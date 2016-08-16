@@ -1,0 +1,243 @@
+<div class="document">
+<div class="documentwrapper">
+<div class="body">
+<div id="mysql-api-commands">
+<div class="altTitle">MySQL API</div>
+<div class="table-of-content container">
+<ul class="simple">
+<li><a class="reference internal" href="#mysql-list_dbs">mysql-list_dbs</a></li>
+<li><a class="reference internal" href="#mysql-list_hostnames">mysql-list_hostnames</a></li>
+<li><a class="reference internal" href="#mysql-add_hostname">mysql-add_hostname</a></li>
+<li><a class="reference internal" href="#mysql-remove_hostname">mysql-remove_hostname</a></li>
+<li><a class="reference internal" href="#mysql-list_users">mysql-list_users</a></li>
+<li><a class="reference internal" href="#mysql-add_user">mysql-add_user</a></li>
+<li><a class="reference internal" href="#mysql-remove_user">mysql-remove_user</a></li>
+<li><a class="See also" href="#See_also">See also</a></li>
+</ul>
+</div>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>The following documentation is officially supported by DreamHost. However, if you find any instructions in this article do not function as intended, it's possible it may be out of date. When in doubt, please contact support for further assistance</p>
+</div>
+</div>
+<p>The <strong>mysql</strong> API module allows you to manage MySQL databases and users.</p>
+<h2>Commands</h2>
+<span id="mysql-list_dbs"></span>
+<h3>mysql-list_dbs</h3>
+<p>Dumps a list of all active MySQL databases on all accounts you have access to.</p>
+<table class="wikitable">
+<tbody>
+<tr>
+<td><strong>Command</strong></td>
+<td>mysql-list_dbs</td>
+</tr>
+<tr>
+<td><strong>Values</strong></td>
+<td>
+<p>(none)</p>
+</td>
+</tr>
+<tr>
+<td><strong>Result</strong></td>
+<td>
+<p>success <br />account_id db description home disk_usage_mb <br />1234 yourdb_db1 Database 1 haass.tuna.dreamhost.com 0.0078125 <br />1234 betterdb2435 This one's better haass.tuna.dreamhost.com 0.0078125</p>
+</td>
+</tr>
+<tr>
+<td><strong>Possible errors</strong></td>
+<td>
+<p>(none)</p>
+</td>
+</tr>
+</tbody>
+</table>
+<span id="mysql-list_hostnames"></span>
+<h3>mysql-list_hostnames</h3>
+<p>Dumps a list of all active MySQL hostnames, and the database servers they refer to, for all accounts you have access to.</p>
+<table>
+<tbody>
+<tr>
+<td><strong>Command</strong></td>
+<td>mysql-list_hostnames</td>
+</tr>
+<tr>
+<td><strong>Values</strong></td>
+<td>
+<p>(none)</p>
+</td>
+</tr>
+<tr>
+<td><strong>Result</strong></td>
+<td>
+<p>success <br />account_id domain home <br />1234 mysql.site.dreamhosters.com haass.tuna.dreamhost.com <br />1234 mysql2.site.dreamhosters.com haass.tuna.dreamhost.com</p>
+</td>
+</tr>
+<tr>
+<td><strong>Possible errors</strong></td>
+<td>
+<p>(none)</p>
+</td>
+</tr>
+</tbody>
+</table>
+<span id="mysql-add_hostname"></span>
+<h3>mysql-add_hostname</h3>
+<p>Adds a MySQL hostname.</p>
+<table class="wikitable">
+<tbody>
+<tr>
+<td><strong>Command</strong></td>
+<td>mysql-add_hostname</td>
+</tr>
+<tr>
+<td><strong>Values</strong></td>
+<td>
+<p><strong>hostname</strong> : The full hostname you want to serve as a MySQL hostname. Unless the domain following the first . is hosted with DreamHost, you won't be able to access phpMyAdmin from this hostname.</p>
+</td>
+</tr>
+<tr>
+<td><strong>Result</strong></td>
+<td>
+<p>success <br />hostname_added</p>
+</td>
+</tr>
+<tr>
+<td><strong>Possible errors</strong></td>
+<td>
+<p>no_hostname <br />invalid_domain <br />taken_subdomain <br />internal_error_adding_hostname <br />internal_error_could_not_load_domain</p>
+</td>
+</tr>
+</tbody>
+</table>
+<span id="mysql-remove_hostname"></span>
+<h3>mysql-remove_hostname</h3>
+<p>Removes a MySQL hostname.</p>
+<table class="wikitable">
+<tbody>
+<tr>
+<td><strong>Command</strong></td>
+<td>mysql-remove_hostname</td>
+</tr>
+<tr>
+<td><strong>Values</strong></td>
+<td>
+<p><strong>hostname</strong> : The full hostname you want to serve as a MySQL hostname.</p>
+</td>
+</tr>
+<tr>
+<td><strong>Result</strong></td>
+<td>
+<p>success <br />hostname_removed</p>
+</td>
+</tr>
+<tr>
+<td><strong>Possible errors</strong></td>
+<td>
+<p>no_hostname <br />invalid_hostname <br />internal_error_removing_hostname</p>
+</td>
+</tr>
+</tbody>
+</table>
+<span id="mysql-list_users"></span>
+<h3>mysql-list_users</h3>
+<p>Dumps a list of MySQL users and their privileges for all databases on all accounts you have access to.</p>
+<table class="wikitable">
+<tbody>
+<tr>
+<td><strong>Command</strong></td>
+<td>mysql-list_users</td>
+</tr>
+<tr>
+<td><strong>Values</strong></td>
+<td>
+<p>(none)</p>
+</td>
+</tr>
+<tr>
+<td><strong>Result</strong></td>
+<td>
+<p>success <br />account_id db home username host select_priv insert_priv update_priv delete_priv create_priv drop_priv index_priv alter_priv <br />1234 yourdb_db1 haass.tuna.dreamhost.com randomuser1 Y Y Y Y Y Y Y Y <br />1234 betterdb2435 haass.tuna.dreamhost.com randomuser2 Y Y Y Y Y Y Y Y</p>
+</td>
+</tr>
+<tr>
+<td><strong>Possible values</strong></td>
+<td>
+<p><strong>*_priv</strong> : Y or N</p>
+</td>
+</tr>
+<tr>
+<td><strong>Possible errors</strong></td>
+<td>
+<p>(none)</p>
+</td>
+</tr>
+</tbody>
+</table>
+<span id="mysql-add_user"></span>
+<h3>mysql-add_user</h3>
+<p>Adds a new MySQL user to a database.</p>
+<table class="wikitable">
+<tbody>
+<tr>
+<td><strong>Command</strong></td>
+<td>mysql-add_user</td>
+</tr>
+<tr>
+<td><strong>Values</strong></td>
+<td>
+<p><br /><strong>db</strong>: The database to which the user should be added <br /><strong>user</strong>: The username for the new user <br /><strong>password</strong>: The password for the new user <br /><strong>select</strong>: Y or N (optional, default is Y) <br /><strong>insert</strong>: Y or N (optional, default is Y) <br /><strong>update</strong>: Y or N (optional, default is Y) <br /><strong>delete</strong>: Y or N (optional, default is Y) <br /><strong>create</strong>: Y or N (optional, default is Y) <br /><strong>drop</strong>: Y or N (optional, default is Y) <br /><strong>index</strong>: Y or N (optional, default is Y) <br /><strong>alter</strong>: Y or N (optional, default is Y) <br /><strong>hostnames</strong>: A newline separated list of hosts in which % is a wildcard. From this list, the user is allowed to access the databases (optional, default is %.dreamhost.com)</p>
+</td>
+</tr>
+<tr>
+<td><strong>Result</strong></td>
+<td>
+<p>success <br />user_added</p>
+</td>
+</tr>
+<tr>
+<td><strong>Possible errors</strong></td>
+<td>
+<p>no_db <br />no_such_db <br />no_user <br />invalid_user: reason <br />user_exists <br />user_not_lowercase <br />user_already_on_db <br />no_password <br />invalid_password: reason <br />invalid_select <br />invalid_insert <br />invalid_update <br />invalid_delete <br />invalid_create <br />invalid_drop <br />invalid_index <br />invalid_alter <br />internal_error_could_not_load_db <br />internal_error_adding_user</p>
+</td>
+</tr>
+</tbody>
+</table>
+<span id="mysql-remove_user"></span>
+<h3>mysql-remove_user</h3>
+<p>Removes a MySQL user from a database.</p>
+<table class="wikitable">
+<tbody>
+<tr>
+<td><strong>Command</strong></td>
+<td>mysql-remove_user</td>
+</tr>
+<tr>
+<td><strong>Values</strong></td>
+<td>
+<p><strong>db</strong>: The database from which the user should be removed <br /><strong>user</strong>: The username for the new user <br /><strong>select</strong>: Y or N <br /><strong>insert</strong>: Y or N <br /><strong>update</strong>: Y or N <br /><strong>delete</strong>: Y or N <br /><strong>create</strong>: Y or N <br /><strong>drop</strong>: Y or N <br /><strong>index</strong>: Y or N <br /><strong>alter</strong>: Y or N</p>
+</td>
+</tr>
+<tr>
+<td><strong>Result</strong></td>
+<td>
+<p>success <br />user_removed</p>
+</td>
+</tr>
+<tr>
+<td><strong>Possible errors</strong></td>
+<td>
+<p>no_db <br />no_such_db <br />no_user <br />no_such_user <br />no_select <br />invalid_select <br />no_insert <br />invalid_insert <br />no_update <br />invalid_update <br />no_delete <br />invalid_delete <br />no_create <br />invalid_create <br />no_drop <br />invalid_drop <br />no_index <br />invalid_index <br />no_alter <br />invalid_alter <br />internal_error_removing_user</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h2><span id="See_also">See also</span></h2>
+<ul>
+<li><a href="/hc/en-us/articles/217560167-Application-programming-interface-overview">Application programming interface overview</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="clearer"> </div>

@@ -1,0 +1,102 @@
+<p>Viewing your message headers is like looking at the map that your email takes when being delivered to your mailbox. Understandably this map is very helpful in finding out the causes for many email problems that can be experienced on any system. From delayed mail to email bounces, headers are the number one clue in troubleshooting delivery issues that may occur.</p>
+<h2><span id="Understanding_received_message_headers" class="mw-headline">Understanding received message headers</span></h2>
+<p>By default, mail clients will only show you the basic headers of a message:</p>
+<dl>
+<dd><img src="https://kbimages.objects-us-west-1.dream.io/images/Headers5.fw.png" alt="Headers5.fw.png" width="498" height="106" /></dd>
+</dl>
+<p>This example is from a message viewed through SquirrelMail. The details on this set of headers only shows the basic information of the message.</p>
+<p>This information is useful, but it is not all of the information that you actually have access to. In your mail program, you can select a message then choose to view the message’s full header details:</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>You must read the header details from the bottom up to see the path of the message.</p>
+</div>
+</div>
+<dl>
+<dd><img src="https://kbimages.objects-us-west-1.dream.io/images/Headers6.fw.png" alt="Headers6.fw.png" width="634" height="476" /></dd>
+</dl>
+<p>This information has kind of an odd trait. You must read it from the bottom up to see the path of the message. In the example above, the first line, shown as ‘Return-Path’, shows where the email was created and originally sent from. Each 'Received' line is a server the email passed through on its way to the recipient.</p>
+<p>The following is a quick overview of the basic fields you’ll see:</p>
+<dl>
+<dt><strong>Return-Path</strong></dt>
+<dd>If the message is rejected, it will be sent back to the email address listed here, which is also the sender of the message.</dd>
+</dl>
+<dl>
+<dt><strong>X-Original-To</strong></dt>
+<dd>The email address listed here is the original recipient of the email that was received.</dd>
+</dl>
+<dl>
+<dt><strong>Delivered-To</strong></dt>
+<dd>In the example listed above, you will see a strange looking email address here:</dd>
+</dl>
+<dl>
+<dd>Delivered-To: x14847128@homiemail-mx18.g.dreamhost.com</dd>
+</dl>
+<dl>
+<dd>The email user listed (to the left of the ‘@’ symbol) is the user ID for the recipient email address hosted with DreamHost. The server listed (to the right of the ‘@’ symbol) is your DreamHost mail server that received this particular message.</dd>
+</dl>
+<dl>
+<dt><strong>Received</strong></dt>
+<dd>There is a ‘Received by’ and ‘Received from’ details listed on the headers. When checking your headers, the ‘Received by’ is indicating that it was received by the IP or servername when the message was originally sent.</dd>
+</dl>
+<dl>
+<dd>The ‘Received from’ would be the server that sent or relayed the email at any specific point in the header.</dd>
+</dl>
+<dl>
+<dt><strong>DKIM-Signature</strong></dt>
+<dd>This shows the <a href="/hc/en-us/articles/215029758-What-are-DKIM-records-">DKIM</a> signature, if the email has one. All emails sent from DreamHost-hosted mail accounts are signed with DKIM. You can read more about DKIM signing in the DKIM article.</dd>
+</dl>
+<dl>
+<dt><strong>MIME-Version</strong></dt>
+<dd>1.0: This is just showing the MIME version at 1.0, which has no relevance in troubleshooting mail delivery.</dd>
+</dl>
+<dl>
+<dt><strong>X-Received</strong></dt>
+<dd>This shows the message being received at the first server. Then an ID is applied to it so the message can be tracked.</dd>
+</dl>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>The example headers used are a very basic set of headers for a message. The test message sent to produce the example was as simple as it can get. When implementing other options such as message filtering and/or spam filtering, the headers will contain other added details pertaining to those additional settings.</p>
+</div>
+</div>
+<h2><span id="Tracking_the_message_delivery_through_the_headers" class="mw-headline">Tracking the message delivery through the headers</span></h2>
+<p>As noted above, headers are read starting from the bottom. In the same example from above, the message was originally sent on:</p>
+<div class="preboxcontainer">
+<pre class="prebox">Received: by 10.70.116.227 with HTTP; Wed, 7 Jan 2015 20:50:11 -0800 (PST)
+</pre>
+</div>
+<p>This shows the message being received with the timestamp listed above. Once received, the ‘X-Received’ status applied the SMTP ID for that message, which was also done at the same time:</p>
+<div class="preboxcontainer">
+<pre class="prebox">X-Received: by 10.70.55.163 with SMTP id t3mr1091761pdp.8.1420692611828; Wed,07 Jan 2015 20:50:11 -0800 (PST)
+</pre>
+</div>
+<p>The message was sent from a test Google user. The details below shows Google looking to pass the message off to the final recipient:</p>
+<div class="preboxcontainer">
+<pre class="prebox">Received: by mail-pa0-f52.google.com with SMTP id eu11so9302323pac.11 for &lt;user@thunderbird.dreamhosters.com&gt;; Wed, 07 Jan 2015 20:50:12 -0800 (PST)
+
+Received: from mail-pa0-f52.google.com (mail-pa0-f52.google.com [209.85.220.52])
+(using TLSv1 with cipher RC4-SHA (128/128 bits))
+(No client certificate requested)
+by homiemail-mx18.g.dreamhost.com (Postfix) with ESMTPS id 59075276046
+for &lt;user@thunderbird.dreamhosters.com&gt;; Wed, 7 Jan 2015 20:50:12 -0800 (PST)
+</pre>
+</div>
+<p>From there, it went from Google to your DreamHost incoming server at ‘homiemail-mx18’. That MX server then delivered the message to the final recipient.</p>
+<p>As you can see, the entire delivery process only took 1 second from the point it was sent to the point it was received.</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>There are tools that help to evaluate the message headers of a message:</p>
+<ul>
+<li>Google has one here: <a class="external free" href="https://toolbox.googleapps.com/apps/messageheader/analyzeheader" rel="nofollow">https://toolbox.googleapps.com/apps/messageheader/analyzeheader</a></li>
+<li>Here's another one: <a class="external free" href="http://mxtoolbox.com/EmailHeaders.aspx" rel="nofollow">http://mxtoolbox.com/EmailHeaders.aspx</a></li>
+</ul>
+</div>
+</div>
+<h2>See also</h2>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215466588-How-do-I-read-sent-and-bounced-email-headers-">How do I read sent and bounced email headers?</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215466778-How-do-I-view-email-headers-">How do I view email headers?</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/217114867-Viewing-email-headers-using-Atmail-webmail">Viewing email headers using Atmail webmail</a></li>
+</ul>

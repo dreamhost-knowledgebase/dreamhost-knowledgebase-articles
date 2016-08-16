@@ -1,0 +1,43 @@
+<h3><span id="Stats_Plugins" class="mw-headline">Stats Plugins</span></h3>
+<p>While having a plugin that handles your stats (and displays them in your admin interface) is nice, they can actually inflate the database almost as quickly as unchecked spam. This means you should be cautious of using them, and pay special attention to your database if you do so.</p>
+<p>Optimally, you'd use something that doesn't depend on your server environment like <a class="external text" href="http://www.google.com/analytics/" rel="nofollow">Google Analytics</a>. But if you prefer a server side solution, <a class="external text" href="http://piwik.org/" rel="nofollow">Piwik</a> is available as a One-Click Install and works rather nicely.</p>
+<h3><span id="Checking_your_plugins" class="mw-headline">Checking your plugins</span></h3>
+<p>Firstly, it's extremely important to make sure your plugins are compatible with the version of WordPress you're using.</p>
+<p>This is something you can verify at <a class="external text" href="http://wordpress.org/extend/plugins/" rel="nofollow">WordPress' Plugin Directory</a>.</p>
+<p>If you are experiencing site slowness, and you want to see if it's resource-usage related (and not something on DreamHost`s end), simply disable all your plugins, and switch to the default theme.</p>
+<p>If your WordPress installation is suddenly running faster, then it’s recommended to go through your plugins and enable them one-by-one, to see if any of them is using more resources than the others.</p>
+<p>For a more scientific approach, you can see how many queries and how much CPU time a page took to load.</p>
+<p>To determine the number the queries and how much CPU is being used:</p>
+<ol>
+<li>Log into the server via FTP. You can find more info about how to use FTP here:
+<ul>
+<li><a href="/hc/en-us/articles/215612917-FTP-overview">FTP</a></li>
+</ul>
+</li>
+<li>Find your "footer.php" file which is found on the webserver.</li>
+<li>Navigate to your /wp-content/themes directory.</li>
+<li>In this directory, open the folder for the theme you’re using. For example, if you’re using ‘twentyfourteen’ you’d find the footer.php file at /wp-content/themes/twentyfourteen/footer.php.</li>
+<li>In the file, add the following content at the very bottom:
+<div class="preboxcontainer">
+<pre class="prebox">&lt;?php echo get_num_queries(); ?&gt; <br />queries in &lt;?php timer_stop(1); ?&gt; seconds</pre>
+</div>
+</li>
+</ol>
+<p>By reloading this page each time you activate a plugin, you can check which one increases your queries and CPU time considerably.</p>
+<p>On the bottom of your WordPress site you’ll see:</p>
+<div class="preboxcontainer">
+<pre class="prebox"># queries in # seconds</pre>
+</div>
+<p><br /> You will need to have any caching plugins disabled for this to work.</p>
+<p>The <strong>Jetpack</strong> plugin is a bit special. You might try disabling individual modules in the plugin to improve performance. For each module, click "Learn More" and then "Deactivate".</p>
+<p>The <a class="external text" href="https://wordpress.org/plugins/p3-profiler/" rel="nofollow">P3 Plugin Profiler</a> plugin is a great tool to see what plugins may be slowing your site down. It gives you a simple graphical output to quickly see which plugins are using the most resources.</p>
+<p><span class="wysiwyg-font-size-x-large"><strong>See also</strong></span></p>
+<ul>
+<li><a href="/hc/en-us/articles/215525287">WordPress overview</a></li>
+<li><a href="/hc/en-us/articles/214586458">Fine tuning your WordPress JavaScript </a></li>
+<li><a href="/hc/en-us/articles/214586538">WordPress caching options </a></li>
+<li><a href="/hc/en-us/articles/214586518">Fine tuning WordPress revisions </a></li>
+<li><a href="/hc/en-us/articles/215300907">WordPress SPAM plugins </a></li>
+<li><a href="/hc/en-us/articles/215300867">General WordPress optimization techniques </a></li>
+<li><a href="/hc/en-us/articles/215527147">Troubleshooting WordPress plugins</a></li>
+</ul>

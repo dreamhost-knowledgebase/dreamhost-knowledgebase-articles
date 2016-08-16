@@ -1,0 +1,25 @@
+<p>If your problem has to do with your memory usage spiking at certain times of the day, it can be difficult to figure out what's happening since things are often running well when you're able to check on them. When that's the case, it's important to be able to simulate the environment that's causing the problem.</p>
+<p>A benchmark tool you can use to simulate traffic is the ‘ab’ command. View the following link for further details:</p>
+<ul>
+<li><a class="external free" href="http://www.unix.com/man-page/linux/1/ab/" rel="nofollow">http://www.unix.com/man-page/linux/1/ab/</a></li>
+</ul>
+<p>To use, enter the following command:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">ab -n 1000 -c 20 <a class="external free" href="http://www.example.com/index.html" rel="nofollow">http://www.example.com/index.html</a></span></pre>
+</div>
+<p>This command attempts to create 1000 connections to <a class="external free" href="http://www.example.com/index.html" rel="nofollow">http://www.example.com/index.html</a> limiting itself to 20 concurrent connections.</p>
+<h2><span id="Viewing_your_processes_while_testing" class="mw-headline">Viewing your processes while testing</span></h2>
+<p>To observe what's going on, you'll likely want three terminal windows open.</p>
+<ul>
+<li>In the first window, <a class="new" title="SSH (page does not exist)" href="https://dreamhosthelp.zendesk.com/hc/en-us/articles/216041267">SSH</a> to your server and run top -c. Then, sort by memory (SHIFT + m).</li>
+<li>In the second window, run free -m (or, run watch free -m).</li>
+<li>In the third window, run the ‘ab’ command to simulate traffic. This is effective for profiling your sites and checking to see if caching is working, and you can run this for each of your domains and see which ones affect your memory usage the most so you know where to optimize.</li>
+</ul>
+<h2>See also</h2>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214879308-VPS-optimization-overview">VPS optimization overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214879348-Managing-your-VPS-memory-usage">Managing your VPS memory usage</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214879438-Recovering-from-memory-saturation">Recovering from memory saturation</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216475397-Troubleshooting-a-single-site-s-connection">Troubleshooting a single site's connection</a></li>
+</ul>

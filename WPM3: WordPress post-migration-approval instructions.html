@@ -1,0 +1,162 @@
+<div class="document">
+<div class="documentwrapper">
+<div class="body">
+<div id="wpm3">
+<div class="altTitle">WPM3: Post-migration instructions</div>
+<div class="table-of-content container">
+<ul class="simple">
+<li><a class="reference internal" href="#DNS">DNS (how the world sees your domain)</a></li>
+<li><a class="reference internal" href="#Email">Email</a></li>
+<li><a class="reference internal" href="#Contact_forms">Contact forms (or other mail-sending forms/scripts)</a></li>
+<li><a class="reference internal" href="#Troubleshooting">Troubleshooting</a></li>
+</ul>
+</div>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Do not use these instructions unless explicitly instructed to by the DreamHost WordPress Migrations Team. The following information is only to be used in a particular phase of a WP migration being done for you by that team; otherwise, the steps will be out of context and can lead to errors if implemented.</p>
+</div>
+</div>
+<p>Now that your migration is complete, it's important to understand issues related to DNS, specific issues related to your previous website configuration (use of a CDN, SSL, and redirects), and any issues specific to the service you have selected (i.e., shared hosting or DreamPress).</p>
+<p>The following information helps you understand and make any necessary adjustments to finalize your migration.</p>
+<div id="domain_name"><span id="DNS"></span>
+<h2>DNS (how the world sees your domain)</h2>
+<h3>Reference</h3>
+<p>Here is a good reference for understanding the Domain Name System (DNS) which is at the heart of how web browsers find websites:</p>
+<ul>
+<li><a href="/hc/en-us/articles/215413857">DreamHost DNS overview</a></li>
+</ul>
+<h3>Changing DNS</h3>
+<p>Changing DNS is almost always accomplished in two different ways:</p>
+<ol>
+<li>Changing nameservers at your domain’s registrar, or</li>
+<li>Editing A-records where your domain’s nameservers exist.</li>
+</ol>
+<p>If you want to minimize the time visitors may see the old site after you change DNS records, reduce the Time-To-Live (TTL) value on the domain, as explained in the next section.</p>
+<h3>Reducing DNS propagation delay (to minimize switchover time)</h3>
+<p>To minimize <a href="/hc/en-us/articles/215840248">DNS Propagation</a> (how long it takes for the domain to show the migrated site), ask your current hosting provider to set your TTL value to the briefest period of time they can provide. If you don't mind the possibility of some repeat visitors not seeing the site for generally about 4 hours during the transition (assuming your domain’s current TTL is 4 hours, which is typical), you can just leave the TTL where it is.</p>
+<p>It's important that if you do reset the TTL to a lower value, you should then wait for the number of hours to pass for the TTL that was previously set before making any DNS changes. This ensures that the current cached versions of the site expire throughout the web and are not able to be retrieved by visitors. After the <a href="/hc/en-us/articles/215413857">DNS</a> is resolving to DreamHost, DreamHost technical support is able to control the TTL on the domain. The TTL is then set back to 4 hours which is optimal.</p>
+<h3>Switching DNS</h3>
+<p>DNS records control which company a website is pointed to. There are generally two different ways of updating DNS records.</p>
+<h3>Changing nameservers at your registrar (recommended)</h3>
+<p>Point your nameservers at your current registrar to DreamHost's nameservers:</p>
+<div class="preboxcontainer">
+<pre class="prebox">ns1.dreamhost.com
+ns2.dreamhost.com
+ns3.dreamhost.com
+</pre>
+</div>
+<h3>How to host the main domain at DreamHost while keeping any subdomains hosted at the current host</h3>
+<p>If you happen to have subdomains (e.g., subdomain.example.com) under your migrated domain, changing nameservers will cause them to no longer function. If you need the subdomains to continue to function at your current host, follow these steps:</p>
+<ol>
+<li>Add the primary domain to your DreamHost panel.</li>
+<li>Create <a href="/hc/en-us/articles/215414867">Custom DNS</a> records for each subdomain.</li>
+<li>When creating the custom subdomain record, point it to the A-record IP address at your current host. Ask your current host for the correct IP address.</li>
+</ol>
+<p>Once those new records are updated online, any visitor that views the subdomain site is redirected to your current hosting company while the primary site is continues to be hosted at DreamHost.</p>
+<h3>Editing A-records</h3>
+<p>A-records for a domain always point to an IP address. Editing A-records is an alternative way to send your traffic to your migrated site instead of changing the nameservers. At your current host, you can edit the A-records in the domain’s “zone file”. The way to edit varies with each host, but it's commonly available at virtually all of them.</p>
+<p>One reason this may be a better choice is if you have subdomains under the primary domain, and you wish to continue to control their DNS at the current hosting company. The downside of this approach is that if an IP address at DreamHost changes for any reason (which is rare), the site will go down since the DNS A-record points at the old IP address. Even if you do have subdomains, you can still use the directions above to update nameservers.</p>
+<p>Follow these steps to point your A-records to your DreamHost site:</p>
+<ol>
+<li>Navigate to the (<a href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;">Panel &gt; 'Domains' &gt; 'Manage Domains'</a>) page.</li>
+<li>Click the 'Edit' link under the fully hosted domain.</li>
+<ul>
+<li>On this page you'll see several <a href="/hc/en-us/articles/215413857">DNS records</a>.</li>
+</ul>
+<li>Find the two A-records for the website. One has www in the first column, the other is blank in the name field. But both use the same IP address.</li>
+<li>Make sure to also enter any other IP addresses of any DreamHost service you wish to use. For example, mysql, webmail, mail, mailboxes. The mysql A-record is important if you need to use <a href="/hc/en-us/articles/214395638">phpMyAdmin</a> with your new DreamHost site.</li>
+<li>Enter these A-records at your current hosting company.</li>
+</ol>
+<div id="mail"><span id="Email"></span>
+<h2>Email</h2>
+<p>Changing DNS by changing nameservers (method 1) also changes which company hosts your email. This is because email is routed using subdomains of your domain, which are subject to the issues explained above. Using method no. 2 (editing A-records to change DNS) does not affect your email in any way, as long as you don’t edit the actual MX or A-records controlling email.</p>
+<p>If you want to keep email uninterrupted, use method 2 (changing the A-record).</p>
+<p>If you want DreamHost to host your email, use method 1. This requires you to also manually migrate your old email to DreamHost. View the following article for details on how to migrate your old email to DreamHost:</p>
+<ul>
+<li><a href="/hc/en-us/articles/215730827">Transferring Emails</a></li>
+</ul>
+<div id="forms"><span id="Contact_forms"></span>
+<h2>Contact forms (or other mail-sending forms/scripts)</h2>
+<p>DreamHost offers four platforms for hosting websites:</p>
+<ul>
+<li>Shared</li>
+<li>VPS</li>
+<li>Dedicated</li>
+<li>DreamPress</li>
+</ul>
+<p>The next paragraph of this section only applies if your migrated site is on Shared hosting. On Shared hosting, DreamHost must comply with stringent Internet spam and “spoofing” rules. This impacts how your site may need to be configured for email sending.</p>
+<h3>Shared hosting plans only</h3>
+<p>Contact forms send email <strong>from</strong> whatever visitor address is typed in to the form. The problem with this is that it violates DreamHost's Sender Domain Policy and causes the email to not be sent.</p>
+<p>The <strong>from</strong> value must be set to a “fully hosted” email address at DreamHost on the same domain. This <strong>cannot</strong> be a “forward-only” address. So, if your site is 'example.com', the 'from' field in your form must always be something like 'admin@example.com'. For further information, visit the following article:</p>
+<ul>
+<li><a href="/hc/en-us/articles/215036058">Sender domain policy</a></li>
+</ul>
+<h3>SMTP plugins</h3>
+<p>The easiest and recommended way to fix this issue is to use an SMTP plugin. This forces the email to be sent through the mail server (instead of the web server). It also allows you to use any 'from' address you like. View the following article for two examples on how to configure an SMTP plugin:</p>
+<ul>
+<li><a href="/hc/en-us/articles/215526937">WordPress SMTP plugins</a></li>
+</ul>
+<p>Your existing contact form plugin remains in place, and this plugin just adds the SMTP capability to your site's email.</p>
+<h3>Sending email from a custom script</h3>
+<p>If instead of a WordPress plugin you run a script that sends email, it's highly recommended to use SMTP authentication in that form. View the following article for an example on how to set this up using a PHP form:</p>
+<ul>
+<li><a href="/hc/en-us/articles/216140597">SMTP authentication with PHP mail</a></li>
+</ul>
+<p>You can also use <a href="/hc/en-us/articles/215842658">PHPMailer</a>.</p>
+<div id="trouble"><span id="Troubleshooting"></span>
+<h2>Troubleshooting</h2>
+<p>The following information may apply to your particular setup.</p>
+<h3>DNS</h3>
+<p>If your site is not resolving after several hours after updating your DNS, test your site on the following site to confirm the DNS has updated online:</p>
+<ul>
+<li><a href="https://www.whatsmydns.net/">https://www.whatsmydns.net</a></li>
+</ul>
+<p>If you still cannot view the updated site on your computer, try clearing your browser's cache and flushing your DNS:</p>
+<ul>
+<li><a href="/hc/en-us/articles/215680477">Flush DNS</a></li>
+<li><a href="/hc/en-us/articles/216456827">Clear cache</a></li>
+</ul>
+<h3>CDN</h3>
+<p>If you run one or more Content Delivery Networks (CDNs) on your site for images, you may need to reconfigure your CDN settings to refresh the images or upload accordingly.</p>
+<h3>SSL certificates and HTTPS</h3>
+<p>As indicated in the Request For Credentials that DreamHost sent you to begin the migration, HTTPS and any related configuration of SSL certificates are out of scope for the migration project. View the following articles for further information:</p>
+<ul>
+<li><a href="/hc/en-us/articles/216041537">Secure Hosting</a></li>
+<li><a href="/hc/en-us/articles/215089668">Adding an SSL certificate</a></li>
+</ul>
+<h3>Preserving or creating web page redirects</h3>
+<p>View the following articles if you've created page redirects in your site using an .htaccess file:</p>
+<ul>
+<li><a href="/hc/en-us/articles/215747748">Redirects and rewrites</a></li>
+<li><a href="http://premium.wpmudev.org/blog/creating-301-redirects-wordpress/">http://premium.wpmudev.org/blog/creating-301-redirects-wordpress/</a></li>
+<li><a href="https://wordpress.org/plugins/search.php?q=seo">https://wordpress.org/plugins/search.php?q=seo</a></li>
+</ul>
+<h3>DreamPress caching</h3>
+<p>This applies only if your site uses <a href="/hc/en-us/articles/214581158">DreamPress</a>. Part of the remarkable speed DreamPress provides is due to the way it caches content by using Varnish. If you happen to make changes and see a lag between the time you save a change and the time it appears, you might want to clear your Varnish cache at the top of the WordPress admin dashboard:</p>
+<ul>
+<li><a href="/hc/en-us/articles/215300647">Purging Varnish cache</a></li>
+</ul>
+<h3>DreamPress and other code</h3>
+<p>For DreamPress hosting, if the team migrated any files for you that constitute some sort of non-WordPress application which runs under the same domain as your migrated WordPress install, the team can't guarantee that the DreamPress platform will properly run that application.</p>
+<p>This is because DreamPress is only designed to run WordPress sites.</p>
+<h3>Re-editing the local hosts file</h3>
+<p>In DreamHost's prior emails to you, you were probably instructed to view the migrated site through editing a local ‘hosts’ file on your home computer:</p>
+<ul>
+<li><a href="/hc/en-us/articles/215415667">Editing your hosts file</a></li>
+</ul>
+<p>Ultimately, you will want to undo any edit you made to this file. If you don’t make this edit and the IP of your site changes at DreamHost, you won't be able to view your migrated site.</p>
+<h2>See also</h2>
+<ul>
+<li><a href="/hc/en-us/articles/218998927-WPM1-WordPress-migration-service-beta-">WPM1: WordPress migration service (beta)</a></li>
+<li><a href="/hc/en-us/articles/218494868-WPM2-When-your-WordPress-site-migration-begins">WPM2: When your WordPress site migration begins</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="clearer"> </div>

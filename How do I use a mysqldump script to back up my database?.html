@@ -1,0 +1,72 @@
+<p>You can create a cron job to utilize mysqldump in order to create a database backup.</p>
+<p>A few notes on the following script:</p>
+<ul>
+<li>dumps a database in the format "yourusername_mm-dd-yyyy.sql" to the directory "/home/username/backup/”.</li>
+<li>assumes that all the included databases run on the same host, and use the same user.</li>
+<li>has been tested on large MySQL databases (600MB+), and has worked very well.</li>
+</ul>
+<p>In the script below, you must fill in the first six variables, namely: "domains", "sqldbs", "opath", "mysqlhost", "username", and "password". Then, simply copy and paste it into cron.</p>
+<dl>
+<dd></dd>
+<dd></dd>
+</dl>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>In the following example, the opath variable points to $HOME/backup/. Make sure you have created this backup directory first before proceeding.</p>
+</div>
+</div>
+<div class="preboxcontainer">
+<pre class="prebox">domains=( example.com example2.com )
+sqldbs=( yourdb1 yourdb2 )
+opath=$HOME/backup/
+mysqlhost=mysqlhostname
+username=mysqlusername
+password=mysqlpassword
+suffix=$(date +%m-%d-%Y)
+for (( i = 0 ; i &lt; ${#domains[@]} ; i++ ))
+do
+	cpath=$opath${domains[$i]}
+	if [ -d $cpath ]
+	then
+		filler="just some action to prevent syntax error"
+	else
+		echo Creating $cpath
+		mkdir -p $cpath
+	fi
+	mysqldump -c -h $mysqlhost --user $username --password=$password ${sqldbs[$i]} &gt; ${cpath}/${sqldbs[$i]}_$suffix.sql
+done
+</pre>
+</div>
+<h2><span id="Troubleshooting" class="mw-headline">Troubleshooting</span></h2>
+<h3><span id="Couldn.27t_execute_.27SET_OPTION_SQL_QUOTE_SHOW_CREATE.3D1.27" class="mw-headline">Couldn't execute 'SET OPTION SQL_QUOTE_SHOW_CREATE=1'</span></h3>
+<p>When running mysqldump, you may see the following error message:</p>
+<div class="preboxcontainer">
+<pre class="prebox">mysqldump: Couldn't execute 'SET OPTION SQL_QUOTE_SHOW_CREATE=1': You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'OPTION SQL_QUOTE_SHOW_CREATE=1' at line 1 (1064)
+</pre>
+</div>
+<p>This means your mysqldump version is too old compared to your MySQL server version.</p>
+<p>To update your mysqldump version, you'll have to compile a new version of MySQL (which first requires compiling dependencies such as cmake).</p>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Any commands that require root/sudo access can only be ran on a <a href="/hc/en-us/articles/215279658-Dedicated-server-overview">Dedicated</a> server. Please note that DreamHost support is unable to assist with any such custom changes to a server. Be prepared to troubleshoot any installation errors yourself.</p>
+</div>
+</div>
+<h2><span id="See_also">See also</span></h2>
+<ul>
+<li><a href="/hc/en-us/articles/215099117">MySQL overview</a></li>
+<li><a href="/hc/en-us/articles/214395738">phpMyAdmin — How to backup / export a database or table</a></li>
+<li><a href="/hc/en-us/articles/215100557">How do I restore my database in the panel?</a></li>
+<li><a href="/hc/en-us/articles/215039758">Backing up database overview</a></li>
+<li><a href="/hc/en-us/articles/214395768">phpMyAdmin — How to import / restore a database or table</a></li>
+<li><a href="/hc/en-us/articles/214395638">phpMyAdmin overview</a></li>
+<li><a href="/hc/en-us/articles/214882998">How do I connect to my database via SSH?</a></li>
+<li><a href="/hc/en-us/articles/216041267">SSH overview</a></li>
+<li><a href="/hc/en-us/articles/221686207-SSH-Backing-up-your-database"><span data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;SSH \u2014 Backing up your database&quot;}" data-sheets-userformat="{&quot;2&quot;:8705,&quot;3&quot;:{&quot;1&quot;:0},&quot;12&quot;:0,&quot;16&quot;:10}">SSH — Backing up your database</span></a></li>
+<li><a href="/hc/en-us/articles/217117947-How-do-I-use-a-mysqldump-script-to-back-up-my-database-"><span data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;SSH \u2014 Backing up your database&quot;}" data-sheets-userformat="{&quot;2&quot;:8705,&quot;3&quot;:{&quot;1&quot;:0},&quot;12&quot;:0,&quot;16&quot;:10}"><span data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;How do I use a mysqldump script to back up my database?&quot;}" data-sheets-userformat="{&quot;2&quot;:8705,&quot;3&quot;:{&quot;1&quot;:0},&quot;12&quot;:0,&quot;16&quot;:10}">How do I use a mysqldump script to back up my database?</span></span></a></li>
+</ul>
+<h3>External links</h3>
+<ul>
+<li><a class="external text" href="http://dev.mysql.com/doc/refman/5.0/en/mysqldump.html" rel="nofollow">MySQL 5.0 Reference Manual: mysqldump</a></li>
+</ul>

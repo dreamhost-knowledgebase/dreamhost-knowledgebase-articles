@@ -1,0 +1,257 @@
+<p>Email can be sent from various accounts. For example:</p>
+<ul>
+<li>Websites sending email can send email from the webserver (using an email script) or from the mail server (via SMTP).</li>
+<li>If mail is sent off the webserver using SMTP, the SPF record you use is the same for your mail server.</li>
+<li>If mail is sent from the webserver using an email script, you’ll need to include the web server IP address in the SPF record so the web server’s sending IP is applied as well.</li>
+</ul>
+<p>The basic information needed for your domain's SPF record to permit the mail servers should be provided to you by your mail host.</p>
+<h2>DreamHost SPF records</h2>
+<p>The current dreamhost.com SPF information is incomplete and does not include all of DreamHost's mail servers.</p>
+<p>However, you can use the following <a class="external text" href="http://www.openspf.org/SPF_Record_Syntax#include" rel="nofollow">include mechanism</a> in your domain's SPF record to cover all available DreamHost IP addresses:</p>
+<div class="preboxcontainer">
+<pre class="prebox">v=spf1 include:netblocks.dreamhost.com</pre>
+</div>
+<h2>Google SPF records</h2>
+<p>For Google hosted mail users, the following link provides details on what to put in your domain's SPF record to permit Google’s mail servers:</p>
+<ul>
+<li><a class="external text" href="https://support.google.com/a/answer/178723?hl=en" rel="nofollow">Configure SPF records to work with Google Apps</a></li>
+</ul>
+<p>For other hosts, you must contact them for details on their SPF information.</p>
+<h2><span id="Advanced_SPF">Advanced SPF</span></h2>
+<p>An advanced SPF record includes more than just the default mail servers: it also has information on all other servers that send mail for the domain. The following is an example of an advanced SPF record:</p>
+<div class="preboxcontainer">
+<pre class="prebox">v=spf1 <span style="color: red;">ip4:321.321.321.321</span> <span style="color: blue;">include:_spf.google.com</span> <span style="color: green;">include:shaw.ca</span> <span style="color: brown;">mx</span> ~<span style="color: purple;">all</span>
+</pre>
+</div>
+<table class="wikitable">
+<tbody>
+<tr><th bgcolor="#F2F2F2">Tag</th><th bgcolor="#F2F2F2">Description</th></tr>
+<tr>
+<td style="width: 25%;">
+<dl>
+<dd>v=spf1</dd>
+</dl>
+</td>
+<td>
+<dl>
+<dd>Identifies this DNS record as an SPF version 1 record.</dd>
+</dl>
+</td>
+</tr>
+<tr>
+<td>
+<dl>
+<dd><span style="color: red;">ip4:321.321.321.321</span></dd>
+</dl>
+</td>
+<td>
+<dl>
+<dd>IP address of a specific server, such as your web server for scripts that send mail directly from that server. You can get your web server IP from the ‘Manage Domains’ page. View the DNS article for details.</dd>
+</dl>
+</td>
+</tr>
+<tr>
+<td>
+<dl>
+<dd><span style="color: blue;">include:_spf.google.com</span></dd>
+</dl>
+</td>
+<td>
+<dl>
+<dd>Includes all of the SPF records from Google, which in this example, is where the domain's mail service is hosted.</dd>
+</dl>
+</td>
+</tr>
+<tr>
+<td>
+<dl>
+<dd><span style="color: green;">include:shaw.ca</span></dd>
+</dl>
+</td>
+<td>
+<dl>
+<dd>Includes all the SPF records for Shaw Cable in Canada, an ISP. In this example, mail from the domain is sometimes sent through the ISP's SMTP server.</dd>
+</dl>
+</td>
+</tr>
+<tr>
+<td>
+<dl>
+<dd><span style="color: brown;">mx</span></dd>
+</dl>
+</td>
+<td>
+<dl>
+<dd>Includes all of the MX servers the domain uses, listed in the domain's MX DNS records.</dd>
+</dl>
+</td>
+</tr>
+<tr>
+<td>
+<dl>
+<dd><span style="color: purple;">-all</span></dd>
+</dl>
+</td>
+<td>
+<dl>
+<dd>Says all other servers are not authorized, and only mail sent from the listed servers will 'pass'.</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<dl>
+<dt>
+<h3>-all (dash) or ~all (tilde) or ?all</h3>
+</dt>
+</dl>
+<p>The <a href="https://en.wikipedia.org/wiki/Sender_Policy_Framework">symbol</a> before "all" indicates how strict the SPF record is enforced.</p>
+<ul>
+<li>?, question mark, makes the whole record inactive, as though the domain had no SPF record at all.</li>
+<li>-, dash, makes the record strict, and any mail from servers not listed will be marked "fail" and may be marked as spam or rejected entirely.</li>
+<li>~, tilde, is between the other two options in strictness. Any mail from servers not listed will be marked "softfail". While intended for testing, it is recommended to be used to avoid delivery issues as noted in <a class="external text" href="https://support.google.com/a/answer/178723?hl=en" rel="nofollow">this</a> article.</li>
+</ul>
+<p>The following table shows SPF information for various mail providers that are in popular use:</p>
+<table class="wikitable">
+<tbody>
+<tr><th bgcolor="#F2F2F2">Provider</th><th bgcolor="#F2F2F2">SPF Information</th></tr>
+<tr>
+<td style="width: 25%;">
+<dl>
+<dd><a class="external text" href="http://help.campaignmonitor.com/topic.aspx?t=88" rel="nofollow">Campaign Monitor</a></dd>
+</dl>
+</td>
+<td>
+<dl>
+<dd>include:cmail1.com</dd>
+</dl>
+</td>
+</tr>
+<tr>
+<td>
+<dl>
+<dd><a class="external text" href="http://support2.constantcontact.com/articles/FAQ/1768" rel="nofollow">Constant Contact</a></dd>
+</dl>
+</td>
+<td>
+<dl>
+<dd>include:spf.constantcontact.com</dd>
+</dl>
+</td>
+</tr>
+<tr>
+<td>
+<dl>
+<dd>Freshbooks</dd>
+</dl>
+</td>
+<td>
+<dl>
+<dd>include:_spf.freshbooks.com</dd>
+</dl>
+</td>
+</tr>
+<tr>
+<td>
+<dl>
+<dd><a class="external text" href="https://support.google.com/a/answer/178723?hl=en" rel="nofollow">Google</a></dd>
+</dl>
+</td>
+<td>
+<dl>
+<dd>include:_spf.google.com</dd>
+</dl>
+</td>
+</tr>
+<tr>
+<td>
+<dl>
+<dd>Hostgator</dd>
+</dl>
+</td>
+<td>
+<dl>
+<dd>include:websitewelcome.com</dd>
+</dl>
+</td>
+</tr>
+<tr>
+<td>
+<dl>
+<dd><a class="external text" href="http://mailchimp.blogs.com/blog/2007/05/senderid_authen.html" rel="nofollow">MailChimp</a></dd>
+</dl>
+</td>
+<td>
+<dl>
+<dd>include:servers.mcsv.net</dd>
+</dl>
+</td>
+</tr>
+<tr>
+<td>
+<dl>
+<dd>Microsoft/Hotmail</dd>
+</dl>
+</td>
+<td>
+<dl>
+<dd>N/A (uses SenderID)</dd>
+</dl>
+</td>
+</tr>
+<tr>
+<td>
+<dl>
+<dd>Shaw Communications Ltd.</dd>
+</dl>
+</td>
+<td>
+<dl>
+<dd>include:shaw.ca</dd>
+</dl>
+</td>
+</tr>
+<tr>
+<td>
+<dl>
+<dd>Telus</dd>
+</dl>
+</td>
+<td>
+<dl>
+<dd>include:telus.net</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<h2><span id="Testing_your_SPF_record">Testing your SPF record</span></h2>
+<p>There are a few ways to test your SPF record before and after creating it:</p>
+<ul>
+<li><a class="external text" href="http://www.kitterman.com/spf/validate.html" rel="nofollow">SPF Record Testing Tools</a> is a tester for verifying the syntax of a record before you add it, and a DNS lookup to check that the record has been published.</li>
+<li><a class="external text" href="http://appmaildev.com/en/spf/" rel="nofollow">Test the SPF record using Gmail or Yahoo</a> by sending an email to either or both hosts from all of the sources from which you send email.</li>
+<li>Test by sending an email to <a class="external text" href="https://250ok.com/tools/spf-analyzer/">an automated testing tool</a> from all of the sources from which you send email.</li>
+</ul>
+<h2><span id="A_note_about_the_envelope_sender">A note about the envelope sender</span></h2>
+<p>When SPF checks are handled by the recipient host, the validation is done on the envelope sender, and not on the actual header details. Information regarding the difference between the 'envelope' sender and the actual 'from' header details is outlined here:</p>
+<ul>
+<li><a href="https://dreamhosthelp.zendesk.com/hc/en-us/articles/215036058-Sender-domain-policy-and-spoofing-overview">Sender domain policy and spoofing overview</a></li>
+</ul>
+<h2><strong>Troubleshooting</strong></h2>
+<p>You may see the following error after setting up your SPF record.</p>
+<div class="preboxcontainer">
+<pre class="prebox">550 SPF:69.163.253.135 is not allowed to send mail from $domain.tld (in reply to RCPT TO command)</pre>
+</div>
+<p>This usually means that your SPF record is not configure properly. You must specify a permitted sender as shown in the section above titled 'DreamHost SPF records'. Make sure to add the netblocks address as shown: </p>
+<div class="preboxcontainer">
+<pre class="prebox">v=spf1 include:netblocks.dreamhost.com</pre>
+</div>
+<h2>See also</h2>
+<ul>
+<li><a style="background-color: #ffffff;" href="https://help.dreamhost.com/hc/en-us/articles/216107737-SPF-overview">SPF overview</a></li>
+<li><a href="https://dreamhosthelp.zendesk.com/hc/en-us/articles/216106197-How-do-I-add-an-SPF-record-">How do I add an SPF record?</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214694348-Basic-DNS-records">Basic DNS records</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215840248-DNS-propagation-overview">DNS propagation overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215413857-DreamHost-DNS-overview">DreamHost DNS overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215414867-How-do-I-add-custom-DNS-records-">How do I add custom DNS records?</a></li>
+</ul>

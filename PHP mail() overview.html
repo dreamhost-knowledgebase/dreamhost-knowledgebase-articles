@@ -1,0 +1,144 @@
+<p>Websites built on PHP can take advantage of the PHP mail function which creates the ability to send email directly from your website. You can read more about this function on PHP’s website:</p>
+<ul>
+<li><a class="external free" href="http://php.net/manual/en/function.mail.php" rel="nofollow">http://php.net/manual/en/function.mail.php</a></li>
+</ul>
+<dl>
+<dd></dd>
+<dd></dd>
+</dl>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Never use form input (such as names or email addresses) in the "Additional headers" section of the PHP mail() command. This can lead to mail header injection exploits which allow spammers to hijack your email forms. Please visit the following page for additional information on how these attacks work and how to prevent them:</p>
+<ul>
+<li><a class="external text" href="http://www.damonkohler.com/2008/12/email-injection.html" rel="nofollow">Email Injection</a></li>
+</ul>
+</div>
+</div>
+<h2><span id="Simple_example_of_phpmail.28.29" class="mw-headline">Simple example of phpmail()</span></h2>
+<p>Add the following code to a PHP file named something like "phpmail.php":</p>
+<div class="preboxcontainer">
+<pre class="prebox">&lt;?php
+//sending email with the php mail()
+mail('user@example.com', 'Subject Line Here', 'Body of Message Here');
+?&gt;
+</pre>
+</div>
+<p>When you then visit this page in a browser, it will appear as a blank white page. But by visiting it, you invoke the PHP mail function to send an email to the address entered.</p>
+<h2><span id="Basic_example_with_variables" class="mw-headline">Basic example with variables</span></h2>
+<p>This example adds the $message variables directly into the mail() parameters:</p>
+<div class="preboxcontainer">
+<pre class="prebox">&lt;?php
+
+// compose message
+$message = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit.";
+$message .= " Nam iaculis pede ac quam. Etiam placerat suscipit nulla.";
+$message .= " Maecenas id mauris eget tortor facilisis egestas.";
+$message .= " Praesent ac augue sed enim aliquam auctor. Ut dignissim ultricies est.";
+$message .= " Pellentesque convallis tempor tortor. Nullam nec purus.";
+
+// make sure each line doesn't exceed 70 characters
+$message = wordwrap($message, 70);
+
+// send email
+mail('somebody@example.com', 'Nonsensical Latin', $message);
+?&gt;
+</pre>
+</div>
+<h2><span id="Advanced_example" class="mw-headline">Advanced example</span></h2>
+<p>This example uses variables such as $to, $subject, and $headers which are then added to the mail() parameters:</p>
+<div class="preboxcontainer">
+<pre class="prebox">&lt;?php
+$to = "somebody@example.com";
+$subject = "Nonsensical Latin";
+
+// compose headers
+$headers = "From: webmaster@example.com\r\n";
+$headers .= "Reply-To: webmaster@example.com\r\n";
+$headers .= "X-Mailer: PHP/".phpversion();
+
+// compose message
+$message = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit.";
+$message .= " Nam iaculis pede ac quam. Etiam placerat suscipit nulla.";
+$message .= " Maecenas id mauris eget tortor facilisis egestas.";
+$message .= " Praesent ac augue sed enim aliquam auctor. Ut dignissim ultricies est.";
+$message .= " Pellentesque convallis tempor tortor. Nullam nec purus.";
+$message = wordwrap($message, 70);
+
+// send email
+mail($to, $subject, $message, $headers);
+?&gt;
+</pre>
+</div>
+<h2><span id="Sending_HTML_mail" class="mw-headline">Sending HTML mail</span></h2>
+<p>This example allows you to add HTML code to your email. Put the following contents into a file with a .php extension:</p>
+<div class="preboxcontainer">
+<pre class="prebox">&lt;?php
+
+// multiple recipients (note the commas)
+$to = "somebody@example.com, ";
+$to .= "nobody@example.com, ";
+$to .= "somebody_else@example.com";
+
+// subject
+$subject = "Nonsensical Latin";
+
+// compose message
+$message = "
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;Nonsensical Latin&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;Nonsensical Latin&lt;/h1&gt;
+    &lt;p&gt;Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+       Nam iaculis pede ac quam. Etiam placerat suscipit nulla.
+       Maecenas id mauris eget tortor facilisis egestas.
+       Praesent ac augue sed &lt;a href=\"http://lipsum.com/\"&gt;enim&lt;/a&gt; aliquam auctor.
+       Pellentesque convallis tempor tortor. Nullam nec purus.&lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+";
+
+// To send HTML mail, the Content-type header must be set
+$headers = "MIME-Version: 1.0\r\n";
+$headers .= "Content-type: text/html; charset=iso-8859-1\r\n";
+
+// send email
+mail($to, $subject, $message, $headers);
+?&gt;
+</pre>
+</div>
+<h2><span id="Mail_header_injection" class="mw-headline">Mail header injection</span></h2>
+<p>The following code can be placed in the top of your PHP script to deter the most common header injections. Please note this code disallows direct page access, so only add to a "process" page reachable by a Submit action. It will filter out any CC or BCC headers being injected as well as any new line or carriage return tags injected into the email header.</p>
+<div class="preboxcontainer">
+<pre class="prebox">&lt;?php
+if (!isset($_POST['submit'])) {
+   echo "&lt;h1&gt;Error&lt;/h1&gt;\n
+      &lt;p&gt;Accessing this page directly is not allowed.&lt;/p&gt;";
+   exit;
+}
+
+$email = preg_replace("([\r\n])", "", $email);
+
+$find = "/(content-type|bcc:|cc:)/i";
+if (preg_match($find, $name) || preg_match($find, $email) || preg_match($find, $url) || preg_match($find, $comments)) {
+   echo "&lt;h1&gt;Error&lt;/h1&gt;\n
+      &lt;p&gt;No meta/header injections, please.&lt;/p&gt;";
+   exit;
+}
+?&gt;
+</pre>
+</div>
+<h2>See also</h2>
+<h3>Internal links</h3>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216140597-How-do-I-send-PHP-mail-via-SMTP-">How do I send PHP mail via SMTP?</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215507068-Troubleshooting-PHP-mail-">Troubleshooting PHP mail()</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216507288-PHP-IMAP">PHP IMAP</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215730437-SMTP-quota-limits">SMTP quota limits</a></li>
+</ul>
+<h3>External links</h3>
+<ul>
+<li><a class="external text" href="http://www.php.net/manual/en/function.mail.php" rel="nofollow">PHP.net <code>mail()</code> function documentation</a></li>
+</ul>

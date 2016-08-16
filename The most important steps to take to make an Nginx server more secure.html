@@ -1,0 +1,355 @@
+<body role="document">
+<div class="document">
+<div class="documentwrapper">
+<div class="body" role="main">
+<div id="the-most-important-steps-to-take-to-make-an-nginx-server-more-secure">
+
+<p>Nginx is a high performance web server designed for serving high-performance,
+scalable applications in an efficient, responsive manner. It can be used to
+serve static content, load balance HTTP requests, and reverse proxy FCGI/PSGI/
+USWGI, and arbitrary TCP connections. Given this, it’s important to be able
+to securely configure and deploy Nginx installations to provide a secure
+web frontend for your application and minimize attack surfaces.</p>
+<div id="securing-the-binary">
+<h2>Securing the Binary</h2>
+<div id="keep-updated">
+<h3>Keep Updated</h3>
+<p>Nginx’s core codebase (memory management, socket handling, etc) is very secure
+and stable, though vulnerabilities in the main binary itself do pop up from time
+to time. For this reason it’s very important to keep Nginx up-to-date. Most
+modern Linux distros will not push the latest version of Nginx into their
+default package lists, so to install the latest version of Nginx via a package,
+you may need to add additional package respositories to your system. See
+<a class="reference external" href="http://nginx.org/en/linux_packages.html#stable">Nginx’s documentation</a> for
+per-distro details.</p>
+</div>
+<div id="compiling-from-source">
+<h3>Compiling from Source</h3>
+<p>As an alternative to building packages, it’s possible (and easy!) to build Nginx
+from source. Doing so allows you to run the latest version available from the
+Nginx development team, and allows for additional security configurations (as
+we’ll see in a bit). Building from source requires a few steps. First, we need
+the source archive, which we’ll download from the office Nginx site. We’ll use
+the current stable branch as of this writing, 1.10.1:</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span># grab the latest tarball from the official Nginx website
+# we will use the latest stable, not mainline, version
+$ wget http://nginx.org/download/nginx-1.10.1.tar.gz
+</pre></div>
+</div>
+<p>We’ll also want to grab the developer’s signing key and verify the contents of
+our download. First, we’ll need the signing key, which we can download from
+a public PGP keyserver:</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>$ gpg --keyserver pgp.mit.edu --recv a1c052f8
+gpg: requesting key A1C052F8 from hkp server pgp.mit.edu
+gpg: key A1C052F8: public key "Maxim Dounin &lt;mdounin@mdounin.ru&gt;" imported
+gpg: 3 marginal(s) needed, 1 complete(s) needed, PGP trust model
+gpg: depth: 0  valid:   3  signed:   5  trust: 0-, 0q, 0n, 0m, 0f, 3u
+gpg: depth: 1  valid:   5  signed:   0  trust: 4-, 0q, 0n, 0m, 1f, 0u
+gpg: next trustdb check due at 2017-11-22
+gpg: Total number processed: 1
+gpg:               imported: 1  (RSA: 1)
+</pre></div>
+</div>
+<p>Next, we’ll grab the signature for this tarball:</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>$ wget http://nginx.org/download/nginx-1.10.1.tar.gz.asc
+</pre></div>
+</div>
+<p>And finally, we’ll verify the signature:</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>$ gpg --verify nginx-1.10.1.tar.gz.asc nginx-1.10.1.tar.gz
+gpg: Signature made Tue 31 May 2016 06:58:32 AM PDT using RSA key ID A1C052F8
+gpg: Good signature from "Maxim Dounin &lt;mdounin@mdounin.ru&gt;"
+Primary key fingerprint: B0F4 2533 73F8 F6F5 10D4  2178 520A 9993 A1C0 52F8
+</pre></div>
+</div>
+<p>From here, we will unpack the tarball, compile Nginx, and install it:</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>$ tar -zxf nginx-1.10.1.tar.gz
+$ cd nginx-1.10.1/
+$ ls
+    auto  CHANGES  CHANGES.ru  conf  configure
+    contrib  html  LICENSE  man README  src
+
+$ ./configure &amp;&amp; make &amp;&amp; make install
+</pre></div>
+</div>
+</div>
+<div id="removing-unnecessary-modules">
+<h3>Removing Unnecessary Modules</h3>
+<p>By default, Nginx compiles with a number of modules that extend its
+functionality. These allow Nginx to be extended to perform a number of functions
+but it’s unlikely that every module will be used on any given server. It’s
+recommended to remove unused modules to reduce the size of the compiled binary,
+and reduce the attack surface the Nginx presents to the world (for example, a
+vulnerability found in the uwsgi proxy would not be exploitable against a
+server that does not leverage the uswgi module). Removing modules can be done at
+compile-time via the configure script. For example:</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span># disable the ngx_http_uwsgi_module
+$ ./configure --without-http_uwsgi_module
+</pre></div>
+</div>
+<p>The configure script provided with the Nginx script provides a large number of
+compile-time options.</p>
+</div>
+</div>
+<div id="securing-configurations">
+<h2>Securing Configurations</h2>
+<p>Computers are only as smart as the people using them. Nginx is built to be
+stable and secure, but it will only be a secure as the user who configures it.
+Once Nginx is built and installed, configure the server to be as minimal as
+possible is important.</p>
+<div id="run-as-an-unprivileged-user">
+<h3>Run as an Unprivileged User</h3>
+<p>In security, the principle of least privilege states that an entity should be
+given no more permission than necessary to accomplish its goals within a given
+system. In the context of our web server, this means locking down Nginx to run
+only with the permissions necessary to run. A first step in this process is to
+configure Nginx to run as an unprivileged system user (e.g., not root). This is
+done via the <cite>user</cite> directive in the Nginx configuration file:</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span># configure a non-privileged user. this user must exist on your system
+user nginx;
+</pre></div>
+</div>
+</div>
+<div id="disable-server-tokens">
+<h3>Disable Server Tokens</h3>
+<p>The HTTP spec recommends (but not requires) that web servers identify themselves
+via the <cite>Server</cite> header. Historically, web servers have included their version
+information as part of this header. Disclosing the version of Nginx running can
+be undesirable, particularly in environments sensitive to information disclosure.
+Nginx can be configured to not display its version in the <cite>Server</cite> header:</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>server_tokens off;
+</pre></div>
+</div>
+</div>
+<div id="hide-upstream-proxy-headers">
+<h3>Hide Upstream Proxy Headers</h3>
+<p>In the same vein, when Nginx is used to proxy requests from an upstream server
+(such as a PHP-FPM instance), it can be beneficial to hide certain headers sent
+in the upstream response (for example, the version of PHP running). For example,
+consider the following response from an Nginx server running a PHP application:</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>$ curl -I http://example.com
+HTTP/1.1 200 OK
+Server: nginx
+Content-Type: text/html; charset=UTF-8
+Connection: keep-alive
+Vary: Accept-Encoding
+X-Powered-By: PHP/5.3.3
+</pre></div>
+</div>
+<p>Disclosing the version of PHP can be undesirable; Nginx configurations make this
+easy to hide with the <cite>proxy_hide_header</cite> directive:</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>proxy_hide_header X-Powered-By;
+</pre></div>
+</div>
+<p>Our request to the same server would now look like:</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>$ curl -I http://example.com
+HTTP/1.1 200 OK
+Server: nginx
+Content-Type: text/html; charset=UTF-8
+Connection: keep-alive
+Vary: Accept-Encoding
+</pre></div>
+</div>
+</div>
+<div id="add-security-headers">
+<h3>Add Security Headers</h3>
+<p>In addition to masking sensitive information, Nginx can be used to inject
+headers with security-positive implications into responses as well. For
+example, adding and <cite>X-Frame-Options</cite> header to prevent clickingjacking attacks
+is trivial to do:</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>add_header X-Frame-Options SAMEORIGIN;
+</pre></div>
+</div>
+<p>This directive can also be used to add arbitrary headers at your whim.</p>
+</div>
+<div id="restrict-access-by-ip">
+<h3>Restrict Access by IP</h3>
+<p>Sensitive areas of websites, such as admin control panels, should have strict
+access controls placed on them. Nginx makes it easy to whitelist IP access to
+certain locations of your website and deny traffic to all other IP addresses:</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>location /wp-admin {
+
+    # allow access from one IP and an additional IP range,
+    # and block everything else
+    allow 1.2.3.4;
+    allow 192.168.0.0/24;
+    deny all;
+}
+</pre></div>
+</div>
+</div>
+<div id="restrict-access-by-password">
+<h3>Restrict Access by Password</h3>
+<p>Access to certain locations can also be set via password-based credentials,
+using the same format that Apache’s .htaccess and .htpasswd files use:</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>location /wp-admin {
+    auth_basic "Admin Area";
+    auth_basic_user_file /path/to/htpasswd;
+}
+</pre></div>
+</div>
+<p>Where the contents of <cite>path/to/htpasswd</cite> looks something like:</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>user1:password1
+user2:password2
+user3:password3
+</pre></div>
+</div>
+</div>
+</div>
+<div id="securing-ssl-tls">
+<h2>Securing SSL/TLS</h2>
+<p>Nginx excels at serving SSL/TLS traffic. Configuring your web server to provide
+securing SSL/TLS configurations for clients is essential to maintaining a secure
+connection.</p>
+<p>As a note, it’s strongly recommended that encrypted traffic use only newer TLS
+protocols, instead of legacy SSL. Both versions of SSL widely available today
+(SSLv2 and SSLv3) have severe security flaws, and should never be used in
+productions environments. Historically, the configurations associated with
+SSL/TLS configuration in Nginx are prefixed with <cite>ssl</cite>; to promote the use of
+modern security protocols, we will use the term ‘TLS’ when referencing encrypted
+(HTTPS) traffic, and ‘ssl’ when applicable to specific Nginx configuration
+directives.</p>
+<div id="turn-tls-on">
+<h3>Turn TLS On</h3>
+<p>It goes without saying, but in order to serve encrypted traffic, SSL/TLS needs
+to be enabled for your server. Fortunately, encrypted connections can be
+enabled/disabled on a per-server basis in Nginx:</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>server {
+    # regular server listening for HTTP traffic
+    listen 80;
+}
+
+server {
+    # server listening for SSL traffic on port 443;
+    listen 443 ssl;
+}
+</pre></div>
+</div>
+</div>
+<div id="enable-strong-tls-ciphers">
+<h3>Enable Strong TLS Ciphers</h3>
+<p>By default, Nginx allows for a wide variety of cryptographic ciphers to be used
+in TLS connections. Some of these ciphers are legacy offerings that are weak or
+prone to attack, and shouldn’t be used. We recommend using the Modern or
+Intermediate cipher suites outlined by Mozilla (the modern list of ciphers is
+stronger, but will cause connectivity problems for older platforms like Internet
+Explorer or Windows XP). Additionally, it’s recommended that the server prefer
+which cipher to be used:</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>ssl_ciphers 'ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS';
+ssl_prefer_server_ciphers on;
+</pre></div>
+</div>
+</div>
+<div id="enable-tls-session-caching">
+<h3>Enable TLS Session Caching</h3>
+<p>Opening a new TLS connection to a server is very expensive as a result of the
+cryptographic protocols involved. To maintain a high-performance environment,
+it’s recommended to cache existing TLS connections so that each new request from
+a client/browser does not need to perform the full TLS handshake:</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>ssl_session_cache shared:SSL:50m;
+ssl_session_timeout 5m;
+</pre></div>
+</div>
+</div>
+<div id="use-custom-diffie-hellman-parameters">
+<h3>Use Custom Diffie-Hellman Parameters</h3>
+<p>The Logjam attack, published in 2015, showed that it was possible for attackers
+(such as nation-state actors) to break the Diffie-Hellman key exchange, used to
+implement forward secrecy (essentially, another layer on top of existing
+encrypted messages). Mitigating this attack is possible in Nginx by computing a
+unique set of Diffie-Hellman parameters and configuring Nginx to use this value:</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span># build a 2048-bit DH prime
+$ openssl dhparam 2048 &gt; /path/to/dhparam
+</pre></div>
+</div>
+<p>From here we only need to tell Nginx to use our custom values:</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span><span class="n">ssl_dhparam</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">dhparam</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>For more information on the Logjam attack, see <a class="reference external" href="https://weakdh.org/">https://weakdh.org/</a></p>
+</div>
+<div id="force-all-connections-over-tls">
+<h3>Force All Connections over TLS</h3>
+<p>Encrypted communications are only useful when actually in use. If desirable, it
+is possible to tell browsers to only use TLS connections for your site. This
+is accomplished with the <cite>Strict-Transport-Security</cite> header, which can be added
+in your Nginx config as we’ve seen before:</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>add_header Strict-Transport-Security max-age=15768000;
+</pre></div>
+</div>
+<p>We can also configure Nginx to send a 301 redirect for plaintext HTTP requests
+to the TLS version of your site:</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>server {
+    listen 80;
+    server_name example.com;
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    server_name example.com;
+
+    # the rest of the appropriate server block below...
+}
+</pre></div>
+</div>
+</div>
+</div>
+<div id="additional-security-measures">
+<h2>Additional Security Measures</h2>
+<p>Beyond the basics of installing a secure Nginx binary, locking down access to
+sensitive areas of your site, and properly serving TLS connections, there are
+some additional steps that can be taken for the extra security-conscious user.</p>
+<div id="install-a-waf">
+<h3>Install a WAF</h3>
+<p>A WAF (web application firewall) is a piece of software designed to inspect
+HTTP/HTTPS traffic, deny malicious requests, and generally act as an additional
+layer of security in your web stack. A properly configured WAF can protect
+your site from SQLi, XSS, CSRF, and DDoS attacks, as well as provide brute force
+attack mitigation and zero-day threat patching. There are a few open-source WAF
+options available for Nginx:</p>
+<ul class="simple">
+<li><a class="reference external" href="https://www.modsecurity.org/">ModSecurity</a>, originally written as a WAF for
+Apache servers, is the de-facto standard for open-source WAF solutions. Recent
+work on the project has shifted focus toward Nginx support; see the project’s
+<a class="reference external" href="https://github.com/SpiderLabs/ModSecurity">GitHub page</a>
+for more detail on installation and configuration.</li>
+<li><a class="reference external" href="https://github.com/nbs-system/naxsi">Naxsi</a> is a lightweight alternative to
+ModSecurity, designed as a native Nginx module, and focuses on XSS/SQLi
+prevention in request parameters.</li>
+<li>For users of the OpenResty bundle seeking a scriptable, high-performance WAF,
+check out <a class="reference external" href="https://github.com/p0pr0ck5/lua-resty-waf">lua-resty-waf</a>, which
+seeks to provide a ModSecurity- compatible rule engine integrated into the
+Nginx + LuaJIT ecosystem.</li>
+</ul>
+</div>
+<div id="automated-log-analysis-monitoring">
+<h3>Automated Log Analysis + Monitoring</h3>
+<p>Programs like Fail2Ban can be used to monitor Nginx access and error logs,
+searching for attack patterns and taking actions against the attacking client
+(such as dropping IP addresses, reporting malicious behavior to the IP’s owner,
+etc). Fail2Ban is extensible, allowing you to write your own search pattern and
+response behavior.</p>
+</div>
+<div id="limit-input-traffic-via-iptables">
+<h3>Limit Input Traffic via IPTables</h3>
+<p>Beyond securing Nginx itself, it’s important to secure the host environment used
+to host your web server. Locking down access to things like SSH can greatly
+increase the security of the host by preventing intrusion attempts. A common
+approach is to whitelist known IPs that will access your host via SSH, and deny
+all other port 22 traffic, or to use a jump box that strictly filters shell
+access.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="clearer"></div>
+</div>
+<div class="footer">
+</div>
+<!--DreamCompute Button-->
+<div class="dream-sign-up">
+<h2>Deploy Your Apps On Cloud Servers Today</h2>
+<a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a>
+</div>
+</body>

@@ -1,0 +1,57 @@
+<p>In some cases, it may not be practical to have to specify the path to a particular version of PHP for each CLI command. Instead, you may decide to make PHP 5.6 the default binary within your user's shell environment.</p>
+<p>To change the default version of PHP under your Shell user:</p>
+<ol>
+<li>Log into your user via <a href="https://dreamhosthelp.zendesk.com/hc/en-us/articles/216041267-SSH-overview">SSH</a>.</li>
+<li>Make sure you’re in the user’s directory.</li>
+<li>Run the following command to open your .bash_profile file.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">nano .bash_profile</span></pre>
+</div>
+</li>
+<li>Add the following line to force PHP 5.6.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="cmdoutput">export PATH=/usr/local/php56/bin:$PATH </span>
+</pre>
+</div>
+</li>
+<li>Update that file by running the following command:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">. ~/.bash_profile</span></pre>
+</div>
+</li>
+</ol>
+<p>If you now run <strong>php -v</strong> you’ll see the new version being used.</p>
+<p>You can also use an alias instead.</p>
+<div class="preboxcontainer">
+<pre class="prebox">alias 'php=/usr/local/php56/bin/php'</pre>
+</div>
+<p>This works the same as export PATH when added to your .bash_profile.</p>
+<p>If you want these directives to be applied every time you log in, add either of the lines to your shell user’s profile. The current <a href="https://dreamhosthelp.zendesk.com/hc/en-us/articles/216557548">supported default shells</a> are:</p>
+<ul>
+<ul>
+<li>.bash_profile</li>
+<li>.kshrc</li>
+<li>.tcshrc</li>
+<li>.zshrc</li>
+</ul>
+</ul>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>If you’re using tcsh, you must modify the command as shown below before they can be added to the .tcshrc profile:</p>
+<div class="preboxcontainer">
+<pre class="prebox">alias php /usr/local/php56/bin/php
+set path=(/usr/local/php56/bin $path)</pre>
+</div>
+</div>
+</div>
+<p>You can also modify this accordingly using the path to any of the PHP-CLI binaries.</p>
+<h2>See also</h2>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214202188-PHP-overview">PHP overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214202238-Command-line-PHP-overview">Command line PHP overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214895317-How-do-I-change-the-PHP-version-of-my-site-">How do I change the PHP version of my site?</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214895287-How-do-I-view-my-PHP-environment-settings-">How do I view my PHP environment settings?</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214200688-php-ini-overview">php.ini overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215082337-What-versions-of-PHP-are-available-at-DreamHost-">What versions of PHP are available at DreamHost?</a></li>
+</ul>

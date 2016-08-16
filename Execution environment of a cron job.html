@@ -1,0 +1,83 @@
+<p>One important consideration is that the cron daemon was designed in such a way that it does NOT execute commands within your normal shell environment. This means you cannot use bare commands in cron the way you would from the SSH shell command line. Example:</p>
+<div class="preboxcontainer">
+<pre class="prebox">* * * * * wp plugin update --all --path=example.com</pre>
+</div>
+<p>This is because the PATH environment variable is <em>/usr/bin:/bin</em>, and the SHELL environment variable is set to <em>/bin/sh</em>. The cron daemon doesn't know where the <em> 'wp' </em> command is located. You must specify the full path to all commands not in the default PATH, and always specify the full path for files. For example:</p>
+<div class="preboxcontainer">
+<pre class="prebox">* * * * * /usr/bin/wp plugin update --all --path=example.com</pre>
+</div>
+<p>If you have any trouble locating where a command is, you can use the following command:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">which command-name</span></pre>
+</div>
+<p>Example:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">which wp</span></pre>
+</div>
+<p>The following prints to your terminal:</p>
+<div class="preboxcontainer">
+<pre class="prebox">/user/bin/wp</pre>
+</div>
+<h2><span id="Using_sudo_and_cron_with_an_admin_user" class="mw-headline">Using sudo and cron with an admin user</span></h2>
+<p>If you’re on a Dedicated Server and have an admin user, do not use 'sudo' in your crontab. Instead of your script working, you’ll get an error like this.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">sudo: no tty present and no askpass program specified</span></pre>
+</div>
+<p>This is because 'sudo' requires a password to be entered in order to run and cron jobs (along with any program/command/script you could execute from them) do not allow any input to be specified.</p>
+<p>If you need root level permissions for a script, you’ll need to create a file in crontab format in the /etc/cron.d/ directory. Of course, make sure to keep a backup of that file as that location is outside the /home directory and not included in DreamHost’s internal backups.</p>
+<h2><span id="MAILTO_variable_requirement" class="mw-headline">MAILTO variable requirement</span></h2>
+<p>For performance reasons, DreamHost now requires all crontabs to have a MAILTO variable set.</p>
+<p>The MAILTO variable can be set to anything. If you leave it blank, it does not email output of your cronjobs. You can set it to your username to have it delivered to your user as usual, or you can specify an external email address. Please note that if you specify an external email address, any cron emails that get sent (including completion/error notification messages) factor in to your shell user's hourly email sending quota. For more information about that limit, please view the <a href="/hc/en-us/articles/215730437-SMTP-quota-limits">SMTP quota</a> article.</p>
+<dl>
+<dd></dd>
+<dd></dd>
+</dl>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>If your cron job doesn't create any output on the command line, no email is sent even if the cron job is set to send email.</p>
+</div>
+</div>
+<p> </p>
+<h3><span id="Examples_of_a_valid_MAILTO_configuration_in_a_crontab_file" class="mw-headline">Examples of a valid MAILTO configuration in a crontab file</span></h3>
+<p>To disable sending cronjob output via email:</p>
+<div class="preboxcontainer">
+<pre class="prebox">MAILTO=""</pre>
+</div>
+<p>To send cronjob output to someuser@example.com:</p>
+<div class="preboxcontainer">
+<pre class="prebox">MAILTO=someuser@example.com</pre>
+</div>
+<p>To send cronjob output to your shell user’s Maildir folder:</p>
+<div class="preboxcontainer">
+<pre class="prebox">MAILTO=youruser</pre>
+</div>
+<dl>
+<dd></dd>
+<dd></dd>
+</dl>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>As stated when running <code>man 5 crontab</code>, strings are not parsed for environmental substitutions or replacement of variables. This means that MAILTO=$LOGNAME does not work.</p>
+</div>
+</div>
+<p> </p>
+<h2><span id="Cron_job_character_limit" class="mw-headline">Cron job character limit</span></h2>
+<p>When adding/modifying a cron job in the panel, the 'Command to run' field specifies a maximum of 1000 characters. This limit does not include the additional content DreamHost adds to the cron job (such as locking or the sh -c $’’ encapsulation). On average, that additional content should not be more than 100 characters. Violating the limit results in this warning:</p>
+<div class="preboxcontainer">
+<pre class="prebox">/bin/sh: -c: line 1: unexpected EOF while looking for matching `''
+/bin/sh: -c: line 2: syntax error: unexpected end of file</pre>
+</div>
+<p>If you encounter this error it’s recommended that you encapsulate your commands into a script and modify the cron job to execute the script instead. For example, if you place the command (or commands) that contain more than 1000 characters in a file named ‘cron.sh’ and place that file in your user’s home directory, you could then set the cron job command as follows.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">. ~/cron.sh</span></pre>
+</div>
+<p>Be sure to review the Execution environment section above to make sure you account for any missing variables, paths, and/or declarations.</p>
+<p><span class="wysiwyg-font-size-x-large"><strong>See also</strong></span></p>
+<ul>
+<li><a href="/hc/en-us/articles/216041267">SSH overview</a></li>
+<li><a href="https://dreamhosthelp.zendesk.com/hc/en-us/articles/215088608">Crontab overview</a></li>
+<li><a href="/hc/en-us/articles/215767047">Advanced technical details of a crontab</a></li>
+<li><a href="/hc/en-us/articles/215088668">How do I create a cron job? </a></li>
+</ul>

@@ -1,0 +1,166 @@
+<body role="document">
+<div class="document">
+<div class="documentwrapper">
+<div class="body" role="main">
+<div id="how-to-configure-php-on-dreamcompute-running-debian-or-ubuntu">
+
+<p>PHP is a popular server-side scripting language used by many web software and
+non-web software packages, and popular with DreamHost customers.  PHP is an
+important part of LAMP (Linux, Apache, MySQL, PHP) stacks as well as other AMP
+stacks.  You can use it for your DreamCompute instance as well, and the
+following information helps you install and configure it.  These instructions
+assume you run a Debian- or Ubuntu-based system as they have their own
+specific configuration and file hierarchy.</p>
+<div id="installing-php">
+<h2>Installing PHP</h2>
+<p>PHP comes in different configuration packages on Debian and Ubuntu systems to
+meet your needs for the command line interface (CLI) client or the apache
+module (mod_php aka libphp5.so) or other specializations.</p>
+<div id="php-cli-only">
+<h3>PHP CLI Only</h3>
+<p>This will install the /usr/bin/php binary and php.ini file.  This is normally
+used for running scripts in SSH and for cron jobs, or for development, but
+isn’t directly usable for websites on apache.</p>
+<div class="code highlight-python"><div class="highlight"><pre>apt-get install php5-cli
+</pre></div>
+</div>
+<p>The install process asks you to confirm if you wish to install any additional
+packages needed for this installation of PHP.  Confirm by entering “<strong>y</strong>”
+and hitting enter:</p>
+<div class="code highlight-python"><div class="highlight"><pre>The following extra packages will be installed:
+libonig2 libqdbm14 php5-common
+Suggested packages:
+php-pear
+The following NEW packages will be installed:
+libonig2 libqdbm14 php5-cli php5-common
+0 upgraded, 4 newly installed, 0 to remove and 1 not upgraded.
+Need to get 3,453 kB of archives.
+After this operation, 9,842 kB of additional disk space will be used.
+Do you want to continue [Y/n]?
+</pre></div>
+</div>
+</div>
+<div id="php-apache-module-cli">
+<h3>PHP Apache Module + CLI</h3>
+<p>This will install the /usr/bin/php binary and php.ini file, as well as the
+apache module located at /usr/lib/apache2/modules/libphp5.so and its own
+php.ini file.</p>
+<div class="code highlight-python"><div class="highlight"><pre>apt-get install libapache2-mod-php5
+</pre></div>
+</div>
+<p>The install process asks you to confirm if you wish to install any additional
+packages needed for this installation of PHP.  Confirm by entering “<strong>y</strong>”
+and hitting enter:</p>
+<div class="code highlight-python"><div class="highlight"><pre>The following extra packages will be installed:
+php5-cli php5-common php5-json php5-readline
+Suggested packages:
+php-pear php5-user-cache
+The following NEW packages will be installed:
+libapache2-mod-php5 php5-cli php5-common php5-json php5-readline
+0 upgraded, 5 newly installed, 0 to remove and 5 not upgraded.
+Need to get 4,852 kB of archives.
+After this operation, 20.4 MB of additional disk space will be used.
+Do you want to continue? [Y/n]
+</pre></div>
+</div>
+<p>The install process will enable the php5 module for you, and restart apache.
+If you wish to double check that it is enabled, you can use the a2enmod
+program:</p>
+<div class="code highlight-python"><div class="highlight"><pre># a2enmod php5
+Module php5 already enabled
+</pre></div>
+</div>
+<p>If you do disable or enable modules, make sure to restart apache with the
+service command:</p>
+<div class="code highlight-python"><div class="highlight"><pre># service apache2 restart
+[ ok ] Restarting web server: apache2 ... waiting .
+</pre></div>
+</div>
+</div>
+<div id="php-modules-for-databases">
+<h3>PHP Modules for Databases</h3>
+<p>There are additional packages available to install modules for various
+database engines.  Here are some of the more common ones that can use apt-get
+to be installed.</p>
+<ul>
+<li><p class="first"><strong>php5-mysqlnd</strong></p>
+<p>This package contains the mysql, mysqli and PDO mysql modules for PHP using
+the MySQL Native Driver which is newer and generally faster.  There is a
+standard “php5-mysql” package available that contains all these same modules
+using the older non-Native Driver is you need to connect to older MySQL
+servers.</p>
+</li>
+<li><p class="first"><strong>php5-pgsql</strong></p>
+<p>The package containing the pgsql and pdo_pgsql modules for use with
+PostgreSQL.</p>
+</li>
+<li><p class="first"><strong>php5-sqlite</strong></p>
+<p>The package containing the sqlite3 and pdo_sqlite modules for working with
+SQLite.</p>
+</li>
+</ul>
+</div>
+<div id="optional-php-modules">
+<h3>Optional PHP Modules</h3>
+<p>These modules add additional features of functionality to PHP depending on
+your needs.  Some of the more common ones will be listed below, with a link
+to all available packages at the bottom.</p>
+<ul>
+<li><p class="first"><strong>php5-curl</strong></p>
+<p>The cURL module for PHP to allow for downloading from HTTP, FTP and other
+sources.</p>
+</li>
+<li><p class="first"><strong>php5-ffmpeg</strong></p>
+<p>The ffmpeg libraries and php5-gd will be installed with this package, to
+allow retrieving meta-data from video and images, as well as some video
+frame editing.</p>
+</li>
+<li><p class="first"><strong>php5-gd</strong></p>
+<p>The GD library provides image manipulation features which can be useful for
+some applications.</p>
+</li>
+<li><p class="first"><strong>php5-imagick</strong></p>
+<p>The ImageMagick library is wrapped into PHP when this package is installed,
+allowing for some image manipulation features.</p>
+</li>
+</ul>
+<p>Additional modules for php5 can be found on the respective packages pages for
+each operating system.</p>
+<p><a class="reference external" href="https://packages.debian.org/search?keywords=php5-&amp;searchon=names&amp;suite=stable&amp;section=all">Debian Packages for PHP5</a></p>
+<p><a class="reference external" href="http://packages.ubuntu.com/search?keywords=php5-&amp;searchon=names&amp;suite=trusty&amp;section=all">Ubuntu Packages for PHP5</a></p>
+</div>
+</div>
+<div id="configuration-files">
+<h2>Configuration Files</h2>
+<p>There are two configuration files for PHP that are used for the CLI and the
+apache modules specifically.  The thinking is that you would want saner
+defaults for PHP when accessed from the web because it is probably your
+production environment.  The CLI on the other hand, is more likely your
+development environment and should be less restricted.</p>
+<ul>
+<li><p class="first"><strong>/etc/php5/cli/php.ini</strong></p>
+<p>The primary configuration file for PHP when executed from the CLI.  It has
+no memory_limit at all, and allows all functions (including <a class="reference external" href="http://php.net/manual/en/ref.pcntl.php">POSIX PHP
+functions</a>).</p>
+</li>
+<li><p class="first"><strong>/etc/php5/apache2/php.ini</strong></p>
+<p>The primary configuration file for PHP when ran from the apache module.  It
+has a memory_limit of 128MB, and disallows all functions related to <a class="reference external" href="http://php.net/manual/en/ref.pcntl.php">POSIX
+PHP functions</a> for security and
+safety reasons.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="clearer"></div>
+</div>
+<div class="footer">
+</div>
+<!--DreamCompute Button-->
+<div class="dream-sign-up">
+<h2>Deploy Your Apps On Cloud Servers Today</h2>
+<a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a>
+</div>
+</body>

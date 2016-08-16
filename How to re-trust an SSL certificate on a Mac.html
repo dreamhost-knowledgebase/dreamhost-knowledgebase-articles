@@ -1,0 +1,103 @@
+<p>This article guides you through how to re-Trust an SSL Certificate on a Mac. These instructions are specific to the Mac Mail app and eliminate the <strong>Mail can’t verify the identity of “mail.example.com”</strong> error.</p>
+<h2><span id="Setting_up_trust_for_the_SSL_certificate" class="mw-headline">Setting up trust for the SSL certificate</span></h2>
+<dl>
+<dd><img src="https://kbimages.objects-us-west-1.dream.io/images/001_Re-trust_SSL.fw.png" alt="001 Re-trust SSL.fw.png" width="548" height="195" /></dd>
+</dl>
+<p>When connecting to a DreamHost mail server with SSL enabled, Mail will issue a warning because the root certificate's domain name won't match your mail server's domain name. To fix this problem, you can tell Mail to ignore the discrepancy using one of the three methods described below.</p>
+<h2><span id="Method_one" class="mw-headline">Method one</span></h2>
+<ol>
+<li>Open up Mail and allow the “Verify Certificate” window to pop up.</li>
+<li>Click the <strong>Show Certificate</strong> button.
+<dl>
+<dd><em>The pop up expands and shows the certificate is for the hostname *.mail.dreamhost.com:</em></dd>
+<dd><img src="https://kbimages.objects-us-west-1.dream.io/images/002_Re-trust_SSL.fw.png" alt="002 Re-trust SSL.fw.png" width="540" height="457" /></dd>
+</dl>
+</li>
+<li>Check the box to the left of “Always trust “.mail.dreamhost.com” when connecting to “mail.example.com”.</li>
+<li>Click the <strong>Connect</strong> button.
+<dl>
+<dd><em>You are prompted for your password to update the changes in your keychain:</em></dd>
+<dd><img src="https://kbimages.objects-us-west-1.dream.io/images/003_Re-trust_SSL.fw.png" alt="003 Re-trust SSL.fw.png" width="440" height="257" /></dd>
+</dl>
+</li>
+<li>Enter your credentials for your Apple Mac, NOT your email password.</li>
+<li>Click <strong>Update Settings</strong>.</li>
+</ol>
+<p>That fixes the cert verification warnings. When fetching or sending mail, you may get prompted to enter your email password: simply enter your password for your email address and then click the checkbox to save the password in your keychains.</p>
+<h2><span id="Method_two" class="mw-headline">Method two</span></h2>
+<ol>
+<li>Quit your Mail app.
+<dl>
+<dd><img src="https://kbimages.objects-us-west-1.dream.io/images/003.5_Re-trust_SSL.fw.png" alt="003.5 Re-trust SSL.fw.png" width="734" height="69" /></dd>
+</dl>
+</li>
+<li>Open up the Keychain Access (from Finder: Applications &gt; Utilities &gt; Keychain Access).
+<dl>
+<dd><img src="https://kbimages.objects-us-west-1.dream.io/images/004_Re-trust_SSL.fw.png" alt="004 Re-trust SSL.fw.png" width="1148" height="203" /></dd>
+</dl>
+</li>
+<li>Locate the certificate in the keychain (search for “dream”).</li>
+<li>Find the *.mail.dreamhost.com certificate.</li>
+<li>Double-click the certificate.</li>
+<li>Expand the “Trust” settings.
+<dl>
+<dd><img src="https://kbimages.objects-us-west-1.dream.io/images/005_Re-trust_SSL.fw.png" alt="005 Re-trust SSL.fw.png" width="999" height="433" /></dd>
+</dl>
+</li>
+<li>Click the drop down list for “When using this certificate” and select <strong>Always Trust</strong>.</li>
+<li>Close the certificate and keychain.
+<dl>
+<dd><em>You may be prompted to enter your password to make the changes. If so, enter your Mac password and NOT your email password.</em></dd>
+</dl>
+</li>
+<li>Launch Mail.</li>
+</ol>
+<p>You should no longer receive a prompt to verify the certificate.</p>
+<h2><span id="Method_3" class="mw-headline">Method 3</span></h2>
+<ol>
+<li>Open the Mail app</li>
+<li>On the top left, click Mail -&gt; Preferences…
+<dl>
+<dd><img src="https://kbimages.objects-us-west-1.dream.io/images/006_Re-trust_SSL.fw.png" alt="006 Re-trust SSL.fw.png" width="670" height="595" /></dd>
+</dl>
+</li>
+<li>Select your email address on the left pane, and then click the drop down list for “Outgoing Mail Server (SMTP)".</li>
+<li>Select 'Edit Server List'.
+<dl>
+<dd><em>All of your SMTP servers are listed here.</em></dd>
+</dl>
+</li>
+<li>Select the CORRECT outgoing mail server, and then click the subtract (<strong>-</strong>) button in the bottom-left corner to delete the outgoing mail settings.</li>
+<li>Click the add (<strong>+</strong>) button to re-add the outgoing mail setting.
+<dl>
+<dd><img src="https://kbimages.objects-us-west-1.dream.io/images/007_Re-trust_SSL.fw.png" alt="007 Re-trust SSL.fw.png" width="469" height="349" /></dd>
+</dl>
+</li>
+<li>Enter a description for your outgoing mail server in the Description field, and then enter your mail server in the Server Name field.</li>
+<li>Click the 'Advanced' tab.
+<dl>
+<dd><img src="https://kbimages.objects-us-west-1.dream.io/images/008_Re-trust_SSL.fw.png" alt="008 Re-trust SSL.fw.png" width="458" height="299" /></dd>
+</dl>
+</li>
+<li>Enter the following:
+<ul>
+<li>Check 'Use the default ports(25, 465, 587)'.</li>
+<li>Check 'Use Secure Sockets Layer (SSL)'.</li>
+<li>Select Password in the ‘Authentication’ dropdown menu.</li>
+</ul>
+<dl>
+<dd><em>A message appears from Mail saying "Mail can't verify the identity of..."</em></dd>
+</dl>
+</li>
+<li>Click "Show Certificate".</li>
+<li>Check the box marked "Always trust *.mail.dreamhost.com"</li>
+<li>Click the <strong>Connect</strong> button.</li>
+</ol>
+<h2><span id="If_you_need_further_help" class="mw-headline">If you need further help</span></h2>
+<p>In rare cases, Mac OS may retain past SSL certificates despite the Mail account having been removed and Keychain Access being emptied of related certificates and passwords. If you find that any of the above steps do not resolve the issue, try removing your account completely from Mail, clear out Keychain Access of *mail.dreamhost.com certificates, and remove any saved passwords for your account. Then, reboot your Mac to flush any remaining configuration of the account from your system. Once the machine logs back in, you can proceed to re-add your email account in Mail.</p>
+<p><a class="external text" href="http://www.apple.com/support/contact/" rel="nofollow">Apple Support</a> can provide the best assistance with Mac Mail issues. Apple technicians are the experts when it comes to Apple software.</p>
+<h2><span id="See_also">See also</span></h2>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216385987-MacMail-How-to-configure-email-with-Mac-OS-X-Yosemite">MacMail — How to configure email with Mac OS X Yosemite</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/221993547-MacMail-How-to-configure-email-with-Mac-OS-X-El-Capitan">MacMail — How to configure email with Mac OS X El Capitan</a></li>
+</ul>

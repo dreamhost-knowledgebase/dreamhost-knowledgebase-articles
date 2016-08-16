@@ -1,0 +1,335 @@
+<body role="document">
+<div class="document">
+<div class="documentwrapper">
+<div class="body" role="main">
+<div id="how-to-deploy-and-configure-postgresql-on-dreamcompute-with-ansible">
+
+<p>Ansible is a configuration management tool with built-in support for
+DreamCompute. This tutorial describes how to create a new Ubuntu
+server on DreamHost Cloud, install and configure PostgreSQL in one
+pass.</p>
+<p>The objective is to create one PostgreSQL server on the latest Ubuntu
+LTS (16.04, also known as Xenial Xerus). We’re not going to configure
+replication or other fancy things: only a single database server with
+Ubuntu’s default security configurations.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Read <a class="reference external" href="925908-How-to-launch-a-DreamCompute-server-with-Ansible">how to install and configure Ansible for DreamCompute</a> if you
+have not used Ansible before.</p>
+</div>
+<div id="prepare-the-playbook-to-launch-a-new-dreamcompute-cloud-server">
+<h2>Prepare the playbook to launch a new DreamCompute cloud server</h2>
+<p>First thing to do is to get the playbook ready to create a new server
+on DreamHost Cloud and setup the private SSH key to use to manage it.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>- hosts: localhost
+  connection: local
+  vars:
+    private_key: $PATH_TO_SSH_PUBLIC_KEY
+
+</pre></div>
+</div>
+<p>Next step is to define what the new Ubuntu server will have to look
+like:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>  tasks:
+
+    - name: create a Ubuntu server
+      os_server:
+            cloud: iad2
+            name: postgres01
+            state: present
+            image: Ubuntu-16.04
+            flavor_ram: 2048
+            key_name: stef
+            boot_from_volume: True
+            volume_size: 10
+            network: public
+      register: pgdb_server
+
+</pre></div>
+</div>
+<p>The task above will connect to the cloud named <cite>iad2</cite> in your
+openstack/clouds.yaml configuration file, tell OpenStack Nova to
+create a new instance called <cite>postgres01</cite> based on the Glance image
+called Ubuntu-16-04, picking the flavor with 2GB RAM, and booting from
+a new 40GB volume. The task will also add the public key associated with
+<cite>mykey</cite> to your server: make sure the corresponding private key is the
+one specified on the <cite>private_key</cite> variable.  Finally the task waits
+for the new machine to be created before registers the name
+<cite>pgdb_server</cite> and moving on to the next steps.</p>
+<p>Once the server has been created, Ansible needs to store some basic
+facts about it. The next tasks are all about getting to know the new
+server:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>
+    - name: get facts about the server (including its public v4 IP address)
+      os_server_facts:
+        cloud: iad2
+        server: postgres01
+        wait: yes
+      until: pgdb_server.server.public_v4 != ""
+      retries: 5
+      delay: 10
+
+    - set_fact: public_v4="{{ pgdb_server.server.public_v4 }}"
+
+    - name: add the server to our ansible inventory
+      add_host: hostname={{ public_v4 }} groups=pgsql ansible_ssh_user=dhc-user ansible_ssh_private_key_file={{ private_key }}
+
+</pre></div>
+</div>
+<p>Gather the public IP address of the server and add it to the Ansible
+hosts catalog. The <cite>add_host</cite> task creates a new entry assigning the
+IP of the new server to the Ansible group <cite>pgsql</cite> and configure the
+SSH connection with the default dhc-user, and set the private SSH key
+specified at the beginning.</p>
+</div>
+<div id="make-the-new-ubuntu-16-04-compatible-with-ansible">
+<h2>Make the new Ubuntu 16.04 compatible with Ansible</h2>
+<p>All the information necessary to install PostgreSQL on the new server
+are now in place. All next steps are going to be executed on the newly
+created DreamHost Cloud server.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>
+- hosts: pgsql
+  gather_facts: no
+
+  tasks:
+    - name: Install python2.7
+      raw: "sudo apt-get update -qq &amp;&amp; sudo apt-get install -qq python2.7 aptitude"
+
+</pre></div>
+</div>
+<p>The first line specifies the group of hosts to execute tasks on. Since
+Ubuntu LTS 16.04 Xenial comes only with Python3, we need to install
+Python 2.x before we can continue with Ansible. The key to proceed
+successfully is the line <cite>gather_facts: no</cite>, since that module will
+fail otherwise. After that, the <cite>raw</cite> task will not rely on python and
+execute the apt-get commands to get the latest python 2.7 package. We
+also need to install the command <cite>aptitude</cite> in order to use the <cite>apt</cite>
+module provided by Ansible.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Using groups in Ansible inventory allows to execute the same task
+on all hosts. In this case there is only one server in the group
+<cite>pgsql</cite>.</p>
+</div>
+</div>
+<div id="install-postgresql-and-create-a-new-database">
+<h2>Install PostgreSQL and create a new database</h2>
+<p>The new server is ready to install PostgreSQL server and create a
+database in it.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>
+- hosts: pgsql
+  vars:
+   ansible_python_interpreter: /usr/bin/python2.7
+
+  become: True
+  vars:
+      db_name: mydb
+      db_user: dreamer
+      db_password: secretpass
+
+  tasks:
+
+    - name: Install PostgreSQL
+      apt: name={{ item }} state=latest update_cache=yes
+      with_items:
+        - postgresql
+        - python-psycopg2
+        - postgresql-contrib
+        - libpq-dev
+
+</pre></div>
+</div>
+<p>This task instructs Ansible to connect to all hosts in the <cite>pgsql</cite>
+group, use python2.7 interpreter and install PostgreSQL server, Python
+Psycopg interface and libraries. It also sets the variables to be used
+to create the new postgres DB using the Ansible module for PostgreSQL:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>
+    - name: Ensure the PostgreSQL service is running
+      service: name=postgresql state=started enabled=yes
+
+    - name: Ensure database is created
+      become_user: postgres
+      become: yes
+      postgresql_db: name={{ db_name }}
+                     encoding='UTF-8'
+                     lc_collate='en_US.UTF-8'
+                     lc_ctype='en_US.UTF-8'
+                     template='template0'
+                     state=present
+
+    - name: Ensure user has access to the database
+      become_user: postgres
+      become: yes
+      postgresql_user: db={{ db_name }}
+                       name={{ db_user }}
+                       password={{ db_password }}
+                       priv=ALL
+                       state=present
+                       encrypted=no
+
+    - name: Ensure user does not have unnecessary privileges
+      become_user: postgres
+      become: yes
+      postgresql_user: name={{ db_user }}
+                       role_attr_flags=NOSUPERUSER,NOCREATEDB
+                       state=present
+
+</pre></div>
+</div>
+</div>
+<div id="running-the-ansible-playbook">
+<h2>Running the Ansible Playbook</h2>
+<p>The Ansible playbook can be run with the following command:</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>$ ansible-playbook postgresql-server.yaml
+</pre></div>
+</div>
+<p>You’ll soon see on <a class="reference external" href="https://iad2.dreamcompute.com/project/instances/">DreamHost Cloud web UI</a> the new instance
+and the new volume. Login into the new machine and check that the
+database is really there:</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>dhc-user@postgres01:~$ psql -h localhost -d mydb -U dreamer
+Password for user dreamer:
+psql (9.5.3)
+SSL connection (protocol: TLSv1.2, cipher:
+ECDHE-RSA-AES256-GCM-SHA384, bits: 256, compression: off)
+Type "help" for help.
+
+mydb=&gt; \l
+                                  List of databases
+   Name    |  Owner   | Encoding  |   Collate   |    Ctype    | Access privileges
+-----------+----------+-----------+-------------+-------------+-----------------------
+ mydb      | postgres | UTF8      | en_US.UTF-8 | en_US.UTF-8 | =Tc/postgres         +
+           |          |           |             |             | postgres=CTc/postgres+
+           |          |           |             |             | dreamer=CTc/postgres
+ postgres  | postgres | SQL_ASCII | C           | C           |
+ template0 | postgres | SQL_ASCII | C           | C           | =c/postgres          +
+           |          |           |             |             | postgres=CTc/postgres
+ template1 | postgres | SQL_ASCII | C           | C           | =c/postgres          +
+           |          |           |             |             | postgres=CTc/postgres
+(4 rows)
+
+mydb=&gt;
+</pre></div>
+</div>
+<p>Easy! Next steps are about securing the newly created server and
+setting the proper security groups so that applications can connect to
+the SQL demon.</p>
+</div>
+<div id="full-playbook">
+<h2>Full Playbook</h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span>#step-1
+- hosts: localhost
+  connection: local
+  vars:
+    private_key: $PATH_TO_SSH_PUBLIC_KEY
+
+#step-2
+  tasks:
+
+    - name: create a Ubuntu server
+      os_server:
+            cloud: iad2
+            name: postgres01
+            state: present
+            image: Ubuntu-16.04
+            flavor_ram: 2048
+            key_name: stef
+            boot_from_volume: True
+            volume_size: 10
+            network: public
+      register: pgdb_server
+
+#step-3
+
+    - name: get facts about the server (including its public v4 IP address)
+      os_server_facts:
+        cloud: iad2
+        server: postgres01
+        wait: yes
+      until: pgdb_server.server.public_v4 != ""
+      retries: 5
+      delay: 10
+
+    - set_fact: public_v4="{{ pgdb_server.server.public_v4 }}"
+
+    - name: add the server to our ansible inventory
+      add_host: hostname={{ public_v4 }} groups=pgsql ansible_ssh_user=dhc-user ansible_ssh_private_key_file={{ private_key }}
+
+#step-4
+
+- hosts: pgsql
+  gather_facts: no
+
+  tasks:
+    - name: Install python2.7
+      raw: "sudo apt-get update -qq &amp;&amp; sudo apt-get install -qq python2.7 aptitude"
+
+#step-5
+
+- hosts: pgsql
+  vars:
+   ansible_python_interpreter: /usr/bin/python2.7
+
+  become: True
+  vars:
+      db_name: mydb
+      db_user: dreamer
+      db_password: secretpass
+
+  tasks:
+
+    - name: Install PostgreSQL
+      apt: name={{ item }} state=latest update_cache=yes
+      with_items:
+        - postgresql
+        - python-psycopg2
+        - postgresql-contrib
+        - libpq-dev
+
+#step-6
+
+    - name: Ensure the PostgreSQL service is running
+      service: name=postgresql state=started enabled=yes
+
+    - name: Ensure database is created
+      become_user: postgres
+      become: yes
+      postgresql_db: name={{ db_name }}
+                     encoding='UTF-8'
+                     lc_collate='en_US.UTF-8'
+                     lc_ctype='en_US.UTF-8'
+                     template='template0'
+                     state=present
+
+    - name: Ensure user has access to the database
+      become_user: postgres
+      become: yes
+      postgresql_user: db={{ db_name }}
+                       name={{ db_user }}
+                       password={{ db_password }}
+                       priv=ALL
+                       state=present
+                       encrypted=no
+
+    - name: Ensure user does not have unnecessary privileges
+      become_user: postgres
+      become: yes
+      postgresql_user: name={{ db_user }}
+                       role_attr_flags=NOSUPERUSER,NOCREATEDB
+                       state=present
+
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="clearer"></div>
+</div>
+<div class="footer">
+</div>
+<!--DreamCompute Button-->
+<div class="dream-sign-up">
+<h2>Deploy Your Apps On Cloud Servers Today</h2>
+<a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a>
+</div>
+</body>

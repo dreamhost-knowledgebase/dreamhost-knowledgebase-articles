@@ -1,0 +1,329 @@
+<body role="document">
+<div class="document">
+<div class="documentwrapper">
+<div class="body" role="main">
+<div id="sample-c-code-using-dreamobjects-s3-compatible-api">
+<span id="cpp"></span>
+<div class="table-of-content container">
+<ul class="simple">
+<li><a class="reference internal" href="#s3-cpp-generate-object-download-url"><span>Generate Object Download URL (signed)</span></a></li>
+<li><a class="reference internal" href="#s3-cpp-setup"><span>Setup</span></a></li>
+<li><a class="reference internal" href="#s3-cpp-creating-a-connection"><span>Creating (and Closing) a Connection</span></a></li>
+<li><a class="reference internal" href="#s3-cpp-listing-owned-buckets"><span>Listing Owned Buckets</span></a></li>
+<li><a class="reference internal" href="#s3-cpp-creating-a-bucket"><span>Creating a Bucket</span></a></li>
+<li><a class="reference internal" href="#s3-cpp-listing-a-buckets-content"><span>Listing a Bucket’s Content</span></a></li>
+<li><a class="reference internal" href="#s3-cpp-deleting-a-bucket"><span>Deleting a Bucket</span></a></li>
+<li><a class="reference internal" href="#s3-cpp-creating-an-object"><span>Creating an Object (from a file)</span></a></li>
+<li><a class="reference internal" href="#s3-cpp-download-an-object"><span>Download an Object (to a file)</span></a></li>
+<li><a class="reference internal" href="#s3-cpp-delete-an-object"><span>Delete an Object</span></a></li>
+<li><a class="reference internal" href="#s3-cpp-change-an-objects-acl"><span>Change an Object’s ACL</span></a></li>
+<li><a class="reference internal" href="#s3-cpp-generate-object-download-url"><span>Generate Object Download URL (signed)</span></a></li>
+</ul>
+</div>
+<div id="setup">
+<span id="s3-cpp-setup"></span><h2>Setup</h2>
+<p>The following contains includes and globals that will be used in later examples:</p>
+<div class="highlight-cpp"><div class="highlight"><pre><span class="cp">#include "libs3.h"</span>
+<span class="cp">#include &lt;stdlib.h&gt;</span>
+<span class="cp">#include &lt;iostream&gt;</span>
+<span class="cp">#include &lt;fstream&gt;</span>
+
+<span class="k">const</span> <span class="kt">char</span> <span class="n">access_key</span><span class="p">[]</span> <span class="o">=</span> <span class="s">"ACCESS_KEY"</span><span class="p">;</span>
+<span class="k">const</span> <span class="kt">char</span> <span class="n">secret_key</span><span class="p">[]</span> <span class="o">=</span> <span class="s">"SECRET_KEY"</span><span class="p">;</span>
+<span class="k">const</span> <span class="kt">char</span> <span class="n">host</span><span class="p">[]</span> <span class="o">=</span> <span class="s">"HOST"</span><span class="p">;</span>
+<span class="k">const</span> <span class="kt">char</span> <span class="n">sample_bucket</span><span class="p">[]</span> <span class="o">=</span> <span class="s">"sample_bucket"</span><span class="p">;</span>
+<span class="k">const</span> <span class="kt">char</span> <span class="n">sample_key</span><span class="p">[]</span> <span class="o">=</span> <span class="s">"hello.txt"</span><span class="p">;</span>
+<span class="k">const</span> <span class="kt">char</span> <span class="n">sample_file</span><span class="p">[]</span> <span class="o">=</span> <span class="s">"resource/hello.txt"</span><span class="p">;</span>
+
+<span class="n">S3BucketContext</span> <span class="n">bucketContext</span> <span class="o">=</span>
+<span class="p">{</span>
+        <span class="n">host</span><span class="p">,</span>
+        <span class="n">sample_bucket</span><span class="p">,</span>
+        <span class="n">S3ProtocolHTTP</span><span class="p">,</span>
+        <span class="n">S3UriStylePath</span><span class="p">,</span>
+        <span class="n">access_key</span><span class="p">,</span>
+        <span class="n">secret_key</span>
+<span class="p">};</span>
+
+<span class="n">S3Status</span> <span class="nf">responsePropertiesCallback</span><span class="p">(</span>
+                <span class="k">const</span> <span class="n">S3ResponseProperties</span> <span class="o">*</span><span class="n">properties</span><span class="p">,</span>
+                <span class="kt">void</span> <span class="o">*</span><span class="n">callbackData</span><span class="p">)</span>
+<span class="p">{</span>
+        <span class="k">return</span> <span class="n">S3StatusOK</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">responseCompleteCallback</span><span class="p">(</span>
+                <span class="n">S3Status</span> <span class="n">status</span><span class="p">,</span>
+                <span class="k">const</span> <span class="n">S3ErrorDetails</span> <span class="o">*</span><span class="n">error</span><span class="p">,</span>
+                <span class="kt">void</span> <span class="o">*</span><span class="n">callbackData</span><span class="p">)</span>
+<span class="p">{</span>
+        <span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">S3ResponseHandler</span> <span class="n">responseHandler</span> <span class="o">=</span>
+<span class="p">{</span>
+        <span class="o">&amp;</span><span class="n">responsePropertiesCallback</span><span class="p">,</span>
+        <span class="o">&amp;</span><span class="n">responseCompleteCallback</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</div>
+<div id="creating-and-closing-a-connection">
+<span id="s3-cpp-creating-a-connection"></span><h2>Creating (and Closing) a Connection</h2>
+<p>This creates a connection so that you can interact with the server.</p>
+<div class="highlight-cpp"><div class="highlight"><pre><span class="n">S3_initialize</span><span class="p">(</span><span class="s">"s3"</span><span class="p">,</span> <span class="n">S3_INIT_ALL</span><span class="p">,</span> <span class="n">host</span><span class="p">);</span>
+<span class="c1">// Do stuff...</span>
+<span class="n">S3_deinitialize</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div id="listing-owned-buckets">
+<span id="s3-cpp-listing-owned-buckets"></span><h2>Listing Owned Buckets</h2>
+<p>This gets a list of Buckets that you own.
+This also prints out the bucket name, owner ID, and display name
+for each bucket.</p>
+<div class="highlight-cpp"><div class="highlight"><pre><span class="k">static</span> <span class="n">S3Status</span> <span class="nf">listServiceCallback</span><span class="p">(</span>
+                <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">ownerId</span><span class="p">,</span>
+                <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">ownerDisplayName</span><span class="p">,</span>
+                <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">bucketName</span><span class="p">,</span>
+                <span class="kt">int64_t</span> <span class="n">creationDate</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">callbackData</span><span class="p">)</span>
+<span class="p">{</span>
+        <span class="kt">bool</span> <span class="o">*</span><span class="n">header_printed</span> <span class="o">=</span> <span class="p">(</span><span class="kt">bool</span><span class="o">*</span><span class="p">)</span> <span class="n">callbackData</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!*</span><span class="n">header_printed</span><span class="p">)</span> <span class="p">{</span>
+                <span class="o">*</span><span class="n">header_printed</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+                <span class="n">printf</span><span class="p">(</span><span class="s">"%-22s"</span><span class="p">,</span> <span class="s">"       Bucket"</span><span class="p">);</span>
+                <span class="n">printf</span><span class="p">(</span><span class="s">"  %-20s  %-12s"</span><span class="p">,</span> <span class="s">"     Owner ID"</span><span class="p">,</span> <span class="s">"Display Name"</span><span class="p">);</span>
+                <span class="n">printf</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+                <span class="n">printf</span><span class="p">(</span><span class="s">"----------------------"</span><span class="p">);</span>
+                <span class="n">printf</span><span class="p">(</span><span class="s">"  --------------------"</span> <span class="s">"  ------------"</span><span class="p">);</span>
+                <span class="n">printf</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="n">printf</span><span class="p">(</span><span class="s">"%-22s"</span><span class="p">,</span> <span class="n">bucketName</span><span class="p">);</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"  %-20s  %-12s"</span><span class="p">,</span> <span class="n">ownerId</span> <span class="o">?</span> <span class="nl">ownerId</span> <span class="p">:</span> <span class="s">""</span><span class="p">,</span> <span class="n">ownerDisplayName</span> <span class="o">?</span> <span class="nl">ownerDisplayName</span> <span class="p">:</span> <span class="s">""</span><span class="p">);</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+
+        <span class="k">return</span> <span class="n">S3StatusOK</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">S3ListServiceHandler</span> <span class="n">listServiceHandler</span> <span class="o">=</span>
+<span class="p">{</span>
+        <span class="n">responseHandler</span><span class="p">,</span>
+        <span class="o">&amp;</span><span class="n">listServiceCallback</span>
+<span class="p">};</span>
+<span class="kt">bool</span> <span class="n">header_printed</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+<span class="n">S3_list_service</span><span class="p">(</span><span class="n">S3ProtocolHTTP</span><span class="p">,</span> <span class="n">access_key</span><span class="p">,</span> <span class="n">secret_key</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">listServiceHandler</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">header_printed</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div id="creating-a-bucket">
+<span id="s3-cpp-creating-a-bucket"></span><h2>Creating a Bucket</h2>
+<p>This creates a new bucket.</p>
+<div class="highlight-cpp"><div class="highlight"><pre><span class="n">S3_create_bucket</span><span class="p">(</span><span class="n">S3ProtocolHTTP</span><span class="p">,</span> <span class="n">access_key</span><span class="p">,</span> <span class="n">secret_key</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">sample_bucket</span><span class="p">,</span> <span class="n">S3CannedAclPrivate</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">responseHandler</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div id="listing-a-bucket-s-content">
+<span id="s3-cpp-listing-a-buckets-content"></span><h2>Listing a Bucket’s Content</h2>
+<p>This gets a list of objects in the bucket.
+This also prints out each object’s name, the file size, and
+last modified date.</p>
+<div class="highlight-cpp"><div class="highlight"><pre><span class="k">static</span> <span class="n">S3Status</span> <span class="nf">listBucketCallback</span><span class="p">(</span>
+                <span class="kt">int</span> <span class="n">isTruncated</span><span class="p">,</span>
+                <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">nextMarker</span><span class="p">,</span>
+                <span class="kt">int</span> <span class="n">contentsCount</span><span class="p">,</span>
+                <span class="k">const</span> <span class="n">S3ListBucketContent</span> <span class="o">*</span><span class="n">contents</span><span class="p">,</span>
+                <span class="kt">int</span> <span class="n">commonPrefixesCount</span><span class="p">,</span>
+                <span class="k">const</span> <span class="kt">char</span> <span class="o">**</span><span class="n">commonPrefixes</span><span class="p">,</span>
+                <span class="kt">void</span> <span class="o">*</span><span class="n">callbackData</span><span class="p">)</span>
+<span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"%-22s"</span><span class="p">,</span>     <span class="s">"      Object Name"</span><span class="p">);</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"  %-5s  %-20s"</span><span class="p">,</span> <span class="s">"Size"</span><span class="p">,</span> <span class="s">"   Last Modified"</span><span class="p">);</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"----------------------"</span><span class="p">);</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"  -----"</span> <span class="s">"  --------------------"</span><span class="p">);</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">contentsCount</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kt">char</span> <span class="n">timebuf</span><span class="p">[</span><span class="mi">256</span><span class="p">];</span>
+                <span class="kt">char</span> <span class="n">sizebuf</span><span class="p">[</span><span class="mi">16</span><span class="p">];</span>
+        <span class="k">const</span> <span class="n">S3ListBucketContent</span> <span class="o">*</span><span class="n">content</span> <span class="o">=</span> <span class="o">&amp;</span><span class="p">(</span><span class="n">contents</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+                <span class="kt">time_t</span> <span class="n">t</span> <span class="o">=</span> <span class="p">(</span><span class="kt">time_t</span><span class="p">)</span> <span class="n">content</span><span class="o">-&gt;</span><span class="n">lastModified</span><span class="p">;</span>
+
+                <span class="n">strftime</span><span class="p">(</span><span class="n">timebuf</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">timebuf</span><span class="p">),</span> <span class="s">"%Y-%m-%dT%H:%M:%SZ"</span><span class="p">,</span> <span class="n">gmtime</span><span class="p">(</span><span class="o">&amp;</span><span class="n">t</span><span class="p">));</span>
+                <span class="n">sprintf</span><span class="p">(</span><span class="n">sizebuf</span><span class="p">,</span> <span class="s">"%5llu"</span><span class="p">,</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span><span class="p">)</span> <span class="n">content</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">);</span>
+                <span class="n">printf</span><span class="p">(</span><span class="s">"%-22s  %s  %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">content</span><span class="o">-&gt;</span><span class="n">key</span><span class="p">,</span> <span class="n">sizebuf</span><span class="p">,</span> <span class="n">timebuf</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">S3StatusOK</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">S3ListBucketHandler</span> <span class="n">listBucketHandler</span> <span class="o">=</span>
+<span class="p">{</span>
+        <span class="n">responseHandler</span><span class="p">,</span>
+        <span class="o">&amp;</span><span class="n">listBucketCallback</span>
+<span class="p">};</span>
+<span class="n">S3_list_bucket</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bucketContext</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">listBucketHandler</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The output will look something like this:</p>
+<div class="highlight-python"><div class="highlight"><pre>myphoto1.jpg 251262  2011-08-08T21:35:48.000Z
+myphoto2.jpg 262518  2011-08-08T21:38:01.000Z
+</pre></div>
+</div>
+</div>
+<div id="deleting-a-bucket">
+<span id="s3-cpp-deleting-a-bucket"></span><h2>Deleting a Bucket</h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The Bucket must be empty! Otherwise it won’t work!</p>
+</div>
+<div class="highlight-cpp"><div class="highlight"><pre><span class="n">S3_delete_bucket</span><span class="p">(</span><span class="n">S3ProtocolHTTP</span><span class="p">,</span> <span class="n">S3UriStylePath</span><span class="p">,</span> <span class="n">access_key</span><span class="p">,</span> <span class="n">secret_key</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">sample_bucket</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">responseHandler</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div id="creating-an-object-from-a-file">
+<span id="s3-cpp-creating-an-object"></span><h2>Creating an Object (from a file)</h2>
+<p>This creates a file <code class="docutils literal"><span class="pre">hello.txt</span></code>.</p>
+<div class="highlight-cpp"><div class="highlight"><pre><span class="cp">#include &lt;sys/stat.h&gt;</span>
+<span class="k">typedef</span> <span class="k">struct</span> <span class="n">put_object_callback_data</span>
+<span class="p">{</span>
+    <span class="kt">FILE</span> <span class="o">*</span><span class="n">infile</span><span class="p">;</span>
+    <span class="kt">uint64_t</span> <span class="n">contentLength</span><span class="p">;</span>
+<span class="p">}</span> <span class="n">put_object_callback_data</span><span class="p">;</span>
+
+
+<span class="k">static</span> <span class="kt">int</span> <span class="nf">putObjectDataCallback</span><span class="p">(</span><span class="kt">int</span> <span class="n">bufferSize</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">buffer</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">callbackData</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">put_object_callback_data</span> <span class="o">*</span><span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="n">put_object_callback_data</span> <span class="o">*</span><span class="p">)</span> <span class="n">callbackData</span><span class="p">;</span>
+
+    <span class="kt">int</span> <span class="n">ret</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">data</span><span class="o">-&gt;</span><span class="n">contentLength</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">toRead</span> <span class="o">=</span> <span class="p">((</span><span class="n">data</span><span class="o">-&gt;</span><span class="n">contentLength</span> <span class="o">&gt;</span> <span class="p">(</span><span class="kt">unsigned</span><span class="p">)</span> <span class="n">bufferSize</span><span class="p">)</span> <span class="o">?</span> <span class="p">(</span><span class="kt">unsigned</span><span class="p">)</span> <span class="nl">bufferSize</span> <span class="p">:</span> <span class="n">data</span><span class="o">-&gt;</span><span class="n">contentLength</span><span class="p">);</span>
+                <span class="n">ret</span> <span class="o">=</span> <span class="n">fread</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">toRead</span><span class="p">,</span> <span class="n">data</span><span class="o">-&gt;</span><span class="n">infile</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">data</span><span class="o">-&gt;</span><span class="n">contentLength</span> <span class="o">-=</span> <span class="n">ret</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">put_object_callback_data</span> <span class="n">data</span><span class="p">;</span>
+<span class="k">struct</span> <span class="n">stat</span> <span class="n">statbuf</span><span class="p">;</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">stat</span><span class="p">(</span><span class="n">sample_file</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">statbuf</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">"</span><span class="se">\n</span><span class="s">ERROR: Failed to stat file %s: "</span><span class="p">,</span> <span class="n">sample_file</span><span class="p">);</span>
+        <span class="n">perror</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">contentLength</span> <span class="o">=</span> <span class="n">statbuf</span><span class="p">.</span><span class="n">st_size</span><span class="p">;</span>
+<span class="n">data</span><span class="p">.</span><span class="n">contentLength</span> <span class="o">=</span> <span class="n">contentLength</span><span class="p">;</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">infile</span> <span class="o">=</span> <span class="n">fopen</span><span class="p">(</span><span class="n">sample_file</span><span class="p">,</span> <span class="s">"r"</span><span class="p">)))</span> <span class="p">{</span>
+        <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">"</span><span class="se">\n</span><span class="s">ERROR: Failed to open input file %s: "</span><span class="p">,</span> <span class="n">sample_file</span><span class="p">);</span>
+        <span class="n">perror</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">S3PutObjectHandler</span> <span class="n">putObjectHandler</span> <span class="o">=</span>
+<span class="p">{</span>
+        <span class="n">responseHandler</span><span class="p">,</span>
+        <span class="o">&amp;</span><span class="n">putObjectDataCallback</span>
+<span class="p">};</span>
+
+<span class="n">S3_put_object</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bucketContext</span><span class="p">,</span> <span class="n">sample_key</span><span class="p">,</span> <span class="n">contentLength</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">putObjectHandler</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">data</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div id="download-an-object-to-a-file">
+<span id="s3-cpp-download-an-object"></span><h2>Download an Object (to a file)</h2>
+<p>This downloads a file and prints the contents.</p>
+<div class="highlight-cpp"><div class="highlight"><pre><span class="k">static</span> <span class="n">S3Status</span> <span class="nf">getObjectDataCallback</span><span class="p">(</span><span class="kt">int</span> <span class="n">bufferSize</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">buffer</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">callbackData</span><span class="p">)</span>
+<span class="p">{</span>
+        <span class="kt">FILE</span> <span class="o">*</span><span class="n">outfile</span> <span class="o">=</span> <span class="p">(</span><span class="kt">FILE</span> <span class="o">*</span><span class="p">)</span> <span class="n">callbackData</span><span class="p">;</span>
+        <span class="kt">size_t</span> <span class="n">wrote</span> <span class="o">=</span> <span class="n">fwrite</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">bufferSize</span><span class="p">,</span> <span class="n">outfile</span><span class="p">);</span>
+        <span class="k">return</span> <span class="p">((</span><span class="n">wrote</span> <span class="o">&lt;</span> <span class="p">(</span><span class="kt">size_t</span><span class="p">)</span> <span class="n">bufferSize</span><span class="p">)</span> <span class="o">?</span> <span class="nl">S3StatusAbortedByCallback</span> <span class="p">:</span> <span class="n">S3StatusOK</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">S3GetObjectHandler</span> <span class="n">getObjectHandler</span> <span class="o">=</span>
+<span class="p">{</span>
+        <span class="n">responseHandler</span><span class="p">,</span>
+        <span class="o">&amp;</span><span class="n">getObjectDataCallback</span>
+<span class="p">};</span>
+<span class="kt">FILE</span> <span class="o">*</span><span class="n">outfile</span> <span class="o">=</span> <span class="n">stdout</span><span class="p">;</span>
+<span class="n">S3_get_object</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bucketContext</span><span class="p">,</span> <span class="n">sample_key</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">getObjectHandler</span><span class="p">,</span> <span class="n">outfile</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div id="delete-an-object">
+<span id="s3-cpp-delete-an-object"></span><h2>Delete an Object</h2>
+<p>This deletes an object.</p>
+<div class="highlight-cpp"><div class="highlight"><pre><span class="n">S3ResponseHandler</span> <span class="n">deleteResponseHandler</span> <span class="o">=</span>
+<span class="p">{</span>
+        <span class="mi">0</span><span class="p">,</span>
+        <span class="o">&amp;</span><span class="n">responseCompleteCallback</span>
+<span class="p">};</span>
+<span class="n">S3_delete_object</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bucketContext</span><span class="p">,</span> <span class="n">sample_key</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">deleteResponseHandler</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div id="change-an-object-s-acl">
+<span id="s3-cpp-change-an-objects-acl"></span><h2>Change an Object’s ACL</h2>
+<p>This changes an object’s ACL to grant full control to another user.</p>
+<div class="highlight-cpp"><div class="highlight"><pre><span class="cp">#include &lt;string.h&gt;</span>
+<span class="kt">char</span> <span class="n">ownerId</span><span class="p">[]</span> <span class="o">=</span> <span class="s">"owner"</span><span class="p">;</span>
+<span class="kt">char</span> <span class="n">ownerDisplayName</span><span class="p">[]</span> <span class="o">=</span> <span class="s">"owner"</span><span class="p">;</span>
+<span class="kt">char</span> <span class="n">granteeId</span><span class="p">[]</span> <span class="o">=</span> <span class="s">"grantee"</span><span class="p">;</span>
+<span class="kt">char</span> <span class="n">granteeDisplayName</span><span class="p">[]</span> <span class="o">=</span> <span class="s">"grantee"</span><span class="p">;</span>
+
+<span class="n">S3AclGrant</span> <span class="n">grants</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="p">{</span>
+                <span class="n">S3GranteeTypeCanonicalUser</span><span class="p">,</span>
+                <span class="p">{{}},</span>
+                <span class="n">S3PermissionFullControl</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+                <span class="n">S3GranteeTypeCanonicalUser</span><span class="p">,</span>
+                <span class="p">{{}},</span>
+                <span class="n">S3PermissionReadACP</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+                <span class="n">S3GranteeTypeAllUsers</span><span class="p">,</span>
+                <span class="p">{{}},</span>
+                <span class="n">S3PermissionRead</span>
+        <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="n">strncpy</span><span class="p">(</span><span class="n">grants</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">grantee</span><span class="p">.</span><span class="n">canonicalUser</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">ownerId</span><span class="p">,</span> <span class="n">S3_MAX_GRANTEE_USER_ID_SIZE</span><span class="p">);</span>
+<span class="n">strncpy</span><span class="p">(</span><span class="n">grants</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">grantee</span><span class="p">.</span><span class="n">canonicalUser</span><span class="p">.</span><span class="n">displayName</span><span class="p">,</span> <span class="n">ownerDisplayName</span><span class="p">,</span> <span class="n">S3_MAX_GRANTEE_DISPLAY_NAME_SIZE</span><span class="p">);</span>
+
+<span class="n">strncpy</span><span class="p">(</span><span class="n">grants</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">grantee</span><span class="p">.</span><span class="n">canonicalUser</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">granteeId</span><span class="p">,</span> <span class="n">S3_MAX_GRANTEE_USER_ID_SIZE</span><span class="p">);</span>
+<span class="n">strncpy</span><span class="p">(</span><span class="n">grants</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">grantee</span><span class="p">.</span><span class="n">canonicalUser</span><span class="p">.</span><span class="n">displayName</span><span class="p">,</span> <span class="n">granteeDisplayName</span><span class="p">,</span> <span class="n">S3_MAX_GRANTEE_DISPLAY_NAME_SIZE</span><span class="p">);</span>
+
+<span class="n">S3_set_acl</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bucketContext</span><span class="p">,</span> <span class="n">sample_key</span><span class="p">,</span> <span class="n">ownerId</span><span class="p">,</span> <span class="n">ownerDisplayName</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">grants</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">responseHandler</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div id="generate-object-download-url-signed">
+<span id="s3-cpp-generate-object-download-url"></span><h2>Generate Object Download URL (signed)</h2>
+<p>This generates a signed download URL that will be valid for 5 minutes.</p>
+<div class="highlight-cpp"><div class="highlight"><pre><span class="cp">#include &lt;time.h&gt;</span>
+<span class="kt">char</span> <span class="n">buffer</span><span class="p">[</span><span class="n">S3_MAX_AUTHENTICATED_QUERY_STRING_SIZE</span><span class="p">];</span>
+<span class="kt">int64_t</span> <span class="n">expires</span> <span class="o">=</span> <span class="n">time</span><span class="p">(</span><span class="nb">NULL</span><span class="p">)</span> <span class="o">+</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">5</span><span class="p">;</span> <span class="c1">// Current time + 5 minutes</span>
+
+<span class="n">S3_generate_authenticated_query_string</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">bucketContext</span><span class="p">,</span> <span class="n">sample_key</span><span class="p">,</span> <span class="n">expires</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="clearer"></div>
+</div>
+<div class="footer">
+</div>
+<!--DreamObjects Button-->
+<div class="dream-sign-up">
+<h2>Start Storing Your Data Today!</h2>
+<a href="https://www.dreamhost.com/cloud/storage/">Sign Up for DreamObjects</a>
+</div>
+</body>

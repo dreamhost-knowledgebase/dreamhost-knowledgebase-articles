@@ -1,0 +1,265 @@
+<div class="document">
+<div class="documentwrapper">
+<div class="body">
+<div id="Rewards API commands">
+<div class="altTitle">Rewards API</div>
+<div class="table-of-content container">
+<ul class="simple">
+<li><a class="reference internal" href="#rewards-add_promo_code">rewards-add_promo_code</a></li>
+<li><a class="reference internal" href="#rewards-remove_promo_code">rewards-remove_promo_code</a></li>
+<li><a class="reference internal" href="#rewards-enable_promo_code">rewards-enable_promo_code</a></li>
+<li><a class="reference internal" href="#rewards-disable_promo_code">rewards-disable_promo_code</a></li>
+<li><a class="reference internal" href="#rewards-list_promo_codes">rewards-list_promo_codes</a></li>
+<li><a class="reference internal" href="#rewards-promo_details">rewards-promo_details</a></li>
+<li><a class="reference internal" href="#rewards-referral_summary">rewards-referral_summary</a></li>
+<li><a class="reference internal" href="#rewards-referral_log">rewards-referral_log</a></li>
+<li><a class="See also" href="#See_also">See also</a></li>
+</ul>
+</div>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>The following documentation is officially supported by DreamHost. However, if you find any instructions in this article do not function as intended, it's possible it may be out of date. When in doubt, please contact support for further assistance.</p>
+</div>
+</div>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>It's no longer possible to add promo codes as an affiliate. View the <a href="/hc/en-us/articles/215207097-How-do-I-get-credit-for-referring-customers-">Rewards</a> article for further details.</p>
+</div>
+</div>
+<p>The <strong>rewards</strong> API module contains commands for managing promo codes and tracking referrals.</p>
+<h2>Commands</h2>
+<h3><span id="rewards-add_promo_code">rewards-add_promo_code</span></h3>
+<p>Creates a promo code. The promo code must provide some sort of bonus, but this bonus is subtracted from the $97 referral reward.</p>
+<table class="wikitable">
+<tbody>
+<tr>
+<td><strong>Command</strong></td>
+<td>rewards-add_promo_code</td>
+</tr>
+<tr>
+<td><strong>Values</strong></td>
+<td>
+<p>code : the desired promo code. must be 3-16 characters long, only letters or numbers, and not be numbers only <br />description : a text description of the code. max 32 characters <br />bonus_domregs : the number of free domregs the code provides (costs $15 per bonus domreg) <br />bonus_ips : the number of free ips the code provides (costs $30 per bonus ip) <br />discount_month : the discount off the monthly plan (note: this is no longer available for new plans) <br />discount_1year : the discount off 1-year hosting <br />discount_2year : the discount off 2-year hosting</p>
+</td>
+</tr>
+<tr>
+<td><strong>Result</strong></td>
+<td>
+<p>success</p>
+</td>
+</tr>
+<tr>
+<td><strong>Possible errors</strong></td>
+<td>
+<p>no_code no_description no_bonus_domregs no_bonus_ips no_discount_month no_discount_1year no_discount_2year invalid_code code_taken description_too_long invalid_bonus_domregs invalid_bonus_ips bonus_too_big negative_discount</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3><span id="rewards-remove_promo_code">rewards-remove_promo_code</span></h3>
+<p>Removes a promo code (only allowed if the code was never used).</p>
+<table class="wikitable">
+<tbody>
+<tr>
+<td><strong>Command</strong></td>
+<td>rewards-remove_promo_code</td>
+</tr>
+<tr>
+<td><strong>Values</strong></td>
+<td>
+<p>code</p>
+</td>
+</tr>
+<tr>
+<td><strong>Result</strong></td>
+<td>
+<p>success</p>
+</td>
+</tr>
+<tr>
+<td><strong>Possible errors</strong></td>
+<td>
+<p>invalid_code <br />code_used</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3><span id="rewards-enable_promo_code">rewards-enable_promo_code</span></h3>
+<p>Enables a promo code so it can be used again (must have been disabled).</p>
+<table class="wikitable">
+<tbody>
+<tr>
+<td><strong>Command</strong></td>
+<td>rewards-enable_promo_code</td>
+</tr>
+<tr>
+<td><strong>Values</strong></td>
+<td>
+<p>code</p>
+</td>
+</tr>
+<tr>
+<td><strong>Result</strong></td>
+<td>
+<p>success</p>
+</td>
+</tr>
+<tr>
+<td><strong>Possible errors</strong></td>
+<td>
+<p>invalid_code</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3><span id="rewards-disable_promo_code">rewards-disable_promo_code</span></h3>
+<p>Disables a promo code so it can no longer be used (must be enabled).</p>
+<table class="wikitable">
+<tbody>
+<tr>
+<td><strong>Command</strong></td>
+<td>rewards-disable_promo_code</td>
+</tr>
+<tr>
+<td><strong>Values</strong></td>
+<td>
+<p>code</p>
+</td>
+</tr>
+<tr>
+<td><strong>Result</strong></td>
+<td>
+<p>success</p>
+</td>
+</tr>
+<tr>
+<td><strong>Possible errors</strong></td>
+<td>
+<p>invalid_code</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3><span id="rewards-list_promo_codes">rewards-list_promo_codes</span></h3>
+<p>Lists all the promo codes you have created.</p>
+<table class="wikitable">
+<tbody>
+<tr>
+<td><strong>Command</strong></td>
+<td>rewards-list_promo_codes</td>
+</tr>
+<tr>
+<td><strong>Values</strong></td>
+<td>
+<p>(none)</p>
+</td>
+</tr>
+<tr>
+<td><strong>Result</strong></td>
+<td>
+<p>success <br />code description created status used <br />TESTCODE my promo code 2010-11-16 17:37:05 active 0</p>
+</td>
+</tr>
+<tr>
+<td><strong>Possible errors</strong></td>
+<td>
+<p>(none)</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3><span id="rewards-promo_details">rewards-promo_details</span></h3>
+<p>Gets the detailed information for a promo code (you must have created the code).</p>
+<table class="wikitable">
+<tbody>
+<tr>
+<td><strong>Command</strong></td>
+<td>rewards-promo_details</td>
+</tr>
+<tr>
+<td><strong>Values</strong></td>
+<td>
+<p>code</p>
+</td>
+</tr>
+<tr>
+<td><strong>Result</strong></td>
+<td>
+<p>success <br />code description status discount_month discount_1year discount_2year bonus_domregs bonus_ips <br />TESTCODE my promo code active $0.00 $0.00 $0.00 2 1</p>
+</td>
+</tr>
+<tr>
+<td><strong>Possible errors</strong></td>
+<td>
+<p>no_code <br />invalid_code</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3><span id="rewards-referral_summary">rewards-referral_summary</span></h3>
+<p>Gives a summary of all referrals for the given time period.</p>
+<table class="wikitable">
+<tbody>
+<tr>
+<td><strong>Command</strong></td>
+<td>rewards-referral_summary</td>
+</tr>
+<tr>
+<td><strong>Values</strong></td>
+<td>
+<p>period : a period of time such as "1 day" or "3 months"</p>
+</td>
+</tr>
+<tr>
+<td><strong>Result</strong></td>
+<td>
+<p>success <br />code signups raw_clicks unique_clicks conversion <br />none 0 8 8 0.00% <br />TESTCODE 213 5515 5235 4.07% <br />Total 213 5523 5243 4.06%</p>
+</td>
+</tr>
+<tr>
+<td><strong>Possible errors</strong></td>
+<td>
+<p>no_period <br />invalid_period</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3><span id="rewards-referral_log">rewards-referral_log</span></h3>
+<p>Returns a raw log of of referrals for the given time period. If the person signed up, then it also shows their webid and signup time.</p>
+<table class="wikitable">
+<tbody>
+<tr>
+<td><strong>Command</strong></td>
+<td>rewards-referral_log</td>
+</tr>
+<tr>
+<td><strong>Values</strong></td>
+<td>
+<p>period : a period of time such as "1 day" or "3 months"</p>
+</td>
+</tr>
+<tr>
+<td><strong>Result</strong></td>
+<td>
+<p>success <br />click_time ip code signup_time ref_url webid status <br />2010-11-16 17:40:34 1.2.3.4 TEST N/A N/A no signup <br />2010-11-16 17:40:12 5.6.7.8 TEST N/A <a href="http://www.example.com/">http://www.example.com</a> N/A no signup <br />2010-11-16 17:32:27 9.10.11.12 TEST N/A <a href="http://www.example.com/">http://www.example.com</a> N/A no signup</p>
+</td>
+</tr>
+<tr>
+<td><strong>Possible errors</strong></td>
+<td>
+<p>no_period <br />invalid_period</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h2><span id="See_also">See also</span></h2>
+<ul>
+<li><a href="/hc/en-us/articles/217560167-Application-programming-interface-overview">Application programming interface overview</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="clearer"> </div>

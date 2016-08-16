@@ -1,0 +1,66 @@
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>This article contains information/examples using root/sudo/admin users. If you require sudo/admin access, you must upgrade to a <a href="https://help.dreamhost.com/hc/en-us/articles/215279658-Dedicated-server-overview">Dedicated server</a> or <a href="https://help.dreamhost.com/hc/en-us/articles/214840947-What-is-DreamCompute">DreamCompute</a>.</p>
+</div>
+</div>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>PHP 5.5 is the only version available in the panel to use with your Nginx website.</p>
+</div>
+</div>
+<h2><span id="PHP_processes_per_user" class="mw-headline">PHP processes per user</span></h2>
+<p>For security purposes, it's generally advised to assign a single user to each domain. This way if that user is compromised, no other sites are affected. However, when running Nginx, it's recommended that you consolidate your domains under a single username. This is for performance reasons.</p>
+<p>Nginx uses a set number of PHP processes when starting up. This happens for each user, and the same number are started regardless of how many domains are hosted under the user.</p>
+<p>However, if you have 10 domains spread across 10 separate FTP users, you'll get 10x as many PHP processes as you would otherwise get with a single user.</p>
+<p>Also, keep in mind that the number of PHP processes that spawn per user is automatically scaled with the amount of memory your <a href="/hc/en-us/articles/215280058-Virtual-Private-Server-overview-VPS-">VPS</a> is set to use.</p>
+<h2><span id="Limiting_the_amount_of_processes_spawned_per_domain" class="mw-headline">Limiting the amount of processes spawned per domain</span></h2>
+<p>Unlike Apache or Lighttpd, Nginx does not automatically spawn FCGI processes. You must start them separately. PHP5 auto-spawns as many as you set in the <strong>PHP_FCGI_CHILDREN</strong> environment variable.</p>
+<p>View the following article for details:</p>
+<ul>
+<li><a class="external free" href="http://wiki.nginx.org/FcgiExample" rel="nofollow">http://wiki.nginx.org/FcgiExample</a></li>
+</ul>
+<p>The <strong>PHP_FCGI_CHILDREN</strong> variable affects how many PHP pages can be processed simultaneously. The lower the value, the less memory used. But if you're getting a lot of traffic this slows down your response time. This value defaults to 9 on DreamHost Nginx servers.</p>
+<h3><span id="Globally" class="mw-headline">Globally</span></h3>
+<ol>
+<li>Using an <a href="/hc/en-us/articles/215945467-How-do-I-add-users-to-a-Dedicated-server-">admin user</a>, navigate to the following directory:
+<div class="preboxcontainer">
+<pre class="prebox">/dh/nginx/servers/httpd-ps12345/environ
+</pre>
+</div>
+</li>
+<li>Use the 'sudo' command to edit this file. You'll see the following lines:
+<div class="preboxcontainer">
+<pre class="prebox">PHP_FCGI_CHILDREN=9
+PHP_FCGI_MAX_REQUESTS=1000
+</pre>
+</div>
+</li>
+</ol>
+<p>PHP_FCGI_CHILDREN is the number of desired processes per domain.</p>
+<h3><span id="Per-user" class="mw-headline">Per-user</span></h3>
+<ol>
+<li>Navigate to your user's $HOME directory.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~</span></pre>
+</div>
+</li>
+<li>Create a .php-launcher file with the following contents:
+<div class="preboxcontainer">
+<pre class="prebox">#!/bin/sh
+export PHP_FCGI_CHILDREN=9
+exec /dh/cgi-system/php5.cgi $*
+</pre>
+</div>
+</li>
+<li>Make the script executable:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">chmod a+x .php-launcher</span></pre>
+</div>
+</li>
+</ol>
+<h2>See also</h2>
+<ul>
+<li><span class="mw-headline"><a href="https://help.dreamhost.com/hc/en-us/articles/216431827-Nginx-overview">Nginx overview</a></span></li>
+</ul>

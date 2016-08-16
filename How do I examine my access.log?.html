@@ -1,0 +1,129 @@
+<p>You might find abuse from specific IPs, and often this is due to bots hitting your site. But, you may also find IPs that are not associated with bots over-browsing your site.</p>
+<p>This section lists a few commands you can run via <a href="https://dreamhosthelp.zendesk.com/hc/en-us/articles/216041267-SSH-overview">SSH</a> to help identify which IPs are hitting your site.</p>
+<h2><span id="Listing_IP_hits">Listing IP hits</span></h2>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Make sure that after you log into the server via SSH that you are in your /logs/example.com/http directory. This is where you’ll run the following commands.</p>
+</div>
+</div>
+<table class="wikitable">
+<tbody>
+<tr style="font-style: bold;"><th bgcolor="#F2F2F2">Command</th><th bgcolor="#F2F2F2">Description</th></tr>
+<tr>
+<td>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cat access.log| awk '{print $1}' | sort | uniq -c |sort -n</span></pre>
+</div>
+</td>
+<td>Generates a list of IP address preceded by the number of times it hit a site.</td>
+</tr>
+<tr>
+<td>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">tail -10000 access.log| awk '{print $1}' | sort | uniq -c |sort -n</span></pre>
+</div>
+</td>
+<td>Generates a list that shows the last 10,000 hits to a site.</td>
+</tr>
+<tr>
+<td>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">host 66.249.66.167</span>
+<span class="cmdoutput">167.66.249.66.in-addr.arpa domain name pointer crawl-66-249-66-167.googlebot.com</span>
+</pre>
+</div>
+</td>
+<td>The 'host' command determines the hosting company from which a specific IP is hitting a site. In this example, the IP belongs to Google.</td>
+</tr>
+<tr>
+<td>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">tail -f -q access.log</span></pre>
+</div>
+</td>
+<td>Watches your server logs in real-time to see if the issue presents itself with a specific IP (for intermittent issues).</td>
+</tr>
+<tr>
+<td>
+<div class="preboxcontainer">
+<pre class="prebox">order allow,deny
+deny from 66.249.66.167
+allow from all 
+</pre>
+</div>
+</td>
+<td>Blocks the IP in an <a href="https://dreamhosthelp.zendesk.com/hc/en-us/articles/216456227--htaccess-overview">.htaccess</a> file. In this example, the .htaccess file blocks the above Google IP.</td>
+</tr>
+</tbody>
+</table>
+<h2><span id="Listing_top_files.2C_folders.2C_and_domains">Listing top files, folders, and domains</span></h2>
+<table class="wikitable">
+<tbody>
+<tr style="font-style: bold;"><th bgcolor="#F2F2F2">Command</th><th bgcolor="#F2F2F2">Description</th></tr>
+<tr>
+<td>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">awk '{print $7}' access.log|cut -d? -f1|sort|uniq -c|sort -nk1|tail -n10</span></pre>
+</div>
+</td>
+<td>Generates a list of files or directories on your site being called the most.</td>
+</tr>
+<tr>
+<td>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">for k in `ls -S */http/access.log`; do wc -l $k | sort -r -n; done</span></pre>
+</div>
+</td>
+<td>
+<ul>
+<li>Generates a list of traffic for all domains listed under a specific user (on a shared server).</li>
+<li>This command must be run in your /logs/ directory.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<h2><span id="If_you_have_a_VPS_or_Dedicated_plan">If you have a VPS or Dedicated plan</span></h2>
+<table class="wikitable">
+<tbody>
+<tr style="font-style: bold;"><th bgcolor="#F2F2F2">Command</th><th bgcolor="#F2F2F2">Description</th></tr>
+<tr>
+<td style="width: 44%;">
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">for k in `ls -S /home/*/logs/*/http/access.log`; do wc -l $k | sort -r -n; done</span></pre>
+</div>
+</td>
+<td>
+<ul>
+<li>Generates a list of all traffic for all domains (for multiple domains on a VPS or Dedicated server).</li>
+<li>You can run this command from within any directory.</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td style="width: 44%;">
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">tail -f -q /home/*/logs/*/http/access.log</span></pre>
+</div>
+</td>
+<td>
+<ul>
+<li>Watches your server logs in real-time to see if the issue presents itself with a specific IP (for intermittent issues).</li>
+<li>You can run this command from within any directory.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<h2><span id="My_unique_IP_is_making_a_lot_of_connections">My Unique IP is making a lot of connections</span></h2>
+<p>You may find in your access.log that your site’s Unique IP is making a lot of connections. This is not an issue and can be safely ignored.</p>
+<p>This occurs because Apache is internally generating these connections in order to shut down unneeded processes.</p>
+<p>You can read more about it <a class="external text" href="http://wiki.apache.org/httpd/InternalDummyConnection" rel="nofollow">here</a>.</p>
+<h2>See also</h2>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216456227--htaccess-overview">.htaccess overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216105077-How-can-I-control-bots-spiders-and-crawlers-">How can I control bots, spiders and crawlers? </a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215458038-How-do-I-view-my-access-log-">How do I view my access.log?</a></li>
+</ul>

@@ -1,0 +1,313 @@
+<p>The PHP Extension and Application Repository, or "PEAR", is a repository of reusable PHP code which you can add to your website to easily enable certain functions such as SMTP Mail.</p>
+<p>Various packages can be downloaded from the PEAR repository, at:</p>
+<ul>
+<li><a href="http://pear.php.net/packages.php" rel="nofollow">http://pear.php.net/packages.php</a></li>
+</ul>
+<p>The following information walks you through the following:</p>
+<ul>
+<li>How to set up your DreamHost environment to run PEAR.</li>
+<li>How to download and install the packages.</li>
+</ul>
+<h2>PEAR MAIL compared to PHPMailer</h2>
+<p>Both PEAR MAIL and PHPMailer allow you to send email using SMTP. But there are a few reasons why PHPMailer may be a better choice. For example:</p>
+<ul>
+<li>PEAR MAIL cycles the socket connection for each message. This could potentially cause the connection to be caught by DreamHost's servers as a brute force attempt.</li>
+<li>PHPMailer open a socket only once. The socket is then kept open as it processes messages.</li>
+<li>PHPMailer is very well documented with many online examples and help pages.</li>
+<li>PHPMailer integrates well with Google's SMTP servers.</li>
+</ul>
+<p>For these reasons, PHPMailer is worth taking a look at as an alternative to PEAR MAIL.</p>
+<h2><span id="Installing_PEAR_manually">Installing PEAR manually</span></h2>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>PEAR is not installed by default on DreamHost servers. If you require any PEAR package to operate on your site it must be installed manually using the following steps.</p>
+</div>
+</div>
+<ul>
+<ul>
+<ol>
+<li>Make sure the user assigned to your domain is a SHELL user.</li>
+<li>Visit the following article which explains how to set up your SHELL user:
+<ul>
+<li><a href="/hc/en-us/articles/216385837-Enabling-Shell-access">Enabling Shell Access</a></li>
+</ul>
+</li>
+<li>Once the user is a SHELL user, log into the web server via SSH. Visit the SSH article for instructions on how to log into your server depending on which operating system you are using:
+<ul>
+<li><a href="/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
+</ul>
+</li>
+<li>Once you’ve logged into your server, make sure you're in your users directory. Run this command in your SHELL terminal:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">pwd</span> <br /><span class="cmdoutput">/home/exampleuser</span></pre>
+</div>
+<ul>
+<li>User is named ‘exampleuser’.</li>
+<li>In this example, you can see you're in the users directory because the full path is /home/exampleuser.</li>
+</ul>
+</li>
+<li>Run the following wget command to download the go-pear.phar file to your users directory:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wget http://pear.php.net/go-pear.phar</span></pre>
+</div>
+<dl>
+<dd><em>You’ll see a response such as this:</em></dd>
+</dl>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$</span><span class="command"> wget http://pear.php.net/go-pear.phar</span>
+<span class="cmdoutput">--2015-01-26 10:27:03-- http://pear.php.net/go-pear.phar
+Resolving pear.php.net (pear.php.net)... 5.77.39.20
+Connecting to pear.php.net (pear.php.net)|5.77.39.20|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 3673193 (3.5M) [application/octet-stream]
+Saving to: `go-pear.phar' <br /> <br />100%[=====================&gt;] 3,673,193 1.26M/s in 2.8s
+
+2015-01-26 10:27:06 (1.26 MB/s) - `go-pear.phar' saved [3673193/3673193] </span></pre>
+</div>
+</li>
+<li>Run the file by entering this command in the same directory:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">/usr/local/php56/bin/php go-pear.phar</span></pre>
+</div>
+</li>
+<li>During the install process, provide the following responses at the prompts:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">/usr/local/php56/bin/php go-pear.phar</span>
+Below is a suggested file layout for your new PEAR installation. To
+change individual locations, type the number in front of the
+directory. Type 'all' to change all of them or simply press Enter to
+accept these locations.
+
+ 1. Installation base ($prefix)                   : /home/exampleuser/pear
+ 2. Temporary directory for processing            : /tmp/pear/install
+ 3. Temporary directory for downloads             : /tmp/pear/install
+ 4. Binaries directory                            : /home/exampleuser/pear/bin
+ 5. PHP code directory ($php_dir)                 : /home/exampleuser/pear/share/pear
+ 6. Documentation directory                       : /home/exampleuser/pear/docs
+ 7. Data directory                                : /home/exampleuser/pear/data
+ 8. User-modifiable configuration files directory : /home/exampleuser/pear/cfg
+ 9. Public Web Files directory                    : /home/exampleuser/pear/www
+10. Tests directory                               : /home/exampleuser/pear/tests
+11. Name of configuration file                    : /home/exampleuser/.pearrc
+
+1-11, 'all' or Enter to continue:
+</pre>
+</div>
+</li>
+<li>Click <strong>Enter</strong> on your keyboard to proceed with the installation.
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>You can alter these later by editing your .pearrc file in your users directory.</p>
+</div>
+</div>
+<dl>
+<dd><em>The install will continue to run, but then stops at this question:</em></dd>
+</dl>
+<div class="preboxcontainer">
+<pre class="prebox">WARNING! The include_path defined in the currently used php.ini does not
+contain the PEAR PHP directory you just specified:
+&lt;/home/exampleuser/pear/share/pear&gt;
+If the specified directory is also not in the include_path used by
+your scripts, you will have problems getting any PEAR packages working.
+
+Would you like to alter php.ini &lt;/etc/php56/php.ini&gt;? [Y/n] : n
+</pre>
+</div>
+</li>
+<li>Enter the letter ‘<strong>n</strong>’ and then click <strong>Enter</strong> to proceed with the install. You will be able to set the include path in the next few steps.
+<dl>
+<dd><em>You’ll finally see this last section of the install script:</em></dd>
+</dl>
+<div class="preboxcontainer">
+<pre class="prebox">I will add a workaround for this in the 'pear' command to make sure the installer works, 
+but please look over your php.ini or Apache configuration to make sure /home/exampleuser/pear/share/pear 
+is in your include_path.
+
+Current include path           : .:/usr/local/lib/php:/usr/local/php5/lib/pear
+Configured directory           : /home/exampleuser/pear/share/pear
+Currently used php.ini (guess) : /etc/php56/php.ini
+Press Enter to continue:
+</pre>
+</div>
+</li>
+<li>Click <strong>Enter</strong> again on your keyboard. The include path will be set in the following steps.</li>
+<li>To update the .bash_profile file in your users directory (since you are still in your users directory), type in the following to open up your .bash_profile file:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">nano .bash_profile</span></pre>
+</div>
+<dl>
+<dd><em>You’ll see these lines already in that file:</em></dd>
+</dl>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="cmdoutput"># ~/.bash_profile: executed by bash(1) for login shells. <br /> <br />umask 002 <br />PS1='[\h]$ '</span></pre>
+</div>
+</li>
+<li>At the bottom, enter these two lines:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="cmdoutput">export PHP_PEAR_PHP_BIN=/usr/local/php56/bin/php
+export PATH=${HOME}/pear/bin:/usr/local/php56/bin:${PATH}</span></pre>
+</div>
+</li>
+<li>On your keyboard, press <strong>CTRL + X</strong> which prompts you to overwrite the current file with your changes.</li>
+<li>Enter the letter '<strong>Y'</strong> and then click <strong>Enter</strong> to save.</li>
+<li>Update that file by running the following command:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">. ~/.bash_profile</span></pre>
+</div>
+</li>
+<li>Open your .bashrc file by running the following command:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">nano .bashrc</span></pre>
+</div>
+<dl>
+<dd><em>You'll see the following line already exists:</em></dd>
+</dl>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="cmdoutput"># ~/.bashrc: executed by bash(1) for non-login shells.</span></pre>
+</div>
+</li>
+<li>Add the following to the bottom of your .bashrc file:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="cmdoutput">source .bash_profile</span></pre>
+</div>
+</li>
+<li>On your keyboard, press <strong>CTRL + X</strong> which prompts you to overwrite the current file with your changes.</li>
+<li>Enter the letter "<strong>Y</strong>" and then click <strong>Enter</strong> to save.</li>
+</ol>
+</ul>
+</ul>
+<p>You've now installed PEAR – but for your environment to know where to find this installation, you must set up the include_path within your phprc file.</p>
+<h2><span id="Setting_the_include_path_in_your_phprc_file">Setting the include_path in your phprc file</span></h2>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>If you do not set up this include_path correctly, you may find your installation does not work as intended.</p>
+</div>
+</div>
+<ul>
+<ul>
+<ol>
+<li>Update your phprc file to allow PHP to know where to look for the PEAR install. You can find info on how to create a phprc file here:
+<ul>
+<li><a href="/hc/en-us/articles/214200688-php-ini-overview">PHP.ini</a></li>
+</ul>
+</li>
+<li>Update the phprc file with the following command:
+<div class="preboxcontainer">
+<pre class="prebox">include_path = ".:/home/username/pear/share/pear"</pre>
+</div>
+<ul>
+<li>Change 'username' to your actual Shell username that the domain is under.</li>
+</ul>
+</li>
+<li>Navigate back to your users directory. Once there, run 'pear list' to see if you get a response:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">pear list</span>
+
+Installed packages, channel pear.php.net:
+Package          Version State
+Archive_Tar      1.3.12  stable
+Console_Getopt   1.3.1   stable
+PEAR             1.9.5   stable
+Structures_Graph 1.0.4   stable
+XML_Util         1.2.3   stable
+</pre>
+</div>
+</li>
+</ol>
+</ul>
+</ul>
+<p>Since you receive a response, you can see that PEAR is now functioning. You can install any other packages you like using the 'pear' command. For example, run the following to install the mail package:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">pear install --onlyreqdeps Mail</span></pre>
+</div>
+<ul>
+<ul>
+<ul>
+<li>The -onlyreqdeps flag instructs the installer to install only required dependencies.</li>
+<li>Visit <a href="http://pear.php.net/packages.php" rel="nofollow">http://pear.php.net/packages.php</a> for a list of available packages.</li>
+</ul>
+</ul>
+</ul>
+<h2><span id="Confirming_your_PEAR_environment_settings">Confirming your PEAR environment settings</span></h2>
+<p>To see if your environment is correctly set, run the following commands in your users directory:</p>
+<ul>
+<ul>
+<ul>
+<li>To determine which PHP (local or shared) command will be used:</li>
+</ul>
+</ul>
+</ul>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">which php</span></pre>
+</div>
+<ul>
+<ul>
+<ul>
+<li>To determine which PHP version is being used:</li>
+</ul>
+</ul>
+</ul>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">php -v</span></pre>
+</div>
+<ul>
+<ul>
+<ul>
+<li>To determine which PEAR (local or shared) command will be used:</li>
+</ul>
+</ul>
+</ul>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">which pear</span></pre>
+</div>
+<ul>
+<ul>
+<ul>
+<li>To determine which PEAR version is being used:</li>
+</ul>
+</ul>
+</ul>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">pear -V</span></pre>
+</div>
+<ul>
+<ul>
+<ul>
+<li>Use this command to display all your PEAR settings – your local configuration data should display:</li>
+</ul>
+</ul>
+</ul>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">pear config-show</span></pre>
+</div>
+<h2><span id="PEAR_channel_server">PEAR channel server</span></h2>
+<p>One reason DreamHost users might want to install their own local version of PEAR is to provide themselves with the infrastructure to host a PEAR channel. For details on how to install a PEAR channel server, read the <a class="external text" href="http://pear.php.net/manual/en/" rel="nofollow">official instructions</a></p>
+<ul>
+<ul>
+<ul>
+<li>Alternatively, you can consider using <a class="external text" href="http://www.pirum-project.org/" rel="nofollow">Pirum</a></li>
+</ul>
+</ul>
+</ul>
+<h2><span id="See_also">See also</span></h2>
+<h3>Internal links</h3>
+<ul>
+<ul>
+<ul>
+<li><a href="/hc/en-us/articles/214202188-PHP-overview">PHP overview</a></li>
+<li><a href="/hc/en-us/articles/214200688-php-ini-overview">php.ini overview</a></li>
+<li><a href="/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
+<li><a href="/hc/en-us/articles/214395118-Troubleshooting-PEAR-errors">Troubleshooting PEAR errors</a></li>
+</ul>
+</ul>
+</ul>
+<h3>External links</h3>
+<ul>
+<ul>
+<li><a href="http://pear.php.net/">PEAR official site</a></li>
+<li><a href="http://pear.php.net/manual/en/installation.checking.php">Checking if PEAR works (and tips for fixing common problems)</a></li>
+</ul>
+</ul>

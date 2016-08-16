@@ -1,0 +1,58 @@
+<p>You can configure your site to automatically check out the current sources from your repository by using Subversion's "<a class="external text" href="http://svnbook.red-bean.com/en/1.1/ch05s02.html#svn-ch-5-sect-2.1" rel="nofollow">hook scripts</a>". In short, the script called 'post-commit' is executed by the web server each time new sources are checked into your repository.</p>
+<p>Be advised that when the web server executes this script, it is running in the security context of the dhapache user. This user does not and should not (for security reasons) have the necessary permissions to modify the files in your web site's directory. As such, you must arrange for the post-commit script to run the update in the security context of a user with the privileges necessary to update your site.</p>
+<h2><span id="Using_post-commit.tmpl" class="mw-headline">Using post-commit.tmpl</span></h2>
+<ol>
+<li>Log into your server via SSH.</li>
+<li>Navigate to the following file:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd $HOME/svn/&lt;repository_name&gt;/hooks/post-commit.tmpl</span></pre>
+</div>
+</li>
+<li>Open the post-commit.tmpl file in a text editor. The following contents are set by default:
+<div class="preboxcontainer">
+<pre class="prebox">#!/bin/sh
+
+REPOS="$1"
+REV="$2"
+
+"$REPOS"/hooks/mailer.py commit "$REPOS" $REV "$REPOS"/mailer.conf
+</pre>
+</div>
+</li>
+<li>Change it to the following making sure to update the two email addresses to yours:
+<div class="preboxcontainer">
+<pre class="prebox">#!/bin/sh
+
+REPOS="$1"
+REV="$2"
+
+/usr/share/subversion/hook-scripts/commit-email.pl --from svnaddress@example.com "$REPOS" "$REV" youremail@example.com
+</pre>
+</div>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>The <strong>--from</strong> section is crucial because the script will fail if it does not have a "from" address. Any email address will do. You can also change the second address to send to any email you like.</p>
+</div>
+</div>
+</li>
+<li>Save the file as <strong>post-commit</strong> (removing the 'tmpl' file extension).
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>When you save this as the new file name in your text editor, the permissions change from dhapache to your user, which is what you want. Confirm that the new post-commit file is now owned by your user before continuing.</p>
+</div>
+</div>
+</li>
+<li>As the new file should now be owned by your user (<em>NOT dhapache</em>), run the following command:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">chmod a+x post-commit</span></pre>
+</div>
+</li>
+<li>Try a commit with your svn repository. You should now receive a commit notification to your email address.</li>
+</ol>
+<h2>See also</h2>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215466058-Subversion-overview">Subversion overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
+</ul>

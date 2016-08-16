@@ -1,0 +1,85 @@
+<body role="document">
+<div class="document">
+<div class="documentwrapper">
+<div class="body" role="main">
+<div id="how-to-configure-lamp-on-dreamcompute-running-debian-or-ubuntu">
+
+<p>LAMP (Linux, Apache, MySQL, PHP) stacks are a popular way to create web
+service solutions that offer consistent tools and capabilities between
+multiple systems.  DreamHost shared, VPS and dedicated hosting services are
+based on these same services, and you can use it for your DreamCompute
+instance as well.  These instructions assume you run a Debian- or Ubuntu-based
+system as they have their own specific configuration and file hierarchy.</p>
+<div id="setup-methods">
+<h2>Setup Methods</h2>
+<p>There are several ways to setup a LAMP stack on your DreamCompute instance,
+from the very manual to the very automated.  We will detail some methods
+below.</p>
+<div id="automated-ubuntu-only">
+<h3>Automated (Ubuntu only)</h3>
+<p>The fastest method is to simply tell Ubuntu to install the “task” named
+lamp-server.  This is accomplished with apt-get and making sure to use a caret
+(^) at the end of the name of the task.</p>
+<div class="code highlight-python"><div class="highlight"><pre>sudo apt-get install lamp-server^
+</pre></div>
+</div>
+<p>The install process asks you to confirm if you wish to install all packages
+needed for this task.  Confirm by entering “<strong>y</strong>” and hitting enter.</p>
+<div class="code highlight-python"><div class="highlight"><pre>The following NEW packages will be installed:
+    apache2 apache2-bin apache2-data apache2-mpm-prefork libaio1
+    libapache2-mod-php5 libapr1 libaprutil1 libaprutil1-dbd-sqlite3
+    libaprutil1-ldap libdbd-mysql-perl libdbi-perl libhtml-template-perl
+    libmysqlclient18 libterm-readkey-perl mysql-client-5.5 mysql-client-core-5.5
+    mysql-common mysql-server mysql-server-5.5 mysql-server-core-5.5 php5-cli
+    php5-common php5-json php5-mysql php5-readline ssl-cert
+0 upgraded, 27 newly installed, 0 to remove and 0 not upgraded.
+Need to get 15.2 MB of archives.
+After this operation, 123 MB of additional disk space will be used.
+Do you want to continue? [Y/n]
+</pre></div>
+</div>
+<p>During this process, the mysql-server installation will ask you to enter and
+confirm a root password for MySQL.  It is recommended to provide one.  When
+this is complete, please refer to the <strong>Configuration</strong> section of this page
+for details on each of these installed packages.</p>
+<p>Troubleshooting: If you get a huge amount of 404 File not found errors during
+this process, run the following:</p>
+<div class="code highlight-python"><div class="highlight"><pre>sudo apt-get update
+</pre></div>
+</div>
+<p>Then rerun these instructions from the top</p>
+</div>
+<div id="manual-installation">
+<h3>Manual Installation</h3>
+<p>To manually install all the needed packages, you can run the following
+command:</p>
+<div class="code highlight-python"><div class="highlight"><pre>sudo apt-get install apache2 mysql-server php5-cli libapache2-mod-php5 php5-mysqlnd
+</pre></div>
+</div>
+<p>During this process, the mysql-server installation will ask you to enter and
+confirm a root password for MySQL.  It is recommended to provide one.  When
+this is complete, please refer to the <strong>Configuration</strong> section of this page
+for details on each of these installed packages.</p>
+</div>
+</div>
+<div id="configuration">
+<h2>Configuration</h2>
+<p>The below links contain details on the configuration of each part of the newly
+installed LAMP stack.</p>
+<p><a class="reference external" href="215879457-How-to-Configure-Apache-on-DreamCompute-Running-Debian-or-Ubuntu">Apache Directories and Main Configuration Files</a></p>
+<p><a class="reference external" href="215879487-How-to-Configure-MYSQL-on-DreamCompute-running-Debian-or-Ubuntu">MySQL Configuration</a></p>
+<p><a class="reference external" href="215231198-How-to-Configure-PHP-on-DreamCompute-running-Debian-or-Ubuntu">PHP Configuration Files</a></p>
+</div>
+</div>
+</div>
+</div>
+<div class="clearer"></div>
+</div>
+<div class="footer">
+</div>
+<!--DreamCompute Button-->
+<div class="dream-sign-up">
+<h2>Deploy Your Apps On Cloud Servers Today</h2>
+<a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a>
+</div>
+</body>

@@ -1,0 +1,105 @@
+<p><strong>MySQL</strong> is a relational database management system (RDBMS) released under the GNU General Public License (GPL). It is one of the most widely used open-source database systems, and is compatible with a multitude of website applications. Other databases offered by DreamHost include <a href="/hc/en-us/articles/217294097-SQLite">SQLite</a> and <a href="/hc/en-us/articles/217716167-MongoDB">MongoDB</a> (on DreamHost VPS and dedicated servers only), however they may not be supported by your desired website applications.</p>
+<p>This article describes everything you need to know on how you can create, add, manage, access, restore, and much more for all of your DreamHost MySQL databases.</p>
+<p>You can make changes to your MySQL databases on the (<a class="external text" href="https://panel.dreamhost.com/index.cgi?tree=goodies.mysql&amp;" rel="nofollow">Panel &gt; 'Goodies' &gt; 'MySQL Databases'</a>).</p>
+<h2><span id="All_about_DreamHost.27s_MySQL_offerings">All about DreamHost's MySQL offerings</span></h2>
+<p>As of September 2015, <a href="/hc/en-us/articles/214581158-DreamPress-overview">DreamPress</a> and <a href="/hc/en-us/articles/215945917-MySQL-VPS-overview">private MySQL</a> servers are being upgraded to MySQL version 5.6.</p>
+<p>Shared and Dedicated servers are scheduled to be upgraded in the future. If a newer version is required, please contact support to be provided with other options.</p>
+<p>The most common storage engines are provided with all DreamHost managed MySQL products. Here is a list of the available storage engines:</p>
+<div class="preboxcontainer">
+<pre class="prebox">mysql&gt; show engines;
+</pre>
+</div>
+<table border="1">
+<tbody>
+<tr><th bgcolor="#F2F2F2">Engine</th><th bgcolor="#F2F2F2">Support</th><th bgcolor="#F2F2F2">Comment</th><th bgcolor="#F2F2F2">Transactions</th><th bgcolor="#F2F2F2">XA</th><th bgcolor="#F2F2F2">Savepoints</th></tr>
+<tr>
+<td>CSV</td>
+<td>YES</td>
+<td>CSV storage engine</td>
+<td>NO</td>
+<td>NO</td>
+<td>NO</td>
+</tr>
+<tr>
+<td>MRG_MYISAM</td>
+<td>YES</td>
+<td>Collection of identical MyISAM tables</td>
+<td>NO</td>
+<td>NO</td>
+<td>NO</td>
+</tr>
+<tr>
+<td>FEDERATED</td>
+<td>NO</td>
+<td>Federated MySQL storage engine</td>
+<td>NULL</td>
+<td>NULL</td>
+<td>NULL</td>
+</tr>
+<tr>
+<td>MyISAM</td>
+<td>DEFAULT</td>
+<td>Default engine as of MySQL 3.23 with great performance</td>
+<td>NO</td>
+<td>NO</td>
+<td>NO</td>
+</tr>
+<tr>
+<td>InnoDB</td>
+<td>YES</td>
+<td>Supports transactions, row-level locking, and foreign keys</td>
+<td>YES</td>
+<td>YES</td>
+<td>YES</td>
+</tr>
+<tr>
+<td>MEMORY</td>
+<td>YES</td>
+<td>Hash based, stored in memory, useful for temporary tables</td>
+<td>NO</td>
+<td>NO</td>
+<td>NO</td>
+</tr>
+</tbody>
+</table>
+<p><br />Customers familiar with running their own MySQL server and who wish to use a newer version, may be interested in the trying out <a href="/hc/en-us/articles/214840947-What-is-DreamCompute">DreamCompute</a> which offers multiple newer operating systems to choose from which have newer versions of MySQL available for install.</p>
+<h2>Comparison of MySQL products</h2>
+<p>DreamHost shared and VPS products for MySQL run on specialized hardware to optimize disk i/o and therefore the speeds in which they return your query. These are networked products which run independent of the webserver hardware. Dedicated servers offer MySQL that is optimized for other use cases where the webserver and MySQL server co-existing makes more sense.</p>
+<table border="1" cellspacing="0" cellpadding="10">
+<tbody>
+<tr><th bgcolor="#F2F2F2">Product</th><th bgcolor="#F2F2F2">Description</th><th bgcolor="#F2F2F2">Local/Networked</th><th bgcolor="#F2F2F2">Suitable For Hosting Needs</th></tr>
+<tr>
+<td><strong>Shared MySQL</strong></td>
+<td>Included with a shared hosting plan, and with a Webserver VPS.</td>
+<td align="center">Networked</td>
+<td>Standard MySQL for optimized and shared hosting appropriate databases.</td>
+</tr>
+<tr>
+<td><strong>MySQL VPS</strong></td>
+<td>An additional service similar to a webserver VPS that only runs the MySQL server and no other services.</td>
+<td align="center">Networked</td>
+<td>High performance MySQL for customers who need higher uptime or have outgrown shared MySQL.</td>
+</tr>
+<tr>
+<td><strong>Dedicated MySQL</strong></td>
+<td>A dedicated server runs a MySQL server locally along with the other web services.</td>
+<td align="center">Local</td>
+<td>A dedicated server is ideal for software that sends larges amounts of data between web applications and MySQL, as there is no network in between to limit throughput.</td>
+</tr>
+</tbody>
+</table>
+<h2>See also</h2>
+<ul>
+<li><a href="/hc/en-us/articles/215100557-How-do-I-restore-my-database-in-the-panel-">How do I restore my database in the panel?</a></li>
+<li><a href="/hc/en-us/articles/221621388-Managing-existing-MySQL-databases">How do I manage my database?</a></li>
+<li><a href="/hc/en-us/articles/214882998">How do I connect to my database via SSH?</a></li>
+<li><a href="/hc/en-us/articles/214883058">How do I connect to my database using a third-party program?</a></li>
+<li><a href="/hc/en-us/articles/215577937">How do I connect to my database using SQLyog?</a></li>
+<li><a href="/hc/en-us/articles/215730087">Troubleshooting your MySQL database</a></li>
+<li><a href="/hc/en-us/articles/215035918">Additional MySQL resource information</a></li>
+<li><a href="/hc/en-us/articles/215039758">Backing up database overview</a></li>
+<li><a href="/hc/en-us/articles/221610868-phpMyAdmin-Finding-your-login-credentials">Finding your database login credentials</a></li>
+<li><a href="/hc/en-us/articles/214395638">phpMyAdmin overview</a></li>
+<li><a href="/hc/en-us/articles/215036388">How do I optimize my database?</a></li>
+<li><a href="/hc/en-us/articles/216041267">SSH overview</a></li>
+</ul>

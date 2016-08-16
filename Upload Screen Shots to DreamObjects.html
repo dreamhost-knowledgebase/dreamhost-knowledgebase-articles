@@ -1,0 +1,66 @@
+<body role="document">
+<div class="document">
+<div class="documentwrapper">
+<div class="body" role="main">
+<div id="upload-screen-shots-to-dreamobjects">
+
+<p>The script is on github and was written to work on Mac OS. I will be running it
+on Linux, which takes some modifications to make work and I will show you how
+to do that. Download the code from
+<a class="reference external" href="https://github.com/dreamhost/screencaps">https://github.com/dreamhost/screencaps</a></p>
+<div id="getting-setup">
+<h2>Getting Setup</h2>
+<p>The code is written in Python and requires the boto library to connect to
+DreamObjects.  You can install boto by opening the Terminal and typing:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>pip install boto
+</pre></div>
+</div>
+<p>If you get an error typing the message above, -bash: pip: command not found
+then you do not have pip installed on your system.  You can type this in the
+Terminal instead to install it on Ubuntu (it will require an admin password):</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>sudo apt-get install python-boto
+</pre></div>
+</div>
+<p>You will also need a program to take the screenshot. I use <code class="docutils literal"><span class="pre">scrot</span></code>. To
+install scrot on Ubuntu run the command below.</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>sudo apt-get install scrot
+</pre></div>
+</div>
+</div>
+<div id="installation">
+<h2>Installation</h2>
+<p>If you don’t have one already, create a folder called bin in your home
+directory and copy dhdo-screencap.py file into it.
+Open dhdo-screencap.py with a text editor and paste in your DreamObjects
+Access Key, Secret Key and bucket name (ensure each of these are
+surrounded by single quotes). If you are running the script on Linux you
+will need to change some things, such as set the program that will take the screenshot</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">([</span><span class="s1">'screencapture'</span><span class="p">,</span> <span class="s1">'-i'</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>should be</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">([</span><span class="s1">'scrot'</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>The above code is equivalent to running the following command in a shell.</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>scrot filename.png
+</pre></div>
+</div>
+<p>Save and close it. Now you can run the script and it will take a screenshot and upload
+it to the bucket you specified. It is a good idea to assign this to a keyboard shortcut.
+How you do this depends on what desktop environment or window manager you
+use. Google for instructions that are specific to what you are using.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="clearer"></div>
+</div>
+<div class="footer">
+</div>
+<!--DreamObjects Button-->
+<div class="dream-sign-up">
+<h2>Start Storing Your Data Today!</h2>
+<a href="https://www.dreamhost.com/cloud/storage/">Sign Up for DreamObjects</a>
+</div>
+</body>

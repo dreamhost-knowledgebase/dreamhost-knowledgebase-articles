@@ -1,0 +1,70 @@
+<p>Now that you have imported your files to the repository, you might be wondering how to leverage version control to your advantage. First thing you need to do is set up a Development area and a Live area.</p>
+<p>For example:</p>
+<dl>
+<dd>
+<ul>
+<li><a class="external free" href="http://dev.example.com/" rel="nofollow">http://dev.example.com/</a> will be your development area.</li>
+<li><a class="external free" href="http://www.example.com/" rel="nofollow">http://www.example.com/</a> will be the Live area.</li>
+</ul>
+</dd>
+</dl>
+<ol>
+<li>Log into your server via <a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a>.</li>
+<li>Backup your site by running the following command:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">tar -cvf yourwebsite.tar example.com/</span></pre>
+</div>
+</li>
+<li>Checkout your repository to your development area:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">svn checkout http://example.com/yourProject $HOME/dev.example.com</span></pre>
+</div>
+</li>
+<li>Checkout your repository to your live area:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">svn checkout http://example.com/yourProject $HOME/example.com</span></pre>
+</div>
+</li>
+</ol>
+<h2><span id="Publishing_from_Dev_to_Live" class="mw-headline">Publishing from Dev to Live</span></h2>
+<p>Using your dev site at dev.example.com, you can now make any necessary changes. Once all the changes are complete in your Dev area, you can then make them Live.</p>
+<ol>
+<li>Go to your dev directory:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd dev.example.com</span></pre>
+</div>
+</li>
+<li>Commit your changes:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">svn commit -m "Your change log notes"</span></pre>
+</div>
+</li>
+<li>Go to your live directory:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~/example.com</span></pre>
+</div>
+</li>
+<li>Update the Live site:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">svn update</span></pre>
+</div>
+</li>
+</ol>
+<p>You may see the following error when updating from your dev site:</p>
+<div class="preboxcontainer">
+<pre class="prebox">Conflict discovered in &lt;filename&gt;
+Select: (p) postpone, (df) diff-full, (e) edit,
+        (mc) mine-conflict, (tc) theirs-conflict,
+        (s) show all options:
+</pre>
+</div>
+<p>If you type in the letters <strong>tc</strong> and click 'Enter' on your keyboard, all changes made in your Dev site are updated to your Live site. View the following page for further details:</p>
+<ul>
+<li><a class="external text" href="http://svnbook.red-bean.com/en/1.7/svn.ref.svn.c.update.html" rel="nofollow">SVN Update</a></li>
+</ul>
+<p>Your changes are now live.</p>
+<h2>See also</h2>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215466058-Subversion-overview">Subversion overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
+</ul>

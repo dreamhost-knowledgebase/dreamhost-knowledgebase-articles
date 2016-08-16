@@ -1,0 +1,249 @@
+<body role="document">
+<div class="document">
+<div class="documentwrapper">
+<div class="body" role="main">
+<div id="how-to-launch-and-delete-openstack-instances-using-ruby-and-fog">
+
+</div>
+<div id="what-you-need">
+<h1>What you need</h1>
+<p>This tutorial will guide you with step-by-step instructions on how to
+get a basic authentication token on DreamCompute and launch a virtual
+machine.</p>
+<p>You will need to have your username, password and project ID
+available. This information can be easily retrieved from
+<a class="reference external" href="https://dashboard.dreamcompute.com/project/access_and_security/api_access/openrc/">DreamCompute’s dashboard, in the openrc file</a>.</p>
+<p>You must also need to have</p>
+<p><a class="reference external" href="http://www.fogproject.org/wiki/index.php?title=FOGUserGuide#Installing_FOG">fog 1.19 or higher installed</a>
+and working with ruby gems 1.9.</p>
+<div id="authenticate">
+<h2>Authenticate</h2>
+<p>Add the following code to a file or copy and paste them in an
+interactive shell, when available. Make sure to use your username,
+password and project ID.</p>
+<p>You can use the interactive Ruby shell <code class="code docutils literal"><span class="pre">irb</span></code> to paste the
+code below:</p>
+<div class="highlight-ruby"><div class="highlight"><pre><span></span><span class="nb">require</span> <span class="s1">'fog'</span>
+
+<span class="n">auth_username</span> <span class="o">=</span> <span class="s1">'your_auth_username'</span>
+<span class="n">auth_password</span> <span class="o">=</span> <span class="s1">'your_auth_password'</span>
+<span class="n">project_name</span> <span class="o">=</span> <span class="s1">'your_project_name_or_id'</span>
+<span class="n">auth_url</span> <span class="o">=</span> <span class="s1">'https://keystone.dream.io'</span>
+<span class="n">region_name</span> <span class="o">=</span> <span class="s1">'RegionOne'</span>
+
+<span class="n">conn</span> <span class="o">=</span> <span class="no">Fog</span><span class="o">::</span><span class="no">Compute</span><span class="o">.</span><span class="n">new</span><span class="p">({</span>
+    <span class="ss">:provider</span>            <span class="o">=&gt;</span> <span class="s1">'openstack'</span><span class="p">,</span>
+    <span class="ss">:openstack_auth_url</span>  <span class="o">=&gt;</span> <span class="n">auth_url</span> <span class="o">+</span> <span class="s1">'/v2.0/tokens'</span><span class="p">,</span>
+    <span class="ss">:openstack_username</span>  <span class="o">=&gt;</span> <span class="n">auth_username</span><span class="p">,</span>
+    <span class="ss">:openstack_tenant</span>    <span class="o">=&gt;</span> <span class="n">project_name</span><span class="p">,</span>
+    <span class="ss">:openstack_api_key</span>   <span class="o">=&gt;</span> <span class="n">auth_password</span><span class="p">,</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+<p>This code creates the <code class="code docutils literal"><span class="pre">conn</span></code> object that you can use in the next
+steps.</p>
+</div>
+<div id="flavors-and-images">
+<h2>Flavors and images</h2>
+<p>To launch an instance, which is just a virtual machine, you choose
+a flavor and an image. The flavor represents the size of the instance,
+including the number of CPUs and amount of RAM and disk space. An
+image is a prepared OS installation from which you clone your
+instance. When you boot instances in a public cloud, larger flavors
+can be more expensive than smaller ones in terms of monetary cost.</p>
+<p>To list the images that are available in your cloud, run some API calls:</p>
+<div class="highlight-ruby"><div class="highlight"><pre><span></span><span class="n">images</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">images</span><span class="o">.</span><span class="n">all</span>
+<span class="nb">print</span> <span class="n">images</span>
+</pre></div>
+</div>
+<p>This code returns output like this:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>{"images"=&gt;[{"id"=&gt;"5e1c34f6-4044-4d19-88df-968ab2ca3df6",
+"links"=&gt;[{"href"=&gt;"https://compute.dream.io:8774/v2/4ad04455f5e6431c895340bf3630e7bb/images/5e1c34f6-4044-4d19-88df-968ab2ca3df6",
+"rel"=&gt;"self"},
+{"href"=&gt;"https://compute.dream.io:8774/4ad04455f5e6431c895340bf3630e7bb/images/5e1c34f6-4044-4d19-88df-968ab2ca3df6",
+"rel"=&gt;"bookmark"},
+{"href"=&gt;"http://10.64.141.226:9292/4ad04455f5e6431c895340bf3630e7bb/images/5e1c34f6-4044-4d19-88df-968ab2ca3df6",
+"type"=&gt;"application/vnd.openstack.image", "rel"=&gt;"alternate"}],
+"name"=&gt;"Debian-8.1"}, {"id"=&gt;"e81771c0-2944-405c-ba92-3deb0e1b4ce3",
+"links"=&gt;[{"href"=&gt;"https://compute.dream.io:8774/v2/4ad04455f5e6431c895340bf3630e7bb/images/e81771c0-2944-405c-ba92-3deb0e1b4ce3",
+"rel"=&gt;"self"},
+{"href"=&gt;"https://compute.dream.io:8774/4ad04455f5e6431c895340bf3630e7bb/images/e81771c0-2944-405c-ba92-3deb0e1b4ce3",
+"rel"=&gt;"bookmark"},
+{"href"=&gt;"http://10.64.141.226:9292/4ad04455f5e6431c895340bf3630e7bb/images/e81771c0-2944-405c-ba92-3deb0e1b4ce3",
+"type"=&gt;"application/vnd.openstack.image", "rel"=&gt;"alternate"}],
+"name"=&gt;"CentOS-7.0"}, {"id"=&gt;"90d5e049-aaed-4abc-aa75-60c2b1ed6516",
+"links"=&gt;[{"href"=&gt;"https://compute.dream.io:8774/v2/4ad04455f5e6431c895340bf3630e7bb/images/90d5e049-aaed-4abc-aa75-60c2b1ed6516",
+"rel"=&gt;"self"},
+{"href"=&gt;"https://compute.dream.io:8774/4ad04455f5e6431c895340bf3630e7bb/images/90d5e049-aaed-4abc-aa75-60c2b1ed6516",
+"rel"=&gt;"bookmark"},
+{"href"=&gt;"http://10.64.141.226:9292/4ad04455f5e6431c895340bf3630e7bb/images/90d5e049-aaed-4abc-aa75-60c2b1ed6516",
+"type"=&gt;"application/vnd.openstack.image", "rel"=&gt;"alternate"}],
+"name"=&gt;"Ubuntu-14.04"},
+{"id"=&gt;"f044ae8f-e0e1-4fb4-baff-0363c19a6638",
+"links"=&gt;[{"href"=&gt;"https://compute.dream.io:8774/v2/4ad04455f5e6431c895340bf3630e7bb/images/f044ae8f-e0e1-4fb4-baff-0363c19a6638",
+"rel"=&gt;"self"},
+{"href"=&gt;"https://compute.dream.io:8774/4ad04455f5e6431c895340bf3630e7bb/images/f044ae8f-e0e1-4fb4-baff-0363c19a6638",
+"rel"=&gt;"bookmark"},
+{"href"=&gt;"http://10.64.141.226:9292/4ad04455f5e6431c895340bf3630e7bb/images/f044ae8f-e0e1-4fb4-baff-0363c19a6638",
+"type"=&gt;"application/vnd.openstack.image", "rel"=&gt;"alternate"}],
+"name"=&gt;"CoreOS"}, {"id"=&gt;"2827d7cc-8cbb-4ce9-9b61-dadc2436144e",
+"links"=&gt;[{"href"=&gt;"https://compute.dream.io:8774/v2/4ad04455f5e6431c895340bf3630e7bb/images/2827d7cc-8cbb-4ce9-9b61-dadc2436144e",
+"rel"=&gt;"self"},
+{"href"=&gt;"https://compute.dream.io:8774/4ad04455f5e6431c895340bf3630e7bb/images/2827d7cc-8cbb-4ce9-9b61-dadc2436144e",
+"rel"=&gt;"bookmark"},
+{"href"=&gt;"http://10.64.141.226:9292/4ad04455f5e6431c895340bf3630e7bb/images/2827d7cc-8cbb-4ce9-9b61-dadc2436144e",
+"type"=&gt;"application/vnd.openstack.image", "rel"=&gt;"alternate"}],
+"name"=&gt;"Fedora-20"}
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You may notice that the image IDs change often even if the
+names of the images remain the same as the images are
+updated over time.</p>
+</div>
+<p>You can also get information about available flavors using API calls:</p>
+<div class="highlight-ruby"><div class="highlight"><pre><span></span><span class="n">flavors</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">flavors</span><span class="o">.</span><span class="n">all</span>
+<span class="nb">print</span> <span class="n">flavors</span>
+</pre></div>
+</div>
+<p>This code returns output like this:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>{"flavors"=&gt;[{"id"=&gt;"100",
+"links"=&gt;[{"href"=&gt;"https://compute.dream.io:8774/v2/4ad04455f5e6431c895340bf3630e7bb/flavors/100",
+"rel"=&gt;"self"},
+{"href"=&gt;"https://compute.dream.io:8774/4ad04455f5e6431c895340bf3630e7bb/flavors/100",
+"rel"=&gt;"bookmark"}], "name"=&gt;"subsonic"}, {"id"=&gt;"200",
+"links"=&gt;[{"href"=&gt;"https://compute.dream.io:8774/v2/4ad04455f5e6431c895340bf3630e7bb/flavors/200",
+"rel"=&gt;"self"},
+{"href"=&gt;"https://compute.dream.io:8774/4ad04455f5e6431c895340bf3630e7bb/flavors/200",
+"rel"=&gt;"bookmark"}], "name"=&gt;"supersonic"}, {"id"=&gt;"300",
+"links"=&gt;[{"href"=&gt;"https://compute.dream.io:8774/v2/4ad04455f5e6431c895340bf3630e7bb/flavors/300",
+"rel"=&gt;"self"},
+{"href"=&gt;"https://compute.dream.io:8774/4ad04455f5e6431c895340bf3630e7bb/flavors/300",
+"rel"=&gt;"bookmark"}], "name"=&gt;"lightspeed"}, {"id"=&gt;"400",
+"links"=&gt;[{"href"=&gt;"https://compute.dream.io:8774/v2/4ad04455f5e6431c895340bf3630e7bb/flavors/400",
+"rel"=&gt;"self"},
+{"href"=&gt;"https://compute.dream.io:8774/4ad04455f5e6431c895340bf3630e7bb/flavors/400",
+"rel"=&gt;"bookmark"}], "name"=&gt;"warpspeed"}, {"id"=&gt;"500",
+"links"=&gt;[{"href"=&gt;"https://compute.dream.io:8774/v2/4ad04455f5e6431c895340bf3630e7bb/flavors/500",
+"rel"=&gt;"self"},
+{"href"=&gt;"https://compute.dream.io:8774/4ad04455f5e6431c895340bf3630e7bb/flavors/500",
+"rel"=&gt;"bookmark"}], "name"=&gt;"hyperspeed"}, {"id"=&gt;"600",
+"links"=&gt;[{"href"=&gt;"https://compute.dream.io:8774/v2/4ad04455f5e6431c895340bf3630e7bb/flavors/600",
+"rel"=&gt;"self"},
+{"href"=&gt;"https://compute.dream.io:8774/4ad04455f5e6431c895340bf3630e7bb/flavors/600",
+"rel"=&gt;"bookmark"}], "name"=&gt;"ridiculous"}, {"id"=&gt;"700",
+"links"=&gt;[{"href"=&gt;"https://compute.dream.io:8774/v2/4ad04455f5e6431c895340bf3630e7bb/flavors/700",
+"rel"=&gt;"self"},
+{"href"=&gt;"https://compute.dream.io:8774/4ad04455f5e6431c895340bf3630e7bb/flavors/700",
+"rel"=&gt;"bookmark"}], "name"=&gt;"ludicrous"}, {"id"=&gt;"800",
+"links"=&gt;[{"href"=&gt;"https://compute.dream.io:8774/v2/4ad04455f5e6431c895340bf3630e7bb/flavors/800",
+"rel"=&gt;"self"},
+{"href"=&gt;"https://compute.dream.io:8774/4ad04455f5e6431c895340bf3630e7bb/flavors/800",
+"rel"=&gt;"bookmark"}], "name"=&gt;"plaid"}]}
+</pre></div>
+</div>
+<p>Choose an image and flavor for your instance. For example, pick one of
+about 1GB RAM, 1 CPU, and a 1GB disk. This example uses the Ubuntu
+image with a small flavor, which is a safe choice.</p>
+<p>First, tell the connection to get a specified image by using the ID of the
+image that you picked in the previous section:</p>
+<div class="highlight-ruby"><div class="highlight"><pre><span></span><span class="n">image_id</span> <span class="o">=</span> <span class="s1">'90d5e049-aaed-4abc-aa75-60c2b1ed6516'</span>
+<span class="n">image</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">images</span><span class="o">.</span><span class="n">get</span> <span class="n">image_id</span>
+<span class="nb">print</span> <span class="n">image</span>
+</pre></div>
+</div>
+<p>Next, choose which flavor you want to use:</p>
+<div class="highlight-ruby"><div class="highlight"><pre><span></span><span class="n">flavor_id</span> <span class="o">=</span> <span class="s1">'100'</span>
+<span class="n">flavor</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">flavors</span><span class="o">.</span><span class="n">get</span> <span class="n">flavor_id</span>
+<span class="nb">print</span> <span class="n">flavor</span>
+</pre></div>
+</div>
+<p>Now, you can launch the instance.</p>
+</div>
+<div id="launch-an-instance">
+<h2>Launch an instance</h2>
+<p>Now you can create the instance:</p>
+<div class="highlight-ruby"><div class="highlight"><pre><span></span><span class="n">instance_name</span> <span class="o">=</span> <span class="s1">'testing'</span>
+<span class="n">testing_instance</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">servers</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">:name</span> <span class="o">=&gt;</span> <span class="n">instance_name</span><span class="p">,</span>
+                                       <span class="ss">:flavor_ref</span> <span class="o">=&gt;</span> <span class="n">flavor</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                                       <span class="ss">:image_ref</span> <span class="o">=&gt;</span> <span class="n">image</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If you list existing instances you’ll see the newly created one in
+there:</p>
+<div class="highlight-ruby"><div class="highlight"><pre><span></span><span class="nb">print</span> <span class="n">conn</span><span class="o">.</span><span class="n">servers</span>
+</pre></div>
+</div>
+<p>The newly created instance will look something like:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>[  &lt;Fog::Compute::OpenStack::Server
+    id="3dfd7960-a76e-47af-afe1-f40c95d93544",
+    instance_name=nil,
+    addresses={},
+    flavor={"id"=&gt;"100",
+"links"=&gt;[{"href"=&gt;"https://compute.dream.io:8774/4ad04455f5e6431c895340bf3630e7bb/flavors/100",
+"rel"=&gt;"bookmark"}]},
+    host_id="a1dc2b7b8b78a71c437e361f8beb2f0c3577891219b319ce2439847b",
+    image={"id"=&gt;"90d5e049-aaed-4abc-aa75-60c2b1ed6516",
+"links"=&gt;[{"href"=&gt;"https://compute.dream.io:8774/4ad04455f5e6431c895340bf3630e7bb/images/90d5e049-aaed-4abc-aa75-60c2b1ed6516",
+"rel"=&gt;"bookmark"}]},
+    metadata=    &lt;Fog::Compute::OpenStack::Metadata
+      [
+
+      ]
+    &gt;,
+    links=[{"href"=&gt;"https://compute.dream.io:8774/v2/4ad04455f5e6431c895340bf3630e7bb/servers/3dfd7960-a76e-47af-afe1-f40c95d93544",
+"rel"=&gt;"self"},
+{"href"=&gt;"https://compute.dream.io:8774/4ad04455f5e6431c895340bf3630e7bb/servers/3dfd7960-a76e-47af-afe1-f40c95d93544",
+"rel"=&gt;"bookmark"}],
+    name="testinstance",
+    personality=nil,
+    progress=0,
+    accessIPv4="",
+    accessIPv6="",
+    availability_zone="iad-1",
+    user_data_encoded=nil,
+    state="BUILD",
+    created=2015-09-10 17:30:22 UTC,
+    updated=2015-09-10 17:30:28 UTC,
+    tenant_id="4ad04455f5e6431c895340bf3630e7bb",
+    user_id="17949030c6f4400b99f367fc1dc051ea",
+    key_name=nil,
+    fault=nil,
+    config_drive="",
+    os_dcf_disk_config="MANUAL",
+    os_ext_srv_attr_host=nil,
+    os_ext_srv_attr_hypervisor_hostname=nil,
+    os_ext_srv_attr_instance_name=nil,
+    os_ext_sts_power_state=0,
+    os_ext_sts_task_state="spawning",
+    os_ext_sts_vm_state="building"
+  &gt;]
+</pre></div>
+</div>
+<p>Before you continue, you must do one more thing.</p>
+</div>
+<div id="destroy-an-instance">
+<h2>Destroy an instance</h2>
+<p>Cloud resources, such as running instances that you no longer use, can
+cost money. To avoid unexpected expenses, destroy cloud resources.</p>
+<div class="highlight-ruby"><div class="highlight"><pre><span></span><span class="n">testing_instance</span><span class="o">.</span><span class="n">destroy</span>
+</pre></div>
+</div>
+<p>If you list the instances again, the instance disappears.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="clearer"></div>
+</div>
+<div class="footer">
+      ©2015, OpenStack contributors.
+      
+    </div>
+<!--DreamCompute Button-->
+<div class="dream-sign-up">
+<h2>Deploy Your Apps On Cloud Servers Today</h2>
+<a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a>
+</div>
+</body>

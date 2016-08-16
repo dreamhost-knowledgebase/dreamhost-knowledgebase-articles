@@ -1,0 +1,102 @@
+<p>A mirror allows you to upload your content to your DreamHost server for one site (site A), but use another site’s URL (site B) on the same account to view the original site (site A).</p>
+<p>More technically, a mirror domain is a server alias on the DreamHost server that allows you to access the same DreamHost site content under more than one address. For example, you can have both a .com and a .net site that share the same site content, or access your site live before your domain is set up. View the following article for further information:</p>
+<ul>
+<li><a href="/hc/en-us/articles/214695758-How-do-I-view-my-site-before-changing-my-DNS-">Viewing site before DNS change</a></li>
+</ul>
+<p>A mirror domain can only "mirror" an existing account at DreamHost, as it is merely a server alias. A mirror domain is a "mirror" only in terms of address aliasing; it is not a physical mirror and there is no content duplication involved, nor is it a "cloaking" or "domain gripping" facility.</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Mirrored domains and cloaked sites do not tend to work well with some CMS applications (WordPress for example). This is because some CMS applications hard-code the URL for the site and actively rewrite the URL in the browser address bar. This causes the URL for the site to change, effectively ruining the mirrored or cloaked settings. You may need to make further adjustments within the CMS if this is the case.</p>
+</div>
+</div>
+<h2><span id="Dreamhosters.com_subdomains">dreamhosters.com subdomains</span></h2>
+<p>If your domain's DNS records are not pointed to DreamHost and you wish to set up the domain before changing the DNS to minimize downtime, you can use a dreamhosters.com subdomain. You can read about how to set that up in the following article:</p>
+<ul>
+<li><a href="/hc/en-us/articles/214695758-How-do-I-view-my-site-before-changing-my-DNS-">Viewing site before DNS change</a></li>
+</ul>
+<p>If you need to access your database while the DNS is not pointed to DreamHost, view the following article:</p>
+<ul>
+<li><a href="/hc/en-us/articles/215730267-How-do-I-access-my-database-before-a-DNS-change-">Accessing your Database before DNS change</a></li>
+</ul>
+<p>Setting up a subdomain can take several hours, so a faster alternative for the technically inclined is to modify your hosts file to point to your DreamHost DNS records. The following article explains how to do this:</p>
+<ul>
+<li><a href="/hc/en-us/articles/215415667-How-to-view-your-DreamHost-site-using-your-hosts-file">Viewing your site through your hosts file</a></li>
+</ul>
+<h2><span id="Internal_linking">Internal linking</span></h2>
+<p>In order to have links on a site stay within the original URL address, they must not contain the domain name. This is called using a relative link or path. For example, if mirror.example.com is the mirror for the actual site named example.com, any links on the example.com site that contain "example.com" will take visitors to example.com. This defeats the purpose of a mirror.</p>
+<p>For example:</p>
+<dl>
+<dd><strong>Good (Relative):</strong> /about-us.html
+<dl>
+<dd><em>This works and keeps the user at the current URL.</em></dd>
+</dl>
+</dd>
+</dl>
+<dl>
+<dd><strong>Bad (Absolute):</strong> http://www.example.com/about-us.html
+<dl>
+<dd><em>This takes the user away from mirror.example.com. With this type of linking, it makes more sense to redirect, rather than mirror.</em></dd>
+</dl>
+</dd>
+</dl>
+<dl>
+<dd></dd>
+<dd></dd>
+</dl>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Using relative paths is also essential if you decide to implement secure hosting on your site, since you won’t have to change any absolute links/paths from http to https.</p>
+</div>
+</div>
+<h2><span id="Mirroring_a_subdomain_if_the_root_domain_is_not_hosted_with_DreamHost">Mirroring a subdomain if the root domain is not hosted with DreamHost</span></h2>
+<p>Example:</p>
+<ul>
+<ul>
+<li><strong>dreamhostexample.com (not hosted at DreamHost)</strong>
+<p>should take you to</p>
+</li>
+<li><strong>site.example.com (hosted at DreamHost)</strong></li>
+</ul>
+</ul>
+<p>If you are trying to add an alias to a domain that is not hosted at DreamHost, you must add the root domain before you are able to set up the subdomain.</p>
+<p>Below are instructions for mirroring a subdomain:</p>
+<ul>
+<ul>
+<ol>
+<li>Open the (<a class="external text" href="https://panel.dreamhost.com/index.cgi?tree=domain.manage" rel="nofollow">Panel &gt; 'Domains' &gt; 'Manage Domains'</a>) page.</li>
+<li>Click the <strong>Add Hosting to a Domain / Sub-Domain</strong> link.</li>
+<li>When the next page opens, scroll down to DNS Only.</li>
+<li>Enter the domain dreamhostexample.com that is not hosted here at DreamHost, and then click <strong>Host DNS Only</strong>. <em>The Manage Domains page opens after adding the domain.</em></li>
+<li>Add the subdomain by clicking the <strong>Add Hosting to a Domain / Sub-Domain</strong> link.</li>
+<li>When the next page opens, scroll down to the Mirrored section.</li>
+<li>To the right of Create the mirror at, enter: dreamhostexample<code>.com.</code></li>
+<li>In the dropdown list, select site.example.com (this must already be created).</li>
+<li>Click the <strong>Mirror this domain</strong> button to save your settings.</li>
+</ol>
+</ul>
+</ul>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>You must make sure that you point the DNS for the subdomain mirror you created above to the IP address of the domain hosted at DreamHost. View the following DNS article for further information:</p>
+<ul>
+<li><a href="/hc/en-us/articles/215413857-DreamHost-DNS-overview">DNS</a></li>
+</ul>
+</div>
+</div>
+<h2><span id="A_reason_to_use_a_redirect_domain_instead">A reason to use a redirect domain instead</span></h2>
+<p>In many situations, it is better to <a href="/hc/en-us/articles/215455377-How-do-I-redirect-my-domain-">redirect a domain</a> if you want the same content accessible from different domains. This is where visitors to any alternative domains are automatically redirected to your primary domain, instead of seeing identical content at the alternative URL.</p>
+<p>The main difference is the URL you see: if you create a mirror at siteB.example.com that mirrors the actual website named siteA.example.com, when you visit siteB.example.com the address bar does not change. But, you still see the content of siteA.com.</p>
+<p>If you create a redirect, when you visit siteB.example.com the address bar changes to siteA.example.com.</p>
+<p>Almost all search engines blacklist your domain if they find the exact same content at another domain, which drops your site very far down in their search results. If you want the same content accessible from different URLs, it is best to use a <a href="/hc/en-us/articles/215455377-How-do-I-redirect-my-domain-">redirect</a>.</p>
+<h2><span id="See_also">See also</span></h2>
+<p>Internal links</p>
+<ul>
+<li><a href="/hc/en-us/sections/203272388-Adding-Managing-Domains">Adding &amp; managing domains article list</a></li>
+</ul>
+<p>External links</p>
+<ul>
+<li><a class="external text" href="http://httpd.apache.org/docs/2.0/mod/core.html#serveralias" rel="nofollow">About ServerAlias in the apache 2.0 series documentation</a></li>
+</ul>

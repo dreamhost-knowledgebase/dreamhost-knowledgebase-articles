@@ -1,0 +1,100 @@
+<p>This guide provides ways to remove the warnings you see when connecting to your domain/web server via <a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a>. The warning this guide pertains to is the 'host keys not matching':</p>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>If you remove known_host entries as recommended here, you are vulnerable to a man-in-the-middle attack.</p>
+</div>
+</div>
+<h2><span id="The_error_message" class="mw-headline">The error message</span></h2>
+<p>If you see the following warning when accessing your domain or web server via <a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a>, it generally means that the host key does not match the key in your known_hosts file.</p>
+<div class="preboxcontainer">
+<pre class="prebox">@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@ WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED! @
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!
+Someone could be eavesdropping on you right now (man-in-the-middle attack)!
+It is also possible that the RSA host key has just been changed.
+The fingerprint for the RSA key sent by the remote host is
+REMOVED FOR SECURITY REASONS
+Please contact your system administrator.
+Add correct host key in /home/USER/.ssh/known_hosts to get rid of this message.
+Offending key in /home/USER/.ssh/known_hosts:10278
+Password authentication is disabled to avoid man-in-the-middle attacks.
+Keyboard-interactive authentication is disabled to avoid man-in-the-middle attacks.
+
+–
+</pre>
+</div>
+<p>This is not typically a cause for concern and can be remedied in a few different ways.</p>
+<h2><span id="Resolving_the_warning_message" class="mw-headline">Resolving the warning message</span></h2>
+<p>There are three methods to remove this error. Please keep in mind that the modification to fix this needs to be performed on the client side, so if you are getting this connecting from home/work you must update that specific computer.</p>
+<h3><span id="Method_One_.E2.80.94_Generate_a_new_host_key_.28MAC_or_Linux.29" class="mw-headline">Method One — Generate a new host key (MAC or Linux)</span></h3>
+<p>Run the following command in your shell:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">ssh-keygen -R HOSTNAME.</span>
+</pre>
+</div>
+<ul>
+<li>This method simply generates the new host key and connects you to your host/domain. This is probably the simplest method.</li>
+</ul>
+<h3><span id="Method_Two_.E2.80.94_Deleting_your_known_hosts_file" class="mw-headline">Method Two — Deleting your known_hosts file</span></h3>
+<p>Delete your entire known_hosts file (on your local computer) if you have several hosts that need to be updated. On first log in, it confirms the new key.</p>
+<ul>
+<li><strong>On a Mac or Linux machine</strong> – the known_hosts file is located in the .ssh/known_hosts directory. You can simply run this command in a terminal to delete the known_host file:</li>
+</ul>
+<dl>
+<dd>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">rm .ssh/known_hosts</span>
+</pre>
+</div>
+</dd>
+</dl>
+<ul>
+<li><strong>On a Windows machine using <a href="/hc/en-us/articles/215464538-How-do-I-configure-PuTTY-">PuTTY</a></strong> – you must access the registry to remove the known_hosts:</li>
+</ul>
+<ol>
+<li>Open up ‘regedit.exe’ by doing a search.</li>
+<li>Navigate to HKEY_CURRENT_USER\Software\SimonTatham\PuTTY\SshHostKeys</li>
+<li>Delete all keys in there or delete the individual host key.</li>
+</ol>
+<h3><span id="Method_Three_.E2.80.94_Edit_the_known_hosts_file" class="mw-headline">Method Three — Edit the known_hosts file</span></h3>
+<p>Edit the known_hosts file. In the above case, open the file /home/USER/.ssh/known_hosts in the preferred text editor, and then remove the problem line.</p>
+<ul>
+<li>This is similar to method two but rather than deleting the entire .known_hosts file, you delete the specific host line in the file instead.</li>
+<li>The warning message lists the line number; it can be found after the file name in the error. In the above error message, the line number is 10,278. If you are on a Mac or Linux machine and if you are using the “vi” editor, you can simply type the following command to jump to that line:</li>
+</ul>
+<dl>
+<dd>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">vim +10278</span></pre>
+</div>
+</dd>
+</dl>
+<dl>
+<dd>The editor opens to that specific line. Click the ‘d’ key twice to delete that line, and then enter the following to save:</dd>
+</dl>
+<dl>
+<dd>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">:x</span></pre>
+</div>
+</dd>
+</dl>
+<ul>
+<li>On a Windows machine using PuTTY, navigate to the Registry folder as shown in method two above. In that directory, a list of hostnames appears. Right click on the one you need to remove, and then select ‘Delete’.</li>
+</ul>
+<h2><span id="See_also" class="mw-headline">See also</span></h2>
+<h3>Internal links</h3>
+<ul>
+<li><a style="background-color: #ffffff;" href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview"><span class="mw-headline">SSH overview</span></a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Enabling-Shell-access"><span class="mw-headline">Enabling Shell access</span></a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216557548-Available-shells-at-DreamHost"><span class="mw-headline">Available shells at DreamHost</span></a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214750888-UNIX-commands-overview"><span class="mw-headline">UNIX commands</span></a></li>
+</ul>
+<h3>External links</h3>
+<ul>
+<li><a class="external text" href="http://mah.everybody.org/docs/ssh" rel="nofollow">Using ssh-agent with ssh</a></li>
+<li><a class="external text" href="http://www.openssh.org/" rel="nofollow">The OpenSSH Project</a></li>
+<li><a class="external text" href="http://www.ss64.com/bash/" rel="nofollow">An A-Z Index of Linux BASH commands at Simon Sheppard's website</a></li>
+</ul>

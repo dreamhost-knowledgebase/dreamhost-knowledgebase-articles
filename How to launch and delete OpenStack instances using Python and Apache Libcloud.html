@@ -1,0 +1,177 @@
+<body role="document">
+<div class="document">
+<div class="documentwrapper">
+<div class="body" role="main">
+<div id="how-to-launch-and-delete-openstack-instances-using-python-and-apache-libcloud">
+</div>
+<div id="what-you-need">
+<h1>What you need</h1>
+<p>This tutorial will guide you with step-by-step instructions on how to
+get a basic authentication token on DreamCompute and launch a virtual
+machine.</p>
+<p>You will need to have your username, password and project ID
+available. This information can be easily retrieved from
+<a class="reference external" href="https://dashboard.dreamcompute.com/project/access_and_security/api_access/openrc/">DreamCompute’s dashboard, in the openrc file</a>.</p>
+<p>You must also need to have</p>
+<p><a class="reference external" href="https://libcloud.apache.org/getting-started.html">libcloud 0.15.1 or higher installed</a>.</p>
+<div id="authenticate">
+<h2>Authenticate</h2>
+<p>Add the following code to a file or copy and paste them in an
+interactive shell, when available. Make sure to use your username,
+password and project ID.</p>
+<p>You can use an interactive Python shell by calling <code class="code docutils literal"><span class="pre">python</span>
+<span class="pre">-i</span></code> or <code class="code docutils literal"><span class="pre">ipython</span></code>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">libcloud.compute.types</span> <span class="kn">import</span> <span class="n">Provider</span>
+<span class="kn">from</span> <span class="nn">libcloud.compute.providers</span> <span class="kn">import</span> <span class="n">get_driver</span>
+
+<span class="n">auth_username</span> <span class="o">=</span> <span class="s">'your_auth_username'</span>
+<span class="n">auth_password</span> <span class="o">=</span> <span class="s">'your_auth_password'</span>
+<span class="n">project_name</span> <span class="o">=</span> <span class="s">'your_project_name_or_id'</span>
+
+<span class="n">auth_url</span> <span class="o">=</span> <span class="s">'https://iad2.dream.io:5000/v2.0'</span>
+<span class="n">region_name</span> <span class="o">=</span> <span class="s">'RegionOne'</span>
+
+<span class="n">provider</span> <span class="o">=</span> <span class="n">get_driver</span><span class="p">(</span><span class="n">Provider</span><span class="o">.</span><span class="n">OPENSTACK</span><span class="p">)</span>
+<span class="n">conn</span> <span class="o">=</span> <span class="n">provider</span><span class="p">(</span><span class="n">auth_username</span><span class="p">,</span>
+                <span class="n">auth_password</span><span class="p">,</span>
+                <span class="n">ex_force_auth_url</span><span class="o">=</span><span class="n">auth_url</span><span class="p">,</span>
+                <span class="n">ex_force_auth_version</span><span class="o">=</span><span class="s">'2.0_password'</span><span class="p">,</span>
+                <span class="n">ex_tenant_name</span><span class="o">=</span><span class="n">project_name</span><span class="p">,</span>
+                <span class="n">ex_force_service_region</span><span class="o">=</span><span class="n">region_name</span><span class="p">)</span>
+
+</pre></div>
+</div>
+<p>This code creates the <code class="code docutils literal"><span class="pre">conn</span></code> object that you can use in the next
+steps.</p>
+</div>
+<div id="flavors-and-images">
+<h2>Flavors and images</h2>
+<p>To launch an instance, which is just a virtual machine, you choose
+a flavor and an image. The flavor represents the size of the instance,
+including the number of CPUs and amount of RAM and disk space. An
+image is a prepared OS installation from which you clone your
+instance. When you boot instances in a public cloud, larger flavors
+can be more expensive than smaller ones in terms of monetary cost.</p>
+<p>To list the images that are available in your cloud, run some API calls:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">images</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">list_images</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">images</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+
+</pre></div>
+</div>
+<p>This code returns output like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="o">&lt;</span><span class="n">NodeImage</span><span class="p">:</span> <span class="nb">id</span><span class="o">=</span><span class="mi">840</span><span class="n">b74a6</span><span class="o">-</span><span class="mi">500</span><span class="n">a</span><span class="o">-</span><span class="mi">45</span><span class="n">f0</span><span class="o">-</span><span class="mi">92</span><span class="n">fc</span><span class="o">-</span><span class="mi">250</span><span class="n">a4650cb2d</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">CoreOS</span><span class="p">,</span> <span class="n">driver</span><span class="o">=</span><span class="n">OpenStack</span>  <span class="o">...&gt;</span>
+<span class="o">&lt;</span><span class="n">NodeImage</span><span class="p">:</span> <span class="nb">id</span><span class="o">=</span><span class="n">a8484bc7</span><span class="o">-</span><span class="n">f6fb</span><span class="o">-</span><span class="mi">45</span><span class="n">fd</span><span class="o">-</span><span class="mi">9</span><span class="n">dfb</span><span class="o">-</span><span class="mi">409</span><span class="n">c7c6e9bc5</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">Debian</span><span class="o">-</span><span class="mf">8.3</span><span class="p">,</span> <span class="n">driver</span><span class="o">=</span><span class="n">OpenStack</span>  <span class="o">...&gt;</span>
+<span class="o">&lt;</span><span class="n">NodeImage</span><span class="p">:</span> <span class="nb">id</span><span class="o">=</span><span class="mi">152</span><span class="n">f56d5</span><span class="o">-</span><span class="n">f5df</span><span class="o">-</span><span class="mi">4</span><span class="n">d2f</span><span class="o">-</span><span class="mi">8</span><span class="n">be0</span><span class="o">-</span><span class="mi">70</span><span class="n">f79122c2af</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">Debian</span><span class="o">-</span><span class="mf">7.9</span><span class="p">,</span> <span class="n">driver</span><span class="o">=</span><span class="n">OpenStack</span>  <span class="o">...&gt;</span>
+<span class="o">&lt;</span><span class="n">NodeImage</span><span class="p">:</span> <span class="nb">id</span><span class="o">=</span><span class="n">f53d69f6</span><span class="o">-</span><span class="mi">4</span><span class="n">b15</span><span class="o">-</span><span class="mi">4</span><span class="n">ef6</span><span class="o">-</span><span class="n">af70</span><span class="o">-</span><span class="n">e0c37e314c64</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">Fedora</span><span class="o">-</span><span class="mi">23</span><span class="p">,</span> <span class="n">driver</span><span class="o">=</span><span class="n">OpenStack</span>  <span class="o">...&gt;</span>
+<span class="o">&lt;</span><span class="n">NodeImage</span><span class="p">:</span> <span class="nb">id</span><span class="o">=</span><span class="mi">12</span><span class="n">f6a911</span><span class="o">-</span><span class="mo">00</span><span class="n">a2</span><span class="o">-</span><span class="mi">42</span><span class="n">eb</span><span class="o">-</span><span class="mi">8712</span><span class="o">-</span><span class="n">d930da2da81f</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">Ubuntu</span><span class="o">-</span><span class="mf">16.04</span><span class="p">,</span> <span class="n">driver</span><span class="o">=</span><span class="n">OpenStack</span>  <span class="o">...&gt;</span>
+<span class="o">&lt;</span><span class="n">NodeImage</span><span class="p">:</span> <span class="nb">id</span><span class="o">=</span><span class="mi">5091963</span><span class="n">c</span><span class="o">-</span><span class="mi">6132</span><span class="o">-</span><span class="mi">4590</span><span class="o">-</span><span class="n">a5c5</span><span class="o">-</span><span class="n">ec720a2afe88</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">test</span><span class="p">,</span> <span class="n">driver</span><span class="o">=</span><span class="n">OpenStack</span>  <span class="o">...&gt;</span>
+<span class="o">&lt;</span><span class="n">NodeImage</span><span class="p">:</span> <span class="nb">id</span><span class="o">=</span><span class="n">e0139772</span><span class="o">-</span><span class="mi">0</span><span class="n">aa3</span><span class="o">-</span><span class="mi">43</span><span class="n">d5</span><span class="o">-</span><span class="n">a480</span><span class="o">-</span><span class="n">ba438bb6fc8e</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">volume</span><span class="o">-</span><span class="n">testing</span><span class="o">-</span><span class="n">snap</span><span class="p">,</span> <span class="n">driver</span><span class="o">=</span><span class="n">OpenStack</span>  <span class="o">...&gt;</span>
+<span class="o">&lt;</span><span class="n">NodeImage</span><span class="p">:</span> <span class="nb">id</span><span class="o">=</span><span class="mf">873e4</span><span class="n">bab</span><span class="o">-</span><span class="n">ed23</span><span class="o">-</span><span class="mi">4096</span><span class="o">-</span><span class="mi">83</span><span class="n">fb</span><span class="o">-</span><span class="n">ee8b0dd2f5a3</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">Ubuntu</span><span class="o">-</span><span class="mf">15.10</span><span class="p">,</span> <span class="n">driver</span><span class="o">=</span><span class="n">OpenStack</span>  <span class="o">...&gt;</span>
+<span class="o">&lt;</span><span class="n">NodeImage</span><span class="p">:</span> <span class="nb">id</span><span class="o">=</span><span class="mo">03</span><span class="n">f89ff2</span><span class="o">-</span><span class="n">d66e</span><span class="o">-</span><span class="mi">49</span><span class="n">f5</span><span class="o">-</span><span class="n">ae61</span><span class="o">-</span><span class="mi">656</span><span class="n">a006bbbe9</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">Ubuntu</span><span class="o">-</span><span class="mf">14.04</span><span class="p">,</span> <span class="n">driver</span><span class="o">=</span><span class="n">OpenStack</span>  <span class="o">...&gt;</span>
+<span class="o">&lt;</span><span class="n">NodeImage</span><span class="p">:</span> <span class="nb">id</span><span class="o">=</span><span class="n">c1e8c5b5</span><span class="o">-</span><span class="n">bea6</span><span class="o">-</span><span class="mf">45e9</span><span class="o">-</span><span class="mi">8202</span><span class="o">-</span><span class="n">b8e769b661a4</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">CentOS</span><span class="o">-</span><span class="mi">7</span><span class="p">,</span> <span class="n">driver</span><span class="o">=</span><span class="n">OpenStack</span>  <span class="o">...&gt;</span>
+<span class="o">&lt;</span><span class="n">NodeImage</span><span class="p">:</span> <span class="nb">id</span><span class="o">=</span><span class="mi">10</span><span class="n">ff94ea</span><span class="o">-</span><span class="mi">18</span><span class="n">dc</span><span class="o">-</span><span class="mi">4790</span><span class="o">-</span><span class="mi">8</span><span class="n">ac8</span><span class="o">-</span><span class="mf">84e6</span><span class="n">ac9f3132</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">CentOS</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="n">driver</span><span class="o">=</span><span class="n">OpenStack</span>  <span class="o">...&gt;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You may notice that the image IDs change often even if the
+names of the images remain the same as the images are
+updated over time.</p>
+</div>
+<p>You can also get information about available flavors using API calls:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">flavors</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">list_sizes</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">flavor</span> <span class="ow">in</span> <span class="n">flavors</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">flavor</span><span class="p">)</span>
+
+</pre></div>
+</div>
+<p>This code returns output like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="o">&lt;</span><span class="n">OpenStackNodeSize</span><span class="p">:</span> <span class="nb">id</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">gp1</span><span class="o">.</span><span class="n">subsonic</span><span class="p">,</span> <span class="n">ram</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span> <span class="n">disk</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">bandwidth</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">price</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">driver</span><span class="o">=</span><span class="n">OpenStack</span><span class="p">,</span> <span class="n">vcpus</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>  <span class="o">...&gt;</span>
+<span class="o">&lt;</span><span class="n">OpenStackNodeSize</span><span class="p">:</span> <span class="nb">id</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">gp1</span><span class="o">.</span><span class="n">supersonic</span><span class="p">,</span> <span class="n">ram</span><span class="o">=</span><span class="mi">2048</span><span class="p">,</span> <span class="n">disk</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">bandwidth</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">price</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">driver</span><span class="o">=</span><span class="n">OpenStack</span><span class="p">,</span> <span class="n">vcpus</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>  <span class="o">...&gt;</span>
+<span class="o">&lt;</span><span class="n">OpenStackNodeSize</span><span class="p">:</span> <span class="nb">id</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">gp1</span><span class="o">.</span><span class="n">lightspeed</span><span class="p">,</span> <span class="n">ram</span><span class="o">=</span><span class="mi">4096</span><span class="p">,</span> <span class="n">disk</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">bandwidth</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">price</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">driver</span><span class="o">=</span><span class="n">OpenStack</span><span class="p">,</span> <span class="n">vcpus</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>  <span class="o">...&gt;</span>
+<span class="o">&lt;</span><span class="n">OpenStackNodeSize</span><span class="p">:</span> <span class="nb">id</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">gp1</span><span class="o">.</span><span class="n">warpspeed</span><span class="p">,</span> <span class="n">ram</span><span class="o">=</span><span class="mi">8192</span><span class="p">,</span> <span class="n">disk</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">bandwidth</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">price</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">driver</span><span class="o">=</span><span class="n">OpenStack</span><span class="p">,</span> <span class="n">vcpus</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>  <span class="o">...&gt;</span>
+<span class="o">&lt;</span><span class="n">OpenStackNodeSize</span><span class="p">:</span> <span class="nb">id</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">gp1</span><span class="o">.</span><span class="n">semisonic</span><span class="p">,</span> <span class="n">ram</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span> <span class="n">disk</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">bandwidth</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">price</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">driver</span><span class="o">=</span><span class="n">OpenStack</span><span class="p">,</span> <span class="n">vcpus</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>  <span class="o">...&gt;</span>
+<span class="o">&lt;</span><span class="n">OpenStackNodeSize</span><span class="p">:</span> <span class="nb">id</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">gp1</span><span class="o">.</span><span class="n">hyperspeed</span><span class="p">,</span> <span class="n">ram</span><span class="o">=</span><span class="mi">16384</span><span class="p">,</span> <span class="n">disk</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">bandwidth</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">price</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">driver</span><span class="o">=</span><span class="n">OpenStack</span><span class="p">,</span> <span class="n">vcpus</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>  <span class="o">...&gt;</span>
+</pre></div>
+</div>
+<p>Choose an image and flavor for your instance. For example, pick one of
+about 1GB RAM, 1 CPU, and a 1GB disk. This example uses the Ubuntu
+image with a small flavor, which is a safe choice.</p>
+<p>First, tell the connection to get a specified image by using the ID of the
+image that you picked in the previous section:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">image_id</span> <span class="o">=</span> <span class="s">'03f89ff2-d66e-49f5-ae61-656a006bbbe9'</span>
+<span class="n">image</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">get_image</span><span class="p">(</span><span class="n">image_id</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+
+</pre></div>
+</div>
+<p>This code returns output like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="o">&lt;</span><span class="n">NodeImage</span><span class="p">:</span> <span class="nb">id</span><span class="o">=</span><span class="mi">90</span><span class="n">d5e049</span><span class="o">-</span><span class="n">aaed</span><span class="o">-</span><span class="mi">4</span><span class="n">abc</span><span class="o">-</span><span class="n">aa75</span><span class="o">-</span><span class="mi">60</span><span class="n">c2b1ed6516</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">Ubuntu</span><span class="o">-</span><span class="mf">14.04</span><span class="p">,</span> <span class="n">driver</span><span class="o">=</span><span class="n">OpenStack</span>  <span class="o">...&gt;</span>
+</pre></div>
+</div>
+<p>Next, choose which flavor you want to use:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">flavor_id</span> <span class="o">=</span> <span class="s">'50'</span>
+<span class="n">flavor</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">ex_get_size</span><span class="p">(</span><span class="n">flavor_id</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">flavor</span><span class="p">)</span>
+
+</pre></div>
+</div>
+<p>This code returns output like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="o">&lt;</span><span class="n">OpenStackNodeSize</span><span class="p">:</span> <span class="nb">id</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">subsonic</span><span class="p">,</span> <span class="n">ram</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span> <span class="n">disk</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">bandwidth</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">price</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">driver</span><span class="o">=</span><span class="n">OpenStack</span><span class="p">,</span> <span class="n">vcpus</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>  <span class="o">...&gt;</span>
+</pre></div>
+</div>
+<p>Now, you can launch the instance.</p>
+</div>
+<div id="launch-an-instance">
+<h2>Launch an instance</h2>
+<p>Now you can create the instance:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">instance_name</span> <span class="o">=</span> <span class="s">'testing'</span>
+<span class="n">testing_instance</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">create_node</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">instance_name</span><span class="p">,</span> <span class="n">image</span><span class="o">=</span><span class="n">image</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">flavor</span><span class="p">,</span> <span class="n">networks</span><span class="o">=</span><span class="p">[</span><span class="s">'public'</span><span class="p">])</span>
+<span class="k">print</span><span class="p">(</span><span class="n">testing_instance</span><span class="p">)</span>
+
+</pre></div>
+</div>
+<p>This code returns output like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="o">&lt;</span><span class="n">Node</span><span class="p">:</span> <span class="n">uuid</span><span class="o">=</span><span class="mi">3</span><span class="n">c8fd6fc02916c26d75b5e9bfa53d8b1315671be</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">testing</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="n">PENDING</span><span class="p">,</span> <span class="n">public_ips</span><span class="o">=</span><span class="p">[],</span> <span class="n">private_ips</span><span class="o">=</span><span class="p">[],</span> <span class="n">provider</span><span class="o">=</span><span class="n">OpenStack</span> <span class="o">...&gt;</span>
+</pre></div>
+</div>
+<p>If you list existing instances you’ll see the newly created one in
+there:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">instances</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">list_nodes</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">instance</span> <span class="ow">in</span> <span class="n">instances</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span>
+
+</pre></div>
+</div>
+<p>The newly created instance will look something like:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="o">&lt;</span><span class="n">Node</span><span class="p">:</span> <span class="n">uuid</span><span class="o">=</span><span class="mi">3</span><span class="n">c8fd6fc02916c26d75b5e9bfa53d8b1315671be</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">testing</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="n">RUNNING</span><span class="p">,</span> <span class="n">public_ips</span><span class="o">=</span><span class="p">[],</span> <span class="n">private_ips</span><span class="o">=</span><span class="p">[],</span> <span class="n">provider</span><span class="o">=</span><span class="n">OpenStack</span> <span class="o">...&gt;</span>
+</pre></div>
+</div>
+<p>Before you continue, you must do one more thing.</p>
+</div>
+<div id="destroy-an-instance">
+<h2>Destroy an instance</h2>
+<p>Cloud resources, such as running instances that you no longer use, can
+cost money. To avoid unexpected expenses, destroy cloud resources.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">conn</span><span class="o">.</span><span class="n">destroy_node</span><span class="p">(</span><span class="n">testing_instance</span><span class="p">)</span>
+
+</pre></div>
+</div>
+<p>If you list the instances again, the instance disappears.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="clearer"></div>
+</div>
+<div class="footer">
+      ©2015, OpenStack contributors.
+      
+    </div>
+<!--DreamCompute Button-->
+<div class="dream-sign-up">
+<h2>Deploy Your Apps On Cloud Servers Today</h2>
+<a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a>
+</div>
+</body>

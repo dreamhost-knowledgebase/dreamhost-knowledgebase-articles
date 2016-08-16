@@ -1,0 +1,206 @@
+<body role="document">
+<div class="document">
+<div class="documentwrapper">
+<div class="body" role="main">
+<div id="how-to-launch-a-dreamcompute-server-with-ansible">
+
+<p>Ansible is a configuration management tool with built in OpenStack support.
+Which means it’s easy to use it to deploy servers and manage them on
+DreamCompute using Ansible. In this tutorial we’re going to explain how to
+install Ansible and use it to launch a simple server on DreamCompute.</p>
+<div id="installation">
+<h2>Installation</h2>
+<p>For this tutorial we’re going to use Ubuntu 16.04 (Xenial Xerus) as our host to
+run Ansible playbooks from. First we need to install a few packages.
+On Ubuntu 16.04 that can be done with one simple command.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you are not using Ubuntu 16.04, you can read
+<a class="reference external" href="http://docs.ansible.com/ansible/intro_installation.html#latest-releases-via-pip">http://docs.ansible.com/ansible/intro_installation.html#latest-releases-via-pip</a>
+to figure out how to install ansible on your system</p>
+</div>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>$ sudo apt-get install -y ansible python2.7 python-virtualenv python-pip
+</pre></div>
+</div>
+<p>Type in your password for sudo (If you have one). It then will download some
+packages and install them. Next we need to install shade in a virtual
+environment as Ansible depends on it.</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>$ virtualenv -p /usr/bin/python2 venv &amp;&amp; source venv/bin/activate &amp;&amp; pip \
+      install shade
+</pre></div>
+</div>
+<p>Now you have shade installed and are ready to start writing Ansible
+playbooks.</p>
+</div>
+<div id="writing-a-ansible-playbook-to-launch-a-server">
+<h2>Writing a Ansible Playbook to Launch a Server</h2>
+<p>Make a file named <strong>launch-server.yaml</strong>, that will be our playbook (Ansible’s
+term for a yaml file that Ansible can interpret and use to perform some tasks).</p>
+<p>The first part of your playbook is a list of hosts that your playbook will run
+on, we only have one, localhost.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>- hosts: localhost
+
+</pre></div>
+</div>
+<p>Then we need to define a list of tasks to perform in this playbook. We will
+only have one that launches an Ubuntu Xenial server on DreamCompute.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>  tasks:
+  - name: launch an Ubuntu server
+
+</pre></div>
+</div>
+<p>Now we need to use the “os_server” module. This lets us define what we want our
+server to look like in DreamCompute.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>    os_server:
+
+</pre></div>
+</div>
+<p>Now we have to tell it how to authenticate to DreamCompute so that it can
+create a server there. use the following example, substituting <strong>{username}</strong>
+with your DreamCompute username, <strong>{password}</strong> with your DreamCompute
+password, and <strong>{project}</strong> with your DreamCompute project.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>      auth:
+        auth_url: https://iad2.dream.io:5000
+        username: {username}
+        password: {password}
+        project_name: {project}
+
+</pre></div>
+</div>
+<p>Now we can actually define what our server should look like.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>      state: present
+      name: ansible-vm1
+      image: Ubuntu-16.04
+      key_name: raynor
+      flavor: 50
+      network: public
+      wait: yes
+</pre></div>
+</div>
+<p>Lets break down the previous few lines</p>
+<ul>
+<li><p class="first"><strong>state</strong> is the state of the server, possible values are</p>
+<blockquote>
+<div><ul class="simple">
+<li>present</li>
+<li>absent</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>name</strong> is the name of the server to create</p>
+</li>
+<li><p class="first"><strong>image</strong> is the image to boot the server from, possible values are</p>
+<blockquote>
+<div><ul class="simple">
+<li>Name of an image: Ubuntu-16.04, CentOS-7, etc</li>
+<li>ID of an image: 12f6a911-00a2-42eb-8712-d930da2da81f</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The list of public images can be found in the web UI at
+<a class="reference external" href="https://iad2.dreamcompute.com/project/images/">https://iad2.dreamcompute.com/project/images/</a></p>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>key_name</strong> is the public key to add to the server once it is created. This
+can be any key you have added to DreamCompute.</p>
+</li>
+<li><p class="first"><strong>flavor</strong> is the flavor of server to boot, this defines how much RAM and CPU
+your server will have. Possible values are</p>
+<blockquote>
+<div><ul class="simple">
+<li>Name of a flavor: gp1.semisonic</li>
+<li>ID of a flavor: 50, 100, 200, etc</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>network</strong> is the network to put your server on. In our case it is the
+“public” network, but if you have private networking enabled, it could be
+different</p>
+<blockquote>
+<div><ul class="simple">
+<li>Name of a network: public</li>
+<li>ID of a network: e098d02f-bb35-4085-ae12-664aad3d9c52</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>wait</strong> is whether or not to wait for the server to create before
+continuing. Possible values are</p>
+<blockquote>
+<div><ul class="simple">
+<li>yes</li>
+<li>no</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div>
+<div id="running-the-ansible-playbook">
+<h2>Running the Ansible Playbook</h2>
+<p>The Ansible playbook can be run with the following command:</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>$ ansible-playbook launch-server.yaml
+</pre></div>
+</div>
+<p>You should see output like</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>PLAY [localhost]
+***************************************************************
+
+TASK [setup]
+*******************************************************************
+ok: [localhost]
+
+TASK [launch an Ubuntu server]
+***********************************************
+changed: [localhost]
+
+PLAY RECAP
+*********************************************************************
+localhost                  : ok=2    changed=1    unreachable=0    failed=0
+</pre></div>
+</div>
+<p>Now if you check the <a class="reference external" href="https://iad2.dreamcompute.com/project/instances/">web UI</a> you should see a instance
+named “ansible-vm1”</p>
+</div>
+<div id="full-playbook">
+<h2>Full Playbook</h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span># hosts the playbook runs on
+- hosts: localhost
+
+  # List of tasks
+  tasks:
+  - name: launch an Ubuntu server
+
+    # This lets us define an server
+    os_server:
+
+      # Cloud authentication information
+      auth:
+        auth_url: https://iad2.dream.io:5000
+        username: {username}
+        password: {password}
+        project_name: {project}
+
+      # VM details
+      state: present
+      name: ansible-vm1
+      image: Ubuntu-16.04
+      key_name: raynor
+      flavor: 50
+      network: public
+      wait: yes
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="clearer"></div>
+</div>
+<div class="footer">
+</div>
+<!--DreamCompute Button-->
+<div class="dream-sign-up">
+<h2>Deploy Your Apps On Cloud Servers Today</h2>
+<a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a>
+</div>
+</body>

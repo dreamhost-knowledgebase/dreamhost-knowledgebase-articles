@@ -1,0 +1,60 @@
+<h2><span id="301_errors" class="mw-headline">301 errors</span></h2>
+<p>If you are receiving 301 errors saying "repository has been moved permanently to [some other url]", then check these things:</p>
+<ul>
+<li>Make sure that you haven't created your repository called "svn" or inside of a directory called "svn".</li>
+<li>Make sure you don't have .htaccess rules above the subversion directory that are causing any kind of re-write (like WordPress). This includes having DreamHost automatically add 'www.' to your URL. View the <a href="/hc/en-us/articles/215457387-How-do-I-add-or-remove-www-from-my-domain-">Removing the "www" from your domain</a> article for further details.</li>
+<li>If you're running WordPress and want to have your SVN repository excluded from the WP redirection, simply add these rules to your .htaccess:</li>
+</ul>
+<div class="preboxcontainer">
+<pre class="prebox"> # BEGIN WordPress
+ &lt;IfModule mod_rewrite.c&gt;
+ RewriteEngine On
+ RewriteBase /
+ RewriteCond %{THE_REQUEST} SVNRepo
+ RewriteRule . - [L]
+ RewriteCond %{REQUEST_FILENAME} !-f
+ RewriteCond %{REQUEST_FILENAME} !-d
+ RewriteRule . /index.php [L]
+ &lt;/IfModule&gt;
+ # END WordPress
+</pre>
+</div>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Make sure to change the end of line #5 to the subversion directory name in your WordPress directory.</p>
+</div>
+</div>
+<h2><span id="Import_errors" class="mw-headline">Import errors</span></h2>
+<p>If you are seeing errors where import is working for some but not all files, try disabling your anti-virus software.</p>
+<h2><span id="File_ownership_problems" class="mw-headline">File ownership problems</span></h2>
+<p>On DreamHost servers, Subversion runs as the <strong>dhapache</strong> user. If you create a file, it is owned by <strong>yourusername</strong>, not <strong>dhapache</strong> and subversion can't read it. It is pretty easy to have this happen.</p>
+<p>Once dhapache has lost ownership of the file, your repository becomes unmodifiable and your users will get "permission denied" errors when they try to commit.</p>
+<h3><span id="Fixing_ownership_problems" class="mw-headline">Fixing ownership problems</span></h3>
+<p>If your repository becomes corrupted through bad ownership, try the following:</p>
+<ol>
+<li>Navigate to the (<a class="external text" href="https://panel.dreamhost.com/index.cgi?tree=goodies.svn&amp;" rel="nofollow">Panel &gt; 'Goodies' &gt; 'Subversion'</a>) page.</li>
+<li>To the far right of your repository, click the <strong>Edit</strong> button.</li>
+<li>Add a new user and password.</li>
+<li>Click the <strong>Update my repository now!</strong> button to save.</li>
+</ol>
+<p>In the process of adding a new user, the DreamHost job will recursively change file ownership for the whole repository back to <strong>dhapache</strong>.</p>
+<p>If this doesn't work, you may have to dump, recreate and reload your repository.</p>
+<p>Below are how the permissions should look on your primary /svn directory under your username:</p>
+<div class="preboxcontainer">
+<pre class="prebox">drwxr-xr-x  username pgXXXXXXX svn
+</pre>
+</div>
+<p>In that directory is your Subversion project. Those files should appear with the following permissions:</p>
+<div class="preboxcontainer">
+<pre class="prebox">drwxrwxr-x dhapache pgXXXXXXX mysvnprojectID
+-rw-r----- username dhapache  mysvnprojectID.access
+-rw-r----- username dhapache  mysvnprojectID.passwd
+</pre>
+</div>
+<h2>See also</h2>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215466058-Subversion-overview">Subversion overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216456227--htaccess-overview">.htaccess overview</a></li>
+</ul>

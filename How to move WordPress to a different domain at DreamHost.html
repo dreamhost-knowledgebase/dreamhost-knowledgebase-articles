@@ -1,0 +1,82 @@
+<p>This article describes how to migrate a WordPress installation between two domains hosted at DreamHost. The example domains used in these instructions are:</p>
+<ul>
+<li>oldsite.example.com</li>
+</ul>
+<dl>
+<dd><em><strong>and</strong></em></dd>
+</dl>
+<ul>
+<li>newsite.example.com</li>
+</ul>
+<h1><span id="Migrating_a_WordPress_installation_between_two_domains" class="mw-headline">Migrating a WordPress installation between two domains</span></h1>
+<h2><span id="Step_one_.E2.80.93_Back_up_your_data" class="mw-headline">Step one – Back up your data</span></h2>
+<p>You should always backup your data before making any change to your site. View the following article for instructions on how to backup your web site files, database, and any email you wish to keep:</p>
+<ul>
+<li><a href="/hc/en-us/articles/215768237-How-can-I-manually-backup-my-data-">Manual backup techniques</a></li>
+</ul>
+<h2><span id="Step_two_.E2.80.93_Add_hosting_for_the_new_site" class="mw-headline">Step two – Add hosting for the new site</span></h2>
+<p>Add the new domain (newsite.example.com) to your new DreamHost account. Make sure to set it as Fully Hosted:</p>
+<ul>
+<li><a href="/hc/en-us/articles/215416227-How-do-I-add-a-domain-">Adding a Domain</a></li>
+</ul>
+<h2><span id="Step_three_.E2.80.93_Create_a_new_database_on_your_new_account" class="mw-headline">Step three – Create a new database on your new account</span></h2>
+<p>Navigate to the (<a class="external text" href="https://panel.dreamhost.com/index.cgi?tree=goodies.mysql&amp;" rel="nofollow">Panel &gt; ‘Goodies’ &gt; ‘MySQL Databases’</a>) page and create a new SQL hostname and empty database.</p>
+<ul>
+<li><a href="/hc/en-us/articles/221691727-Creating-a-MySQL-database">Create a new database</a></li>
+</ul>
+<h2><span id="Step_four_.E2.80.93_Transfer_your_WordPress_installation" class="mw-headline">Step four – Transfer your WordPress installation</span></h2>
+<p>Transfer your WordPress files you’ve backed up in step one to your new DreamHost account. If you had email addresses on the old site (oldsite.example.com), make sure to create the same addresses on your new account. You can then transfer those emails.</p>
+<ol>
+<li>Import your web files using the following article:
+<ul>
+<li><a href="/hc/en-us/articles/215612917-FTP-overview">FTP</a></li>
+</ul>
+</li>
+<li>Import your database using the Migrate MySQL article:
+<ul>
+<li><a href="/hc/en-us/articles/215039938-How-do-I-migrate-my-database-to-DreamHost-">Migrate MySQL</a></li>
+</ul>
+</li>
+<li>Transfer email from your old account:
+<ul>
+<li><a href="/hc/en-us/articles/215029918-How-do-I-add-an-email-address-">Email Setup</a>: Use this article to set up your email addresses on the new account.</li>
+<li><a href="/hc/en-us/articles/215730827-How-do-I-import-my-old-host-s-email-to-my-DreamHost-mail-server-">How to import email</a>: This article explains how to import your email to the new account.</li>
+<li><a href="/hc/en-us/articles/214918038-Email-client-configuration-overview">Email Client Configuration</a>: This article is a guide to different email configurations you can use.</li>
+</ul>
+</li>
+</ol>
+<h2><span id="Step_five_.E2.80.93_Edit_the_new_wp-config.php_file" class="mw-headline">Step five – Edit the new wp-config.php file</span></h2>
+<p>Log into your new site (newsite.example.com) via <a href="/hc/en-us/articles/215612917-FTP-overview">FTP</a> or <a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a> and open the wp-config.php file. You’ll see the following contents:</p>
+<dl>
+<dd><img src="https://kbimages.objects-us-west-1.dream.io/images/06_Move_WordPress_wpconfig.fw.png" alt="06 Move WordPress wpconfig.fw.png" width="506" height="341" /></dd>
+</dl>
+<p>You'll need to update the following:</p>
+<ul>
+<li>Database name</li>
+<li>Database user</li>
+<li>Database user password</li>
+<li>Hostname</li>
+</ul>
+<h2><span id="Step_six_.E2.80.93_Update_the_Home_and_Site_url" class="mw-headline">Step six – Update the Home and Site url</span></h2>
+<p>In your panel, log into your database via <a href="/hc/en-us/articles/214395638-phpMyAdmin-overview">phpMyAdmin</a>.</p>
+<p>Change the HOME and SITE url in the database to your new site name (newsite.example.com):</p>
+<ul>
+<li><a href="/hc/en-us/articles/214580498-How-do-I-change-the-WordPress-Site-URL-">Changing the Home and Site url</a></li>
+</ul>
+<h2><span id="Step_seven_.E2.80.93_Update_all_other_urls_in_the_database" class="mw-headline">Step seven – Update all other urls in the database</span></h2>
+<p>WordPress hardcodes the site's domain name into the database in such things as image and link urls. This is a problem because when you click on a link on your new site, it redirects back to the old site. To change these, you can use a search and replace the plugin. Below are a couple of plugins that work:</p>
+<ul>
+<li><a class="external text" href="https://wordpress.org/plugins/velvet-blues-update-urls/" rel="nofollow">Velvet Blues Update URLs</a></li>
+<li><a class="external text" href="https://wordpress.org/plugins/search-and-replace/" rel="nofollow">Search and Replace</a></li>
+</ul>
+<h1><span id="Summary" class="mw-headline">Summary</span></h1>
+<p>Once the above steps are complete, the new site looks exactly the same as as it once appeared on your old domain name.</p>
+<h2><span id="See_also">See also</span></h2>
+<ul>
+<li><a href="/hc/en-us/articles/215525287">WordPress overview</a></li>
+<li><a href="/hc/en-us/articles/214693178">How to manually migrate WordPress to DreamHost</a></li>
+<li><a href="/hc/en-us/articles/215412347">How do I test my WordPress migration to DreamHost before changing DNS?</a></li>
+<li><a href="/hc/en-us/articles/214829398">How do I view WordPress before pointing my DNS to DreamHost?</a></li>
+<li><a href="/hc/en-us/articles/214828548">How do I install WordPress before my DNS is pointed to DreamHost?</a></li>
+<li><a href="/hc/en-us/articles/215525277">How to install WordPress using the One-Click Installer</a></li>
+</ul>

@@ -1,0 +1,136 @@
+<div class="document">
+<div class="documentwrapper">
+<div class="body">
+<div id="ARTICLE-TITLE-NAME">
+<div class="altTitle">Configure spam settings</div>
+<div class="table-of-content container">
+<ul class="simple">
+<li><a class="reference internal" href="#settings">Domain-wide settings vs. individual account settings</a></li>
+<li><a class="reference internal" href="#adjust_score">Adjusting the quarantine score</a></li>
+<li><a class="reference internal" href="#white_black">Whitelist and blacklist</a></li>
+<li><a class="reference internal" href="#change_location">Changing the quarantine location</a></li>
+<li><a class="reference internal" href="#report_note">Quarantined Report notification</a></li>
+<li><a class="reference internal" href="#see">See also</a></li>
+</ul>
+</div>
+<p>All mail filter settings can be controlled from the panel's (<a href="https://panel.dreamhost.com/index.cgi?tree=mail.junk&amp;">Panel &gt; 'Mail' &gt; 'Anti-spam'</a>) page. Individual mail account users can control their own settings in the <a href="/hc/en-us/articles/217133137-The-Mailboxes-interface">Mailboxes interface</a> in case they cannot access the panel.</p>
+<span id="settings"></span>
+<h2>Domain-wide settings vs. individual account settings</h2>
+<p>Filtering is enabled for an entire domain at a time. Each fully-hosted mail account has its own filter settings, including <a href="/hc/en-us/articles/215686487-How-do-I-configure-my-Anti-spam-settings-">quarantine</a> score and whitelist/blacklist entries. The domain as a whole has a separate set of filter settings that are used by all forward-only addresses on the domain.</p>
+<p>To view your filter settings, visit the Anti-Spam page in your panel at (<a href="https://panel.dreamhost.com/index.cgi?tree=mail.junk&amp;">Panel &gt; ‘Mail’ &gt; ‘Anti-Spam’</a>).</p>
+<p>On that page, click the <strong>Edit Filter</strong> button in the far right of the page for the specific domain.</p>
+<dl>
+<dd>
+<p><em>This page shows you the current settings for the domain and users:</em></p>
+</dd>
+</dl>
+<dl>
+<dd><img src="https://kbimages.objects-us-west-1.dream.io/images/01.5_antispam.fw.png" alt="01.5 antispam.fw.png" width="1100" height="299" /></dd>
+</dl>
+<ul>
+<li>There is a button for the current domain-wide settings at the top, and the current individual email address settings are found at the bottom.</li>
+<li>Domain-wide settings can only be managed through this page in the account panel.</li>
+<li>These settings cannot be done through the mailbox interface for a user.</li>
+</ul>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>A ‘forward-only’ address will not be listed on the screenshot above since there is no mailbox for those users to edit.</p>
+</div>
+</div>
+<span id="adjust_score"></span>
+<h2>Adjusting the quarantine score</h2>
+<p>The default <a href="/hc/en-us/articles/215686487"><strong>Quarantine email with a spam score above</strong></a> setting is <strong>4</strong> (as shown in the above image). Emails must have a spam score lower than that to be delivered to the inbox.</p>
+<ul>
+<li>A higher score requires emails to look more like spam before being quarantined, so less emails are quarantined and more emails are delivered directly to the inbox.</li>
+<li>A lower score allows emails that look less like spam to be quarantined, so more emails are quarantined and less emails are delivered directly to the inbox.</li>
+<li>If you are having too many spam emails delivered to the inbox, lower the quarantine score to have more emails quarantined.</li>
+<li>If you are having too many legitimate emails quarantined, raise the quarantine score to have fewer emails quarantined.</li>
+</ul>
+<dl>
+<dd><em>Quarantine settings page as seen in the panel:</em></dd>
+</dl>
+<dl>
+<dd><img src="https://kbimages.objects-us-west-1.dream.io/images/02_Anti-Spam11115.4.fw.png" alt="02 Anti-Spam11115.4.fw.png" width="722" height="455" /></dd>
+</dl>
+<dl>
+<dd><em>Quarantine settings page as seen on the mailboxes interface page:</em></dd>
+</dl>
+<dl>
+<dd><img src="https://kbimages.objects-us-west-1.dream.io/images/03_Anti-Spam11115.5.fw.png" alt="03 Anti-Spam11115.5.fw.png" width="862" height="325" /></dd>
+</dl>
+<p>To choose a quarantine score, look at the scores on emails you are receiving. You can find information about the header details of the message to see how the message was scored in the following article:</p>
+<ul>
+<li><a href="/hc/en-us/articles/215466778-How-do-I-view-email-headers-">How do I view email headers?</a></li>
+</ul>
+<p>Look at both spam emails and legitimate emails and pick a score between them. You want to select a quarantine score that is <strong>lower than spam</strong> and <strong>higher than your legitimate email</strong>. The score can be fine-tuned to one decimal point at most; for example: 3.7.</p>
+<p>When anti-spam filters are enabled, they will apply an extra set of details to the headers with the spam scoring of that message. The specific details will appear on the header as seen in the image below:</p>
+<dl>
+<dd><img src="https://kbimages.objects-us-west-1.dream.io/images/04_Anti-Spam11215.1.fw.png" alt="04 Anti-Spam11215.1.fw.png" width="601" height="145" /></dd>
+</dl>
+<p>The ‘X-Spam-Score’ shows the score for this message, which is 4.59. With the default quarantine value set at 4, the message was scored above that value and filtered into the ‘Junk Mail’ folder as spam.</p>
+<span id="white_black"></span>
+<h2>Whitelist and blacklist</h2>
+<p><strong>Blacklist</strong> entries are email addresses or domains you know you <strong>never want to receive</strong> mail from. Emails from blacklisted senders will be quarantined regardless of the email's spam score. These emails will always be quarantined in the 'Junk Mail' folder, not in the IMAP quarantine folder. As stated above, the Junk Mail folder is only accessible through SquirrelMail or the mailboxes interface.</p>
+<p><strong>Whitelist</strong> entries are email addresses or domains you know you <strong>always want to receive</strong> mail from. Emails from whitelisted senders will be delivered to the inbox regardless of the email's spam score.</p>
+<dl>
+<dd><img src="https://kbimages.objects-us-west-1.dream.io/images/05_Anti-Spam11115.2.fw.png" alt="05 Anti-Spam11115.2.fw.png" width="695" height="255" /></dd>
+</dl>
+<ul>
+<li>You can either edit the settings for the entire domain’s filter settings or each individual user listed.</li>
+</ul>
+<p>List entries can be individual email addresses <em>user@EXAMPLE.com</em> or one entry to cover an entire domain <em>@EXAMPLE.com</em>.</p>
+<p>The limit is 1000 blacklist entries and 7500 whitelist entries. If you are getting close to that limit, consolidate multiple email addresses on a single domain with just one entry for for entire domain.</p>
+<p>Adjusting the quarantine score can improve the effectiveness of spam score based sorting and also reduce the need for individual whitelist and blacklist entries.</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Whitelist and blacklist entries apply to the envelope or SMTP sender, which does not always match the information in the From details of the header. The envelope sender is often recorded in an email's full headers as the original sender or the return path.</p>
+</div>
+</div>
+<h3>Priority</h3>
+<p>The priority of a whitelist or blacklist entry is generally ignored, and only used when an incoming email could match more than one entry.</p>
+<p>All whitelist and blacklist entries are stored together, and any incoming email is potentially compared against all of them. If there is only one black/white list entry for sender@EXAMPLE.com, and no entry for @EXAMPLE.com (meaning all senders on that domain), then the priority doesn't matter. The entry for sender@EXAMPLE.com will simply be used.</p>
+<p>The priority comes in to play when there are multiple entries. The priority informs which entry will take precedence. If there is a tie, it is randomly chosen which entry will be selected to route the email.</p>
+<dl>
+<dt><strong>Example</strong></dt>
+<dd>All mail you get from AOL is spam or chain letters; mail you don't ever want to read. But, there are plenty of important emails you do need to read from trusted mail senders that may be using AOL as well. For example, let's say trustedsender@aol.com needs to get through. In this case, you would create a blacklist entry for @aol.com with the priority set to 'Low', and a separate whitelist entry for trustedsender@aol.com with a higher priority. With that combination, emails from trustedsender@aol.com will be handled by the higher priority whitelist entry, and all other emails from other senders using @aol.com will be handled by the lower priority blacklist entry.</dd>
+</dl>
+<dl>
+<dd><img src="https://kbimages.objects-us-west-1.dream.io/images/06_Anti-Spam11115.6.fw.png" alt="06 Anti-Spam11115.6.fw.png" width="869" height="125" /></dd>
+</dl>
+<p>The image above illustrates the set up that was discussed in the previous example. The messages from ‘trustedsender@aol.com’ will be delivered to the inbox despite the ‘@aol.com’ domain being blacklisted due to priority settings.</p>
+<span id="change_location"></span>
+<h2>Changing the quarantine location</h2>
+<p>The default quarantine location is the 'Junk Mail' folder, accessible from the <a href="/hc/en-us/articles/217133137-The-Mailboxes-interface">mailboxes</a> website and SquirrelMail interface.</p>
+<p>Quarantined emails can also be put in a custom IMAP folder, accessible from any mail client program using IMAP, instead of the 'Junk Mail' quarantine folder. Three settings are involved:</p>
+<ol>
+<li>Set the <strong>Quarantine email with a spam score above</strong> setting to '999' so no emails are sent to the 'Junk Mail' folder.</li>
+<li>Enter the quarantine score (default is 4) for the <strong>Tag as spam if the score is above</strong> setting.</li>
+<li>Select an <strong>existing</strong> IMAP folder or create a new one in your mail client. Enter the name of that IMAP folder into 'Quarantine to IMAP folder'.</li>
+</ol>
+<p>Once completed, click the blue ‘Set Quarantine Policy’ button to apply those settings. You can refresh your mailbox for the new custom IMAP junk folder to appear.</p>
+<p>You can make this change at any time and it can be done both through the panel’s (<a href="https://panel.dreamhost.com/index.cgi?tree=mail.junk&amp;">Panel &gt; 'Mail' &gt; ‘Anti-Spam’</a>) page as well as the mailboxes interface for the individual users that do not have panel access to the account.</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Emails from blacklisted senders will still go to the Junk Mail folder, accessible through SquirrelMail.</p>
+</div>
+</div>
+<p>Domain-wide settings can only be managed through the account panel. These settings cannot be done through the mailbox interface for a user.</p>
+<span id="report_note"></span>
+<h2>Quarantined Report notification</h2>
+<p>Quarantined reports are emails containing a summary of all emails currently in the mail account's Junk Mail folder. This quarantined report email is set by default to send every Friday. The other schedule options are ‘Daily’, ‘Monthly’, and ‘Never’. This setting can be adjusted on the 'Quarantine Settings' page mentioned above.</p>
+<span id="see"></span>
+<h2>See also</h2>
+<ul>
+<li><a href="/hc/en-us/articles/214984738-Anti-spam-overview">Anti-spam overview </a></li>
+<li><a href="/hc/en-us/articles/215036368-What-is-Spam-">What is Spam?</a></li>
+<li><a href="/hc/en-us/articles/215686647-Technical-details-on-how-Anti-spam-filters-work">Technical details on how Anti-spam filters work </a></li>
+<li><a href="/hc/en-us/articles/215686667-Troubleshooting-Anti-spam-settings">Troubleshooting Anti-spam settings </a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="clearer"> </div>
+</div>

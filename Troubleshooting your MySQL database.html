@@ -1,0 +1,66 @@
+<h2><span id="If_you.27re_having_problems_logging_in" class="mw-headline">If you're having problems logging in</span></h2>
+<ul>
+<li>If you receive numerous username/password error messages, and you're certain that you keyed them correctly, then try deleting the cache.</li>
+<li>Make sure that your current IP address is added to the database's allowable hosts. You can manage this setting in the panel under <strong>Goodies &gt; MySQL &gt; Database Username &gt; Allowable hosts</strong>.</li>
+</ul>
+<h2><span id="Error_messages" class="mw-headline">Error messages</span></h2>
+<h3>"<em>The used command is not allowed with this MySQL version</em>"</h3>
+<p>This error may occur when using the "LOAD DATA LOCAL INFILE" statement on Ubuntu 12.04 webservers. A change in the mysql library from Debian to Ubuntu requires code changes to work around this error and allow your statement to execute.</p>
+<dl>
+<dt>
+<ul>
+<li>mysql command line</li>
+</ul>
+</dt>
+<dd>Add the --local-infile flag to your mysql connection statement, such as:</dd>
+</dl>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">mysql --local-infile -h HOSTNAME -u USERNAME -pPASSWORD DATABASENAME</span></pre>
+</div>
+<dl>
+<dt>
+<ul>
+<li>PHP mysql_connect()</li>
+</ul>
+</dt>
+<dd>Add 2 extra params to mysql_connect, a false for "new link" and then a client flag of 128 or CLIENT_LOCAL_FILES:</dd>
+</dl>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="cmdoutput">mysql_connect('HOSTNAME','USERNAME','PASSWORD', false, 128);</span></pre>
+</div>
+<dl>
+<dt>
+<ul>
+<li>PHP mysqli_connect()</li>
+</ul>
+</dt>
+<dd>Initialize mysqli first via mysqli_init, and use mysqli_options() to specify local infile as true before connecting to the mysql server:</dd>
+</dl>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="cmdoutput">$link = mysqli_init();
+mysqli_options($link, MYSQLI_OPT_LOCAL_INFILE, true);
+mysqli_real_connect($link, 'HOSTNAME','USERNAME','PASSWORD','DATABASENAME');</span></pre>
+</div>
+<dl>
+<dt>
+<ul>
+<li>PERL DBI</li>
+</ul>
+</dt>
+<dd>The mysql_local_infile param can be added to your data source name variable, or directly in DBI-&gt;connect:</dd>
+</dl>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="cmdoutput">$dbh = DBI-&gt;connect("DBI:mysql:database=DATABASENAME;host=HOSTNAME;mysql_local_infile=1", "USERNAME", "PASSWORD");</span></pre>
+</div>
+<h3><span id="mysqldump:_Couldn.27t_execute_.27SET_OPTION_SQL_QUOTE_SHOW_CREATE.3D1.27" class="mw-headline">mysqldump: Couldn't execute 'SET OPTION SQL_QUOTE_SHOW_CREATE=1'</span></h3>
+<p>This error is caused by an incompatibility with DreamHost's older Debian operating system on dedicated and webserver VPS products when used with newer MySQL 5.6.x server version. If you see this error please contact support to discuss operating system upgrade options.</p>
+<h2>See also</h2>
+<ul>
+<li><a href="/hc/en-us/articles/215099117">MySQL overview</a></li>
+<li><a href="/hc/en-us/articles/215100557">How do I backup and restore my database?</a></li>
+<li><a href="/hc/en-us/articles/221621388-Managing-existing-MySQL-databases">How do I manage my database?</a></li>
+<li><a href="/hc/en-us/articles/214882998">How do I connect to my database via SSH?</a></li>
+<li><a href="/hc/en-us/articles/214883058">How do I connect to my database using a third-party program?</a></li>
+<li><a href="/hc/en-us/articles/215577937">How do I connect to my database using SQLyog?</a></li>
+<li><a href="/hc/en-us/articles/215035918">Additional MySQL resource information</a></li>
+</ul>

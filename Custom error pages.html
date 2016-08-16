@@ -1,0 +1,131 @@
+<p>Custom error pages enable you to customize the pages that are displayed when an error occurs. Not only do they make your website more professional, they can also save you from losing visits to your site. If a visitor sees a generic error page, they are likely to leave your site. However, if they see a helpful error page, they may continue to stay because they can simply click a link to go to another page within your site.</p>
+<h2><span id="Simple_configuration" class="mw-headline">Simple configuration</span></h2>
+<p>To create a custom error page for your domain, add the following line to an <a href="/hc/en-us/articles/216456227--htaccess-overview">.htaccess</a> file located in your domain’s web directory:</p>
+<div class="preboxcontainer">
+<pre class="prebox">ErrorDocument 404 /error.php
+</pre>
+</div>
+<p>This redirects browsers that experience a 404 error (Not Found) to the file "error.php" located in the same directory as your .htaccess file. Alternatively, you can use the above line as a template to create separate custom error pages for each error.</p>
+<h2><span id="Status_codes" class="mw-headline">Status codes</span></h2>
+<p>The complete (and very long) list of errors is available here:</p>
+<ul>
+<li><a class="external text" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html" rel="nofollow">Status codes</a></li>
+</ul>
+<p>Some of the most common errors you'll probably want to make entries for are:</p>
+<ul>
+<li>400 – Bad Request</li>
+<li>401 – Unauthorized</li>
+<li>403 – Forbidden</li>
+<li>404 – Not Found</li>
+<li>500 – Internal Server Error</li>
+</ul>
+<p>For example, to catch those errors, you would add the following to your .htaccess file for the domain you'd like to configure:</p>
+<div class="preboxcontainer">
+<pre class="prebox">ErrorDocument 400 /error.php
+ErrorDocument 401 /error.php
+ErrorDocument 403 /error.php
+ErrorDocument 404 /error.php
+ErrorDocument 500 /error.php
+</pre>
+</div>
+<p>This forces a browser to redirect to the /error.php file if it encounters any of the status codes above.</p>
+<h2><span id="Setting_up_the_error.php_file" class="mw-headline">Setting up the error.php file</span></h2>
+<p>Then, in error.php, add something similar to the following. This particular example is made for a wiki site: if someone visits http://www.example.com/Foo, then they are redirected to http://www.example.com/wiki/Foo. Anything after the last "/" is assumed to be a wiki article they are trying to reach:</p>
+<div class="preboxcontainer">
+<pre class="prebox">&lt;?php
+
+$page_redirected_from = $_SERVER['REQUEST_URI'];  // this is especially useful with error 404 to indicate the missing page.
+$server_url = "http://" . $_SERVER["SERVER_NAME"] . "/";
+$redirect_url = $_SERVER["REDIRECT_URL"];
+$redirect_url_array = parse_url($redirect_url);
+$end_of_path = strrchr($redirect_url_array["path"], "/");
+
+switch(getenv("REDIRECT_STATUS"))
+{
+	# "400 - Bad Request"
+	case 400:
+	$error_code = "400 - Bad Request";
+	$explanation = "The syntax of the URL submitted by your browser could not be understood. Please verify the address and try again.";
+	$redirect_to = "";
+	break;
+
+	# "401 - Unauthorized"
+	case 401:
+	$error_code = "401 - Unauthorized";
+	$explanation = "This section requires a password or is otherwise protected. If you feel you have reached this page in error, please return to the login page and try again, or contact the webmaster if you continue to have problems.";
+	$redirect_to = "";
+	break;
+
+	# "403 - Forbidden"
+	case 403:
+	$error_code = "403 - Forbidden";
+	$explanation = "This section requires a password or is otherwise protected. If you feel you have reached this page in error, please return to the login page and try again, or contact the webmaster if you continue to have problems.";
+	$redirect_to = "";
+	break;
+
+	# "404 - Not Found"
+	case 404:
+	$error_code = "404 - Not Found";
+	$explanation = "The requested resource '" . $page_redirected_from . "' could not be found on this server. Please verify the address and try again.";
+	$redirect_to = $server_url . "wiki" . $end_of_path;
+	break;
+
+	# "500 - Internal Server Error"
+	case 500:
+	$error_code = "500 - Internal Server Error";
+	$explanation = "The server experienced an unexpected error. Please verify the address and try again.";
+	$redirect_to = "";
+	break;
+}
+?&gt;
+
+&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;
+&lt;html xmlns="http://www.w3.org/1999/xhtml"&gt;
+&lt;head&gt;
+
+	&lt;link rel="Shortcut Icon" href="/favicon.ico" type="image/x-icon" /&gt;
+&lt;?php
+	if ($redirect_to != "")
+	{
+?&gt;
+
+	&lt;meta http-equiv="Refresh" content="5; url='&lt;?php print($redirect_to); ?&gt;'"&gt;
+&lt;?php
+	}
+?&gt;
+
+	&lt;title&gt;Page not found: &lt;?php print ($redirect_to); ?&gt;&lt;/title&gt;
+
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;h1&gt;Error Code &lt;?php print ($error_code); ?&gt;&lt;/h1&gt;
+
+&lt;p&gt;The &lt;a href="http://en.wikipedia.org/wiki/Uniform_resource_locator"&gt;URL&lt;/a&gt; you requested was not found. &lt;?PHP echo($explanation); ?&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Did you mean to type &lt;a href="&lt;?php print ($redirect_to); ?&gt;"&gt;&lt;?php print ($redirect_to); ?&gt;&lt;/a&gt;?&lt;/strong&gt; You will be automatically redirected there in five seconds.&lt;/p&gt;
+
+&lt;p&gt;You may also want to try starting from the home page: &lt;a href="&lt;?php print ($server_url); ?&gt;"&gt;&lt;?php print ($server_url); ?&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;i&gt;A project of &lt;a href="&lt;?php print ($server_url); ?&gt;"&gt;&lt;?php print ($server_url); ?&gt;&lt;/a&gt;.&lt;/i&gt;&lt;/p&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+</div>
+<p>Style the page so that it fits with the rest of your site and you're done with basic error handling.</p>
+<h2><span id="See_also" class="mw-headline wysiwyg-font-size-x-large">See also</span></h2>
+<p><span class="mw-headline wysiwyg-font-size-large">Internal links</span></p>
+<ul>
+<li><a href="/hc/en-us/articles/216041267">SSH overview</a></li>
+<li><a href="/hc/en-us/articles/214202188">PHP overview</a></li>
+<li><a style="background-color: #ffffff;" href="/hc/en-us/articles/217738987"><span class="mw-headline">What can I do with an .htaccess file?</span></a></li>
+</ul>
+<p><span class="mw-headline wysiwyg-font-size-large">External links</span></p>
+<ul>
+<li><a class="external text" href="http://httpd.apache.org/docs/2.2/custom-error.html" rel="nofollow">Apache Docs - Custom Errors Responses</a></li>
+<li><a class="external text" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html" rel="nofollow">HTTP/1.1 Status Code Definitions</a> (see specifically the 4xx and 5xx codes)</li>
+</ul>

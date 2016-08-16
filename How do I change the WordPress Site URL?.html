@@ -1,0 +1,114 @@
+<p>If needed, you may wish to change the domain name for your WordPress site.</p>
+<p>You can use the following steps to ensure it's done properly, as there are a few important settings that must me made in order to make the switch.</p>
+<h2><span id="Introduction">Introduction</span></h2>
+<p>The following are instructions for moving a WordPress installation from one URL to a different one. There are two different cases for moving a WordPress install, as shown below. The first case shows a WP site move from a sub-directory to its parent domain. The second case shows a WP site move from one fully hosted domain to a different one.</p>
+<ul>
+<li><strong>Case 1:</strong> Moving from a sub-directory to a parent domain or vice versa. An example of this is to move from <a class="external free" href="http://example.com/blog" rel="nofollow">http://example.com/blog</a> to <a class="external free" href="http://example.com" rel="nofollow">http://example.com</a></li>
+<li><strong>Case 2:</strong> Moving from one domain to a completely different domain name. An example of this is to move from <a class="external free" href="http://example.com" rel="nofollow">http://example.com</a> to <a class="external free" href="http://dreamhost.com" rel="nofollow">http://dreamhost.com</a></li>
+</ul>
+<p>If the domain will remain the same and the first case more closely matches what you wish to accomplish, then you can ignore the "Getting Started" section below and proceed to the Changing the base URL set in your WordPress settings section. If the second case more closely matches what you wish to accomplish, then begin with the Getting Started section.</p>
+<h2><span id="Getting_Started">Getting Started</span></h2>
+<p>Since WordPress only works properly on a domain that is Fully Hosted, you must make sure that the new domain you wish to move your site to is Fully Hosted in the DreamHost system. In the above example (Case 2), the site is moved from one domain to a completely new one.</p>
+<p>Make sure that the new domain is:</p>
+<ul>
+<li>fully hosted at DreamHost, and</li>
+<li>fully hosted under the same FTP user as the old domain as it will make it easier when it comes to moving the WordPress files.</li>
+</ul>
+<p>For more information on adding a hosting to a domain, see the <a href="/hc/en-us/articles/215416227-How-do-I-add-a-domain-">Adding domains</a> article.</p>
+<h2><span id="Changing_the_base_URL_set_in_your_WordPress_settings">Changing the base URL set in your WordPress settings</span></h2>
+<p>WordPress relies heavily on a base URL in order to properly load your media, pages, and so on. Since you are moving the WordPress site to a different URL, you also must update the base URL set within your WordPress site's settings in order to reflect the URL changes.</p>
+<ol>
+<li>Log into your WordPress Dashboard.
+<dl>
+<dd><img src="https://kbimages.objects-us-west-1.dream.io/images/01_Change_wordpress_site_url.fw.png" alt="01 Change wordpress site url.fw.png" width="312" height="199" /></dd>
+</dl>
+</li>
+<li>Navigate over to <a class="external text" href="http://codex.wordpress.org/Settings_General_SubPanel" rel="nofollow"><strong>Settings &gt; General</strong></a>.</li>
+<li>Locate the <em>"WordPress Address (URL)"</em> and <em>"Site Address (URL)"</em>, and then write down the <strong>EXACT</strong> URL listed for <em>"WordPress Address (URL)"</em> which you will use later.
+<dl>
+<dd><img src="https://kbimages.objects-us-west-1.dream.io/images/02_Change_wordpress_site_url_in_the_dashboard.fw.png" alt="02 Change wordpress site url in the dashboard.fw.png" width="937" height="371" /></dd>
+</dl>
+</li>
+<li>Change the URL for both <em>"WordPress Address (URL)"</em> and <em>"Site Address (URL)"</em> to its new URL.</li>
+<li>Save your changes</li>
+<li>Log out of your WP dashboard and close your browser's window, but do not attempt to load the site just yet.</li>
+</ol>
+<h2><span id="Changing_the_base_URL_using_PhpMyAdmin">Changing the base URL using phpMyAdmin</span></h2>
+<p>If you cannot access the WordPress site through your user, you can instead use PhpMyAdmin to update the URL.</p>
+<p>Visit the following article for more information on how to log into phpMyAdmin:</p>
+<ul>
+<li><a href="/hc/en-us/articles/221610868-phpMyAdmin-Finding-your-login-credentials">Finding your phpMyAdmin login credentials</a></li>
+</ul>
+<ol>
+<li>Open phpMyAdmin.</li>
+<li>Look for your wp_options table after selecting the appropriate database with which the WordPress installation is associated.
+<dl>
+<dd><img src="https://kbimages.objects-us-west-1.dream.io/images/03_Change_wordpress_site_url_phpmyadmin.fw.png" alt="03 Change wordpress site url phpmyadmin.fw.png" width="1026" height="399" /></dd>
+</dl>
+</li>
+<li>Scroll to the wp_options row and select the first icon under the actions tab.
+<dl>
+<dd><em>When you scroll over these options, "browse" will appear.</em></dd>
+<dd><img src="https://kbimages.objects-us-west-1.dream.io/images/04_Change_wordpress_site_url_phpmyadmin.fw.png" alt="04 Change wordpress site url phpmyadmin.fw.png" width="648" height="99" /></dd>
+</dl>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>The two options, the Siteurl and Home, determine the WordPress URL and have the same affect as making the changes in the General Settings area of WordPress area; which if unavailable due to errors, is a good alternative.</p>
+</div>
+</div>
+</li>
+<li>Select the pencil option to the left.
+<dl>
+<dd><img src="https://kbimages.objects-us-west-1.dream.io/images/04.5_Change_wordpress_site_url_phpmyadmin.fw.png" alt="04.5 Change wordpress site url phpmyadmin.fw.png" width="778" height="325" /></dd>
+</dl>
+</li>
+<li>Alter the URL by typing in a new one.</li>
+<li>Click the <strong>Go</strong> button to save the settings.</li>
+</ol>
+<h2><span id="Moving_the_actual_wordpress_files">Moving the actual WordPress files</span></h2>
+<p>You can use FTP, SFTP, or SSH to move your WordPress files. As mentioned previously, keeping the old domain and the new domain on the same user simplifies this process.</p>
+<p>If you choose to use FTP or SFTP for example, you can move the files and folders within the server as your user has access to both domains.</p>
+<h2><span id="Correcting_any_broken_paths">Correcting any broken paths</span></h2>
+<dl>
+<dd></dd>
+<dd></dd>
+</dl>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Before you proceed, you should back up your database since the following changes may cause issues. For more information on how to backup up your database, visit the following article:</p>
+<ul>
+<li><a href="/hc/en-us/articles/215039758-How-do-I-backup-my-database-">How do I backup my MySQL database?</a></li>
+</ul>
+</div>
+</div>
+<ol>
+<li>Once you've moved the WordPress site’s files to the new domain’s web directory, check to see if you are able to view the site.
+<ul>
+<li>You may notice that the site appears broken, as if the CSS and media files are missing.</li>
+<li>They are not missing, but the URLs are incorrect (assuming you properly moved the new data over to the new domain’s directory).</li>
+</ul>
+</li>
+<li>Update the hardcoded URLs which are defined in the database.</li>
+<li>Use the following WordPress plugin which can help you update the URL paths that are experiencing problems:
+<ul>
+<li><a class="external free" href="https://wordpress.org/plugins/better-search-replace/" rel="nofollow">https://wordpress.org/plugins/better-search-replace/</a></li>
+</ul>
+</li>
+<li>If you are familiar with the command line, run the following command for the same effect (assuming you saved the old WordPress address):
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp search-replace http://example.com http://new.example.com --dry-run</span></pre>
+</div>
+<ul>
+<li>The --dry-run call at the end tests the address</li>
+</ul>
+</li>
+<li>If the changes make sense to you, then run the above command again without the 'dry-run' call.</li>
+</ol>
+<h2><span id="See_also">See also</span></h2>
+<ul>
+<li><a href="/hc/en-us/articles/215525287-WordPress-overview">WordPress overview</a></li>
+<li><a href="/hc/en-us/articles/214693248-WordPress-wp-cli-overview">WordPress wp-cli overview</a></li>
+<li><a href="/hc/en-us/articles/214693268-WordPress-wp-config-php-overview">WordPress wp-config.php overview</a></li>
+</ul>

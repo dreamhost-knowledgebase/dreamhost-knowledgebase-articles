@@ -1,0 +1,66 @@
+<p>It's possible to install Python packages on your <a href="/hc/en-us/articles/215280058-Virtual-Private-Server-overview-VPS-">VPS</a> <a href="/hc/en-us/articles/216994417-How-to-manage-your-VPS-without-an-admin-user">without using 'sudo'</a>. This requires to use Python's <a href="/hc/en-us/articles/215489338-Installing-virtualenv-and-custom-modules-in-Python">Virtual Environment (virtualenv)</a>: a tool to keep the dependencies required by different projects in separate places, by creating virtual Python environments for them.</p>
+<p>The following steps detail how to install boto-rsync on a DreamHost VPS as a simple user, without using 'sudo'.</p>
+<ol>
+<li>In your users home directory, create a new directory for the Python project and move into it:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">mkdir my_python</span>
+<span class="server">[server]$ </span><span class="command">cd my_python/</span>
+</pre>
+</div>
+</li>
+<li>Create the virtual enviroment:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">virtualenv venv</span>
+<span class="cmdoutput">New python executable in venv/bin/python
+Installing
+distribute..................................done.
+Installing pip...............done.</span>
+</pre>
+</div>
+<p>The command makes a copy of the Python interpreter and libraries from the VPS operating system and puts them in the /venv directory.</p>
+</li>
+<li>To activate the virtual environment, run the following command:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">source venv/bin/activate</span>
+<span class="server">(venv)$ </span>
+</pre>
+</div>
+<p>If you now run 'which python' you can see that once the virtual environment is active, the Python interpreter used is no longer the default system version.</p>
+</li>
+<li>Run the following command to confirm the Python interpreter is now located in your virtualenv.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">(venv)$ </span><span class="command">which python
+<span class="cmdoutput">/home/$YOURUSER/my_awscli/venv/bin/python</span>
+</span></pre>
+</div>
+<div class="highlight">Now you're ready to <a href="/hc/en-us/articles/217473218-How-to-use-boto-rsync-with-DreamObjects">install boto-rsync to use with DreamObjects</a>.</div>
+</li>
+<li>Use 'pip' to install.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">(venv)$ </span><span class="command">pip install boto_rsync</span>
+<span class="cmdoutput">Downloading/unpacking boto-rsync
+Downloading boto_rsync-0.8.1.tar.gz
+Running setup.py egg_info for package boto-rsync
+----
+Downloading/unpacking boto&gt;=2.2.1 (from boto-rsync)
+Downloading boto-2.40.0.tar.gz (1.4Mb): 1.4Mb downloaded
+Running setup.py egg_info for package boto
+<em>[... a bunch of output...]</em> 
+Successfully installed boto-rsync boto
+Cleaning up...
+</span></pre>
+</div>
+</li>
+</ol>
+<p>The installation is now complete. You can now use <a href="/hc/en-us/articles/217473218">boto-rsync</a> to upload or download files in DreamObjects. For example:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">(venv)$ </span><span class="command">boto-rsync -a $ACCESS_KEY -s $SECRET_KEY --endpoint objects-us-west-1.dream.io test s3://stefphone test</span>
+<span class="cmdoutput">32.0b of  32.0b    100%     32.0b/s    0:00:00----</span>
+</pre>
+</div>
+<h2>See also</h2>
+<ul>
+<li><a href="/hc/en-us/articles/214879308-VPS-optimization-overview">VPS</a></li>
+<li><a href="/hc/en-us/articles/215489338-Installing-virtualenv-and-custom-modules-in-Python">Installing virtualenv and custom modules in Python</a></li>
+<li><a href="/hc/en-us/articles/217473218-How-to-use-boto-rsync-with-DreamObjects">How to use boto-rsync with DreamObjects</a></li>
+</ul>

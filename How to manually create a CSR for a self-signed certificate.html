@@ -1,0 +1,85 @@
+<p>You are also able to manually create a CSR via Secure Shell. To proceed with these steps, you must have a Shell user configured in your panel and a general knowledge of the UNIX Shell.</p>
+<p>View the following articles for further information:</p>
+<ul>
+<li><a href="/hc/en-us/articles/216385837-Enabling-Shell-access">Enabling Shell Access</a></li>
+<li><a href="/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
+</ul>
+<dl>
+<dd></dd>
+<dd></dd>
+</dl>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>DreamHost support cannot provide assistance with these steps. You’ll need to have basic knowledge of the UNIX shell to complete this procedure.</p>
+</div>
+</div>
+<p> </p>
+<ol>
+<li>Connect to your domain via SSH. Visit the SSH article for instructions.</li>
+<li>Once logged into your server via SSH, use OpenSSL to create your private key which you will use to create the CSR.</li>
+<li>Type in the following to open the OpenSSL command line tool.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">openssl</span></pre>
+</div>
+<dl>
+<dd><em>Your command prompt now changes to OpenSSL&gt; which means you’re ready to run the following commands.</em></dd>
+</dl>
+</li>
+<li>Generate a new RSA private key by entering the following command without a password:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">OpenSSL&gt; </span><span class="command">genrsa -out private.key 2048</span>
+Generating RSA private key, 2048 bit long modulus
+......................+++
+......................+++
+e is 65537 (0x10001)</pre>
+</div>
+<dl>
+<dd><em>This will create a private key named private.key. You’ll use this to create the CSR.</em></dd>
+</dl>
+</li>
+<li>Create the CSR by running the following command:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">OpenSSL&gt; req -new -sha256 -key private.key -out file.csr</span></pre>
+</div>
+<dl>
+<dd><em>You are then prompted for the following information:</em></dd>
+</dl>
+<dl>
+<dd></dd>
+<dd></dd>
+</dl>
+<div class="preboxcontainer">
+<pre class="prebox">"Common Name" is where you put your domain name, e.g., example.com or www.example.com.</pre>
+</div>
+<p> </p>
+<div class="preboxcontainer">
+<pre class="prebox">You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN. 
+There are quite a few fields but you can leave some blank 
+For some fields there will be a default value, 
+If you enter '.', the field will be left blank.-----
+Country Name (2 letter code) [AU]: 
+State or Province Name (full name) [Some-State]: 
+Locality Name (eg, city) []: 
+Organization Name (eg, company) [Internet Widgits Pty Ltd]: 
+Organizational Unit Name (eg, section) []: 
+Common Name (eg, YOUR name) []: 
+Email Address []: 
+
+Please enter the following 'extra' attributes 
+to be sent with your certificate request 
+A challenge password []: (Enter a . and click ENTER) 
+An optional company name []:(Enter a . and click ENTER)</pre>
+</div>
+</li>
+</ol>
+<p>Your CSR is now created. Based on the command you ran above, this file is named file.csr.</p>
+<p><span class="wysiwyg-font-size-x-large"><strong>See also</strong></span></p>
+<ul>
+<li><a href="/hc/en-us/articles/216041267">SSH overview</a></li>
+<li><a href="/hc/en-us/articles/215088748">Is DreamHost able to create a CSR for me? </a></li>
+<li><a href="/hc/en-us/articles/215767277">How to create a CSR in the panel for a self-signed certificate </a></li>
+<li><a href="/hc/en-us/articles/215767357">How to manually create a CSR for a professionally-signed certificate </a></li>
+</ul>

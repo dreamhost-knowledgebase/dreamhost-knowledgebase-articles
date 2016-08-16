@@ -1,0 +1,63 @@
+<p>Nginx is a high performance web server used as an alternative to the popular Apache web server. WordPress works great on Nginx machines, however you need to adjust some files to get it to work as it would on an Apache server.</p>
+<p>This article shows you how to view your Analog stats after enabling stats in your DreamHost panel.</p>
+<h2>WordPress stats and Apache</h2>
+<p>Site statistics are not initially available when running WordPress. When WordPress is running on an Apache server, you can use an .htaccess file to allow the /stats subdirectory to serve your site statistics. View the following article for details:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/217068087-Making-stats-accessible-with-an-htaccess-file">Making stats available with an .htaccess file</a></li>
+</ul>
+<h2>WordPress stats and Nginx</h2>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>After making any adjustments to a .conf file, you must <a href="https://help.dreamhost.com/hc/en-us/articles/216454967-How-to-reload-and-restart-Nginx-Dedicated-servers-only-">restart your VPS or reload your Dedicated server</a>.</p>
+</div>
+</div>
+<p>When using Nginx, your .htaccess file does not function. So you must add code to another file in order to view your stats. Your Nginx WordPress site has two directories:</p>
+<p>Your actual web directory (aka document root)</p>
+<dl>
+<dd><strong>/home/username/example.com</strong></dd>
+</dl>
+<p>Your nginx/example.com directory where ALL config files should be placed</p>
+<dl>
+<dd><strong>/home/username/nginx/example.com</strong></dd>
+</dl>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>View the <a href="https://help.dreamhost.com/hc/en-us/articles/216455077-Nginx-configuration-file-locations">Nginx configuration file locations</a> article for further details.</p>
+</div>
+</div>
+<p>In this /home/username/nginx/example.com directory, create a file titled wordpress.conf. Add the following rule at the very beginning of this wordpress.conf file.</p>
+<div class="preboxcontainer">
+<pre class="prebox">### stats
+	if ($request_uri ~* ^/(stats|failed_auth\.html).*$)
+{
+	break;
+}
+</pre>
+</div>
+<p>Now when you visit example.com/stats, a login prompt displays allowing you to log in and view your site statistics.</p>
+<h2>Enabling stats and permalinks</h2>
+<p>WordPress uses something called 'permalinks' to make the URLs easier to read. When running Nginx, add the following two sections to get both site statistics and permalinks to function.</p>
+<div class="preboxcontainer">
+<pre class="prebox">### stats
+if ($request_uri ~* ^/(stats|doc|failed_auth\.html).*$)
+{
+	break;
+}
+### Permalinks
+if (!-e $request_filename) {
+  rewrite ^.*$ /index.php last;
+}
+</pre>
+</div>
+<h2>Troubleshooting</h2>
+<p>If you've enabled a stats user on the <a href="https://panel.dreamhost.com/index.cgi?tree=domain.stats&amp;">(Panel &gt; 'Domains' &gt; 'Site Statistics')</a> page but find stats are still not accessible, please <a href="https://help.dreamhost.com/hc/en-us/articles/218084068-Contacting-support-overview">contact DreamHost support</a>.</p>
+<h2>See also</h2>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216431827-Nginx-overview">Nginx overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/217068087-Making-stats-accessible-with-an-htaccess-file">Making stats accessible with an .htaccess file</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216510258-Panel-statistics-overview">Panel statistics overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216661708-Analog-stats-overview">Analog stats overview</a></li>
+</ul>

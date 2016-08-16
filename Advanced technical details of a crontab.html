@@ -1,0 +1,233 @@
+<h2>Basic details</h2>
+<ul>
+<li>The crontab files are where the lists of jobs and other instructions to the cron daemon are kept. Each user at DreamHost has their own individual crontab file and there is a system wide crontab file at /etc/crontab (but this file can only be edited by a system administrator).</li>
+</ul>
+<ul>
+<li>Crontab files are simple text files that have a particular format. Each line of a crontab file follows a particular format as a series of fields, separated by spaces and/or tabs. Each field can have a single value or a series of values. A single cron job should take up exactly one line, but this can be a long line (more than 80 characters).</li>
+</ul>
+<ul>
+<li>Each line has five time/date fields, followed by a command, followed by a newline character (’\n’). A common problem is not including a newline, so hit 'Enter/Return' a time or three at the end of your command.</li>
+</ul>
+<ul>
+<li>Another common problem is automatic word-wrap breaking up a long line into multiple lines, so make sure your text editor doesn't do this.</li>
+</ul>
+<ul>
+<li>Blank lines and leading spaces and tabs are ignored. Lines whose first non-space character is a hash-sign (#) are ignored as they are considered comments. Note that comments are not allowed on the same line as cron commands, since they are interpreted as being part of the command. Similarly, comments are not allowed on the same line as environment variable settings (like MAILTO).</li>
+</ul>
+<h2><span id="Date.2FTime_fields" class="mw-headline">Date/Time fields</span></h2>
+<p>The first five fields of the line are the date and time field which specify how frequently and when to execute a command. When adding the cron job in the DreamHost panel, the Date/Time is added for you automatically based on your 'When to run' setting.</p>
+<table border="1" cellspacing="0" cellpadding="4">
+<tbody>
+<tr><th>Field no.</th><th>Description</th><th>Permitted values</th></tr>
+<tr>
+<td>1</td>
+<td>minute</td>
+<td>0-59</td>
+</tr>
+<tr>
+<td>2</td>
+<td>hour</td>
+<td>0-23</td>
+</tr>
+<tr>
+<td>3</td>
+<td>day of the month</td>
+<td>1-31</td>
+</tr>
+<tr>
+<td>4</td>
+<td>month</td>
+<td>1-12</td>
+</tr>
+<tr>
+<td>5</td>
+<td>day of the week</td>
+<td>0-7</td>
+</tr>
+</tbody>
+</table>
+<p>Note: For day of the week, both 0 and 7 are considered Sunday. The time is based on that of the server running cron.</p>
+<p>Another (graphical) way of looking at these fields.</p>
+<div class="preboxcontainer">
+<pre class="prebox"> # * * * * *  command to execute
+ # │ │ │ │ │
+ # │ │ │ │ │
+ # │ │ │ │ └───── day of week (0 - 6) (0 to 6 are Sunday to Saturday, or use names; 7 is Sunday, the same as 0)
+ # │ │ │ └────────── month (1 - 12)
+ # │ │ └─────────────── day of month (1 - 31)
+ # │ └──────────────────── hour (0 - 23)
+ # └───────────────────────── min (0 - 59)
+</pre>
+</div>
+<p>There are several ways of specifying multiple values in these fields:</p>
+<ul>
+<li>The comma (',') operator specifies a list of values.
+<ul>
+<li>1,3,4,7,8</li>
+</ul>
+</li>
+<li>The dash ('-') operator specifies a range of values.
+<ul>
+<li>1-6</li>
+<li>This is equivalent to "1,2,3,4,5,6".</li>
+</ul>
+</li>
+<li>The asterisk ('*') operator (frequently known as a wildcard) specifies all possible values for a field. For example, an asterisk in the hour (second) field would be equivalent to 'every hour'.</li>
+<li>The slash ('/') operator can be used in conjunction with an asterisk to skip a given number of values. Example:
+<ul>
+<li>/3</li>
+<li>This means to skip to every third value. So "*/3" in the hour field is equivalent to "0,3,6,9,12,15,18,21"; "*" specifies 'every hour' but the "/3" means that only the first, fourth, seventh, etc. values given by "*" are used.</li>
+</ul>
+</li>
+</ul>
+<p>You can also use one of these special strings in place of the time/date fields.</p>
+<table class="wikitable">
+<tbody>
+<tr><th>Entry</th><th>Description</th><th>Equivalent to</th></tr>
+<tr>
+<td><code>@yearly (or @annually)</code></td>
+<td>Run once a year at midnight on January 1</td>
+<td><code>0 0 1 1 *</code></td>
+</tr>
+<tr>
+<td><code>@monthly</code></td>
+<td>Run once a month at midnight on the first day of the month</td>
+<td><code>0 0 1 * * </code></td>
+</tr>
+<tr>
+<td><code>@weekly</code></td>
+<td>Run once a week at midnight on Sunday morning</td>
+<td><code>0 0 * * 0 </code></td>
+</tr>
+<tr>
+<td><code>@daily (or @midnight)</code></td>
+<td>Run once a day at midnight</td>
+<td><code>0 0 * * *</code></td>
+</tr>
+<tr>
+<td><code>@hourly</code></td>
+<td>Run once an hour at the beginning of the hour</td>
+<td><code>0 * * * *</code></td>
+</tr>
+<tr>
+<td><code>@reboot</code></td>
+<td>Run at startup (of the cron daemon)</td>
+<td><code>@reboot</code></td>
+</tr>
+</tbody>
+</table>
+<p>Review the following Wikipedia article for further information:</p>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Cron#Nonstandard_predefined_scheduling_definitions">Cron – Nonstandard predefined scheduling definitions</a></li>
+</ul>
+<h2><span id="Output" class="mw-headline">Output</span></h2>
+<p>The output of the cron job is determined by what is sent to the terminal as a result of the commands/script that are executed. By default, all output is emailed to the location specified in the <a href="/hc/en-us/articles/215767107-Execution-environment-of-a-cron-job">MAILTO</a> variable (see the MAILTO variable requirement section for more information). As noted above, if your cron job command doesn't create any output on the command line then no email is sent.</p>
+<p>You can provide special instructions for the standard out (STDOUT) and standard error (STDERR) output by using the "&gt;" operator. When you use "&gt;" without a number before it, it defaults to "1&gt;". This is the standard (non-error) output.</p>
+<p>When you use "2&gt;" you are specifying what to do with the error output. So, for example, "&gt;my_file.txt" would redirect standard output to a file called "my_file.txt", and "2&gt;my_errors.txt" would redirect the errors to a file called "my_errors.txt".</p>
+<h2><span id="Permissions" class="mw-headline">Permissions</span></h2>
+<p>By default, files created on DreamHost's servers have a permissions level of 644. If you choose to execute a script via cron, you may need to set the permissions for the file to 744 using <a class="external text" href="http://linux.die.net/man/1/chmod" rel="nofollow">chmod</a> in order to allow it to execute properly.</p>
+<h3><span id="Examples" class="mw-headline">Examples</span></h3>
+<ul>
+<li><strong>Example 1</strong>: This runs a command at 4:10 PM PST/PDT, and email you the regular and error output to the destination specified by MAILTO.</li>
+</ul>
+<div class="preboxcontainer">
+<pre class="prebox">10 16 * * * /home/username/bin/yourscript.pl
+</pre>
+</div>
+<p> </p>
+<ul>
+<li><strong>Example 2</strong>: This runs a command at 2:00 AM PST/PDT on Saturday, and the only output is errors.</li>
+</ul>
+<div class="preboxcontainer">
+<pre class="prebox">0 2 * * 6 /home/username/weekly/weekly-pruning.sh &gt; /dev/null
+</pre>
+</div>
+<p> </p>
+<ul>
+<li><strong>Example 3</strong>: This runs at midnight on New Years Day (January 1st), and there is no output.</li>
+</ul>
+<div class="preboxcontainer">
+<pre class="prebox">0 0 1 1 0 /home/you/happy.new.years.pyc &gt;/dev/null 2&gt;&amp;1
+</pre>
+</div>
+<p>2&gt;&amp;1 is a special redirect that sends the standard error (“2&gt;”) output to the same place as the standard out (“&gt;” or “1&gt;”) output.</p>
+<p> </p>
+<ul>
+<li><strong>Example 4</strong>: This runs a PHP script called cron.php at the top of every hour.</li>
+</ul>
+<div class="preboxcontainer">
+<pre class="prebox">0 * * * * wget -O /dev/null http://www.example.com/cron.php
+</pre>
+</div>
+<p> </p>
+<ul>
+<li><strong>Example 5</strong>: This runs a local script (i.e. hosted at DreamHost) every 15 minutes.</li>
+</ul>
+<div class="preboxcontainer">
+<pre class="prebox">*15 * * * * /usr/local/bin/perl /home/username/example.com/myscript.pl
+</pre>
+</div>
+<p> </p>
+<p><strong>CONTINUE HERE</strong></p>
+<ul>
+<li><strong>Example 6</strong>: This runs an external script (i.e. hosted elsewhere) every 30 minutes using curl.</li>
+</ul>
+<div class="preboxcontainer">
+<pre class="prebox">*30 * * * * /usr/bin/curl -s http://example.com/send.php &amp;&gt; /dev/null
+</pre>
+</div>
+<p>&amp;&gt;/dev/null is an abbreviation for 1&gt; /dev/null 2&gt; &amp;1. It redirects both file descriptor 2 (STDERR) and descriptor 1 (STDOUT) to /dev/null.</p>
+<p>View <a class="external free" href="http://unix.stackexchange.com/a/70971" rel="nofollow">http://unix.stackexchange.com/a/70971</a> for more information.</p>
+<h2><span id="Manually_editing_crontab" class="mw-headline">Manually editing crontab</span></h2>
+<p>To edit the your crontab manually you'll have to log in to your server via <a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a>. You can replace your existing crontab with a file you have uploaded using the following command:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">crontab /home/username/filename</span>
+</pre>
+</div>
+<p>You can also directly edit your crontab by executing the following command:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">crontab -e</span>
+</pre>
+</div>
+<p>Once you've saved your changes and exited the text editor, you can check that the change was successful using the following command:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">crontab -l</span>
+</pre>
+</div>
+<ul>
+<li>To remove your crontab and start fresh:</li>
+</ul>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">crontab -r
+</span></pre>
+</div>
+<p>If you are logged in as a Dedicated server admin user, you can edit the crontab file directly. It is stored here:</p>
+<div class="preboxcontainer">
+<pre class="prebox">/var/spool/cron/crontabs/youruser
+</pre>
+</div>
+<p>You’ll need to use <code>sudo</code> on your Dedicated server (or start an interactive session as the root user with <code>sudo -i</code>) to access that file. </p>
+<div id="mw-content-text" class="mw-content-ltr" dir="ltr" lang="en">
+<dl>
+<dd></dd>
+<dd></dd>
+</dl>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>If you require sudo/admin access, you must upgrade to a Dedicated server.</p>
+</div>
+</div>
+<p>Example (opening the file with the 'vi' text editor):</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">sudo vi /var/spool/cron/crontabs/youruser</span>
+</pre>
+</div>
+</div>
+<p><span class="wysiwyg-font-size-x-large"><strong>See also</strong></span></p>
+<ul>
+<li><a href="/hc/en-us/articles/216041267">SSH overview</a></li>
+<li><a href="/hc/en-us/articles/215088608">Crontab overview </a></li>
+<li><a href="/hc/en-us/articles/215767107">Execution environment of a cron job </a></li>
+<li><a href="/hc/en-us/articles/215088668">How do I create a cron job? </a></li>
+</ul>

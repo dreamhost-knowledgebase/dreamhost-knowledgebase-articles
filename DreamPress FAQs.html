@@ -1,0 +1,105 @@
+<h2>How much traffic can my site take?</h2>
+<p>DreamHost does not limit the amount of visitors to your site, or have any overages for traffic. Many customers asked for a direct comparison of competitor offerings, so DreamHost took a look at the performance of DreamPress 2 using loader.io, an independent benchmarking tool. This estimate is based on 50-100 un-cached visitors per minute (averaging 3 page views each) on a basic WordPress install filled with content. Under most circumstances, your site will be able to sustain significantly higher traffic levels due to DreamPress 2's multi-level caching systems.</p>
+<h2>How many sites can I have on one DreamPress instance?</h2>
+<p>At this time, you can only host one domain name per DreamPress account. Need another instance of DreamPress for another site? No problem. Additional instances of DreamPress can be ordered and managed through your DreamHost control panel.</p>
+<h2>Is Multisite/WPMU supported?</h2>
+<p>Not at this time.</p>
+<h2>Is email provided with DreamPress?</h2>
+<p>Yes. Email service is available on DreamPress-only accounts.</p>
+<h2>Is Secure Hosting (https) supported by DreamPress?</h2>
+<p>Yes. You can use a secure connection on your site if you choose to. Bear in mind, while DreamHost caches all safe https requests, it still won't be quite as fast as a non-https site.</p>
+<h2>How do I use SSL on DreamPress?</h2>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>In the past, .htaccess rewrite rules were required for HTTP:X-Forwarded-Proto, but this is no longer necessary. No .htaccess customization is needed and DreamPress with HTTPS works using only the changes mentioned below.</p>
+</div>
+</div>
+<p>First, make sure your site is properly set up for HTTPS. You will need to have an SSL certificate applied to your site, but you don't need a Unique IP because you already have one with DreamPress – just add the certificate.</p>
+<p>To set WordPress for SSL:</p>
+<ol>
+<li>Change your Home and Site URLs to use https (go to Settings -&gt; General and change the URLs there).</li>
+<li>Add the following two lines (above the line that says "Stop Editing Here”) to your wp-config.php file to set WordPress to 'secure' all the time:
+<div class="preboxcontainer">
+<pre class="prebox">define('FORCE_SSL', true); <br />define('FORCE_SSL_ADMIN',true);</pre>
+</div>
+</li>
+<li>If this is an existing site, change all your internal URLs to use the secure URL too in order to make the green lock appear in your browser bar.
+<ul>
+<li>You can use a plugin to do that, search/replace in your database, or <a href="/hc/en-us/articles/214693248-WordPress-wp-cli-overview">WP CLI</a> and run a search-replace command.</li>
+</ul>
+</li>
+</ol>
+<h2>Can I alter my PHP configuration for a DreamPress site?</h2>
+<p>You can find instructions on how to edit your php.ini in the following article:</p>
+<ul>
+<li><a href="/hc/en-us/articles/214200688-php-ini-overview">PHP.ini</a></li>
+</ul>
+<h2>Can I develop my site on DreamPress while it's hosted elsewhere?</h2>
+<p>You can use a dreamhosters.com subdomain to mirror the site content. Please check the following articles for instructions on how to set up the mirror:</p>
+<ul>
+<li><a href="/hc/en-us/articles/214695758-How-do-I-view-my-site-before-changing-my-DNS-">Viewing site before DNS change</a></li>
+<li><a href="/hc/en-us/articles/214828548-How-do-I-install-WordPress-before-my-DNS-is-pointed-to-DreamHost-">WordPress – Installing before you point your DNS to DreamHost</a></li>
+</ul>
+<h2>Can I create cronjobs with my DreamPress user?</h2>
+<p>By default, DreamPress users are created as SFTP users so support for cronjobs is not immediately available. See the following article for further instructions on how to change the user type:</p>
+<ul>
+<li><a href="/hc/en-us/articles/216385837-Enabling-Shell-access">Enabling Shell Access</a></li>
+</ul>
+<h2>How does WordPress caching work on DreamPress?</h2>
+<p>Your DreamPress install comes with a plugin called "<a href="https://wordpress.org/plugins/varnish-http-purge">Varnish HTTP Purge</a>", written by DreamHost WordPress developers. When active, the plugin automatically detects changes to your post content (be it an edit, a new post, or a comment on a post) and will flush the appropriate cache for you. The plugin runs on its own and requires no configuration for the majority of users.</p>
+<p>If you edit content outside of WordPress such as uploading media via SFTP or editing CSS directly, you need to use the "<strong>Purge</strong>" button in your WordPress Toolbar.</p>
+<h2>Can I use CloudFlare and Varnish together?</h2>
+<p>When you use CloudFlare or any other similar service, there's a proxy in front of the Varnish proxy. In general, this isn't a bad thing. The problem arises when the DNS sends the purge request to your domain name. When you have an additional proxy like CloudFlare, you don't want the request to go to the proxy; you want it to go instead to the Varnish server.</p>
+<p>To fix this, add the following to your wp-config.php file:</p>
+<div class="preboxcontainer">
+<pre class="prebox">define('VHP_VARNISH_IP','123.45.67.89');</pre>
+</div>
+<p>Replace "123.45.67.89" with the IP of your Varnish Server (not CloudFlare, Varnish). DO NOT put in http in this define statement.</p>
+<p>You can also set the option vhp_varnish_ip in the database. This will NOT take precedence over the define; it's just there to let hosts who are using something like wp-cli do this for you in an automated fashion:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp option add vhp_varnish_ip 123.45.67.89</span></pre>
+</div>
+<dl>
+<dd>
+<p><em>and</em></p>
+</dd>
+</dl>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp option update vhp_varnish_ip 123.45.67.890</span></pre>
+</div>
+<p>To find your Varnish IP, go to (<a href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;">Panel &gt; 'Domains' &gt; 'Manage Domains'</a>) and click on the <strong>DNS</strong> link beneath the domain. The IP address entry for the www or blank A record is your varnish server. For example:</p>
+<div class="preboxcontainer">
+<pre class="prebox">www A 208.97.157.172</pre>
+</div>
+<h2>Can I use other plugins besides your Varnish plugin for caching?</h2>
+<p>Yes, but DreamHost does not provide support for them. It's possible to set up W3 Total Cache, for example, to use Varnish. You may need to enter your Varnish IP address. To find that, go to (<a href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;">Panel &gt; 'Domains' &gt; 'Manage Domains'</a>) and click on the <strong>DNS</strong> link beneath the domain. The IP Address entry for <em>www</em> is your varnish server. For example:</p>
+<div class="preboxcontainer">
+<pre class="prebox">www A 208.97.157.172</pre>
+</div>
+<h2>Are there any plugins I can't use?</h2>
+<p>At this time, DreamHost has not banned customers from using any specific plugins. That said, there are some plugins that DreamHost does not recommend you use with DreamPress as they're not the best fit. In general, if a plugin uses PHP Sessions, it's not going to perform well with Varnish and, thus, DreamPress.</p>
+<ul>
+<li><a href="https://wordpress.org/plugins/bad-behavior/">Bad Behavior</a> – The way it sets cookies isn't 100% compatible with Varnish and can cause caching not to set.</li>
+<li><a href="http://wordpress.org/plugins/simple-session-support/">Simple Session Support</a> – Uses PHP Sessions.</li>
+<li>Captcha plugins – These generally apply cookies and/or sessions in a way that tells Varnish not to cache. Try not to use them on comment pages.</li>
+<li>Advanced Custom Fields – This doesn't always play well with Memcached. Many people have reported that it works better on PHP 5.5.</li>
+</ul>
+<h2>Can I have password protected folders?</h2>
+<p>Yes, but be careful. WordPress doesn't always play well with that, and Varnish won't know to flush the cache for that folder if it's <strong>not</strong> powered by WordPress. You may have to <a href="/hc/en-us/articles/215300647-How-do-I-purge-the-DreamPress-cache-">manually flush</a> the cache for that folder any time you update its contents.</p>
+<h2>How can I be sure my site is cached?</h2>
+<p>Since logged in users (that is, you) don't get the same cached page, this can be hard to figure out if you're not accustomed to looking at page headers. A useful tool is <a href="http://www.isvarnishworking.com/">http://www.isvarnishworking.com/</a> which will not only tell you <strong>if</strong> it's working, but also when it's not, so you can pinpoint the problem and troubleshoot.</p>
+<h2>What happened to DreamPress 1?</h2>
+<p>DreamPress customers were migrated to DreamPress 2.</p>
+<h2>What is the difference between using DreamPress 2 and shared hosting?</h2>
+<p>The primary difference are the servers DreamPress is hosted on. With DreamPress 2, all WordPress sites are hosted on their own isolated virtual private server. All MySQL databases are also hosted on an isolated virtual private server.</p>
+<p>In addition, WordPress is automatically installed on every instance of DreamPress 2. On a shared hosting plan, WordPress can be installed through the <a href="/hc/en-us/articles/215915837-How-do-I-install-a-One-Click-Install-">One-Click Install</a> feature located in the DreamHost control panel.</p>
+<h2>Is there only one DreamPress 2 plan?</h2>
+<p>Yes, at this time there is only one DreamPress 2 plan. However DreamHost is always working on improvements so additional plans may be available in the future.</p>
+<h2>Can I use IonCube Loader with DreamPress?</h2>
+<p><a href="/hc/en-us/articles/214897027-Enabling-ionCube-Loader">IonCube Loader</a> is not supported with DreamPress. IonCube's website states that it's purpose is to "makes it easy to protect PHP source code from easy observation, theft and change by compiling to bytecode." Since the WordPress software is open source, there is never a reason to use IonCube Loader to hide your code.</p>
+<p>If you absolutely require IonCube, the only options are to downgrade to a <a href="/hc/en-us/articles/215280058-Virtual-Private-Server-overview-VPS-">VPS</a> or <a href="/hc/en-us/articles/215560437-What-types-of-hosting-plans-are-available-">Shared</a> hosting plan.</p>
+<h2>See also</h2>
+<ul>
+<li><a href="/hc/en-us/articles/214581158-DreamPress-overview">DreamPress overview </a></li>
+</ul>

@@ -1,0 +1,119 @@
+<p><a class="external text" href="http://git.or.cz/" rel="nofollow">Git</a> is a free and open source distributed version control system designed to handle everything from small to very large projects with speed and efficiency. For further details, view the following page at Wikipedia:</p>
+<ul>
+<li><a class="new" title="W:Git (software) (page does not exist)" href="https://en.wikipedia.org/wiki/Git_%28software%29">Git at Wikipedia</a></li>
+</ul>
+<h2><span id="Pre-installed_Git" class="mw-headline">Pre-installed Git</span></h2>
+<p>Git is installed on all DreamHost servers. As of August 2016, the following version is installed:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">which git</span>
+<span class="cmdoutput">/usr/bin/git</span>
+<span class="server">[server]$ </span><span class="command">git --version</span>
+<span class="cmdoutput">git version 2.7.3</span>
+</pre>
+</div>
+<h2><span id="How_to_set_up_Git_for_the_first_time" class="mw-headline">How to set up Git for the first time</span></h2>
+<p>When you first set up you Git environment, you'll want to configure a few variables. View the following article for details:</p>
+<ul>
+<li><a class="external text" href="http://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup" rel="nofollow">First time Git setup</a></li>
+</ul>
+<h2><span id="Creating_your_identity" class="mw-headline">Creating your identity</span></h2>
+<p>The following two commands create your username and email address to be used with Git. View the SSH article for details on how to log into your server:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">git config --global user.name "John Doe"</span>
+<span class="server">[server]$ </span><span class="command">git config --global user.email johndoe@example.com</span>
+</pre>
+</div>
+<p>This creates a file named .gitconfig in your user's directory with the following content:</p>
+<div class="preboxcontainer">
+<pre class="prebox">[user]
+        name = John Doe
+        email = johndoe@example.com
+</pre>
+</div>
+<p>Then, check your settings that Git can find by running the following:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">git config --list</span>
+<span class="cmdoutput">user.name=John Doe
+user.email=johndoe@example.com</span>
+</pre>
+</div>
+<h2><span id="Setting_up_the_repository_and_commit" class="mw-headline">Setting up the repository and commit</span></h2>
+<ol>
+<li>Navigate to the directory of your application. In the example below, the application is in the directory named /mygitapp.</li>
+<li>Run the following to initialize the new repository:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">git init
+<span class="cmdoutput">Initialized empty Git repository in /home/username/mygitapp/.git/</span>
+</span></pre>
+</div>
+<dl>
+<dd>This command creates the /.git directory.</dd>
+</dl>
+</li>
+<li>Add all files in your app to the Git repository. The following command shows how to add all files:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">git add .</span>
+</pre>
+</div>
+<dl>
+<dd>You can also choose specific files if you wish.</dd>
+</dl>
+</li>
+<li>Run the <a class="external text" href="http://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository" rel="nofollow">status command</a> to confirm which files are in the staging area:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">git status</span>
+<span class="cmdoutput"># On branch master
+#
+# Initial commit
+#
+# Changes to be committed:
+#   (use "git rm --cached &lt;file&gt;..." to unstage)
+#
+#       new file:   file1.txt
+#       new file:   file2.txt
+#       new file:   file3.txt
+#       new file:   subdirectory1/file4.txt
+#</span>
+</pre>
+</div>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>In this example, you can see the following files are being tracked and ready to be committed:</p>
+<ul>
+<li>file1.txt</li>
+<li>file2.txt</li>
+<li>file3.txt</li>
+<li>file4.txt (Note how this file is in the /subdirectory1 directory)</li>
+</ul>
+</div>
+</div>
+</li>
+<li>If you're sure you're ready to commit these versions of the files, run the following command:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">git commit -m "first commit"</span>
+<span class="cmdoutput">
+[master (root-commit) 0bd2848] first commit
+ 0 files changed
+ create mode 100644 file1.txt
+ create mode 100644 file2.txt
+ create mode 100644 file3.txt
+ create mode 100644 subdirectory1/file4.txt</span>
+</pre>
+</div>
+<dl>
+<dd>The -m flag allows you to add a message to this commit'.</dd>
+</dl>
+</li>
+</ol>
+<p>This creates your first commit which records the snapshot you set up in your staging area. View the following link for further examples and explanations:</p>
+<ul>
+<li><a class="external text" href="http://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository" rel="nofollow">Recording changes to the repository</a></li>
+</ul>
+<h2><span id="Access_control_with_Gitolite" class="mw-headline">Access control with Gitolite</span></h2>
+<p>Gitolite allows you to set up fine-grained access controls as other features. Visit the <a class="external text" href="http://github.com/sitaramc/gitolite/" rel="nofollow">Gitolite GitHub page</a> for further details.</p>
+<h2>See also</h2>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216445197-How-to-push-your-Git-repository-to-an-external-server">How do I push my Git repository to an external server?</a></li>
+</ul>

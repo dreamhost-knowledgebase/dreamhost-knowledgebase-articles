@@ -1,0 +1,47 @@
+<p>Dedicated servers do not have the option for customers to restore a website backup from the control panel. All restores need to be done using an <a href="/hc/en-us/articles/215945467-How-do-I-add-users-to-a-Dedicated-server-">admin user</a>, using the below techniques.</p>
+<dl>
+<dd></dd>
+<dd></dd>
+</dl>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>The following commands require <a href="/hc/en-us/articles/216041267-SSH-overview">SSH access</a>.</p>
+</div>
+</div>
+<p>The backups for Dedicated servers are accessible from the /mnt/backup directory of the server.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">~# cd /mnt/backup/home/USERNAME</span>
+</pre>
+</div>
+<ol>
+<li>To restore something from the most recent backup, rename the directory of the website you wish to restore. For example, if your site is example.com, rename it to example.com.old.</li>
+<li>Create a new empty website folder. In this example, a blank folder named example.com is used.</li>
+<li>Run an rsync to copy the files to this new blank folder:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">rsync -av /mnt/backup/home/USERNAME/example.com/   /home/USERNAME/example.com/</span>
+</pre>
+</div>
+</li>
+</ol>
+<h2>Restoring older backups</h2>
+<p>If you need older backups, the snapshots can be found in the .zfs and snapshot directory:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">/mnt/backup/.zfs/snapshot# ls</span>
+<span class="cmdoutput">zfs-auto-snap_daily-2016-03-11-16h18  zfs-auto-snap_daily-2016-03-15-16h18  zfs-auto-snap_daily-2016-03-18-16h18
+zfs-auto-snap_daily-2016-03-12-16h19  zfs-auto-snap_daily-2016-03-16-16h18  zfs-auto-snap_weekly-2016-03-06-16h18
+zfs-auto-snap_daily-2016-03-14-16h18  zfs-auto-snap_daily-2016-03-17-16h18  zfs-auto-snap_weekly-2016-03-13-16h18</span>
+</pre>
+</div>
+<p>To restore something from a snapshot, rename the directory of the website you wish to restore as mentioned above, create a new blank directory, then run rsync:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">rsync -av /mnt/backup/.zfs/snapshot/SNAPSHOTDIR/home/USERNAME/example.com/   /home/USERNAME/example.com/</span>
+</pre>
+</div>
+<h2>See also</h2>
+<ul>
+<li><a href="/hc/en-us/articles/215768237-How-can-I-manually-backup-my-data-">How can I manually backup my data?</a></li>
+<li><a href="/hc/en-us/articles/215089918-How-do-I-backup-my-entire-account-">How do I backup my entire account?</a></li>
+<li><a href="/hc/en-us/articles/215768257-How-do-I-restore-my-website-">How do I restore my website?</a></li>
+<li><a href="/hc/en-us/articles/215089888-WordPress-backup-tools">WordPress backup tools</a></li>
+</ul>

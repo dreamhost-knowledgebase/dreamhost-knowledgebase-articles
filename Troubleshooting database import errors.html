@@ -1,0 +1,44 @@
+<h2>ERROR 1044</h2>
+<p>Most SQL files contain a CREATE DATABASE and a USE statement, which are created when you export the contents of an existing database. These statements are intended to completely automate the process of migrating the database to a new installation.</p>
+<p>If you attempt to import your data into a new database on DreamHost with such a file, it fails as you do not have CREATE DATABASE permissions from the command line (or anywhere except the Control Panel).</p>
+<p>When you use the import command as described in the previous section, you'll see the following error message:</p>
+<div class="preboxcontainer">
+<pre class="prebox">ERROR 1044 (42000): Access denied for user 'your_user_name'@'yourhost/hostmask' to database 'newdbname'</pre>
+</div>
+<p>This error message indicates that you don't have sufficient permissions to create the new database, which is caused by the CREATE DATABASE statement in the SQL file being imported. This is not a major problem as you have already created the database. Because of this, the CREATE DATABASE statement that is in your exported SQL file is not even needed.</p>
+<h3>The solution</h3>
+<p>To resolve this issue:</p>
+<ol>
+<li>Open the SQL file in a text editor (not a word processor, such as MS-Word).</li>
+<li>Delete the lines that begin with CREATE DATABASE and USE. For example:
+<div class="preboxcontainer">
+<pre class="prebox">CREATE DATABASE `newdbname` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_c$ USE `newdbname`;</pre>
+</div>
+<dl>
+<dd><em>and</em></dd>
+</dl>
+<div class="preboxcontainer">
+<pre class="prebox">USE `newdbname`;</pre>
+</div>
+<ul>
+<li>The exact text of the CREATE DATABASE statement differs depending on the database name and the character set used.</li>
+<li>Make sure to delete everything from the beginning of the line through, and including, the semi-colon at the end of the line.</li>
+</ul>
+</li>
+<li>Once you have deleted these statements, save your edited SQL file, and then repeat the import command as indicated in the previous section.</li>
+</ol>
+<p>If you have done everything else correctly, the import should proceed without further issue.</p>
+<h2>ERROR 1227</h2>
+<p>If you restore a MySQL backup to a database under another user and have any views in your database, you'll get an error similar to this:</p>
+<div class="preboxcontainer">
+<pre class="prebox">ERROR 1227 (42000) at line 694: Access denied; you need the SUPER privilege for this operation.</pre>
+</div>
+<p>You'll need to remove the DEFINER mentioned in the .sql file at the line specified in the error.</p>
+<h2>See also</h2>
+<ul>
+<li><a href="/hc/en-us/articles/215099117-MySQL-overview">MySQL overview</a></li>
+<li><a href="/hc/en-us/articles/214395738-phpMyAdmin-How-to-backup-export-a-database-or-table">phpMyAdmin — How to backup / export a database or table</a></li>
+<li><a href="/hc/en-us/articles/214395768-phpMyAdmin-How-to-import-restore-a-database-or-table">phpMyAdmin — How to import / restore a database or table</a></li>
+<li><a href="/hc/en-us/articles/221614988-SSH-Importing-a-database">SSH — Importing a database</a></li>
+<li><a href="/hc/en-us/articles/221686207-SSH-Backing-up-your-database">SSH — Backing up your database</a></li>
+</ul>

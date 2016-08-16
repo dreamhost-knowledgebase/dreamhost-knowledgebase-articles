@@ -1,0 +1,120 @@
+<p>Hip Hop Virtual Machine (aka HHVM) is Facebook’s PHP replacement, and it’s faster than PHP. Since it doesn’t work perfectly with all WordPress themes and plugins, it’s an opt-in feature done through the DreamPress panel page. Choosing HHVM disables your ability to choose PHP (and that means phprc files no longer apply). As of WordPress 3.9 and HHVM 2.0 there are no hacks needed to make WP and HHVM make beautiful music together.</p>
+<dl>
+<dd></dd>
+<dd></dd>
+</dl>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>HHVM is only available for <a href="/hc/en-us/articles/214581158-DreamPress-overview">DreamPress</a> customers.</p>
+</div>
+</div>
+<h2><span id="Activation" class="mw-headline">Activation</span></h2>
+<p>HHVM is disabled by default. The following steps detail how to activate this feature for your DreamPress site:</p>
+<ol>
+<li>Navigate to the <a class="external text" href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;" rel="nofollow">(Panel &gt; ‘Domains’ &gt; ‘Manage Domains’</a>) page.</li>
+<li>To the right of your domain, click the <strong>Edit</strong> button under the ‘Web Hosting’ column.</li>
+<li>Scroll down to the ‘Web Options’ section.
+<dl>
+<dd><img src="https://kbimages.objects-us-west-1.dream.io/images/01_HHVM.png" alt="01 HHVM.png" width="948" height="288" /></dd>
+<dd></dd>
+<dd></dd>
+</dl>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>When you check the option for ‘Enable HHVM’ you’ll see the ‘PHP mode’ option grayed out.</p>
+</div>
+</div>
+</li>
+<li>Scroll down and click the blue <strong>Change settings</strong> button in the center of the page to save your new settings.</li>
+</ol>
+<h2><span id="Customization" class="mw-headline">Customization</span></h2>
+<p>At this time, ini.php customizations of HHVM, which are synonymous with phprc/php.ini changes, are not supported.</p>
+<h2><span id="Commands" class="mw-headline">Commands</span></h2>
+<h3><span id="Common_commands" class="mw-headline">Common commands</span></h3>
+<p>Restart</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">/etc/init.d/hhvm restart</span></pre>
+</div>
+<p>Run command line scripts with HHVM:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">hhvm whatever.php</span></pre>
+</div>
+<h2><span id="Debugging" class="mw-headline">Debugging</span></h2>
+<p>To view any errors associated with HHVM, check your site's error.log file. View the following article for instructions on how to access this file:</p>
+<ul>
+<li><a style="background-color: #ffffff;" href="/hc/en-us/articles/216512197-Viewing-your-error-log-via-SFTP">Error log</a></li>
+</ul>
+<p>HHVM has a debugger called hphpd that is can be used to debug a running program or used as a standalone line-by-line scratch pad for simple testing. Invoke hphpd by typing the following at the command line:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">hhvm -m debug [filename]</span></pre>
+</div>
+<p>Using a filename is optional. Debugging HHVM and code conflicts is currently not provided as a part of DreamHost support.</p>
+<p>For more information, see the <a class="external text" href="https://github.com/facebook/hhvm/blob/master/hphp/doc/debugger.start" rel="nofollow">GitHub Repository for the debugger</a>.</p>
+<h3><span id="Connecting_to_your_database" class="mw-headline">Connecting to your database</span></h3>
+<p>Since PHP is disabled if you choose to enable HHVM, you CANNOT perform any of the following actions:</p>
+<ul>
+<li>Create a custom <a href="/hc/en-us/articles/214200688-php-ini-overview">PHP.ini</a> file</li>
+<li>Access your database via <a href="/hc/en-us/articles/214395638-phpMyAdmin-overview">phpMyAdmin</a></li>
+<li>Access your database using a PHP script</li>
+</ul>
+<p>If you need to access your database, it must be done via <a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a> using the 'mysql' command-line tool. Visit the following tutorial for further details:</p>
+<ul>
+<li><a class="external text" href="http://dev.mysql.com/doc/refman/5.1/en/connecting-disconnecting.html" rel="nofollow">MySQL Tutorial on Connecting to and Disconnecting from the Server</a></li>
+</ul>
+<h2><span id="FAQ" class="mw-headline">FAQ</span></h2>
+<h3><span id="Why_HHVM.3F" class="mw-headline">Why HHVM?</span></h3>
+<p>It’s fast. Faster than PHP by a mile.</p>
+<h3><span id="Why_Beta.2FOpt-in.3F" class="mw-headline">Why Beta/Opt-in?</span></h3>
+<p>Because while it’s fast, it’s also not going to work with all WP plugins and themes, and not with all setups.</p>
+<h3><span id="Is_it_compatible_with_PHP.3F" class="mw-headline">Is it compatible with PHP?</span></h3>
+<p>Right now, one of the goals is 100% compatibility with PHP, so all your existing PHP code will continue to function. There are no signs this will change in the future.</p>
+<h3><span id="What_will_it_help.3F" class="mw-headline">What will it help?</span></h3>
+<p>Sites where users are logged in, like bbPress and BuddyPress, or stores where caching is often sketchy at best. Since it processes faster than PHP, those get a kickstart.</p>
+<h3><span id="Who_should_use_it.3F" class="mw-headline">Who should use it?</span></h3>
+<p>Only people who are comfortable debugging site errors. This is why it's an opt-in feature.</p>
+<h3><span id="Who_should_NOT_use_it.3F" class="mw-headline">Who should NOT use it?</span></h3>
+<p>People who are not technical savvy should not be using HHVM.</p>
+<h3><span id="How_much_will_DreamHost_support_assist_with_errors.3F" class="mw-headline">How much will DreamHost support assist with errors?</span></h3>
+<p>It’s currently in beta. Users are expected to be able to troubleshoot any errors that may arise. DreamHost support may help you confirm if the issue is related to a plugin, however support cannot debug why a plugin is causing an error.</p>
+<p><strong>Is HHVM better than PHP 7?</strong></p>
+<p><strong><span style="font-weight: 400;">Both PHP 7 and HHVM perform remarkably similar in most tests, including tests with WordPress. If you’re concerned about full compatibility with all plugins and themes, PHP 7 is the better choice at this time.</span></strong></p>
+<h2><span id="Advanced_developer_information" class="mw-headline">Advanced developer information</span></h2>
+<p>You may install HHVM on your own VPS if you like.</p>
+<p>These packages are required to get HHVM to work properly. Default packages referenced are for packages that are available upstream and aren’t necessarily special. The non-default packages referenced are extremely custom packages that have been backported by various sources. They are only installed on the image for DreamPress and shouldn’t be needed in future versions of HHVM.</p>
+<h3><span id="Default_packages_needed" class="mw-headline">Default packages needed</span></h3>
+<p class="exampletext">git-core gawk cmake g++ libmysqlclient-dev libxml2-dev libmcrypt-dev libicu-dev openssl build-essential binutils-dev libcap-dev libgd2-xpm-dev zlib1g-dev libtbb-dev libonig-dev libpcre3-dev autoconf automake libtool libcurl4-openssl-dev wget memcached libreadline-dev libncurses-dev libmemcached-dev libbz2-dev libc-client2007e-dev php5-mcrypt php5-imagick libgoogle-perftools-dev libcloog-ppl0 libelf-dev libdwarf-dev subversion python-software-properties libmagickwand-dev libxslt1-dev ocaml-native-compilers libevent-dev gawk libyaml-dev gperf</p>
+<h3><span id="Non_default_packages_needed" class="mw-headline">Non default packages needed</span></h3>
+<div class="preboxcontainer">
+<pre class="prebox">ndn-hhvm_3.5.2-1_amd64.deb google-glog_0.3.3-11_amd64.deb icu-doc_52.1-2_all.deb libicu52-dbg_52.1-2_amd64.deb libicu52_52.1-2_amd64.deb libicu-dev_52.1-2_amd64.deb <br />icu-devtools_52.1-2_amd64.deb jemalloc_3.6.0-2_amd64.deb cpp-4.8_4.8.1-2ubuntu1~12.04_amd64.deb g++-4.8_4.8.1-2ubuntu1~12.04_amd64.deb gcc-4.8-base_4.8.1-2ubuntu1~12.04_amd64.deb <br />gcc-4.8_4.8.1-2ubuntu1~12.04_amd64.deb gcc-4.9-base_4.9.2-0ubuntu1~12.04_amd64.deb libasan0_4.8.1-2ubuntu1~12.04_amd64.deb libatomic1_4.9.2-0ubuntu1~12.04_amd64.deb <br />libcloog-isl4_0.18.2-1~12.04_amd64.deb libgcc-4.8-dev_4.8.1-2ubuntu1~12.04_amd64.deb libisl10_0.12.2-2~12.04_amd64.deb libitm1_4.9.2-0ubuntu1~12.04_amd64.deb <br />libstdc++-4.8-dev_4.8.1-2ubuntu1~12.04_amd64.deb libtsan0_4.9.2-0ubuntu1~12.04_amd64.deb binutils-gold_2.22-6ubuntu1.3_amd64.deb                              <br />libboost-thread1.49.0_1.49.0-2ubuntu1~precise3_amd64.deb
+<br />cpp-4.8_4.8.1-2ubuntu1~12.04_amd64.deb                              libboost1.49-dev_1.49.0-2ubuntu1~precise3_amd64.deb
+<br />g++-4.8_4.8.1-2ubuntu1~12.04_amd64.deb                               libcloog-isl4_0.18.2-1~12.04_amd64.deb
+<br />gcc-4.8-base_4.8.1-2ubuntu1~12.04_amd64.deb                          libgcc-4.8-dev_4.8.1-2ubuntu1~12.04_amd64.deb
+<br />gcc-4.8-doc_4.8.1-2ubuntu1~12.04_all.deb                             libgcc1-dbg_1%3a4.9.2-0ubuntu1~12.04_amd64.deb
+<br />gcc-4.8-locales_4.8.1-2ubuntu1~12.04_all.deb                         libgcc1_1%3a4.9.2-0ubuntu1~12.04_amd64.deb
+<br />gcc-4.8_4.8.1-2ubuntu1~12.04_amd64.deb                               libgomp1-dbg_4.9.2-0ubuntu1~12.04_amd64.deb
+<br />gcc-4.9-base_4.9.2-0ubuntu1~12.04_amd64.deb                          libgomp1_4.9.2-0ubuntu1~12.04_amd64.deb
+<br />libasan0-dbg_4.8.1-2ubuntu1~12.04_amd64.deb                          libicu-dev_4.8.1.1-3ubuntu0.5_amd64.deb
+<br />libasan0_4.8.1-2ubuntu1~12.04_amd64.deb                              libicu48_4.8.1.1-3ubuntu0.5_amd64.deb
+<br />libatomic1-dbg_4.9.2-0ubuntu1~12.04_amd64.deb                        libisl10_0.12.2-2~12.04_amd64.deb
+<br />libatomic1_4.9.2-0ubuntu1~12.04_amd64.deb                            libitm1-dbg_4.9.2-0ubuntu1~12.04_amd64.deb
+<br />libboost-date-time1.49-dev_1.49.0-2ubuntu1~precise3_amd64.deb        libitm1_4.9.2-0ubuntu1~12.04_amd64.deb
+<br />libboost-date-time1.49.0_1.49.0-2ubuntu1~precise3_amd64.deb          libmudflap0-4.8-dev_4.8.1-2ubuntu1~12.04_amd64.deb
+<br />libboost-filesystem1.49-dev_1.49.0-2ubuntu1~precise3_amd64.deb       libmudflap0-dbg_4.8.1-2ubuntu1~12.04_amd64.deb
+<br />libboost-filesystem1.49.0_1.49.0-2ubuntu1~precise3_amd64.deb         libmudflap0_4.8.1-2ubuntu1~12.04_amd64.deb
+<br />libboost-program-options1.49-dev_1.49.0-2ubuntu1~precise3_amd64.deb  libquadmath0-dbg_4.9.2-0ubuntu1~12.04_amd64.deb
+<br />libboost-program-options1.49.0_1.49.0-2ubuntu1~precise3_amd64.deb    libquadmath0_4.9.2-0ubuntu1~12.04_amd64.deb
+<br />libboost-regex1.49-dev_1.49.0-2ubuntu1~precise3_amd64.deb            libstdc++-4.8-dev_4.8.1-2ubuntu1~12.04_amd64.deb
+<br />libboost-regex1.49.0_1.49.0-2ubuntu1~precise3_amd64.deb              libstdc++-4.8-doc_4.8.1-2ubuntu1~12.04_all.deb
+<br />libboost-serialization1.49-dev_1.49.0-2ubuntu1~precise3_amd64.deb    libstdc++6-4.8-dbg_4.8.1-2ubuntu1~12.04_amd64.deb
+<br />libboost-serialization1.49.0_1.49.0-2ubuntu1~precise3_amd64.deb      libstdc++6_4.9.2-0ubuntu1~12.04_amd64.deb
+<br />libboost-system1.49-dev_1.49.0-2ubuntu1~precise3_amd64.deb           libtsan0-dbg_4.9.2-0ubuntu1~12.04_amd64.deb
+<br />libboost-system1.49.0_1.49.0-2ubuntu1~precise3_amd64.deb             libtsan0_4.9.2-0ubuntu1~12.04_amd64.deb
+<br />libboost-thread1.49-dev_1.49.0-2ubuntu1~precise3_amd64.deb
+</pre>
+</div>
+<h2><span id="See_also">See also</span></h2>
+<ul>
+<li><a href="/hc/en-us/articles/214581158">DreamPress overview</a></li>
+</ul>

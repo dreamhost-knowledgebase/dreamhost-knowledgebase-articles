@@ -1,0 +1,351 @@
+<body role="document">
+<div class="document">
+<div class="documentwrapper">
+<div class="body" role="main">
+<div id="step-by-step-guide-to-set-up-trellis-on-dreamcompute">
+
+<div id="trellis">
+<h2>Trellis</h2>
+<p>In this tutorial we are going to use <a class="reference external" href="https://roots.io/trellis/">Trellis</a>
+to install a very solid modern LEMP stack on DreamCompute. This LEMP stack by
+Roots is great to run WordPress websites and works well with <a class="reference external" href="https://roots.io/bedrock/">Bedrock</a>
+, the modern WordPress stack.</p>
+</div>
+<div id="modern-lemp-stack">
+<h2>Modern LEMP Stack</h2>
+<p>Trellis is a set of Ansible playbooks that help you setup a full local,
+staging and development environment for your WordPress project. With it you
+will have a WordPress ready server running locally or remotely (intention
+in this tutorial) with:</p>
+<ul class="simple">
+<li>Nginx</li>
+<li>MariaDB (MySQL drop-in replacement)</li>
+<li>PHP 7 (+ extensions)</li>
+<li>Composer</li>
+<li>WP-CLI</li>
+<li>sSMTP</li>
+<li>Memcached</li>
+<li>Fail2ban</li>
+<li>ferm (firewall)</li>
+<li>Mailhog</li>
+</ul>
+<p>Locally it works with an automated Vagrant setup and remotely for staging
+it sets you up with a fully fledged WordPress server. It also helps you
+deploy your WordPress site once you are ready to do so.</p>
+</div>
+<div id="requirements">
+<h2>Requirements</h2>
+<p>There are several <a class="reference external" href="https://roots.io/trellis/docs/installing-trellis/">requirements</a>
+to work with Trellis locally and to be able to work on the remote server:</p>
+<ul class="simple">
+<li>Ansible 2.0.2.0</li>
+<li>Virtualbox &gt;= 4.3.10</li>
+<li>Vagrant &gt;= 1.5.4</li>
+<li>vagrant-bindfs &gt;= 0.3.1 (Windows users may skip this if not using vagrant-winnfsd for folder sync)</li>
+<li>vagrant-hostmanager</li>
+</ul>
+<p><strong>NOTES</strong></p>
+<p>Ansible is both needed for setting up a remote server for staging or
+production on DreamCompute. Git and an accessible online repository will also be
+needed as well as the latest Python 2.x version for running Ansible 2.0.2.0.</p>
+<p>On Ubuntu most if not all of these tools can be installed using the
+package manager apt-get. On OSX Homebrew and Pip are your friends. On
+Windows more Linux tools have become available with the latest version
+such as Bash and other needed dependencies can be installed as well using
+various tools. Tougher though than on Nix systems as you can read <a class="reference external" href="https://roots.io/trellis/docs/windows/">here</a> .</p>
+</div>
+<div id="trellis-setup">
+<h2>Trellis Setup</h2>
+<p><strong>NB</strong> Taken from <a class="reference external" href="https://roots.io/trellis/docs/installing-trellis/">Roots Trellis documentation on installing Trellis</a></p>
+<p>Structure as recommended by Roots is</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>example.com/      # → Root folder for the project
+├── trellis/      # → Your clone of this repository
+└── site/         # → A Bedrock-based WordPress site
+    └── web/
+        ├── app/  # → WordPress content directory (themes, plugins, etc.)
+        └── wp/   # → WordPress core (don't touch!)
+</pre></div>
+</div>
+<p>Set up a directory for your project:</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>$ mkdir example.com &amp;&amp; cd example.com
+</pre></div>
+</div>
+<p>Then clone the repository:</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>git clone --depth=1 git@github.com:roots/trellis.git &amp;&amp; rm -rf trellis/.git
+</pre></div>
+</div>
+<p>Clone Bedrock:</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>git clone --depth=1 git@github.com:roots/bedrock.git site &amp;&amp; rm -rf site/.git
+</pre></div>
+</div>
+<p>Install the Galaxy Ansible Roles</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>cd trellis &amp;&amp; ansible-galaxy install -r requirements.yml
+</pre></div>
+</div>
+<p>Next you need to change the wordpress_sites.yml. File for local
+development is to be found at trellis/group_vars/development/wordpress_sites.yml</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span># group_vars/development/wordpress_sites.yml
+wordpress_sites:
+  example.com:
+    site_hosts:
+      - example.dev
+    local_path: ../site # path targeting local Bedrock site directory
+    (relative to Ansible root)
+    admin_email: admin@example.dev
+    multisite:
+      enabled: false
+    ssl:
+      enabled: false
+    cache:
+      enabled: false
+</pre></div>
+</div>
+<p>You also need to edit vault.yml for local development:</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>#  group_vars/development/vault.yml
+    vault_wordpress_sites:
+      example.com:
+        admin_password: admin
+        env:
+          db_password: example_dbpassword
+</pre></div>
+</div>
+<p>This file contains all the database data.</p>
+</div>
+<div id="local-setup">
+<h2>Local Setup</h2>
+<p>How you install things locally depends partly on your operating system:</p>
+<ul class="simple">
+<li>OSX,</li>
+<li>Linux,</li>
+<li>Windows</li>
+</ul>
+<p>and is not really part of this tutorial as we focus on the
+DreamCompute part of things. I recommend following the Trellis
+documentation on the <a class="reference external" href="https://roots.io/trellis/docs/local-development-setup/">local development setup</a>
+. Just remember the earlier mentioned prerequisites. Without those on your
+local server or PC you won’t be able to get things started. This and the
+proper changes in the Trellis configuration files for setting up a site
+locally and remotely the way you want. See documentation on this at <a class="reference external" href="https://roots.io/trellis/docs/wordpress-sites/">Roots
+Trellis Docs WordPress Sites</a> .</p>
+<p>Just make sure you have checked the following items:</p>
+<ul class="simple">
+<li>Configure your site(s) based on the WordPress Sites docs.</li>
+<li>Read the <a class="reference external" href="https://roots.io/trellis/docs/wordpress-sites/#development">development specific ones</a></li>
+<li>Make sure you’ve edited both group_vars/development/wordpress_sites.yml and</li>
+<li>edited group_vars/development/vault.yml.</li>
+</ul>
+<p>They were discussed under installation earlier!</p>
+<p>Then run the vagrant command from the command line. Do this inside the
+trellis folder where the Vagrant File is:</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>vagrant up
+</pre></div>
+</div>
+<div id="id3">
+<h3>Bedrock</h3>
+<p>For working with Bedrock - a Modern WordPress Stack - which is really
+recommended we recommend you checking out the <a class="reference external" href="https://roots.io/bedrock/">Bedrock documentation</a> . Just great to have a WordPress Stack with a
+logical file structure, dependency management with Composer, easy WordPress
+configuration and enhanced security!</p>
+</div>
+</div>
+<div id="setting-up-your-instance">
+<h2>Setting Up Your Instance</h2>
+<p>Go to your DreamCompute Dashboard and pick Ubuntu from the list under
+images. This Trellis server setup on a DreamCompute instance is best done
+using a Ubuntu 14.0.4 image on DreamCompute. You can also use a more
+recent version of Ubuntu, Ubuntu 16.0.4. However, you will then be
+forced to install an older version of Python - 2.x - side by side
+with Python 3 on your DreamCompute instance. This you can do using:</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>sudo apt-get install python
+</pre></div>
+</div>
+<p>If you do not mind this extra step then do go ahead. Always nice to run a
+more recent Ubuntu version, isn’t it?</p>
+<p>Just make sure you use Ubuntu as the Ansible playbooks used by Trellis to
+run the LEMP setup are built with Ubuntu/Debian in mind.
+Whichever Ubuntu version you pick, remember it’s better to boot volume
+backed instances as they are permanent as opposed to ephemeral disks.</p>
+</div>
+<div id="provisioning-your-dreamcompute-instance">
+<h2>Provisioning Your DreamCompute Instance</h2>
+<p>Provisioning Trellis means setting up the actual LEMP stack for your
+staging or production website. Staging and Production do not differ much.
+Do remember you need a separate instance for both though!
+<strong>NB</strong> Provisioning you normally do once you have worked out the proper
+site setup and have setup things locally.</p>
+<div id="passwordless-ssh">
+<h3>Passwordless SSH</h3>
+<p>Trellis works best with passwordless SSH login so do make sure you have
+added your public SSH key in the DreamCompute Dashboard.</p>
+<p>DreamCompute allows you to add your key in the DC Dashboard under Access &amp;
+Security &gt; Key Pairs.</p>
+<p>Also make sure the file trellis/group_vars/all/users.yml has the proper
+path to you SSH key on your box and that that is the one you added to the
+DreamCompute Dashboard.</p>
+</div>
+</div>
+<div id="configuration-files">
+<h2>Configuration Files</h2>
+<p>Let’s say you work locally and on production only and have worked out
+things locally. Then you only need to set up / edit a couple of files for
+provisioning your remote server - <a class="reference external" href="https://roots.io/trellis/docs/remote-server-setup/">setting up remote server documentation</a>
+<strong>NB</strong> You can most of the time just copy data from the local development files.</p>
+<div id="wordpress-sites">
+<h3>WordPress Sites</h3>
+<p>The first one to begin with is wordpress_sites.yml. This file is located
+under trellis/group_vars/production. In this file you need to change the
+following:</p>
+<ul class="simple">
+<li>name of site</li>
+<li>site_hosts</li>
+<li>repository (Github repository for example)</li>
+<li>multisite or not</li>
+<li>ssl or not and which provider</li>
+<li>cache enabled or not</li>
+</ul>
+<p>This is basically the same for setting things up locally so if you did that
+well, this should work out just fine.</p>
+</div>
+<div id="vault">
+<h3>Vault</h3>
+<p>Once that is done you also need to edit vault.yml - extended documentation
+at <a class="reference external" href="https://roots.io/trellis/docs/vault/">https://roots.io/trellis/docs/vault/</a> under trellis/group_vars/production
+. There you have to add:</p>
+<ul class="simple">
+<li>vault_mysql_root_password</li>
+<li>vault_wordpress_sites (same as in wordpress_sites.yml)</li>
+<li>db_password</li>
+<li>auth_key</li>
+<li>secure_auth_key</li>
+<li>logged_in_key</li>
+<li>nonce_key</li>
+<li>auth_salt</li>
+<li>secure_auth_salt</li>
+<li>logged_in_salt</li>
+<li>nonce_salt</li>
+</ul>
+<p>Generate your keys at the Roots <a class="reference external" href="https://roots.io/salts.html">salts generator</a> .</p>
+</div>
+<div id="hosts">
+<h3>Hosts</h3>
+<p>Now under the trellis folder open hosts/production. That is a file where
+you add your host details for making the real connection. If you do forget
+it you will net be able to connect and sometimes not get any errors at all
+. Here is an example:</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span># Add each host to the [production] group and to a "type" group such as
+ [web] or [db].
+# List each machine only once per [group], even if it will host
+multiple sites.
+
+[production]
+example.com
+
+[web]
+example.com
+</pre></div>
+</div>
+<p>You can either add the domain connected to the DreamCompute public IP
+address using an A record or use the IP address itself. Better connect the
+domain to your instance before you provision. See this <a class="reference external" href="https://goo.gl/vYHa1h">DreamHost KB
+article on Custom DNS Records</a> .</p>
+</div>
+<div id="users">
+<h3>Users</h3>
+<p>Wait, we skipped one more important file to attend to located in
+trellis/group_vars/all. That is users.yml. DreamCompute does not work with
+root but with the user dhc-user and that should be reflected in this file:</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span># Documentation: https://roots.io/trellis/docs/ssh-keys/
+admin_user: dhc-user
+# Also define 'vault_sudoer_passwords' (`group_vars/staging/vault.yml`,
+ `group_vars/production/vault.yml`)
+users:
+  - name: "{{ web_user }}"
+    groups:
+      - "{{ web_group }}"
+    keys:
+      - "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+      # - https://github.com/username.keys
+  - name: "{{ admin_user }}"
+    groups:
+      - sudo
+    keys:
+      - "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+      # - https://github.com/username.keys
+web_user: web
+web_group: www-data
+web_sudoers:
+  - "/usr/sbin/service php7.0-fpm *"
+</pre></div>
+</div>
+<p>Everything else in this file can stay the same. Do notice where it is
+grabbing the SSH keys from. If you have keys with a different name or
+located elsewhere you do need to change those lines as well.</p>
+</div>
+<div id="push-to-remote-dreamcompute-instance">
+<h3>Push to Remote DreamCompute Instance</h3>
+<p>Double check you have done the following:</p>
+<ul class="simple">
+<li>Configure your WordPress sites in group_vars/&lt;environment&gt;/wordpress_sites.yml</li>
+<li>configure all in in group_vars/&lt;environment&gt;/vault.yml (see the Vault docs for how to encrypt files containing passwords)</li>
+<li>Add your server IP/hostnames to hosts/&lt;environment&gt;</li>
+<li>Specify public SSH keys for users in group_vars/all/users.yml (see the SSH Keys docs)</li>
+</ul>
+<p>When all that is good you can go ahead and push to the remote server using:</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>ansible-playbook server.yml -e env=&lt;environment&gt;
+</pre></div>
+</div>
+<p>Here <em>environment</em> will be production if you are pushing to production.
+Staging is the other option.</p>
+<p><strong>Note</strong> Please understand that provisioning will take quite some time as
+a full stack server will be installed with Nginx, MariaDB, PHP 7 and
+beautiful things such as SSL, HTTP2 and so on. Also it takes care of
+setting up WordPress on the server. All in all a pretty great feat.</p>
+</div>
+</div>
+<div id="deploying-your-site-to-dreamcompute">
+<h2>Deploying your site to DreamCompute</h2>
+<p>You have to realize that provisioning is just setting up your server for
+working with WordPress really well and at lightning speed. The instance is
+still not loading a site at all and going to the IP address or domain will
+show you a nice Nginx 404 as nothing can be found. You simply need to
+push your locally deployed WordPress site to the server still. Once that
+is done you still either have to go through the installation process or
+import and existing database.</p>
+<p>For deploys, there are a couple more settings needed besides the ones you
+did for provisioning:</p>
+<ul class="simple">
+<li>repository (required) - git URL of your Bedrock-based WordPress project (in SSH format: <a class="reference external" href="mailto:git%40github.com">git<span>@</span>github<span>.</span>com</a>:roots/bedrock.git)</li>
+<li>repo_subtree_path (optional) - relative path to your Bedrock/WP directory in your repository if its not the root (like site in roots-example-project)</li>
+<li>branch (optional) - the git branch to deploy (default: master)</li>
+</ul>
+<p>You can deploy with a single command:</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>./deploy.sh &lt;environment&gt; &lt;domain&gt;
+</pre></div>
+</div>
+<p>where the environment can again be staging or production .</p>
+<p><strong>NOTE</strong>
+Make sure you have SSH Agent forwarding set up properly. Read more on it
+at the <a class="reference external" href="https://developer.github.com/guides/using-ssh-agent-forwarding/">Using SSH Agent Forwarding</a> article
+at Github.</p>
+</div>
+<div id="issues-setting-up-trellis">
+<h2>Issues setting up Trellis</h2>
+<p>If you do run into issues ask a question at <a class="reference external" href="https://discourse.roots.io/c/trellis">Roots Discourse</a>
+This is the dedicated forum sub section for Trellis and that is where you
+can find the experts you need debugging issues. Many errors with possible
+solution can also be found at the Imagewize Blog article called <a class="reference external" href="https://imagewize.com/web-development/roots-trellis-errors/">Roots
+Trellis Errors</a> .</p>
+</div>
+</div>
+</div>
+</div>
+<div class="clearer"></div>
+</div>
+<div class="footer">
+</div>
+<!--DreamCompute Button-->
+<div class="dream-sign-up">
+<h2>Deploy Your Apps On Cloud Servers Today</h2>
+<a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a>
+</div>
+</body>

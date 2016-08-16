@@ -1,0 +1,88 @@
+<p>If you have a <a href="https://dreamhosthelp.zendesk.com/hc/en-us/articles/215280058-Virtual-Private-Server-overview-VPS-">VPS </a>or <a href="https://dreamhosthelp.zendesk.com/hc/en-us/articles/215279658-Dedicated-server-overview">Dedicated server</a>, you might be interested in finding the status of that server without having to wait at a terminal window. Instead, you can run a script that emails you this information about the status of your server.</p>
+<p>It works by outputing HTML 4.01 Strict compliant content containing information on your server, including:</p>
+<ul>
+<li>load average</li>
+<li>memory usage</li>
+<li>open network connections</li>
+<li>top 10 memory processes</li>
+<li>top 10 CPU processes</li>
+<li>netstat output</li>
+<li>top snapshot of all running processes</li>
+</ul>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>This only applies to your web server. Shell access to <a href="https://dreamhosthelp.zendesk.com/hc/en-us/articles/215945917-MySQL-VPS-overview">MySQL VPS</a> is not available.</p>
+</div>
+</div>
+<h2><span id="Installing_a_server_script" class="mw-headline">Installing a server script</span></h2>
+<p>Download a copy of the script in one of two ways:</p>
+<ul>
+<li>Visit the URL of the script. You can then download it in your browser:</li>
+</ul>
+<dl>
+<dd><a class="external free" href="https://cdn.rawgit.com/watsonian/server-status-report/master/status.rb" rel="nofollow">https://cdn.rawgit.com/watsonian/server-status-report/master/status.rb</a></dd>
+<dd><em>If you download the file by visiting the URL, you still must upload the file via <a href="https://dreamhosthelp.zendesk.com/hc/en-us/articles/215612917-FTP-overview">FTP</a>.</em></dd>
+</dl>
+<ul>
+<li>If you’re able to <a href="https://dreamhosthelp.zendesk.com/hc/en-us/articles/216041267-SSH-overview">SSH</a> into your VPS, you can simply run:</li>
+</ul>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">curl -s -o status.rb https://cdn.rawgit.com/watsonian/server-status-report/master/status.rb</span></pre>
+</div>
+<p>The script is named status.rb, and the script itself is written in Ruby to take advantage of the ERB templating system to produce the HTML content.</p>
+<h2><span id="Confirming_if_mailx_is_installed" class="mw-headline">Confirming if mailx is installed</span></h2>
+<p>Once you've downloaded the script successfully, you must make sure that the mailx package is installed on your PS.</p>
+<p>To find out, run this command:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">dpkg -l | grep mailx</span></pre>
+</div>
+<p>If you see output something like this:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="cmdoutput">ii  bsd-mailx        8.1.2-0.20100314cvs-1        simple mail user agent</span>
+</pre>
+</div>
+<p>it means it's installed.</p>
+<p>If instead you see output like this:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="cmdoutput">rc  mailx        8.1.2-0.20050715cvs-1        A simple mail user agent</span>
+</pre>
+</div>
+<p>then that means you need to install it.</p>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>You can only install mailx on a Dedicated server with an <a href="https://dreamhosthelp.zendesk.com/hc/en-us/articles/215945467-How-do-I-add-users-to-a-Dedicated-server-">admin user</a>. This is because it requires sudo. Once logged in, run the following command:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">sudo apt-get install mailx</span></pre>
+</div>
+</div>
+</div>
+<h2><span id="Creating_a_cron_job" class="mw-headline">Creating a cron job</span></h2>
+<p>View the <a href="https://dreamhosthelp.zendesk.com/hc/en-us/articles/215088608-Crontab-overview">Crontab</a> article for details on how to create a cron job under your shell user. Enter the following command in the panel when creating the cron job:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">/usr/bin/ruby /path/to/script/status.rb | /usr/bin/mail -a "Content-type: text/html;" -s "Status Report: $HOSTNAME" "some@example.com"</span></pre>
+</div>
+<p>If the above command does not work, try modifying '/user/bin/ruby' with '/user/bin/ruby1.8'.</p>
+<ul>
+<li>You can change the subject to anything you like.</li>
+</ul>
+<ul>
+<li>You can also change the email to any address you’d like the cron email sent to.</li>
+</ul>
+<ul>
+<li>If you want to CC the email to more email addresses, you can use the -c flag and pass it a comma separated list of email addresses.</li>
+</ul>
+<ul>
+<li>Running it once per hour is probably not a bad idea, but you can run it as frequently or infrequently as you like.</li>
+</ul>
+<h2><span id="Conclusion" class="mw-headline">Conclusion</span></h2>
+<p>If you set everything up properly, then you should start getting emails that look roughly like this:</p>
+<dl>
+<dd><img class="thumbborder" src="https://kbimages.objects-us-west-1.dream.io/images/Server_status_script_preview.png" alt="Server status script preview.png" /></dd>
+</dl>
+<p>Keep in mind that this script is likely to update as time progresses if things change with server configurations. So, if this stops working on your server, be sure to check back to see if the script has updated. This was tested with the new SSD VPS on Ubuntu 12.04 LTS and so far there are no problems.</p>
+<h2><span id="See_also">See also</span></h2>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214879308-VPS-optimization-overview">VPS optimization overview</a></li>
+</ul>

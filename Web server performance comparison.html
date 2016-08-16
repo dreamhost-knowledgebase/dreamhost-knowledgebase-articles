@@ -1,0 +1,46 @@
+<p>Over the years, a myriad of web servers have been written.</p>
+<p>Apache, being one of the oldest, is <a class="external text" href="http://news.netcraft.com/archives/2015/01/15/january-2015-web-server-survey.html" rel="nofollow">the most widely used today</a>. However, it was implemented with a scaling mechanism that can be relatively inefficient in some ways. Some newer web servers have come out in the last few years that attempt to address some of the shortcomings of Apache. The most prominent of these are <a href="/hc/en-us/articles/218079257-Lighttpd">Lighttpd</a> and <a href="/hc/en-us/articles/216431827-Nginx-overview">Nginx</a>.</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>All three of these web servers are supported and available pre-configured on DreamHost's <a href="/hc/en-us/articles/215280058-Virtual-Private-Server-overview-VPS-">VPS</a> hosting platform. Regular Shared Hosting uses Apache (primarily because of its broader feature support).</p>
+</div>
+</div>
+<p>This article examines the relative performance of each web server to see how they compare head-to-head. Keep in mind that this is not meant to be an exhaustive be-all end-all performance comparison. The hope is to simply give a relative performance comparison under common conditions.</p>
+<h2><span id="Testing_method" class="mw-headline">Testing method</span></h2>
+<ul>
+<li>The method to test these web servers uses <a class="external text" href="http://httpd.apache.org/docs/2.0/programs/ab.html" rel="nofollow">ApacheBench</a> (an HTTP server benchmarking tool).</li>
+</ul>
+<ul>
+<li>In each test, 25,000 requests are made for a <a class="external text" href="https://kbimages.objects-us-west-1.dream.io/images/Dreamhost_logo.png" rel="nofollow">5k PNG file</a> locally from a VPS to remove potentially variable network conditions from the equation.</li>
+</ul>
+<ul>
+<li>Before each test the web server in question was restarted to clear out any potential caching or other issues that may interfere with results.</li>
+</ul>
+<ul>
+<li>Each test was run with different numbers of concurrent requests to gauge performance at different levels of usage. (Consider that it's very common for browsers to allow up to 6 concurrent connections per single user you have browsing a site. Therefore 10 users browsing your site at the same time would amount to approximately 60 concurrent connections).</li>
+</ul>
+<p>The commands that are used in this test follow this format:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">ab -n 25000 -c 50 http://www.example.com/dreamhost_logo.png</span></pre>
+</div>
+<p>where the <code>-c</code> flag increased with the concurrency level.</p>
+<h2><span id="Memory_usage" class="mw-headline">Memory usage</span></h2>
+<p>This is important to measure, especially on a VPS where your memory usage has a hard cap and raising it costs you additional money. (Note that memory is in megabytes.)</p>
+<p><img src="https://kbimages.objects-us-west-1.dream.io/images/Webserver_memory_graph.jpg" alt="Webserver memory graph.jpg" width="500" height="444" /></p>
+<p>As you can see, both Lighttpd and Nginx come out as clear leaders in this test. In fact, the difference is SO dramatic it's almost a bit unbelievable. How can such a huge disparity exist?</p>
+<p>It has to do with how Apache handles scaling with more incoming requests. To handle additional requests, it spawns new threads (i.e., processes). As more and more connections come in, more and more Apache processes are spawned to handle them. This causes memory usage to grow fairly quickly.</p>
+<p>In comparison, you see that Nginx and Lighttpd both have fairly static memory usage. Lighttpd actually increases more over time (and purportedly has issues with memory leaking), whereas Nginx stays fairly static across the board from start to finish.</p>
+<h2><span id="Requests_per_second" class="mw-headline">Requests per second</span></h2>
+<p>This is essentially a measure of how fast the server can receive and serve requests at different levels of concurrency. The more requests they can handle per second, the more able the server is to handle large amounts of traffic. Here's how the servers compare in this arena:</p>
+<p><img src="https://kbimages.objects-us-west-1.dream.io/images/Webserver_requests_graph.jpg" alt="Webserver requests graph.jpg" width="464" height="450" /></p>
+<p>Nginx clearly dominates in the raw number of requests per second it can serve. At higher levels of concurrency, it can handle fewer requests per second, but still can serve double what Lighttpd does (which was already doing nearly 4x what Apache was able to do).</p>
+<p>Remember, the results shown are good only for measuring <em>relative</em> (and not absolute) performance, as the tests were conducted locally on the server.</p>
+<h2><span id="Caveat" class="mw-headline">Caveat</span></h2>
+<p>Remember, Apache supports a larger toolbox of things it can do immediately and is probably the most compatible across all web software out there today. Furthermore, most websites really don't get so many concurrent hits as to gain large performance/memory benefits from Lighttpd or Nginx – but you can check them out to see if they work best for your needs.</p>
+<h2><span id="See_also">See also</span></h2>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214879308-VPS-optimization-overview">VPS optimization overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216431827-Nginx-overview">Nginx overview</a></li>
+</ul>

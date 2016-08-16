@@ -1,0 +1,89 @@
+<h2>MX Records</h2>
+<p>Anti-spam filtering is enabled by changing the domain's MX records to route incoming emails to the filtering servers first before passing the message off to the MX machines for delivery. Domains using non-DreamHost nameservers will need to manually update their MX records to reflect the change. The filter records are:</p>
+<ul>
+<li>MX 0 fltr-in1.mail.dreamhost.com.</li>
+<li>MX 0 fltr-in2.mail.dreamhost.com.</li>
+</ul>
+<h2>Special considerations for forwarding addresses</h2>
+<p>There are certain things to remember with filtering in relation to forwarding email addresses. The details for the four combinations with this setup are outlined below.</p>
+<ul>
+<li>If the domain is being filtered, and the address is being forwarded to another DreamHost email address that is also filtered, email gets sorted based on the junk mail settings of the receiving mailbox address. You don't need to set separate settings for the forwarding addresses, as the receiving mailbox will use its own settings.</li>
+<li>If the domain is being filtered, and the address is being forwarded to another DreamHost email address that is not filtered or is being forwarded to an outside address only (like @gmail), then the settings for the forwarding address's domain will be used. The quarantined spam emails will not be stored, they will be discarded.</li>
+<li>If the domain is not being filtered and it forwards to a DreamHost email address that is on a filtered domain, the mail will not get filtered.</li>
+</ul>
+<p>This table shows how Anti-spam filtering works for/with forward-only addresses. A@example.com is forward-only and sends emails to B@example.net which is a fully hosted mail account.</p>
+<table class="wikitable">
+<tbody>
+<tr><th>A@example.com uses filtering</th><th>B@example.net uses filtering</th><th>Is filtering done on incoming mail?</th><th>What score is used?</th></tr>
+<tr>
+<td class="table-yes" style="background: #90ff90; color: black;">Yes</td>
+<td class="table-yes" style="background: #90ff90; color: black;">Yes</td>
+<td>Yes</td>
+<td>B@example.net</td>
+</tr>
+<tr>
+<td class="table-yes" style="background: #90ff90; color: black;">Yes</td>
+<td class="table-no" style="background: #ff9090; color: black;">No</td>
+<td>Yes, but filtered spam emails are <strong>discarded</strong>.</td>
+<td>A@example.com</td>
+</tr>
+<tr>
+<td class="table-no" style="background: #ff9090; color: black;">No</td>
+<td class="table-yes" style="background: #90ff90; color: black;">Yes</td>
+<td>No filtering done</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td class="table-no" style="background: #ff9090; color: black;">No</td>
+<td class="table-no" style="background: #ff9090; color: black;">No</td>
+<td>No filtering done</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table>
+<h2>Headers related to filtering</h2>
+<p>All emails that pass through the filtering servers have some extra headers added.</p>
+<p>Let's take another look at the following screenshot which was used in a previous example:</p>
+<dl>
+<dd><img alt="07 Anti-Spam11215.1.fw.png" height="151" src="https://kbimages.objects-us-west-1.dream.io/images/07_Anti-Spam11215.1.fw.png" width="601"/></dd>
+</dl>
+<p>Below are details on what each field in the filter details above means:</p>
+<dl>
+<dt><strong>X-Spam-Flag: YES</strong></dt>
+<dd>This info will either show a ‘YES’ or a ‘NO’. If the total spam score exceeds the quarantine value that’s set for the user, that message will be quarantined and the status here will show as ‘YES’. In this case, the message was caught and filtered as spam since it shows the flag as ‘YES’.</dd>
+<dt><strong>X-Spam-Score: 4.59</strong></dt>
+<dd>The score listed here is the total spam score of this message. After the message went through the filters, based on the contents and the way it was sent, the message was tagged at the score of 4.59. As seen from the details above, it was not flagged for spam.</dd>
+<dt><strong>X-Spam-Level: ****</strong></dt>
+<dd>This field contains a number of asterisk (*) that describes the spam score. The number of asterisks shown is based on the digits to the left of the decimal point for the spam score. In this example, the number of asterisk shown is 4 since the score is 4.59.</dd>
+<dt><strong>X-Spam-Status:</strong></dt>
+<dd>The details for this part of the header has two slightly different ways it can look. The example details below are from a different set of headers than the information listed above:</dd>
+</dl>
+<div class="preboxcontainer">
+<pre class="prebox">&gt; X-Spam-Status: No, score=2.4 tagged_above=-999 required=999 tests=[HTML_MESSAGE=0.001, MIME_HTML_ONLY=2.299, RDNS_DYNAMIC=0.1] <br/> <br/>&gt; X-Spam-Status: Yes, score=2.09 tag=-999 tag2=999 kill=2 tests=[HTML_IMAGE_RATIO_04=2.089, HTML_MESSAGE=0.001, T_DKIM_INVALID=0.01, T_RP_MATCHES_RCVD=-0.01]</pre>
+</div>
+<p>Here is a description of the fields in the above example:</p>
+<ul>
+<li><strong>No/Yes</strong>: This shows whether the email was flagged as spam or not.</li>
+<li><strong>score</strong>: This shows the spam score; same as the ‘X-Spam-Score’ details.</li>
+<li><strong>tagged_above or tag</strong>: The emails with spam scores above this tag get additional headers details added.</li>
+<li><strong>required or tag2</strong>: This is the score required to add 'spam detected' headers.</li>
+<li><strong>kill</strong>: This is the score required to quarantine the message to the ‘Junk Mail’ quarantine folder.</li>
+<li><strong>tests</strong>: This shows the rules the email matched on along with each rule's score.</li>
+</ul>
+<h2>Filtering and what it does</h2>
+<p>There are two services currently set up on the anti-spam filters. Below is a description of each:</p>
+<dl>
+<dt><strong>SpamAssassin</strong></dt>
+<dd>This is the filter service that scores the incoming messages for spam. Depending on how the message was sent and the contents within it, the message will be applied with a spam score to determine whether the message should be filtered as junk or delivered as a valid email to the user’s inbox.</dd>
+<dd>You can read more about this service through their site here: <a href="http://spamassassin.apache.org/">http://spamassassin.apache.org/</a></dd>
+<dt><strong>Clam AntiVirus (or ClamAV)</strong></dt>
+<dd>This service will scan the incoming messages for malicious threats such as Trojans, viruses, and other forms of malware within that message. If this filter catches anything threatening, the message caught will be discarded, so the user will never see it.</dd>
+<dd>For more details about this application, check their site here: <a href="http://www.clamav.net/index.html">http://www.clamav.net/index.html</a></dd>
+</dl>
+<h2>See also</h2>
+<ul>
+<li><a href="/hc/en-us/articles/214984738-Anti-spam-overview">Anti-spam overview</a></li>
+<li><a href="/hc/en-us/articles/215036368-What-is-Spam-">What is Spam?</a></li>
+<li><a href="/hc/en-us/articles/215686667-Troubleshooting-Anti-spam-settings">Troubleshooting Anti-spam settings</a></li>
+<li><a href="/hc/en-us/articles/215686487-How-do-I-configure-my-Anti-spam-settings-">How do I configure my Anti-spam settings?</a></li>
+</ul>

@@ -1,0 +1,58 @@
+<p><a class="new" href="https://en.wikipedia.org/wiki/Rsync">rsync</a> is a fast and versatile file copying/syncing tool used in Linux and OSX operating systems. It is useful for backing up your content to your local computer, as well as for pushing your local content up to the web server. It also allows you to quickly sync files from two computers so they remain the same.</p>
+<h2><span id="Using_rsync_to_publish_your_files" class="mw-headline">Using rsync to publish your files</span></h2>
+<p>When you use rsync to upload your site files (or changes), it is able to determine which files have changed and upload only the changed files. This ensures that a file is not duplicated when syncing.</p>
+<h2><span id="Basic_example" class="mw-headline">Basic example</span></h2>
+<p>In the simplest case, without any filters, here's what an rsync "push out to webhost" command looks like:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">rsync -e "/usr/bin/ssh"  --bwlimit=2000 -av local_directory username@server.dreamhost.com:remote_directory</span>
+</pre>
+</div>
+<p><strong>Explanation of fields</strong></p>
+<ul>
+<li><strong>rsync</strong> - always start the full command with this.</li>
+<li><strong>-e</strong> - Specifies the remote shell program to use. This can always remain as /usr/bin/ssh.</li>
+<li><strong>bwlimit</strong> - Allows you to specify a maximum transfer rate in kb/sec.</li>
+<li><strong>-av</strong> - Archive and Verbose mode.</li>
+<li><strong>local_directory</strong> - This is the local directory on your computer where you store the data to be uploaded.</li>
+<li><strong>username</strong> - This is your DreamHost <a href="/hc/en-us/articles/216385837-Enabling-Shell-access">shell username</a> assigned to your site.</li>
+<li><strong>server</strong> - This is the name of the server you're uploading content to. View the <a href="/hc/en-us/articles/215613157-Where-do-I-find-my-FTP-login-credentials-">Finding your hostname</a> article for instructions on how to locate this name.</li>
+<li><strong>remote_directory</strong> - This is the directory on the server that you wish to upload content to.</li>
+</ul>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>To avoid any errors, it is recommended to use the full path for both local and remote directories.</p>
+</div>
+</div>
+<p>More information on the flags used above can be found here:</p>
+<ul>
+<li><a class="external free" href="http://linux.die.net/man/1/rsync" rel="nofollow">http://linux.die.net/man/1/rsync</a></li>
+</ul>
+<h2><span id="Setting_filters" class="mw-headline">Setting filters</span></h2>
+<p>It is also possible to set filters for which files it will include and which it will ignore. This makes it possible to have a completely automated one-step configuration once your filters are in place.</p>
+<h2><span id="Filter_example" class="mw-headline">Filter example</span></h2>
+<p>The easiest way to add a filter is to add them into the command line rsync. RoR example, you could do the following to filter out .pyc files and /.git directories:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">rsync <strong>--filter '- *.pyc' --filter '- /.git' </strong> -e "/usr/bin/ssh" --bwlimit=2000 -av local_directory username@server.dreamhost.com:remote_directory</span>
+</pre>
+</div>
+<p>View the following page for further details:</p>
+<ul>
+<li><a class="external free" href="http://linux.die.net/man/1/rsync" rel="nofollow">http://linux.die.net/man/1/rsync</a></li>
+</ul>
+<h2><span id="rsync_for_Windows" class="mw-headline">rsync for Windows</span></h2>
+<p>rsync is available for Windows as well, but the configuration includes a few more steps. One solution is to use <a class="external text" href="http://www.aboutmyip.com/AboutMyXApp/DeltaCopy.jsp" rel="nofollow">Delta Copy</a>. The 'raw' version with no installer works fine.</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>One note about rsync for Windows is that you use *nix style paths even if they're on your Windows machine.</p>
+</div>
+</div>
+<h2><span id="See_also">See also</span></h2>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216560958-Website-tools">Website tools</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/217213327-Wget">Wget</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215840708-Traceroute">Traceroute</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216606088-Telnet">Telnet</a></li>
+</ul>

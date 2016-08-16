@@ -1,0 +1,188 @@
+<body role="document">
+<div class="document">
+<div class="documentwrapper">
+<div class="body" role="main">
+<div id="sample-java-code-using-dreamobjects-openstack-swift-compatible-api">
+
+<div class="table-of-content container">
+<ul class="simple">
+<li><a class="reference internal" href="#swift-java-setup"><span>Setup</span></a></li>
+<li><a class="reference internal" href="#swift-java-create-a-connection"><span>Create a Connection</span></a></li>
+<li><a class="reference internal" href="#swift-java-list-owned-containers"><span>List Owned Containers</span></a></li>
+<li><a class="reference internal" href="#swift-java-create-a-container"><span>Create a Container</span></a></li>
+<li><a class="reference internal" href="#swift-java-list-a-containers-content"><span>List a Container’s Content</span></a></li>
+<li><a class="reference internal" href="#swift-java-delete-a-container"><span>Delete a Container</span></a></li>
+<li><a class="reference internal" href="#swift-java-create-an-object"><span>Create an Object</span></a></li>
+<li><a class="reference internal" href="#swift-java-retrieve-object-metadata"><span>Retrieve Object Metadata</span></a></li>
+<li><a class="reference internal" href="#swift-java-delete-an-object"><span>Delete an Object</span></a></li>
+</ul>
+</div>
+<div id="setup">
+<span id="swift-java-setup"></span><h2>Setup</h2>
+<p>The following examples use <a class="reference external" href="http://jclouds.apache.org">Apache jclouds</a>. Installing jclouds is easy with
+<a class="reference external" href="http://maven.apache.org">Apache Maven</a>, just specify an additional dependency in your pom.xml file.</p>
+<p>A sample pom.xml file:</p>
+<div class="highlight-xml"><div class="highlight"><pre><span></span><span class="cp">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
+<span class="nt">&lt;project</span> <span class="na">xmlns=</span><span class="s">"http://maven.apache.org/POM/4.0.0"</span> <span class="na">xmlns:xsi=</span><span class="s">"http://www.w3.org/2001/XMLSchema-instance"</span> <span class="na">xsi:schemaLocation=</span><span class="s">"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;modelVersion&gt;</span>4.0.0<span class="nt">&lt;/modelVersion&gt;</span>
+  <span class="nt">&lt;properties&gt;</span>
+    <span class="nt">&lt;jclouds.version&gt;</span>1.8.0<span class="nt">&lt;/jclouds.version&gt;</span>
+  <span class="nt">&lt;/properties&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>com.mycompany.app<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>my-app<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;version&gt;</span>1.0-SNAPSHOT<span class="nt">&lt;/version&gt;</span>
+  <span class="nt">&lt;dependencies&gt;</span>
+    <span class="nt">&lt;dependency&gt;</span>
+        <span class="nt">&lt;groupId&gt;</span>org.apache.jclouds<span class="nt">&lt;/groupId&gt;</span>
+        <span class="nt">&lt;artifactId&gt;</span>jclouds-all<span class="nt">&lt;/artifactId&gt;</span>
+        <span class="nt">&lt;version&gt;</span>${jclouds.version}<span class="nt">&lt;/version&gt;</span>
+      <span class="nt">&lt;/dependency&gt;</span>
+  <span class="nt">&lt;/dependencies&gt;</span>
+<span class="nt">&lt;/project&gt;</span>
+</pre></div>
+</div>
+<p>Our examples will require some or all of the following java classes to
+be imported:</p>
+<div class="highlight-java"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">org.jclouds.ContextBuilder</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.jclouds.blobstore.BlobStore</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.jclouds.blobstore.BlobStoreContext</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.jclouds.blobstore.domain.Blob</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.jclouds.blobstore.domain.PageSet</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.jclouds.blobstore.domain.BlobMetadata</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.jclouds.blobstore.domain.StorageMetadata</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.jclouds.blobstore.domain.StorageType</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.jclouds.io.Payload</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">static</span> <span class="n">org</span><span class="o">.</span><span class="na">jclouds</span><span class="o">.</span><span class="na">Constants</span><span class="o">.*;</span>
+<span class="kn">import</span> <span class="nn">com.google.common.io.Files</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.google.common.io.ByteSource</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">static</span> <span class="n">com</span><span class="o">.</span><span class="na">google</span><span class="o">.</span><span class="na">common</span><span class="o">.</span><span class="na">io</span><span class="o">.</span><span class="na">ByteSource</span><span class="o">.</span><span class="na">wrap</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.google.common.net.MediaType</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.google.common.base.Charsets</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.io.File</span><span class="o">;</span>
+</pre></div>
+</div>
+</div>
+<div id="create-a-connection">
+<span id="swift-java-create-a-connection"></span><h2>Create a Connection</h2>
+<p>This creates a connection so that you can interact with the server.</p>
+<div class="highlight-java"><div class="highlight"><pre><span></span><span class="n">String</span> <span class="n">provider</span> <span class="o">=</span> <span class="s">"swift"</span><span class="o">;</span>
+<span class="n">String</span> <span class="n">identity</span> <span class="o">=</span> <span class="s">"USER:SUB-USER"</span><span class="o">;</span> <span class="c1">// Your DreamObjects user and sub-user</span>
+<span class="n">String</span> <span class="n">password</span> <span class="o">=</span> <span class="s">"SECRET-KEY"</span><span class="o">;</span>    <span class="c1">// Your DreamObjects secret key</span>
+<span class="n">String</span> <span class="n">auth_url</span> <span class="o">=</span> <span class="s">"https://objects-us-west-1.dream.io/auth"</span><span class="o">;</span>
+
+<span class="n">BlobStoreContext</span> <span class="n">context</span> <span class="o">=</span> <span class="n">ContextBuilder</span><span class="o">.</span><span class="na">newBuilder</span><span class="o">(</span><span class="n">provider</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">endpoint</span><span class="o">(</span><span class="n">auth_url</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">credentials</span><span class="o">(</span><span class="n">identity</span><span class="o">,</span> <span class="n">password</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">buildView</span><span class="o">(</span><span class="n">BlobStoreContext</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+
+<span class="n">BlobStore</span> <span class="n">blobStore</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="na">getBlobStore</span><span class="o">();</span>
+
+<span class="c1">// Close the connection after completing all operations!</span>
+<span class="n">context</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+</pre></div>
+</div>
+</div>
+<div id="list-owned-containers">
+<span id="swift-java-list-owned-containers"></span><h2>List Owned Containers</h2>
+<p>This gets a list of Containers that you own.
+This also prints out the container name.</p>
+<div class="highlight-java"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="o">(</span><span class="n">StorageMetadata</span> <span class="n">resourceMd</span> <span class="o">:</span> <span class="n">blobStore</span><span class="o">.</span><span class="na">list</span><span class="o">())</span> <span class="o">{</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">resourceMd</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>The output will look something like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">container1</span>
+<span class="n">container2</span>
+<span class="n">container3</span>
+</pre></div>
+</div>
+</div>
+<div id="create-a-container">
+<span id="swift-java-create-a-container"></span><h2>Create a Container</h2>
+<p>This creates a new container called <code class="docutils literal"><span class="pre">my-new-container</span></code></p>
+<div class="highlight-java"><div class="highlight"><pre><span></span><span class="n">blobStore</span><span class="o">.</span><span class="na">createContainerInLocation</span><span class="o">(</span><span class="kc">null</span><span class="o">,</span> <span class="s">"my-new-container"</span><span class="o">);</span>
+</pre></div>
+</div>
+</div>
+<div id="list-a-container-s-content">
+<span id="swift-java-list-a-containers-content"></span><h2>List a Container’s Content</h2>
+<p>This gets a list of objects in the container <code class="docutils literal"><span class="pre">my-new-container</span></code>.</p>
+<div class="highlight-java"><div class="highlight"><pre><span></span><span class="n">PageSet</span><span class="o">&lt;?</span> <span class="kd">extends</span> <span class="n">StorageMetadata</span><span class="o">&gt;</span> <span class="n">objects</span> <span class="o">=</span> <span class="n">blobStore</span><span class="o">.</span><span class="na">list</span><span class="o">(</span><span class="s">"my-new-container"</span><span class="o">);</span>
+<span class="k">for</span> <span class="o">(</span><span class="n">StorageMetadata</span> <span class="n">resourceMd</span> <span class="o">:</span> <span class="n">objects</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">resourceMd</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>The output will look something like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">myphoto1</span><span class="o">.</span><span class="n">jpg</span>
+<span class="n">myphoto2</span><span class="o">.</span><span class="n">jpg</span>
+</pre></div>
+</div>
+</div>
+<div id="delete-a-container">
+<span id="swift-java-delete-a-container"></span><h2>Delete a Container</h2>
+<p>This deletes the container called <code class="docutils literal"><span class="pre">my-old-container</span></code></p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The Container must be empty! Otherwise it won’t work!</p>
+</div>
+<div class="highlight-java"><div class="highlight"><pre><span></span><span class="n">blobStore</span><span class="o">.</span><span class="na">deleteContainer</span><span class="o">(</span><span class="s">"my-old-container"</span><span class="o">);</span>
+</pre></div>
+</div>
+</div>
+<div id="create-an-object">
+<span id="swift-java-create-an-object"></span><h2>Create an Object</h2>
+<p>This creates an object <code class="docutils literal"><span class="pre">foo.txt</span></code> with the string <code class="docutils literal"><span class="pre">Hello</span> <span class="pre">World!</span></code>
+into the container <code class="docutils literal"><span class="pre">my-new-container</span></code></p>
+<div class="highlight-java"><div class="highlight"><pre><span></span><span class="n">ByteSource</span> <span class="n">payload</span> <span class="o">=</span> <span class="n">ByteSource</span><span class="o">.</span><span class="na">wrap</span><span class="o">(</span><span class="s">"Hello World!"</span><span class="o">.</span><span class="na">getBytes</span><span class="o">(</span><span class="n">StandardCharsets</span><span class="o">.</span><span class="na">UTF_8</span><span class="o">));</span>
+<span class="n">Blob</span> <span class="n">blob</span> <span class="o">=</span> <span class="n">blobStore</span><span class="o">.</span><span class="na">blobBuilder</span><span class="o">(</span><span class="s">"foo.txt"</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">payload</span><span class="o">(</span><span class="n">payload</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">contentLength</span><span class="o">(</span><span class="n">payload</span><span class="o">.</span><span class="na">size</span><span class="o">())</span>
+    <span class="o">.</span><span class="na">contentType</span><span class="o">(</span><span class="s">"text/plain"</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+<span class="n">blobStore</span><span class="o">.</span><span class="na">putBlob</span><span class="o">(</span><span class="s">"my-new-container"</span><span class="o">,</span> <span class="n">blob</span><span class="o">);</span>
+</pre></div>
+</div>
+<p>This uploads a file called <code class="docutils literal"><span class="pre">bar.txt</span></code> into the container <code class="docutils literal"><span class="pre">my-new-container</span></code></p>
+<div class="highlight-java"><div class="highlight"><pre><span></span><span class="n">ByteSource</span> <span class="n">payload</span> <span class="o">=</span> <span class="n">Files</span><span class="o">.</span><span class="na">asByteSource</span><span class="o">(</span><span class="k">new</span> <span class="n">File</span><span class="o">(</span><span class="s">"bar.txt"</span><span class="o">));</span>
+<span class="n">Blob</span> <span class="n">blob</span> <span class="o">=</span> <span class="n">blobStore</span><span class="o">.</span><span class="na">blobBuilder</span><span class="o">(</span><span class="s">"bar.txt"</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">payload</span><span class="o">(</span><span class="n">payload</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">contentDisposition</span><span class="o">(</span><span class="s">"bar.txt"</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">contentLength</span><span class="o">(</span><span class="n">payload</span><span class="o">.</span><span class="na">size</span><span class="o">())</span>
+    <span class="o">.</span><span class="na">contentType</span><span class="o">(</span><span class="n">MediaType</span><span class="o">.</span><span class="na">OCTET_STREAM</span><span class="o">.</span><span class="na">toString</span><span class="o">())</span>
+    <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+<span class="n">blobStore</span><span class="o">.</span><span class="na">putBlob</span><span class="o">(</span><span class="s">"my-new-container"</span><span class="o">,</span> <span class="n">blob</span><span class="o">);</span>
+</pre></div>
+</div>
+</div>
+<div id="retrieve-object-metadata">
+<span id="swift-java-retrieve-object-metadata"></span><h2>Retrieve Object Metadata</h2>
+<p>Retrieves metadata and gets content type for object named <code class="docutils literal"><span class="pre">foo.txt</span></code>
+in the container <code class="docutils literal"><span class="pre">my-new-container</span></code></p>
+<div class="highlight-java"><div class="highlight"><pre><span></span><span class="n">BlobMetadata</span> <span class="n">metadata</span> <span class="o">=</span> <span class="n">blobStore</span><span class="o">.</span><span class="na">blobMetadata</span><span class="o">(</span><span class="s">"my-new-container"</span><span class="o">,</span> <span class="s">"foo.txt"</span><span class="o">);</span>
+<span class="n">String</span> <span class="n">contentType</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="na">getContentMetadata</span><span class="o">().</span><span class="na">getContentType</span><span class="o">();</span>
+</pre></div>
+</div>
+</div>
+<div id="delete-an-object">
+<span id="swift-java-delete-an-object"></span><h2>Delete an Object</h2>
+<p>This deletes the object <code class="docutils literal"><span class="pre">goodbye.txt</span></code> from the container
+called <code class="docutils literal"><span class="pre">my-new-container</span></code></p>
+<div class="highlight-java"><div class="highlight"><pre><span></span><span class="n">blobStore</span><span class="o">.</span><span class="na">removeBlob</span><span class="o">(</span><span class="s">"my-new-container"</span><span class="o">,</span> <span class="s">"goodbye.txt"</span><span class="o">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="clearer"></div>
+</div>
+<div class="footer">
+</div>
+<!--DreamObjects Button-->
+<div class="dream-sign-up">
+<h2>Start Storing Your Data Today!</h2>
+<a href="https://www.dreamhost.com/cloud/storage/">Sign Up for DreamObjects</a>
+</div>
+</body>

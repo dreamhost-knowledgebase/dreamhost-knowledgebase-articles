@@ -1,0 +1,54 @@
+<h2>Before adding the certificate</h2>
+<p>Make sure your DNS points to DreamHost. This is because 'Let's Encrypt' adds a .well_known/ folder to your site to authenticate the certificate. If your site's DNS is not resolving to DreamHost, the certificate cannot create this folder and authenticate.</p>
+<p>Additionally, certain .htaccess rules such as IP blocking, rewrite rules, and password protection may cause the installation to fail. To play it safe, rename your .htaccess file (to something like .htaccess_OFF) in order to turn it off temporarily. Then, install the certificate. Once installed, you can rename the file back to .htaccess.</p>
+<p>If disabling your .htaccess breaks your site, then add the following rule which should allow the installation to process:</p>
+<div class="preboxcontainer">
+<pre class="prebox">RewriteRule ^.well-known/(.*)$ - [L]
+</pre>
+</div>
+<h2>Adding the certificate</h2>
+<ol>
+<li>Navigate to the <a href="https://panel.dreamhost.com/index.cgi?tree=domain.secure&amp;">(Panel &gt; 'Domains' &gt; 'Secure Hosting')</a> page. The top section titled 'Active SSL certificates' lists any active SSL certificates for your domains.
+<dl>
+<dd><em>The next section titled 'Add a new SSL certificate' lists three options to add an SSL to your domain:</em></dd>
+</dl>
+<dl>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/SSL_panel_01.png" alt="SSL panel 01.png" width="966" height="295" /></dd>
+</dl>
+</li>
+<li>Click the <strong>'Add'</strong> button next to Let's Encrypt SSL.
+<dl>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/SSL_panel_05.png" alt="SSL panel 05.png" width="966" height="295" /></dd>
+</dl>
+</li>
+<li>Choose your domain and if you wish to purchase a <a href="https://help.dreamhost.com/hc/en-us/articles/216109647-Unique-IP-overview">Unique IP</a> address. Then click the <strong>'Add now!'</strong> button.
+<dl>
+<dd><em>A Success message displays confirming the purchased certificate:</em></dd>
+</dl>
+<dl>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/Switched_from_self_signed_to_Lets_Encrypt.png" alt="Switched_from_self_signed_to_Lets_Encrypt.png" width="655" height="200" /></dd>
+</dl>
+</li>
+</ol>
+<h2>How do I change my current SSL certificate into a Let's Encrypt certificate?</h2>
+<ol>
+<li>Navigate to the (<a href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;">'Panel' &gt; 'Domains' &gt; 'Manage Domains'</a>) page.
+<dl>
+<dd><img src="https://kbimages.objects-us-west-1.dream.io/images/04_Let%27s_Encrypt_add_SSL.png" alt="04 Let's Encrypt add SSL.png" width="174" height="73" /></dd>
+</dl>
+</li>
+<li>Under the 'Secure Hosting' column, click the 'Certificates' link.
+<dl>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/SSL_panel_Let%27s_Encrypt_add_SSL.png" alt="SSL panel Let's Encrypt.png" width="966" height="295" /></dd>
+</dl>
+</li>
+<li>Choose the option to add a 'Let's Encrypt' certificate.</li>
+<li>Check the box to agree to the terms of service.</li>
+<li>Click the <strong>Save changes now!</strong> button.</li>
+</ol>
+<p>In a few hours your new certificate is automatically installed.</p>
+<h2>See also</h2>
+<ul>
+<li><a href="https://dreamhosthelp.zendesk.com/hc/en-us/articles/216539558-Let-s-Encrypt-SSL-certificate-overview">Let's Encrypt SSL certificate overview</a></li>
+<li><a href="https://dreamhosthelp.zendesk.com/hc/en-us/articles/216041537-Secure-Hosting-overview">Secure Hosting overview</a></li>
+</ul>

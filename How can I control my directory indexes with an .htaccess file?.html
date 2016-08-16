@@ -1,0 +1,63 @@
+<h2><span class="mw-headline" id="What_are_directory_indexes.3F">What are directory indexes?</span></h2>
+<p>If the Indexes option is enabled (which it is by default), visitors can look inside any directory that does not have an index.html (or index.php, etc.) file in it and browse the contents of the directory. This is probably not the behavior you typically want, especially if said directory contains something like script configuration files that could pose a security risk.</p>
+<p>One way around this problem is to put an empty index.html in every single folder of your site, but for sites with a large hierarchy of directory structure, this can quickly become very tedious. Fortunately, there's a better way:</p>
+<h2><span class="mw-headline" id="Turning_off_directory_indexes">Turning off directory indexes</span></h2>
+<p>Place the following in an .htaccess file in your main domain name folder to disable directory indexes throughout your entire site:</p>
+<pre>Options -Indexes
+</pre>
+<p>Now, if someone tries to browse the contents of any directory of your site, they'll get a 403 (Forbidden) error.</p>
+<dl>
+<dd></dd>
+<dd></dd>
+</dl>
+<div class="alert alert-note">
+<div class="alert-icon"><img alt="" height="60" src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" width="60"/></div>
+<div class="alert-content">
+<p>If a subdirectory contains an index file (such as index.html), that directory will still load. This option only disables directories without index files.</p>
+</div>
+</div>
+<h3><span class="mw-headline" id="Turning_on_directory_indexes_for_specific_folders">Turning on directory indexes for specific folders</span></h3>
+<p>If there's a particular directory in your site that you do want people to be able to browse, simply create a new .htaccess file in that particular folder. Add the following:</p>
+<pre>Options +Indexes
+</pre>
+<p>This now overrides the "global" setting and allow users to view the content of that directory.</p>
+<h2><span class="mw-headline" id="Alternative_index_files">Alternative index files</span></h2>
+<p>When a visitor accesses your website, the server checks the folder for an index file. Some examples of common index files are:</p>
+<ul>
+<li>index.htm</li>
+<li>index.html</li>
+<li>index.php</li>
+<li>index.cgi</li>
+<li>index.pl</li>
+</ul>
+<p>The supported index files depend on the how the server is set up. DreamHost's servers are set to:</p>
+<pre>DirectoryIndex index.html index.shtml index.htm Index.html Index.htm Index.shtml default.htm Default.htm default.html Default.html default.shtml Default.shtml page1.html index.pl index.cgi index.php index.php3 index.phtml home.htm home.html home.shtml index.wml index.pcgi quickstart.html
+</pre>
+<ul>
+<li>As long as you name your "index" file any one of the above, it will automatically load.</li>
+</ul>
+<ul>
+<li>When you add a new domain/subdomain to your account, DreamHost creates a quickstart.html file for you and places it in your directory which loads by default unless you delete it or add your own index file.</li>
+</ul>
+<ul>
+<li>If you have two files with names from the list above, Apache shows the one that appears first (e.g., index.html will show up, even if you have an index.php file in the same directory).</li>
+</ul>
+<ul>
+<li>You can change your own DirectoryIndex setting to be anything you like using an .htaccess file. If the server cannot find an index file, it tries to display an index of all the files within the current directory; however if this is disabled, the server ends up displaying a 404 forbidden error.</li>
+</ul>
+<ul>
+<li>Using .htaccess, you can use a completely different index file instead of the defaults listed above. To do this, insert the following line into an .htaccess file:</li>
+</ul>
+<pre>DirectoryIndex pagename.html</pre>
+<p>Change pagename.html to the page that you wish to use as the index file. If you specify something like example.html to be the directoryindex and you have not uploaded this file to your web directory, Apache shows a listing of all files since it cannot find the one you specified. Be careful where you place this rule (or any rule), because it is recursive.</p>
+<h2><span class="mw-headline" id="Fail_safe_directory_listing">Fail safe directory listing</span></h2>
+<p>The following allows a specific file to load just in case there is no default index file already set up:</p>
+<pre>Options -Indexes
+DirectoryIndex index.php index.html /example.php
+</pre>
+<p>When a visitor requests a directory, Apache searches for index.php, then index.html, and if neither are found it displays /example.php.</p>
+<h2><span id="See_also">See also</span></h2>
+<ul>
+<li><a href="/hc/en-us/articles/216456227">.htaccess overview</a></li>
+<li><a href="/hc/en-us/articles/217738987">What can I do with an .htaccess file?</a></li>
+</ul>

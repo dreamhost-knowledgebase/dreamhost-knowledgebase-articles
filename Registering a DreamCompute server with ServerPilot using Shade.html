@@ -1,0 +1,157 @@
+<body role="document">
+<div class="document">
+<div class="documentwrapper">
+<div class="body" role="main">
+<div id="registering-a-dreamcompute-server-with-serverpilot-using-shade">
+
+<p>This article assumes you have</p>
+<ul class="simple">
+<li>An account on ServerPilot and your <a class="reference external" href="https://serverpilot.io/community/articles/how-to-use-the-serverpilot-api.html">client ID and API key</a>
+for that account.</li>
+<li>An <a class="reference external" href="https://iad2.dreamcompute.com/project/access_and_security/api_access/openrc/">openrc.sh file</a></li>
+</ul>
+<div id="authentication">
+<h2>Authentication</h2>
+<p>Start by setting the environment variables that tell Shade how to authenticate
+to Dreamcompute, do this by running the following and typing in your password
+when it asks for it:</p>
+<div class="code bash highlight-python"><div class="highlight"><pre><span></span>source openrc.sh
+</pre></div>
+</div>
+</div>
+<div id="getting-a-server-id-and-server-api-key-from-serverpilot">
+<h2>Getting a server ID and server API key from ServerPilot</h2>
+<p>The first step in this process is to request a new server ID and server API
+key from ServerPilot. You also set the name of the server you want to create
+here.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">shade</span>
+<span class="kn">import</span> <span class="nn">json</span>
+
+<span class="n">client_id</span> <span class="o">=</span> <span class="s1">'CLIENT ID GOES HERE'</span>
+<span class="n">api_key</span> <span class="o">=</span> <span class="s1">'API KEY GOES HERE'</span>
+<span class="n">server_name</span> <span class="o">=</span> <span class="s1">'serverpilot'</span>
+
+</pre></div>
+</div>
+<p>Next you make the request to the ServerPilot API to create new a new server ID
+and API key.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">server_info</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="s1">'{"name": "'</span> <span class="o">+</span> <span class="n">server_name</span> <span class="o">+</span> <span class="s1">'"}'</span><span class="p">)</span>
+<span class="n">server_endpoint</span> <span class="o">=</span> <span class="s1">'https://api.serverpilot.io/v1/servers'</span>
+
+<span class="n">session</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
+<span class="n">session</span><span class="o">.</span><span class="n">auth</span> <span class="o">=</span> <span class="p">(</span><span class="n">client_id</span><span class="p">,</span> <span class="n">api_key</span><span class="p">)</span>
+<span class="n">session</span><span class="o">.</span><span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'Content-Type'</span><span class="p">:</span> <span class="s1">'application/json'</span><span class="p">}</span>
+<span class="n">response_raw</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">server_endpoint</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">server_info</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">response_raw</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+<span class="n">response_json</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">response_raw</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+
+</pre></div>
+</div>
+<p>Now you have a server ID and server API key stored in the <code class="docutils literal"><span class="pre">response_json</span></code>
+dictionary that you can use with the server you want to register with
+ServerPilot.</p>
+</div>
+<div id="launching-a-server-and-registering-it-with-serverpilot">
+<h2>Launching a server and registering it with ServerPilot</h2>
+<p>Pass the ServerPilot installer as a task to be executed as soon as the
+new server is created, using cloud-init:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">cloud_init</span><span class="o">=</span><span class="s1">'''#!/bin/bash</span>
+<span class="s1">sudo apt-get update &amp;&amp; sudo apt-get -y install wget ca-certificates &amp;&amp; </span><span class="se">\</span>
+<span class="s1">sudo wget -nv -O serverpilot-installer </span><span class="se">\</span>
+<span class="s1">https://download.serverpilot.io/serverpilot-installer &amp;&amp; </span><span class="se">\</span>
+<span class="s1">sudo sh serverpilot-installer </span><span class="se">\</span>
+<span class="s1">--server-id={serverid} </span><span class="se">\</span>
+<span class="s1">--server-apikey={serverapikey}</span>
+<span class="s1">'''</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">serverid</span><span class="o">=</span><span class="n">response_json</span><span class="p">[</span><span class="s1">'data'</span><span class="p">][</span><span class="s1">'id'</span><span class="p">],</span> <span class="n">serverapikey</span><span class="o">=</span><span class="n">response_json</span><span class="p">[</span><span class="s1">'data'</span><span class="p">][</span><span class="s1">'apikey'</span><span class="p">])</span>
+
+</pre></div>
+</div>
+<p>Then set variables for the image, flavor, and key pair to launch the server
+with.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">image_name</span> <span class="o">=</span> <span class="s1">'Ubuntu-16.04'</span>
+<span class="n">flavor_id</span> <span class="o">=</span> <span class="s1">'100'</span>
+<span class="n">key_name</span> <span class="o">=</span> <span class="s1">'KEY NAME GOES HERE'</span>
+
+</pre></div>
+</div>
+<p>Change the <code class="docutils literal"><span class="pre">key_name</span></code> file to be the name of your key pair on DreamCompute so
+that you can SSH into the server. The <code class="docutils literal"><span class="pre">image</span></code> and <code class="docutils literal"><span class="pre">flavor_id</span></code>
+variables can also be modified to deploy a different image or a different size
+server.</p>
+<p>Finally, connect to DreamCompute with Shade and request the building of the
+server. For more information about Shade, read our documentation on <a class="reference external" href="214836997">how
+to use Shade with DreamCompute</a>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">conn</span> <span class="o">=</span> <span class="n">shade</span><span class="o">.</span><span class="n">OpenStackCloud</span><span class="p">()</span>
+
+<span class="n">image</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">get_image</span><span class="p">(</span><span class="n">image_name</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">create_server</span><span class="p">(</span><span class="n">image</span><span class="o">=</span><span class="n">image</span><span class="p">,</span> <span class="n">flavor</span><span class="o">=</span><span class="n">flavor_id</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="n">server_info</span><span class="p">[</span><span class="s1">'name'</span><span class="p">],</span> <span class="n">network</span><span class="o">=</span><span class="s1">'public'</span><span class="p">,</span> <span class="n">userdata</span><span class="o">=</span><span class="n">cloud_init</span><span class="p">,</span>
+        <span class="n">key_name</span><span class="o">=</span><span class="n">key_name</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Once the script runs and finishes, go to <a class="reference external" href="https://manage.serverpilot.io/#servers">ServerPilot.io</a>, click on servers
+and you should see your new server (it may take up to a couple minutes for the
+installation script to finish). You can now use ServerPilot to manage your
+server and deploy applications on it.</p>
+</div>
+<div id="full-script">
+<h2>Full script</h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># step-1</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">shade</span>
+<span class="kn">import</span> <span class="nn">json</span>
+
+<span class="n">client_id</span> <span class="o">=</span> <span class="s1">'CLIENT ID GOES HERE'</span>
+<span class="n">api_key</span> <span class="o">=</span> <span class="s1">'API KEY GOES HERE'</span>
+<span class="n">server_name</span> <span class="o">=</span> <span class="s1">'serverpilot'</span>
+
+<span class="c1"># step-2</span>
+<span class="n">server_info</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="s1">'{"name": "'</span> <span class="o">+</span> <span class="n">server_name</span> <span class="o">+</span> <span class="s1">'"}'</span><span class="p">)</span>
+<span class="n">server_endpoint</span> <span class="o">=</span> <span class="s1">'https://api.serverpilot.io/v1/servers'</span>
+
+<span class="n">session</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
+<span class="n">session</span><span class="o">.</span><span class="n">auth</span> <span class="o">=</span> <span class="p">(</span><span class="n">client_id</span><span class="p">,</span> <span class="n">api_key</span><span class="p">)</span>
+<span class="n">session</span><span class="o">.</span><span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'Content-Type'</span><span class="p">:</span> <span class="s1">'application/json'</span><span class="p">}</span>
+<span class="n">response_raw</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">server_endpoint</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">server_info</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">response_raw</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+<span class="n">response_json</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">response_raw</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+
+<span class="c1"># step-3</span>
+<span class="n">cloud_init</span><span class="o">=</span><span class="s1">'''#!/bin/bash</span>
+<span class="s1">sudo apt-get update &amp;&amp; sudo apt-get -y install wget ca-certificates &amp;&amp; </span><span class="se">\</span>
+<span class="s1">sudo wget -nv -O serverpilot-installer </span><span class="se">\</span>
+<span class="s1">https://download.serverpilot.io/serverpilot-installer &amp;&amp; </span><span class="se">\</span>
+<span class="s1">sudo sh serverpilot-installer </span><span class="se">\</span>
+<span class="s1">--server-id={serverid} </span><span class="se">\</span>
+<span class="s1">--server-apikey={serverapikey}</span>
+<span class="s1">'''</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">serverid</span><span class="o">=</span><span class="n">response_json</span><span class="p">[</span><span class="s1">'data'</span><span class="p">][</span><span class="s1">'id'</span><span class="p">],</span> <span class="n">serverapikey</span><span class="o">=</span><span class="n">response_json</span><span class="p">[</span><span class="s1">'data'</span><span class="p">][</span><span class="s1">'apikey'</span><span class="p">])</span>
+
+<span class="c1"># step-4</span>
+<span class="n">image_name</span> <span class="o">=</span> <span class="s1">'Ubuntu-16.04'</span>
+<span class="n">flavor_id</span> <span class="o">=</span> <span class="s1">'100'</span>
+<span class="n">key_name</span> <span class="o">=</span> <span class="s1">'KEY NAME GOES HERE'</span>
+
+<span class="c1"># step-5</span>
+<span class="n">conn</span> <span class="o">=</span> <span class="n">shade</span><span class="o">.</span><span class="n">OpenStackCloud</span><span class="p">()</span>
+
+<span class="n">image</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">get_image</span><span class="p">(</span><span class="n">image_name</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">create_server</span><span class="p">(</span><span class="n">image</span><span class="o">=</span><span class="n">image</span><span class="p">,</span> <span class="n">flavor</span><span class="o">=</span><span class="n">flavor_id</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="n">server_info</span><span class="p">[</span><span class="s1">'name'</span><span class="p">],</span> <span class="n">network</span><span class="o">=</span><span class="s1">'public'</span><span class="p">,</span> <span class="n">userdata</span><span class="o">=</span><span class="n">cloud_init</span><span class="p">,</span>
+        <span class="n">key_name</span><span class="o">=</span><span class="n">key_name</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="clearer"></div>
+</div>
+<div class="footer">
+</div>
+<!--DreamCompute Button-->
+<div class="dream-sign-up">
+<h2>Deploy Your Apps On Cloud Servers Today</h2>
+<a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a>
+</div>
+</body>

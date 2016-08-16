@@ -1,0 +1,221 @@
+<div class="document">
+<div class="documentwrapper">
+<div class="body">
+<div id="Troubleshooting-a-single-site's-connection">
+<div class="altTitle">Troubleshooting site connection</div>
+<div class="table-of-content container">
+<ul class="simple">
+<li><strong>Troubleshooting</strong></li>
+<li><a class="reference internal" href="#Immediate_500_Internal_Server_Error">Immediate 500 Internal Server Error</a></li>
+<li><a class="reference internal" href="#Site_spins_trying_to_load_for_a_while_and_then_displays_a_500_Internal_Server_Error">Site spins trying to load for a while and then displays a 500 Internal Server Error</a></li>
+<li><a class="reference internal" href="#Site_spins_trying_to_load_forever">Site spins trying to load forever</a></li>
+<li><a class="reference internal" href="#Site_loads_immediately_but_only_a_blank_page_displays">Site loads immediately, but only a blank page displays</a></li>
+<li><a class="reference internal" href="#Site_loads_immediately_but_displays_a_database_connection_error">Site loads immediately, but displays a database connection error</a></li>
+<li><a class="reference internal" href="#Site_loads_immediately_but_displays_a_403_Forbidden_Error">Site loads immediately, but displays a 403 Forbidden Error</a></li>
+<li><a class="reference internal" href="#Site_loads_but_displays_a_404_Error_rather_than_what_you_expected">Site loads, but displays a 404 Error rather than what you expected</a></li>
+<li><strong>Investigating</strong></li>
+<li><a class="reference internal" href="#Checking_the_version_of_your_software">Checking the version of your software</a></li>
+<li><a class="reference internal" href="#Checking_for_database_table_overhead">Checking for database table overhead</a></li>
+<li><a class="reference internal" href="#Checking_your_addons">Checking your addons</a></li>
+<li><a class="reference internal" href="#Disabling_an_old_and_potentially_hacked_site">Disabling an old and potentially hacked site</a></li>
+</ul>
+</div>
+<p>In a shared hosting environment, there are many issues that can affect the performance of your site. They can range from problems with your database, compromised code, misconfigurations in your site, and hitting memory limits which causes your processes to be killed.</p>
+<p>To make matters worse, these problems can often cause each other. For example, a compromised site could slow down the database with junk data, causing it to take more time and memory to load, which then causes the user for the site to hit memory limits.</p>
+<p>This article lists a few common errors along with troubleshooting solutions.</p>
+<h2><strong>Troubleshooting a single site</strong></h2>
+<p>There are many reasons why your site cannot load. The first thing you will need to do is identify the symptoms that you are seeing. Common symptoms observed when a site does not load include:</p>
+<ul>
+<li>Immediate 500 Internal Server Error</li>
+<li>Site spins trying to load for a while and then displays a 500 Internal Server Error</li>
+<li>Site spins trying to load forever</li>
+<li>Site loads immediately, but only a blank page displays</li>
+<li>Site loads immediately, but displays a database connection error</li>
+<li>Site loads immediately, but displays a 403 Forbidden Error</li>
+<li>Site loads, but displays a 404 Error rather than what you expected</li>
+</ul>
+<p>Each of the above issues is examined below.</p>
+<div id="immediate"><span id="Immediate_500_Internal_Server_Error"></span>
+<h2><strong>Immediate 500 Internal Server Error</strong></h2>
+<p>There are two things that can potentially cause this to happen. If the error happens instantaneously, then most likely the cause is something to do with your site's .htaccess file. Some potential things to look for:</p>
+<ul>
+<li>Syntax errors in the .htaccess file</li>
+<li>Custom PHP setup that isn't working</li>
+</ul>
+<p>To see if this is the cause, try renaming the .htaccess file in your site's home directory to something like ".htaccess.disabled". If the problem is in your .htaccess file, that will immediately solve the problem.</p>
+<p>Keep in mind that .htaccess rules apply to all subdirectories – so it's possible for an .htaccess file outside of your site's web directory to affect your site. Make sure you also look higher up in the directory structure for .htaccess files that might affect things and try renaming any you find in order to see if it helps.</p>
+<p>If that doesn’t solve the problem, you may be having processes killed due to exceeding your user's memory limit. One quick way to see if this might be affecting you is to simply check to see which processes you have running as your user:</p>
+<ol>
+<li>Log in to your server via <a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a>.</li>
+<li>Once you're in, run the top -c command like this:</li>
+</ol>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">top -c</span>
+<span class="cmdoutput">top - 14:37:35 up 10 days, 17:35,  3 users,  load average: 0.83, 0.89, 1.11
+Tasks:  16 total,   1 running,  15 sleeping,   0 stopped,   0 zombie
+Cpu(s): 34.7%us,  4.8%sy,  1.7%ni, 56.5%id,  0.9%wa,  0.2%hi,  1.1%si,  0.0%st
+Mem:  32966092k total, 32546460k used,   419632k free,  6369232k buffers
+Swap:  8000328k total,   228972k used,  7771356k free, 12650516k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND 
+ 8384 youruser  20   0 66984  11m 6852 S    1  0.0   0:03.62 php5.cgi
+ 8385 youruser  20   0 66044  10m 6700 S    0  0.0   0:00.24 php5.cgi
+10895 youruser  20   0 65940  10m 6848 S    0  0.0   0:00.92 php5.cgi
+10917 youruser  20   0 65980  10m 6848 S    0  0.0   0:00.79 php5.cgi
+ 7542 youruser  20   0 65956  10m 6860 S    0  0.0   0:00.51 php5.cgi
+ 7818 youruser  20   0 65980  10m 6860 S    0  0.0   0:00.35 php5.cgi
+ 7828 youruser  20   0 65988  10m 6860 S    0  0.0   0:00.33 php5.cgi
+ 7917 youruser  20   0 66016  10m 6860 S    0  0.0   0:00.43 php5.cgi
+ 8152 youruser  20   0 65976  10m 6856 S    0  0.0   0:04.21 php5.cgi
+ 8380 youruser  20   0 65932  10m 6848 S    0  0.0   0:04.03 php5.cgi
+ 8386 youruser  20   0 66020  10m 6860 S    0  0.0   0:00.32 php5.cgi
+10896 youruser  20   0 65908  10m 6848 S    0  0.0   0:00.66 php5.cgi
+10919 youruser  20   0 65948  10m 6848 S    0  0.0   0:00.24 php5.cgi
+</span></pre>
+</div>
+<p>If it looks something like the above, then you're very likely running into this problem. Generally, if you're running more than 10 PHP processes at once and they hold pretty steady, then this is an indication of memory issues.</p>
+<div id="site-spins-while"><span id="Site_spins_trying_to_load_for_a_while_and_then_displays_a_500_Internal_Server_Error"></span>
+<h2><strong>Site spins trying to load for a while and then displays a 500 Internal Server Error</strong></h2>
+<p>This can be caused by a few different things. One cause can sometimes be running into memory limit issues as described in the 'Immediate 500 Internal Server Error' section above, and the most common cause is PHP timing out. If this only happens on a subset of pages (in particular admin pages for the software you're using), then it's very likely that this could be the cause. By default, the PHP timeout is 30 seconds. You can find out if this is the cause by creating a custom phprc for your site and adjusting the max_execution_time setting to 2-3 times what it is now. If this happens to all of your pages, then it can still potentially be a PHP timeout. You can check your site <a href="/hc/en-us/articles/216512197-Viewing-your-error-log-via-SFTP">error logs</a> in the logs/example.com/http/error.log file inside your user's home directory to see if there are any helpful error messages. If all you see is a "Premature end of headers" error, then that is generally not too helpful as it simply means the script exited before completing.</p>
+<p>You can read more about creating a custom phprc file in the following article:</p>
+<ul>
+<li><a href="/hc/en-us/articles/214894037-How-do-I-create-a-phprc-file-via-FTP-">How to create a phprc file</a></li>
+</ul>
+<div id="site-forever"><span id="Site_spins_trying_to_load_forever"></span>
+<h2><strong>Site spins trying to load forever</strong></h2>
+<p>This is perhaps the most generic thing that can happen with your site. Most often this means that something is causing your PHP processes to hang. If you check the top -c command on the server you might notice &lt;defunct&gt; showing up next to some of those processes as well. This can be caused by a large number of things.</p>
+<p>With WordPress, this often has to do with database tables your site is using having overhead. That shouldn't cause problems, but for some reason WordPress can get itself into a bad state if there is any overhead (particularly in the wp_options table) and it will oftentimes exhibit this symptom in those cases. Other major causes of this are software misconfigurations or third-party addons to the software you're using that have a compatibility issue or poor coding.</p>
+<p>You can read more about reducing overhead and optimizing WordPress in the following articles:</p>
+<ul>
+<li><a href="/hc/en-us/articles/216349808-Common-reasons-for-poor-website-performance">Poor performance</a></li>
+<li><a href="/hc/en-us/sections/203242637-Optimization">WordPress optimization articles</a></li>
+</ul>
+<div id="site-blank"><span id="Site_loads_immediately_but_only_a_blank_page_displays"></span>
+<h2><strong>Site loads immediately, but only a blank page displays</strong></h2>
+<p>This issue is most often related to either a theme that's being used having problems or a caching addon behaving improperly. Depending upon what exactly is going on this one can be a little tricky to solve and will likely require some fiddling to get things working properly again.</p>
+<div id="site-db-error"><span id="Site_loads_immediately_but_displays_a_database_connection_error"></span>
+<h2><strong>Site loads immediately, but displays a database connection error</strong></h2>
+<p>This can happen either because the database server is unavailable or because the database connection information is incorrect. Under some conditions servers may have trouble contacting MySQL servers due to networking issues (fairly rare). In many cases this is simply because the database login information was changed without updating the connection information or the MySQL hostname isn't working properly (e.g., domain being used expired, hostname was removed from the panel, and so on).</p>
+<p>Log in to your site via <a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a> or <a href="/hc/en-us/articles/215612917-FTP-overview">FTP</a>. Once logged in, open your site’s configuration file. For WordPress, it is called wp-config.php, for other apps, it may just be called config.php. That file contains the settings used to connect to the MySQL database. Generally, the parts you want to test are:</p>
+<ul>
+<li>Hostname</li>
+<li>Username</li>
+<li>Password</li>
+<li>Database Name</li>
+</ul>
+<p>First, test the hostname by trying to access it with a web browser. If nothing loads, then you likely have an incorrect hostname and you'll need to replace it with a functioning one. Luckily, hostnames on the same server are interchangeable, so if you have another hostname that does work on the same server, you can just use the one that works. If you have no other hostnames for that server, you will need to create one and wait for it to propagate. View the <a href="/hc/en-us/articles/214395638-phpMyAdmin-overview">phpMyAdmin</a> article for further details.</p>
+<p>If the hostname loads, you will be prompted for a username and password. If the username and password from the config file are rejected, you may need to update them with the correct information. View the <a href="/hc/en-us/articles/214395638-phpMyAdmin-overview">phpMyAdmin</a> article for details on how to obtain the correct credentials in your panel.</p>
+<p>If you are able to log in, check to see which databases are available. If the database listed in the config file does not exist, you will need to update the config file if the database’s name has changed, or restore the missing database.</p>
+<div id="site-forbidden"><span id="Site_loads_immediately_but_displays_a_403_Forbidden_Error"></span>
+<h2><strong>Site loads immediately, but displays a 403 Forbidden Error</strong></h2>
+<p>The 403 Forbidden error is displayed when a deny rule is set for an IP in a site's .htaccess file or when file permissions keep the web server from serving up a page. In most cases this is file-permission related. To check permissions for your site:</p>
+<ol>
+<li>Log in via SSH.</li>
+<li>Get a directory listing:</li>
+</ol>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">ls -la</span>
+<span class="cmdoutput">drwxr-x--x   16 youruser pg123456    4096 2009-12-10 04:25 ./
+...</span>
+</pre>
+</div>
+<p>The first line should look like the above. Notice the permission string that reads "drwxr-x--x". The first letter stands for "directory", then there are three sets of three permissions. The first set are the owner permissions, which are set to read/write/execute. The second set are the group permissions which are set to read/execute. The third set are "other" permissions (or what all other users have), which is set to execute only. If you have Enhanced Security enabled for your user it would look like this instead:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">ls -la</span>
+<span class="cmdoutput">drwxr-x---   16 youruser  adm    4096 2009-12-10 04:25 ./
+...</span>
+</pre>
+</div>
+<p>The above are correct permission settings. If instead they look like this:</p>
+<div class="preboxcontainer">
+<pre class="prebox">drw-r-----   16 youruser pg123456    4096 2009-12-10 04:25 ./
+</pre>
+</div>
+<p>or this:</p>
+<div class="preboxcontainer">
+<pre class="prebox">d---------   16 youruser pg123456    4096 2009-12-10 04:25 ./
+</pre>
+</div>
+<p>Then that means your user has been disabled and you should contact DreamHost. If this is the case you'll likely see errors like this when attempting to log in and won't be able to get the directory listing as described above:</p>
+<div class="preboxcontainer">
+<pre class="prebox">Could not chdir to home directory /home/youruser: Permission denied
+-bash: /home/youruser/.bash_profile: Permission denied
+</pre>
+</div>
+<p>If you see this, <a href="/hc/en-us/articles/218084068-Contacting-support-overview">contact DreamHost support</a> for assistance.</p>
+<p>If permissions look fine, but you're still getting a 403, then try renaming the .htaccess file for your affected domain from ".htaccess" to ".htaccess.disabled" like this:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">mv .htaccess .htaccess.disabled</span>
+</pre>
+</div>
+<p>Then, try loading up your site. If the 403 is gone, then open up your .htaccess file and look for lines starting with "deny". If you find any, comment them out by putting a "#" before the line and saving the file. You can re-enable the .htaccess file you disabled above like this:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">mv .htaccess.disabled .htaccess</span>
+</pre>
+</div>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>If you see the site directory has an addition to the end of its directory saying that it was disabled by DreamHost, check your email for a notice from support concerning why. If you cannot find one, write in for support immediately.</p>
+</div>
+</div>
+<p>Visit the following page for further details on file permissions:</p>
+<ul>
+<li><a href="/hc/en-us/articles/214751018-UNIX-commands-Changing-permissions">Unix File Permissions</a></li>
+</ul>
+<div id="site-404-error"><span id="Site_loads_but_displays_a_404_Error_rather_than_what_you_expected"></span>
+<h2><strong>Site loads, but displays a 404 Error rather than what you expected</strong></h2>
+<p>This happens most often with sites that use software such as WordPress that use .htaccess rules for their permalinks/pretty URLs. If those rules are removed or changed somehow then a 404 will appear rather than the content you expect. The easiest way to fix this is to download a fresh copy of the software you're using from its website (e.g., <a class="external free" href="http://www.joomla.org/download.html" rel="nofollow">http://www.joomla.org/download.html</a>) and then copy the contents of the default .htaccess file and paste it into your existing one (keep in mind that ".htaccess" files are invisible files, so you might need to <a href="/hc/en-us/articles/215613037-How-do-I-show-hidden-files-on-my-FTP-client-">enable viewing of invisible files</a> in your client to find the file if it's there).</p>
+<p>Not all software comes with an .htaccess file by default. For instance, WordPress generates one when you change your permalinks settings, so keep that in mind as well. If putting in the default .htaccess rules doesn't resolve the 404 issue, write in to support and request additional help.</p>
+<p>For WordPress specifically, this can often be fixed by just resaving your permalink structure. To do this, log into your admin panel, go to ‘Settings’ &gt; ‘Permalinks’, and then click the save permalinks button.</p>
+<h2><strong>Investigating the site</strong></h2>
+<div id="software-version"><span id="Checking_the_version_of_your_software"></span>
+<h2><strong>Checking the version of your software</strong></h2>
+<p>At this point, you've identified the site in question. The first thing you always want to do is check to make sure it's running the most recent version of whatever software it's running. In WordPress' case, you would do that by running this command inside the directory in which WordPress is installed:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp core version</span>
+</pre>
+</div>
+<p>If the version number you get is not the current version, you will want to upgrade. Visit the following article for more commands you can run using wp-cli:</p>
+<ul>
+<li><a href="/hc/en-us/articles/214693248-WordPress-wp-cli-overview">WordPress wp-cli</a></li>
+</ul>
+<div id="database-overhead"><span id="Checking_for_database_table_overhead"></span>
+<h2><strong>Checking for database table overhead</strong></h2>
+<p>Many web applications seem to have trouble if your database tables develop overhead. Database table overhead shouldn't cause problems, but it’s been demonstrated in many cases that it does. In fact, with WordPress 2.9 they introduced a new option to make your site automatically check for this. To manually check, browse to the MySQL hostname you're using in your site to get to the phpMyAdmin interface. Select the database your site is using from the dropdown menu at the top left of the page and you should see something like this:</p>
+<dl>
+<dd><img src="https://kbimages.objects-us-west-1.dream.io/images/Adv_troubleshooting_phpmyadmin.png" alt="Adv troubleshooting phpmyadmin.jpg" /></dd>
+</dl>
+<p>Notice the column on the far right titled "overhead". Rows with values are tables that have overhead. Just click the "Check tables having overhead" link at the bottom (this only shows up if some tables actually have overhead), then select "Optimize table" from the dropdown to the right of that link.</p>
+<div id="addons"><span id="Checking_your_addons"></span>
+<h2><strong>Checking your addons</strong></h2>
+<p>Next, you'll want to make sure you have some kind of caching addon installed.</p>
+<p>If you do not have a caching plugin installed, you will want to install one, as they can dramatically reduce resource usage and improve performance.</p>
+<div id="disable-hacked"><span id="Disabling_an_old_and_potentially_hacked_site"></span>
+<h2><strong>Disabling an old and potentially hacked site</strong></h2>
+<p>If the version of WordPress is really old, it may have been hacked. View the following article to troubleshoot:</p>
+<ul>
+<li><a href="/hc/en-us/articles/214820158-Hacked-WordPress-site-overview">My WordPress site was hacked</a></li>
+</ul>
+<p>Now, check to see if your sites are loading properly and monitor top to make sure PHP processes aren't building back up again.</p>
+<h2><strong>See also</strong></h2>
+<ul>
+<li><a href="/hc/en-us/articles/215867298-Troubleshooting-your-busiest-sites">Troubleshooting your busiest sites</a></li>
+<li><a href="/hc/en-us/articles/217141537-Collecting-ping-results">Collecting ping results</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="clearer"> </div>

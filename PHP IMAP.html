@@ -1,0 +1,93 @@
+<p>Using the PHP programming language, you are able to create simple <a href="https://dreamhosthelp.zendesk.com/hc/en-us/articles/215507058-PHP-mail-overview">mail forms</a> to send email. PHP also has a set of more advanced IMAP functions you can take advantage of to create more advanced email forms. This allows you to save sent emails and check your inbox for new messages.</p>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Creating custom forms is beyond the scope of technical support. If anything does not work as intended, DreamHost support is unable to troubleshoot issues related to the coding of the form.</p>
+</div>
+</div>
+<h2><span id="General_notes_on_website_forms" class="mw-headline">General notes on website forms</span></h2>
+<p>Examples on this page show a message sent through the DreamHost web server for the 'From' email address listed. Because of this, the message is subject to the sender’s domain policy:</p>
+<ul>
+<li><a href="https://dreamhosthelp.zendesk.com/hc/en-us/articles/215036058-Sender-domain-policy-and-spoofing-overview">Sender Domain Policy and Spoofing</a></li>
+</ul>
+<p>If you need to use an outside email address for the ‘From’ sending user, you may want to consider setting up an SMTP form for the site instead.</p>
+<p>Please note that there are strict sending limits when sending email from a web server. Visit the following article for further details:</p>
+<ul>
+<li><a href="https://dreamhosthelp.zendesk.com/hc/en-us/articles/215730467-SMTP-quota-overview">SMTP quota</a></li>
+</ul>
+<h2><span id="Basic_.27mail.28.29.27_function_replacement" class="mw-headline">Basic 'mail()' function replacement</span></h2>
+<p>The imap_mail() function can replace the standard mail() function typically used for sending email. Parameters for both functions are mostly similar.</p>
+<p>Here's a basic example using imap_mail():</p>
+<div class="preboxcontainer">
+<pre class="prebox">&lt;?php
+
+$to = "recipient@example.com, recipient2@example.com";
+$subject = "Test Email";
+$body = "This is only a test.";
+$headers = "From: me@example.com\r\n".
+   	"Reply-To: me@example.com\r\n";
+$cc = null;
+$bcc = null;
+$return_path = "me@example.com";
+
+imap_mail($to, $subject, $body, $headers, $cc, $bcc, $return_path);
+
+?&gt;
+</pre>
+</div>
+<h3><span id="Explanation_of_fields_on_this_form" class="mw-headline">Explanation of fields on this form</span></h3>
+<dl>
+<dt><strong>$headers</strong></dt>
+<dd>This section has two fields: ‘From’ and ‘Reply-To’.</dd>
+</dl>
+<dl>
+<dt><strong>The ‘From’ email address</strong></dt>
+<dd>Should be set with the email address sending the message. If you’re not using SMTP authentication, this must be an email address on the same domain you’re sending from and must be hosted with DreamHost. If you want to use any other address as the ‘From’, you must use SMTP authentication.</dd>
+</dl>
+<dl>
+<dt><strong>The ‘Reply-To’ email address</strong></dt>
+<dd>Can be set with any address and receives the replies back to the message from the recipient.</dd>
+</dl>
+<dl>
+<dt><strong>$return_path</strong></dt>
+<dd>Rejected mail goes back to the envelope sender listed here. You want the ‘Reply-To’ and ‘Return-Path’ set to the same sending user.</dd>
+</dl>
+<h2><span id="Saving_sent_emails" class="mw-headline">Saving sent emails</span></h2>
+<p>The form setup above allows you to send the message, but does not save it in the SENT folder. If you want to see a record of all emails sent, you can add another function to store the message into the SENT folder.</p>
+<p>To store the sent message in the ‘Sent’ folder, add this function to the PHP file:</p>
+<div class="preboxcontainer">
+<pre class="prebox">&lt;?php
+
+//The first line connects to your inbox over port 143
+$mbox = imap_open("{mail.example.com:143/notls}INBOX", "me@example.com", "password");
+
+//imap_append() appends a string to a mailbox. In this example your SENT folder.
+// Notice the 'r' format for the date function, which formats the date correctly for messaging.
+imap_append($mbox, "{mail.example.com:143/notls}INBOX.Sent",
+    "From: me@example.com\r\n".
+    "To: ".$to."\r\n".
+    "Subject: ".$subject."\r\n".
+    "Date: ".date("r", strtotime("now"))."\r\n".
+    "\r\n".
+    $body.
+    "\r\n"
+    );
+
+// close mail connection.
+imap_close($mbox);
+?&gt;
+</pre>
+</div>
+<h2><span id="See_also" class="mw-headline">See also</span></h2>
+<h3>Internal links</h3>
+<ul>
+<li><a style="background-color: #ffffff;" href="https://help.dreamhost.com/hc/en-us/articles/215507058-PHP-mail-overview">PHP mail() overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216140597-How-do-I-send-PHP-mail-via-SMTP-">How do I send PHP mail via SMTP?</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215507068-Troubleshooting-PHP-mail-">Troubleshooting PHP mail()</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215730437-SMTP-quota-limits">SMTP quota limits</a></li>
+</ul>
+<h3>External links</h3>
+<ul>
+<li><a class="external text" href="http://us2.php.net/manual/en/ref.imap.php" rel="nofollow">PHP IMAP Function Reference</a></li>
+<li><a class="external text" href="http://php.net/manual/en/function.imap-append.php" rel="nofollow">imap_append function</a></li>
+</ul>

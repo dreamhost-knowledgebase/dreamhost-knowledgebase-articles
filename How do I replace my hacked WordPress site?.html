@@ -1,0 +1,182 @@
+<p>This following sections describe the steps on how to manually re-install a new copy of WordPress to your hacked site and should be done in order as they appear.</p>
+<h2><span id="Step_one:_change_your_WordPress_theme" class="mw-headline">Step one: change your WordPress theme</span></h2>
+<p>If possible, log into your WordPress dashboard at ‘example.com/wp-admin’. Once logged in, navigate to ‘Appearance &gt; Themes’ to change your theme to the current default theme.</p>
+<p>Twenty Fifteen is WordPress's current default theme. Changing your theme now makes the process easier for you later.</p>
+<h2><span id="Step_two:_change_your_passwords" class="mw-headline">Step two: change your passwords</span></h2>
+<p>There are a few general notes on passwords you should always follow:</p>
+<ul>
+<li>Don't reuse passwords – Most people use the same password in multiple places. Don't do it. You should make sure that your passwords are all unique from one another. This way, if one password is compromised, your other logins will remain secure.</li>
+<li>Use strong passwords – You can generate them from places like <a class="external text" href="https://strongpasswordgenerator.com/" rel="nofollow">Strong Password Generator</a>. At the very least, your passwords should be 8 characters long and consist of a mix of numbers and letters.</li>
+<li>Use a password tool – <a class="external text" href="https://lastpass.com/" rel="nofollow">LastPass</a> and <a class="external text" href="https://agilebits.com/onepassword" rel="nofollow">OnePassword</a> are great for protecting your passwords and generating new ones.</li>
+</ul>
+<p>You should change both your FTP user password as well as your database user password.</p>
+<h3><span id="Changing_the_FTP_user_password" class="mw-headline">Changing the FTP user password</span></h3>
+<p>The following article walks you through how to change this password:</p>
+<ul>
+<li><a href="/hc/en-us/articles/215613157-Where-do-I-find-my-FTP-login-credentials-">Locating the correct FTP user</a></li>
+</ul>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>For greater security, if your user is currently an FTP-only user, change it to an <a href="/hc/en-us/articles/216107387-How-do-I-use-SFTP-to-connect-to-my-server-">SFTP</a> or <a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a> user at the same time you change the password. View the <a href="/hc/en-us/articles/216385837-Enabling-Shell-access">Enabling Shell Access</a> article for further details.</p>
+</div>
+</div>
+<h3><span id="Changing_the_database_user_password" class="mw-headline">Changing the database user password</span></h3>
+<p>View the <a href="/hc/en-us/articles/221610868-phpMyAdmin-Finding-your-login-credentials">Finding your MySQL credentials</a> article for instructions on how to obtain your database username and change its password.</p>
+<h3><span id="Updating_your_wp-config.php_file" class="mw-headline">Updating your wp-config.php file</span></h3>
+<p>When you change the database user’s password, you will also need to edit your wp-config.php file to reflect this new password. There is information on how to edit the wp-config.php file to change the database password at <a class="external text" href="http://codex.wordpress.org/Editing_wp-config.php#Set_Database_Password" rel="nofollow">codex.WordPress.org</a>. You can also view the <a href="/hc/en-us/articles/214693268-WordPress-wp-config-php-overview">WordPress wp-config</a> article for further details.</p>
+<p>If you have multiple users for your database, make sure that you are changing the correct user's password. You can check which database user logs into your database for your WordPress install by looking at the wp-config.php file.</p>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>If there is anything like the following in your file, you have definitely been hacked, and you MUST remove it ASAP:</p>
+<div class="preboxcontainer">
+<pre class="prebox">&lt;?php eval(gzinflate(base64_decode('dVRtb6NGE.....')));?&gt;</pre>
+</div>
+<p>Base64 hacks are insidious and leave a backdoor that hackers can use again and again on your site. Delete that section entirely, or better yet, just rebuild the wp-config.php.</p>
+</div>
+</div>
+<h2><span id="Step_three:_take_the_hacked_code_offline" class="mw-headline">Step three: take the hacked code offline</span></h2>
+<ol>
+<li>Log into the web server via <a href="/hc/en-us/articles/215612917-FTP-overview">FTP</a>.</li>
+<li>Find your domain's directory (folder) which is most likely a folder with your sites name. If you’re in the correct directory, you’ll see a list of files and directories beginning with "wp-". It’s also possible you installed WordPress in a subdirectory such as /blog.</li>
+<li>Rename the directory (folder) where WordPress is installed. If it’s your primary directory, rename it ‘example.com_HACKED’. If it’s in a subdirectory, rename it to ‘example.com/blog_HACKED’.
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>When you rename the web directory, your site will immediately be taken offline.</p>
+</div>
+</div>
+</li>
+<li>Create a new, empty domain directory with the same directory name as the old one.</li>
+</ol>
+<h2><span id="Step_four:_install_a_new_unhacked_copy_of_WordPress" class="mw-headline">Step four: install a new <em>unhacked</em> copy of WordPress</span></h2>
+<p>Reinstall WordPress in one of two ways:</p>
+<ul>
+<li>Manually</li>
+<li>Using the One-Click Installer</li>
+</ul>
+<h3><span id="Manually_reinstalling_WordPress" class="mw-headline">Manually reinstalling WordPress</span></h3>
+<p>View the following page for details on how to manually reinstall WordPress:</p>
+<ul>
+<li><a class="external text" href="http://codex.wordpress.org/Installing_WordPress" rel="nofollow">Installing WordPress</a></li>
+</ul>
+<h3><span id="Reinstalling_WordPress_using_the_One-Click_Installer" class="mw-headline">Reinstalling WordPress using the One-Click Installer</span></h3>
+<p>View the <a href="/hc/en-us/articles/215915837-How-do-I-install-a-One-Click-Install-">How to Install a One-Click Install</a> article for details on how to install WordPress using the One-Click Installer.</p>
+<p>If you already have a One-Click Install active for this domain, then you must first remove it. View the <a href="/hc/en-us/articles/215916107-How-do-I-remove-a-One-Click-Install-">How to Remove a One-Click Install</a> article for details.</p>
+<dl>
+<dd></dd>
+<dd></dd>
+</dl>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>When removing the current One-Click Install, make sure to click the <strong>Remove from List</strong> button. DO NOT click the <strong>Delete all Files</strong> as that will permanently remove your website files.</p>
+</div>
+</div>
+<h2><span id="Step_five:_connect_your_new_install_to_your_old_database" class="mw-headline">Step five: connect your new install to your old database</span></h2>
+<p>You must connect the new files you’ve downloaded to your existing database. To do this, you need the following information:</p>
+<ul>
+<li>Database name</li>
+<li>Database username</li>
+<li>Database user password</li>
+<li>Hostname</li>
+<li>Table prefix</li>
+</ul>
+<p>This information is located in your former wp-config.php file:</p>
+<ol>
+<li>Log into your server via <a href="/hc/en-us/articles/215612917-FTP-overview">FTP</a>.</li>
+<li>Navigate to your former hacked directory which you renamed to example.com_HACKED.</li>
+<li>Open the wp-config.php file. You’ll find all of the values listed above.
+<ul>
+<li>The table prefix line begins with $table_prefix =.</li>
+<li>For DreamHost installs, the table prefix starts with wp_ and is followed by a series of random numbers and letters. For example:</li>
+</ul>
+<dl>
+<dd><strong>wp_17Dz9g</strong></dd>
+</dl>
+</li>
+<li>Navigate to your new WordPress install directory.</li>
+<li>Delete or rename the wp-config.php in that new folder.</li>
+<li>Load your site.
+<dl>
+<dd><em>You are prompted to select a language:</em></dd>
+<dd><img src="https://kbimages.objects-us-west-1.dream.io/images/01_WP_Hacked_oneclick.fw.png" alt="01 WP Hacked oneclick.fw.png" width="270" height="414" /></dd>
+</dl>
+</li>
+<li>Select your preferred language, and then click <strong>Continue</strong>.
+<dl>
+<dd><em>The WordPress setup page opens:</em></dd>
+<dd><img src="https://kbimages.objects-us-west-1.dream.io/images/02_WP_Hacked_oneclick.fw.png" alt="02 WP Hacked oneclick.fw.png" width="449" height="356" /></dd>
+</dl>
+</li>
+<li>Click <strong>Let’s go!</strong>
+<dl>
+<dd><em>The following page appears asking you to enter your credentials:</em></dd>
+<dd><img src="https://kbimages.objects-us-west-1.dream.io/images/03_WP_Hacked_oneclick.fw.png" alt="03 WP Hacked oneclick.fw.png" width="466" height="413" /></dd>
+</dl>
+</li>
+<li>Enter the required information, and then click <strong>Submit</strong>.
+<dl>
+<dd><img src="https://kbimages.objects-us-west-1.dream.io/images/04_WP_Hacked_oneclick.fw.png" alt="04 WP Hacked oneclick.fw.png" width="538" height="213" /></dd>
+</dl>
+</li>
+<li>Click the <strong>Run the install</strong> button.
+<dl>
+<dd><em>Since you already have data, a message appears indicating that WordPress is already installed, which means that you've successfully connected your WordPress installation to your old database:</em></dd>
+<dd><img src="https://kbimages.objects-us-west-1.dream.io/images/05_WP_Hacked_oneclick.fw.png" alt="05 WP Hacked oneclick.fw.png" width="452" height="215" /></dd>
+</dl>
+</li>
+</ol>
+<h2><span id="Step_six:_add_your_previous_content" class="mw-headline">Step six: add your previous content</span></h2>
+<p>Your WordPress site is now fully installed and connected to your old database. However, it is not using your former theme, plugins, or previously uploaded images.</p>
+<p>This step describes how to add all of your previous themes, uploads, and plugins.</p>
+<h3><span id="Installing_your_previous_theme" class="mw-headline">Installing your previous theme</span></h3>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>WordPress themes are vulnerable to hacking. Always download and install a new copy of your theme rather than moving the theme files from your old install.</p>
+</div>
+</div>
+<p>If you changed your theme to Twenty Fifteen before you started, your site should load your posts, but without the correct theme.</p>
+<p>If your specific theme is not currently installed, you can install it through the WordPress dashboard. View the following page for instructions on how to install a different theme:</p>
+<ul>
+<li><a class="external text" href="http://codex.wordpress.org/Themes#Adding_New_Themes_using_the_Administration_Panel" rel="nofollow">codex.WordPress.org</a></li>
+</ul>
+<p>If you did not change the theme to Twenty Fifteen before beginning, the site may load a blank white page. This is because your database is looking for a theme that is no longer installed.</p>
+<p>Since you cannot access the WordPress dashboard at this point, you will need to download a copy of your chosen theme (usually delivered in a ZIP format). You can upload and install the theme from within the WordPress dashboard. You can also unzip it on your computer, and then log into your server using your FTP account to upload the theme to the themes directory. It’s located in the following folder:</p>
+<div class="preboxcontainer">
+<pre class="prebox">example.com/wp-content/themes</pre>
+</div>
+<p>So, if your theme name is /my_theme, it should look like this:</p>
+<div class="preboxcontainer">
+<pre class="prebox">example.com/wp-content/themes/my_theme/</pre>
+</div>
+<p>Once you have your chosen theme installed, you should be able to load your site and see your posts.</p>
+<h3><span id="Copying_your_previous_uploads" class="mw-headline">Copying your previous uploads</span></h3>
+<p>Your uploads (images and other media) are still in the old hacked install's directory. Using FTP, copy the contents from the old folder to the new one. For example:</p>
+<div class="preboxcontainer">
+<pre class="prebox">example.com_HACKED/wp-content/uploads</pre>
+</div>
+<dl>
+<dd><em><strong>-to-</strong></em></dd>
+</dl>
+<div class="preboxcontainer">
+<pre class="prebox">example.com/wp-content/uploads</pre>
+</div>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Please check over the files you are moving and make sure they are all yours. If you move hacked code into your new install, it will infect your new site. The /uploads directory primarily contains media, so the files should end with extensions that indicate what kind of file they are (.jpg for a JPEG image, for example, or .mp3 for a MP3 audio file). <strong>BE VERY CAUTIOUS ABOUT FILES ENDING IN .PHP IN THE /uploads DIRECTORY</strong>.</p>
+</div>
+</div>
+<h3><span id="Installing_your_former_plugins" class="mw-headline">Installing your former plugins</span></h3>
+<p>The final step is to install the WordPress plugins that you need for your site. Again, it is very important to install brand-new copies of your plugins, rather than copying over the files from the hacked install.</p>
+<p>You can install the plugins from your new WordPress dashboard. Only install the plugins you know you need and use. Cutting down on inactive plugins limits a hacker's access to your install and makes WordPress run faster as well.</p>
+<h2><span id="Step_seven:_finish_successfully" class="mw-headline">Step seven: finish successfully</span></h2>
+<p>If everything goes well, you now have a brand-new install of WordPress, connected to your old database and with all your uploaded content, your chosen theme, and your chosen plugins.</p>
+<h2>See also</h2>
+<ul>
+<li><a href="/hc/en-us/articles/215513877-How-to-fix-specific-content-in-a-hacked-WordPress-site">How to fix specific content in a hacked WordPress site</a></li>
+<li><a href="/hc/en-us/articles/214820158-Hacked-WordPress-site-overview">Hacked WordPress site overview</a></li>
+</ul>

@@ -1,0 +1,207 @@
+<body role="document">
+<div class="document">
+<div class="documentwrapper">
+<div class="body" role="main">
+<div id="how-to-configure-access-and-security-for-dreamcompute-instances-using-the-nova-command-line-client">
+
+<p>When you launch a virtual machine, you can inject a <em>key pair</em>, which
+provides SSH access to your instance. For this to work, the image must
+contain the <code class="docutils literal"><span class="pre">cloud-init</span></code> package.</p>
+<p>You can create at least one key pair for each project. You can use the key
+pair for multiple instances that belong to that project. If you generate
+a key pair with an external tool, you can import it into OpenStack.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">A key pair belongs to an individual user, not to a project.
+To share a key pair across multiple users, each user
+needs to import that key pair.</p>
+</div>
+<p>If an image uses a static root password or a static key set (neither is
+recommended), you must not provide a key pair when you launch the
+instance.</p>
+<p>A <em>security group</em> is a named collection of network access rules that
+are use to limit the types of traffic that have access to instances.
+When you launch an instance, you can assign one or more security groups
+to it. If you do not create security groups, new instances are
+automatically assigned to the default security group, unless you
+explicitly specify a different security group.</p>
+<p>The associated <em>rules</em> in each security group control the traffic to
+instances in the group. Any incoming traffic that is not matched by a
+rule is denied access by default. You can add rules to or remove rules
+from a security group, and you can modify rules for the default and any
+other security group.</p>
+<p>You can modify the rules in a security group to allow access to
+instances through different ports and protocols. For example, you can
+modify rules to allow access to instances through SSH, to ping
+instances, or to allow UDP traffic; for example, for a DNS server
+running on an instance. You specify the following parameters for rules:</p>
+<ul class="simple">
+<li><strong>Source of traffic</strong>. Enable traffic to instances from either IP
+addresses inside the cloud from other group members or from all IP
+addresses.</li>
+<li><strong>Protocol</strong>. Choose TCP for SSH, ICMP for pings, or UDP.</li>
+<li><strong>Destination port on virtual machine</strong>. Define a port range. To open
+a single port only, enter the same value twice. ICMP does not support
+ports; instead, you enter values to define the codes and types of
+ICMP traffic to be allowed.</li>
+</ul>
+<p>Rules are automatically enforced as soon as you create or modify them.</p>
+<div id="add-a-key-pair">
+<h2>Add a key pair</h2>
+<p>You can generate a key pair or upload an existing public key.</p>
+<ol class="arabic">
+<li><p class="first">To generate a key pair, run the following command.</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova keypair-add KEY_NAME &gt; MY_KEY.pem
+</pre></div>
+</div>
+<p>This command generates a key pair with the name that you specify for
+KEY_NAME, writes the private key to the <code class="docutils literal"><span class="pre">.pem</span></code> file that you specify,
+and registers the public key to the Nova database.</p>
+</li>
+<li><p class="first">To set the permissions of the <code class="docutils literal"><span class="pre">.pem</span></code> file so that only you can read
+and write to it, run the following command.</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> chmod <span class="m">600</span> MY_KEY.pem
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div id="import-a-key-pair">
+<h2>Import a key pair</h2>
+<ol class="arabic">
+<li><p class="first">If you have already generated a key pair and the public key is located
+at <code class="docutils literal"><span class="pre">~/.ssh/id_rsa.pub</span></code>, run the following command to upload the public
+key.</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova keypair-add --pub_key ~/.ssh/id_rsa.pub KEY_NAME
+</pre></div>
+</div>
+<p>This command registers the public key at the Nova database and names the
+key pair the name that you specify for <code class="docutils literal"><span class="pre">KEY_NAME</span></code>.</p>
+</li>
+<li><p class="first">To ensure that the key pair has been successfully imported, list key
+pairs as follows:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova keypair-list
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div id="create-and-manage-security-groups">
+<h2>Create and manage security groups</h2>
+<ol class="arabic">
+<li><p class="first">To list the security groups for the current project, including
+descriptions, enter the following command:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova secgroup-list
+</pre></div>
+</div>
+</li>
+<li><p class="first">To create a security group with a specified name and description, enter
+the following command:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova secgroup-create SECURITY_GROUP_NAME GROUP_DESCRIPTION
+</pre></div>
+</div>
+</li>
+<li><p class="first">To delete a specified group, enter the following command:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova secgroup-delete SECURITY_GROUP_NAME
+</pre></div>
+</div>
+</li>
+</ol>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You cannot delete the default security group for a project. Also,
+you cannot delete a security group that is assigned to a running
+instance.</p>
+</div>
+</div>
+<div id="create-and-manage-security-group-rules">
+<h2>Create and manage security group rules</h2>
+<p>Modify security group rules with the <strong class="command">nova secgroup-*-rule</strong>
+commands. Before you begin, source the OpenStack RC file.</p>
+<ol class="arabic">
+<li><p class="first">To list the rules for a security group, run the following command:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova secgroup-list-rules SECURITY_GROUP_NAME
+</pre></div>
+</div>
+</li>
+<li><p class="first">To allow SSH access to the instances, choose one of the following
+options:</p>
+<ul>
+<li><p class="first">Allow access from all IP addresses, specified as IP subnet <code class="docutils literal"><span class="pre">0.0.0.0/0</span></code>
+in CIDR notation:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova secgroup-add-rule SECURITY_GROUP_NAME tcp <span class="m">22</span> <span class="m">22</span> 0.0.0.0/0
+</pre></div>
+</div>
+</li>
+<li><p class="first">Allow access only from IP addresses from other security groups
+(source groups) to access the specified port:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova secgroup-add-group-rule --ip_proto tcp --from_port <span class="m">22</span> <span class="se">\</span>
+<span class="go">      --to_port 22 SECURITY_GROUP_NAME SOURCE_GROUP_NAME</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+<li><p class="first">To allow pinging of the instances, choose one of the following options:</p>
+<ul>
+<li><p class="first">Allow pinging from all IP addresses, specified as IP subnet
+<code class="docutils literal"><span class="pre">0.0.0.0/0</span></code> in CIDR notation.</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova secgroup-add-rule SECURITY_GROUP_NAME icmp -1 -1 0.0.0.0/0
+</pre></div>
+</div>
+<p>This allows access to all codes and all types of ICMP traffic.</p>
+</li>
+<li><p class="first">Allow only members of other security groups (source groups) to ping
+instances.</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova secgroup-add-group-rule --ip_proto icmp --from_port -1 <span class="se">\</span>
+<span class="go">     --to_port -1 SECURITY_GROUP_NAME SOURCE_GROUP_NAME</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+<li><p class="first">To allow access through a UDP port, such as allowing access to a DNS
+server that runs on a VM, choose one of the following options:</p>
+<ul>
+<li><p class="first">Allow UDP access from IP addresses, specified as IP subnet
+<code class="docutils literal"><span class="pre">0.0.0.0/0</span></code> in CIDR notation.</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova secgroup-add-rule SECURITY_GROUP_NAME udp <span class="m">53</span> <span class="m">53</span> 0.0.0.0/0
+</pre></div>
+</div>
+</li>
+<li><p class="first">Allow only IP addresses from other security groups (source groups) to
+access the specified port.</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova secgroup-add-group-rule --ip_proto udp --from_port <span class="m">53</span> <span class="se">\</span>
+<span class="go">      --to_port 53 SECURITY_GROUP_NAME SOURCE_GROUP_NAME</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+</ol>
+</div>
+<div id="delete-a-security-group-rule">
+<h2>Delete a security group rule</h2>
+<p>To delete a security group rule, specify the same arguments that you
+used to create the rule.</p>
+<p>For example, to delete the security group rule that permits SSH access
+from all IP addresses, run the following command.</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova secgroup-delete-rule SECURITY_GROUP_NAME tcp <span class="m">22</span> <span class="m">22</span> 0.0.0.0/0
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="clearer"></div>
+</div>
+<div class="footer">
+      ©2015-2016, OpenStack contributors.
+      
+    </div>
+<!--DreamCompute Button-->
+<div class="dream-sign-up">
+<h2>Deploy Your Apps On Cloud Servers Today</h2>
+<a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a>
+</div>
+</body>

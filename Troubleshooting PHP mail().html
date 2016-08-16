@@ -1,0 +1,106 @@
+<h2><span id="Sender_domain_policy" class="mw-headline">Sender domain policy</span></h2>
+<p>If you’ve created a PHP mail form and find it’s not sending email, then it’s most often due to the FROM address the form is using in its headers.</p>
+<p>A simple way to confirm if this is the case:</p>
+<ol>
+<li>Log in to your web server via <a href="https://dreamhosthelp.zendesk.com/hc/en-us/articles/215612917-FTP-overview">FTP</a> or <a href="https://dreamhosthelp.zendesk.com/hc/en-us/articles/216041267-SSH-overview">SSH</a>.</li>
+<li>Navigate to the /Maildir/new folder which is located in your user’s directory:
+<dl>
+<dd>
+<div class="preboxcontainer">
+<pre class="prebox">/home/username/Maildir/new</pre>
+</div>
+</dd>
+<dd><em>In this directory, you’ll see emails that have failed to send.</em></dd>
+</dl>
+</li>
+<li>Open the emails in a text editor.
+<dl>
+<dd><em>You may see the following error:</em></dd>
+<dd>
+<div class="preboxcontainer">
+<pre class="prebox">Sender domain not allowed. Please read: http://dhurl.org/20b (in reply to end of DATA command))</pre>
+</div>
+</dd>
+</dl>
+</li>
+</ol>
+<p>This happens because of the following reasons:</p>
+<ul>
+<li>The outgoing spam prevention policies which were put into effect, as detailed <a class="external text" href="http://dhurl.org/20b" rel="nofollow">here</a>.</li>
+<li>The FROM address you’re using is not an email address on the domain you’re sending from and/or it’s not hosted with DreamHost.</li>
+<li>For example, if you’re sending from a site called ‘example.com’, the FROM address in your PHP Mail form must be something like admin@example.com. Changing this to your email hosted with DreamHost allows the form to send correctly.</li>
+</ul>
+<p>If DreamHost is not hosting your email, you must use SMTP authentication to send in your PHP mail form. If you enable SMTP authentication, you can use any email address you like as the FROM address.</p>
+<h2><span id="Certificate_errors_using_PHP_5.6" class="mw-headline">Certificate errors using PHP 5.6</span></h2>
+<p>PHP 5.6 handles certificates differently than previous versions as explained on the following page:</p>
+<ul>
+<li><a class="external free" href="http://php.net/manual/en/migration56.openssl.php" rel="nofollow">http://php.net/manual/en/migration56.openssl.php</a></li>
+</ul>
+<h3><span id="Error_messages" class="mw-headline">Error messages</span></h3>
+<p>When sending via PHP mail, you may see the following errors:</p>
+<ul>
+<li><strong>PHPMailer</strong></li>
+</ul>
+<div class="preboxcontainer">
+<pre class="prebox">Warning: stream_socket_enable_crypto(): Peer certificate CN=`*.mail.dreamhost.com' did not match expected CN=`mail.example.com'
+</pre>
+</div>
+<ul>
+<li><strong>PHP SMTP mail</strong></li>
+</ul>
+<div class="preboxcontainer">
+<pre class="prebox">Failed to connect to ssl://mail.example.com:465 [SMTP: Failed to connect socket: fsockopen(): unable to connect to ssl://mail.example.com:465 (Unknown error) (code: -1, response: )]
+</pre>
+</div>
+<ul>
+<li><strong>WordPress SMTP plugins</strong></li>
+</ul>
+<div class="preboxcontainer">
+<pre class="prebox">The SMTP debugging output is shown below:
+
+2015-09-08 19:44:51	Connection: opening to ssl://mail.example.com:465, timeout=300, options=array (
+                   	                  )
+2015-09-08 19:44:53	SMTP ERROR: Failed to connect to server:  (0)
+2015-09-08 19:44:53	SMTP connect() failed. https://github.com/PHPMailer/PHPMailer/wiki/Troubleshooting
+</pre>
+</div>
+<h3><span id="Solution" class="mw-headline">Solution</span></h3>
+<p>This is due to the hostname being used. The certificate references mail.dreamhost.com which is not same as your domain. View the following article for an explanation of this error:</p>
+<ul>
+<li><a href="https://dreamhosthelp.zendesk.com/hc/en-us/articles/215306748-Certificate-domain-mismatch-error-when-connecting-to-a-DreamHost-mail-server">Certificate Domain Mismatch Error</a></li>
+</ul>
+<p>The solution is to use your mail server's name as the hostname. In the code of your PHP mail form, you are using your domain as the mail <a href="https://dreamhosthelp.zendesk.com/hc/en-us/articles/214918038#Server_names">servername</a>. It may look something like this:</p>
+<div class="preboxcontainer">
+<pre class="prebox">$mail_host = "mail.example.com";
+</pre>
+</div>
+<p>Instead of using your domain name in the mail server variable, use your actual mail server name.</p>
+<ol>
+<li>Log into your panel.</li>
+<li>Navigate to the <a class="external text" href="https://panel.dreamhost.com/index.cgi?tree=support.dc&amp;" rel="nofollow">(Panel &gt; 'Support' &gt; Data Centers'</a>) page.
+<dl>
+<dd><img src="https://kbimages.objects-us-west-1.dream.io/images/04_mail_servernames.png" alt="04 mail servernames.png" width="927" height="174" /></dd>
+</dl>
+</li>
+<li>To the right of your domain you'll see your mail servername. It will appear something like this:
+<div class="preboxcontainer">
+<pre class="prebox">homiemail-sub4
+</pre>
+</div>
+</li>
+<li>In your mail form, change your hostname to the following:
+<div class="preboxcontainer">
+<pre class="prebox">$mail_host = "sub4.mail.dreamhost.com"; 
+</pre>
+</div>
+</li>
+</ol>
+<p>Changing the hostname fixes this error. View the following article for further details about mail servernames at DreamHost.</p>
+<ul>
+<li><a href="https://dreamhosthelp.zendesk.com/hc/en-us/articles/214918038#Server_names">Email server names</a></li>
+</ul>
+<h2>See also</h2>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215507058-PHP-mail-overview">PHP mail() overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216140597-How-do-I-send-PHP-mail-via-SMTP-">How do I send PHP mail via SMTP?</a></li>
+</ul>

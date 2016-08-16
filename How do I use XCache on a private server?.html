@@ -1,0 +1,115 @@
+<p>XCache is a PHP opcode cacher. It improves performance for PHP applications by caching compiled PHP code in memory for later requests. When configured properly, this can potentially increase the rate of page generation (speed) by up to five times.</p>
+<p>More information can be found on the XCache website:</p>
+<ul>
+<li><a class="external free" href="http://xcache.lighttpd.net/" rel="nofollow">http://xcache.lighttpd.net/</a></li>
+</ul>
+<h2><span id="How_to_make_XCache_available">How to make XCache available</span></h2>
+<p>XCache is an on-demand available option to DreamHost <a href="/hc/en-us/articles/215280058-Virtual-Private-Server-overview-VPS-">VPS</a> users. It can be enabled on a per-domain basis, or can be set up for all domains.</p>
+<h3><span class="mw-headline" id="Enabling_FastCGI_and_XCache_on_a_domain">Enabling FastCGI and XCache on a domain</span></h3>
+<ol>
+<li>Navigate to the (<a class="external text" href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;" rel="nofollow">Panel &gt; ‘Domains’ &gt; ‘Manage Domains’</a>) page.</li>
+<li>Click the <strong>Edit</strong> button to the right of your domain under the ‘Web Hosting’ column.
+<dl>
+<dd><img alt="01 xcache panel.fw.png" height="365" src="https://kbimages.objects-us-west-1.dream.io/images/01_xcache_panel.fw.png" width="776"/></dd>
+</dl>
+</li>
+<li>Scroll down to the ‘Web Options’ section:
+<ul>
+<li>Select which version of PHP you’d like to use in the dropdown menu. Make sure to choose a FastCGI option.</li>
+<li>Check the box next to ‘PHP XCache Support’.</li>
+</ul>
+</li>
+<li>Scroll down and click the blue <strong>Change settings</strong> button to save your changes.</li>
+</ol>
+<h3><span id="Enabling_XCache_for_all_sites_on_a_VPS">Enabling XCache for all sites on a VPS</span></h3>
+<p>There is also an option on your VPS configuration page (<a class="external text" href="https://panel.dreamhost.com/index.cgi?tree=vps.dashboard&amp;" rel="nofollow">Panel &gt; ‘VPS’ &gt; ‘Dashboard’</a>) to enable PHP cache for the entire VPS.</p>
+<ol>
+<li>Click the <strong>Configure</strong> button to the right of your server to view this option.
+<dl>
+<dd><img alt="03 PS Optimization.fw.png" height="177" src="https://kbimages.objects-us-west-1.dream.io/images/03_PS_Optimization.fw.png" width="599"/></dd>
+</dl>
+</li>
+<li>From the 'PHP cache' dropdown, choose 'active'.</li>
+<li>Click the <strong>Save settings...</strong> button to save your changes.</li>
+</ol>
+<dl>
+<dd></dd>
+<dd></dd>
+</dl>
+<div class="alert alert-note">
+<div class="alert-icon"><img alt="" height="60" src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" width="60"/></div>
+<div class="alert-content">
+<p>If all domains are set to use FCGI or CGI for the PHP mode, then you may safely deactivate mod_php in the PS configuration to save a good deal of memory. All modern PHP applications run fine exclusively on FCGI.</p>
+</div>
+</div>
+<h3><span id="Configuring_XCache">Configuring XCache</span></h3>
+<p>If you can view XCache through a <a href="/hc/en-us/articles/214895287-How-do-I-view-my-PHP-environment-settings-">phpinfo()</a> file, then you can configure it through a custom <a href="/hc/en-us/articles/214200688-php-ini-overview">PHP.ini</a> file by using the following settings:</p>
+<div class="preboxcontainer">
+<pre class="prebox">[xcache]
+; ini only settings, all the values here is default unless explained
+
+; select low level shm/allocator scheme implementation
+xcache.shm_scheme =        "mmap"
+; to disable: xcache.size=0
+; to enable : xcache.size=64M etc (any size &gt; 0) and your system mmap allows
+xcache.size  =                64M
+; set to cpu count (cat /proc/cpuinfo |grep -c processor)
+xcache.count =                 2
+; just a hash hints, you can always store count(items) &gt; slots
+xcache.slots =                8k
+; ttl of the cache item, 0=forever
+xcache.ttl   =                 0
+; interval of gc scanning expired items, 0=no scan, other values is in seconds
+xcache.gc_interval =           0
+
+; same as above but for variable cache
+xcache.var_size  =            0M
+xcache.var_count =             1
+xcache.var_slots =            8K
+; default ttl
+xcache.var_ttl   =             0
+xcache.var_maxttl   =          0
+xcache.var_gc_interval =     300
+
+xcache.test =                Off
+; N/A for /dev/zero
+xcache.readonly_protection = Off
+; for *nix, xcache.mmap_path is a file path, not directory.
+; Use something like "/tmp/xcache" if you want to turn on ReadonlyProtection
+; 2 group of php won't share the same /tmp/xcache
+
+; leave it blank(disabled) or "/tmp/phpcore/"
+; make sure it's writable by php (without checking open_basedir)
+xcache.coredump_directory =   ""
+
+; per request settings
+xcache.cacher =               On
+xcache.stat   =               On
+xcache.optimizer =           On
+
+[xcache.coverager]
+; per request settings
+; enable coverage data collecting for xcache.coveragedump_directory and xcache_$
+xcache.coverager =          Off
+
+; ini only settings
+; make sure it's readable (care open_basedir) by coverage viewer script
+; requires xcache.coverager=On
+xcache.coveragedump_directory = ""</pre>
+</div>
+<h2><span id="XCache_best_practices">XCache best practices</span></h2>
+<p>Be sure to adhere to the following best practices when using XCache:</p>
+<ul>
+<li>For WordPress sites, the W3TC WordPress cache plugin and the DreamHost version of XCache may conflict. For maximum compatibility, be sure that the W3TC plugin setting ‘Enhanced Disk Caching’ is enabled as this enables the static file caching.</li>
+<li>For DreamPress sites, DreamHost recommends that you do not combine the use of XCache and the W3TC cache plugin. Instead, only choose one for your site.</li>
+<li>Enabling XCache increases overall memory usage, however it also speeds up page loading time. It is designed to use memory and it increases memory usage because each site needs to spawn its own PHP processes with a custom config. If your site is experiencing memory limit issues, you may want to disable XCache during any debugging process. Other caching options can be found in the <a href="/hc/en-us/articles/214879308#Caching_your_site">Caching your Site</a> article.</li>
+</ul>
+<h2><span id="See_also">See also</span></h2>
+<p><span class="mw-headline">Internal links</span></p>
+<ul>
+<li><a href="/hc/en-us/articles/215280058-Virtual-Private-Server-overview-VPS-" style="background-color: #ffffff;"><span class="mw-headline">Private server overview</span></a></li>
+</ul>
+<p><span class="mw-headline">External links</span></p>
+<ul>
+<li><a class="external free" href="http://xcache.lighttpd.net/" rel="nofollow">http://xcache.lighttpd.net/</a></li>
+</ul>

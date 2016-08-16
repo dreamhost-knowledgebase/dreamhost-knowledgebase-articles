@@ -1,0 +1,122 @@
+<body role="document">
+<div class="document">
+<div class="documentwrapper">
+<div class="body" role="main">
+<div id="sample-python-code-using-dreamobjects-openstack-swift-compatible-api">
+
+<div class="table-of-content container">
+<ul class="simple">
+<li><a class="reference internal" href="#swift-python-creating-a-connection"><span>Creating a Connection</span></a></li>
+<li><a class="reference internal" href="#swift-python-listing-owned-containers"><span>Listing Owned Containers</span></a></li>
+<li><a class="reference internal" href="#swift-python-creating-a-container"><span>Creating a Container</span></a></li>
+<li><a class="reference internal" href="#swift-python-listing-a-containers-content"><span>Listing a Container’s Content</span></a></li>
+<li><a class="reference internal" href="#swift-python-deleting-a-container"><span>Deleting a Container</span></a></li>
+<li><a class="reference internal" href="#swift-python-creating-an-object"><span>Creating an Object</span></a></li>
+<li><a class="reference internal" href="#swift-python-download-an-object"><span>Download an Object (to a file)</span></a></li>
+<li><a class="reference internal" href="#swift-python-delete-an-object"><span>Delete an Object</span></a></li>
+</ul>
+</div>
+<div id="creating-a-connection">
+<span id="swift-python-creating-a-connection"></span><h2>Creating a Connection</h2>
+<p>This creates a connection so that you can interact with the server.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cloudfiles</span>
+<span class="n">username</span> <span class="o">=</span> <span class="s1">'account_name:username'</span>
+<span class="n">api_key</span> <span class="o">=</span> <span class="s1">'your_api_key'</span>
+
+<span class="n">conn</span> <span class="o">=</span> <span class="n">cloudfiles</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span>
+    <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">,</span>
+    <span class="n">api_key</span><span class="o">=</span><span class="n">api_key</span><span class="p">,</span>
+    <span class="n">authurl</span><span class="o">=</span><span class="s1">'https://objects-us-west-1.dream.io/auth'</span><span class="p">,</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div id="listing-owned-containers">
+<span id="swift-python-listing-owned-containers"></span><h2>Listing Owned Containers</h2>
+<p>This gets a list of Containers that you own.
+This also prints out the container name.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">container</span> <span class="ow">in</span> <span class="n">conn</span><span class="o">.</span><span class="n">get_all_containers</span><span class="p">():</span>
+    <span class="k">print</span> <span class="n">container</span><span class="o">.</span><span class="n">name</span>
+</pre></div>
+</div>
+<p>The output will look something like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">mahbuckat1</span>
+<span class="n">mahbuckat2</span>
+<span class="n">mahbuckat3</span>
+</pre></div>
+</div>
+</div>
+<div id="creating-a-container">
+<span id="swift-python-creating-a-container"></span><h2>Creating a Container</h2>
+<p>This creates a new container called <code class="docutils literal"><span class="pre">my-new-container</span></code></p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">container</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">create_container</span><span class="p">(</span><span class="s1">'my-new-container'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div id="listing-a-container-s-content">
+<span id="swift-python-listing-a-containers-content"></span><h2>Listing a Container’s Content</h2>
+<p>This gets a list of objects in the container.
+This also prints out each object’s name, the file size, and last
+modified date.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">container</span><span class="o">.</span><span class="n">get_objects</span><span class="p">():</span>
+    <span class="k">print</span> <span class="s2">"{0}</span><span class="se">\t</span><span class="s2">{1}</span><span class="se">\t</span><span class="s2">{2}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">size</span><span class="p">,</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">last_modified</span><span class="p">,</span>
+        <span class="p">)</span>
+</pre></div>
+</div>
+<p>The output will look something like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>myphoto1.jpg 251262  2011-08-08T21:35:48.000Z
+myphoto2.jpg 262518  2011-08-08T21:38:01.000Z
+</pre></div>
+</div>
+</div>
+<div id="deleting-a-container">
+<span id="swift-python-deleting-a-container"></span><h2>Deleting a Container</h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The Container must be empty! Otherwise it won’t work!</p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">conn</span><span class="o">.</span><span class="n">delete_container</span><span class="p">(</span><span class="n">container</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div id="creating-an-object">
+<span id="swift-python-creating-an-object"></span><h2>Creating an Object</h2>
+<p>This creates a file <code class="docutils literal"><span class="pre">hello.txt</span></code> from the file named <code class="docutils literal"><span class="pre">my_hello.txt</span></code></p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">obj</span> <span class="o">=</span> <span class="n">container</span><span class="o">.</span><span class="n">create_object</span><span class="p">(</span><span class="s1">'hello.txt'</span><span class="p">)</span>
+<span class="n">obj</span><span class="o">.</span><span class="n">content_type</span> <span class="o">=</span> <span class="s1">'text/plain'</span>
+<span class="n">obj</span><span class="o">.</span><span class="n">load_from_filename</span><span class="p">(</span><span class="s1">'./my_hello.txt'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div id="download-an-object-to-a-file">
+<span id="swift-python-download-an-object"></span><h2>Download an Object (to a file)</h2>
+<p>This downloads the object <code class="docutils literal"><span class="pre">hello.txt</span></code> and saves it in
+<code class="docutils literal"><span class="pre">./my_hello.txt</span></code></p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">obj</span> <span class="o">=</span> <span class="n">container</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="s1">'hello.txt'</span><span class="p">)</span>
+<span class="n">obj</span><span class="o">.</span><span class="n">save_to_filename</span><span class="p">(</span><span class="s1">'./my_hello.txt'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div id="delete-an-object">
+<span id="swift-python-delete-an-object"></span><h2>Delete an Object</h2>
+<p>This deletes the object <code class="docutils literal"><span class="pre">goodbye.txt</span></code></p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">container</span><span class="o">.</span><span class="n">delete_object</span><span class="p">(</span><span class="s1">'goodbye.txt'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="clearer"></div>
+</div>
+<div class="footer">
+</div>
+<!--DreamObjects Button-->
+<div class="dream-sign-up">
+<h2>Start Storing Your Data Today!</h2>
+<a href="https://www.dreamhost.com/cloud/storage/">Sign Up for DreamObjects</a>
+</div>
+</body>

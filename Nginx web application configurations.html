@@ -1,0 +1,476 @@
+<div class="alert alert-warning">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-warning-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p><strong>WARNING: POSSIBLE OUTDATED INFORMATION!</strong><br /><span style="font-size: 90%;">DreamHost does not directly support any of the features described on this page and is not responsible for keeping this content updated or accurate. Use at your own risk! </span></p>
+</div>
+</div>
+<p>Many web applications such as WordPress and MediaWiki are originally configured to work with Apache. Since .htaccess files are not supported with Nginx, there are some adjustments to be made to get your applications running properly. In all examples below, make sure to follow these steps:</p>
+<ol>
+<li>View the <a href="http://wiki.dreamhost.com/Nginx_web_application_configurations#Nginx.23Local_configuration_files">Local configuration files</a> section above to create your local <code>/nginx/example.com</code> directory.</li>
+<li>Create your .conf file in this <code>/nginx/example.com</code> directory.
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>The .conf file can be named anything. It just needs to end in .conf.</p>
+</div>
+</div>
+</li>
+<li>Add content to the .conf file.</li>
+<li>Make sure to <a title="Nginx" href="http://wiki.dreamhost.com/Nginx#Reloading_.26_restarting">reload Nginx</a> for the changes to take effect.</li>
+</ol>
+<p>A list of examples for various web applications can be found here:</p>
+<ul>
+<li><a class="external text" href="http://wiki.nginx.org/Configuration" rel="nofollow">Nginx configuration examples</a></li>
+</ul>
+<p><strong>The instructions provided in this article or section are considered advanced.</strong></p>
+<p>You are expected to be knowledgeable in the UNIX shell.<br /> <span style="font-size: 1.1em; text-decoration: blink;"><em>Support for these instructions is <strong>not available</strong> from DreamHost tech support.</em></span><br /> <span style="font-size: 1.1em;"><strong><em>Server changes performed by DreamHost may break your modifications. You, as the user, are responsible for troubleshooting and resolving issues with your customizations.</em></strong> </span><strong><em><br /></em></strong></p>
+<h1><span id="WordPress" class="mw-headline">WordPress</span></h1>
+<p>Create a <code>wordpress.conf</code> file in your <code>/home/username/nginx/example.com/</code> directory.</p>
+<p>This is where you'll put all your Nginx config rules.</p>
+<p>If you are going to share this WordPress configuration across multiple sites, create a default file. Then create symlinks for each of your sites. For example:</p>
+<ol>
+<li>Make a default directory for your WordPress file.
+<pre>mkdir -p /home/username/nginx/default-wp/
+</pre>
+</li>
+<li>In this /default-wp directory, create wordpress.conf file.
+<pre>nano /home/YOURUSER/nginx/default-wp/wordpress.conf
+</pre>
+</li>
+<li>Create symlinks from this directory, to each of your sites config directories:
+<pre>ln -s /home/username/nginx/default-wp/ /home/username/nginx/example.com
+ln -s /home/username/nginx/default-wp/ /home/username/nginx/example2.com
+</pre>
+</li>
+</ol>
+<h2><span id="Permalinks" class="mw-headline">Permalinks</span></h2>
+<p>The most basic set of WordPress rules that will get you up and running immediately are these:</p>
+<pre>#######################
+# Permalinks
+
+if (!-e $request_filename) {
+  rewrite ^.*$ /index.php last;
+}
+</pre>
+<p>That will get all basic WordPress functionality going in terms of permalinks.</p>
+<p>An alternate approach, which does not use 'if', is as follows:</p>
+<pre>#######################
+# Permalinks
+
+try_files $uri $uri/ /index.php?$args;
+</pre>
+<h3><span id="Multisite" class="mw-headline">Multisite</span></h3>
+<p>If you're using Multisite, you will need slightly more advanced rules:</p>
+<pre>######################
+# Permalinks
+
+if (!-e $request_filename) {
+ rewrite ^/files(.*) /wp-includes/ms-files.php?file=$1 last;
+
+ rewrite ^(/[^/]+)?(/wp-.*) $2 last;
+ rewrite ^(/[^/]+)?(/.*.php) $2 last;
+
+ rewrite ^.*$ /index.php last;
+}
+</pre>
+<p>This will provide basic functionality for Multisite.</p>
+<h2><span id="W3_Total_Cache" class="mw-headline">W3 Total Cache</span></h2>
+<p>The W3 Total Cache plugin for Wordpress will automatically recognize that it is running under Nginx and will create a default Nginx configuration file which you can copy into your /nginx/&lt;domain name&gt;/ directory.</p>
+<p>W3 Total Cache should also be setup to use XCache:</p>
+<blockquote>
+<p>For the W3 settings, I basically turned on XCache support in my dreamhost config panel, then used it everywhere in the W3 settings. Then I enabled the Page Cache, Object Cache, and Browser Cache modules. All three are set to use the XCache to hold their data, so the cached info is stored in RAM, basically.</p>
+<p>The Page Cache does whole-page caching, and is nice and fast for repeated queries to the same pages, for logged in or anon users.</p>
+<p>The Object Cache does object caching, and causes my admin section to be nice and speedy, since things like posts and such are pulled from memory instead of the database.</p>
+<p>The Browser Cache basically just sets the proper expire headers on everything, thus images and such don’t have to be redownloaded all the time. (Snarfed from <a class="external text" href="http://www.wptavern.com/wordpress-optimization-guide-by-dreamhost" rel="nofollow">here</a>)</p>
+</blockquote>
+<h2><span id="WP_Super_Cache" class="mw-headline">WP Super Cache</span></h2>
+<p>If you're using the WP Super Cache plugin, you'll want to use the following in place of the permalink rules above:</p>
+<pre>#######################
+# WP Super Cache
+
+# if the requested file exists, return it immediately
+if (-f $request_filename) {
+  break;
+}
+
+set $supercache_file '';
+set $supercache_uri $request_uri;
+
+if ($request_method = POST) {
+  set $supercache_uri '';
+}
+
+# Using pretty permalinks, so bypass the cache for any query string
+if ($query_string) {
+  set $supercache_uri '';
+}
+
+if ($http_cookie ~* "comment_author_|wordpress|wp-postpass_" ) {
+  set $supercache_uri '';
+}
+
+# if we haven't bypassed the cache, specify our supercache file
+if ($supercache_uri ~ ^(.+)$) {
+  set $supercache_file /wp-content/cache/supercache/$http_host$1/index.html;
+}
+
+# only rewrite to the supercache file if it actually exists
+if (-f $document_root$supercache_file) {
+  rewrite ^(.*)$ $supercache_file break;
+}
+
+# all other requests go to Wordpress
+if (!-e $request_filename) {
+  rewrite ^.*$ /index.php last;
+}
+</pre>
+<h2><span id="FeedBurner" class="mw-headline">FeedBurner</span></h2>
+<p>If you have your blog's RSS feed setup using <a class="external text" href="http://feedburner.google.com/" rel="nofollow">FeedBurner</a>, you'll want to add the following lines <strong>above</strong> the permalink or supercache lines mentioned previously:</p>
+<pre>#######################
+# FeedBurner
+
+if ($http_user_agent !~ FeedBurner) {
+  rewrite ^/comment/feed/ http://feeds.feedburner.com/your-comment-feed last;
+  rewrite ^/feed/ http://feeds.feedburner.com/your-feed last;
+}
+</pre>
+<p>You'll need to replace the "your-comment-feed" and "your-feed" bits with the appropriate FeedBurner URLs you get when you add your feeds to their system.</p>
+<h1><span id="Drupal" class="mw-headline">Drupal</span></h1>
+<p>Before we get going here, you should create a <code>drupal.conf</code> file (the name doesn't really matter, but generally you want to at least give it a .conf extension) in the following location:</p>
+<pre>/home/YOURUSER/nginx/example.com/</pre>
+<p>Like so:</p>
+<pre>nano /home/YOURUSER/nginx/example.com/drupal.conf</pre>
+<p>This is where you'll put all your nginx config rules.</p>
+<h2><span id="Top_Level_Domain_Install" class="mw-headline">Top Level Domain Install</span></h2>
+<p>If your Drupal is installed at the top level of your domain (i.e., <a class="external free" href="http://www.example.com/" rel="nofollow">http://www.example.com/</a> is your Drupal install), then you want to add these rules:</p>
+<pre>#######################
+# Drupal Clean URLs (Top Level Domain)
+
+if (!-e $request_filename) {
+rewrite ^/(.*)$ /index.php?q=$1 last;
+}</pre>
+<h2><span id="Subdirectory_Install" class="mw-headline">Subdirectory Install</span></h2>
+<p>If your Drupal is installed in a subdirectory (i.e., <a class="external free" href="http://www.example.com/drupal/" rel="nofollow">http://www.example.com/drupal/</a> is your Drupal install), then you want to add these rules:</p>
+<pre>#######################
+# Drupal Clean URLs (Subdirectory)
+
+if (!-e $request_filename) {
+rewrite ^/drupal$ /drupal/ permanent;
+rewrite ^/drupal/(.*)$ /drupal/index.php?q=$1 last;
+rewrite ^/(.*)$ /index.php?q=$1 last;
+}</pre>
+<p>You would replace occurrences of "drupal" in the above with whatever your subdirectory is named.</p>
+<h2><span id="Enable_Clean_URLs" class="mw-headline">Enable Clean URLs</span></h2>
+<p>If you haven't already, you need to login to your Drupal admin user and go to the Administer -&gt; Site Configuration -&gt; Clean URLs area and turn Clean URLs on. If you have trouble finding it, then try browsing to http://www.example.com/index.php?q=admin/settings/clean-urls. If you get an error message saying Clean URLs aren't supported, make sure you remembered to reload your nginx configuration as discussed earlier in the article.</p>
+<h2><span id="Gotchas" class="mw-headline">Gotchas</span></h2>
+<p>Unfortunately, this configuration currently causes site searches that contain spaces to break. With Apache, when you search for "some thing" that gets converted to "search/node/some+thing". When this is processed by nginx the "+" gets encoded so you end up with "search/node/some%20thing". Thus, your search ends up looking for the string "some+thing" rather than "some thing". There are currently no known workarounds that were forthcoming.</p>
+<h2><span id="Drupal_6_with_Boost.2C_Clean_URLs" class="mw-headline">Drupal 6 with Boost, Clean URLs</span></h2>
+<p>For this setup I had moved my drupal site off of apache to nginx. Been very happy with the performance. Getting drupal to work was easy but a little slow. I also wanted the drupal module boost to work as well. This here is the config file for my site exactly as it is. I will explain each section. First here is the entire config file located in /home/YOURUSER/nginx/example.com/drupal.conf</p>
+<pre>#######################################################
+### nginx.conf catch-all
+#######################################################
+
+client_max_body_size 75M;
+ 
+gzip_static on;
+gzip on;
+gzip_comp_level 9;
+gzip_types application/x-javascript text/css text/plain text/xml application/xml application/xml+rss text/javascript;
+
+location ~ \.(gif|jpg|jpeg|png|tif|bmp|jpe)$ {
+
+valid_referers server_names none blocked ~(pcwintech.com|google.|simpleportforwarding.com);
+
+if ($invalid_referer) {
+
+rewrite ^ http://$host/showimage?file=${uri} permanent;
+}
+
+}
+
+location ~ \.(exe|zip|reg|vbs)$ {
+
+valid_referers server_names none blocked ~(pcwintech.com|google.|simpleportforwarding.com);
+
+if ($invalid_referer) {
+
+rewrite ^ http://$host? permanent;
+}
+
+}
+
+
+location = /favicon.ico {
+log_not_found off;
+access_log off;
+}
+
+location = /robots.txt {
+allow all;
+log_not_found off;
+access_log off;
+}
+
+# This is mostly based on Drupal's stock .htaccess
+location ~* ^.+(\.(txt|engine|inc|info|install|module|profile|po|sh|.*sql|theme|tpl(\.php)?|xtmpl)|code-style\.pl|/Entries.*|/Repository|/Root|/Tag|/Template)$ {
+return 404;
+}
+
+# serve static files directly
+location ~* ^.+\.(jpg|jpeg|gif|png|ico|swf|flv)$ {
+access_log off;
+expires 30d;
+}
+
+# Very rarely should these ever be accessed outside of your lan
+location ~* \.(txt|log)$ {
+allow 192.168.0.0/16;
+deny all;
+}
+
+location ~ \..*/.*\.php$ {
+return 403;
+}
+
+## Deny some crawlers
+if ($http_user_agent ~* (HTTrack|HTMLParser|libwww) ) {
+return 444;
+}
+## Deny certain Referers (case insensitive)
+if ($http_referer ~* (poker|sex|girl) ) {
+return 444;
+}
+## www. redirect
+if ($host = 'pcwintech.com' ) {
+rewrite ^/(.*)$ http://www.pcwintech.com/$1 permanent;
+}
+
+
+##
+## required only when using purl, spaces &amp; og for modules: ajax_comments, watcher and fasttoggle
+## the /og path should be modified to match your default for og/purl URL for organic groups
+##
+location ~* ^/og {
+rewrite ^/og\-(.*)/ajax_comments/(.*)$ /index.php?q=ajax_comments/$2 last;
+rewrite ^/og\-(.*)/context/ajax-block-view$ /index.php?q=context/ajax-block-view last;
+rewrite ^/og\-(.*)/comment/reply/(.*)\?reload=1$ /index.php?q=comment/reply/$2&amp;reload=1 last;
+rewrite ^/og\-(.*)/node/([0-9]+)/toggle/(.*)$ /index.php?q=node/$2/toggle/$3 last;
+rewrite ^/og\-(.*)/node/([0-9]+)/edit\?(.*)$ /index.php?q=node/$2/edit?$3 last;
+rewrite ^/og\-(.*)/user/([0-9]+)/watcher/toggle/(.*)$ /index.php?q=user/$2/watcher/toggle/$3 last;
+rewrite ^/(.*)$ /index.php?q=$1 last;
+}
+
+## 6.x starts
+location / {
+deny 1.2.3.4;
+deny 83.228.199.228;
+deny 194.8.75.141;
+deny 84.122.26.246;
+deny 194.8.75.0/24;
+deny 194.8.74.0/24; 
+#rewrite ^/(.*)/$ /$1 permanent; # remove trailing slashes - disabled
+try_files $uri @cache;
+}
+
+location @cache {
+if ( $request_method !~ ^(GET|HEAD)$ ) {
+return 405;
+}
+if ($http_cookie ~ "DRUPAL_UID") {
+return 405;
+}
+error_page 405 = @drupal;
+add_header Expires "Tue, 24 Jan 1984 08:00:00 GMT"; 
+add_header Cache-Control "must-revalidate, post-check=0, pre-check=0";
+add_header X-Header "Boost Citrus 1.9"; 
+charset utf-8;
+try_files /cache/normal/$host${uri}_$args.html /cache/$host${uri}_$args.html @drupal;
+}
+
+location @drupal {
+###
+### now simplified to reduce rewrites
+###
+rewrite ^/(.*)$ /index.php?q=$1 last;
+}
+
+location ~* (/\..*|settings\.php$|\.(htaccess|engine|inc|info|install|module|profile|pl|po|sh|.*sql|theme|tpl(\.php)?|xtmpl)$|^(Entries.*|Repository|Root|Tag|Template))$ {
+deny all;
+}
+
+location ~* /files/.*\.php$ {
+return 444;
+}
+location ~* /themes/.*\.php$ {
+return 444;
+}
+
+location ~ \.css$ {
+if ( $request_method !~ ^(GET|HEAD)$ ) {
+return 405;
+}
+if ($http_cookie ~ "DRUPAL_UID") {
+return 405;
+}
+error_page 405 = @uncached;
+access_log off;
+expires max; #if using aggregator
+add_header X-Header "Boost Citrus 2.1";
+try_files /cache/perm/$host${uri}_.css /cache/$host${uri}_.css $uri =404;
+}
+
+location ~ \.js$ {
+if ( $request_method !~ ^(GET|HEAD)$ ) {
+return 405;
+}
+if ($http_cookie ~ "DRUPAL_UID") {
+return 405;
+}
+error_page 405 = @uncached;
+access_log off;
+expires max; # if using aggregator
+add_header X-Header "Boost Citrus 2.2"; 
+try_files /cache/perm/$host${uri}_.js /cache/$host${uri}_.js $uri =404;
+}
+
+location ~ \.json$ {
+if ( $request_method !~ ^(GET|HEAD)$ ) {
+return 405;
+}
+if ($http_cookie ~ "DRUPAL_UID") {
+return 405;
+}
+error_page 405 = @uncached;
+access_log off;
+expires max; # if using aggregator
+add_header X-Header "Boost Citrus 2.3"; 
+try_files /cache/normal/$host${uri}_.json /cache/$host${uri}_.json $uri =404;
+}
+
+location @uncached {
+access_log off;
+expires max; # max if using aggregator, otherwise sane expire time
+}
+
+location ~* /files/imagecache/ {
+access_log off;
+try_files $uri @drupal; #imagecache support - now it works
+}
+
+location ~* ^.+\.(jpg|jpeg|gif|png|ico)$ {
+access_log off;
+expires 30d;
+try_files $uri =404;
+}
+
+location ~* \.xml$ {
+if ( $request_method !~ ^(GET|HEAD)$ ) {
+return 405;
+}
+if ($http_cookie ~ "DRUPAL_UID") {
+return 405;
+}
+error_page 405 = @drupal;
+add_header Expires "Tue, 24 Jan 1984 08:00:00 GMT";
+add_header Cache-Control "must-revalidate, post-check=0, pre-check=0";
+add_header X-Header "Boost Citrus 2.4"; 
+charset utf-8;
+types { }
+default_type application/rss+xml;
+try_files /cache/normal/$host${uri}_.xml /cache/normal/$host${uri}_.html /cache/$host${uri}_.xml $uri @drupal;
+}
+
+location ~* /feed$ {
+if ( $request_method !~ ^(GET|HEAD)$ ) {
+return 405;
+}
+if ($http_cookie ~ "DRUPAL_UID") {
+return 405;
+}
+error_page 405 = @drupal;
+add_header Expires "Tue, 24 Jan 1984 08:00:00 GMT";
+add_header Cache-Control "must-revalidate, post-check=0, pre-check=0";
+add_header X-Header "Boost Citrus 2.5"; 
+charset utf-8;
+types { }
+default_type application/rss+xml;
+try_files /cache/normal/$host${uri}_.xml /cache/normal/$host${uri}_.html /cache/$host${uri}_.xml $uri @drupal;
+}
+
+#######################################################
+### nginx.conf catch-all
+#######################################################</pre>
+<p>A lot of the code in the config file already has explanations for them, so I wont cover all of them..</p>
+<pre>location ~ \.(gif|jpg|jpeg|png|tif|bmp|jpe)$ {
+
+valid_referers server_names none blocked ~(pcwintech.com|google.|simpleportforwarding.com);
+
+if ($invalid_referer) {
+
+rewrite ^ http://$host/showimage?file=${uri} permanent;
+}
+
+}
+
+location ~ \.(css|exe|zip|reg|vbs)$ {
+
+valid_referers server_names none blocked ~(pcwintech.com|google.|simpleportforwarding.com);
+
+if ($invalid_referer) {
+
+rewrite ^ http://$host? permanent;
+}
+
+}</pre>
+<p>These prevent hot linking to the site. For the Pictures I have them being redirected to a showimage page on the site. I have allowed my sites and goole access to them. All others will be redirected. On the zip and exe files they will be redirected to the sites home page instead.</p>
+<p>You will notice ~(pcwintech.com|google.|simpleportforwarding.com) this allows for all sub domains of my site in. like forums.pcwintech.com and www.pcwintech.com On the google one this allows all subdomains and main domains like google.com or google.uk</p>
+<pre>## www. redirect
+if ($host = 'pcwintech.com' ) {
+rewrite ^/(.*)$ http://www.pcwintech.com/$1 permanent;
+}</pre>
+<p>This will redirect to the www part of the site. so if a user comes to pcwintech.com they will be redirected to www.pcwintech.com</p>
+<pre>## 6.x starts
+location / {
+deny 1.2.3.4;
+deny 83.228.199.228;
+deny 194.8.75.141;
+deny 84.122.26.246;
+deny 194.8.75.0/24;
+deny 194.8.74.0/24; 
+#rewrite ^/(.*)/$ /$1 permanent; # remove trailing slashes - disabled
+try_files $uri @cache;
+}</pre>
+<p>this section is used for boost, but also where I put the deny IPs rules. As you see deny 83.228.199.228; will block that IP where deny 194.8.75.0/24; will block the whole range of IPs. This config file should work as is for you. Make sure to change the domain in the config file to yours. This is where drupal is the top level domain, has boost enabled and clean urls. After this config the performance picked up a good amount and has been running very smooth. --<a class="new" title="User:Shane (page does not exist)" href="http://wiki.dreamhost.com/index.php?title=User:Shane&amp;action=edit&amp;redlink=1">Shane</a> 17:14, 25 November 2010 (UTC)</p>
+<h1><span id="MediaWiki" class="mw-headline">MediaWiki</span></h1>
+<p><a title="MediaWiki" href="http://wiki.dreamhost.com/MediaWiki">MediaWiki</a> is a popular wiki software running this wiki and many others. It was developed by the founders of Wikipedia - which continues to use and maintain the software today. It is available for free and an open-source project. I moved a MediaWiki 1.17.0 site (using Clean URLs) off of <a class="mw-redirect" title="Apache" href="http://wiki.dreamhost.com/Apache">Apache</a> to nginx. First, create an <code>mediawiki.conf</code> file in the appropriate directory:</p>
+<pre>/home/YOURUSER/nginx/example.com/mediawiki.conf</pre>
+<pre>location / {
+        try_files $uri $uri/ /index.php;
+    }
+	
+location /cache {
+        deny  all;
+    }
+location ~* ^.+\.(js|css|png|jpg|jpeg|gif|ico)$ {
+        expires max;
+        log_not_found off;
+        access_log off;
+    }
+location /dumps {
+        root /home/YOURUSER/example.com/local;
+        autoindex on;
+    }
+### Dreamhost analog stats
+if ($request_uri ~* ^/(stats|failed_auth\.html).*$)
+{
+	break;
+}</pre>
+<p>--<a title="User:Varnent" href="http://wiki.dreamhost.com/User:Varnent">Varnent</a> 21:28, 24 July 2011 (PDT)</p>
+<h1><span id="phpBB" class="mw-headline">phpBB</span></h1>
+<h2><span id="Increase_FastCGI_Timeout" class="mw-headline">Increase FastCGI Timeout</span></h2>
+<p>Put this in a .conf file as described above</p>
+<p>fastcgi_read_timeout 120;</p>
+<p>Source: <a class="external free" href="https://www.phpbb.com/community/viewtopic.php?f=46&amp;t=1778165#p10746575" rel="nofollow">https://www.phpbb.com/community/viewtopic.php?f=46&amp;t=1778165#p10746575</a></p>
+<h2><span id="Sending_Mass_E-Mail_Settings" class="mw-headline">Sending Mass E-Mail Settings</span></h2>
+<p>If you want to send mass emails with SMTP authentication you have to use POP-BEFORE-SMTP as the "Authentication method for SMTP".</p>
+<p><a title="User:JHeckman" href="http://wiki.dreamhost.com/User:JHeckman">JHeckman</a> (<a class="new" title="User talk:JHeckman (page does not exist)" href="http://wiki.dreamhost.com/index.php?title=User_talk:JHeckman&amp;action=edit&amp;redlink=1">talk</a>) 22:51, 25 January 2013 (PST)</p>

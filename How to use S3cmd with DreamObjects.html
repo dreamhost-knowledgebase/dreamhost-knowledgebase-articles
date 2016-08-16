@@ -1,0 +1,164 @@
+<body role="document">
+<div class="document">
+<div class="documentwrapper">
+<div class="body" role="main">
+<div id="how-to-use-s3cmd-with-dreamobjects">
+
+<div id="overview">
+<h2>Overview</h2>
+<dl class="docutils">
+<dt><a class="reference external" href="http://s3tools.org/s3cmd">S3cmd</a> is:</dt>
+<dd><ul class="first last simple">
+<li>a command-line tool for uploading, retrieving, and managing data in
+Amazon S3 and other Cloud Storage Service Providers that use the S3
+protocol such as DreamHost DreamObjects.</li>
+<li>best suited for power users who don’t fear command line.</li>
+<li>ideal for scripts, automated backups triggered from cron, and so on.</li>
+</ul>
+</dd>
+</dl>
+<p>The following instructions help you install and configure s3cmd to work with
+DreamObjects.</p>
+</div>
+<div id="installing-s3cmd">
+<h2>Installing S3cmd</h2>
+<p>These instructions were performed with <strong>s3cmd v1.6.1</strong>. If you’d like to
+install a different version, you’ll need to modify the file names
+appropriately.</p>
+<ol class="arabic">
+<li><p class="first">Log in to your account using SSH.</p>
+</li>
+<li><p class="first">Create a bin directory in your home directory if you don’t have one
+already.</p>
+<blockquote>
+<div><div class="code highlight-python"><div class="highlight"><pre><span></span>mkdir ~/bin
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">Download the <a class="reference external" href="https://github.com/s3tools/s3cmd/releases">latest release of s3cmd from GitHub</a>.</p>
+<blockquote>
+<div><div class="code highlight-python"><div class="highlight"><pre><span></span>curl -O -L https://github.com/s3tools/s3cmd/archive/v1.6.1.tar.gz
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">Untar the file.</p>
+<blockquote>
+<div><div class="code highlight-python"><div class="highlight"><pre><span></span>tar xzf v1.6.1.tar.gz
+</pre></div>
+</div>
+<p><em>You should now have a directory called s3cmd-1.6.1</em></p>
+</div></blockquote>
+</li>
+<li><p class="first">Change into that directory</p>
+<blockquote>
+<div><div class="code highlight-python"><div class="highlight"><pre><span></span>cd s3cmd-1.6.1
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">Copy the s3cmd executable and S3 folder into the bin directory we created
+earlier</p>
+<blockquote>
+<div><div class="code highlight-python"><div class="highlight"><pre><span></span>cp -R s3cmd S3 ~/bin
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">Add the bin directory to your path so that you can execute the newly
+installed script.</p>
+<blockquote>
+<div><div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This assumes you’re using the default bash shell. If you’re
+using a different shell, you’ll have to set the path in
+the proper place.</p>
+</div>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>echo "export PATH=$HOME/bin:$PATH" &gt;&gt; ~/.bashrc
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">Execute your bash profile for it to take effect</p>
+<blockquote>
+<div><div class="code highlight-python"><div class="highlight"><pre><span></span>. ~/.bashrc
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ol>
+</div>
+<div id="configuring-s3cmd">
+<h2>Configuring S3cmd</h2>
+<p>Instead of following the instructions on the s3cmd site to configure it, just
+do the following:</p>
+<ol class="arabic simple">
+<li>Create a file in your home directory called .s3cfg (note the leading “dot”)</li>
+<li>Copy this file into it.</li>
+<li>Include your access key and secret key from the <a class="reference external" href="https://panel.dreamhost.com/index.cgi?tree=cloud.objects&amp;">DreamObjects control panel</a>.</li>
+</ol>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>[default]
+access_key = Your_DreamObjects_Access_Key
+secret_key = Your_DreamObjects_Secret_Key
+host_base = objects-us-west-1.dream.io
+host_bucket = %(bucket)s.objects-us-west-1.dream.io
+enable_multipart = True
+multipart_chunk_size_mb = 15
+use_https = True
+</pre></div>
+</div>
+</div>
+<div id="example-commands">
+<h2>Example Commands</h2>
+<p><strong>Making a bucket</strong></p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>$ s3cmd mb s3://s3cmd-justin
+Bucket 's3://s3cmd-justin/' created
+</pre></div>
+</div>
+<p><strong>Listing all buckets</strong></p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>$ s3cmd ls
+2014-02-28 16:28  s3://s3cmd-justin
+</pre></div>
+</div>
+<p><strong>Uploading a file into a bucket</strong></p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>$ s3cmd put testfile.txt s3://s3cmd-justin/
+testfile.txt -&gt; s3://s3cmd-justin/testfile.txt  [1 of 1]
+127 of 127   100% in    0s  1522.87 B/s  done
+</pre></div>
+</div>
+<p><strong>Listing the contents of a bucket</strong></p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>$ s3cmd ls s3://s3cmd-justin
+2014-02-28 16:29       127   s3://s3cmd-justin/testfile.txt
+</pre></div>
+</div>
+<p><strong>Downloading a file from a bucket</strong></p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>$ s3cmd get s3://s3cmd-justin/testfile.txt
+s3://s3cmd-justin/testfile.txt -&gt; ./testfile.txt  [1 of 1]
+127 of 127   100% in    0s     3.46 kB/s  done
+</pre></div>
+</div>
+<p><strong>Deleting a file in a bucket</strong></p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>$ s3cmd del s3://s3cmd-justin/testfile.txt
+File s3://s3cmd-justin/testfile.txt deleted
+</pre></div>
+</div>
+<p><strong>Listing the size of a bucket</strong></p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>$ s3cmd du -H s3://s3cmd-justin
+40G      s3://s3cmd-justin
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="clearer"></div>
+</div>
+<div class="footer">
+</div>
+<!--DreamObjects Button-->
+<div class="dream-sign-up">
+<h2>Start Storing Your Data Today!</h2>
+<a href="https://www.dreamhost.com/cloud/storage/">Sign Up for DreamObjects</a>
+</div>
+</body>

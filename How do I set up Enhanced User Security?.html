@@ -1,0 +1,40 @@
+<p>The Enhanced User Security setting prevents other users from accessing your home directory. This setting is enabled by default for every user created. You can find this setting on the (<a class="external text" href="https://panel.dreamhost.com/index.cgi?tree=users.users&amp;" rel="nofollow">‘Panel’ &gt; ‘Users’ &gt; ‘Manage Users’</a>) page in the DreamHost panel by clicking the <strong>Edit</strong> button for the user you wish to change.</p>
+<dl>
+<dd><img src="https://kbimages.objects-us-west-1.dream.io/images/01_EnhancedUserSecurity.fw.png" alt="01 EnhancedUserSecurity.fw.png" width="528" height="91" /></dd>
+</dl>
+<p>As you can see, the setting is just a box that needs to be checked in order for it to be active. Make sure to click the <strong>Save Changes</strong> button at the bottom of the page to save that change. (The <em>learn more</em> link directs users to this article.)</p>
+<p>DreamHost strongly recommends that you keep this security setting enabled to prevent other users from accessing your files.</p>
+<h2><span id="Enabled">Enabled</span></h2>
+<p>By default, Enhanced User Security is enabled and sets the user's home directory permissions to '710' and changes the group to 'adm':</p>
+<div class="preboxcontainer">
+<pre class="prebox">drwx--x--- 18 user1 adm 4096 Jan 12 14:05 user1</pre>
+</div>
+<p>This has the following effects:</p>
+<ul>
+<li>The user and their scripts have the same access to the home directory as when the option is disabled.</li>
+<li>Other DreamHost users no longer have any access to your home directory. They cannot enter your home directory, subdirectories or access any files, no matter how lax the permissions are set.</li>
+</ul>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>The Apache user is in the group 'adm', and thus still has access to the home directory.</p>
+</div>
+</div>
+<h2><span id="Disabled">Disabled</span></h2>
+<p>When this setting is manually disabled, the user's home directory permissions are set to '751', with the group set to the user's account group shown as ‘pgXXXXXXX’ (the ‘X’ being variables for the group specific ID number):</p>
+<div class="preboxcontainer">
+<pre class="prebox">drwxr-x--x 6 user2 pgXXXXXXX 4096 Nov 4 2013 user2</pre>
+</div>
+<p><br />This has the following effects:</p>
+<ul>
+<li>The user has full read/write access to their own home directory, as do user scripts (such as PHP) which run as the user.</li>
+<li>Other users on the same account also have full read/execute access to the home directory, except that they may not rename, delete or create files or directories. However, they may perform these actions in sub-directories that have group +w permission (e.g., users set with ‘771’ (rwxrwx--x) permissions).</li>
+<li>Other DreamHost users have some limited access to your home directory. They may not read the list of filenames in the home directory, and may not rename, delete or create files or directories. However, they can read any other file or directory listing accessible to the web server, assuming they know the path and filename or can guess. They may also read, and possibly write, any file or directory that has lax permissions set; for example, users set with ‘755’ (rwxr-xr-x) or ‘777’ (rwxrwxrwx).</li>
+</ul>
+<h2>See also</h2>
+<ul>
+<li><a href="/hc/en-us/articles/215947927-How-do-I-enable-Extra-Web-Security-for-my-website-">How do I enable Extra Web Security for my website?</a></li>
+<li><a href="/hc/en-us/articles/215608187-Keeping-your-DreamHost-panel-secure">Keeping your DreamHost panel secure</a></li>
+<li><a href="/hc/en-us/articles/214916918-Keeping-your-website-secure">Keeping your website secure</a></li>
+<li><a href="/hc/en-us/articles/214917918-Transport-Layer-Security-TLS-">Transport Layer Security (TLS)</a></li>
+</ul>

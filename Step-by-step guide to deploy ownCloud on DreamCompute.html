@@ -1,0 +1,204 @@
+<body role="document">
+<div class="document">
+<div class="documentwrapper">
+<div class="body" role="main">
+<div id="step-by-step-guide-to-deploy-owncloud-on-dreamcompute">
+
+<div id="preparation">
+<h2>Preparation</h2>
+<p>In this tutorial we are going to install ownCloud on two DreamCompute
+instances, one for the application itself and one for the database it uses.
+We’ll install and configure all necessary components without making use of
+automatic configuration management systems. Future tutorials will cover
+automation.</p>
+<p>First you need to deploy 2 Ubuntu 14.04LTS virtual machines. It’s better to
+boot volume backed instances as they are permanent as opposed to ephemeral
+disks. You can do this in the <a class="reference external" href="215912848">web UI</a> or with the <a class="reference external" href="215912778">nova client</a>.  Once you have those instances up and running, you need to add
+a security group to the instance that runs the database so that it allows TCP
+on port 3306, the MySQL/MariaDB port. That can be done with the <a class="reference external" href="215912838">web
+interface</a> or the <a class="reference external" href="216511637">nova command line client</a> as well.</p>
+</div>
+<div id="installing-mariadb">
+<h2>Installing MariaDB</h2>
+<p>In order to install MariaDB on your database server, first login to the server
+with:</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>ssh dhc-user@$IP
+</pre></div>
+</div>
+<p>changing the IP to your server’s public IP address. Then run</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>sudo su -
+</pre></div>
+</div>
+<p>this creates a root shell, which you will need because you have to have
+administrator rights to install things system-wide. Now that you have a root
+shell you can install mariadb by running:</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>apt-get install mariadb-server
+</pre></div>
+</div>
+<p>It will ask for a root password for the Database, enter whatever you want and
+remember it, you will need it later.</p>
+</div>
+<div id="configuring-mariadb">
+<h2>Configuring MariaDB</h2>
+<div id="changing-the-bind-address">
+<h3>Changing the bind address</h3>
+<p>Open the /etc/mysql/my.conf file in an editor and edit the line that says</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>bind-address            = 127.0.0.1
+</pre></div>
+</div>
+<p>and change it to</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>bind-address            = $IP
+</pre></div>
+</div>
+<p>where <strong>$IP</strong> is the IP address of the DB server.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you have private networking enabled, this will be the private IP address
+and not the floating IP if your DB server has one.</p>
+</div>
+<p>This makes the database listen to connections from it’s IP address instead of
+only listening on 127.0.0.1, which is localhost.</p>
+</div>
+<div id="allowing-root-login-from-a-foreign-ip-address">
+<h3>Allowing root login from a foreign IP address</h3>
+<p>Now our database will listen to connections from other servers, but we have
+to allow root to login from another IP address. We do this by logging into the
+DB as root with</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>mysql -u root -p
+</pre></div>
+</div>
+<p>then enter the root password for your database. Then run:</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>use mysql;
+update user set host='$IP' where user='root' and host='$HOSTNAME';
+flush privileges;
+</pre></div>
+</div>
+<p>where <strong>$IP</strong> is the IP address of your application instance, and <strong>$HOSTNAME</strong>
+is the hostname of your database server.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you want to allow root login from any IP address, change $IP to ‘%’, but
+this is not recommended, especially if your database server has a public IP
+address, because then anyone can try access it.</p>
+</div>
+<p>now restart the mariadb service so the new configs are loaded by running:</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>service mysql restart
+</pre></div>
+</div>
+</div>
+</div>
+<div id="installing-the-owncloud-application">
+<h2>Installing the ownCloud application</h2>
+<div id="installing-dependencies">
+<h3>Installing Dependencies</h3>
+<p>Now that we have a database that ownCloud can use, we need to deploy the
+frontend application. First login to the server that you will be
+installing ownCloud on. Create a root shell again by running</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>sudo su -
+</pre></div>
+</div>
+<p>Then run</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>apt-get install apache2 libapache2-mod-php5
+apt-get install php5-gd php5-json php5-mysql php5-curl
+apt-get install php5-intl php5-mcrypt php5-imagick
+</pre></div>
+</div>
+<p>to install the packages that ownCloud requires to run.</p>
+</div>
+<div id="downloading-owncloud">
+<h3>Downloading ownCloud</h3>
+<p>Now we need to download the actual ownCloud application. Do this by going to
+<a class="reference external" href="https://owncloud.org/install/#instructions-server">https://owncloud.org/install/#instructions-server</a> in a browser and right click
+the <em>.tar.bz2</em> link and click <em>copy link location</em> then in your root shell run</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>wget $URL
+</pre></div>
+</div>
+<p>where <strong>$URL</strong> is the URL you just copied. This will download a compressed
+copy of the ownCloud application. Decompress the file by running</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>bzip2 -d owncloud-9.0.0.tar.bz2
+tar -xvf owncloud-9.0.0.tar
+</pre></div>
+</div>
+<p>owncloud-9.0.0.tar.bz2 is the name of the file you just downloaded and
+owncloud-9.0.0.tar is the directory created by running the bzip2 command. The
+version numbers for your download might be different from mine.
+This should create a directory called “owncloud” in your current directory.</p>
+</div>
+<div id="setting-up-the-owncloud-directory">
+<h3>Setting up the owncloud directory</h3>
+<p>First we need to copy ownCloud to the right directory. We will be running it
+out of /var/www/owncloud. To copy it run</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>cp -R owncloud /var/www/
+</pre></div>
+</div>
+<p>Now we want to change the permissions of the owncloud directory so that the web
+user, www-data in our case, can access it. Do this by running</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>chown -R www-data:www-data /var/www/owncloud
+</pre></div>
+</div>
+</div>
+<div id="configuring-apache">
+<h3>Configuring Apache</h3>
+<p>Now that we have ownCloud in the right place, we need to configure Apache to
+use it. To do this we must create a file in /etc/apache2/sites-available called
+“owncloud.conf” and make it’s contents</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>Alias /owncloud "/var/www/owncloud/"
+
+&lt;Directory /var/www/owncloud/&gt;
+  Options +FollowSymlinks
+  AllowOverride All
+
+ &lt;IfModule mod_dav.c&gt;
+  Dav off
+ &lt;/IfModule&gt;
+
+ SetEnv HOME /var/www/owncloud
+ SetEnv HTTP_HOME /var/www/owncloud
+
+&lt;/Directory&gt;
+</pre></div>
+</div>
+<p>Then symlink /etc/apache2/sites-enabled/owncloud.conf to
+/etc/apache2/sites-available/owncloud.conf by running</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span><span class="n">ln</span> <span class="o">-</span><span class="n">s</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">apache2</span><span class="o">/</span><span class="n">sites</span><span class="o">-</span><span class="n">available</span><span class="o">/</span><span class="n">owncloud</span><span class="o">.</span><span class="n">conf</span> \
+<span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">apache2</span><span class="o">/</span><span class="n">sites</span><span class="o">-</span><span class="n">enabled</span><span class="o">/</span><span class="n">owncloud</span><span class="o">.</span><span class="n">conf</span>
+</pre></div>
+</div>
+<p>ownCloud also needs certain apache modules to run properly, enable them by
+running</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>a2enmod rewrite
+</pre></div>
+</div>
+<p>You should also use SSL with ownCloud to protect login information and data,
+Apache installed on Ubuntu comes with a self-signed cert. To enable SSL using
+that cert run</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>a2enmod ssl
+a2ensite default-ssl
+service apache2 restart
+</pre></div>
+</div>
+</div>
+</div>
+<div id="finishing-the-installation">
+<h2>Finishing the Installation</h2>
+<p>Now everything is configured on the server, open a browser and visit
+<a class="reference external" href="https://IP/owncloud">https://IP/owncloud</a> where <strong>IP</strong> is the IP address of your application instance.
+Create an admin account using the web interface. Then fill in the details for
+the database. The database user is “root”, the password is the root password
+for the database, the host is the IP address of your database
+server, and the database name can be set to anything, I recommend “owncloud”.
+Then continue and <strong>BAM</strong> you have a working ownCloud.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="clearer"></div>
+</div>
+<div class="footer">
+</div>
+<!--DreamCompute Button-->
+<div class="dream-sign-up">
+<h2>Deploy Your Apps On Cloud Servers Today</h2>
+<a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a>
+</div>
+</body>

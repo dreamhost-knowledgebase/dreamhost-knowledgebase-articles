@@ -1,0 +1,154 @@
+<p>The primary use of Unix Groups is to assign “group ownership” of files and directories. You can configure this in the panel on the (<a class="external text" href="https://panel.dreamhost.com/index.cgi?tree=users.groups&amp;" rel="nofollow">Panel &gt; 'Users' &gt; 'Unix Groups'</a>) page. However, please note that only users with <a href="/hc/en-us/articles/215282088">Enhanced User Security</a> disabled can have their user group changed.</p>
+<h2><span id="Creating_a_Unix_Group" class="mw-headline">Creating a Unix Group</span></h2>
+<p>To use UNIX Groups to give individual FTP users access to specific subdirectories of a website:</p>
+<ol>
+<li>Navigate to the (<a class="external text" href="https://panel.dreamhost.com/index.cgi?tree=users.users&amp;" rel="nofollow">Panel &gt; 'Users' &gt; 'Manage Users'</a>) page.</li>
+<li>Create a few users with Shell access. View the<a href="/hc/en-us/articles/216385837"> Enabling Shell Access</a> article for instructions.
+<ul>
+<li>In this example, the new Shell users 'webmaster_unixgroup' and 'contributor_unixgroup' are named.</li>
+</ul>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Make sure <a href="/hc/en-us/articles/215282088">Enhanced User Security</a> is disabled on each Shell user or the following steps will not function.</p>
+</div>
+</div>
+</li>
+<li>Navigate to the (<a class="external text" href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;" rel="nofollow">Panel &gt; 'Domains' &gt; 'Manage Domains'</a>) page.</li>
+<li>Assign your domain to the new Shell user you just created named 'webmaster'. View the following article for instructions:
+<ul>
+<li><a href="/hc/en-us/articles/215909407">Assigning users to a domain</a></li>
+</ul>
+</li>
+<li>Navigate to the (<a class="external text" href="https://panel.dreamhost.com/index.cgi?tree=users.groups&amp;" rel="nofollow">Panel &gt; 'Users' &gt; 'Unix Groups'</a>) page.
+<dl>
+<dd><img src="https://kbimages.objects-us-west-1.dream.io/images/01_Unix_Groups.fw.png" alt="01 Unix Groups.fw.png" width="499" height="219" /></dd>
+</dl>
+</li>
+<li>Click the <strong>Add Custom Group</strong> button.
+<dl>
+<dd><img src="https://kbimages.objects-us-west-1.dream.io/images/02_Unix_Groups.fw.png" alt="02 Unix Groups.fw.png" width="699" height="347" /></dd>
+</dl>
+</li>
+<li>Create a group with both users in it. For example, you can name it "contributor_group".
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>In this example the following names are used:</p>
+<ul>
+<li>Unix group name – 'contributor_group_test'.</li>
+<li>The two users are named 'webmaster_unixgroup' and 'contributor_unixgroup'</li>
+</ul>
+</div>
+</div>
+<dl>
+<dd><em>After clicking <strong>Add Custom Group!</strong> the following confirmation message appears:</em></dd>
+<dd><img src="https://kbimages.objects-us-west-1.dream.io/images/03_Unix_Groups.fw.png" alt="03 Unix Groups.fw.png" width="799" height="329" /></dd>
+</dl>
+</li>
+<li><a href="/hc/en-us/articles/216041267">SSH</a> to the server as your 'webmaster' Shell user and then give the "contributor_group_test" access to whichever directory you want the user "contributor_unixgroup" to access. For example, give the user 'contributor_unixgroup' user access to the directory named '/contributor_dir'.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">chgrp -R contributor_group_test contributor_dir</span></pre>
+</div>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>If you only use the command 'chgrp' it only changes the permissions on the single directory named /contributor_dir. If you want all subdirectories to also change permissions, make sure to add the -R option.</p>
+</div>
+</div>
+</li>
+<li>While still logged in as "webmaster", give the group (and all users in it) the desired level of access for that directory.
+<ul>
+<li>To provide full read/write/execute access to /contributor_dir and all of its subdirectories and files, run this command:</li>
+</ul>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">chmod -R g+rwxs contributor_dir</span></pre>
+</div>
+</li>
+<li>Exit the session and then log back in as 'contributor_unixgroup'.</li>
+<li>Make a symbolic link (i.e., a shortcut) to the directory with this command:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">ln -s /home/webmaster_unixgroup/example.com/contributor_dir /home/contributor_unixgroup/</span></pre>
+</div>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Note the space after the remote path, but just before the local /home/&lt;username&gt;/ path, which creates a symbolic link called "contributor_dir" in the home directory of 'contributor_unixgroup'.</p>
+</div>
+</div>
+<dl>
+<dd><img src="https://kbimages.objects-us-west-1.dream.io/images/04_Unix_Groups.fw.png" alt="04 Unix Groups.fw.png" width="867" height="395" /></dd>
+</dl>
+</li>
+</ol>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>To upload or download files, 'contributor_unixgroup' must use <a href="/hc/en-us/articles/216107387-How-do-I-use-SFTP-to-connect-to-my-server-">SFTP</a>, because <a href="/hc/en-us/articles/215612917-FTP-overview">FTP</a> does not work with symbolic links.</p>
+</div>
+</div>
+<h2><span id="Caveats" class="mw-headline">Caveats</span></h2>
+<ul>
+<li>If you have any .cgi files, the above command makes them fail to run and generates HTTP 500 errors. Be sure that you leave the group for the .cgi and its parent directory as the default group. In other words, if your .cgi file is in <strong>/home/joe/example.com/cgi/fun.cgi</strong> then the following directories/files must be joe's default group:
+<ul>
+<li><strong>/home/joe/example.com/cgi</strong></li>
+<li><strong>/home/joe/example.com/cgi/fun.cgi.</strong></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>Some file servers have an internal limit of 16 groups. If you are in more than 16 groups, only the first 16 (as listed by the "groups" command) are considered.</li>
+</ul>
+<h2><span id="Fundamentals_of_Unix_Groups_at_DreamHost" class="mw-headline">Fundamentals of Unix Groups at DreamHost</span></h2>
+<ul>
+<li>Every DreamHost shared hosting account has a Unix Group in the form of pg####### (where each # is a [0-9] digit):</li>
+<li>This group is called "a default group" and there is exactly 1 per account.</li>
+<li>Every Unix User and every Mailbox belonging to the account is a member of this group. Your files and folders are not shared outside of your account.</li>
+<li>Each Unix User's default Unix Group is entirely determined by the Unix User's <a href="/hc/en-us/articles/215282088-How-do-I-set-up-Enhanced-User-Security-">Enhanced User Security</a> check-box option.</li>
+</ul>
+<dl>
+<dd>- If <a href="/hc/en-us/articles/215282088-How-do-I-set-up-Enhanced-User-Security-">Enhanced User Security</a> is <strong>NOT</strong> selected, the default pg####### group is the user's group and its permissions are 751.</dd>
+<dd>- If <a href="/hc/en-us/articles/215282088-How-do-I-set-up-Enhanced-User-Security-">Enhanced User Security</a> <strong>IS</strong> selected, the user's home directory has its permissions set to 710 and its group is changed to "adm".</dd>
+</dl>
+<ul>
+<li>None of the above can be changed except Enhanced User Security.</li>
+<li>Every Unix Group of an account can contain any subset (combination) of Unix users which belong to that same DreamHost account.</li>
+<li>Unix Groups cannot be nested.</li>
+</ul>
+<h2><span id="Advanced:_Protecting_your_files_from_other_members_of_your_group" class="mw-headline">Advanced: Protecting your files from other members of your group</span></h2>
+<p>The following sections are for advanced users with a solid knowledge of the Unix command-line.</p>
+<h3><span id="Option_one:_chgrp" class="mw-headline">Option one: chgrp</span></h3>
+<p>To keep other members of your group from accessing your files, you can create a new group in the panel and add <strong>only yourself</strong> to the group. Then, change the group of all of your files that you want to protect:</p>
+<pre>chgrp -R my_group /home/user/directory
+</pre>
+<p>The down side to this is that you have to chgrp any new files when they are created in order to continue protecting them.</p>
+<h3><span id="Option_two:_chmod_g-x" class="mw-headline">Option two: chmod g-x</span></h3>
+<p>To keep everyone from your group out, you can also use this method. Simply remove execute permissions from the directory you want to protect:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">chmod g-x /home/user/directory</span>
+</pre>
+</div>
+<p>The down side to this is that you have to remember:</p>
+<ul>
+<li>to do this for every folder that you create, and</li>
+<li>not to do it to any of your web folders.</li>
+</ul>
+<h3><span id="Option_three:_SetGID_bit" class="mw-headline">Option three: SetGID bit</span></h3>
+<p>Set the GID bit on your root folder and any already existing folders:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">chgrp -R &lt;my_group&gt; ~/
+find ~/ -xdev -user &lt;username&gt; -group &lt;my_group&gt; -type d -print -exec chmod +s {} \;
+</span></pre>
+</div>
+<p>Line #1 of this changes the group ownership of all 'files' and 'folders' (within your home folder ~/) to the specified &lt;my_group&gt;.</p>
+<p>Line #2 'sets the GID bit' for all the 'folders' within your home folder and it's subfolders. In particular, it modifies all that are owned by the specified &lt;my_group&gt; which should be all of them if the command from line #1 was executed successfully. Setting the GID bit on a folder changes it such that subsequently any folders or files created within it will be owned by the specified &lt;my_group&gt;.</p>
+<p>The down side to this is that if the group of a folder is ever changed, it loses the GID flag and anything under that folder is now created with your default (pg#######) group again.</p>
+<h2><span id="See_also">See also</span></h2>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214750888-UNIX-commands-overview">UNIX commands overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214750918-UNIX-commands-Changing-ownership">UNIX commands - Changing ownership</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214751018-UNIX-commands-Changing-permissions">UNIX commands - Changing permissions</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215465297-UNIX-commands-Working-with-directories">UNIX commands - Working with directories</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214750848-UNIX-commands-Working-with-files">UNIX commands - Working with files</a></li>
+</ul>

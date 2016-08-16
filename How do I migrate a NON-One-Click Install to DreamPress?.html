@@ -1,0 +1,121 @@
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>DreamHost support is currently unable to provide assistance for WordPress instances that aren't set up through the One-Click installer or are transferred from another host.</p>
+</div>
+</div>
+<p>The following steps guide your through how to manually migrate an existing WordPress site:</p>
+<ol>
+<li>Export the WordPress MySQL database(s). View the following article for further instructions:
+<dl>
+<dd>
+<ul>
+<li><a href="/hc/en-us/articles/215039758-How-do-I-backup-my-database-">Backup MySQL</a></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li>Download your entire WordPress installation. View the following article for further instructions:
+<dl>
+<dd>
+<ul>
+<li><a href="/hc/en-us/articles/215612917-FTP-overview">FTP</a></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li>View the <a href="/hc/en-us/articles/214583258-How-do-I-add-DreamPress-to-a-new-domain-">Setting up a new domain</a> article to add your site to DreamPress.
+<dl>
+<dd><em>When the setup completes, your new DreamPress installation looks similar to this:</em></dd>
+<dd><img src="https://kbimages.objects-us-west-1.dream.io/images/06_Dreampress_Account_Created.fw.png" alt="06 Dreampress Account Created.fw.png" width="759" height="442" /></dd>
+</dl>
+</li>
+<li>You can import your database through phpMyAdmin or through a SHELL user.
+<dl>
+<dd>
+<ul>
+<li><strong>Option #1 - Import via phpMyAdmin</strong> - View the following article which explains how to import using phpMyAdmin:</li>
+</ul>
+<dl>
+<dd>
+<ul>
+<li><a href="/hc/en-us/articles/215039938-How-do-I-migrate-my-database-to-DreamHost-">Importing your database via phpMyAdmin</a></li>
+</ul>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl>
+<dd>
+<ul>
+<li><strong>Option #2 - Import via SSH</strong> - View the following article which explains how to import using <a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a>:</li>
+</ul>
+</dd>
+</dl>
+<dl>
+<dd>
+<dl>
+<dd>
+<ul>
+<li><a href="/hc/en-us/articles/215039938-How-do-I-migrate-my-database-to-DreamHost-">Importing your database via SSH</a></li>
+</ul>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl>
+<dd></dd>
+<dd></dd>
+</dl>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>The wp-cli tool is handy for the MySQL dump and import. You can read about this tool in the following article:</p>
+<ul>
+<li><a href="/hc/en-us/articles/214693248-WordPress-wp-cli-overview">WordPress wp-cli</a></li>
+<li>Using the wp-cli tool is the fastest method.</li>
+<li>To use the wp-cli tool, you'll need to make sure your DreamPress user has Shell access.</li>
+<li>You can also visit the following articles for further instructions on how to change the user type and how to log in via SSH:</li>
+<ul>
+<li><a href="/hc/en-us/articles/216385837-Enabling-Shell-access">Enabling Shell Access</a></li>
+<li><a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a></li>
+</ul>
+</ul>
+</div>
+</div>
+<p>After connecting via SSH with your DreamPress user, run the following command (replacing "backup.sql" with the name of the MySQL backup that you uploaded previously):</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp db import backup.sql</span></pre>
+</div>
+</li>
+<li>Import any necessary WordPress files (such as your custom theme, images and wp-config.php file) via <a href="/hc/en-us/articles/215612917-FTP-overview">FTP</a>.</li>
+</ol>
+<p>The database is now imported and your wp-config.php file links to the new installation.</p>
+<h4><span id="Troubleshooting_the_new_import" class="mw-headline">Troubleshooting the new import</span></h4>
+<p>If your site does not display as it should at this point, you may need to flush both Memcache and Varnish cache. View the following articles for further details:</p>
+<ul>
+<li><a href="/hc/en-us/articles/215300647-How-do-I-purge-the-DreamPress-cache-">Flushing Varnish cache</a></li>
+<li><a href="/hc/en-us/articles/214693248-WordPress-wp-cli-overview">Flushing Memcache using 'wp cache flush'</a></li>
+</ul>
+<p>Below are examples on how to flush both via <a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a>:</p>
+<ul>
+<li><em>Flush Varnish cache for all of your theme files</em></li>
+</ul>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">curl -X PURGE "http://example.com/wp-content/themes/.*" </span></pre>
+</div>
+<ul>
+<li><em>Flush Memcache using the <a href="/hc/en-us/articles/214693248-WordPress-wp-cli-overview">WordPress wp-cli</a></em></li>
+</ul>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp cache flush<br /></span></pre>
+</div>
+<p><span class="wysiwyg-font-size-x-large"><strong>See also</strong></span></p>
+<ul>
+<li><a href="/hc/en-us/articles/214581158">DreamPress overview</a></li>
+<li><a href="/hc/en-us/articles/214581728">DreamPress FAQs</a></li>
+<li><a href="/hc/en-us/articles/214583258">How do I add DreamPress to a new domain?</a></li>
+<li><a href="/hc/en-us/articles/215298577">How can I downgrade or delete DreamPress?</a></li>
+<li><a href="/hc/en-us/articles/215300567">How do I add DreamPress to an existing domain?</a></li>
+<li><a href="/hc/en-us/articles/215300597">How do I import existing content into DreamPress?</a></li>
+</ul>

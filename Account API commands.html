@@ -1,0 +1,142 @@
+<div class="document">
+<div class="documentwrapper">
+<div class="body">
+<div id="account-api-commands">
+<div class="altTitle">Account API</div>
+<div class="table-of-content container">
+<ul class="simple">
+<li><a class="reference internal" href="#account-domain_usage">account-domain_usage</a></li>
+<li><a class="reference internal" href="#account-list_keys">account-list_keys</a></li>
+<li><a class="reference internal" href="#account-status">account-status</a></li>
+<li><a class="reference internal" href="#account-user_usage">account-user_usage</a></li>
+<li><a class="See also" href="#See_also">See also</a></li>
+</ul>
+</div>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>The following documentation is officially supported by DreamHost. However, if you find any instructions in this article do not function as intended, it's possible it may be out of date. When in doubt, please contact support for further assistance.</p>
+</div>
+</div>
+<p>The <strong>account</strong> API module contains commands for checking status or usage of your account.</p>
+<h2>Commands</h2>
+<h3><span id="account-domain_usage">account-domain_usage</span></h3>
+<p>Lists bandwidth usage for all visible domain services. Bandwidth usage is in bytes from the beginning of the current billing cycle (which can be determined using account-status).</p>
+<table class="wikitable">
+<tbody>
+<tr>
+<td><strong>Command</strong></td>
+<td>account-domain_usage</td>
+</tr>
+<tr>
+<td><strong>Values</strong></td>
+<td>
+<p>(none)</p>
+</td>
+</tr>
+<tr>
+<td><strong>Result</strong></td>
+<td>
+<p>success <br />domain type bw <br />example.com http 1048576</p>
+</td>
+</tr>
+<tr>
+<td><strong>Possible errors</strong></td>
+<td>
+<p>(none)</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3><span id="account-list_keys">account-list_keys</span></h3>
+<p>Lists all SSH public keys on this account. SSH keys may be used to provide root access to any of your VPS or Dedicated Servers.</p>
+<table class="wikitable">
+<tbody>
+<tr>
+<td><strong>Command</strong></td>
+<td>account-list_keys</td>
+</tr>
+<tr>
+<td><strong>Values</strong></td>
+<td>
+<p>(none)</p>
+</td>
+</tr>
+<tr>
+<td><strong>Result</strong></td>
+<td>
+<p>success <br />key_name key_val <br />Test ssh-rsa ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz/+..........== DreamHost Managed Key</p>
+</td>
+</tr>
+<tr>
+<td><strong>Possible errors</strong></td>
+<td>
+<p>(none)</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3><span id="account-status">account-status</span></h3>
+<p>Returns the status of the current account. All results of this function should be treated as advisory only.</p>
+<table class="wikitable">
+<tbody>
+<tr>
+<td><strong>Command</strong></td>
+<td>account-status</td>
+</tr>
+<tr>
+<td><strong>Values</strong></td>
+<td>
+<p>(none)</p>
+</td>
+</tr>
+<tr>
+<td><strong>Result</strong></td>
+<td>
+<p>success <br />key value <br />balance -10.00 <br />delinquent 0 <br />delinquent_date 2009-10-02 <br />due 0 <br />lastrebill_date 2009-12-02 <br />nextrebill_date 2010-01-02 <br />past_due 0 <br />pastdue_date 2009-11-02 <br />today 2009-12-23</p>
+</td>
+</tr>
+<tr>
+<td><strong>Possible errors</strong></td>
+<td>
+<p>(none)</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3><span id="account-user_usage">account-user_usage</span></h3>
+<p>Lists disk and bandwidth usage for all visible users. Disk usage is in kilobytes; bandwidth usage is in bytes since the start of the billing cycle (see account-status to determine when that is). In most cases, bandwidth usage appears as zero here. See account-domain_usage for domain bandwidth.</p>
+<table class="wikitable">
+<tbody>
+<tr>
+<td><strong>Command</strong></td>
+<td>account-user_usage</td>
+</tr>
+<tr>
+<td><strong>Values</strong></td>
+<td>
+<p>(none)</p>
+</td>
+</tr>
+<tr>
+<td><strong>Result</strong></td>
+<td>
+<p>success <br />user disk disk_as_of bw <br />username 4700.56 2009-12-22 9.412</p>
+</td>
+</tr>
+<tr>
+<td><strong>Possible errors</strong></td>
+<td>
+<p>(none)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<h2><span id="See_also">See also</span></h2>
+<ul>
+<li><a href="/hc/en-us/articles/217560167-Application-programming-interface-overview">Application programming interface overview</a></li>
+</ul>

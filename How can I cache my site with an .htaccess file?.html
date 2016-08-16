@@ -1,0 +1,56 @@
+<h2><span id="GZIP" class="mw-headline">GZIP</span></h2>
+<p>DEFLATE is a lossless data compression algorithm similar to gzip, but it works in Apache 2. In the past, mod_gzip was a recommended tool. But DreamHost uses Apache 2 and mod_deflate, which calls gzip on the back end automatically. If you want to, you can add additional encoding types to the filter for things like XML or JSON. For example:</p>
+<pre>#Gzip
+&lt;ifmodule mod_deflate.c&gt;
+AddOutputFilterByType DEFLATE text/text text/html text/plain text/xml text/css application/x-javascript application/javascript text/javascript
+&lt;/ifmodule&gt;
+#End Gzip
+</pre>
+<p>View the following page for further details:</p>
+<p><a class="external text" href="http://httpd.apache.org/docs/2.2/mod/mod_deflate.html" rel="nofollow">mod_deflate</a></p>
+<h2><span id="Browser_caching" class="mw-headline">Browser caching</span></h2>
+<p>Using <a class="external text" href="http://httpd.apache.org/docs/2.2/mod/mod_expires.html" rel="nofollow">mod_expires</a>, you can tell visiting browsers to hold on to certain files longer (likes images, which are rarely changed). This example shows how to cache specific file types for specific periods of time:</p>
+<pre># BEGIN Expire headers  
+&lt;ifModule mod_expires.c&gt;  
+        ExpiresActive On  
+        ExpiresDefault "access plus 5 seconds"  
+        ExpiresByType image/x-icon "access plus 2592000 seconds"  
+        ExpiresByType image/jpeg "access plus 2592000 seconds"  
+        ExpiresByType image/png "access plus 2592000 seconds"  
+        ExpiresByType image/gif "access plus 2592000 seconds"  
+        ExpiresByType application/x-shockwave-flash "access plus 2592000 seconds"  
+        ExpiresByType text/css "access plus 604800 seconds"  
+        ExpiresByType text/javascript "access plus 216000 seconds"  
+        ExpiresByType application/javascript "access plus 216000 seconds"  
+        ExpiresByType application/x-javascript "access plus 216000 seconds"  
+        ExpiresByType text/html "access plus 600 seconds"  
+        ExpiresByType application/xhtml+xml "access plus 600 seconds"  
+&lt;/ifModule&gt;  
+# END Expire headers  
+</pre>
+<p>Alternately, you can use <a class="external text" href="http://httpd.apache.org/docs/2.2/mod/mod_headers.html" rel="nofollow">mod_headers</a>:</p>
+<pre># BEGIN Caching
+&lt;ifModule mod_headers.c&gt;
+&lt;filesMatch "\\.(ico|pdf|flv|jpg|jpeg|png|gif|swf)$"&gt;
+Header set Cache-Control "max-age=2592000, public"
+&lt;/filesMatch&gt;
+&lt;filesMatch "\\.(css)$"&gt;
+Header set Cache-Control "max-age=604800, public"
+&lt;/filesMatch&gt;
+&lt;filesMatch "\\.(js)$"&gt;
+Header set Cache-Control "max-age=216000, private"
+&lt;/filesMatch&gt;
+&lt;filesMatch "\\.(xml|txt)$"&gt;
+Header set Cache-Control "max-age=216000, public, must-revalidate"
+&lt;/filesMatch&gt;
+&lt;filesMatch "\\.(html|htm|php)$"&gt;
+Header set Cache-Control "max-age=1, private, must-revalidate"
+&lt;/filesMatch&gt;
+&lt;/ifModule&gt;
+# END Caching
+</pre>
+<h2>See also</h2>
+<ul>
+<li><a href="/hc/en-us/articles/216456227">.htaccess overview</a></li>
+<li><a href="/hc/en-us/articles/217738987">What can I do with an .htaccess file?</a></li>
+</ul>

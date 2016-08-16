@@ -1,0 +1,104 @@
+<h2><span id="Creating_files" class="mw-headline">Creating files</span></h2>
+<p>To create a new file, you can either save it from within a text editor (or other program), or you can use the <code>touch</code> command:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">touch filename</span></pre>
+</div>
+<p>This creates an empty file named <code>filename</code> in the current working directory.</p>
+<h2><span id="Moving_files" class="mw-headline">Moving files</span></h2>
+<p>To move a file to another place:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">mv /old/location/filename /new/location/filename</span></pre>
+</div>
+<p>Note that you can also use relative paths:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">mv filename ../directory/filename</span></pre>
+</div>
+<h2><span id="Copying_files" class="mw-headline">Copying files</span></h2>
+<p>To copy a file to another place:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cp /existing/location/filename /new/location/filename</span></pre>
+</div>
+<h2><span id="Renaming_files" class="mw-headline">Renaming files</span></h2>
+<p><code>mv</code> is also used to rename a file to something else:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">mv oldfilename newfilename</span></pre>
+</div>
+<p><code>mv</code> can also be used to move a file to a new directory while renaming it:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">mv oldfilename ../directory/newfilename </span></pre>
+</div>
+<p>You can also rename a file while using the <code>cp</code> command:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cp /existing/location/filename /new/location/newfilename </span></pre>
+</div>
+<h2><span id="Delete_files" class="mw-headline">Delete files</span></h2>
+<p>To delete a file:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">rm filename </span></pre>
+</div>
+<p>You can use wildcards to delete multiple files with similar names. To delete all files beginning with "pic" (eg, pic01.jpg, pic02.jpg, etc):</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">rm pic*</span></pre>
+</div>
+<p><br /> The wildcard can appear anywhere in the string. To delete all .jpg files:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">rm *.jpg</span></pre>
+</div>
+<p>Be careful when using wildcards as you can inadvertently delete files this way. As a safeguard, you can use the <code>-i</code> flag; you will then be asked to confirm all deletions. Type y or n as prompted to confirm whether or not you wish to delete the each file:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">rm -i *.jpg</span>
+<span class="cmdoutput">rm: remove 'example1.jpg'? y
+rm: remove 'example2.jpg'? y</span></pre>
+</div>
+<p>To permanently remove a directory and all its contents, use the <code>-rf</code> flags:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">rm -rf directoryname</span></pre>
+</div>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>The rm -rf command completely deletes everything in that folder and there will be no way to recover the data. Be careful when using this command.</p>
+</div>
+</div>
+<h2><span id="Locating_files" class="mw-headline">Locating files</span></h2>
+<p>To locate all of the files in a directory tree that contain some pattern in their name:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">find directory -name &lt;regexp&gt; -print</span>
+<span class="cmdoutput">list
+of
+results</span></pre>
+</div>
+<p>Note that this command uses a regular expression (&lt;regexp&gt;) to describe the filename. You can also type in the exact filename.</p>
+<p>For example, to find all files ending with <code>htm</code> in the current directory and any subdirectories:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">find . -name *.htm -print</span></pre>
+</div>
+<p>Note that searches containing wildcards ("*", ".","?") should be bounded by quotes so that the shell does not try to interpret them as regular expressions:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">find . -name "*.htm" -print</span></pre>
+</div>
+<p>Further, <code>-print</code> is the default on most Unix/Linux systems so it can be omitted in most instances:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">find . -name "*.htm"</span></pre>
+</div>
+<p>The find command is extremely powerful. Another handy use is to delete all of the empty subfolders in a particular tree. For example:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">find . -depth -type d -empty -exec rmdir {} ';'</span></pre>
+</div>
+<p>Just make sure to include the <code>-empty</code> flag within the above command.</p>
+<p>This command searches in the current directory and all sub directories. All files that contain the string will have their path printed to standard output:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">find . -exec grep "<var>some_string</var>" '{}' \; -print</span></pre>
+</div>
+<p>To find all the files that have been modified in the last 7 days and output them to a file:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">find . -mtime -7 &gt; mod.txt<br /></span></pre>
+</div>
+<h2><span id="See_also">See also</span></h2>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214750888-UNIX-commands-overview">UNIX commands overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215465297-UNIX-commands-Working-with-directories">UNIX commands - Working with directories</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214750918-UNIX-commands-Changing-ownership">UNIX commands - Changing ownership</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214751018-UNIX-commands-Changing-permissions">UNIX commands - Changing permissions</a></li>
+</ul>

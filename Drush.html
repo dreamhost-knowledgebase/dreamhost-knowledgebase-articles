@@ -1,0 +1,94 @@
+<p><a href="https://github.com/drush-ops/drush"><strong>Drush</strong></a> is a command-line shell and scripting interface for <a href="/hc/en-us/articles/216691848-Drupal">Drupal</a>. To use, you must have a <a href="/hc/en-us/articles/216385837-Enabling-Shell-access">shell user enabled</a> and knowledge of the Unix <a href="/hc/en-us/articles/216041267-SSH-overview">shell</a>.</p>
+<h2>Installing Drush using Composer</h2>
+<p><a href="https://getcomposer.org/">Composer</a> is a tool for dependency management in PHP. It allows you to declare the libraries your project depends on and it will manage (install/update) them for you.</p>
+<p>Follow the instructions at <a href="https://github.com/drush-ops/drush">https://github.com/drush-ops/drush</a>:</p>
+<ol>
+<li>Log into your server via <a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a>.</li>
+<li>Edit the .bash_profile file.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">nano .bash_profile</span>
+</pre>
+</div>
+</li>
+<li>Add the following line if you’re using PHP 5.6. Change the number for a different version.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">export PATH=/usr/local/php56/bin:$PATH</span>
+</pre>
+</div>
+</li>
+<li>Save the file by holding CTRL + X, then click the 'Enter' key.</li>
+<li>Update this file.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">. ~/.bash_profile</span>
+</pre>
+</div>
+</li>
+<li>Create a phprc file. View the <a href="/hc/en-us/articles/214894037-How-do-I-create-a-phprc-file-via-FTP-">Adding a phprc</a> file article for details.</li>
+<li>In this phprc file, add the following lines:
+<div class="preboxcontainer">
+<pre class="prebox">extension = phar.so
+suhosin.executor.include.whitelist = phar</pre>
+</div>
+</li>
+<li>Kill off all running PHP processes.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">killall -9 php56.cgi</span>
+</pre>
+</div>
+</li>
+<li>In your user’s directory, run the following command:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">curl -sS https://getcomposer.org/installer | php</span>
+<span class="cmdoutput">#!/usr/bin/env php
+All settings correct for using Composer
+Downloading...
+
+Composer successfully installed to: /home/exampleuser/composer.phar
+Use it: php composer.phar</span>
+</pre>
+</div>
+</li>
+</ol>
+<h3>Installing Drush on Shared</h3>
+<p>Once you have installed Composer, run the following commands to install Drush.</p>
+<ol>
+<li>Run the following commands in your user’s directory:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">php composer.phar global require drush/drush:dev-master</span>
+<span class="server">[server]$ </span><span class="command">php composer.phar global require drush/drush:7.0.0</span>
+<span class="server">[server]$ </span><span class="command">php .composer/vendor/bin/drush.php</span> </pre>
+</div>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>If you get a connection timed out error, you may be affected by <a class="external text" href="https://github.com/composer/composer/issues/4142" rel="nofollow">this issue</a>. If you have a private server you can use the /etc/gai.conf workaround mentioned there.</p>
+</div>
+</div>
+</li>
+<li>Add this line to your .bash_profile file:
+<div class="preboxcontainer">
+<pre class="prebox">export PATH="$PATH:~/.composer/vendor/bin"</pre>
+</div>
+</li>
+<li>Run the following command to confirm drush is functioning:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">drush topic</span>
+</pre>
+</div>
+</li>
+</ol>
+<h3>Installing Drush on VPS</h3>
+<ul>
+<li><a href="http://web.archive.org/web/20140104153752/http://www.pru8.com/install-drush-on-dreamhost-vps">Install Drush on DreamHost VPS</a></li>
+</ul>
+<h2>See also</h2>
+<h3>Internal links</h3>
+<ul>
+<li><a href="/hc/en-us/articles/216691848-Drupal">Drupal</a></li>
+<li><a href="/hc/en-us/articles/216385837-Enabling-Shell-access">Enabling Shell access</a></li>
+</ul>
+<h3>External links</h3>
+<ul>
+<li><a href="https://github.com/drush-ops/drush">Drush at GitHub</a></li>
+<li><a href="https://groups.drupal.org/drush/commands">Drush commands reference</a></li>
+</ul>

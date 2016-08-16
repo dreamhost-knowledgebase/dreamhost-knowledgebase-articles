@@ -1,0 +1,230 @@
+<div class="document">
+<div class="documentwrapper">
+<div class="body">
+<div id="Jabber API commands">
+<div class="altTitle">Jabber API</div>
+<div class="table-of-content container">
+<ul class="simple">
+<li><a class="reference internal" href="#jabber-list_users">jabber-list_users</a></li>
+<li><a class="reference internal" href="#jabber-list_users_no_pw">jabber-list_users_no_pw</a></li>
+<li><a class="reference internal" href="#jabber-list_valid_domains">jabber-list_valid_domains</a></li>
+<li><a class="reference internal" href="#jabber-add_user">jabber-add_user</a></li>
+<li><a class="reference internal" href="#jabber-remove_user">jabber-remove_user</a></li>
+<li><a class="reference internal" href="#jabber-reactivate_user">jabber-reactivate_user</a></li>
+<li><a class="reference internal" href="#jabber-deactivate_user">jabber-deactivate_user</a></li>
+<li><a class="See also" href="#See_also">See also</a></li>
+</ul>
+</div>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>The following documentation is officially supported by DreamHost. However, if you find any instructions in this article do not function as intended, it's possible it may be out of date. When in doubt, please contact support for further assistance.</p>
+</div>
+</div>
+<p>The <strong>jabber</strong> API module allows you to manage Jabber users for your domains.</p>
+<h2>Commands</h2>
+<h3><span id="jabber-list_users">jabber-list_users</span></h3>
+<p>Lists all Jabber users on this account and includes the user passwords and status. The status is one of the following: active, inactive, pending-active, pending-inactive, pending-delete</p>
+<table class="wikitable">
+<tbody>
+<tr>
+<td><strong>Command</strong></td>
+<td>jabber-list_users</td>
+</tr>
+<tr>
+<td><strong>Values</strong></td>
+<td>
+<p>(none)</p>
+</td>
+</tr>
+<tr>
+<td><strong>Result</strong></td>
+<td>
+<p>success <br />username domain password status <br />testuser example.com abc123 active <br />testuser2 example.com 12345 active</p>
+</td>
+</tr>
+<tr>
+<td><strong>Possible errors</strong></td>
+<td>
+<p>(none)</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3><span id="jabber-list_users_no_pw">jabber-list_users_no_pw</span></h3>
+<p>Same as jabber-list_users, but leaves out the passwords. Passwords display as ********.</p>
+<table class="wikitable">
+<tbody>
+<tr>
+<td><strong>Command</strong></td>
+<td>jabber-list_users_no_pw</td>
+</tr>
+<tr>
+<td><strong>Values</strong></td>
+<td>
+<p>(none)</p>
+</td>
+</tr>
+<tr>
+<td><strong>Result</strong></td>
+<td>
+<p>success <br />username domain password status <br />testuser example.com ******** active <br />testuser2 example.com ******** active</p>
+</td>
+</tr>
+<tr>
+<td><strong>Possible errors</strong></td>
+<td>
+<p>(none)</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3><span id="jabber-list_valid_domains">jabber-list_valid_domains</span></h3>
+<p>Lists domains on your account that can have Jabber users.</p>
+<table class="wikitable">
+<tbody>
+<tr>
+<td><strong>Command</strong></td>
+<td>jabber-list_valid_domains</td>
+</tr>
+<tr>
+<td><strong>Values</strong></td>
+<td>
+<p>(none)</p>
+</td>
+</tr>
+<tr>
+<td><strong>Result</strong></td>
+<td>
+<p>success <br />domain <br />example.com <br />sub.example.com</p>
+</td>
+</tr>
+<tr>
+<td><strong>Possible errors</strong></td>
+<td>
+<p>(none)</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3><span id="jabber-add_user">jabber-add_user</span></h3>
+<p>Creates a new Jabber user. This returns a service token (see Service Control Commands). This may return the same service queue token as previous calls to the Jabber API. If this is the case, then all pending changes are applied together.</p>
+<table class="wikitable">
+<tbody>
+<tr>
+<td><strong>Command</strong></td>
+<td>jabber-add_user</td>
+</tr>
+<tr>
+<td><strong>Values</strong></td>
+<td>
+<p><strong>username</strong> : The desired Jabber username <br /><strong>domain</strong> : The domain for the new user <br /><strong>password</strong> : The password for the new user</p>
+</td>
+</tr>
+<tr>
+<td><strong>Result</strong></td>
+<td>
+<p>success <br />token <br />gcnaBcD12eFgH34iJkL</p>
+</td>
+</tr>
+<tr>
+<td><strong>Possible errors</strong></td>
+<td>
+<p>no_username <br />no_domain <br />no_password <br />invalid_username <br />invalid_domain <br />invalid_password <br />user_exists</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3><span id="jabber-remove_user">jabber-remove_user</span></h3>
+<p>Removes a Jabber user. This returns a service token (see Service Control Commands). This may return the same service queue token as previous calls to the Jabber API. If this is the case, then all pending changes are applied together.</p>
+<table class="wikitable">
+<tbody>
+<tr>
+<td><strong>Command</strong></td>
+<td>jabber-remove_user</td>
+</tr>
+<tr>
+<td><strong>Values</strong></td>
+<td>
+<p>username <br />domain</p>
+</td>
+</tr>
+<tr>
+<td><strong>Result</strong></td>
+<td>
+<p>success <br />token <br />gcnaBcD12eFgH34iJkL</p>
+</td>
+</tr>
+<tr>
+<td><strong>Possible errors</strong></td>
+<td>
+<p>no_username <br />no_domain <br />invalid_domain <br />user_does_not_exist <br />change_already_pending</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3><span id="jabber-reactivate_user">jabber-reactivate_user</span></h3>
+<p>Reactivates a Jabber user that had been disabled. This returns a service token (see Service Control Commands). This may return the same service queue token as previous calls to the Jabber API. If this is the case, then all pending changes are applied together.</p>
+<table class="wikitable">
+<tbody>
+<tr>
+<td><strong>Command</strong></td>
+<td>jabber-reactivate_user</td>
+</tr>
+<tr>
+<td><strong>Values</strong></td>
+<td>
+<p>username <br />domain</p>
+</td>
+</tr>
+<tr>
+<td><strong>Result</strong></td>
+<td>
+<p>success <br />token <br />gcnaBcD12eFgH34iJkL</p>
+</td>
+</tr>
+<tr>
+<td><strong>Possible errors</strong></td>
+<td>
+<p>no_username <br />no_domain <br />invalid_domain <br />user_does_not_exist <br />user_already_active <br />change_already_pending</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3><span id="jabber-deactivate_user">jabber-deactivate_user</span></h3>
+<p>Deactivates a Jabber user. This returns a service token (see Service Control Commands). This may return the same service queue token as previous calls to the Jabber API. If this is the case, then all pending changes are applied together.</p>
+<table class="wikitable">
+<tbody>
+<tr>
+<td><strong>Command</strong></td>
+<td>jabber-deactivate_user</td>
+</tr>
+<tr>
+<td><strong>Values</strong></td>
+<td>
+<p>username <br />domain</p>
+</td>
+</tr>
+<tr>
+<td><strong>Result</strong></td>
+<td>
+<p>success <br />token <br />gcnaBcD12eFgH34iJkL</p>
+</td>
+</tr>
+<tr>
+<td><strong>Possible errors</strong></td>
+<td>
+<p>no_username <br />no_domain <br />invalid_domain <br />user_does_not_exist <br />user_already_inactive <br />change_already_pending</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h2><span id="See_also">See also</span></h2>
+<ul>
+<li><a href="/hc/en-us/articles/217560167-Application-programming-interface-overview">Application programming interface overview</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="clearer"> </div>

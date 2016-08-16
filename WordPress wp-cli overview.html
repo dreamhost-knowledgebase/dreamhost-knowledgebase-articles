@@ -1,0 +1,175 @@
+<p>WordPress Command Line Interface (or, <a href="http://wp-cli.org/">wp-cli </a>) is installed on all servers at DreamHost. This feature allows you to run WordPress commands from your Shell terminal. For example you can import a database, create a new user, update themes and plugins all using wp-cli.</p>
+<p>This article is a quick overview of this service.</p>
+<h2><span id="Listing_available_commands">Listing available commands</span></h2>
+<p>Log in to your server via <a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a>. Once logged in, make sure you’re in your WordPress site’s directory. In that directory run the following command to print a list of available options:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp</span></pre>
+</div>
+<p>The following available commands display:</p>
+<div class="preboxcontainer">
+<pre class="prebox">SUBCOMMANDS
+
+ cache               Manage the object cache.
+ cap                 Manage user capabilities.
+ cli                 Get information about WP-CLI itself.
+ comment             Manage comments.
+ core                Download, install, update and otherwise manage WordPress proper.
+ db                  Perform basic database operations.
+ eval                Execute arbitrary PHP code after loading WordPress.
+ eval-file           Load and execute a PHP file after loading WordPress.
+ export              Export content to a WXR file.
+ help                Get help on a certain command.
+ import              Import content from a WXR file.
+ jetpack             Control your local Jetpack installation.
+ media               Manage attachments.
+ network
+ option              Manage options.
+ plugin              Manage plugins.
+ post                Manage posts.
+ rewrite             Manage rewrite rules.
+ role                Manage user roles.
+ scaffold            Generate code for post types, taxonomies, etc.
+ search-replace      Search/replace strings in the database.
+ shell               Interactive PHP console.
+ site                Perform site-wide operations.
+ super-admin         List, add, and remove super admins from a network.
+ term                Manage terms.
+ theme               Manage themes.
+ transient           Manage transients.
+ user                Manage users.
+
+GLOBAL PARAMETERS
+
+ --path=&lt;path&gt;
+     Path to the WordPress files
+
+ --url=&lt;url&gt;
+     Pretend request came from given URL
+
+ --user=&lt;id|login&gt;
+     Set the WordPress user
+
+ --skip-plugins[=&lt;plugin&gt;]
+     Skip loading all or some plugins
+
+ --require=&lt;path&gt;
+     Load PHP file before running the command (may be used more than once)
+
+ --[no-]color
+     Whether to colorize the output
+
+ --debug
+     Show all PHP errors
+
+ --prompt
+     Prompt the user to enter values for all command arguments
+
+ --quiet
+</pre>
+</div>
+<h2><span id="Finding_more_information_on_a_command">Finding more information on a command</span></h2>
+<p>To get more information on a specific command, run the --help option. For example:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp plugin --help</span></pre>
+</div>
+<p>This prints a list of available subcommands. For example:</p>
+<div class="preboxcontainer">
+<pre class="prebox">SUBCOMMANDS
+
+ activate          Activate a plugin.
+ deactivate        Deactivate a plugin.
+ delete            Delete plugin files.
+ get               Get a plugin.
+ install           Install a plugin.
+ is-installed      Check if the plugin is installed.
+ list              Get a list of plugins.
+ path              Get the path to a plugin or to the plugin directory.
+ search            Search the wordpress.org plugin repository.
+ status            See the status of one or all plugins.
+ toggle            Toggle a plugin's activation state.
+ uninstall         Uninstall a plugin.
+ update            Update one or more plugins.
+</pre>
+</div>
+<p>You can then combine these with the main command to perform an action. Here is how you’d install a plugin named hello-dolly:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp plugin install hello-dolly</span>
+Installing Hello Dolly (1.6)
+Downloading install package from https://downloads.wordpress.org/plugin/hello-dolly.1.6.zip...
+Unpacking the package...
+Installing the plugin...
+Plugin installed successfully.
+</pre>
+</div>
+<p>If you now run ‘wp plugin list’, all of your plugins appear:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp plugin list</span>
++--------------------+----------+--------+---------+
+| name               | status   | update | version |
++--------------------+----------+--------+---------+
+| akismet            | inactive | none   | 3.1.1   |
+| dreamobjects       | inactive | none   | 3.5.2   |
+| hello-dolly        | inactive | none   | 1.6     |
+| hello              | inactive | none   | 1.6     |
+| jetpack            | active   | none   | 3.5.3   |
+| varnish-http-purge | active   | none   | 3.7.2   |
++--------------------+----------+--------+---------+
+</pre>
+</div>
+<h2><span id="Common_commands">Common commands</span></h2>
+<p>These popular commands are used most often when debugging:</p>
+<h3><span id="Deactivating_a_plugin" class="mw-headline">Deactivating a plugin</span></h3>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp plugin deactivate PLUGIN_NAME</span></pre>
+</div>
+<dl>
+<dd><em><strong>-or-</strong></em></dd>
+</dl>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp plugin toggle NAME</span></pre>
+</div>
+<h3><span id="Deactivating_installed_plugins_on_multisite_network" class="mw-headline">Deactivating installed plugins on multisite network</span></h3>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp plugin toggle NAME --network</span></pre>
+</div>
+<h3><span id="Deactivating_a_theme" class="mw-headline">Deactivating a theme</span></h3>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp theme deactivate THEME_NAME</span></pre>
+</div>
+<p>You must then activate a different theme:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp theme activate THEME_NAME</span></pre>
+</div>
+<h3><span id="Changing_a_password">Changing a password</span></h3>
+<p>List all users to view their user ID#:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp user list</span></pre>
+</div>
+<p>Use that user ID# to update their password:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp user update 3 --user_pass=123456</span></pre>
+</div>
+<h2><span id="Flushing_your_cache">Flushing your cache</span></h2>
+<p>Depending on which plugin you’re using, run one of these to flush your cache:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp cache flush</span></pre>
+</div>
+<dl>
+<dd><em><strong>-or-</strong></em></dd>
+</dl>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp super-cache flush</span></pre>
+</div>
+<h3><span id="Re-updating_core_files" class="mw-headline">Re-updating core files</span></h3>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp core update</span></pre>
+</div>
+<h3><span id="Forcing_the_DB_upgrade_to_run" class="mw-headline">Forcing the DB upgrade to run</span></h3>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp core update-db</span></pre>
+</div>
+<h2><span id="See_also">See also</span></h2>
+<ul>
+<li><a class="external free" href="http://wp-cli.org/" rel="nofollow">http://wp-cli.org/</a> – Official WP CLI website</li>
+<li><a href="/hc/en-us/articles/215525287-WordPress-overview">WordPress overview</a></li>
+</ul>

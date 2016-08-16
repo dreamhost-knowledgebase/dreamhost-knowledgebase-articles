@@ -1,0 +1,159 @@
+<body role="document">
+<div class="document">
+<div class="documentwrapper">
+<div class="body" role="main">
+<div id="how-to-configure-mysql-on-dreamcompute-running-debian-or-ubuntu">
+
+<p>MySQL is the worlds second most popular database engine (after SQLite) and a
+very common choice for a open-source relational database management system
+(RDBMS).  MySQL is an important part of LAMP (Linux, Apache, MySQL, PHP)
+stacks as well as other AMP stacks, and is supported by many web software
+packages.  MySQL is the only relational database software offered by DreamHost
+for its shared, VPS and dedicated hosting products, except for SQLite.  You
+can use it for your DreamCompute instance as well, and the following
+information helps you install and configure it.  These instructions assume you
+run a Debian- or Ubuntu-based system as they have their own specific
+configuration and file hierarchy.</p>
+<div id="installing-mysql">
+<h2>Installing MySQL</h2>
+<p>Debian and Ubuntu sometimes offer multiple versions of MySQL in case your
+needs require a later version, however it is usually best to go with their
+defaults if no specific version is required.</p>
+<p>Debian 7.0 wheezy:</p>
+<ul class="simple">
+<li>mysql-server / mysql-server-5.5 - default and only version available</li>
+</ul>
+<p>Ubuntu 14.04 LTS:</p>
+<ul class="simple">
+<li>mysql-server / mysql-server-5.5 - default version of MySQL 5.5</li>
+<li>mysql-server-5.6 - alternative version of MySQL 5.6</li>
+</ul>
+<p>To install MySQL on your system, run the following commands with the desired
+mysql version, such as:</p>
+<div class="code highlight-python"><div class="highlight"><pre>sudo apt-get update
+sudo apt-get install mysql-server
+</pre></div>
+</div>
+<p>The install process asks you to confirm if you wish to install any additional
+packages needed for this installation of MySQL.  Confirm by entering “<strong>y</strong>”
+and hitting enter.</p>
+<div class="code highlight-python"><div class="highlight"><pre># apt-get install mysql-server
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+The following extra packages will be installed:
+libaio1 libdbd-mysql-perl libdbi-perl libhtml-template-perl
+libmysqlclient18 mysql-client-5.5 mysql-common mysql-server-5.5
+mysql-server-core-5.5
+Suggested packages:
+libipc-sharedcache-perl libterm-readkey-perl tinyca
+The following NEW packages will be installed:
+libaio1 libdbd-mysql-perl libdbi-perl libhtml-template-perl
+libmysqlclient18 mysql-client-5.5 mysql-common mysql-server
+mysql-server-5.5
+mysql-server-core-5.5
+0 upgraded, 10 newly installed, 0 to remove and 1 not upgraded.
+Need to get 9,696 kB of archives.
+After this operation, 97.0 MB of additional disk space will be used.
+Do you want to continue [Y/n]?
+</pre></div>
+</div>
+<p>Before the installation completes, a dialog will pop up asking you to specify
+a MySQL server root password.  The root user is the default admin user and
+should have a strong password.</p>
+<div class="code highlight-python"><div class="highlight"><pre>Configuring mysql-server-5.5
+While not mandatory, it is highly recommended that you set a
+password for the MySQL administrative "root" user.
+If this field is left blank, the password will not be changed.
+New password for the MySQL "root" user:
+</pre></div>
+</div>
+<p>If you enter a password, another dialog box will come up for you to re-enter
+the password to confirm.</p>
+<p>When it completes, the MySQL server is installed and runs with its default
+configuration.</p>
+</div>
+<div id="configuring-and-using-mysql">
+<h2>Configuring and Using MySQL</h2>
+<p>The configuration files are stored in the /etc/mysql directory.  If any
+changes are made, you must restart MySQL for it to read the them.  This can be
+done by running:</p>
+<div class="code highlight-python"><div class="highlight"><pre>service mysql restart
+</pre></div>
+</div>
+<div id="main-configuration-file-etc-mysql-my-cnf">
+<h3>Main configuration file /etc/mysql/my.cnf</h3>
+<p>This is the main configuration file for MySQL.  There are a few settings you
+may wish to change:</p>
+<ul>
+<li><dl class="first docutils">
+<dt><strong>bind</strong></dt>
+<dd><p class="first last">The ip address that MySQL is listening to.  It can only listen to one ip
+address at any time.  By default it will listen to 127.0.0.1 (aka
+localhost), meaning that the MySQL service will only be accessible from
+the instance it is installed on.  If you want to connect to it from other
+DreamCompute instances, you can change this to your instances IPv4 or IPv6
+IP address.  Here is what an IPv6 configured mysql bind variable looks
+like:</p>
+</dd>
+</dl>
+</li>
+</ul>
+<div class="code highlight-python"><div class="highlight"><pre>bind-address            = 2607:f298:6050:8a28:f816:3eff:fe62:c9c3
+</pre></div>
+</div>
+<ul>
+<li><dl class="first docutils">
+<dt><strong>max_allowed_packet</strong></dt>
+<dd><p class="first last">The largest size allowed for a single packet, which normally is only
+relevant for restoring backups.  If a backup was created on a server with
+a high setting for this value, it may have difficulty restoring on another
+machine with a lower setting for this value.  The default is 16M.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div id="resetting-the-root-password">
+<h3>Resetting the root password</h3>
+<p>If you forget the root password, it can be reset by running this command and
+entering in a new password twice.</p>
+<div class="code highlight-python"><div class="highlight"><pre>dpkg-reconfigure mysql-server-5.5
+</pre></div>
+</div>
+</div>
+<div id="connecting-to-mysql-shell">
+<h3>Connecting to mysql shell</h3>
+<p>To connect to your new mysql install, to setup new databases or configure new
+users, you can run these commands.</p>
+<p>Via socket (should work even if “bind” is changed in my.cnf):</p>
+<div class="code highlight-python"><div class="highlight"><pre>mysql -S /var/run/mysqld/mysqld.sock -u root -p
+</pre></div>
+</div>
+<p>Via IP address:</p>
+<div class="code highlight-python"><div class="highlight"><pre>mysql -h 10.10.10.X -u root -p
+</pre></div>
+</div>
+<p>Via localhost:</p>
+<div class="code highlight-python"><div class="highlight"><pre>mysql -h localhost -u root -p
+</pre></div>
+</div>
+<p>or just:</p>
+<div class="code highlight-python"><div class="highlight"><pre>mysql -u root -p
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="clearer"></div>
+</div>
+<div class="footer">
+</div>
+<!--DreamCompute Button-->
+<div class="dream-sign-up">
+<h2>Deploy Your Apps On Cloud Servers Today</h2>
+<a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a>
+</div>
+</body>

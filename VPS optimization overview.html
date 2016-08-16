@@ -1,0 +1,58 @@
+<p>Optimizing your private server helps it to use less memory which saves you money as well as speeding up your websites. This articles describes the steps to pinpoint and mitigate the source of any memory issues on a <a href="https://dreamhosthelp.zendesk.com/hc/en-us/articles/215280058-Virtual-Private-Server-overview-VPS-">DreamHost VPS</a>.</p>
+<h2><span id="How_to_optimize_your_PS" class="mw-headline">How to optimize your PS</span></h2>
+<h3>Blocking abusive access</h3>
+<p>Common problems for sites are caused by search engine indexing bots or abusive viewers hammering them. When search engine bots hit a site, they usually hit it pretty hard. To minimize this issue, you should definitely set up a Robots.txt file. After that, it's possible that someone can crawl your site, systematically downloading every page, image, and file available. This could especially be the case if your site contains media (video, images, audio, and so on). Finding abusive accesses like this can often be more of an art than a science, but you can get some data on this by analyzing the access.log file for your websites.</p>
+<p>View the following article for detailed information on how to check your access.log file and see who is hitting it the most:</p>
+<ul>
+<li><a href="https://dreamhosthelp.zendesk.com/hc/en-us/articles/216105077-How-can-I-control-bots-spiders-and-crawlers-">How can I control bots, spiders and crawlers?</a></li>
+<li><a href="https://dreamhosthelp.zendesk.com/hc/en-us/articles/216105097-How-do-I-examine-my-access-log-">How do I examine my access log?</a></li>
+</ul>
+<h2><span id="IP_Tables" class="mw-headline">IP Tables</span></h2>
+<p>Private servers are virtual servers running on a single host machine. The host machine controls IP tables for all private servers on it.</p>
+<p>It's not possible to install and control your own custom IP tables on your private server while it's being managed by DreamHost.</p>
+<p>If you wish to run your own custom IP tables, you must upgrade to a Dedicated server and manually install this software.</p>
+<h2><span id="Preventing_image_hotlinking" class="mw-headline">Preventing image hotlinking</span></h2>
+<p><a href="https://dreamhosthelp.zendesk.com/hc/en-us/articles/216363197-How-do-I-prevent-image-hotlinking-">Hotlinking</a> is when a site other than your own includes an image in their site that is actually hosted on your server. They do this by directly referencing the image's URL from your site in their own. This can cause massive problems for you if some of your hosted images are hotlinked in another popular site. Even a relatively low traffic site can cause poor server performance if this is the case. To prevent this from happening, you can review the Preventing hotlinking article.</p>
+<h2><span id="Caching_your_site" class="mw-headline">Caching your site</span></h2>
+<p>As you've probably seen by now, PHP processes can take up a significant amount of memory. If your site is getting hammered with traffic, the fewer hits that have to spawn a PHP CGI process, the better. This can be accomplished by enabling caching on your site. Essentially, caching renders a PHP script and then "caches" that HTML output as a file. The next time that page is accessed, the server outputs the static HTML page, rather than process the PHP script again. The task of serving a static file requires far less memory and generally serves more efficiently, than the processing and execution of a PHP script. So if you're having memory trouble on your PS, it's essential that you confirm that you're running software that has caching functionality and that you enable the use of this feature.</p>
+<p>Also, if you expect a large volume of website visitors, you can enable <a href="https://dreamhosthelp.zendesk.com/hc/en-us/articles/215873088-CloudFlare-overview">CloudFlare</a>. This is a service that DreamHost partners with to add additional caching options for your websites.</p>
+<h2><span id="Enabling_FastCGI_and_XCache" class="mw-headline">Enabling FastCGI and XCache</span></h2>
+<p>Another improvement you can make in order to reduce memory usage is to turn on FastCGI and <a href="https://dreamhosthelp.zendesk.com/hc/en-us/articles/215945977-How-do-I-use-XCache-on-a-private-server-">XCache</a> for your domains that run PHP-based sites. Without FastCGI enabled, an entire PHP binary process has to be executed individually for each PHP page that's viewed in order to parse and process it.</p>
+<p>Enabling FastCGI for all your PHP domains switches your sites over to using mod_fcgid (see <a href="https://dreamhosthelp.zendesk.com/hc/en-us/articles/217298967-FastCGI-overview">Fcgid</a> overview). What this means is that when a PHP script is hit by a browser, the PHP interpreter process begins, processes the script, and then stays in memory, waiting for another request. When a new request hits, it is sent to this running interpreter for processing, rather than spawn a new one. If you have a lot of sites or a lot of traffic, this can greatly reduce your overall memory usage.</p>
+<p>Enabling this also allows you to enable XCache which essentially caches compiled PHP code in memory to output as PHP scripts are requested. For more information on configuring this after it's enabled, view the XCache article page. If you'd like additional information about XCache, the <a class="external text" href="http://xcache.lighttpd.net/wiki/Introduction" rel="nofollow">introduction page</a> of the official XCache article is a good place to start.</p>
+<p>View the following article for details on how to enable this feature:</p>
+<ul>
+<li><a href="https://dreamhosthelp.zendesk.com/hc/en-us/articles/215945977-How-do-I-use-XCache-on-a-private-server-">How to enable XCache on a private server</a></li>
+</ul>
+<h2><span id="WordPress-specific_optimizations" class="mw-headline">WordPress-specific optimizations</span></h2>
+<p>If you're running multiple instances of the WordPress software on your private server, you should definitely review the <a href="https://dreamhosthelp.zendesk.com/hc/en-us/sections/203242637">'WordPress Optimization' category</a> for detailed articles.</p>
+<p>Make sure to do the following with each installation:</p>
+<ul>
+<li>Always run the most recent version of WordPress.</li>
+<li>Install only essential plugins.</li>
+<li>Keep your plugins up-to-date.</li>
+<li>Remove/delete unused plugins as opposed to just deactivating them.</li>
+<li>Confirm your active theme isn't generating any errors in your error.log file (located in the same directory as the access.log).</li>
+<li>View <a class="external text" href="http://www.die.net/musings/page_load_time/" rel="nofollow">Optimizing Page Load Time</a> and make sure you have a popular WordPress caching plugin installed and configured. For example, W3TC or WP Super Cache.</li>
+<li>Please keep in mind that running a third-party WordPress caching plugin simultaneously with your panel’s XCache option can actually increase overall memory usage. It's best to pick either one or the other for your caching needs.</li>
+<li>Another useful tool to detect memory intensive third-party plugins is <a class="external text" href="https://wordpress.org/plugins/p3-profiler/" rel="nofollow">P3 (Plugin Performance Profiler)</a> plugin for WordPress. Make sure to disable this plugin if you're not currently using it as it can increase your overall memory usage.</li>
+<li>Finally, compressing your image files improves loading time and reduces overall memory usage.</li>
+</ul>
+<h2>See also</h2>
+<h3>Internal links</h3>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214879348-Managing-your-VPS-memory-usage">Managing your VPS memory usage</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215280058-Virtual-Private-Server-VPS-overview-">Private server overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214879438-Recovering-from-memory-saturation">Recovering from memory saturation</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215572647-Simulating-high-traffic">Simulating high traffic</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214880098-Commands-to-troubleshoot-your-VPS">Commands to troubleshoot your VPS</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215945987-Web-server-performance-comparison">Web server performance comparison</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215945977-How-do-I-use-XCache-on-a-private-server-">How do I use XCache on a private server?</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215573127-How-do-I-reboot-my-VPS-">How do I reboot my VPS?</a></li>
+</ul>
+<h3>External links</h3>
+<ul>
+<li><a href="http://www.cyberciti.biz/tips/howto-performance-benchmarks-a-web-server.html" rel="nofollow">nixCraft Howto: Performance Benchmark a Webserver</a></li>
+<li><a href="http://www.unix.com/man-page/linux/1/ab/" rel="nofollow">Apache HTTP server benchmarking tool</a></li>
+<li><a href="http://www.die.net/musings/page_load_time/" rel="nofollow">Optimizing Page Load Time</a></li>
+</ul>

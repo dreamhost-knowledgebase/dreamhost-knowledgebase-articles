@@ -1,0 +1,70 @@
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>This article contains information/examples using root/sudo/admin users. If you require sudo/admin access, you must upgrade to a Dedicated server.</p>
+</div>
+</div>
+<h2><span id="The_nginx.conf_file" class="mw-headline">The nginx.conf file</span></h2>
+<p>The main config file can only be seen or edited if you're using an <a href="https://help.dreamhost.com/hc/en-us/articles/215945467-How-do-I-add-users-to-a-Dedicated-server-">admin user</a>.</p>
+<ol>
+<li>Once you've created and admin user, log into your <a href="https://help.dreamhost.com/hc/en-us/articles/215279658-Dedicated-server-overview">Dedicated server</a> and navigate to the following directory:
+<div class="preboxcontainer">
+<pre class="prebox">/dh/nginx/servers/httpd-psXXXXXX/
+</pre>
+</div>
+</li>
+<li>Use 'sudo' to view the directory contents:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">sudo ls -la</span></pre>
+</div>
+</li>
+<li>Enter your password when prompted.
+<dl>
+<dd><em>You'll see the nginx.conf file listed.</em></dd>
+</dl>
+</li>
+<li>Edit the file using 'sudo':
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">sudo nano nginx.conf</span>
+</pre>
+</div>
+</li>
+</ol>
+<h2><span id="Local_configuration_files" class="mw-headline">Local configuration files</span></h2>
+<p>Nginx hard codes an include path for every domain, as seen in the following example:</p>
+<div class="preboxcontainer">
+<pre class="prebox">/home/username/nginx/example.com
+</pre>
+</div>
+<p>This <code>/home/username/nginx/example.com</code> directory is the only place you should load any .conf file you want your actual site to use. Additionally, any file ending in .conf is inserted into the server block of the nginx.conf file.</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>The /nginx/example.com folders do not exist by default. You must create them manually by running the following commands under your username:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">mkdir -p nginx/example.com</span></pre>
+</div>
+</div>
+</div>
+<p>To clarify, you'll now have two directories your domain uses:</p>
+<ul>
+<li><strong>Your actual web directory (aka document root)</strong></li>
+</ul>
+<dl>
+<dd>
+<pre>/home/username/example.com</pre>
+</dd>
+</dl>
+<ul>
+<li><strong>Your <code>nginx/example.com</code> directory where ALL config files should be placed</strong></li>
+</ul>
+<dl>
+<dd>
+<pre>/home/username/nginx/example.com</pre>
+</dd>
+</dl>
+<h2>See also</h2>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216431827-Nginx-overview"><span class="mw-headline">Nginx overview</span></a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
+</ul>

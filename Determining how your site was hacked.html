@@ -1,0 +1,101 @@
+<p>The first step in getting things back to normal is to determine how the account was hacked. In general, almost all hacks occur through three methods ranked in order of likelihood:</p>
+<ol>
+<li>A CGI vulnerability in software you've uploaded to your website has been exploited and used to write/execute arbitrary code on the server.</li>
+<li>Your FTP/SSH <a href="/hc/en-us/articles/216479147-Passwords-overview">password</a> has been compromised.</li>
+<li>You have world-writable directory permissions on web-accessible folders.</li>
+</ol>
+<p>Perhaps counter-intuitively, CGI hacks are more common than FTP/SSH password hacks primarily due to the sheer proliferation of pre-bundled software that people set up and frequently later forget to update. However, FTP/SSH hacks are the easiest to check up on. World-writable folders attacks are possible when the attacker is in the same machine that your account is. With world-writable permissions (o=w), anyone with an account on the hosting machine is able to put files there.</p>
+<h2><span id="Looking_for_FTP.2FSSH_hacks" class="mw-headline">Looking for FTP/SSH hacks</span></h2>
+<p>Since recent FTP/SSH hacks are easiest to spot, start by eliminating this option. Log into your user via SSH and run the following commands.</p>
+<p>Shows you your login history for the current month:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">last -i | grep youruser</span>
+</pre>
+</div>
+<p>Shows you your login history for the prior month:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">last -if /var/log/wtmp.1 | grep youruser</span>
+</pre>
+</div>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>The usernames printed by "last" truncate after 8 characters, so if you have a longer username you'll want to truncate yours in the grep string as well.</p>
+</div>
+</div>
+<p>The output looks something like this:</p>
+<div class="preboxcontainer">
+<pre class="prebox">youruser pts/4        99.139.XXX.XXX   Wed May 28 06:10 - 07:11  (01:00)    
+youruser pts/5        66.33.XXX.XXX    Sun May 25 09:31 - 12:14  (02:42)    
+youruser ftpd30715    66.33.XXX.XXX    Wed May 21 14:16 - 14:16  (00:00)    
+youruser pts/2        66.33.XXX.XXX    Tue May 20 13:22 - 14:18  (00:56)    
+youruser pts/2        66.33.XXX.XXX    Tue May 20 13:06 - 13:22  (00:15)    
+</pre>
+</div>
+<p>You can simplify this data to print out only IP addresses and counts by adding pipes to a few simple commands:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">last -if /var/log/wtmp.1 | grep youruser | awk '{print $3}' | sort | uniq -c</span>
+</pre>
+</div>
+<p>The output looks more like this:</p>
+<div class="preboxcontainer">
+<pre class="prebox">4 66.33.XXX.XXX
+1 99.139.XXX.XXX
+</pre>
+</div>
+<p>You may find either method useful for determining who has logged into your FTP/SSH user.</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>The wtmp logs only go back at most 1–2 months, so if the hack is older than that, DreamHost won’t have any records of it.</p>
+</div>
+</div>
+<p>If you've determined that FTP/SSH is the source of the hack, you should:</p>
+<ol>
+<li>Change your password. Visit the Change password article for further details.</li>
+<li>Discontinue use of FTP which sends your password over the Internet in plaintext, and then switch to <a href="/hc/en-us/articles/216107387-How-do-I-use-SFTP-to-connect-to-my-server-">SFTP</a> or <a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a>. You can disable FTP for the account in the control panel on the same page that you changed your password.</li>
+<li>Ensure there is up-to-date virus/malware scanning on any computers on which you've used the password/user in question.</li>
+</ol>
+<h2><span id="Looking_for_CGI_hacks" class="mw-headline">Looking for CGI hacks</span></h2>
+<h3><span id="Checking_your_logs_on_a_specific_date" class="mw-headline">Checking your logs on a specific date</span></h3>
+<p>If possible, start by trying to determine when the hack occurred. This can often be determined by noting the modification date of any files which have been modified by the hacker. Usually, they will all share a common modification time. If that time can be determined, check the logs for that day and time to see what was requested or posted to your site.</p>
+<p>Careful examination of your log files often reveals exactly how your site was hacked. Every request and post to your site is logged and the log files can not be changed by the user, so the record of the attack is preserved provided that the exploit was discovered within the 30 days or so which are recorded in the logs.</p>
+<h3><span id="Checking_all_of_your_logs" class="mw-headline">Checking all of your logs</span></h3>
+<p>If the original time can not be ascertained, the log files can be scanned en masse although it's more difficult to uncover the evidence of the intrusion. You can run the following command on your web server after you log in via SSH:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">gunzip -c ~/logs/example.com/http/access.log.* | gawk '{a[$7]++}END{for (i in a) {print a[i]"\t"i}}' | sort -n | more</span>
+</pre>
+</div>
+<p>This returns a report of all requests to your site from all available logs sorted in ascending order. Since the majority of requests should (hopefully) be legitimate, it's easiest to start by looking at the top of the report — the least frequent requests — for evidence of the exploit:</p>
+<p>It's not uncommon to see many requests which should not be there, as this is the nature of a website since it is publicly accessible. These requests do not, in and of themselves, indicate a breach, but should be investigated to see if the request successfully revealed a vulnerability.</p>
+<h2><span id="Looking_for_world-writable_directories" class="mw-headline">Looking for world-writable directories</span></h2>
+<p>World-writable directories allow file writing by any user on the machine, and these directories can be mass-scanned. It's recommended that you perform this step anytime you suspect a breach.</p>
+<p>Even if you're sure you didn't make any permission mistakes, some less security-aware software vendors or plugin developers often use system commands or language-native permission-management functions to make some directories (usually ones used for caching and temporary files, session files, and so on) to ease installation and management.</p>
+<p>To scan for directories with world-writable permissions, use the UNIX find tool. Run this command via SSH in your domain’s web directory.</p>
+<p>This command searches all folders below the folder in which you run it:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">find . -type d -perm -o=w</span>
+</pre>
+</div>
+<p>If no results are displayed, then no folders are world-writable.</p>
+<h3><span id="Fixing_world-writable_directories" class="mw-headline">Fixing world-writable directories</span></h3>
+<p>You can mass-change all your world-writable directories permission with the UNIX find tool. Run this command via SSH:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">find . -type d -perm -o=w -print -exec chmod 770 {} \;</span>
+</pre>
+</div>
+<p>When you run this command in your web directory, the following happens:</p>
+<ul>
+<li>All directories that have 777 permissions are found.</li>
+<li>Those directories with 777 permissions are changed to 770.</li>
+<li>Other directories are not touched.</li>
+</ul>
+<p>It's always better to enumerate all the world-writable directories and then deciding the proper permissions. Some folders require special attention.</p>
+<h2>See also</h2>
+<ul>
+<li><a href="/hc/en-us/categories/202186727">List of website troubleshooting articles</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215604737-Hacked-sites-overview">Hacked sites overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214915258-Cleaning-up-your-site-after-a-hack">Cleaning up your site after a hack</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215605037-Preventing-future-hacks">Preventing future hacks</a></li>
+</ul>

@@ -1,0 +1,129 @@
+<body role="document">
+<div class="document">
+<div class="documentwrapper">
+<div class="body" role="main">
+<div id="how-to-use-aws-cli-with-dreamobjects">
+
+<div id="overview">
+<h2>Overview</h2>
+<dl class="docutils">
+<dt><a class="reference external" href="https://aws.amazon.com/cli/">AWS CLI</a> is:</dt>
+<dd><ul class="first last simple">
+<li>a command-line tool for uploading, retrieving, and managing data in
+Amazon S3 and other Cloud Storage Service Providers that use the S3
+protocol such as DreamHost DreamObjects.</li>
+<li>best suited for power users who don’t fear command line.</li>
+<li>ideal for scripts, automated backups triggered from cron, and so on.</li>
+</ul>
+</dd>
+</dl>
+<p>The following instructions help you install and configure AWS CLI to work with
+DreamObjects.</p>
+</div>
+<div id="installing-aws-cli">
+<h2>Installing AWS CLI</h2>
+<p>Depending on the operating system you are running, there are several options.</p>
+<p>For Windows there are files in .msi format that can be installed directly.</p>
+<p>For Mac and Linux, the suggested installation is through python “pip”.  To do
+this, run the following command on your local computer:</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>$ pip install awscli
+</pre></div>
+</div>
+<p>To install the client on a DreamHost shared, VPS or dedicated server will
+require the use of python virtualenv and then using its “pip” to install the
+AWS CLI client locally with the same pip install command above.  Please see
+the <a class="reference external" href="215489338-Installing-virtualenv-and-custom-modules-in-Python">Python</a> article for
+specifics on how to accomplish this.</p>
+</div>
+<div id="configuring-aws-cli">
+<h2>Configuring AWS CLI</h2>
+<p>This client has features that apply to many services offered by Amazon, but
+for this tutorial we only are concerned with using the S3 functionality in
+combination with DreamObjects.  To use the S3 features, you must ensure a few
+things:</p>
+<ol class="arabic simple">
+<li>Newer versions of AWS CLI may have a signature_version variable set that is
+incompatible with DreamObjects.  Setting the value to empty if one exists
+will ensure compatibility.  You can check and change this value with these
+commands.</li>
+</ol>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>$ aws configure get default.s3.signature_version
+s3v4
+$ aws configure set default.s3.signature_version ""
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li>Run the following command to input your access and secret keys for AWS CLI
+to store them encrypted for you.  Accept the default region and output
+format by hitting enter.</li>
+</ol>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>$ aws configure
+AWS Access Key ID [None]:
+AWS Secret Access Key [None]:
+Default region name [None]:
+Default output format [None]:
+</pre></div>
+</div>
+</div>
+<div id="example-commands">
+<h2>Example Commands</h2>
+<p><strong>Making a bucket</strong></p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>$ aws --endpoint-url https://objects-us-west-1.dream.io s3 mb s3://newbucketname
+make_bucket: s3://newbucketname/
+</pre></div>
+</div>
+<p><strong>Listing all buckets</strong></p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>$ aws --endpoint-url https://objects-us-west-1.dream.io s3 ls
+2016-01-27 20:14:46 newbucketname
+</pre></div>
+</div>
+<p><strong>Uploading a file into a bucket</strong></p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>$ aws --endpoint-url https://objects-us-west-1.dream.io s3 cp testfile.txt s3://newbucketname/testfile.txt
+upload: ./testfile.txt to s3://newbucketname/testfile.txt
+</pre></div>
+</div>
+<p><strong>Listing the contents of a bucket</strong></p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>$ aws --endpoint-url https://objects-us-west-1.dream.io s3 ls s3://newbucketname
+2016-01-27 19:30:21       8803 testfile.txt
+</pre></div>
+</div>
+<p><strong>Downloading a file from a bucket</strong></p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>$ aws --endpoint-url https://objects-us-west-1.dream.io s3 cp s3://newbucketname/testfile.txt testfile.txt
+download: s3://newbucketname/testfile.txt to ./testfile.txt
+</pre></div>
+</div>
+<p><strong>Deleting a file in a bucket</strong></p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>$ aws --endpoint-url https://objects-us-west-1.dream.io s3 rm s3://newbucketname/testfile.txt
+delete: s3://newbucketname/testfile.txt
+</pre></div>
+</div>
+<p><strong>Deleting an empty bucket</strong></p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>$ aws --endpoint-url https://objects-us-west-1.dream.io s3 rb s3://newbucketname/
+remove_bucket: s3://newbucketname/
+</pre></div>
+</div>
+<p><strong>Sync a directory and its files to or from a bucket</strong></p>
+<p>This will only upload new and changed files, and not delete any files.  You
+can specify other params such as –delete to remove files from the destination
+that aren’t on the source.  An additional useful flag is –acl which accepts
+values such as “private” or “public-read”.</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>$ aws --endpoint-url https://objects-us-west-1.dream.io s3 sync syncdir s3://newbucketname/
+upload: syncdir/file3 to s3://newbucketname/file3
+upload: syncdir/file1 to s3://newbucketname/file1
+upload: syncdir/file2 to s3://newbucketname/file2
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="clearer"></div>
+</div>
+<div class="footer">
+</div>
+<!--DreamObjects Button-->
+<div class="dream-sign-up">
+<h2>Start Storing Your Data Today!</h2>
+<a href="https://www.dreamhost.com/cloud/storage/">Sign Up for DreamObjects</a>
+</div>
+</body>

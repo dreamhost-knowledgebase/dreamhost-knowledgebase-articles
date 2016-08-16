@@ -1,0 +1,50 @@
+<h2><span id="Private_key_doesn.27t_work">Private key doesn't work</span></h2>
+<p>The most common case for a private key not working is that the permissions are set incorrectly on your .ssh directory. In particular, the <code>.ssh</code> directory, as well as your <code>authorized_keys</code> file, must <strong>both</strong> be set to only be writable by your user. If you're having issues, please try running the following:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">chmod 700 $HOME/.ssh</span>
+<span class="server">[server]$ </span><span class="command">chmod 600 $HOME/.ssh/authorized_keys</span></pre>
+</div>
+<h2><span id="Directory.2Ffilenames_which_contain_non-English.2FAsian_characters_show_up_as_.3F.3F.3F.3F.3F.3F_or_are_corrupt">Directory/filenames which contain non-English/Asian characters show up as ?????? or are corrupt</span></h2>
+<p>If you are having problems with your filenames or content not showing up correctly, you can add the following to your .bash_profile file to enable UTF support:</p>
+<div class="preboxcontainer">
+<pre class="prebox">export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+export LANGUAGE=en_US.UTF-8
+export G_FILENAME_ENCODING=UTF-8\
+</pre>
+</div>
+<p>UTF-8 is most likely enabled already. You can check in your terminal by entering the command ‘locale’:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">locale</span> <br /><span class="cmdoutput">LANG=en_US.UTF-8 <br />LANGUAGE= <br />LC_CTYPE="en_US.UTF-8" <br />LC_NUMERIC="en_US.UTF-8" <br />LC_TIME="en_US.UTF-8" <br />LC_COLLATE=C <br />LC_MONETARY="en_US.UTF-8" <br />LC_MESSAGES="en_US.UTF-8" <br />LC_PAPER="en_US.UTF-8" <br />LC_NAME="en_US.UTF-8" <br />LC_ADDRESS="en_US.UTF-8" <br />LC_TELEPHONE="en_US.UTF-8" <br />LC_MEASUREMENT="en_US.UTF-8" <br />LC_IDENTIFICATION="en_US.UTF-8" <br />LC_ALL= </span></pre>
+</div>
+<p>You can see the first line is LANG=en_US.UTF-8. If for some reason this still doesn’t work, it’s most likely the terminal client you’re using. For instructions on how to configure this in PuTTY please visit the following article:</p>
+<ul>
+<li><a href="/hc/en-us/articles/215464538-How-do-I-configure-PuTTY-">PuTTY</a></li>
+</ul>
+<h2><span id="Server_unexpectedly_closed_network_connection">Server unexpectedly closed network connection</span></h2>
+<p>If you get this error when attempting to SSH, this can mean your IP has been blocked. Contact support to see if your IP is blocked. If so, support is able to whitelist it. If you don't know your IP, visit <a class="external text" href="http://www.whatismyipaddress.com/" rel="nofollow">whatismyipaddress.com</a>.</p>
+<h2><span id=".5BUser.5D_is_not_in_the_sudoers_group">[User] is not in the sudoers group</span></h2>
+<p>DreamHost does not allow regular shell users sudo access on shared servers for security purposes. While many tasks can be accomplished without the use of sudo, if you do need sudo access, you must upgrade to a <a href="/hc/en-us/articles/215279658-Dedicated-server-overview">Dedicated</a> server and create an <a href="/hc/en-us/articles/215945467-How-do-I-add-users-to-a-Dedicated-server-">admin user</a>.</p>
+<h2><span id="Idle_connections_are_getting_dropped">Idle connections are getting dropped</span></h2>
+<p>DreamHost and other ISPs may kill ssh connections that remain idle longer than a certain number of minutes. The fix is simple in Linux or OSX. All you need to do is set up keep-alive by editing the /etc/ssh/ssh_config or ~/.ssh/config file on your computer. In that file, add the following:</p>
+<div class="preboxcontainer">
+<pre class="prebox">  Host *
+      ServerAliveInterval 15
+      ServerAliveCountMax 4
+</pre>
+</div>
+<p>Now, the ssh client asks the server for a sign of life every 15 seconds, thus keeping the connection open.</p>
+<p>For instructions on how to configure this setting in PuTTY, please visit the following article:</p>
+<ul>
+<li><a href="/hc/en-us/articles/215466658-Troubleshooting-PuTTY">Troubleshooting PuTTY</a></li>
+</ul>
+<h2><span id="Killed">Killed</span></h2>
+<p>Running processes via SSH that consume large quantities of memory and/or processor power may lead them to be "Killed" – see the following article for further information:</p>
+<ul>
+<li><a href="/hc/en-us/articles/216540488-Why-did-procwatch-kill-processes-on-my-Shared-server-">Why did procwatch kill processes on my Shared server?</a></li>
+</ul>
+<h2>See also</h2>
+<ul>
+<li><a href="/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
+<li><a href="/hc/en-us/articles/215360828-SSH-client-software">SSH client software</a></li>
+</ul>

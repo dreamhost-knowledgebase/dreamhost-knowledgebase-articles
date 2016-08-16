@@ -1,0 +1,46 @@
+<p>It’s possible your PHP site will throw an error if certain PEAR packages are not installed. For example, if you get an error referencing any of the following, run the command below (in your users directory) to install that package.</p>
+<table style="border: 1px solid #BEBEBE; width: 40%;" border="1" cellspacing="0" cellpadding="10">
+<tbody>
+<tr style="font-style: bold;"><th bgcolor="#F2F2F2">Error reference</th><th bgcolor="#F2F2F2">Command to fix</th></tr>
+<tr>
+<td>Mail.php</td>
+<td>pear install --onlyreqdeps Mail</td>
+</tr>
+<tr>
+<td>Mail/mime.php</td>
+<td>pear install --onlyreqdeps Mail_Mime</td>
+</tr>
+<tr>
+<td>Console/Getopt.php</td>
+<td>pear install --onlyreqdeps Console_Getopt</td>
+</tr>
+<tr>
+<td>DB.php</td>
+<td>pear install --onlyreqdeps MDB2</td>
+</tr>
+<tr>
+<td>Net/SMTP.php</td>
+<td>pear install --onlyreqdeps Net_SMTP</td>
+</tr>
+</tbody>
+</table>
+<p>When you create a script that references PEAR, make sure to add these two lines at the very top of that script:</p>
+<div class="preboxcontainer">
+<pre class="prebox">error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED ^ E_STRICT);
+set_include_path("." . PATH_SEPARATOR . ($UserDir = dirname($_SERVER['DOCUMENT_ROOT'])) . "/pear/php" . PATH_SEPARATOR . get_include_path());
+</pre>
+</div>
+<ul>
+<li>The first line turns off any errors that may show.</li>
+<li>The second line allows the script to reference your PEAR installation.</li>
+</ul>
+<p>Additionally, you may need to include the configuration file that you created. The configuration file includes variables for template and data path, which are required for some PEAR modules:</p>
+<div class="preboxcontainer">
+<pre class="prebox">$pear_user_config = $UserDir . "/.pearrc";</pre>
+</div>
+<p>Where <strong>$UserDir = dirname($_SERVER['DOCUMENT_ROOT'])</strong> dynamically determines your DreamHost home directory, e.g., '/home/user'.</p>
+<h2>See also</h2>
+<ul>
+<li><a href="/hc/en-us/articles/214202188-PHP-overview">PHP overview</a></li>
+<li><a href="/hc/en-us/articles/214392988-How-do-I-install-PEAR-"><span class="mw-headline">How do I install PEAR?</span></a></li>
+</ul>

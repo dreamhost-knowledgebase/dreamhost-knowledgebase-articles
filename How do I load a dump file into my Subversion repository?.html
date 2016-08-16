@@ -1,0 +1,28 @@
+<p>You may have an existing repository that you want to migrate to your DreamHost svn repository. To use this at DreamHost, you must first make a dump file of your existing repository. Only then can you load it into your DreamHost repository.</p>
+<ol>
+<li>Dump your existing repository :
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">svnadmin dump &lt;path-to-repo&gt; | gzip &gt; dumpfile.gz</span></pre>
+</div>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>If you set up your repo using the DreamHost Subversion panel, the repository will be under your user's /home/username/svn/repoID directory. For example:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">svnadmin dump /home/exampleuser/svn/exampleProjectID/</span></pre>
+</div>
+</div>
+</div>
+</li>
+<li>Upload dumpfile.gz to your home directory via <a href="/hc/en-us/articles/215612917-FTP-overview">FTP</a>.</li>
+<li>Decompress the dumpfile before importing:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">gunzip -c dumpfile.gz | svnadmin load svn/repository_id</span></pre>
+</div>
+</li>
+</ol>
+<h2>See also</h2>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215466058-Subversion-overview">Subversion overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
+</ul>

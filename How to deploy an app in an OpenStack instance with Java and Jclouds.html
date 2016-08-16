@@ -1,0 +1,416 @@
+<body role="document">
+<div class="document">
+<div class="documentwrapper">
+<div class="body" role="main">
+<div id="how-to-deploy-an-app-in-an-openstack-instance-with-java-and-jclouds">
+
+</div>
+<p>Now that you know how to create and destroy instances, you can deploy the
+sample application. The instance that you create for the application is
+similar to the first instance that you created, but this time, we’ll briefly
+introduce a few extra concepts.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Internet connectivity from your cloud instance is required
+to download the application.</p>
+</div>
+<p>When you create an instance for the application, you’ll want to give it a bit
+more information than you supplied to the bare instance that you just created
+and destroyed. We’ll go into more detail in later sections, but for now,
+simply create the following resources so that you can feed them to the
+instance:</p>
+<ul class="simple">
+<li>A key pair. To access your instance, you must import an SSH public key into
+OpenStack to create a key pair. OpenStack installs this key pair on the new
+instance. Typically, your public key is written to <code class="code docutils literal"><span class="pre">.ssh/id_rsa.pub</span></code>. If
+you do not have an SSH public key file, follow
+<a class="reference external" href="https://help.github.com/articles/generating-ssh-keys/">these instructions</a> first.</li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre>
+    private boolean checkForKey(String keyName){
+        KeyPairApi keyPairApi = conn.getKeyPairApi(region).get();
+        for (KeyPair keyPair : keyPairApi.list()) {
+            if (keyPair.getName().equals(keyName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void createKeyPair(String name, String path) throws IOException {
+        if (checkForKey(name) == true){
+            return;
+        }
+
+        KeyPairApi keypairApi = conn.getKeyPairExtensionForZone(region).get();
+        BufferedReader br = null;
+        try {
+            br = new BufferedReader(new FileReader(path));
+            StringBuilder sb = new StringBuilder(); String line;
+            while ((line = br.readLine()) != null) {
+                sb.append(line);
+            }
+            line = sb.toString();
+            keypairApi.createWithPublicKey(name, line);
+        }
+        catch (IOException e) {
+            System.out.println("ERROR::Given file path is not valid.");
+        }
+        finally { br.close(); }
+    }
+</pre></div>
+</div>
+<ul class="simple">
+<li>Network access. DreamCompute has a default security group that will
+work for our purposes. If you want, you can create another security
+group by following along below. This security group allows HTTP
+and SSH access.</li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre>
+    public void createSecurityGroup() {
+        SecurityGroupApi securityGroupApi = conn.getSecurityGroupApi(region).get();
+        SecurityGroup securityGroup = securityGroupApi.createWithDescription("all-in-one", "Security group for a test application");
+
+        Ingress http = Ingress.builder().ipProtocol(IpProtocol.TCP).fromPort(80).toPort(80).build();
+        Ingress ssh = Ingress.builder().ipProtocol(IpProtocol.TCP).fromPort(22).toPort(22).build();
+
+        securityGroupApi.createRuleAllowingCidrBlock(securityGroup.getId(), http, "0.0.0.0/0");
+        securityGroupApi.createRuleAllowingCidrBlock(securityGroup.getId(), ssh, "0.0.0.0/0");
+    }
+</pre></div>
+</div>
+<ul class="simple">
+<li>User data. During instance creation, you can provide user data to OpenStack to
+configure instances after they boot. The cloud-init service applies the
+user data to an instance. You must pre-install the cloud-init service on your
+chosen image.</li>
+</ul>
+<div class="highlight-java"><div class="highlight"><pre><span class="n">String</span> <span class="n">userdata</span> <span class="o">=</span> <span class="s">"#!/usr/bin/env bash\ncurl -L -s https://git.openstack.org/cgit/stackforge/faafo/plain/contrib/install.sh | bash -s -- -i faafo -i messaging -r api -r worker -r demo"</span><span class="o">;</span>
+</pre></div>
+</div>
+<p>Now, you can boot and configure the instance.</p>
+<div id="boot-and-configure-an-instance">
+<h1>Boot and configure an instance</h1>
+<p>Use the image, flavor, key pair, and userdata to create an instance. After you
+request the instance, wait for it to build.</p>
+<div class="highlight-python"><div class="highlight"><pre>    public String createInstance(String instanceName, String keypair, String userData) {
+        ServerApi serverApi = conn.getServerApi(region);
+        String flavorId = "100";
+        String imageId = "90d5e049-aaed-4abc-aa75-60c2b1ed6516";
+
+        CreateServerOptions options = CreateServerOptions.Builder.keyPairName(keypair).userData(userData.getBytes());
+        ServerCreated ser = serverApi.create(instanceName, imageId, flavorId, options);
+
+        Server server = serverApi.get(ser.getId());
+        while(server.getStatus().value().equals("ACTIVE") == false) {
+            try {
+                Thread.sleep(1000);
+            }
+            catch (InterruptedException ex) {}
+            server = serverApi.get(ser.getId());
+        }
+
+        return ser.getId();
+    }
+
+</pre></div>
+</div>
+<p>When the instance boots, the <cite>ex_userdata</cite> variable value instructs the
+instance to deploy the Fractals application.</p>
+</div>
+<div id="associate-a-floating-ip-for-external-connectivity">
+<h1>Associate a floating IP for external connectivity</h1>
+<p>To see the application running, you must know where to look for it. By
+default, your instance has outbound network access. To make your instance
+reachable from the Internet, you need an IP address. By default in some cases,
+your instance is provisioned with a publicly rout-able IP address. In this
+case, you’ll see an IP address listed under <cite>public_ips</cite> or <cite>private_ips</cite> when
+you list the instances. If not, you must create and attach a floating IP
+address to your instance.</p>
+<div class="highlight-python"><div class="highlight"><pre>    private String getFloatingIP() {
+        FloatingIPApi floatingIPApi = conn.getFloatingIPExtensionForZone(region).get();
+
+        for ( FloatingIP floatingIP : floatingIPApi.list() ) {
+            if (floatingIP.getInstanceId() == null) {
+                return floatingIP.getIp();
+            }
+        }
+        return floatingIPApi.create().getIp();
+    }
+
+</pre></div>
+</div>
+<p>This will get an ip address that you can assign to your instance
+with:</p>
+<div class="highlight-python"><div class="highlight"><pre>    public void attachIP(String ip, String serverId) {
+        FloatingIPApi floatingIPApi = conn.getFloatingIPExtensionForZone(region).get();
+        floatingIPApi.addToServer(ip, serverId);
+    }
+
+</pre></div>
+</div>
+<p>Run the script to start the deployment.</p>
+</div>
+<div id="access-the-application">
+<h1>Access the application</h1>
+<p>Deploying application data and configuration to the instance can take some
+time. Consider enjoying a cup of coffee while you wait. After the application
+deploys, you can visit the awesome graphic interface at the following link
+by using your preferred browser.</p>
+<div class="highlight-python"><div class="highlight"><pre>    public void notifyUserOfAppLocation(String ip) {
+        System.out.println("App will be deployed to http://" + ip);
+    }
+}
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you do not use floating IPs, substitute another IP address as appropriate</p>
+</div>
+<div class="align-center figure">
+<a class="reference internal image-reference" href="_images/screenshot_webinterface.png"><img alt="screenshot of the webinterface" src="https://dreamhosthelp.zendesk.com/hc/article_attachments/204940848/screenshot_webinterface.png" style="width: 800px; height: 600px;"/></a>
+</div>
+</div>
+<div id="complete-code-sample">
+<h1>Complete code sample</h1>
+<p>The following file contains all of the code from this section of the
+tutorial. This comprehensive code sample lets you view and run the code
+as a single script.</p>
+<p>Before you run this script, confirm that you have set your authentication
+information, the flavor ID, and image ID.</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="c1">// step-1</span>
+<span class="kn">import</span> <span class="nn">com.google.common.collect.ImmutableSet</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.google.common.io.Closeables</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.google.inject.Module</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.jclouds.ContextBuilder</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.jclouds.openstack.nova.v2_0.NovaApi</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.jclouds.openstack.nova.v2_0.domain.Server</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.jclouds.openstack.nova.v2_0.domain.ServerCreated</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.jclouds.openstack.nova.v2_0.domain.Image</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.jclouds.openstack.nova.v2_0.domain.Flavor</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.jclouds.openstack.nova.v2_0.domain.KeyPair</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.jclouds.openstack.nova.v2_0.domain.FloatingIP</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.jclouds.openstack.nova.v2_0.domain.SecurityGroup</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.jclouds.openstack.nova.v2_0.domain.SecurityGroupRule</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.jclouds.openstack.nova.v2_0.domain.Ingress</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.jclouds.openstack.nova.v2_0.extensions.KeyPairApi</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.jclouds.openstack.nova.v2_0.extensions.FloatingIPApi</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.jclouds.openstack.nova.v2_0.extensions.SecurityGroupApi</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.jclouds.openstack.nova.v2_0.features.ServerApi</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.jclouds.openstack.nova.v2_0.features.ImageApi</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.jclouds.openstack.nova.v2_0.features.FlavorApi</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.jclouds.openstack.nova.v2_0.options.CreateServerOptions</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.jclouds.net.domain.IpProtocol</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.io.Closeable</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Set</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.io.BufferedInputStream</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.io.BufferedReader</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.io.DataInputStream</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.io.File</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.io.FileInputStream</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.io.FileNotFoundException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.io.FileReader</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">JCloudsNova</span> <span class="kd">implements</span> <span class="n">Closeable</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="n">NovaApi</span> <span class="n">conn</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">region</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+        <span class="n">JCloudsNova</span> <span class="n">jcloudsNova</span> <span class="o">=</span> <span class="k">new</span> <span class="n">JCloudsNova</span><span class="o">();</span>
+        <span class="c1">// Data goes here, for example:</span>
+        <span class="n">String</span> <span class="n">instanceName</span> <span class="o">=</span> <span class="s">"jcloudsdemo"</span><span class="o">;</span>
+
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="c1">// Function calls go here, for example:</span>
+            <span class="n">jcloudsNova</span><span class="o">.</span><span class="na">listImages</span><span class="o">();</span>
+            <span class="n">jcloudsNova</span><span class="o">.</span><span class="na">listFlavors</span><span class="o">();</span>
+            <span class="n">jcloudsNova</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+        <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+            <span class="n">jcloudsNova</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="nf">JCloudsNova</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">String</span> <span class="n">provider</span> <span class="o">=</span> <span class="s">"openstack-nova"</span><span class="o">;</span>
+        <span class="n">String</span> <span class="n">identity</span> <span class="o">=</span> <span class="s">"tenantName:userName"</span><span class="o">;</span>
+        <span class="n">String</span> <span class="n">credential</span> <span class="o">=</span> <span class="s">"Password"</span><span class="o">;</span>
+        <span class="n">region</span> <span class="o">=</span> <span class="s">"RegionOne"</span><span class="o">;</span>
+
+        <span class="n">conn</span> <span class="o">=</span> <span class="n">ContextBuilder</span><span class="o">.</span><span class="na">newBuilder</span><span class="o">(</span><span class="n">provider</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">endpoint</span><span class="o">(</span><span class="s">"https://keystone.dream.io:5000/v2.0/"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">credentials</span><span class="o">(</span><span class="n">identity</span><span class="o">,</span> <span class="n">credential</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">buildApi</span><span class="o">(</span><span class="n">NovaApi</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">close</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+        <span class="n">Closeables</span><span class="o">.</span><span class="na">close</span><span class="o">(</span><span class="n">conn</span><span class="o">,</span> <span class="kc">true</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="c1">// step-2</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">listImages</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">ImageApi</span> <span class="n">imageApi</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="na">getImageApi</span><span class="o">(</span><span class="n">region</span><span class="o">);</span>
+
+        <span class="k">for</span> <span class="o">(</span><span class="n">Image</span> <span class="n">image</span> <span class="o">:</span> <span class="n">imageApi</span><span class="o">.</span><span class="na">listInDetail</span><span class="o">().</span><span class="na">concat</span><span class="o">())</span> <span class="o">{</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">" "</span> <span class="o">+</span> <span class="n">image</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="c1">// step-3</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">listFlavors</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">FlavorApi</span> <span class="n">flavorApi</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="na">getFlavorApi</span><span class="o">(</span><span class="n">region</span><span class="o">);</span>
+
+        <span class="k">for</span> <span class="o">(</span><span class="n">Flavor</span> <span class="n">flavor</span> <span class="o">:</span> <span class="n">flavorApi</span><span class="o">.</span><span class="na">listInDetail</span><span class="o">().</span><span class="na">concat</span><span class="o">())</span> <span class="o">{</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">" "</span> <span class="o">+</span> <span class="n">flavor</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="c1">// step-4</span>
+
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">createInstance</span><span class="o">(</span><span class="n">String</span> <span class="n">instanceName</span><span class="o">){</span>
+        <span class="n">ServerApi</span> <span class="n">serverApi</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="na">getServerApi</span><span class="o">(</span><span class="n">region</span><span class="o">);</span>
+        <span class="n">String</span> <span class="n">imageId</span> <span class="o">=</span> <span class="s">"90d5e049-aaed-4abc-aa75-60c2b1ed6516"</span><span class="o">;</span>
+<span class="c1">// step-5</span>
+        <span class="n">String</span> <span class="n">flavorId</span> <span class="o">=</span> <span class="s">"100"</span><span class="o">;</span>
+<span class="c1">// step-6</span>
+
+        <span class="n">ServerCreated</span> <span class="n">ser</span> <span class="o">=</span> <span class="n">serverApi</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">instanceName</span><span class="o">,</span> <span class="n">imageId</span><span class="o">,</span> <span class="n">flavorId</span><span class="o">);</span>
+
+        <span class="n">Server</span> <span class="n">server</span> <span class="o">=</span> <span class="n">serverApi</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">ser</span><span class="o">.</span><span class="na">getId</span><span class="o">());</span>
+        <span class="k">while</span><span class="o">(</span><span class="n">server</span><span class="o">.</span><span class="na">getStatus</span><span class="o">().</span><span class="na">value</span><span class="o">().</span><span class="na">equals</span><span class="o">(</span><span class="s">"ACTIVE"</span><span class="o">)</span> <span class="o">==</span> <span class="kc">false</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">try</span> <span class="o">{</span>
+                <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">1000</span><span class="o">);</span>
+            <span class="o">}</span>
+            <span class="k">catch</span> <span class="o">(</span><span class="n">InterruptedException</span> <span class="n">ex</span><span class="o">)</span> <span class="o">{}</span>
+            <span class="n">server</span> <span class="o">=</span> <span class="n">serverApi</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">ser</span><span class="o">.</span><span class="na">getId</span><span class="o">());</span>
+        <span class="o">}</span>
+
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">ser</span><span class="o">.</span><span class="na">getId</span><span class="o">());</span>
+
+        <span class="k">return</span> <span class="n">ser</span><span class="o">.</span><span class="na">getId</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="c1">// step-7</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">listServers</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">ServerApi</span> <span class="n">serverApi</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="na">getServerApi</span><span class="o">(</span><span class="n">region</span><span class="o">);</span>
+
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Servers in "</span> <span class="o">+</span> <span class="n">region</span><span class="o">);</span>
+
+        <span class="k">for</span> <span class="o">(</span><span class="n">Server</span> <span class="n">server</span> <span class="o">:</span> <span class="n">serverApi</span><span class="o">.</span><span class="na">listInDetail</span><span class="o">().</span><span class="na">concat</span><span class="o">())</span> <span class="o">{</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"  "</span> <span class="o">+</span> <span class="n">server</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="c1">// step-8</span>
+
+    <span class="kd">private</span> <span class="kt">boolean</span> <span class="nf">deleteInstance</span><span class="o">(</span><span class="n">String</span> <span class="n">instanceId</span><span class="o">){</span>
+        <span class="n">ServerApi</span> <span class="n">serverApi</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="na">getServerApi</span><span class="o">(</span><span class="n">region</span><span class="o">);</span>
+
+        <span class="k">return</span> <span class="n">serverApi</span><span class="o">.</span><span class="na">delete</span><span class="o">(</span><span class="n">instanceId</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="c1">// step-9</span>
+
+    <span class="kd">private</span> <span class="kt">boolean</span> <span class="nf">checkForKey</span><span class="o">(</span><span class="n">String</span> <span class="n">keyName</span><span class="o">){</span>
+        <span class="n">KeyPairApi</span> <span class="n">keyPairApi</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="na">getKeyPairApi</span><span class="o">(</span><span class="n">region</span><span class="o">).</span><span class="na">get</span><span class="o">();</span>
+        <span class="k">for</span> <span class="o">(</span><span class="n">KeyPair</span> <span class="n">keyPair</span> <span class="o">:</span> <span class="n">keyPairApi</span><span class="o">.</span><span class="na">list</span><span class="o">())</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">keyPair</span><span class="o">.</span><span class="na">getName</span><span class="o">().</span><span class="na">equals</span><span class="o">(</span><span class="n">keyName</span><span class="o">))</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">createKeyPair</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">,</span> <span class="n">String</span> <span class="n">path</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">checkForKey</span><span class="o">(</span><span class="n">name</span><span class="o">)</span> <span class="o">==</span> <span class="kc">true</span><span class="o">){</span>
+            <span class="k">return</span><span class="o">;</span>
+        <span class="o">}</span>
+
+        <span class="n">KeyPairApi</span> <span class="n">keypairApi</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="na">getKeyPairExtensionForZone</span><span class="o">(</span><span class="n">region</span><span class="o">).</span><span class="na">get</span><span class="o">();</span>
+        <span class="n">BufferedReader</span> <span class="n">br</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="n">br</span> <span class="o">=</span> <span class="k">new</span> <span class="n">BufferedReader</span><span class="o">(</span><span class="k">new</span> <span class="n">FileReader</span><span class="o">(</span><span class="n">path</span><span class="o">));</span>
+            <span class="n">StringBuilder</span> <span class="n">sb</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringBuilder</span><span class="o">();</span> <span class="n">String</span> <span class="n">line</span><span class="o">;</span>
+            <span class="k">while</span> <span class="o">((</span><span class="n">line</span> <span class="o">=</span> <span class="n">br</span><span class="o">.</span><span class="na">readLine</span><span class="o">())</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="n">line</span><span class="o">);</span>
+            <span class="o">}</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">sb</span><span class="o">.</span><span class="na">toString</span><span class="o">();</span>
+            <span class="n">keypairApi</span><span class="o">.</span><span class="na">createWithPublicKey</span><span class="o">(</span><span class="n">name</span><span class="o">,</span> <span class="n">line</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">catch</span> <span class="o">(</span><span class="n">IOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"ERROR::Given file path is not valid."</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">finally</span> <span class="o">{</span> <span class="n">br</span><span class="o">.</span><span class="na">close</span><span class="o">();</span> <span class="o">}</span>
+    <span class="o">}</span>
+<span class="c1">// step-10</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">createSecurityGroup</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">SecurityGroupApi</span> <span class="n">securityGroupApi</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="na">getSecurityGroupApi</span><span class="o">(</span><span class="n">region</span><span class="o">).</span><span class="na">get</span><span class="o">();</span>
+        <span class="n">SecurityGroup</span> <span class="n">securityGroup</span> <span class="o">=</span> <span class="n">securityGroupApi</span><span class="o">.</span><span class="na">createWithDescription</span><span class="o">(</span><span class="s">"all-in-one"</span><span class="o">,</span> <span class="s">"Security group for a test application"</span><span class="o">);</span>
+
+        <span class="n">Ingress</span> <span class="n">http</span> <span class="o">=</span> <span class="n">Ingress</span><span class="o">.</span><span class="na">builder</span><span class="o">().</span><span class="na">ipProtocol</span><span class="o">(</span><span class="n">IpProtocol</span><span class="o">.</span><span class="na">TCP</span><span class="o">).</span><span class="na">fromPort</span><span class="o">(</span><span class="mi">80</span><span class="o">).</span><span class="na">toPort</span><span class="o">(</span><span class="mi">80</span><span class="o">).</span><span class="na">build</span><span class="o">();</span>
+        <span class="n">Ingress</span> <span class="n">ssh</span> <span class="o">=</span> <span class="n">Ingress</span><span class="o">.</span><span class="na">builder</span><span class="o">().</span><span class="na">ipProtocol</span><span class="o">(</span><span class="n">IpProtocol</span><span class="o">.</span><span class="na">TCP</span><span class="o">).</span><span class="na">fromPort</span><span class="o">(</span><span class="mi">22</span><span class="o">).</span><span class="na">toPort</span><span class="o">(</span><span class="mi">22</span><span class="o">).</span><span class="na">build</span><span class="o">();</span>
+
+        <span class="n">securityGroupApi</span><span class="o">.</span><span class="na">createRuleAllowingCidrBlock</span><span class="o">(</span><span class="n">securityGroup</span><span class="o">.</span><span class="na">getId</span><span class="o">(),</span> <span class="n">http</span><span class="o">,</span> <span class="s">"0.0.0.0/0"</span><span class="o">);</span>
+        <span class="n">securityGroupApi</span><span class="o">.</span><span class="na">createRuleAllowingCidrBlock</span><span class="o">(</span><span class="n">securityGroup</span><span class="o">.</span><span class="na">getId</span><span class="o">(),</span> <span class="n">ssh</span><span class="o">,</span> <span class="s">"0.0.0.0/0"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="c1">// step-11</span>
+<span class="c1">// step-12</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">createInstance</span><span class="o">(</span><span class="n">String</span> <span class="n">instanceName</span><span class="o">,</span> <span class="n">String</span> <span class="n">keypair</span><span class="o">,</span> <span class="n">String</span> <span class="n">userData</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">ServerApi</span> <span class="n">serverApi</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="na">getServerApi</span><span class="o">(</span><span class="n">region</span><span class="o">);</span>
+        <span class="n">String</span> <span class="n">flavorId</span> <span class="o">=</span> <span class="s">"100"</span><span class="o">;</span>
+        <span class="n">String</span> <span class="n">imageId</span> <span class="o">=</span> <span class="s">"90d5e049-aaed-4abc-aa75-60c2b1ed6516"</span><span class="o">;</span>
+
+        <span class="n">CreateServerOptions</span> <span class="n">options</span> <span class="o">=</span> <span class="n">CreateServerOptions</span><span class="o">.</span><span class="na">Builder</span><span class="o">.</span><span class="na">keyPairName</span><span class="o">(</span><span class="n">keypair</span><span class="o">).</span><span class="na">userData</span><span class="o">(</span><span class="n">userData</span><span class="o">.</span><span class="na">getBytes</span><span class="o">());</span>
+        <span class="n">ServerCreated</span> <span class="n">ser</span> <span class="o">=</span> <span class="n">serverApi</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">instanceName</span><span class="o">,</span> <span class="n">imageId</span><span class="o">,</span> <span class="n">flavorId</span><span class="o">,</span> <span class="n">options</span><span class="o">);</span>
+
+        <span class="n">Server</span> <span class="n">server</span> <span class="o">=</span> <span class="n">serverApi</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">ser</span><span class="o">.</span><span class="na">getId</span><span class="o">());</span>
+        <span class="k">while</span><span class="o">(</span><span class="n">server</span><span class="o">.</span><span class="na">getStatus</span><span class="o">().</span><span class="na">value</span><span class="o">().</span><span class="na">equals</span><span class="o">(</span><span class="s">"ACTIVE"</span><span class="o">)</span> <span class="o">==</span> <span class="kc">false</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">try</span> <span class="o">{</span>
+                <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">1000</span><span class="o">);</span>
+            <span class="o">}</span>
+            <span class="k">catch</span> <span class="o">(</span><span class="n">InterruptedException</span> <span class="n">ex</span><span class="o">)</span> <span class="o">{}</span>
+            <span class="n">server</span> <span class="o">=</span> <span class="n">serverApi</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">ser</span><span class="o">.</span><span class="na">getId</span><span class="o">());</span>
+        <span class="o">}</span>
+
+        <span class="k">return</span> <span class="n">ser</span><span class="o">.</span><span class="na">getId</span><span class="o">();</span>
+    <span class="o">}</span>
+
+<span class="c1">// step-13</span>
+    <span class="kd">private</span> <span class="n">String</span> <span class="nf">getFloatingIP</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">FloatingIPApi</span> <span class="n">floatingIPApi</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="na">getFloatingIPExtensionForZone</span><span class="o">(</span><span class="n">region</span><span class="o">).</span><span class="na">get</span><span class="o">();</span>
+
+        <span class="k">for</span> <span class="o">(</span> <span class="n">FloatingIP</span> <span class="n">floatingIP</span> <span class="o">:</span> <span class="n">floatingIPApi</span><span class="o">.</span><span class="na">list</span><span class="o">()</span> <span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">floatingIP</span><span class="o">.</span><span class="na">getInstanceId</span><span class="o">()</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="n">floatingIP</span><span class="o">.</span><span class="na">getIp</span><span class="o">();</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">floatingIPApi</span><span class="o">.</span><span class="na">create</span><span class="o">().</span><span class="na">getIp</span><span class="o">();</span>
+    <span class="o">}</span>
+
+<span class="c1">// step-14</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">attachIP</span><span class="o">(</span><span class="n">String</span> <span class="n">ip</span><span class="o">,</span> <span class="n">String</span> <span class="n">serverId</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">FloatingIPApi</span> <span class="n">floatingIPApi</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="na">getFloatingIPExtensionForZone</span><span class="o">(</span><span class="n">region</span><span class="o">).</span><span class="na">get</span><span class="o">();</span>
+        <span class="n">floatingIPApi</span><span class="o">.</span><span class="na">addToServer</span><span class="o">(</span><span class="n">ip</span><span class="o">,</span> <span class="n">serverId</span><span class="o">);</span>
+    <span class="o">}</span>
+
+<span class="c1">// step-15</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">notifyUserOfAppLocation</span><span class="o">(</span><span class="n">String</span> <span class="n">ip</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"App will be deployed to http://"</span> <span class="o">+</span> <span class="n">ip</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="clearer"></div>
+</div>
+<div class="footer">
+      ©2015, OpenStack contributors.
+      
+    </div>
+</body>

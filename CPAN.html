@@ -1,0 +1,265 @@
+<div class="document">
+<div class="documentwrapper">
+<div class="body">
+<div id="CPAN">
+<div class="table-of-content container">
+<ul class="simple">
+<li><a class="reference internal" href="#setting_up">Setting up CPAN</a></li>
+<li><a class="reference internal" href="#cgi">Making your FastCGI / CGI scripts work</a></li>
+<li><a class="reference internal" href="#modules">Installing Module::Build and many other modules</a></li>
+<li><a class="reference internal" href="#other">Other modules</a></li>
+<li><a class="reference internal" href="#configure">Configuring CPAN</a></li>
+<li><a class="reference internal" href="#minus_local">Using CPAN Minus and local::lib</a></li>
+<li><a class="reference internal" href="#killed">Killed</a></li>
+</ul>
+</div>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p><strong>POSSIBLE OUTDATED INFORMATION!</strong></p>
+<ul>
+<li>DreamHost does not directly support any of the features described on this page and is not responsible for keeping this content updated or accurate. Use at your own risk!</li>
+<li>The instructions provided in this article or section are considered advanced. You are expected to be knowledgeable in the UNIX shell. Support for these instructions is <strong>not available</strong> from DreamHost tech support.</li>
+<li>Server changes performed by DreamHost may break your modifications. You, as the user, are responsible for troubleshooting and resolving issues with your customizations.</li>
+</ul>
+</div>
+</div>
+<p>CPAN is the Comprehensive Perl Archive Network and allows you to use the HUGE library of premade modules available at <a href="http://search.cpan.org/">http://search.cpan.org</a>.</p>
+<p>You need root access normally, but this article will show you how to setup CPAN as a non-root user.</p>
+<span id="setting_up"></span>
+<h2>Setting up CPAN</h2>
+<ol>
+<li>To install modules in your home directory, set up a target directory for them:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">$ mkdir ~/perlmods</span>
+</pre>
+</div>
+</li>
+<li>To ensure that Perl knows where the new modules are going to be installed, add the following lines to the bottom of your ~/.profile file:
+<div class="preboxcontainer">
+<pre class="prebox">PERL5LIB=~/perlmods/lib/perl/5.x:~/perlmods/lib/perl/5.x.x
+PERL5LIB=$PERL5LIB:~/perlmods/share/perl/5.x:~/perlmods/share/perl/5.x.x
+PERL5LIB=$PERL5LIB:~/perlmods/local/share/perl/5.x.x:~/perlmods/local/lib/perl/5.x.x
+export PERL5LIB</pre>
+</div>
+<p>where 5.x and 5.x.x refer to the current version of Perl installed on the DreamHost servers. (You can find the version with `perl -v`.)</p>
+</li>
+<li>Log out from DreamHost and then log in again.</li>
+<li>Set up CPAN to install the modules in the new path, and then run cpan. If this is the first time you run it it will go directly into configuration mode:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cpan</span>
+</pre>
+</div>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>You <em>must</em> use the <span class="code">cpan</span> command, rather than <span class="code">perl -MCPAN</span>. The latter command is not recognized as an installer, and is subject to more stringent memory limits.</p>
+</div>
+</div>
+</li>
+<li>If the CPAN setup doesn't come up, enter "<strong>o conf init</strong>" at the cpan&gt; prompt.
+<div class="preboxcontainer">
+<pre class="prebox">Are you ready for manual configuration? <strong>yes</strong>
+
+Policy on building prerequisites (follow, ask or ignore)? <strong>follow</strong>
+
+Parameters for the 'perl Makefile.PL' command?
+Typical frequently used settings:
+
+PREFIX=~/perl non-root users (please see manual for more hints)
+
+Your choice: <strong>PREFIX=~/perlmods</strong>
+
+Select your continent (or several nearby continents) [] <strong>5</strong>
+Select your country (or several nearby countries) [] <strong>6</strong>
+
+put them on one line, separated by blanks, e.g. '1 4 5' [] 14 7 1 2 3 (whatever you like)</pre>
+</div>
+<ul>
+<li>The important options are that you want to do a manual configuration, and the PREFIX= line.</li>
+<li>The prerequisite line is optional but easier overall.</li>
+</ul>
+<dl>
+<dd><em>When finished, the following cpan&gt; command prompt appears:</em></dd>
+</dl>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cpan&gt; <strong>install XRAY::Vision</strong></span>
+</pre>
+</div>
+</li>
+<li>Type "install Some::Module", where Some::Module is the name of the module you are trying to install. See the example above, which installs it in the perlmods directory.</li>
+<li>When finished, enter the following to exit the CPAN shell:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cpan&gt; <strong>bye</strong></span>
+</pre>
+</div>
+</li>
+<li>To confirm if a Module is installed (or if you need to add it or not), enter the following at a shell login:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">perl -MXRAY::Vision -e 1</span>
+</pre>
+</div>
+<ul>
+<li>If the module is installed in the root perl install, you won't get any errors; it will just return silently.</li>
+<li>If the module is not already installed in the root perl install, you will get something like this:</li>
+</ul>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">perl -MXRAY::Vision -e 1</span>
+<span class="cmdoutput">Can't locate XRAY/Vision.pm in @INC (@INC contains: /etc/perl /usr/local/lib/perl/5.8.4 .... etc</span>
+</pre>
+</div>
+</li>
+</ol>
+<span id="cgi"></span>
+<h2>Making your FastCGI / CGI scripts work</h2>
+<p>Any CGI or Fast CGI scripts must have the following at the top in order to use the locally installed modules:</p>
+<div class="preboxcontainer">
+<pre class="prebox">use lib qw( /home/<em>username</em>/<em>perlmods</em>/lib/perl/5.x /home/<em>username</em>/<em>perlmods</em>/lib/perl/5.x.x 
+            /home/<em>username</em>/<em>perlmods</em>/share/perl/5.x /home/<em>username</em>/<em>perlmods</em>/share/perl/5.x.x
+            /home/<em>username</em>/<em>perlmods</em>/local/share/perl/5.x.x 
+            /home/<em>username</em>/<em>perlmods</em>/local/lib/perl/5.x.x );</pre>
+</div>
+<p>where username is your shell name, perlmods is what you chose above as the local CPAN install directory, and 5.x and 5.x.x refer to the currently installed Perl version determined by perl -v.</p>
+<h3>What if I see an error?</h3>
+<p>If the above <strong>cpan</strong> command generates an error like the following:</p>
+<div class="preboxcontainer">
+<pre class="prebox">Your configuration suggests that CPAN.pm should use a working
+directory of
+    /root/.cpan
+Unfortunately we could not create the lock file
+    /root/.cpan/.lock
+due to permission problems.
+
+Please make sure that the configuration variable
+    $CPAN::Config-&gt;{cpan_home}
+points to a directory where you can write a .lock file. You can set
+this variable in either
+    /etc/perl/CPAN/Config.pm
+or
+    /home/username/.cpan/CPAN/MyConfig.pm
+
+Could not open &gt;/root/.cpan/.lock: Permission denied</pre>
+</div>
+<p>then you must manually create a <span class="code">~/.cpan/CPAN/MyConfig.pm</span> file <strong>before</strong> proceeding to the next step (this is because <em>root</em> already configured cpan in your host.)</p>
+<p>You can do this by entering the following:</p>
+<div class="preboxcontainer">
+<pre class="prebox">mkdir -pv ${HOME}/.cpan/CPAN
+cat &gt; ${HOME}/.cpan/CPAN/MyConfig.pm &lt;&lt;eof
+
+\$CPAN::Config = {
+  'auto_commit' =&gt; q[0],
+  'build_cache' =&gt; q[10],
+  'build_dir' =&gt; q[\$ENV{HOME}/.cpan/build],
+  'cache_metadata' =&gt; q[1],
+  'commandnumber_in_prompt' =&gt; q[1],
+  'cpan_home' =&gt; q[\$ENV{HOME}/.cpan],
+  'dontload_hash' =&gt; {  },
+  'ftp' =&gt; q[/usr/bin/ftp],
+  'ftp_passive' =&gt; q[1],
+  'ftp_proxy' =&gt; q[],
+  'getcwd' =&gt; q[cwd],
+  'gpg' =&gt; q[/usr/bin/gpg],
+  'gzip' =&gt; q[/bin/gzip],
+  'histfile' =&gt; q[\$ENV{HOME}/.cpan/histfile],
+  'histsize' =&gt; q[100],
+  'http_proxy' =&gt; q[],
+  'inactivity_timeout' =&gt; q[0],
+  'index_expire' =&gt; q[1],
+  'inhibit_startup_message' =&gt; q[0],
+  'keep_source_where' =&gt; q[\$ENV{HOME}/.cpan/sources],
+  'lynx' =&gt; q[/usr/bin/lynx],
+  'make' =&gt; q[/usr/bin/make],
+  'make_arg' =&gt; q[],
+  'make_install_arg' =&gt; q[],
+  'make_install_make_command' =&gt; q[/usr/bin/make],
+  'makepl_arg' =&gt; q[PREFIX=\$ENV{HOME}/perlmods],
+  'mbuild_arg' =&gt; q[],
+  'mbuild_install_arg' =&gt; q[],
+  'mbuild_install_build_command' =&gt; q[./Build],
+  'mbuildpl_arg' =&gt; q[],
+  'ncftpget' =&gt; q[/usr/bin/ncftpget],
+  'no_proxy' =&gt; q[],
+  'pager' =&gt; q[less],
+  'prerequisites_policy' =&gt; q[follow],
+  'scan_cache' =&gt; q[atstart],
+  'shell' =&gt; q[/bin/bash],
+  'tar' =&gt; q[/bin/tar],
+  'term_is_latin' =&gt; q[0],
+  'term_ornaments' =&gt; q[1],
+  'unzip' =&gt; q[/usr/bin/unzip],
+  'urllist' =&gt; [q[ftp://cpan.cse.msu.edu/], q[ftp://cpan-du.viaverio.com/pub/CPAN/], q[ftp://cpan.mirrors.redwire.net/pub/CPAN/], q[ftp://cpan.hostrack.net/pub/CPAN]],
+  'use_sqlite' =&gt; q[0],
+  'wget' =&gt; q[/usr/bin/wget],
+};
+1;
+__END__
+eof</pre>
+</div>
+<span id="modules"></span>
+<h2>Installing Module::Build and many other modules</h2>
+<p>If you're installing Module::Build or others which use Module::Build in their installation, it might help to add the above PERL5LIB lines to your .profile (or .bash_profile), otherwise anything you build won't know how to read the Module::Build Build script.</p>
+<span id="other"></span>
+<h2>Other modules</h2>
+<p>Please note that some modules will not install correctly from CPAN as non-root and to a non-standard path. They must be built and installed manually (that is, using the build scripts provided with the modules). Two specifically are:</p>
+<h3>DateTime</h3>
+<p>DateTime (as of 0.68) requires the install step to be executed like so using the "--install_base" option:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">./Build install --install_base ~/perlmods</span>
+</pre>
+</div>
+<h3>IO:Compress</h3>
+<p>IO::Compress (as of 2.034) requires tweaking the Makefile because one of the target paths ignores the PREFIX environment variable.</p>
+<ol>
+<li>Generate the Makefile using:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">perl Makefile.PL PREFIX=~/perlmods</span>
+</pre>
+</div>
+</li>
+<li>Open up the Makefile and look for this line:
+<div class="preboxcontainer">
+<pre class="prebox">INSTALLARCHLIB = /usr/lib/perl/5.10</pre>
+</div>
+</li>
+<li>Change it to say:
+<div class="preboxcontainer">
+<pre class="prebox">INSTALLARCHLIB = $(SITEPREFIX)/lib/perl/5.10</pre>
+</div>
+</li>
+<li>Proceed with your make/make test/make install.</li>
+</ol>
+<span id="configure"></span>
+<h2>Configuring CPAN</h2>
+<p>If you need to manually configure settings, you can access your configuration in the file:</p>
+<div class="preboxcontainer">
+<pre class="prebox">~/.cpan/CPAN/MyConfig.pm</pre>
+</div>
+<p>If specifying PREFIX as above, then use the full path to your perlmods directory:</p>
+<div class="preboxcontainer">
+<pre class="prebox">PREFIX=/home/username/perlmods</pre>
+</div>
+<p>Use <em>perldoc</em> to get a listing of CPAN settings that you can edit:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">perldoc CPAN</span>
+</pre>
+</div>
+<span id="minus_local"></span>
+<h2>Using CPAN Minus and local::lib</h2>
+<p>Tatsuhiko Miyagawa's CPAN Minus (<a href="https://github.com/miyagawa/cpanminus">github</a> <a href="http://search.cpan.org/perldoc?App::cpanminus">cpan</a>) makes it even easier to add support for your own Perl modules. Use</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cpanm -L ~/perlmod <em>module</em> <em>...</em></span>
+</pre>
+</div>
+<p>to install modules into ~/perlmod. In your script, enter the following:</p>
+<div class="preboxcontainer">
+<pre class="prebox">use local::lib '~/perlmod';</pre>
+</div>
+<p>to use these modules.</p>
+<span id="killed"></span>
+<h2>Killed</h2>
+<p>There is a procwatch daemon running that may kill your perl installs. Visit the <a href="/hc/en-us/articles/216540488-Why-did-procwatch-kill-processes-on-my-Shared-server-">procwatch</a> article for more information.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="clearer"> </div>

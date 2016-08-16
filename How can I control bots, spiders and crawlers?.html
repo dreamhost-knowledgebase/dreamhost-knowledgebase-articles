@@ -1,0 +1,148 @@
+<p>Bots, spiders, and other crawlers hitting your dynamic pages can cause extensive resource (memory and CPU) usage. This can lead to high load on the server and slow down your site(s).</p>
+<p>One option to reduce server load from bots, spiders, and other crawlers is to create a "robots.txt" file at the root of your site/domain. This tells search engines what content on your site they should and should not index. This can be helpful, for example, if you want to keep a portion of your site out of the Google search engine index.</p>
+<p>If you prefer not to create this file yourself, you can have DreamHost create one for you automatically (on a per-domain basis) on the (<a class="external text" href="https://panel.dreamhost.com/index.cgi?tree=goodies.robots&amp;" rel="nofollow">Panel &gt; 'Goodies' &gt; 'Block Spiders'</a>) page.</p>
+<dl>
+<dd></dd>
+<dd></dd>
+</dl>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>While most of the major search engines respect robots.txt directives, this file only acts as a <em>suggestion</em> to compliant search engines and does not <em>prevent</em> search engines (or other similar tools, such as email/content scrapers) from accessing the content or making it available.</p>
+</div>
+</div>
+<h2><span id="Blocking_robots">Blocking robots</span></h2>
+<p>The problem may be that Google, Yahoo, or another search engine bot is over-browsing your site. (This is the sort of problem that feeds on itself; if the bot is not able to complete its search because of a lack of resources, it may launch the same search over and over again.)</p>
+<h2><span id="Blocking_Googlebots">Blocking Googlebots</span></h2>
+<p>In the following example, the IP of 66.249.66.167 was found in your access.log. You can check which company this IP belongs to by running the ‘host’ command:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">host 66.249.66.167</span>
+<span class="cmdoutput">167.66.249.66.in-addr.arpa domain name pointer crawl-66-249-66-167.googlebot.com.</span>
+</pre>
+</div>
+<p>To block this Googlebot, use the following in your robots.txt file:</p>
+<div class="preboxcontainer">
+<pre class="prebox"># go away Googlebot
+User-agent: Googlebot
+Disallow: /</pre>
+</div>
+<dl>
+<dt>
+<h3>Explanation of the fields above:</h3>
+</dt>
+</dl>
+<dl>
+<dt><strong># go away</strong></dt>
+<dd>This is a comment which is only used so you know why you created this rule.</dd>
+<dt><strong>User-agent</strong></dt>
+<dd>The name of the bot to which the next rule will apply.</dd>
+<dt><strong>Disallow</strong></dt>
+<dd>The path of the URL you wish to block. This forward slash means the entire site will be blocked.</dd>
+</dl>
+<p>View further information about Google robots by clicking the following:</p>
+<ul>
+<li><a class="external text" href="https://support.google.com/webmasters/answer/6062608?hl=en" rel="nofollow">Google robots.txt</a></li>
+</ul>
+<h2><span id="Blocking_Yahoo">Blocking Yahoo</span></h2>
+<p>Yahoo's crawling bots comply to the <code>crawl-delay</code> rule in robots.txt which limits their fetching activity. For example, to tell Yahoo not to fetch a page more than once every 10 seconds, you would add the following:</p>
+<div class="preboxcontainer">
+<pre class="prebox"># slow down Yahoo
+User-agent: Slurp
+Crawl-delay: 10</pre>
+</div>
+<dl>
+<dt>
+<h3>Explanation of the fields above:</h3>
+</dt>
+</dl>
+<dl>
+<dt><strong># slow down Yahoo</strong></dt>
+<dd>This is a comment which is only used so you know why you created this rule.</dd>
+<dt><strong>User-agent: Slurp</strong></dt>
+<dd>Slurp is the Yahoo User-agent name. You must use this to block Yahoo.</dd>
+<dt><strong>Crawl-delay</strong></dt>
+<dd>Tells the User-agent to wait 10 seconds between each request to the server.</dd>
+</dl>
+<p>View further information about Yahoo robots by clicking the following:</p>
+<ul>
+<li><a class="external text" href="https://help.yahoo.com/kb/search/slurp-crawling-page-sln22600.html" rel="nofollow">Yahoo robots.txt</a></li>
+</ul>
+<h2><span id="Slowing_good_bots">Slowing good bots</span></h2>
+<p>Use the following to slow some, but not all, good bots:</p>
+<div class="preboxcontainer">
+<pre class="prebox">User-agent: * <br />Crawl-Delay: 3600</pre>
+</div>
+<dl>
+<dt>
+<h3>Explanation of the fields above:</h3>
+</dt>
+</dl>
+<dl>
+<dt><strong>User-agent: *</strong></dt>
+<dd>Applies to all User-agents.</dd>
+<dt><strong>Crawl-delay</strong></dt>
+<dd>Tells the User-agent to wait 3600 seconds between each request to the server.</dd>
+</dl>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<ul>
+<li>Googlebot ignores the crawl-delay directive.</li>
+<li>To slow down Googlebot, you’ll need to sign up at <a class="external text" href="http://www.google.com/webmasters/tools" rel="nofollow">Google WebMaster Tools</a>.</li>
+<li>Once your account is created, you can set the crawl rate and generate a robots.txt.</li>
+</ul>
+</div>
+</div>
+<h2><span id="Blocking_all_bots">Blocking all bots</span></h2>
+<p>To disallow all bots:</p>
+<div class="preboxcontainer">
+<pre class="prebox">User-agent: *
+Disallow: /</pre>
+</div>
+<p>To disallow them on a specific folder:</p>
+<div class="preboxcontainer">
+<pre class="prebox">User-agent: *
+Disallow: /yourfolder/</pre>
+</div>
+<dl>
+<dd></dd>
+<dd></dd>
+</dl>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Bad bots may use this content as a list of targets.</p>
+</div>
+</div>
+<dl>
+<dt>
+<h3>Explanation of the fields above:</h3>
+</dt>
+</dl>
+<dl>
+<dt><strong>User-agent: *</strong></dt>
+<dd>Applies to all User-agents.</dd>
+<dt><strong>Disallow: /</strong></dt>
+<dd>Disallows the indexing of everything.</dd>
+<dt><strong>Disallow: /yourfolder/</strong></dt>
+<dd>Disallows the indexing of this single folder.</dd>
+</dl>
+<h2><span id="Use_caution">Use caution</span></h2>
+<p>Blocking all bots (User-agent: *) from your entire site (Disallow: /) will get your site de-indexed from legitimate search engines. Also, note that bad bots will likely ignore your robots.txt file, so you may want to block their user-agent with an <a href="/hc/en-us/articles/216456227--htaccess-overview">.htaccess file</a>.</p>
+<p>Bad bots may also use your robots.txt file as a target list, so you may want to skip listing directories in robots.txt. Bad bots may also use false or misleading User-agents, so blocking User-agents with .htaccess may not work as well as anticipated.</p>
+<p>If you don't want to block anyone, this is a good default robots.txt file:</p>
+<div class="preboxcontainer">
+<pre class="prebox">User-agent: *
+Disallow:</pre>
+</div>
+<p>You may need to remove robots.txt in this case, if you don't mind 404 requests in your logs.</p>
+<p>DreamHost recommends that you only block specific User-agents and files/directories, rather than *, unless you're 100% sure that's what you want.</p>
+<h2><span id="Blocking_bad_referrers">Blocking bad referrers</span></h2>
+<p>For detailed instructions, please visit the article on how to <a href="/hc/en-us/articles/216363197-How-do-I-prevent-image-hotlinking-">block referrers</a>.</p>
+<h2>See also</h2>
+<ul>
+<li><a href="/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
+<li><a href="/hc/en-us/articles/216456227--htaccess-overview">.htaccess overview</a></li>
+<li><a href="/hc/en-us/articles/215458038-How-do-I-view-my-access-log-">How do I view my access.log? </a></li>
+<li><a href="/hc/en-us/articles/216105097-How-do-I-examine-my-access-log-">How do I examine my access.log? </a></li>
+</ul>

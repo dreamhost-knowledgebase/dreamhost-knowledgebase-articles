@@ -1,0 +1,79 @@
+<p>Perl is a programming language used widely in the UNIX/Linux world to write everything from quick scripts to powerful, broad-featured programs. The following is a description from <a href="http://perldoc.perl.org/perlintro.html">the perlintro man page</a>:</p>
+<dl>
+<dd><strong>What is Perl?</strong></dd>
+<dd>
+<p>Perl is a general-purpose programming language originally developed for text manipulation and now used for a wide range of tasks including system administration, web development, network programming, GUI development, and more.</p>
+<p>The language is intended to be practical (easy to use, efficient, complete) rather than beautiful (tiny, elegant, minimal). Its major features are that it's easy to use, supports both procedural and object-oriented (OO) programming, has powerful built-in support for text processing, and has one of the world's most impressive collections of third-party modules.</p>
+<p>Different definitions of Perl are given in <a href="http://perldoc.perl.org/perl.html">perl</a>, <a href="http://perldoc.perl.org/perlfaq1.html">perlfaq1</a> and no doubt other places. From this we can determine that Perl is different things to different people, but that lots of people think it's at least worth writing about.</p>
+</dd>
+</dl>
+<h2>History</h2>
+<p><strong>Perl</strong> was created in the mid-1980s by <a href="https://en.wikipedia.org/wiki/Larry_Wall">Larry Wall</a>. Its original intent was to fill in the gap between so-called "low-level" languages like <a href="https://en.wikipedia.org/wiki/C">C</a> and <a href="https://en.wikipedia.org/wiki/C%2B%2B">C++</a>, and the higher level scripting languages like <a href="https://en.wikipedia.org/wiki/AWK"><em>awk</em></a>, <a href="https://en.wikipedia.org/wiki/Sed"><em>sed</em></a>, and shell scripts. It has evolved considerably since then, becoming the de facto language of choice for many *nix system administrators and power users. It has found broad appeal on the <a href="https://en.wikipedia.org/wiki/Internet">Internet</a> (a mostly *nix based network) as the background code behind many sites on the <a href="https://en.wikipedia.org/wiki/World_Wide_Web">World Wide Web</a>. A notable example is <a href="http://slashdot.org">Slashdot</a>.</p>
+<h2>Perl on DreamHost</h2>
+<h3>Path to the Perl interpreter</h3>
+<p>The path to Perl on DreamHost's servers is shown below. This path is standard on *nix based systems and most scripts should not need to be modified.</p>
+<div class="preboxcontainer">
+<pre class="prebox">/usr/bin/perl</pre>
+</div>
+<p><span class="code">mod_perl</span> is currently not supported at DreamHost. You must use <a href="/hc/en-us/articles/217298967-FastCGI-overview">FastCGI</a> instead.</p>
+<h3>DreamHost's Perl version</h3>
+<p>As of June 2015, DreamHost uses Perl version 5.14.2. As with <a href="/hc/en-us/articles/216137717-Python-overview">Python</a> and <a href="/hc/en-us/articles/214202188-PHP-overview">PHP</a>, you can build another version in your home directory if necessary. However, most Perl programs should work fine with the installed version.</p>
+<h3>Using Perl Modules</h3>
+<p>DreamHost has nearly all the common Perl modules installed, as well as many uncommon ones.</p>
+<p>To check whether a Perl module is installed on DreamHost's servers, log into your shell account, and then type the following:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">perl -M<var>The::Module::Name</var> -e0</span>
+</pre>
+</div>
+<p>where <span class="code"><var>The::Module::Name</var></span> is, obviously enough, the name of the Perl module you are looking for.</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img alt="" height="60" src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" width="60"/></div>
+<div class="alert-content">
+<p>The command outputs nothing when the module is found. If it's not found, an error is thrown.</p>
+</div>
+</div>
+<h3>Installing custom modules</h3>
+<p>You can install your own modules in your home directory directly. Follow these <a href="/hc/en-us/articles/217716877-CPAN">DreamHost specific instructions</a> for installing CPAN modules.</p>
+<h3>Perl FastCGI</h3>
+<p>The perl FCGI module is installed by default on DreamHost servers.</p>
+<p>To test if FastCGI is configured and working properly, try this simple 'Hello World' program. Paste this text into a file with the ending .fcgi.</p>
+<div class="preboxcontainer">
+<pre class="prebox">#!/usr/bin/perl
+
+use lib qw( /home/myhome/lib/perl/5.8.4 );
+use FCGI;
+use Socket qw( :crlf ); # server agnostic line endings in $CRLF
+
+my $counter = 0;
+while ( FCGI::accept() &gt;= 0 ) {
+   $counter++;
+
+   print
+        "Content-Type: text/plain",
+        $CRLF,
+        $CRLF,
+        "Hello World, in Perl FastCGI!",
+        $CRLF,
+        "I am process $$.",
+        $CRLF,
+        "I have served $counter request(s).",
+        $CRLF;
+ }</pre>
+</div>
+<p>The <span class="code">$CRLF</span> is a server-neutral line ending equivalent to "\015\012." It will always work. "\n" or even "\r\n" sometimes will not.</p>
+<p>If you change the extension of this script to .pl or .cgi so it's handled by regular CGI, you'll notice that the PID is different on every request, and the request counter stays at 1.</p>
+<h2>Debugging</h2>
+<p>DreamHost runs <a href="/hc/en-us/articles/215364578-How-do-I-use-suEXEC-"><span class="code">suexec</span></a> and <strong>requires</strong> that all cgi scripts and the directories in which they reside <strong>not</strong> be writable by anyone but the owner (i.e., user). This means that you must change the permissions of the script using <span class="code">chmod</span> (see the following example):</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">chmod -R 755 perldir</span>
+</pre>
+</div>
+<p>where <span class="code">perldir</span> is the directory in which your perl CGI resides.</p>
+<h2>See also</h2>
+<ul>
+<li><a href="/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
+<li><a href="http://perldoc.perl.org">The Perl manual pages online</a></li>
+<li><a href="http://perl.org/">Official Perl Home Page</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Perl">Perl on Wikipedia</a></li>
+<li><a href="http://www.cpan.org">CPAN</a></li>
+</ul>

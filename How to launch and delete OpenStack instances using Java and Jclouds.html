@@ -1,0 +1,251 @@
+<body role="document">
+<div class="document">
+<div class="documentwrapper">
+<div class="body" role="main">
+<div id="how-to-launch-and-delete-openstack-instances-using-java-and-jclouds">
+
+</div>
+<div id="what-you-need">
+<h1>What you need</h1>
+<p>This tutorial will guide you with step-by-step instructions on how to
+get a basic authentication token on DreamCompute and launch a virtual
+machine.</p>
+<p>You will need to have your username, password and project ID
+available. This information can be easily retrieved from
+<a class="reference external" href="https://dashboard.dreamcompute.com/project/access_and_security/api_access/openrc/">DreamCompute’s dashboard, in the openrc file</a>.</p>
+<p>You must also need to have</p>
+<p><a class="reference external" href="https://jclouds.apache.org/start/install">jClouds 1.9 or higher installed</a>.</p>
+<p>Once jclouds and maven are installed, you can install dependencies with
+`mvn dependency:copy-dependencies “-DoutputDirectory=./lib”`, compile the
+program with `javac -classpath ”.:lib/*” JCloudsNova.java`, and run the
+program with `java -classpath ”.:lib/*” JCloudsNova`</p>
+<div id="authenticate">
+<h2>Authenticate</h2>
+<p>Add the following code to a file or copy and paste them in an
+interactive shell, when available. Make sure to use your username,
+password and project ID.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>import com.google.common.collect.ImmutableSet;
+import com.google.common.io.Closeables;
+import com.google.inject.Module;
+import org.jclouds.ContextBuilder;
+import org.jclouds.openstack.nova.v2_0.NovaApi;
+import org.jclouds.openstack.nova.v2_0.domain.Server;
+import org.jclouds.openstack.nova.v2_0.domain.ServerCreated;
+import org.jclouds.openstack.nova.v2_0.domain.Image;
+import org.jclouds.openstack.nova.v2_0.domain.Flavor;
+import org.jclouds.openstack.nova.v2_0.domain.KeyPair;
+import org.jclouds.openstack.nova.v2_0.domain.FloatingIP;
+import org.jclouds.openstack.nova.v2_0.domain.SecurityGroup;
+import org.jclouds.openstack.nova.v2_0.domain.SecurityGroupRule;
+import org.jclouds.openstack.nova.v2_0.domain.Ingress;
+import org.jclouds.openstack.nova.v2_0.extensions.KeyPairApi;
+import org.jclouds.openstack.nova.v2_0.extensions.FloatingIPApi;
+import org.jclouds.openstack.nova.v2_0.extensions.SecurityGroupApi;
+import org.jclouds.openstack.nova.v2_0.features.ServerApi;
+import org.jclouds.openstack.nova.v2_0.features.ImageApi;
+import org.jclouds.openstack.nova.v2_0.features.FlavorApi;
+import org.jclouds.openstack.nova.v2_0.options.CreateServerOptions;
+import org.jclouds.net.domain.IpProtocol;
+
+import java.io.Closeable;
+import java.io.IOException;
+import java.util.Set;
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
+public class JCloudsNova implements Closeable {
+
+    private final NovaApi conn;
+    private final String region;
+
+    public static void main(String[] args) throws IOException {
+        JCloudsNova jcloudsNova = new JCloudsNova();
+        // Data goes here, for example:
+        String instanceName = "jcloudsdemo";
+
+        try {
+            // Function calls go here, for example:
+            jcloudsNova.listImages();
+            jcloudsNova.listFlavors();
+            jcloudsNova.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            jcloudsNova.close();
+        }
+    }
+
+    public JCloudsNova() {
+        String provider = "openstack-nova";
+        String identity = "tenantName:userName";
+        String credential = "Password";
+        region = "RegionOne";
+
+        conn = ContextBuilder.newBuilder(provider)
+                .endpoint("https://keystone.dream.io:5000/v2.0/")
+                .credentials(identity, credential)
+                .buildApi(NovaApi.class);
+    }
+
+    public void close() throws IOException {
+        Closeables.close(conn, true);
+    }
+</pre></div>
+</div>
+<p>This code creates the <code class="code docutils literal"><span class="pre">conn</span></code> object that you can use in the next
+steps.</p>
+</div>
+<div id="flavors-and-images">
+<h2>Flavors and images</h2>
+<p>To launch an instance, which is just a virtual machine, you choose
+a flavor and an image. The flavor represents the size of the instance,
+including the number of CPUs and amount of RAM and disk space. An
+image is a prepared OS installation from which you clone your
+instance. When you boot instances in a public cloud, larger flavors
+can be more expensive than smaller ones in terms of monetary cost.</p>
+<p>To list the images that are available in your cloud, run some API calls:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>
+    public void listImages() {
+        ImageApi imageApi = conn.getImageApi(region);
+
+        for (Image image : imageApi.listInDetail().concat()) {
+            System.out.println(" " + image);
+        }
+    }
+</pre></div>
+</div>
+<p>This code returns output like this:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>Image{id=5e1c34f6-4044-4d19-88df-968ab2ca3df6, name=Debian-8.1, links=[Link{relation=SELF, href=https://compute.dream.io:8774/v2/4ad04455f5e6431c895340bf3630e7bb/images/5e1c34f6-4044-4d19-88df-968ab2ca3df6}, Link{relation=BOOKMARK, href=https://compute.dream.io:8774/4ad04455f5e6431c895340bf3630e7bb/images/5e1c34f6-4044-4d19-88df-968ab2ca3df6}, Link{relation=ALTERNATE, type=application/vnd.openstack.image, href=http://10.64.141.201:9292/4ad04455f5e6431c895340bf3630e7bb/images/5e1c34f6-4044-4d19-88df-968ab2ca3df6}], updated=Thu Aug 27 12:25:22 PDT 2015, created=Thu Aug 27 12:12:47 PDT 2015, tenantId=null, userId=null, status=ACTIVE, progress=100, minDisk=0, minRam=0, server=null, metadata={build=1, distro=Debian, quicklaunch=False, revision=8.1-1, verified=True, verified_by=7, version=8.1}}
+Image{id=e81771c0-2944-405c-ba92-3deb0e1b4ce3, name=CentOS-7.0, links=[Link{relation=SELF, href=https://compute.dream.io:8774/v2/4ad04455f5e6431c895340bf3630e7bb/images/e81771c0-2944-405c-ba92-3deb0e1b4ce3}, Link{relation=BOOKMARK, href=https://compute.dream.io:8774/4ad04455f5e6431c895340bf3630e7bb/images/e81771c0-2944-405c-ba92-3deb0e1b4ce3}, Link{relation=ALTERNATE, type=application/vnd.openstack.image, href=http://10.64.141.201:9292/4ad04455f5e6431c895340bf3630e7bb/images/e81771c0-2944-405c-ba92-3deb0e1b4ce3}], updated=Tue Aug 11 13:17:31 PDT 2015, created=Tue Aug 11 13:05:54 PDT 2015, tenantId=null, userId=null, status=ACTIVE, progress=100, minDisk=0, minRam=0, server=null, metadata={build=10, distro=Centos, quicklaunch=False, revision=7.0-10, verified=True, verified_by=6, version=7.0}}
+Image{id=90d5e049-aaed-4abc-aa75-60c2b1ed6516, name=Ubuntu-14.04, links=[Link{relation=SELF, href=https://compute.dream.io:8774/v2/4ad04455f5e6431c895340bf3630e7bb/images/90d5e049-aaed-4abc-aa75-60c2b1ed6516}, Link{relation=BOOKMARK, href=https://compute.dream.io:8774/4ad04455f5e6431c895340bf3630e7bb/images/90d5e049-aaed-4abc-aa75-60c2b1ed6516}, Link{relation=ALTERNATE, type=application/vnd.openstack.image, href=http://10.64.141.201:9292/4ad04455f5e6431c895340bf3630e7bb/images/90d5e049-aaed-4abc-aa75-60c2b1ed6516}], updated=Wed Aug 05 09:38:59 PDT 2015, created=Wed Aug 05 09:26:21 PDT 2015, tenantId=null, userId=null, status=ACTIVE, progress=100, minDisk=0, minRam=0, server=null, metadata={build=16, distro=Ubuntu, quicklaunch=False, revision=14.04-16, verified=True, verified_by=5, version=14.04}}
+Image{id=f044ae8f-e0e1-4fb4-baff-0363c19a6638, name=CoreOS, links=[Link{relation=SELF, href=https://compute.dream.io:8774/v2/4ad04455f5e6431c895340bf3630e7bb/images/f044ae8f-e0e1-4fb4-baff-0363c19a6638}, Link{relation=BOOKMARK, href=https://compute.dream.io:8774/4ad04455f5e6431c895340bf3630e7bb/images/f044ae8f-e0e1-4fb4-baff-0363c19a6638}, Link{relation=ALTERNATE, type=application/vnd.openstack.image, href=http://10.64.141.201:9292/4ad04455f5e6431c895340bf3630e7bb/images/f044ae8f-e0e1-4fb4-baff-0363c19a6638}], updated=Thu May 21 16:17:53 PDT 2015, created=Thu May 21 15:24:28 PDT 2015, tenantId=null, userId=null, status=ACTIVE, progress=100, minDisk=0, minRam=0, server=null, metadata={}}
+Image{id=2827d7cc-8cbb-4ce9-9b61-dadc2436144e, name=Fedora-20, links=[Link{relation=SELF, href=https://compute.dream.io:8774/v2/4ad04455f5e6431c895340bf3630e7bb/images/2827d7cc-8cbb-4ce9-9b61-dadc2436144e}, Link{relation=BOOKMARK, href=https://compute.dream.io:8774/4ad04455f5e6431c895340bf3630e7bb/images/2827d7cc-8cbb-4ce9-9b61-dadc2436144e}, Link{relation=ALTERNATE, type=application/vnd.openstack.image, href=http://10.64.141.201:9292/4ad04455f5e6431c895340bf3630e7bb/images/2827d7cc-8cbb-4ce9-9b61-dadc2436144e}], updated=Tue Mar 17 11:09:36 PDT 2015, created=Tue Mar 17 10:58:31 PDT 2015, tenantId=null, userId=null, status=ACTIVE, progress=100, minDisk=0, minRam=0, server=null, metadata={}}
+Image{id=42a0101d-31c1-4c09-a70d-8f75f887ee27, name=Fedora-21, links=[Link{relation=SELF, href=https://compute.dream.io:8774/v2/4ad04455f5e6431c895340bf3630e7bb/images/42a0101d-31c1-4c09-a70d-8f75f887ee27}, Link{relation=BOOKMARK, href=https://compute.dream.io:8774/4ad04455f5e6431c895340bf3630e7bb/images/42a0101d-31c1-4c09-a70d-8f75f887ee27}, Link{relation=ALTERNATE, type=application/vnd.openstack.image, href=http://10.64.141.201:9292/4ad04455f5e6431c895340bf3630e7bb/images/42a0101d-31c1-4c09-a70d-8f75f887ee27}], updated=Mon Mar 16 09:54:02 PDT 2015, created=Thu Mar 12 09:52:16 PDT 2015, tenantId=null, userId=null, status=ACTIVE, progress=100, minDisk=0, minRam=0, server=null, metadata={}}
+Image{id=683e165f-96b1-4ee5-8747-d15aade0dbff, name=CentOS-6.6, links=[Link{relation=SELF, href=https://compute.dream.io:8774/v2/4ad04455f5e6431c895340bf3630e7bb/images/683e165f-96b1-4ee5-8747-d15aade0dbff}, Link{relation=BOOKMARK, href=https://compute.dream.io:8774/4ad04455f5e6431c895340bf3630e7bb/images/683e165f-96b1-4ee5-8747-d15aade0dbff}, Link{relation=ALTERNATE, type=application/vnd.openstack.image, href=http://10.64.141.201:9292/4ad04455f5e6431c895340bf3630e7bb/images/683e165f-96b1-4ee5-8747-d15aade0dbff}], updated=Wed Mar 18 14:54:52 PDT 2015, created=Fri Mar 06 17:41:34 PST 2015, tenantId=null, userId=null, status=ACTIVE, progress=100, minDisk=0, minRam=0, server=null, metadata={}}
+Image{id=de4d521b-6630-4361-8b9a-b2fa640cdfa0, name=CentOS-6.5, links=[Link{relation=SELF, href=https://compute.dream.io:8774/v2/4ad04455f5e6431c895340bf3630e7bb/images/de4d521b-6630-4361-8b9a-b2fa640cdfa0}, Link{relation=BOOKMARK, href=https://compute.dream.io:8774/4ad04455f5e6431c895340bf3630e7bb/images/de4d521b-6630-4361-8b9a-b2fa640cdfa0}, Link{relation=ALTERNATE, type=application/vnd.openstack.image, href=http://10.64.141.201:9292/4ad04455f5e6431c895340bf3630e7bb/images/de4d521b-6630-4361-8b9a-b2fa640cdfa0}], updated=Wed Mar 18 14:53:58 PDT 2015, created=Mon Nov 17 14:42:15 PST 2014, tenantId=null, userId=null, status=ACTIVE, progress=100, minDisk=0, minRam=0, server=null, metadata={}}
+Image{id=5011c04a-f760-4dc5-9772-7e30d98647e6, name=Ubuntu-12.04-Precise, links=[Link{relation=SELF, href=https://compute.dream.io:8774/v2/4ad04455f5e6431c895340bf3630e7bb/images/5011c04a-f760-4dc5-9772-7e30d98647e6}, Link{relation=BOOKMARK, href=https://compute.dream.io:8774/4ad04455f5e6431c895340bf3630e7bb/images/5011c04a-f760-4dc5-9772-7e30d98647e6}, Link{relation=ALTERNATE, type=application/vnd.openstack.image, href=http://10.64.141.201:9292/4ad04455f5e6431c895340bf3630e7bb/images/5011c04a-f760-4dc5-9772-7e30d98647e6}], updated=Mon Oct 27 15:05:35 PDT 2014, created=Mon Oct 27 15:02:18 PDT 2014, tenantId=null, userId=null, status=ACTIVE, progress=100, minDisk=0, minRam=0, server=null, metadata={}}
+Image{id=b4efbc2a-6130-4f2e-b436-55a618c4de20, name=Debian-7.0-Wheezy, links=[Link{relation=SELF, href=https://compute.dream.io:8774/v2/4ad04455f5e6431c895340bf3630e7bb/images/b4efbc2a-6130-4f2e-b436-55a618c4de20}, Link{relation=BOOKMARK, href=https://compute.dream.io:8774/4ad04455f5e6431c895340bf3630e7bb/images/b4efbc2a-6130-4f2e-b436-55a618c4de20}, Link{relation=ALTERNATE, type=application/vnd.openstack.image, href=http://10.64.141.201:9292/4ad04455f5e6431c895340bf3630e7bb/images/b4efbc2a-6130-4f2e-b436-55a618c4de20}], updated=Wed Oct 15 15:42:52 PDT 2014, created=Mon Jul 14 12:02:15 PDT 2014, tenantId=null, userId=null, status=ACTIVE, progress=100, minDisk=10, minRam=1024, server=null, metadata={}}
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You may notice that the image IDs change often even if the
+names of the images remain the same as the images are
+updated over time.</p>
+</div>
+<p>You can also get information about available flavors using API calls:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>
+    public void listFlavors() {
+        FlavorApi flavorApi = conn.getFlavorApi(region);
+
+        for (Flavor flavor : flavorApi.listInDetail().concat()) {
+            System.out.println(" " + flavor);
+        }
+    }
+</pre></div>
+</div>
+<p>This code returns output like this:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>Flavor{id=100, name=subsonic, links=[Link{relation=SELF, href=https://compute.dream.io:8774/v2/4ad04455f5e6431c895340bf3630e7bb/flavors/100}, Link{relation=BOOKMARK, href=https://compute.dream.io:8774/4ad04455f5e6431c895340bf3630e7bb/flavors/100}], ram=1024, disk=80, vcpus=1, swap=Optional.of(), rxtxFactor=Optional.of(1.0), ephemeral=Optional.of(0)}
+Flavor{id=200, name=supersonic, links=[Link{relation=SELF, href=https://compute.dream.io:8774/v2/4ad04455f5e6431c895340bf3630e7bb/flavors/200}, Link{relation=BOOKMARK, href=https://compute.dream.io:8774/4ad04455f5e6431c895340bf3630e7bb/flavors/200}], ram=2048, disk=80, vcpus=1, swap=Optional.of(), rxtxFactor=Optional.of(1.0), ephemeral=Optional.of(0)}
+Flavor{id=300, name=lightspeed, links=[Link{relation=SELF, href=https://compute.dream.io:8774/v2/4ad04455f5e6431c895340bf3630e7bb/flavors/300}, Link{relation=BOOKMARK, href=https://compute.dream.io:8774/4ad04455f5e6431c895340bf3630e7bb/flavors/300}], ram=4096, disk=80, vcpus=2, swap=Optional.of(), rxtxFactor=Optional.of(1.0), ephemeral=Optional.of(0)}
+Flavor{id=400, name=warpspeed, links=[Link{relation=SELF, href=https://compute.dream.io:8774/v2/4ad04455f5e6431c895340bf3630e7bb/flavors/400}, Link{relation=BOOKMARK, href=https://compute.dream.io:8774/4ad04455f5e6431c895340bf3630e7bb/flavors/400}], ram=8192, disk=80, vcpus=4, swap=Optional.of(), rxtxFactor=Optional.of(1.0), ephemeral=Optional.of(0)}
+Flavor{id=500, name=hyperspeed, links=[Link{relation=SELF, href=https://compute.dream.io:8774/v2/4ad04455f5e6431c895340bf3630e7bb/flavors/500}, Link{relation=BOOKMARK, href=https://compute.dream.io:8774/4ad04455f5e6431c895340bf3630e7bb/flavors/500}], ram=16384, disk=80, vcpus=8, swap=Optional.of(), rxtxFactor=Optional.of(1.0), ephemeral=Optional.of(0)}
+Flavor{id=600, name=ridiculous, links=[Link{relation=SELF, href=https://compute.dream.io:8774/v2/4ad04455f5e6431c895340bf3630e7bb/flavors/600}, Link{relation=BOOKMARK, href=https://compute.dream.io:8774/4ad04455f5e6431c895340bf3630e7bb/flavors/600}], ram=32768, disk=80, vcpus=16, swap=Optional.of(), rxtxFactor=Optional.of(1.0), ephemeral=Optional.of(0)}
+Flavor{id=700, name=ludicrous, links=[Link{relation=SELF, href=https://compute.dream.io:8774/v2/4ad04455f5e6431c895340bf3630e7bb/flavors/700}, Link{relation=BOOKMARK, href=https://compute.dream.io:8774/4ad04455f5e6431c895340bf3630e7bb/flavors/700}], ram=65536, disk=80, vcpus=32, swap=Optional.of(), rxtxFactor=Optional.of(1.0), ephemeral=Optional.of(0)}
+Flavor{id=800, name=plaid, links=[Link{relation=SELF, href=https://compute.dream.io:8774/v2/4ad04455f5e6431c895340bf3630e7bb/flavors/800}, Link{relation=BOOKMARK, href=https://compute.dream.io:8774/4ad04455f5e6431c895340bf3630e7bb/flavors/800}], ram=131072, disk=80, vcpus=64, swap=Optional.of(), rxtxFactor=Optional.of(1.0), ephemeral=Optional.of(0)}
+</pre></div>
+</div>
+<p>Choose an image and flavor for your instance. For example, pick one of
+about 1GB RAM, 1 CPU, and a 1GB disk. This example uses the Ubuntu
+image with a small flavor, which is a safe choice.</p>
+<p>First, tell the connection to get a specified image by using the ID of the
+image that you picked in the previous section:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>
+    public String createInstance(String instanceName){
+        ServerApi serverApi = conn.getServerApi(region);
+        String imageId = "90d5e049-aaed-4abc-aa75-60c2b1ed6516";
+</pre></div>
+</div>
+<p>Next, choose which flavor you want to use:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>        String flavorId = "100";
+</pre></div>
+</div>
+<p>Now, you can launch the instance.</p>
+</div>
+<div id="launch-an-instance">
+<h2>Launch an instance</h2>
+<p>Now you can create the instance:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>
+        ServerCreated ser = serverApi.create(instanceName, imageId, flavorId);
+
+        Server server = serverApi.get(ser.getId());
+        while(server.getStatus().value().equals("ACTIVE") == false) {
+            try {
+                Thread.sleep(1000);
+            }
+            catch (InterruptedException ex) {}
+            server = serverApi.get(ser.getId());
+        }
+
+        System.out.println(ser.getId());
+
+        return ser.getId();
+    }
+</pre></div>
+</div>
+<p>If you list existing instances you’ll see the newly created one in
+there:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>
+    public void listServers() {
+        ServerApi serverApi = conn.getServerApi(region);
+
+        System.out.println("Servers in " + region);
+
+        for (Server server : serverApi.listInDetail().concat()) {
+            System.out.println("  " + server);
+        }
+    }
+</pre></div>
+</div>
+<p>The newly created instance will look something like:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>Server{id=2346a21b-f080-4ec0-bba2-accdab95a479, name=jcloudsdemo, links=[Link{relation=SELF, href=https://compute.dream.io:8774/v2/4ad04455f5e6431c895340bf3630e7bb/servers/2346a21b-f080-4ec0-bba2-accdab95a479}, Link{relation=BOOKMARK, href=https://compute.dream.io:8774/4ad04455f5e6431c895340bf3630e7bb/servers/2346a21b-f080-4ec0-bba2-accdab95a479}], uuid=null, tenantId=4ad04455f5e6431c895340bf3630e7bb, userId=17949030c6f4400b99f367fc1dc051ea, updated=Mon Sep 14 10:52:55 PDT 2015, created=Mon Sep 14 10:52:11 PDT 2015, hostId=2d51aec2cb6a97d232ff6866139c70e8e615accf8694c30cb2cb032e, accessIPv4=null, accessIPv6=null, status=ACTIVE, image=Resource{id=90d5e049-aaed-4abc-aa75-60c2b1ed6516, name=null, links=[Link{relation=BOOKMARK, href=https://compute.dream.io:8774/4ad04455f5e6431c895340bf3630e7bb/images/90d5e049-aaed-4abc-aa75-60c2b1ed6516}]}, flavor=Resource{id=100, name=null, links=[Link{relation=BOOKMARK, href=https://compute.dream.io:8774/4ad04455f5e6431c895340bf3630e7bb/flavors/100}]}, keyName=null, configDrive=null, addresses={private-network=[Address{addr=2607:f298:6050:8450:f816:3eff:febc:4091, version=6}, Address{addr=10.10.10.76, version=4}]}, metadata={}, extendedStatus=Optional.of(ServerExtendedStatus{taskState=null, vmState=active, powerState=1}), extendedAttributes=Optional.absent(), diskConfig=Optional.of(MANUAL), availabilityZone=Optional.of(iad-1)}
+</pre></div>
+</div>
+<p>Before you continue, you must do one more thing.</p>
+</div>
+<div id="destroy-an-instance">
+<h2>Destroy an instance</h2>
+<p>Cloud resources, such as running instances that you no longer use, can
+cost money. To avoid unexpected expenses, destroy cloud resources.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>
+    private boolean deleteInstance(String instanceId){
+        ServerApi serverApi = conn.getServerApi(region);
+
+        return serverApi.delete(instanceId);
+    }
+</pre></div>
+</div>
+<p>If you list the instances again, the instance disappears.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="clearer"></div>
+</div>
+<div class="footer">
+      ©2015, OpenStack contributors.
+      
+    </div>
+<!--DreamCompute Button-->
+<div class="dream-sign-up">
+<h2>Deploy Your Apps On Cloud Servers Today</h2>
+<a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a>
+</div>
+</body>

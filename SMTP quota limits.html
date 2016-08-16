@@ -1,0 +1,170 @@
+<p>View the <a href="https://dreamhosthelp.zendesk.com/hc/en-us/articles/215730467-SMTP-quota-overview">SMTP quota</a> article for details related to this policy. This article lists DreamHost's SMTP quota limitations.</p>
+<table class="wikitable">
+<tbody>
+<tr><th bgcolor="#F2F2F2">Sending method</th><th bgcolor="#F2F2F2">Recipient per hour</th><th bgcolor="#F2F2F2">Max recipient per message</th><th bgcolor="#F2F2F2">Max message size</th></tr>
+<tr>
+<td>SMTP authentication in an email client</td>
+<td style="text-align: center;">100</td>
+<td style="text-align: center;">100</td>
+<td>40MB (encoded)</td>
+</tr>
+<tr>
+<td>SMTP authentication in Atmail Webmail</td>
+<td style="text-align: center;">100</td>
+<td style="text-align: center;">100</td>
+<td>40MB</td>
+</tr>
+<tr>
+<td>SMTP authentication in SquirrelMail Webmail</td>
+<td style="text-align: center;">100</td>
+<td style="text-align: center;">100</td>
+<td>7MB</td>
+</tr>
+<tr>
+<td>SMTP authentication in a webform</td>
+<td style="text-align: center;">100</td>
+<td style="text-align: center;">100</td>
+<td>40MB (encoded)</td>
+</tr>
+<tr>
+<td>FTP &amp; Shell users on <strong>shared</strong> servers. Sending using PHP/CGI scripts.</td>
+<td style="text-align: center;">200</td>
+<td style="text-align: center;">40</td>
+<td>40MB (encoded)</td>
+</tr>
+<tr>
+<td>FTP &amp; Shell users on <strong>VPS</strong> or <strong>Dedicated</strong> servers. Sending using PHP/CGI scripts.</td>
+<td style="text-align: center;">Unlimited</td>
+<td style="text-align: center;">Unlimited</td>
+<td>40MB (encoded)</td>
+</tr>
+<tr>
+<td>Announcement Lists</td>
+<td style="text-align: center;">Unlimited</td>
+<td style="text-align: center;">Unlimited</td>
+<td>40MB (encoded)</td>
+</tr>
+<tr>
+<td>Discussion Lists</td>
+<td style="text-align: center;">Unlimited</td>
+<td style="text-align: center;">Unlimited</td>
+<td>
+<p>40MB (encoded)</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>The limits above are based on the number of RECIPIENTS, not the number of messages. For example, a single email message with 5 recipients would count as 5 towards your sending limit. All recipients in the TO, CC, and BCC fields are counted.</p>
+</div>
+</div>
+<h2><span id="Incoming_message_limitations" class="mw-headline">Incoming message limitations</span></h2>
+<ul>
+<li>The sending limits mentioned above do <strong>NOT</strong> apply to incoming messages. Just for completeness, here are two incoming message limitations:</li>
+</ul>
+<dl>
+<dd>
+<ul>
+<li>Maximum message size: This is set to <strong>40MB</strong>. Incoming messages over 40MB are bounced.</li>
+<li>The amount of disk space you've allocated to your mailbox: if your mailbox fills up, it bounces incoming messages. You may not even be able to delete any messages because the server needs some free space in order to work. So, try to avoid allowing your mailboxes fill up. See the <a href="https://dreamhosthelp.zendesk.com/hc/en-us/articles/215306928-Email-disk-usage-warning-overview">Disk Usage Warning</a> article for more information on setting the "Limit total disk usage" and <a href="https://dreamhosthelp.zendesk.com/hc/en-us/articles/214981508-Inbox-Archiver-settings">Inbox Archiver</a> article for how to configure "Email me daily" warning messages for your accounts.</li>
+</ul>
+</dd>
+</dl>
+<ul>
+<li>DreamHost recommends allocating at least <strong>100MB</strong> for each mailbox. Attachments in a single email can take up several MB. So just a few large message can fill your inbox.</li>
+<li>DreamHost recommends enabling the "Email me daily" warning messages option for your accounts. These notifications help you to avoid hitting your disk quota limit.</li>
+<li>If you have the "Save removed messages" option enabled (which is the default option), those saved messages can eat up your disk space without you ever seeing them. Make sure that you've subscribed to the <a href="https://dreamhosthelp.zendesk.com/hc/en-us/articles/215683037-How-do-I-subscribe-to-the-old-messages-folder-">old-messages folder</a> (or whatever you've configured it to be) so you know what's in there.</li>
+</ul>
+<h2><span id="Examples_of_how_the_limits_are_implemented" class="mw-headline">Examples of how the limits are implemented</span></h2>
+<table class="wikitable">
+<tbody>
+<tr><th bgcolor="#F2F2F2">How the message is sent</th><th bgcolor="#F2F2F2">Message and Recipients</th><th bgcolor="#F2F2F2">Outcome</th></tr>
+<tr>
+<td style="width: 25%; text-align: center;">SMTP</td>
+<td style="width: 29%;">
+<dl>
+<dd>Single message with 100 recipients.</dd>
+</dl>
+</td>
+<td>
+<ul>
+<li>You reach the maximum sending limit for that hour.</li>
+<li>After one hour, you can attempt to send more messages.</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td style="text-align: center;">SMTP</td>
+<td>
+<dl>
+<dd>5 messages with 5 recipients each during one hour.</dd>
+</dl>
+</td>
+<td>
+<dl>
+<dd>The system counts this as 25 recipients during that hour.</dd>
+</dl>
+</td>
+</tr>
+<tr>
+<td style="text-align: center;">SMTP</td>
+<td>
+<dl>
+<dd>100 messages with a single recipient each.</dd>
+</dl>
+</td>
+<td>
+<dl>
+<dd>You reach the maximum sending limit for that hour.</dd>
+</dl>
+</td>
+</tr>
+<tr>
+<td style="text-align: center;">SMTP</td>
+<td>
+<dl>
+<dd>Single message to 50 recipients, and then within that same hour try to send another message with 55 recipients.</dd>
+</dl>
+</td>
+<td>
+<ul>
+<li>The second message FAILS and your account is blocked because it exceeds your sending limit.</li>
+<li>You must wait for that hour to elapse (from the time you send the first message) before you can attempt to resend the message which could not be sent during the last hour.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<h2><span id="What_happens_when_you_hit_the_limits" class="mw-headline">What happens when you hit the limits</span></h2>
+<p>Once you have reached your hourly sending limit, any message that you attempt to send that exceeds your sending limit causes your account to be blocked immediately. Those messages that exceeded, or attempted to exceed, your sending limit are NOT sent and fail with a "Policy Rejection- Quota Exceeded" error message. Those unsent messages typically remain in your email client's "outbox" so that you can attempt to resend them later.</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>If you are blocked for exceeding quota, the block will remain in place until at least one hour has passed during which time there have been no further attempts to send mail from the account.</p>
+</div>
+</div>
+<p>Some email clients (most notably Outlook) will try to send anything in the "outbox" at regular intervals, or at every attempt to send. To have the quota lifted as soon as possible, make sure to remove any message from the outbox, and wait at least an hour before attempting to send again.</p>
+<p>However, the mail servers AUTOMATICALLY unblock/reset your account one hour after the first message that was sent. There is no need to contact support when this happens.</p>
+<p>Also, if a message that has been successfully sent to a recipient bounces back to you for various reasons, it still counts towards your sending limit. They are not deducted from your sending limit.</p>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Accounts that are blocked repeatedly for attempting to exceed the sending limit are blocked permanently by the system. If this happens to your account, you are required to contact technical support for assistance in order to have your account unblocked. In your support request, please include your email username and email address.</p>
+</div>
+</div>
+<h2><span id="Examples_of_what_can_cause_you_to_hit_the_limits" class="mw-headline">Examples of what can cause you to hit the limits</span></h2>
+<ul>
+<li>If you have an account set as a forward to any email sent to an another address, those forwarded messages also count towards your sending limit.</li>
+<li>If you have Keyword Filters on an account that are set to forward any email to another address, those forwarded messages also count towards your sending limit.</li>
+<li>Auto-responder messages also count toward that account's hourly sending limit.</li>
+<li>Multiple websites hosted under the same FTP/Shell account that send email all count towards that FTP/Shell account's sending limit.</li>
+<li>If you use Cron jobs to send email, they count towards the shell account's hourly sending limit. Cron job completion/error notification emails also count.</li>
+<li>Cron jobs and other scripts/CGI processes that use authenticated SMTP to send email messages are restricted to the sending limit of the address that they use for authentication.</li>
+<li>Email limits are per email address. This does not mean you can "spread" your bulk/mass email across several email addresses. If you need to send more than 1–2 emails every minute, then you should review the <a class="external text" href="http://www.dreamhost.com/spam.html" rel="nofollow">DreamHost anti-spam/bulkmail policy</a>.</li>
+</ul>
+<h2>See also</h2>
+<ul>
+<li><a style="background-color: #ffffff;" href="https://help.dreamhost.com/hc/en-us/articles/215730467-SMTP-quota-overview">SMTP quota overview</a></li>
+</ul>

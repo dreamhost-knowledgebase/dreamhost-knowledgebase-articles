@@ -1,0 +1,267 @@
+<body role="document">
+<div class="document">
+<div class="documentwrapper">
+<div class="body" role="main">
+<div id="how-to-launch-a-virtual-server-on-dreamcompute">
+
+<p>Virtual machines that run inside the cloud are called instances.</p>
+<p>Before you can launch an instance, gather the following parameters:</p>
+<ul class="simple">
+<li>The <strong>instance source</strong> can be an image, snapshot, or block storage
+volume that contains an image or snapshot.</li>
+<li>A <strong>name</strong> for your instance.</li>
+<li>The <strong>flavor</strong> for your instance, which defines the compute, memory,
+and storage capacity of nova computing instances. A flavor is an
+available hardware configuration for a server. It defines the size of
+a virtual server that can be launched.</li>
+<li>Any <strong>user data</strong> files. A user data file is a special key in the
+metadata service that holds a file that cloud-aware applications in
+the guest instance can access. For example, one application that uses
+user data is the
+<a class="reference external" href="https://help.ubuntu.com/community/CloudInit">cloud-init</a> system,
+which is an open-source package from Ubuntu that is available on
+various Linux distributions and that handles early initialization of
+a cloud instance.</li>
+<li>Access and security credentials, which include one or both of the
+following credentials:</li>
+<li>A <strong>key pair</strong> for your instance, which are SSH credentials that
+are injected into images when they are launched. For the key pair
+to be successfully injected, the image must contain the
+<code class="docutils literal"><span class="pre">cloud-init</span></code> package. Create at least one key pair for each
+project. If you already have generated a key pair with an external
+tool, you can import it into OpenStack. You can use the key pair
+for multiple instances that belong to that project.</li>
+<li>A <strong>security group</strong> that defines which incoming network traffic
+is forwarded to instances. Security groups hold a set of firewall
+policies, known as <em>security group rules</em>.</li>
+<li>If needed, you can assign a <strong>floating (public) IP address</strong> to a
+running instance.</li>
+<li>You can also attach a block storage device, or <strong>volume</strong>, for
+persistent storage.</li>
+</ul>
+<p>After you gather the parameters that you need to launch an instance,
+you can launch it from an <a class="reference internal" href="#image">image</a> or a volume. You can launch an
+instance directly from one of the available OpenStack images or from
+an image that you have copied to a persistent volume. The OpenStack
+Image service provides a pool of images that are accessible to members
+of different projects.</p>
+<div id="gather-parameters-to-launch-an-instance">
+<h2>Gather parameters to launch an instance</h2>
+<p>Before you begin, source the OpenStack RC file.</p>
+<ol class="arabic">
+<li><p class="first">List the available flavors.</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova flavor-list
+</pre></div>
+</div>
+<p>Note the ID of the flavor that you want to use for your instance:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>+-----+----------------+-----------+------+-----------+------+-------+-------------+-----------+
+| ID  | Name           | Memory_MB | Disk | Ephemeral | Swap | VCPUs | RXTX_Factor | Is_Public |
++-----+----------------+-----------+------+-----------+------+-------+-------------+-----------+
+| 100 | gp1.subsonic   | 1024      | 80   | 0         |      | 1     | 1.0         | True      |
+| 200 | gp1.supersonic | 2048      | 80   | 0         |      | 1     | 1.0         | True      |
+| 300 | gp1.lightspeed | 4096      | 80   | 0         |      | 2     | 1.0         | True      |
+| 400 | gp1.warpspeed  | 8192      | 80   | 0         |      | 4     | 1.0         | True      |
+| 50  | gp1.semisonic  | 512       | 80   | 0         |      | 1     | 1.0         | True      |
+| 500 | gp1.hyperspeed | 16384     | 80   | 0         |      | 8     | 1.0         | True      |
++-----+----------------+-----------+------+-----------+------+-------+-------------+-----------+
+</pre></div>
+</div>
+</li>
+<li><p class="first">List the available images.</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova image-list
+</pre></div>
+</div>
+<p>Note the ID of the image from which you want to boot your instance:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>+--------------------------------------+--------------+--------+--------------------------------------+
+| ID                                   | Name         | Status | Server                               |
++--------------------------------------+--------------+--------+--------------------------------------+
+| 10ff94ea-18dc-4790-8ac8-84e6ac9f3132 | CentOS-6     | ACTIVE |                                      |
+| c1e8c5b5-bea6-45e9-8202-b8e769b661a4 | CentOS-7     | ACTIVE |                                      |
+| dd759c80-74c8-4598-8d9b-3dac32a386f2 | Debian-7.0   | ACTIVE |                                      |
+| 00a5fa60-6fdb-4d30-ad88-64fbc32be85a | Debian-7.9   | ACTIVE |                                      |
+| dfc066b8-4f5a-4ea5-84be-35924594bc43 | Ubuntu-12.04 | ACTIVE |                                      |
+| 03f89ff2-d66e-49f5-ae61-656a006bbbe9 | Ubuntu-14.04 | ACTIVE |                                      |
+| 873e4bab-ed23-4096-83fb-ee8b0dd2f5a3 | Ubuntu-15.10 | ACTIVE |                                      |
++--------------------------------------+--------------+--------+--------------------------------------+
+</pre></div>
+</div>
+<p>You can also filter the image list by using <strong class="command">grep</strong> to find a specific
+image, as follows:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova image-list <span class="p">|</span> grep <span class="s1">'Ubuntu-14.04'</span>
+
+<span class="go">   | 03f89ff2-d66e-49f5-ae61-656a006bbbe9 | Ubuntu-14.04 | ACTIVE |                                      |</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">List the available security groups.</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova secgroup-list --all-tenants
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you are an admin user, specify the <cite>–all-tenants</cite> parameter to
+list groups for all tenants.</p>
+</div>
+<p>Note the ID of the security group that you want to use for your
+instance:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>+--------------------------------------+---------+------------------------+
+| Id                                   | Name    | Description            |
++--------------------------------------+---------+------------------------+
+| a79caa69-e011-498b-9149-ee6f130b1977 | default | Default security group |
++--------------------------------------+---------+------------------------+
+</pre></div>
+</div>
+<p>If you have not created any security groups, you can assign the instance
+to only the default security group.</p>
+<p>You can view rules for a specified security group:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova secgroup-list-rules default
+</pre></div>
+</div>
+</li>
+<li><p class="first">List the available key pairs, and note the key pair name that you use for
+SSH access.</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova keypair-list
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div id="launch-an-instance-from-an-image">
+<span id="image"></span><h2>Launch an instance from an image</h2>
+<ol class="arabic">
+<li><p class="first">After you gather required parameters, run the following command to
+launch an instance. Specify the server name, flavor ID, and image ID.</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova boot --flavor FLAVOR_ID --image IMAGE_ID --key-name KEY_NAME <span class="se">\</span>
+<span class="go">  --user-data USER_DATA_FILE --security-groups SEC_GROUP_NAME --meta KEY=VALUE \</span>
+<span class="go">  INSTANCE_NAME</span>
+</pre></div>
+</div>
+<p>Optionally, you can provide a key name for access control and a security
+group for security. You can also include metadata key and value pairs.
+For example, you can add a description for your server by providing the
+<code class="docutils literal"><span class="pre">--meta</span> <span class="pre">description="My</span> <span class="pre">Server"</span></code> parameter.</p>
+<p>You can pass user data in a local file at instance launch by using the
+<code class="docutils literal"><span class="pre">--user-data</span> <span class="pre">USER-DATA-FILE</span></code> parameter.</p>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<p class="last">If you boot an instance with an INSTANCE_NAME greater than 63 characters,
+Compute truncates it automatically when turning it into a host name to
+ensure the correct work of dnsmasq. The corresponding warning is written
+into the <code class="docutils literal"><span class="pre">nova-network.log</span></code> file.</p>
+</div>
+<p>The following command launches the <code class="docutils literal"><span class="pre">MyUbuntuServer</span></code> instance with the
+<code class="docutils literal"><span class="pre">gp1.subsonic</span></code> flavor (ID of <code class="docutils literal"><span class="pre">100</span></code>), <code class="docutils literal"><span class="pre">Ubuntu-14.04</span></code> image (ID
+of <code class="docutils literal"><span class="pre">03f89ff2-d66e-49f5-ae61-656a006bbbe9</span></code>), <code class="docutils literal"><span class="pre">default</span></code> security
+group, <code class="docutils literal"><span class="pre">KeyPair01</span></code> key, and a user data file called
+<code class="docutils literal"><span class="pre">cloudinit.file</span></code>:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova boot --flavor <span class="m">1</span> --image 397e713c-b95b-4186-ad46-6126863ea0a9 <span class="se">\</span>
+<span class="go">  --security-groups default --key-name KeyPair01 --user-data cloudinit.file \</span>
+<span class="go">  MyUbuntuServer</span>
+</pre></div>
+</div>
+<p>Depending on the parameters that you provide, the command returns a list
+of server properties.</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">+-------------------------------------+-------------------------------------+</span>
+<span class="go">| Property                            | Value                               |</span>
+<span class="go">+-------------------------------------+-------------------------------------+</span>
+<span class="go">| OS-EXT-STS:task_state               | scheduling                          |</span>
+<span class="go">| image                               | Ubuntu-14.04                        |</span>
+<span class="go">| OS-EXT-STS:vm_state                 | building                            |</span>
+<span class="go">| OS-EXT-SRV-ATTR:instance_name       | instance-00000002                   |</span>
+<span class="go">| flavor                              | gp1.subsonic                        |</span>
+<span class="go">| id                                  | b3cdc6c0-85a7-4904-ae85-71918f734048|</span>
+<span class="go">| security_groups                     | [{u'name': u'default'}]             |</span>
+<span class="go">| user_id                             | 376744b5910b4b4da7d8e6cb483b06a8    |</span>
+<span class="go">| OS-DCF:diskConfig                   | MANUAL                              |</span>
+<span class="go">| accessIPv4                          |                                     |</span>
+<span class="go">| accessIPv6                          |                                     |</span>
+<span class="go">| progress                            | 0                                   |</span>
+<span class="go">| OS-EXT-STS:power_state              | 0                                   |</span>
+<span class="go">| OS-EXT-AZ:availability_zone         | nova                                |</span>
+<span class="go">| config_drive                        |                                     |</span>
+<span class="go">| status                              | BUILD                               |</span>
+<span class="go">| updated                             | 2013-07-16T16:25:34Z                |</span>
+<span class="go">| hostId                              |                                     |</span>
+<span class="go">| OS-EXT-SRV-ATTR:host                | None                                |</span>
+<span class="go">| key_name                            | KeyPair01                           |</span>
+<span class="go">| OS-EXT-SRV-ATTR:hypervisor_hostname | None                                |</span>
+<span class="go">| name                                | MyUbuntuServer                      |</span>
+<span class="go">| adminPass                           | tVs5pL8HcPGw                        |</span>
+<span class="go">| tenant_id                           | 66265572db174a7aa66eba661f58eb9e    |</span>
+<span class="go">| created                             | 2013-07-16T16:25:34Z                |</span>
+<span class="go">| metadata                            | {u'KEY': u'VALUE'}                  |</span>
+<span class="go">+-------------------------------------+-------------------------------------+</span>
+</pre></div>
+</div>
+<p>A status of <code class="docutils literal"><span class="pre">BUILD</span></code> indicates that the instance has started, but is
+not yet online.</p>
+<p>A status of <code class="docutils literal"><span class="pre">ACTIVE</span></code> indicates that the instance is active.</p>
+</li>
+<li><p class="first">Copy the server ID value from the <code class="docutils literal"><span class="pre">id</span></code> field in the output. Use the
+ID to get server details or to delete your server.</p>
+</li>
+<li><p class="first">Copy the administrative password value from the <code class="docutils literal"><span class="pre">adminPass</span></code> field. Use the
+password to log in to your server.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You can also place arbitrary local files into the instance file
+system at creation time by using the <code class="docutils literal"><span class="pre">--file</span> <span class="pre">&lt;dst-path=src-path&gt;</span></code>
+option. You can store up to five files. For example, if you have a
+special authorized keys file named <code class="docutils literal"><span class="pre">special_authorized_keysfile</span></code> that
+you want to put on the instance rather than using the regular SSH key
+injection, you can use the <cite>–file</cite> option as shown in the following
+example.</p>
+</div>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova boot --image Ubuntu-14.04 --flavor <span class="m">100</span> vm-name <span class="se">\</span>
+<span class="go">  --file /root/.ssh/authorized_keys=special_authorized_keysfile</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<ol class="arabic" start="4">
+<li><p class="first">Check if the instance is online.</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova list
+</pre></div>
+</div>
+<p>The list shows the ID, name, status, and private (and if assigned,
+public) IP addresses for all instances in the project to which you
+belong:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">+-------------+----------------------+--------+------------+-------------+------------------+</span>
+<span class="go">| ID          | Name                 | Status | Task State | Power State | Networks         |</span>
+<span class="go">+-------------+----------------------+--------+------------+-------------+------------------+</span>
+<span class="go">| 84c6e57d... | MyUbuntuServer       | ACTIVE | None       | Running     | private=10.0.0.3 |</span>
+<span class="go">| 8a99547e... | myInstanceFromVolume | ACTIVE | None       | Running     | private=10.0.0.4 |</span>
+<span class="go">+-------------+----------------------+--------+------------+-------------+------------------+</span>
+</pre></div>
+</div>
+<p>If the status for the instance is ACTIVE, the instance is online.</p>
+</li>
+<li><p class="first">To view the available options for the <strong class="command">nova list</strong> command, run the
+following command:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova <span class="nb">help</span> list
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you did not provide a key pair, security groups, or rules, you
+can access the instance only from inside the cloud through VNC. Even
+pinging the instance is not possible.</p>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="clearer"></div>
+</div>
+<div class="footer">
+      ©2015-2016, OpenStack contributors.
+      
+    </div>
+<!--DreamCompute Button-->
+<div class="dream-sign-up">
+<h2>Deploy Your Apps On Cloud Servers Today</h2>
+<a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a>
+</div>
+</body>

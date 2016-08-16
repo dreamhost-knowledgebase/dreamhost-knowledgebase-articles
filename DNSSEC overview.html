@@ -1,0 +1,75 @@
+<p>Domain Name System Security Extensions (DNSSEC) is normal DNS with added signatures to authenticate the origin of the data. It's a suite of specifications for securing DNS information.</p>
+<p>DreamHost supports DNSSEC as a registrar. This mean that if your domain is registered at DreamHost, DNSSEC is available for the domain registration. However, at this time, DreamHost's nameservers are not compatible with DNSSEC. For this reason, you must host your nameservers at a 3rd party host that supports DNSSEC on their nameservers.</p>
+<p>Once your domain's nameservers are hosted at a 3rd party company that supports DNSSEC on its nameservers, DreamHost can complete the DNSSEC configuration as the registrar of the domain.</p>
+<h1><span id="How_do_I_set_up_DNSSEC_on_my_domain.3F" class="mw-headline">How do I set up DNSSEC on my domain?</span></h1>
+<p>You must first host your nameservers at a third-party host that supports DNSSEC. It's not possible to enable this if your nameservers are pointed to DreamHost.</p>
+<p>Tell your third-party DNS host that you need to set up public keys to configure DNSSEC on your domain. They should provide you with 4 pieces of information:</p>
+<ul>
+<li>key tag</li>
+<li>algorithm</li>
+<li>digest type</li>
+<li>digest</li>
+</ul>
+<p>These are explained below.</p>
+<table border="1">
+<tbody>
+<tr><th bgcolor="#F2F2F2">Field</th><th bgcolor="#F2F2F2">Explanation</th><th bgcolor="#F2F2F2">Example</th></tr>
+<tr>
+<td>key tag</td>
+<td>An integer in the range 0 to 65535.</td>
+<td>62910</td>
+</tr>
+<tr>
+<td>algorithm</td>
+<td>An integer that references a cryptographic algorithm used to generate the signature. Possible values are 1, 2, 3, 5, 6, 7, 8, 10, 12, 13, 14.</td>
+<td>7</td>
+</tr>
+<tr>
+<td>digest type</td>
+<td>An integer that corresponding to the algorithm type used to construct the digest. Values are 1 or 2.</td>
+<td>1</td>
+</tr>
+<tr>
+<td>digest</td>
+<td>A hexadecimal alpha-numeric value. Make sure to remove any white space.</td>
+<td>1D6AC75083F3CEC31861993E325E0EEC7E97D1DD</td>
+</tr>
+</tbody>
+</table>
+<p>When you have this information, create a ticket in your DreamHost panel and provide technical support with this data. Technical support is then able to complete the configuration for you.</p>
+<h1><span id="FAQs" class="mw-headline">FAQs</span></h1>
+<h2><span id="Why_is_DNSSEC_necessary.3F" class="mw-headline">Why is DNSSEC necessary?</span></h2>
+<p>When the infrastructure for DNS was originally designed, it did not include any security protection. If you searched for a website, the DNS server did not check for credentials before accepting an answer and sending you the data back to view the website. Because credentials were not checked, a malicious user could hijack/forge the DNS and control it for their own nefarious means. DNSSEC helps to prevent this by adding security to DNS.</p>
+<p>Simply put, DNSSEC digitally signs the data so you can be sure it is valid and originates from its original source.</p>
+<h2><span id="What_does_DNSSEC_provide_to_DNS_clients_.28resolvers.29.3F" class="mw-headline">What does DNSSEC provide to DNS clients (resolvers)?</span></h2>
+<p>A DNS resolver is responsible for translating a domain name into an IP address. DNSSEC provides DNS clients (resolvers) with tools such as:</p>
+<ul>
+<li>Origin authentication of DNS data</li>
+<li>Authenticated denial of existence</li>
+<li>Data integrity</li>
+</ul>
+<p>DNSSEC can specifically protect any DNS data published such as:</p>
+<ul>
+<li>text records (TXT)</li>
+<li>mail exchange records (MX)</li>
+</ul>
+<h2><span id="What_DNSSEC_CANNOT_do" class="mw-headline">What DNSSEC <strong>CANNOT</strong> do</span></h2>
+<dl>
+<dd><strong>Confidentiality</strong> — DNSSEC does not provide confidentiality of data. All DNSSEC responses are authenticated, but they are <strong>not</strong> encrypted.</dd>
+<dd><strong>DDoS protection</strong> — DNSSEC does not directly protect against DDoS attacks.</dd>
+<dd><strong>Encryption</strong> — DNSSEC does not encrypt any data.</dd>
+<dd><strong>Spoofing</strong> — DNSSEC does not prevent spoofing or phishing.</dd>
+</dl>
+<h2><span id="See_also" class="mw-headline">See also</span></h2>
+<h3><strong>Internal links</strong></h3>
+<ul>
+<li><a href="/hc/en-us/articles/215413857-DreamHost-DNS-overview">DreamHost DNS overview</a></li>
+<li><a href="/hc/en-us/articles/215840248-DNS-propagation-overview">DNS propagation overview</a></li>
+<li><a href="/hc/en-us/articles/214694348-Basic-DNS-records">Basic DNS overview</a></li>
+</ul>
+<h3>External links</h3>
+<ul>
+<li><a class="external text" href="https://www.icann.org/resources/pages/dnssec-qaa-2014-01-29-en" rel="nofollow">DNSSEC – What Is It and Why Is It Important?</a></li>
+<li><a class="external text" href="https://en.wikipedia.org/wiki/Domain_Name_System_Security_Extensions" rel="nofollow">DNSSEC at Wikipedia</a></li>
+<li><a class="external text" href="https://www.cloudflare.com/dnssec/how-dnssec-works/" rel="nofollow">How DNSSEC works (CloudFlare article)</a></li>
+</ul>
