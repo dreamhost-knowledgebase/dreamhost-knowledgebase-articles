@@ -1,41 +1,52 @@
 <h2><span id="Deny_access_to_files" class="mw-headline">Deny access to files</span></h2>
 <h3><span id="Denying_access_to_specific_file_extensions" class="mw-headline">Denying access to specific file extensions</span></h3>
 <p>The following code forces any file ending in .inc to throw a 404 Forbidden error when visited:</p>
-<pre>&lt;Files ~ "\.inc$"&gt;  
+<div class="preboxcontainer">
+<pre class="prebox">&lt;Files ~ "\.inc$"&gt;  
 Order Allow,Deny
 Deny from All
 &lt;/Files&gt;
 </pre>
-<h3><span id="Denying_access_to_.22hidden.22_files" class="mw-headline">Denying access to "hidden" files</span></h3>
+</div>
+<h2><span id="Denying_access_to_.22hidden.22_files" class="mw-headline">Denying access to "hidden" files</span></h2>
 <p>File names beginning with a dot are considered "hidden" by UNIX. Usually, you don't want to serve them to visitors.</p>
 <p>DreamHost already disallows retrieving '.htaccess' and '.htpasswd', but you can recursively deny all access to all hidden files by placing the following into a top-level .htaccess:</p>
-<pre>RedirectMatch 403 /\..*$</pre>
+<div class="preboxcontainer">
+<pre class="prebox">RedirectMatch 403 /\..*$</pre>
+</div>
 <h2><span id="Deny_access_to_folders" class="mw-headline">Deny access to folders</span></h2>
 <h3><span id="Denying_access_to_a_directory_listing" class="mw-headline">Denying access to a directory listing</span></h3>
 <p>If you don't have an index file in your directory, all of your files are listed in a directory list for anyone to view. The following code forces this directory listing to throw a 404 Forbidden error instead when visited:</p>
-<pre>Options -Indexes
+<div class="preboxcontainer">
+<pre class="prebox">Options -Indexes
 </pre>
-<h3><span id="Denying_access_during_a_specific_hour_of_the_day" class="mw-headline">Denying access during a specific hour of the day</span></h3>
+</div>
+<h2><span id="Denying_access_during_a_specific_hour_of_the_day" class="mw-headline">Denying access during a specific hour of the day</span></h2>
 <p>If you wish to block access to files in a directory during a specific time of day, then you can do so by adding the following code to an .htaccess file:</p>
-<pre>RewriteEngine On
+<div class="preboxcontainer">
+<pre class="prebox">RewriteEngine On
 # If the hour is 16 (4 PM)
 RewriteCond %{TIME_HOUR} ^16$
 # Then deny all access
 RewriteRule ^.*$ - [F,L]
 </pre>
+</div>
 <p>If someone visits the directory anytime between 4:00 – 4:59 pm, a 500 Internal Server error is thrown. You can also specify multiple hours as well:</p>
-<pre>RewriteEngine On
+<div class="preboxcontainer">
+<pre class="prebox">RewriteEngine On
 # Multiple hour blocks
 # If the hour is 4 PM or 5 PM or 8 AM
 RewriteCond %{TIME_HOUR} ^16|17|08$
 # Then deny all access
-RewriteRule ^.*$ - [F,L]
-</pre>
-<h3><span id="Denying_access_to_a_directory" class="mw-headline">Denying access to a directory</span></h3>
+RewriteRule ^.*$ - [F,L]</pre>
+</div>
+<h2><span id="Denying_access_to_a_directory" class="mw-headline">Denying access to a directory</span></h2>
 <p>If you have a directory named 'blah' that you want to block, but it can occur anywhere in your directory tree, use the following:</p>
-<pre>RewriteEngine On
+<div class="preboxcontainer">
+<pre class="prebox">RewriteEngine On
 RewriteRule (^|/)blah(/|$) - [F]
 </pre>
+</div>
 <h2><span id="Denying_access_from_specific_IP_addresses" class="mw-headline">Denying access from specific IP addresses</span></h2>
 <p>If you have problems with certain visitors to your website, you can easily ban them. There are two different ways to ban visitors:</p>
 <ul>
@@ -43,9 +54,13 @@ RewriteRule (^|/)blah(/|$) - [F]
 <li>the domain name from which they are visiting.</li>
 </ul>
 <p>Here's an example that denies a user by their IP address:</p>
-<pre>deny from 173.236.241.100</pre>
+<div class="preboxcontainer">
+<pre class="prebox">deny from 173.236.241.100</pre>
+</div>
 <p>When the user tries to connect to your site from that specific IP, they see a 403 Forbidden page instead. If you want to block an entire block of IPs, just leave the last octet off. For example:</p>
-<pre>deny from 173.236.241.</pre>
+<div class="preboxcontainer">
+<pre class="prebox">deny from 173.236.241.</pre>
+</div>
 <p>This denies access from anyone using an IP in the range from 173.236.241.0 all the way up to 173.236.241.255.</p>
 <p>The following link is a useful online tool that automatically generates an IP range for you:</p>
 <dl>
@@ -57,27 +72,35 @@ RewriteRule (^|/)blah(/|$) - [F]
 </dl>
 <h2><span id="Allowing_access_from_a_specific_IP" class="mw-headline">Allowing access from a specific IP</span></h2>
 <p>If you need to deny access to your site to everyone while still allowing yourself or another specific IP address to visit it, you can use something like this:</p>
-<pre>order deny,allow
+<div class="preboxcontainer">
+<pre class="prebox">order deny,allow
 deny from all
 allow from &lt;YOUR_IP_ADDRESS&gt;
 </pre>
+</div>
 <h2><span id="Denying_access_from_a_specific_domain" class="mw-headline">Denying access from a specific domain</span></h2>
 <p>This denies access from anyone connecting to your site from www.example.com. If someone clicks on a link at example.com that redirects to your site, they then see a 403 Forbidden error:</p>
-<pre>SetEnvIfNoCase Referer "example.com" bad_referer
+<div class="preboxcontainer">
+<pre class="prebox">SetEnvIfNoCase Referer "example.com" bad_referer
 Order Allow,Deny
 Allow from ALL
 Deny from env=bad_referer
 </pre>
+</div>
 <p>This example throws a 500 Internal Server Error for anyone linking from example.com:</p>
-<pre>RewriteEngine on
+<div class="preboxcontainer">
+<pre class="prebox">RewriteEngine on
 RewriteCond %{HTTP_REFERER} example\.com [NC,OR]
 RewriteRule .* - [F]
 </pre>
+</div>
 <p>The following example redirects any visitor connecting from example.com to google.com:</p>
-<pre>RewriteEngine On
+<div class="preboxcontainer">
+<pre class="prebox">RewriteEngine On
 RewriteCond %{HTTP_REFERER} ^http://example.com/
 RewriteRule /* http://www.google.com [R,L]
 </pre>
+</div>
 <h2><span id="See_also">See also</span></h2>
 <ul>
 <li><a href="/hc/en-us/articles/216456227">.htaccess overview</a></li>
