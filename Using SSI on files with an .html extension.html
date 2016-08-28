@@ -2,24 +2,27 @@
 <p>DreamHost’s servers are configured by default to only parse files with an .shtml extension with server-side includes. If you ensure all your files that include other files (using SSI) are named "something.shtml" you won't have to do anything to get them to work.</p>
 <p>However, some customers have transferred a site from a different server configuration where any .html file was parsed for SSI. It can be a difficult to rename all the files in a website, as well as fix any links between them. Because of this, DreamHost allows users to turn on parsing of ANY sort of file they'd like.</p>
 <p>To do this, simply create a plain text file named ".htaccess" in the directory in which you'd like all files with a different extension to be parsed for SSI. Inside the .htaccess file, put this one line:</p>
-<pre>AddHandler server-parsed .html</pre>
+<div class="preboxcontainer">
+<pre class="prebox">AddHandler server-parsed .html</pre>
+</div>
 <p>That's it. Now any file ending in .html will have SSI run on it. DreamHost really does not recommend doing this, unless it is absolutely necessary. It adds some overhead to the web serving to parse in SSI as each and every request for an .html file (even ones that don't have any SSI in them) are slightly slower when you turn on this option. It's much better to just name the appropriate files with the .shtml extension.</p>
 <h2><span id="Using_XBitHack" class="mw-headline">Using XBitHack</span></h2>
 <p>Another way to accomplish this is to enable "XBitHack" via your .htaccess file by adding this line:</p>
-<pre>XBitHack on</pre>
+<div class="preboxcontainer">
+<pre class="prebox">XBitHack on</pre>
+</div>
 <p>Then, set the user execute bit on the .html file using either of the following commands:</p>
-<p> </p>
-<pre>chmod u+x yourfile.html
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">chmod u+x yourfile.html</span>
 </pre>
+</div>
 <dl>
 <dd><em><strong>-or-</strong></em></dd>
 </dl>
-<pre>chmod 744 yourfile.html
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">chmod 744 yourfile.html</span>
 </pre>
-<dl>
-<dd></dd>
-<dd></dd>
-</dl>
+</div>
 <div class="alert alert-note">
 <div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
