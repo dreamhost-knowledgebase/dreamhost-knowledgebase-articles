@@ -1,16 +1,16 @@
 <p>DKIM is a way of 'signing' emails to prove they came from you. It is a form of email authentication that works via a digital signature and makes it easier to identify <a href="/hc/en-us/articles/215036058-Sender-domain-policy-and-spoofing-overview">spoofed emails</a>. The sending mail server signs the email with the private key, and the receiving mail server uses the public key in the domain's <a href="/hc/en-us/articles/215413857-DreamHost-DNS-overview">DNS</a> information to verify the signature. One domain can have several DKIM keys publicly listed in DNS, but each matching private key is only on one mail server.</p>
-<h2><span id="Example_of_a_DKIM_record" class="mw-headline">Example of a DKIM record</span></h2>
+<h2>Example of a DKIM record</h2>
 <p>If you're using regular DreamHost-hosted mail service, all the pieces used by DKIM are already in place. DreamHost automatically makes the DKIM DNS record for all domains and subdomains that use DreamHost email, and you can view it on the panel's <a href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;">(Panel &gt; 'Domains' &gt; 'Manage Domains')</a> page. Click the ‘DNS’ link under your domain to list your <a href="/hc/en-us/articles/215413857-DreamHost-DNS-overview">DNS</a> records.</p>
 <p>The DreamHost mail server DKIM records will look like these, both identifiable by_domainkey in the record and type TXT:</p>
-<table border="1">
+<table class="wikitable">
 <tbody>
 <tr>
-<td>_domainkey</td>
+<td><strong>_domainkey</strong></td>
 <td>TXT</td>
 <td>o=~; r=postmaster@example.com</td>
 </tr>
 <tr>
-<td>example.com._domainkey</td>
+<td><strong>example.com._domainkey</strong></td>
 <td>TXT</td>
 <td>
 <p>k=rsa; t=y; p=GIMfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCfVzZoj6YZph/1oTroL1NhkfHmMgZy uUyNBRVVPkXzQaeZMHMC+S+KxVP7TUPPQYZ6CKSELzqDwjv9jz10u3zx1eB+Bmqc8cYA2oxZdda3EaJ/LEYtI A1auXxHzY2qaElIToSLrV97il19F3m4p6V5M6Yho9zxfIfrlTHSECLsrQIDAQBA</p>
@@ -19,39 +19,29 @@
 </tbody>
 </table>
 <p>When you send emails through the mail server, they will be automatically signed. Most emails are sent through the mail server; webmail, mail client programs – anything that uses SMTP to send emails sends them through the mail server.</p>
-<dl>
-<dd></dd>
-<dd></dd>
-</dl>
 <div class="alert alert-note">
 <div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
 <p>Remember that DKIM signing can only be done by the mail server. If your website sends email and doesn't use DKIM, those emails won't be DKIM signed.</p>
 </div>
 </div>
-<p> </p>
-<h2><span id="What_if_my_nameservers_are_not_hosted_at_DreamHost.3F" class="mw-headline">What if my nameservers are not hosted at DreamHost?</span></h2>
+<h2>What if my nameservers aren't hosted at DreamHost?</h2>
 <p>If you're using DreamHost-hosted mail service, but not DreamHost's <a href="/hc/en-us/articles/215769408-What-are-DreamHost-s-nameservers-">nameservers</a>, you'll need to take the DKIM DNS records from the panel and enter them into the system where your domain's DNS is actually managed.</p>
-<h2><span id="What_if_my_email_isn.E2.80.99t_hosted_at_DreamHost.3F" class="mw-headline">What if my email isn’t hosted at DreamHost?</span></h2>
+<h2>What if my email isn’t hosted at DreamHost?</h2>
 <p>If you're using another mail provider for your domain's mail service, that mail provider may offer DKIM signing. If you send email through other mail servers, such as a mass-mailing service, those servers may provide DKIM signing too. Contact them to see if they offer DKIM and if they can provide the DNS entries to you.</p>
 <p>The following lists DKIM information from various mail providers that customers often use:</p>
 <ul>
-<li><a class="external text" href="http://help.campaignmonitor.com/topic.aspx?t=88" rel="nofollow">Campaign Monitor</a></li>
-<li><a class="external text" href="http://support2.constantcontact.com/articles/FAQ/1768" rel="nofollow">Constant Contact</a></li>
-<li><a class="external text" href="https://support.google.com/a/answer/174124?hl=en" rel="nofollow">Google Apps</a></li>
+<li><a href="http://help.campaignmonitor.com/topic.aspx?t=88">Campaign Monitor</a></li>
+<li><a href="http://support2.constantcontact.com/articles/FAQ/1768">Constant Contact</a></li>
+<li><a href="https://support.google.com/a/answer/174124?hl=en">Google Apps</a></li>
 </ul>
-<dl>
-<dd></dd>
-<dd></dd>
-</dl>
 <div class="alert alert-note">
 <div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
 <p>Be careful when copying and pasting the DNS records into the panel, and make sure that there are no spaces in the key itself. Even though the DNS records will be accepted in the DreamHost panel, your emails will fail the DKIM check if the key contains spaces.</p>
 </div>
 </div>
-<p> </p>
-<h2><span id="Multiple_DKIM_records" class="mw-headline">Multiple DKIM records</span></h2>
+<h2>Multiple DKIM records</h2>
 <p>A domain can have as many DKIM public keys as servers that send and sign mail.</p>
 <p>There are two types of DKIM DNS records:</p>
 <ul>
@@ -60,22 +50,22 @@
 </ul>
 <p>Selectors are how receiving servers know which public key to use for an email and which corresponding private key was used to sign the email. More information about selectors and DKIM DNS records can be found on the following pages:</p>
 <ul>
-<li><a class="external free" href="http://dkimcore.org/specification.html" rel="nofollow">http://dkimcore.org/specification.html</a></li>
-<li><a class="external free" href="http://support.simpledns.com/KB/a62/configuring-dns-records-for-domainkeys-dkim.aspx" rel="nofollow">http://support.simpledns.com/KB/a62/configuring-dns-records-for-domainkeys-dkim.aspx</a></li>
-<li><a class="external free" href="https://www.xpertdns.com/billing/knowledgebase/1/DomainKeys-or-DKIM.html" rel="nofollow">https://www.xpertdns.com/billing/knowledgebase/1/DomainKeys-or-DKIM.html</a></li>
+<li><a href="http://dkimcore.org/specification.html">http://dkimcore.org/specification.html</a></li>
+<li><a href="http://support.simpledns.com/KB/a62/configuring-dns-records-for-domainkeys-dkim.aspx">http://support.simpledns.com/KB/a62/configuring-dns-records-for-domainkeys-dkim.aspx</a></li>
+<li><a href="https://www.xpertdns.com/billing/knowledgebase/1/DomainKeys-or-DKIM.html">https://www.xpertdns.com/billing/knowledgebase/1/DomainKeys-or-DKIM.html</a></li>
 </ul>
-<h2><span id="Using_DKIM_with_sendmail_and_PHP_Mail" class="mw-headline">Using DKIM with sendmail and PHP Mail</span></h2>
+<h2>Using DKIM with sendmail and PHP Mail</h2>
 <p>Automatic DreamHost DKIM settings are not enabled if you're using Sendmail or PHP Mail to send email. This means that if you use a <a href="/hc/en-us/articles/215525287-WordPress-overview">WordPress</a> newsletter plugin that sends email via <a href="/hc/en-us/articles/216687518-How-do-I-use-Sendmail-">sendmail</a> or <a href="/hc/en-us/articles/215507058-PHP-mail-overview">PHP Mail</a>, you have two options to use DKIM records:</p>
 <ul>
 <li>Configure WordPress to use SMTP when sending email. Some newsletter and contact form plugins have SMTP built-in, or there are plugins that add SMTP support to WordPress.</li>
-<li>Manually install and configure DKIM. The proposed solution is to use <a class="external text" href="http://opendkim.org/" rel="nofollow">opendkim.org</a>. You can install it yourself on your Dedicated server with an admin user or <a title="DreamCompute" href="/hc/en-us/articles/214840947-What-is-DreamCompute">DreamCompute</a>. Please note that DreamHost cannot provide any support regarding manually-installed DKIM software.</li>
+<li>Manually install and configure DKIM. The proposed solution is to use <a href="http://opendkim.org/">opendkim.org</a>. You can install it yourself on your Dedicated server with an admin user or <a href="/hc/en-us/articles/214840947-What-is-DreamCompute">DreamCompute</a>. Please note that DreamHost cannot provide any support regarding manually-installed DKIM software.</li>
 </ul>
-<h2><span id="See_also" class="mw-headline">See also</span></h2>
+<h2>See also</h2>
 <ul>
 <li><a href="/hc/en-us/articles/215413857">DreamHost DNS overview</a></li>
 <li><a href="/hc/en-us/articles/215840248">DNS propagation overview</a></li>
 <li><a href="/hc/en-us/articles/215414867">How do I add custom DNS records?</a></li>
-<li><a class="new" title="W:DomainKeys Identified Mail (page does not exist)" href="https://en.wikipedia.org/wiki/DomainKeys_Identified_Mail">DomainKeys Identified Mail on Wikipedia</a></li>
-<li><a class="external text" href="http://www.dkim.org/" rel="nofollow">dkim.org</a></li>
-<li><a class="external text" href="http://opendkim.org/" rel="nofollow">opendkim.org</a></li>
+<li><a href="https://en.wikipedia.org/wiki/DomainKeys_Identified_Mail">DomainKeys Identified Mail on Wikipedia</a></li>
+<li><a href="http://www.dkim.org/">dkim.org</a></li>
+<li><a href="http://opendkim.org/">opendkim.org</a></li>
 </ul>

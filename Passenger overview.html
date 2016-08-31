@@ -1,5 +1,5 @@
 <p>Passenger is an open source web and application server that greatly simplifies the deployment of Ruby applications, Python, and Node.js. Passenger is the preferred way to deploy and host Ruby on Rails applications across all DreamHost servers and is free on every DreamHost hosting plan.</p>
-<h1><span id="Basic_operation" class="mw-headline">Basic operation</span></h1>
+<h2><span id="Basic_operation" class="mw-headline">Basic operation</span></h2>
 <p>The following are the basic actions that take place once a file is requested from a domain running Passenger and Ruby on Rails:</p>
 <ol>
 <li>When a request is made to a domain/subdomain, the <a href="/hc/en-us/articles/217214317-Apache-HTTP-Server">Apache HTTP Server</a> passes the request to Passenger.</li>
@@ -7,14 +7,10 @@
 <li>If no matching file is found, the request is passed to Passenger's Rack interface.</li>
 <li>Note that this use of the /public subdirectory meshes precisely with the way that Ruby on Rails makes use of the same subdirectory.</li>
 <li>In order to generate a response, Rack looks for a file named "config.ru" in the domain/subdomain's root directory (i.e., the parent of the domain's /public subdirectory).</li>
-<li>Rack requires that you place the appropriate Ruby code into "config.ru" to invoke your desired web framework or application to handle the request.
-<dl>
-<dd>(See Rack for more information about how information is passed through the Rack interface.)</dd>
-</dl>
-</li>
+<li>Rack requires that you place the appropriate Ruby code into "config.ru" to invoke your desired web framework or application to handle the request.</li>
 </ol>
 <p>Under normal circumstances, Ruby on Rails (RoR) will automatically create and initialize all of the files and directories needed to interface with Passenger/Rack. When running a RoR application, the only Rack-related files you are likely to modify are possibly adding GEM_PATH information to "config.ru" and "touching" the "tmp/restart.txt" file.</p>
-<h1><span id="Use_of_Passenger_vs._FastCGI" class="mw-headline">Use of Passenger vs. FastCGI</span></h1>
+<h2><span id="Use_of_Passenger_vs._FastCGI" class="mw-headline">Use of Passenger vs. FastCGI</span></h2>
 <p>Passenger should only be enabled if you intend to run a Ruby on Rails (RoR) or other Ruby/Python-based program as the sole application for the entire domain or subdomain. Passenger directs all requests for the designated domain/subdomain to the associated Rack-compliant application. So it's best to leave Passenger disabled if you do not actually need it.</p>
 <p>In other words, you should only enable Passenger if you want to access your application via the following three URLs:</p>
 <dl>
@@ -27,7 +23,7 @@
 </dd>
 </dl>
 <p>If you want to access your application via www.example.com/path-to-myapp then use FastCGI instead of passenger.</p>
-<h1><span id="A_couple_of_technical_notes" class="mw-headline">A couple of technical notes</span></h1>
+<h2><span id="A_couple_of_technical_notes" class="mw-headline">A couple of technical notes</span></h2>
 <ul>
 <li>Output to STDERR for processes run through the Rack interface is directed to the master Apache error log file rather than the domain/subdomain specific log file. You do not have direct access to the master log file. This limitation can make debugging initialization errors (in particular syntax errors and gem resolution issues) tricky. Passenger will often produce an error output webpage including a stack traceback. However, in some cases it does not. If you have a persistent problem and Passenger is not producing sufficiently useful error output, you can try contacting the DreamHost support staff and ask them to examine the master log file for you. Once a framework (such as RoR) is up and running, its error output is typically handled by the framework's own error logging mechanism. For example, RoR records its error output in a file named "log/production.log".</li>
 </ul>
@@ -49,14 +45,16 @@
 <ul>
 <li>You can use your local gem repository if you use the following in the config/environment.rb file:</li>
 </ul>
-<pre>if ENV['RAILS_ENV'] == 'production'  # don't bother on dev
+<div class="preboxcontainer">
+<pre class="prebox">if ENV['RAILS_ENV'] == 'production'  # don't bother on dev
   ENV['GEM_PATH'] = '/home/USERNAME/.gems' #+ ':/usr/lib/ruby/gems/1.8'  # Need this or Passenger fails to start
 end
 
 require File.join(File.dirname(__FILE__), 'boot')
 </pre>
+</div>
 <p>The same path should be set in your shell's environment variables GEM_HOME and GEM_PATH so you can use the gem program to install/upgrade your own gems. You can reload the config file by running "touch tmp/restart.txt" in your base directory.</p>
-<h1><span id="Troubleshooting" class="mw-headline">Troubleshooting</span></h1>
+<h2><span id="Troubleshooting" class="mw-headline">Troubleshooting</span></h2>
 <p>For common troubleshooting solutions, please visit the <a href="/hc/en-us/articles/216635268-Passenger-troubleshooting">Passenger Troubleshooting</a> article.</p>
 <h2><span class="wysiwyg-font-size-x-large"><strong><span id="See_also" class="mw-headline">See also</span></strong></span></h2>
 <h3><strong><span id="Passenger" class="mw-headline wysiwyg-font-size-large">Passenger</span></strong></h3>
