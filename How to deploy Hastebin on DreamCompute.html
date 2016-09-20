@@ -1,0 +1,152 @@
+<body role="document">
+<div class="document">
+<div class="documentwrapper">
+<div class="body" role="main">
+<div id="how-to-deploy-hastebin-on-dreamcompute">
+
+<p>Hastebin is a simple self-hosted pastebin alternative.</p>
+<div id="setting-up-a-server">
+<h2>Setting up a server</h2>
+<p>The first step to deploying Hastebin is to launch a server to run it on. For
+example in this tutorial, an Ubuntu Xenial server is used. Read <a class="reference external" href="https://help.dreamhost.com/hc/en-us/articles/215912848-How-to-launch-and-manage-servers-with-the-DreamCompute-dashboard">How to launch
+and manage servers with the DreamCompute dashboard</a>
+for information on how to do this.
+You also need to expose port 8080 to incoming traffic,
+as that is blocked by default. Read <a class="reference external" href="https://help.dreamhost.com/hc/en-us/articles/215912838-How-to-configure-access-and-security-for-DreamCompute-instances">How to configure access and security for
+DreamCompute instances</a>
+for information on how to do this.</p>
+</div>
+<div id="installing-dependencies">
+<h2>Installing dependencies</h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Deploying Hastebin as a service (as done in this article) requires you to
+have root permissions. In order to start a root shell type <code class="docutils literal"><span class="pre">sudo</span> <span class="pre">su</span> <span class="pre">-</span></code>.</p>
+</div>
+<p>Once you have your server up and running the next step is to install all of
+Hastebin’s dependencies:</p>
+<div class="code console highlight-python"><div class="highlight"><pre><span></span>[root@server]# apt-get update
+[root@server]# apt-get install nodejs npm
+</pre></div>
+</div>
+<p>Next you must symlink /usr/bin/nodejs to /usr/bin/node because Hastebin will
+try to use that path. Most Linux distributions install nodejs in /usr/bin/node.
+This step is only necessary on Ubuntu servers since it doesn’t install nodejs
+in /usr/bin/node because of another package.</p>
+<div class="code console highlight-python"><div class="highlight"><pre><span></span>[root@server]# ln -s /usr/bin/nodejs /usr/bin/node
+</pre></div>
+</div>
+</div>
+<div id="installing-hastebin">
+<h2>Installing Hastebin</h2>
+<p>Now that all the dependencies are installed the next step is to download
+Hastebin and run it. To clone Hastebin using git, run:</p>
+<div class="code console highlight-python"><div class="highlight"><pre><span></span>[root@server]# git clone https://github.com/seejohnrun/haste-server.git /srv/haste-server
+</pre></div>
+</div>
+<p>Then to install the application, run:</p>
+<div class="code console highlight-python"><div class="highlight"><pre><span></span>[root@server]# cd /srv/haste-server
+[root@server]# npm install
+</pre></div>
+</div>
+<div id="configuration">
+<h3>Configuration</h3>
+<div id="networking">
+<h4>Networking</h4>
+<p>Now comes the configuration of Hastebin. By default it runs on port 7777.
+Change it to run on port 8080 by editing /srv/haste-server/config.js:</p>
+<div class="code console highlight-python"><div class="highlight"><pre><span></span>"port" : 7777,
+</pre></div>
+</div>
+<p>should be changed to:</p>
+<div class="code console highlight-python"><div class="highlight"><pre><span></span>"port" : 8080,
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Read <a class="reference external" href="https://help.dreamhost.com/hc/en-us/articles/215912838-How-to-configure-access-and-security-for-DreamCompute-instances">How to configure access and security for DreamCompute instances</a>
+for information on how to open port 8080 to traffic.</p>
+</div>
+</div>
+<div id="database">
+<h4>Database</h4>
+<p>By default Hastebin uses redis to store its data, we’re going to use a simpler
+solution, flat files.
+Edit config.js and delete the configuration for redis:</p>
+<div class="code js highlight-python"><div class="highlight"><pre><span></span>"storage": {
+  "type": "redis",
+  "host": "0.0.0.0",
+  "port": 6379,
+  "db": 2,
+  "expire": 2592000
+},
+</pre></div>
+</div>
+<p>and replace it with the configuration for using flat files:</p>
+<div class="code js highlight-python"><div class="highlight"><pre><span></span>"storage": {
+  "type": "file",
+  "path": "./data"
+},
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Flat files will not scale as well as a database will, so if you expect to
+have lots of users, be sure to use a database for your data.</p>
+</div>
+</div>
+</div>
+</div>
+<div id="creating-a-systemd-service">
+<h2>Creating a systemd service</h2>
+<p>The best way to run Hastebin is to create a systemd service for it and create a
+user for it to run as. To create a systemd service copy the following into
+/etc/systemd/system/haste-server.service.</p>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>[Unit]
+Description=haste-server (online code snippet sharing tool)
+After=syslog.target network.target
+
+[Service]
+WorkingDirectory=/srv/haste-server
+Type=simple
+User=haste-server
+Group=haste-server
+ExecStart=/usr/bin/node server.js
+
+[Install]
+WantedBy=multi-user.target
+</pre></div>
+</div>
+<p>Next create the user for haste-server to run as.</p>
+<div class="code console highlight-python"><div class="highlight"><pre><span></span>[root@server]# adduser --system --home=/srv/haste-server --group haste-server
+</pre></div>
+</div>
+<p>Now there is an ‘haste-server’ user, change the permissions of
+/srv/haste-server so that it has access to the directory.</p>
+<div class="code console highlight-python"><div class="highlight"><pre><span></span>[root@server]# chown -R haste-server:haste-server /srv/haste-server
+</pre></div>
+</div>
+</div>
+<div id="starting-hastebin">
+<h2>Starting Hastebin</h2>
+<p>Finally start the service and set it to start at boot:</p>
+<div class="code console highlight-python"><div class="highlight"><pre><span></span>[root@server]# systemctl enable haste-server
+[root@server]# systemctl start haste-server
+</pre></div>
+</div>
+<p>Hastebin is now running. Confirm it works by going to <a class="reference external" href="http://IP:8080">http://IP:8080</a>. Make
+sure to replace “IP” with the IP address of your server.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="clearer"></div>
+</div>
+<div class="footer">
+</div>
+<!--DreamCompute Button-->
+<div class="dream-sign-up">
+<h2>Deploy Your Apps On Cloud Servers Today</h2>
+<a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a>
+</div>
+</body>
