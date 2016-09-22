@@ -1,5 +1,5 @@
 <div class="alert alert-important">
-<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-icon"><img alt="" height="60" src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60"/></div>
 <div class="alert-content">
 <ul>
 <li>The instructions provided in the following section are considered advanced.</li>
@@ -12,7 +12,7 @@
 </div>
 <p><a href="/hc/en-us/articles/215769578-Passenger-overview">Passenger</a> is best known for being used with Ruby on Rails applications, however it can also serve up Python web applications which use the <a class="external text" href="http://www.python.org/dev/peps/pep-3333/" rel="nofollow">WSGI</a> interface, including any application which uses the <a href="/hc/en-us/articles/215319598-Django-overview">Django</a> framework. Since Passenger allows your application to temporarily reside in memory while it is being actively used, it will allow your site to respond significantly faster than is otherwise possible.</p>
 <p>Passenger's WSGI support works reasonably well, however another available option is Python FastCGI in case you run into problems.</p>
-<h2><span id="Setting_up_Passenger_WSGI" class="mw-headline">Setting up Passenger WSGI</span></h2>
+<h2><span class="mw-headline" id="Setting_up_Passenger_WSGI">Setting up Passenger WSGI</span></h2>
 <p>To start an example Python site using Passenger WSGI, your first step should be to configure the domain to use Passenger as shown in the <a href="/hc/en-us/articles/216385637-How-do-I-enable-Passenger-on-my-domain-">Passenger article</a>. Note that the document root must end in "/public" for a Passenger application as this directory will be used to serve static media.</p>
 <p>Once you have set the domain to use Passenger, create a file called <code>passenger_wsgi.py</code> in the folder above the document root (i.e., if you set your document root to <code>/home/username/example.com/public</code>, you'd put this file at <code>/home/username/example.com/passenger_wsgi.py</code>). This file must export a WSGI server with the name <code>application</code>. Here's a minimal example:</p>
 <div class="preboxcontainer">
@@ -22,9 +22,9 @@
 </pre>
 </div>
 <p>This application will return a text file with the content "Hello, world!" for any request.</p>
-<h2><span id="Passenger_WSGI_and_Django" class="mw-headline">Passenger WSGI and Django</span></h2>
+<h2><span class="mw-headline" id="Passenger_WSGI_and_Django">Passenger WSGI and Django</span></h2>
 <p>See <a href="/hc/en-us/articles/215319598-Django-overview">Django</a> for instructions on how to configure Passenger to run Django.</p>
-<h2><span id="Passenger_WSGI_and_virtualenv" class="mw-headline">Passenger WSGI and virtualenv</span></h2>
+<h2><span class="mw-headline" id="Passenger_WSGI_and_virtualenv">Passenger WSGI and virtualenv</span></h2>
 <p>As Passenger loads your <code>passenger_wsgi.py</code> into a special wrapper (currently <code>/dh/passenger/lib/phusion_passenger/wsgi/request_handler.py</code>, although this may change), you cannot directly select which Python interpreter is used to run your application. However, you can switch interpreters at runtime by adding the following code to the beginning of your <code>passenger_wsgi.py</code>:</p>
 <div class="preboxcontainer">
 <pre class="prebox">import sys, os
@@ -34,7 +34,7 @@ if sys.executable != INTERP: os.execl(INTERP, INTERP, *sys.argv)
 </pre>
 </div>
 <p>Set INTERP to the Python interpreter which you wish to use instead of the default.</p>
-<h2><span id="Passenger_WSGI_and_Pylons.2FPyramid" class="mw-headline">Passenger WSGI and Pylons/Pyramid</span></h2>
+<h2><span class="mw-headline" id="Passenger_WSGI_and_Pylons.2FPyramid">Passenger WSGI and Pylons/Pyramid</span></h2>
 <p>If you're using a Pyramid-framework supported site, the following should work for your <code>passenger_wsgi.py</code>, assuming you've setup the Python virtual environment at <code>INTERP</code>:</p>
 <div class="preboxcontainer">
 <pre class="prebox">import sys, os
@@ -50,7 +50,7 @@ application = loadapp('config:/home/path/to/site/production.ini')
 <dl>
 <dd><a class="external text" href="http://www.ricksresources.com/2012/07/pyramid-on-dreamhost/" rel="nofollow">Pyramid-on-DreamHost</a></dd>
 </dl>
-<h2><span id="500_Errors_with_Passenger_WSGI_workaround" class="mw-headline">500 Errors with Passenger WSGI workaround</span></h2>
+<h2><span class="mw-headline" id="500_Errors_with_Passenger_WSGI_workaround">500 Errors with Passenger WSGI workaround</span></h2>
 <p>Passenger WSGI at the moment has difficulty dealing with errors. Namely, when your WSGI application (for example, but not limited to, Django) raises an uncaught exception, Passenger dies, a 500 page is displayed in the browser, and the error message is not recorded in the home/username/logs/sitename/http/error.log file. This makes debugging tricky.</p>
 <p>One solution is to use Python Paste as a WSGI middleware between passenger and your application:</p>
 <ol>
@@ -87,7 +87,7 @@ application = loadapp('config:/home/path/to/site/production.ini')
  application = ErrorMiddleware(application, debug=True)
 </pre>
 </div>
-<h2><span id="Local_logging_alternative" class="mw-headline">Local logging alternative</span></h2>
+<h2><span class="mw-headline" id="Local_logging_alternative">Local logging alternative</span></h2>
 <div class="preboxcontainer">
 <pre class="prebox">import os, sys
 
@@ -131,7 +131,7 @@ def application(environ, start_response):
     return results
 </pre>
 </div>
-<h2><span id="A_slightly_more_robust_local_logging_alternative" class="mw-headline">A slightly more robust local logging alternative</span></h2>
+<h2><span class="mw-headline" id="A_slightly_more_robust_local_logging_alternative">A slightly more robust local logging alternative</span></h2>
 <p>This example uses Python's logging module. It does not contain the alternative interpreter bit or loading the ini file. It does show how to load local modules using <code>getcwd()</code>.</p>
 <p>Apart from the name <code>myappmodule</code> and <code>myappmodule.application</code>, this doesn't make any assumptions about your application.</p>
 <div class="preboxcontainer">
@@ -163,7 +163,7 @@ def application(environ, start_response):
     return results
 </pre>
 </div>
-<h2><span id="Another_solution" class="mw-headline">Another solution</span></h2>
+<h2><span class="mw-headline" id="Another_solution">Another solution</span></h2>
 <p>This solution is only available on a <a href="/hc/en-us/articles/215280058-Virtual-Private-Server-overview-VPS-">VPS</a> machine.</p>
 <p>Another solution is to start a development server by executing:</p>
 <div class="preboxcontainer">
@@ -175,12 +175,12 @@ def application(environ, start_response):
 </div>
 <p>This opens your application in the lynx web browser, bypassing Passenger by using the Django development server. If you're lucky, it will return some helpful feedback.</p>
 <div class="alert alert-note">
-<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-icon"><img alt="" height="60" src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60"/></div>
 <div class="alert-content">
 <p>This solution won't help if the problem is with your Passenger configuration since this method bypasses Passenger entirely.</p>
 </div>
 </div>
-<h2><span id="Tips_and_tricks" class="mw-headline">Tips and tricks</span></h2>
+<h2><span class="mw-headline" id="Tips_and_tricks">Tips and tricks</span></h2>
 <p>Try running your <code>passenger_wsgi.py</code> from your command line which may point out any Python errors.</p>
 <p>Passenger seems to use a persistent Python session. After updating <code>passenger_wsgi.py</code>, make sure to run <code>pkill python</code> to reset the session and force the server to use your new changes.</p>
 <h2>See also</h2>
