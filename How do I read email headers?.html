@@ -1,11 +1,6 @@
 <p>Viewing your message headers is like looking at the map that your email takes when being delivered to your mailbox. Understandably this map is very helpful in finding out the causes for many email problems that can be experienced on any system. From delayed mail to email bounces, headers are the number one clue in troubleshooting delivery issues that may occur.</p>
 <h2><span id="Understanding_received_message_headers" class="mw-headline">Understanding received message headers</span></h2>
-<p>By default, mail clients will only show you the basic headers of a message:</p>
-<dl>
-<dd><img src="https://kbimages.objects-us-west-1.dream.io/images/Headers5.fw.png" alt="Headers5.fw.png" width="498" height="106" /></dd>
-</dl>
-<p>This example is from a message viewed through SquirrelMail. The details on this set of headers only shows the basic information of the message.</p>
-<p>This information is useful, but it is not all of the information that you actually have access to. In your mail program, you can select a message then choose to view the message’s full header details:</p>
+<p>By default, mail clients will only show you the basic headers of a message such as the sender and recipient. This information is useful, but it is not all of the information that you actually have access to. In your mail program, you can select a message then choose to <a href="https://help.dreamhost.com/hc/en-us/articles/215466778-How-do-I-view-email-headers-">view the message’s full header details</a>:</p>
 <div class="alert alert-note">
 <div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
@@ -13,7 +8,7 @@
 </div>
 </div>
 <dl>
-<dd><img src="https://kbimages.objects-us-west-1.dream.io/images/Headers6.fw.png" alt="Headers6.fw.png" width="634" height="476" /></dd>
+<dd><img src="https://kbimages.objects-us-west-1.dream.io/03_Atmail.png" alt="Headers6.fw.png" width="741" height="556" /></dd>
 </dl>
 <p>This information has kind of an odd trait. You must read it from the bottom up to see the path of the message. In the example above, the first line, shown as ‘Return-Path’, shows where the email was created and originally sent from. Each 'Received' line is a server the email passed through on its way to the recipient.</p>
 <p>The following is a quick overview of the basic fields you’ll see:</p>
@@ -30,7 +25,7 @@
 <dd>In the example listed above, you will see a strange looking email address here:</dd>
 </dl>
 <dl>
-<dd>Delivered-To: x14847128@homiemail-mx18.g.dreamhost.com</dd>
+<dd>Delivered-To: x15975942@homiemail-mx33.g.dreamhost.com</dd>
 </dl>
 <dl>
 <dd>The email user listed (to the left of the ‘@’ symbol) is the user ID for the recipient email address hosted with DreamHost. The server listed (to the right of the ‘@’ symbol) is your DreamHost mail server that received this particular message.</dd>
@@ -63,23 +58,19 @@
 <h2><span id="Tracking_the_message_delivery_through_the_headers" class="mw-headline">Tracking the message delivery through the headers</span></h2>
 <p>As noted above, headers are read starting from the bottom. In the same example from above, the message was originally sent on:</p>
 <div class="preboxcontainer">
-<pre class="prebox">Received: by 10.70.116.227 with HTTP; Wed, 7 Jan 2015 20:50:11 -0800 (PST)
+<pre class="prebox">Received: by 10.176.80.232 with HTTP; Thu, 22 Sep 2016 14:19:22 -0700 (PDT)
 </pre>
 </div>
 <p>This shows the message being received with the timestamp listed above. Once received, the ‘X-Received’ status applied the SMTP ID for that message, which was also done at the same time:</p>
 <div class="preboxcontainer">
-<pre class="prebox">X-Received: by 10.70.55.163 with SMTP id t3mr1091761pdp.8.1420692611828; Wed,07 Jan 2015 20:50:11 -0800 (PST)
+<pre class="prebox">X-Received: by 10.176.4.72 with SMTP id 66mr1541980uav.133.1474579162566; Thu, 22 Sep 2016 14:19:22 -0700 (PDT)
 </pre>
 </div>
 <p>The message was sent from a test Google user. The details below shows Google looking to pass the message off to the final recipient:</p>
 <div class="preboxcontainer">
-<pre class="prebox">Received: by mail-pa0-f52.google.com with SMTP id eu11so9302323pac.11 for &lt;user@thunderbird.dreamhosters.com&gt;; Wed, 07 Jan 2015 20:50:12 -0800 (PST)
+<pre class="prebox">Received: by mail-pa0-f52.google.com with SMTP id eu11so9302323pac.11 for &lt;user@thunderbird.dreamhosters.com&gt;; <br />Wed, 07 Jan 2015 20:50:12 -0800 (PST)
 
-Received: from mail-pa0-f52.google.com (mail-pa0-f52.google.com [209.85.220.52])
-(using TLSv1 with cipher RC4-SHA (128/128 bits))
-(No client certificate requested)
-by homiemail-mx18.g.dreamhost.com (Postfix) with ESMTPS id 59075276046
-for &lt;user@thunderbird.dreamhosters.com&gt;; Wed, 7 Jan 2015 20:50:12 -0800 (PST)
+from mail-ua0-f172.google.com (mail-ua0-f172.google.com [209.85.217.172]) <br />(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits)) <br />(No client certificate requested) by homiemail-mx33.g.dreamhost.com (Postfix) <br />with ESMTPS id 7C9F08009A15 for &lt;user@dreamhostexample.com&gt;; Thu, 22 Sep 2016 14:19:23 -0700 (PDT)
 </pre>
 </div>
 <p>From there, it went from Google to your DreamHost incoming server at ‘homiemail-mx18’. That MX server then delivered the message to the final recipient.</p>
