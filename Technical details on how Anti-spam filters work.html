@@ -45,7 +45,7 @@
 </table>
 <h2>Headers related to filtering</h2>
 <p>All emails that pass through the filtering servers have some extra headers added.</p>
-<p>Let's take another look at the following screenshot which was used in a previous example:</p>
+<p>Let's take another look at the following example:</p>
 <div class="preboxcontainer">
 <pre class="prebox">X-vr-status  SPAM
 X-vr-score  500
@@ -62,10 +62,11 @@ nhhithhirghlugdruhhs
 </pre>
 </div>
 <p>Below are details on what each field in the filter details above means:</p>
+<h3>X-vr-status</h3>
 <div class="preboxcontainer">
-<pre class="prebox">X-vr-status: SPAM</pre>
+<pre class="prebox">X-vr-status</pre>
 </div>
-<p>This info shows ‘Whitelisted’, ‘SPAM’, ‘DCE’, ‘PCE’, ‘MCE’, ’SN’, or ‘OK’:</p>
+<p>This field could show any of the following:</p>
 <dl>
 <dt><strong>Whitelisted</strong></dt>
 <dd>the user says always allow this email sender.</dd>
@@ -82,25 +83,27 @@ nhhithhirghlugdruhhs
 <dt><strong>OK</strong></dt>
 <dd>everything is good.</dd>
 </dl>
+<h3>X-vr-score</h3>
 <div class="preboxcontainer">
 <pre class="prebox">X-vr-score  500</pre>
 </div>
 <dl>
-<dd>The score listed here is the total spam score of this message. After the message went through the filters, based on the contents and the way it was sent, the message was tagged at the score of 500. As seen from the details above, it was flagged for spam.</dd>
+<dd>The score is a arbitraty number given by Vade. It is NOT an indicator that an email is SPAM or SN or any of the other statuses mentioned. It is only used in conjunction with the SPAM status to decide when an email should be rejected because it's considered as a scam or spear phishing.</dd>
 </dl>
+<h3>X-vr-spamcause</h3>
 <div class="preboxcontainer">
 <pre class="prebox">X-vr-spamcause  gggruggvucftvghtrhhoucdtuddrfeekledrvdeigdduudejucetufdoteggodetrfdotffvucfrrhhofhh
 ….
 Thesghhmrghilhdrtghomhdprhgtphhtthhopehtrghksehinhhithhirghlugdruh</pre>
 </div>
 <dl>
-<dd>This is a hash of the spam cause.</dd>
+<dd>This is a hash of the spam cause only used by Vade.</dd>
 </dl>
 <h2>Filtering and what it does</h2>
 <p>There are two services currently set up to filter spam. Below is a description of each:</p>
 <dl>
 <dt><strong>Vade Secure</strong></dt>
-<dd>This is the filter service that scores the incoming messages for spam. Depending on how the message was sent and the contents within it, the message will be applied with a spam score to determine whether the message should be filtered or delivered as a valid email to the user’s inbox. Email that is beyond a certain threshold will be denied and the sender will get a bounce message.</dd>
+<dd>This is the filter service that scans the incoming messages for spam and other categories such as social or promotional emails. Depending on multiple factors, the message will be tagged with a status (SPAM, SN, etc) to determine if the message should be delivered to the recipients inbox, or filtered into the Spam, Social or Promotions folder.  However, spam emails that are beyond a certain threshold will be rejected.</dd>
 <dt><strong>Procmail</strong></dt>
 <dd>This is the delivery agent for the mailbox which actually places the email into Spam, Social or Promotions folders when it detects the Vade Secure headers. This is also responsible for the user defined filters defined in the panel.</dd>
 </dl>
