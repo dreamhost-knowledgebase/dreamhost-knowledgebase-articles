@@ -1,0 +1,186 @@
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>The following should be taken into consideration when creating filters:</p>
+<ul>
+<li>Order matters! The rules are checked one by one, so be sure you have them listed in the order you want them to be checked or executed.</li>
+<li>Most rules should end with "execute and stop". Only use "execute and continue" if you wish to do multiple actions to a single incoming email.</li>
+</ul>
+</div>
+</div>
+<p>Visit the (<a class="external text" href="https://panel.dreamhost.com/index.cgi?tree=mail.filters&amp;" rel="nofollow">Panel &gt; ‘Mail’ &gt; ‘Message Filters’</a>) page to create a new filter. The following is a list of available fields to add to it.</p>
+<p>View the <a href="https://help.dreamhost.com/hc/en-us/articles/215030678-How-do-I-enable-message-filters-on-my-email-address-">How do I enable message filters on my email address</a> article for further details.</p>
+<table class="wikitable">
+<tbody>
+<tr><th bgcolor="#F2F2F2">Field</th><th bgcolor="#F2F2F2">Explanation</th><th bgcolor="#F2F2F2">Example</th></tr>
+<tr>
+<td style="width: 15%; text-align: center;">
+<p><strong>Subject</strong></p>
+</td>
+<td style="width: 55%;">
+<p>Looks in the Subject line of the email. It looks everywhere in the subject line, and can match part or all of the Subject.</p>
+</td>
+<td>
+<ul>
+<li>match "drink" in "Subject: Eat, drink, and be merry!"</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td style="text-align: center;">
+<p><strong>From</strong></p>
+</td>
+<td>Looks in the From line of the email, checking for who sent the email. It looks everywhere in the From line, and can match part or all of the From line.</td>
+<td>
+<ul>
+<li>match "bob" in "From: bob@example.com"</li>
+<li>match "Jones" in "From: Bob Jones &lt;bob@example.com&gt;"</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td style="text-align: center;">
+<p><strong>To</strong></p>
+</td>
+<td>Looks in the To line of the email, checking for whom the email was sent to. It starts searching directly after "To". Use .* before your term to match any part of the name or email address anywhere in the line.</td>
+<td>
+<ul>
+<li>match "George" in "To: George of the Jungle &lt;george@example.com&gt;"</li>
+</ul>
+<p>Tip: Combine this rule with using '+' for slightly customized email addresses for easy sorting of emails from websites. Give Amazon your email address as you+amazon@example.com and then you can easily filter those emails.</p>
+<ul>
+<li>match ".*books" in "To: me+books@example.com"</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td style="text-align: center;">
+<p><strong>CC</strong></p>
+</td>
+<td>Looks in the CC line(s) of the email, checking for other people the email was sent to.</td>
+<td style="text-align: center;">N/A</td>
+</tr>
+<tr>
+<td style="text-align: center;">
+<p><strong>Headers</strong></p>
+</td>
+<td>Looks at the beginning of every line in the email. Intended for use when matching header lines, such as "X-Spam: Yes". Note that this checks the entire email – the message body and the headers.</td>
+<td>
+<ul>
+<li>match "X-Spam: Yes" in the email's headers</li>
+</ul>
+<p>Tip: use .* to match anywhere in the line, not just the beginning.</p>
+<ul>
+<li>match ".*bananas" to match "bananas" anywhere in any line of the email</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td style="text-align: center;">
+<p><strong>Reply-To</strong></p>
+</td>
+<td>Looks in the Reply-To line of the email for the email address where replies to the email are sent.</td>
+<td style="text-align: center;">N/A</td>
+</tr>
+<tr>
+<td style="text-align: center;">
+<p><strong>Body</strong></p>
+</td>
+<td>Looks in the message body of the email and does not look in the headers.</td>
+<td style="text-align: center;">N/A</td>
+</tr>
+</tbody>
+</table>
+<h2><span id="Explanation_of_the_.E2.80.98Do_this.E2.80.99_action_option_fields" class="mw-headline">Explanation of the ‘Do this’ action option fields</span></h2>
+<table class="wikitable">
+<tbody>
+<tr><th bgcolor="#F2F2F2">Field</th><th bgcolor="#F2F2F2">Explanation</th><th bgcolor="#F2F2F2">Example</th></tr>
+<tr>
+<td style="width: 15%; text-align: center;">
+<p><strong>Move it to folder</strong></p>
+</td>
+<td style="width: 55%;">
+<p>Puts the email in the specified folder. This is possibly the most useful action, but there are a few caveats/restrictions:</p>
+<ul>
+<li>The folder must already exist – the filter cannot make the folder for you. If you enter a folder name that does not exist, the <strong>emails will be deleted instead of moved</strong>.</li>
+<li>Folder names are cAsE sEnSiTiVe! Double-check your folder name's spelling and shift key usage.</li>
+<li>The filters cannot use folder names that have spaces in the name. Subfolders are okay, but must be specified with the parent folder and a '.', like ParentFolder.SubFolder. Folder names can only contain only letters, numbers, underscores, dots, and dashes. (But no leading dots, trailing dots, or double dots!)</li>
+</ul>
+</td>
+<td style="text-align: center;">N/A</td>
+</tr>
+<tr>
+<td style="text-align: center;">
+<p><strong>Add this to the subject</strong></p>
+</td>
+<td>Adds the specified text to the beginning of the email's subject line.</td>
+<td>"Subject: Test Email" becomes "Subject: ADDED_TEXT Test Email"</td>
+</tr>
+<tr>
+<td style="text-align: center;">
+<p><strong>Add this header</strong></p>
+</td>
+<td>Adds the specified text to the header area of the email. This added text will not be visible when the email is displayed normally – it will only be visible when viewing all the headers.</td>
+<td style="text-align: center;">N/A</td>
+</tr>
+<tr>
+<td style="text-align: center;">
+<p><strong>Forward it to email address</strong></p>
+</td>
+<td>What it says. The email address to forward the email to can be any address, hosted at DreamHost or anywhere else.</td>
+<td style="text-align: center;">N/A</td>
+</tr>
+<tr>
+<td style="text-align: center;">
+<p><strong>Forward to shell account</strong></p>
+</td>
+<td>Forward the email to the Maildir of a shell user. This is the same as forwarding to an email address and specifying shell_user@server_name.dreamhost.com.</td>
+<td style="text-align: center;">N/A</td>
+</tr>
+<tr>
+<td style="text-align: center;">
+<p><strong>Delete it</strong></p>
+</td>
+<td>What it says. The email is not put in the Trash folder and is completely erased.</td>
+<td style="text-align: center;">N/A</td>
+</tr>
+</tbody>
+</table>
+<h2><span id="Doing_more_than_one_action" class="mw-headline">Doing more than one action</span></h2>
+<p>Each individual message filter can check for multiple things but can only perform a single action. You can use "execute and continue" to have multiple actions done on a single email. When a filter has "execute and continue" the action from the matching filter is taken, and then the next filter is checked and filtering continues. Normally, filters are made with "execute and stop" and the first rule that matches is the only action taken, and no more filters are checked.</p>
+<p>Here's an example set of filters that check for spam and also sort mail into folders:</p>
+<ul>
+<li>add POSSIBLE SPAM to the subject of emails for any of the following:</li>
+</ul>
+<dl>
+<dd>-contains viagra in the Subject</dd>
+<dd>-contains diet in the Subject</dd>
+<dd>-contains monkey in the Subject</dd>
+<dd>and then <strong>continue</strong></dd>
+</dl>
+<ul>
+<li>move emails to Amazon with Amazon in the Subject</li>
+</ul>
+<dl>
+<dd>and then <strong>stop</strong>.</dd>
+</dl>
+<ul>
+<li>move emails to Twitter with twitter.com in the From</li>
+</ul>
+<dl>
+<dd>and then <strong>stop</strong>.</dd>
+</dl>
+<h2><span id="A_note_on_the_forwarding_rule" class="mw-headline">A note on the forwarding rule</span></h2>
+<p>Forwarding will act very differently depending on the final ‘execute and stop’ or ‘execute and continue’ rule.</p>
+<p>For example, a single filter set to:</p>
+<ul>
+<li><strong>forward and continue</strong> – forwards the email, after which a copy is also placed in your inbox.</li>
+<li><strong>forward and stop</strong> – ends the filter chain before it reaches the end, so no message would be placed in your inbox.</li>
+</ul>
+<h2><span id="Using_message_filters_with_the_Junk_Mail_filters" class="mw-headline">Using message filters with Vade spam filters</span></h2>
+<p>You can still use the message filters even if the domain is set up with Vade spam filters. Mail is filtered through the spam machines first, then gets routed to the regular incoming mail machines where your filters are then applied.</p>
+<h2>See also</h2>
+<ul>
+<li><a style="background-color: #ffffff;" href="/hc/en-us/articles/215030678">How do I enable message filters on my email address?</a></li>
+<li><a href="/hc/en-us/articles/214984738">Anti-spam overview</a></li>
+</ul>
