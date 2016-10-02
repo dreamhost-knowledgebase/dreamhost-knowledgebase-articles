@@ -1,0 +1,220 @@
+<body role="document">
+<div class="document">
+<div class="documentwrapper">
+<div class="body" role="main">
+<div id="how-to-install-openresty-lua-resty-waf-on-ubuntu-14-04">
+
+<p>OpenResty is a software bundle containing the Nginx web server,
+<a class="reference external" href="https://github.com/openresty/lua-nginx-module">lua-nginx-module</a>, the
+LuaJIT compiler, and a number of Lua modules designed to extend the capability
+of Nginx and transform it into a full-fledged application server.
+<a class="reference external" href="https://github.com/p0pr0ck5/lua-resty-waf">lua-resty-waf</a> is a high
+performance web application firewall (WAF) written for the OpenResty stack,
+leveraging the scalable architecture of Nginx, while providing a ModSecurity-compatible
+rule syntax. This allows users to move their ModSecurity WAF installations to the
+OpenResty ecosystem.</p>
+<p>This tutorial walks you through the installation process for OpenResty and lua-resty-waf
+on a DreamCompute instance running Ubuntu 14.04.</p>
+<div id="installing-prerequisites">
+<h2>Installing prerequisites</h2>
+<p>You must compile OpenResty from source on Ubuntu distributions. First, update
+the system package repository listings and install the following packages:</p>
+<div class="code console highlight-python"><div class="highlight"><pre><span></span># apt-get update &amp;&amp; apt-get -y install make gcc libssl-dev g++ \
+    liblua5.1-0-dev python-minimal python2.7 libjson-perl git
+</pre></div>
+</div>
+</div>
+<div id="preparing-the-source">
+<h2>Preparing the source</h2>
+<p>Download and unpack the OpenResty source in a local directory:</p>
+<div class="code console highlight-python"><div class="highlight"><pre><span></span># cd /usr/local/src
+# wget https://openresty.org/download/openresty-1.11.2.1.tar.gz &amp;&amp; \
+    tar -zxf openresty-1.11.2.1.tar.gz
+</pre></div>
+</div>
+<p>Most web application firewalls use a number of pattern matching techniques when
+examining HTTP traffic, including regular expressions. Because complex regular
+expressions can be expensive to process, it makes sense to use a regex library
+that is capable of optimizing regex execution. Modern versions of the Perl
+Compatible Regular Expressions (PCRE) library, the regular expression library
+used by Nginx and OpenResty, are capable of performing just-in-time compilation
+of regular expressions which greatly improves regex matching performance.</p>
+<p>Because the version of PCRE provided by the default Ubuntu package does not contain
+JIT support, you must download and unpack the PCRE source:</p>
+<div class="code console highlight-python"><div class="highlight"><pre><span></span># wget ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.39.tar.bz2 \
+    &amp;&amp; tar -jxf pcre-8.39.tar.bz2
+</pre></div>
+</div>
+<p>Note: Compiling and installing PCRE is not necessary, as it is statically compiled
+into OpenResty.</p>
+</div>
+<div id="compiling-openresty">
+<h2>Compiling OpenResty</h2>
+<p>Build the OpenResty bundle from source and install it to the system:</p>
+<div class="code console highlight-python"><div class="highlight"><pre><span></span># cd openresty-1.11.2.1 &amp;&amp; ./configure --with-debug \
+    --with-pcre=/usr/local/src/pcre-8.39 \
+    --with-pcre-jit \
+    --with-pcre-opt=-g &amp;&amp; \
+    make &amp;&amp; \
+    make install
+</pre></div>
+</div>
+<p>Nginx is built and configured to use the previously-downloaded version of PCRE
+that supports JIT, instead of the system PCRE, which greatly improves performance.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><strong>`–with-debug`</strong> and <strong>`–with-pcre-opt=-g`</strong> are provided
+to allow Nginx to write debugging information when configured to do
+so. Adding these options causes performance degredation in
+high-concurrency environments, so do not enable these options for
+high-traffic sites.</p>
+</div>
+</div>
+<div id="testing-openresty">
+<h2>Testing OpenResty</h2>
+<p>Once OpenResty is installed, you can configure a simple test to confirm that it is
+responding as expected.</p>
+<p>To test, add the following configuration snippet inside the existing <cite>server</cite> block
+located in the configuration file:</p>
+<div class="code console highlight-python"><div class="highlight"><pre><span></span><span class="c1"># cd /usr/local/openresty/nginx</span>
+<span class="c1"># vi conf/nginx.conf</span>
+</pre></div>
+</div>
+<div class="code nginx highlight-python"><div class="highlight"><pre><span></span>location /foo {
+    content_by_lua_block {
+        ngx.say("Hello, world!")
+    }
+}
+</pre></div>
+</div>
+<p>Once it completes, start Nginx:</p>
+<div class="code console highlight-python"><div class="highlight"><pre><span></span><span class="c1"># ./sbin/nginx</span>
+</pre></div>
+</div>
+<p>Send a test request to the test location block:</p>
+<div class="code console highlight-python"><div class="highlight"><pre><span></span># curl http://&lt;instance-ip&gt;/foo
+Hello, world!
+</pre></div>
+</div>
+</div>
+<div id="building-lua-resty-waf">
+<h2>Building lua-resty-waf</h2>
+<p>Once OpenResty is installed and working, download and install lua-resty-waf. The
+source for lua-resty-waf lives in a GitHub repo, so clone the repo to a local
+source, and then make and install the project:</p>
+<div class="code console highlight-python"><div class="highlight"><pre><span></span># cd /usr/local/src
+# git clone --recursive https://github.com/p0pr0ck5/lua-resty-waf.git &amp;&amp; \
+    cd lua-resty-waf &amp;&amp; \
+    make &amp;&amp; \
+    make install
+</pre></div>
+</div>
+</div>
+<div id="configuring-lua-resty-waf">
+<h2>Configuring lua-resty-waf</h2>
+<p>After installing lua-resty-waf, return to the Nginx config file and add the
+basic directives to run lua-resty-waf:</p>
+<div class="code console highlight-python"><div class="highlight"><pre><span></span><span class="c1"># cd /usr/local/openresty/nginx</span>
+<span class="c1"># vi conf/nginx.conf</span>
+</pre></div>
+</div>
+<p>Add the following directive to the <cite>http</cite> block, above the existing <cite>server</cite>
+block:</p>
+<div class="code nginx highlight-python"><div class="highlight"><pre><span></span>init_by_lua_block {
+    require "resty.core"
+    local waf = require "resty.waf"
+    waf.init()
+}
+</pre></div>
+</div>
+<p>Add the following directives to the test <cite>location</cite> directive created earlier:</p>
+<div class="code nginx highlight-python"><div class="highlight"><pre><span></span>access_by_lua_block {
+    local lrw = require "resty.waf"
+    local waf = lrw:new()
+    waf:set_option("debug", true)
+    waf:set_option("mode", "ACTIVE")
+    waf:exec()
+}
+
+log_by_lua_block {
+    local lrw = require "resty.waf"
+    local waf = lrw:new()
+    waf:write_log_events()
+}
+</pre></div>
+</div>
+<p>These directives instruct OpenResty to execute lua-resty-waf when a request
+is handled by the test location directive, and to deny requests that look
+malicious. lua-resty-waf ships with a basic set of rules that mimic the
+<a class="reference external" href="https://www.owasp.org/index.php/Category:OWASP_ModSecurity_Core_Rule_Set_Project">OWASP CRS</a>,
+which provides protection against HTTP protocol anomalies, known suspicious user
+agents, cross-site scripting (XSS), and SQL injection (SQLi) attacks.</p>
+<p>To test, reload Nginx and send the following request:</p>
+<div class="code console highlight-python"><div class="highlight"><pre><span></span><span class="c1"># ./sbin/nginx -s reload</span>
+<span class="c1"># curl 'http://&lt;instance-ip&gt;/foo?a=alert(1)'</span>
+</pre></div>
+</div>
+<p>Nginx should return a 403 Forbidden response, instead of the 200 OK and
+‘Hello, world!’ received earlier.</p>
+</div>
+<div id="further-configuration">
+<h2>Further configuration</h2>
+<p>By default, lua-resty-waf logs transactions that it blocks to the Nginx
+error log. This can be difficult to parse out, especially with debug logging
+enabled.</p>
+<p>You can configure lua-resty-waf to write event logs to a file on disk, which provides
+more detailed information about the request, by adding the following
+directives to the previously created <cite>access_by_lua_block</cite>, above the
+<cite>waf:exec()</cite> directive:</p>
+<div class="code nginx highlight-python"><div class="highlight"><pre><span></span>waf:set_option("event_log_target", "file")
+waf:set_option("event_log_target_path", "/tmp/waf.log")
+waf:set_option("event_log_request_headers", true)
+waf:set_option("event_log_request_arguments", true)
+waf:set_option("event_log_request_body", true)
+waf:set_option("event_log_periodic_flush", 1)
+</pre></div>
+</div>
+<p>Reload Nginx, and then send the test bad request again:</p>
+<div class="code console highlight-python"><div class="highlight"><pre><span></span><span class="c1"># ./sbin/nginx -s reload</span>
+<span class="c1"># curl 'http://&lt;instance-ip&gt;/foo?a=alert(1)'</span>
+</pre></div>
+</div>
+<p>lua-resty-waf creates the event log file and populates it with a JSON
+entry containing details about the request. JSON that is not pretty-printed can
+be hard to eyeball; instead, use the following snippet to clean up the log entry:</p>
+<div class="code console highlight-python"><div class="highlight"><pre><span></span># perl -e '
+    use JSON;
+    print to_json(from_json(&lt;&gt;), { pretty =&gt; 1, canonical =&gt; 1 });
+' &lt; /tmp/waf.log
+</pre></div>
+</div>
+</div>
+<div id="further-exploration">
+<h2>Further exploration</h2>
+<p>Besides basic request protection, lua-resty-waf can fulfill a wide variety of
+needs in a WAF installation, including:</p>
+<ul class="simple">
+<li>Analyze any aspect of an HTTP request or response for anomalous behaviors</li>
+<li>Mitigate brute-force attacks to any request resource</li>
+<li>Use real-time DNS blacklists to deny known malicious hosts</li>
+<li>Send audit event logs to a remote TCP/UDP/syslog server</li>
+<li>Use memcached or redis to store long-term variables</li>
+</ul>
+<p>Check out the <a class="reference external" href="https://github.com/p0pr0ck5/lua-resty-waf/blob/master/README.md">lua-resty-waf Readme</a>
+and <a class="reference external" href="https://github.com/p0pr0ck5/lua-resty-waf/wiki">wiki</a> for
+updates on the project and further tutorials on specific behaviors.
+There is also a <cite>#lua-resty-waf</cite> channel on Freenode IRC.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="clearer"></div>
+</div>
+<div class="footer">
+</div>
+<!--DreamCompute Button-->
+<div class="dream-sign-up">
+<h2>Deploy Your Apps On Cloud Servers Today</h2>
+<a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a>
+</div>
+</body>
