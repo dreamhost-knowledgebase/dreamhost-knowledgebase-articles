@@ -1,17 +1,17 @@
 <p>This article lists common errors you may run into when using Passenger.</p>
-<h2><span class="mw-headline" id="Application_not_restarting">Application not restarting</span></h2>
+<h2><span id="Application_not_restarting" class="mw-headline">Application not restarting</span></h2>
 <p>This generally isn't actually a problem. It's only perceived as a problem. In Passenger 2.1 the behavior of the restart mechanism changed. Now Passenger simply checks the modification timestamp on the restart.txt file. If it's more recent than the last time it checked, it restarts. The file is not removed. This was done so that restarting applications would work seamlessly on NFS shares.</p>
 <p>On lower traffic sites, you can usually still visually see the application restarting by "priming" a page (loading it a couple times in your browser), touching the restart.txt file and then loading that page again. It should take a noticeably longer time to load than it had the previous couple of times. This won't really work on live sites that are getting traffic though as it's entirely possible another person's request restarted the application by the time you test it yourself.</p>
-<h2><span class="mw-headline" id="Broken_pipe_error">Broken pipe error</span></h2>
+<h2><span id="Broken_pipe_error" class="mw-headline">Broken pipe error</span></h2>
 <dl>
-<dd><img alt="Passenger error broken pipe.jpg" height="223" src="https://objects-us-west-1.dream.io/kbimages/images/Passenger_error_broken_pipe.jpg" width="410"/></dd>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/Passenger_error_broken_pipe.jpg" alt="Passenger error broken pipe.jpg" width="410" height="223" /></dd>
 </dl>
 <p>If you get an error message mentioning a broken pipe with the exception class <strong>PhusionPassenger::Railz::ApplicationSpawner::Error</strong> as depicted in the image, you're most likely running into memory limit problems. What's happening is the request being processed by Passenger caused your user memory limit on the server to be exceeded and the Rails process that was handling that request was killed. Unfortunately, there isn't a much that can be done about this since even a very basic Rails application requires a lot of memory up front. This happens even more frequently if you have more than one Rails application hosted from the same account. The best way to ensure that you don't run into this problem is to move your Rails sites over to a <a href="/hc/en-us/articles/215280058-Virtual-Private-Server-overview-VPS-">VPS</a>. That gives you guaranteed, scalable memory that you can adjust until your memory needs are met.</p>
-<h2><span class="mw-headline" id="Production_log_isn.27t_written_to">Production log isn't written to</span></h2>
+<h2><span id="Production_log_isn.27t_written_to" class="mw-headline">Production log isn't written to</span></h2>
 <p>This is most often caused by a misconfigured database.yml file. If your database.yml file isn't configured correctly, Passenger dies before your application is loaded. As such, you get no helpful error messages from Passenger and your production.log file isn't touched.</p>
-<h2><span class="mw-headline" id="Missing_connection_settings">Missing connection settings</span></h2>
+<h2><span id="Missing_connection_settings" class="mw-headline">Missing connection settings</span></h2>
 <p>Some versions of Passenger really don't like it if your database.yml file doesn't at least include settings (they can be blank) for all environments. The symptom of this happening is your application endlessly loading with no output to the production.log file. So, make sure you leave the connection information for all environments in your database.yml file -- even if you're only using the production settings.</p>
-<h2><span class="mw-headline" id="Using_a_socket_connection_rather_than_a_host">Using a socket connection rather than a host</span></h2>
+<h2><span id="Using_a_socket_connection_rather_than_a_host" class="mw-headline">Using a socket connection rather than a host</span></h2>
 <p>This mistake is simply not changing from using a socket connection to a host. The default MySQL connection information looks like this:</p>
 <div class="preboxcontainer">
 <pre class="prebox">production:
@@ -38,7 +38,7 @@
   host: mysql.example.com
 </pre>
 </div>
-<h2><span class="mw-headline" id="Misnaming_parameters">Misnaming parameters</span></h2>
+<h2><span id="Misnaming_parameters" class="mw-headline">Misnaming parameters</span></h2>
 <p>Another common mistake is simply having a necessary parameter misnamed. This can happen easier than it sounds because when you generate a Rails application it defaults to generating a sqlite3 database.yml configuration file. You have to manually specify that you want a MySQL file (rails --database mysql &lt;projectname&gt;) or you'll have to change it manually. Since a lot of people don't realize this, they end up changing it after the fact and sqlite3 config files don't have username or host parameters. Here's what a default sqlite3 section looks like:</p>
 <div class="preboxcontainer">
 <pre class="prebox">production:
@@ -70,9 +70,9 @@
   host: mysql.example.com
 </pre>
 </div>
-<h2><span class="mw-headline" id="Passenger_can.27t_find_rails">Passenger can't find rails</span></h2>
+<h2><span id="Passenger_can.27t_find_rails" class="mw-headline">Passenger can't find rails</span></h2>
 <p>There have been some instances where this error pops up when deploying applications that include their own config.ru, such as Fat Free CRM. If you come across this error, try renaming the config.ru and see if the error goes away.</p>
-<h2><span class="mw-headline" id="ERB_comments_cause_the_beginning_of_your_view_to_vanish">ERB comments cause the beginning of your view to vanish</span></h2>
+<h2><span id="ERB_comments_cause_the_beginning_of_your_view_to_vanish" class="mw-headline">ERB comments cause the beginning of your view to vanish</span></h2>
 <p>You may be tempted to begin a view with a comment to help you remember which file you're editing. This can be helpful if, for example, you have "index.html.erb" under many different controllers. You may be tempted to do this.</p>
 <p>This view is broken:</p>
 <div class="preboxcontainer">
@@ -92,7 +92,7 @@
 <p>The solution, is to eliminate the comment or replace it with an old-school HTML comment (the <tt>&lt;!--</tt> kind).</p>
 <h2>See also</h2>
 <ul>
-<li><a href="/hc/en-us/articles/215769578">Passenger overview</a></li>
-<li><a href="/hc/en-us/articles/216385637">How do I enable Passenger on my domain?</a></li>
-<li><a href="/hc/en-us/articles/215769548">Passenger and Python WSGI</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215769578-Passenger-overview">Passenger overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216385637-How-do-I-enable-Passenger-on-my-domain-">How do I enable Passenger on my domain?</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215769548-Passenger-and-Python-WSGI">Passenger and Python WSGI</a></li>
 </ul>

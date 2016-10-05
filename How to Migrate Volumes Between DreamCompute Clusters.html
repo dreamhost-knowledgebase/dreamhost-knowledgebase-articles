@@ -41,7 +41,7 @@ some time.  The copy needs to complete before service can be restored.</p>
 data on the volume, safely unmounted it on the instance using it, and detached
 it from the instance in the Volumes menu in the dashboard.</p>
 <p>As an overview, we are going to setup the following to accomplish this task.</p>
-<div class="code highlight-python"><div class="highlight"><pre>  SOURCE CLUSTER       DESTINATION CLUSTER
+<div class="code highlight-python"><div class="highlight"><pre><span></span>  SOURCE CLUSTER       DESTINATION CLUSTER
 
  +---------------+     +---------------+
  | Temp Instance |----&gt;| Temp Instance |
@@ -62,7 +62,7 @@ won’t be planning to keep it.</p>
 instead of SSH keys, however you can do it either way you prefer.  To setup
 the instances for password authentication, turn it on with the below
 commands.</p>
-<div class="code bash highlight-python"><div class="highlight"><pre>&lt;login to dhc-user on each instance&gt;
+<div class="code bash highlight-python"><div class="highlight"><pre><span></span>&lt;login to each instance&gt;
 sudo su -
 sed -i -e 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
 sed -i -e 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
@@ -79,7 +79,7 @@ destination cluster.  There is no need to mount them.</p>
 <p>5.  Determine the drive letter of the volumes on both instances.  Generally
 /dev/vda will be the boot drive of your instance, so it will be /dev/vdb or
 /dev/vdc.  You can check for it with a couple commands:</p>
-<div class="code bash highlight-python"><div class="highlight"><pre>fdisk -l /dev/vdb | grep Disk
+<div class="code bash highlight-python"><div class="highlight"><pre><span></span>fdisk -l /dev/vdb | grep Disk
 fdisk -l /dev/vdc | grep Disk
 </pre></div>
 </div>
@@ -90,7 +90,7 @@ instance on the destination cluster, and use the IPv6 address for simplicity.
 Replace IPV6-OF-SOURCE-INSTANCE with the IPv6 address of the source instance
 and the first /dev/vdX with the drive letter of the source volume, and the
 second /dev/vdX with the drive letter of the destination volume.</p>
-<div class="code bash highlight-python"><div class="highlight"><pre>ssh root@IPV6-OF-SOURCE-INSTANCE "dd if=/dev/vdX | gzip -1 -" | dd of=/dev/vdX
+<div class="code bash highlight-python"><div class="highlight"><pre><span></span>ssh root@IPV6-OF-SOURCE-INSTANCE "dd if=/dev/vdX | gzip -1 -" | dd of=/dev/vdX
 </pre></div>
 </div>
 <p>7.  Detach the destination volume from the instance, and check that it has the

@@ -67,13 +67,13 @@ server:</p>
 - set_fact: public_v4="{{ mariadb_server.server.public_v4 }}"
 
 - name: add the server to our ansible inventory
-  add_host: hostname={{ public_v4 }} groups=sql ansible_ssh_user=dhc-user ansible_ssh_private_key_file={{ private_key }}
+  add_host: hostname={{ public_v4 }} groups=sql ansible_ssh_user=user ansible_ssh_private_key_file={{ private_key }}
 </pre></div>
 </div>
 <p>Gather the public IP address of the server and add it to the Ansible
 hosts catalog. The <cite>add_host</cite> task creates a new entry assigning the
 IP of the new server to the Ansible group <cite>sql</cite> and configure the SSH
-connection with the default dhc-user, and set the private SSH key
+connection with the default user for your image, and set the private SSH key
 specified at the beginning.</p>
 </div>
 <div id="make-the-new-ubuntu-16-04-compatible-with-ansible">
@@ -187,7 +187,7 @@ the SQL demon.</p>
     - set_fact: public_v4="{{ mariadb_server.server.public_v4 }}"
 
     - name: add the server to our ansible inventory
-      add_host: hostname={{ public_v4 }} groups=sql ansible_ssh_user=dhc-user ansible_ssh_private_key_file={{ private_key }}
+      add_host: hostname={{ public_v4 }} groups=sql ansible_ssh_user=ubuntu ansible_ssh_private_key_file={{ private_key }}
 
 
 - hosts: sql
