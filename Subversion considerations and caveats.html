@@ -9,17 +9,17 @@
 <p>You must configure a subdomain such as realsvn.exampleOnDreamHost.com, then create a subdomain for svn.exampleNOTonDreamHost.com.</p>
 <p>Finally, create a <a href="/hc/en-us/articles/215416417-Mirror-domain-overview">mirror</a> to that domain from the domain you want. Make sure you wait for DNS propagation to occur before testing everything.</p>
 <h2><span id="Handmade_repos_are_read-only" class="mw-headline">Handmade repos are read-only</span></h2>
-<p>If you find that you have to tweak and reload your dumpfile a few times, it can be handy to use the CLI tools (e.g., <tt>rm -rf</tt> and <tt>svnadmin create</tt>) to wipe and recreate your repository until you get it right. But then you'll want to use the panel to delete and recreate your repository. Your test repositories will not function properly in production as they won't permit any changes.</p>
-<p>The panel creates the repository with <tt>dhapache</tt> as the owner, and the <tt>reponame.access</tt> and <tt>reponame.passwd</tt> files with <tt>dhapache</tt> as the group. Trying to create your own production repo with <tt>svnadmin create</tt> is futile because you don't have authorization to change those ownerships and group memberships (and you're not a sudoer).</p>
+<p>If you find that you have to tweak and reload your dumpfile a few times, it can be handy to use the CLI tools (e.g., rm -rf and svnadmin create) to wipe and recreate your repository until you get it right. But then you'll want to use the panel to delete and recreate your repository. Your test repositories will not function properly in production as they won't permit any changes.</p>
+<p>The panel creates the repository with dhapache as the owner, and the reponame.access and reponame.passwd files with dhapache as the group. Trying to create your own production repo with svnadmin create is futile because you don't have authorization to change those ownerships and group memberships (and you're not a sudoer).</p>
 <div class="alert alert-important">
 <div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
-<p>Don't overwrite <tt>dhapache</tt> files. Overwriting files causes them to have your user's group instead of <tt>dhapache</tt>. If your repository is relatively mature when you make this mistake, and you have no backup, you won't have any options.</p>
+<p>Don't overwrite dhapache files. Overwriting files causes them to have your user's group instead of dhapache. If your repository is relatively mature when you make this mistake, and you have no backup, you won't have any options.</p>
 </div>
 </div>
 <h2><span id="Some_clients_require_MD5_passwords" class="mw-headline">Some clients require MD5 passwords</span></h2>
-<p>If you get "access denied" warnings, you may need to use MD5 passwords instead of the standard variety created by the DreamHost panel. Use <tt>htpasswd -nm username</tt> to generate the entry (ala <tt>username:passwd-hash</tt>) for your <tt>reponame.passwd</tt> file, then use an editor to replace your standard password entry.</p>
-<p>Don't overwrite your <tt>reponame.access</tt> and <tt>reponame.passwd</tt> files with <tt>echo "username:passwd-hash" &gt; reponame.passwd</tt>. Overwriting files causes them to have your user's group instead of <tt>dhapache</tt>, leaving your repository in a read-only or inaccessible state.</p>
+<p>If you get "access denied" warnings, you may need to use MD5 passwords instead of the standard variety created by the DreamHost panel. Use htpasswd -nm username to generate the entry (ala username:passwd-hash) for your reponame.passwd file, then use an editor to replace your standard password entry.</p>
+<p>Don't overwrite your reponame.access&gt; and reponame.passwd files with echo "username:passwd-hash" &gt; reponame.passwd. Overwriting files causes them to have your user's group instead of dhapache, leaving your repository in a read-only or inaccessible state.</p>
 <h2><span id="Interfacing_with_Subversion_from_PHP" class="mw-headline">Interfacing with Subversion from PHP</span></h2>
 <p>You'll need to install the PECL extension SVN:</p>
 <ul>
