@@ -1,5 +1,5 @@
 <p>Post Revisions is a WordPress feature that has proven to be helpful. While these are very nice to have, some databases can balloon if you're prone to making a lot of changes or spending a lot of time creating a post. To help keep your database size down — which keeps your install speedy — you might want to fine tune the amount of revisions your site saves.</p>
-<h2><span class="mw-headline" id="Running_a_MySQL_query">Running a MySQL query</span></h2>
+<h2><span id="Running_a_MySQL_query" class="mw-headline">Running a MySQL query</span></h2>
 <p>If you don't want to add another plugin into your WordPress installation, then you can run a simple SQL query to remove revisions.</p>
 <p>To set up a SQL query:</p>
 <ol>
@@ -8,24 +8,18 @@
 <li>Click your database name.</li>
 <li>Make a note of the table prefix.
 <div class="alert alert-note">
-<div class="alert-icon"><img alt="" height="60" src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
 <p>The table prefix may appear as "wp_" but it’s very possible to have a random string of letters such as "wp_qch9en_".</p>
 </div>
 </div>
-<dl>
-<dd><em>In the upper left of the phpMyAdmin page are a series of icons:</em></dd>
-</dl>
-<dl>
-<dd><img alt="Wp finetune2.fw.png" height="127" src="https://objects-us-west-1.dream.io/kbimages/images/Wp_finetune2.fw.png" width="174"/></dd>
-</dl>
 </li>
-<li>Click the <strong>SQL</strong> button to open the SQL command window.
+<li>At the bottom of phpMyAdmin, click the 'Console' icon to open the SQL command window.
 <dl>
 <dd><em>The SQL command page opens:</em></dd>
 </dl>
 <dl>
-<dd><img alt="Wp finetune3.fw.png" height="245" src="https://objects-us-west-1.dream.io/kbimages/images/Wp_finetune3.fw.png" width="699"/></dd>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/Wp_finetune3.fw.png" alt="Wp finetune3.fw.png" width="645" height="226" /></dd>
 </dl>
 </li>
 <li>Paste the following SQL command in the SQL window:
@@ -33,9 +27,10 @@
 <pre class="prebox"><span class="command">DELETE FROM wp_posts WHERE post_type = "revision";</span></pre>
 </div>
 </li>
+<li>To run the command, click 'CTRL + ENTER'.</li>
 </ol>
 <p>This will remove all revisions currently stored in the database. Just make sure to enter the correct table prefix into the query. In the example above, the prefix is just wp_.</p>
-<h2><span class="mw-headline" id="Disabling_revisions">Disabling revisions</span></h2>
+<h2><span id="Disabling_revisions" class="mw-headline">Disabling revisions</span></h2>
 <p>To prevent revisions from being created and stored in the first place, add this line to your wp-config.php file <em>after</em> the database info:</p>
 <div class="preboxcontainer">
 <pre class="prebox">define('WP_POST_REVISIONS', false);</pre>
