@@ -30,38 +30,38 @@ defaults if no specific version is required.</p>
 </ul>
 <p>To install MySQL on your system, run the following commands with the desired
 mysql version, such as:</p>
-<div class="code highlight-python"><div class="highlight"><pre>sudo apt-get update
-sudo apt-get install mysql-server
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> sudo apt-get update
+<span class="gp">[user@server]$</span> sudo apt-get install mysql-server
 </pre></div>
 </div>
 <p>The install process asks you to confirm if you wish to install any additional
 packages needed for this installation of MySQL.  Confirm by entering “<strong>y</strong>”
 and hitting enter.</p>
-<div class="code highlight-python"><div class="highlight"><pre># apt-get install mysql-server
-Reading package lists... Done
-Building dependency tree
-Reading state information... Done
-The following extra packages will be installed:
-libaio1 libdbd-mysql-perl libdbi-perl libhtml-template-perl
-libmysqlclient18 mysql-client-5.5 mysql-common mysql-server-5.5
-mysql-server-core-5.5
-Suggested packages:
-libipc-sharedcache-perl libterm-readkey-perl tinyca
-The following NEW packages will be installed:
-libaio1 libdbd-mysql-perl libdbi-perl libhtml-template-perl
-libmysqlclient18 mysql-client-5.5 mysql-common mysql-server
-mysql-server-5.5
-mysql-server-core-5.5
-0 upgraded, 10 newly installed, 0 to remove and 1 not upgraded.
-Need to get 9,696 kB of archives.
-After this operation, 97.0 MB of additional disk space will be used.
-Do you want to continue [Y/n]?
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> sudo apt-get install mysql-server
+<span class="go">Reading package lists... Done</span>
+<span class="go">Building dependency tree</span>
+<span class="go">Reading state information... Done</span>
+<span class="go">The following extra packages will be installed:</span>
+<span class="go">libaio1 libdbd-mysql-perl libdbi-perl libhtml-template-perl</span>
+<span class="go">libmysqlclient18 mysql-client-5.5 mysql-common mysql-server-5.5</span>
+<span class="go">mysql-server-core-5.5</span>
+<span class="go">Suggested packages:</span>
+<span class="go">libipc-sharedcache-perl libterm-readkey-perl tinyca</span>
+<span class="go">The following NEW packages will be installed:</span>
+<span class="go">libaio1 libdbd-mysql-perl libdbi-perl libhtml-template-perl</span>
+<span class="go">libmysqlclient18 mysql-client-5.5 mysql-common mysql-server</span>
+<span class="go">mysql-server-5.5</span>
+<span class="go">mysql-server-core-5.5</span>
+<span class="go">0 upgraded, 10 newly installed, 0 to remove and 1 not upgraded.</span>
+<span class="go">Need to get 9,696 kB of archives.</span>
+<span class="go">After this operation, 97.0 MB of additional disk space will be used.</span>
+<span class="go">Do you want to continue [Y/n]?</span>
 </pre></div>
 </div>
 <p>Before the installation completes, a dialog will pop up asking you to specify
 a MySQL server root password.  The root user is the default admin user and
 should have a strong password.</p>
-<div class="code highlight-python"><div class="highlight"><pre>Configuring mysql-server-5.5
+<div class="code highlight-python"><div class="highlight"><pre><span></span>Configuring mysql-server-5.5
 While not mandatory, it is highly recommended that you set a
 password for the MySQL administrative "root" user.
 If this field is left blank, the password will not be changed.
@@ -78,7 +78,7 @@ configuration.</p>
 <p>The configuration files are stored in the /etc/mysql directory.  If any
 changes are made, you must restart MySQL for it to read the them.  This can be
 done by running:</p>
-<div class="code highlight-python"><div class="highlight"><pre>service mysql restart
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> sudo service mysql restart
 </pre></div>
 </div>
 <div id="main-configuration-file-etc-mysql-my-cnf">
@@ -99,7 +99,7 @@ like:</p>
 </dl>
 </li>
 </ul>
-<div class="code highlight-python"><div class="highlight"><pre>bind-address            = 2607:f298:6050:8a28:f816:3eff:fe62:c9c3
+<div class="code highlight-python"><div class="highlight"><pre><span></span>bind-address            = 2607:f298:6050:8a28:f816:3eff:fe62:c9c3
 </pre></div>
 </div>
 <ul>
@@ -118,7 +118,7 @@ machine with a lower setting for this value.  The default is 16M.</p>
 <h3>Resetting the root password</h3>
 <p>If you forget the root password, it can be reset by running this command and
 entering in a new password twice.</p>
-<div class="code highlight-python"><div class="highlight"><pre>dpkg-reconfigure mysql-server-5.5
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> dpkg-reconfigure mysql-server-5.5
 </pre></div>
 </div>
 </div>
@@ -127,19 +127,19 @@ entering in a new password twice.</p>
 <p>To connect to your new mysql install, to setup new databases or configure new
 users, you can run these commands.</p>
 <p>Via socket (should work even if “bind” is changed in my.cnf):</p>
-<div class="code highlight-python"><div class="highlight"><pre>mysql -S /var/run/mysqld/mysqld.sock -u root -p
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> mysql -S /var/run/mysqld/mysqld.sock -u root -p
 </pre></div>
 </div>
 <p>Via IP address:</p>
-<div class="code highlight-python"><div class="highlight"><pre>mysql -h 10.10.10.X -u root -p
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> mysql -h 10.10.10.X -u root -p
 </pre></div>
 </div>
 <p>Via localhost:</p>
-<div class="code highlight-python"><div class="highlight"><pre>mysql -h localhost -u root -p
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> mysql -h localhost -u root -p
 </pre></div>
 </div>
 <p>or just:</p>
-<div class="code highlight-python"><div class="highlight"><pre>mysql -u root -p
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> mysql -u root -p
 </pre></div>
 </div>
 </div>

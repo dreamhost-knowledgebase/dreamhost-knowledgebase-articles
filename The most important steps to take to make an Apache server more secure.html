@@ -80,14 +80,14 @@ nor Indexes cause an internal server error.</p>
 <p>Sensitive areas of websites, such as admin control panels, should have strict
 access controls placed on them. Access makes it easy to whitelist IP access to
 certain locations of your website and deny traffic to all other IP addresses:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>&lt;Directory "/wp-admin"&gt;
+<div class="highlight-apacheconf"><div class="highlight"><pre><span></span><span class="nt">&lt;Directory</span> <span class="s">"/wp-admin"</span><span class="nt">&gt;</span>
 
-    # allow access from one IP and an additional IP range,
-    # and block everything else
-    Order Allow,Deny
-    Allow from 1.2.3.4
-    Allow from 192.168.0.0/24
-&lt;/Directory&gt;
+    <span class="c"># allow access from one IP and an additional IP range,</span>
+    <span class="c"># and block everything else</span>
+    <span class="nb">Order</span> Allow,Deny
+    <span class="nb">Allow</span> from <span class="m">1.2.3.4</span>
+    <span class="nb">Allow</span> from <span class="m">192.168.0.0/24</span>
+<span class="nt">&lt;/Directory&gt;</span>
 </pre></div>
 </div>
 <p>In this example, the use of the <cite>Order</cite> directive instructs Apache to allow
@@ -99,23 +99,23 @@ other traffic.</p>
 <p>Access to certain locations can also be set via password-based credentials,
 using the <cite>htpasswd</cite> utility. First, create a file called  <cite>.htpasswd</cite> to store
 the desired user/password combinations:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span><span class="c1"># htpasswd -c /path/to/.htpasswd user1</span>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> htpasswd -c /path/to/.htpasswd user1
 </pre></div>
 </div>
 <p>The <cite>htpasswd</cite> command creates the file <cite>/path/to/.htpasswd</cite> if it doesn’t
 exist, and prompt for a password. To add another user, simply run the command,
 leaving out the <cite>-c</cite> argument:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span><span class="c1"># htpasswd /path/to/.htpasswd user2</span>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> htpasswd /path/to/.htpasswd user2
 </pre></div>
 </div>
 <p>Once you’ve created the user, configure Apache to read the password file and
 control access to the desired directory:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>&lt;Directory "/wp-admin"&gt;
-    AuthType Basic
-    AuthName "Restricted Content"
-    AuthUserFile /path/to/.htpasswd
-    Require valid-user
-&lt;/Directory&gt;
+<div class="highlight-apacheconf"><div class="highlight"><pre><span></span><span class="nt">&lt;Directory</span> <span class="s">"/wp-admin"</span><span class="nt">&gt;</span>
+    <span class="nb">AuthType</span> Basic
+    <span class="nb">AuthName</span> <span class="s2">"Restricted Content"</span>
+    <span class="nb">AuthUserFile</span> <span class="sx">/path/to/.htpasswd</span>
+    <span class="nb">Require</span> valid-user
+<span class="nt">&lt;/Directory&gt;</span>
 </pre></div>
 </div>
 </div>
@@ -169,11 +169,11 @@ Apache configuration directives.</p>
 <h3>Turn TLS On</h3>
 <p>In order to serve encrypted traffic, SSL/TLS needs to be enabled in Apache.
 Enable secure communications with the <cite>SSLEngine</cite> directive:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>&lt;VirtualHost 192.168.1.1:443&gt;
-    SSLEngine on
-    SSLCertificateFile /path/to/cert
-    SSLCertificateKeyFile /path/to/key
-&lt;/VirtualHost&gt;
+<div class="highlight-apacheconf"><div class="highlight"><pre><span></span><span class="nt">&lt;VirtualHost</span> <span class="s">192.168.1.1:443</span><span class="nt">&gt;</span>
+    <span class="nb">SSLEngine</span> <span class="k">on</span>
+    <span class="nb">SSLCertificateFile</span> <span class="sx">/path/to/cert</span>
+    <span class="nb">SSLCertificateKeyFile</span> <span class="sx">/path/to/key</span>
+<span class="nt">&lt;/VirtualHost&gt;</span>
 </pre></div>
 </div>
 </div>
@@ -210,13 +210,13 @@ SSLSessionCacheTimeout 300
 implement forward secrecy (essentially, another layer on top of existing
 encrypted messages). Mitigating this attack is possible in Apache by computing a
 unique set of Diffie-Hellman parameters and configuring Apache to use this value:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span># build a 2048-bit DH prime
-$ openssl dhparam 2048 &gt; /path/to/dhparam
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span> build a 2048-bit DH prime
+<span class="gp">[user@server]$</span> openssl dhparam <span class="m">2048</span> &gt; /path/to/dhparam
 </pre></div>
 </div>
 <p>From here, add the params to the end of the file noted in the
 <cite>SSLCertificateFile</cite> directive:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span><span class="c1"># cat /path/to/custom/dhparam &gt;&gt; /path/to/sslcertfile</span>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> cat /path/to/custom/dhparam &gt;&gt; /path/to/sslcertfile
 </pre></div>
 </div>
 <p>For more information on the Logjam attack, see <a class="reference external" href="https://weakdh.org/">https://weakdh.org/</a></p>
@@ -231,7 +231,7 @@ the <cite>Strict-Transport-Security</cite> header:</p>
 </div>
 <p>For all plaintext connections, configure Apache to send a 301 redirect for
 requests to the TLS version of the site:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>&lt;VirtualHost 192.168.1.1:80&gt;
+<div class="highlight-apacheconf"><div class="highlight"><pre><span></span>&lt;VirtualHost 192.168.1.1:80&gt;
     [...]
     ServerName example.com
     Redirect permanent / https://example.com/

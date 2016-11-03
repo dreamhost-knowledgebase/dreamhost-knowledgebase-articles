@@ -14,33 +14,35 @@ libmodsecurity for a DreamCompute instance running Ubuntu 14.04.</p>
 <h2>Building libmodsecurity</h2>
 <p>First, install the necessary packages and libraries used to build source
 projects, as well as libraries used specifically by libmodsecurity:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span># apt-get install automake gcc make pkg-config libtool g++ libfl-dev bison \
-    build-essential libbison-dev libyajl-dev liblmdb-dev libpcre3-dev \
-    libcurl4-openssl-dev libgeoip-dev libxml2-dev
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> apt-get install automake gcc make pkg-config libtool g++ libfl-dev bison <span class="se">\</span>
+<span class="go">    build-essential libbison-dev libyajl-dev liblmdb-dev libpcre3-dev \</span>
+<span class="go">    libcurl4-openssl-dev libgeoip-dev libxml2-dev</span>
 </pre></div>
 </div>
 <p>Next, download and unpack the most recent source of libmodsecurity. This is
 available from the ModSecurity GitHub project, on the <cite>libmodsecurity</cite> branch:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span># git clone https://github.com/SpiderLabs/ModSecurity
-Cloning into 'ModSecurity'...
-remote: Counting objects: 20508, done.
-remote: Compressing objects: 100% (72/72), done.
-remote: Total 20508 (delta 16), reused 0 (delta 0), pack-reused 20435
-Receiving objects: 100% (20508/20508), 33.93 MiB | 9.49 MiB/s, done.
-Resolving deltas: 100% (14572/14572), done.
-Checking connectivity... done.
-# cd ModSecurity/
-~/ModSecurity# git checkout -b origin/libmodsecurity
-Switched to a new branch 'origin/libmodsecurity'
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> git clone https://github.com/SpiderLabs/ModSecurity
+<span class="go">Cloning into 'ModSecurity'...</span>
+<span class="go">remote: Counting objects: 20508, done.</span>
+<span class="go">remote: Compressing objects: 100% (72/72), done.</span>
+<span class="go">remote: Total 20508 (delta 16), reused 0 (delta 0), pack-reused 20435</span>
+<span class="go">Receiving objects: 100% (20508/20508), 33.93 MiB | 9.49 MiB/s, done.</span>
+<span class="go">Resolving deltas: 100% (14572/14572), done.</span>
+<span class="go">Checking connectivity... done.</span>
+</pre></div>
+</div>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> <span class="nb">cd</span> ModSecurity/
+<span class="gp">[root@server]#</span> git checkout -b origin/libmodsecurity
+<span class="go">Switched to a new branch 'origin/libmodsecurity'</span>
 </pre></div>
 </div>
 <p>Initialize and update the git submodules that libmodsecurity requires:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>~/ModSecurity# git submodule init
-~/ModSecurity# git submodule update
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> git submodule init
+<span class="gp">[root@server]#</span> git submodule update
 </pre></div>
 </div>
 <p>Finally, configure, build, and install the libmodsecurity library:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>~/ModSecurity# ./build.sh &amp;&amp; ./configure &amp;&amp; make &amp;&amp; make install
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> ./build.sh <span class="o">&amp;&amp;</span> ./configure <span class="o">&amp;&amp;</span> make <span class="o">&amp;&amp;</span> make install
 </pre></div>
 </div>
 </div>
@@ -50,50 +52,46 @@ Switched to a new branch 'origin/libmodsecurity'
 third-party programs, Nginx can be compiled with the ModSecurity-nginx connector
 to load libmodsecurity and process requests.</p>
 <p>First, grab the source for the Nginx module wraps around libmodsecurity:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span><span class="c1"># git clone https://github.com/SpiderLabs/ModSecurity-nginx.git</span>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> git clone https://github.com/SpiderLabs/ModSecurity-nginx.git
 </pre></div>
 </div>
 <p>Next, grab the Nginx source and verify it:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span><span class="c1"># wget http://nginx.org/download/nginx-1.10.1.tar.gz</span>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> wget http://nginx.org/download/nginx-1.10.1.tar.gz
 </pre></div>
 </div>
 <p>It’s also important to grab the developer’s signing key and verify the contents
 of the download:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span># gpg --keyserver pgp.mit.edu --recv a1c052f8
-gpg: requesting key A1C052F8 from hkp server pgp.mit.edu
-gpg: key A1C052F8: public key "Maxim Dounin &lt;mdounin@mdounin.ru&gt;" imported
-gpg: 3 marginal(s) needed, 1 complete(s) needed, PGP trust model
-gpg: depth: 0  valid:   3  signed:   5  trust: 0-, 0q, 0n, 0m, 0f, 3u
-gpg: depth: 1  valid:   5  signed:   0  trust: 4-, 0q, 0n, 0m, 1f, 0u
-gpg: next trustdb check due at 2017-11-22
-gpg: Total number processed: 1
-gpg:               imported: 1  (RSA: 1)
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> gpg --keyserver pgp.mit.edu --recv a1c052f8
+<span class="go">gpg: requesting key A1C052F8 from hkp server pgp.mit.edu</span>
+<span class="go">gpg: key A1C052F8: public key "Maxim Dounin &lt;mdounin@mdounin.ru&gt;" imported</span>
+<span class="go">gpg: 3 marginal(s) needed, 1 complete(s) needed, PGP trust model</span>
+<span class="go">gpg: depth: 0  valid:   3  signed:   5  trust: 0-, 0q, 0n, 0m, 0f, 3u</span>
+<span class="go">gpg: depth: 1  valid:   5  signed:   0  trust: 4-, 0q, 0n, 0m, 1f, 0u</span>
+<span class="go">gpg: next trustdb check due at 2017-11-22</span>
+<span class="go">gpg: Total number processed: 1</span>
+<span class="go">gpg:               imported: 1  (RSA: 1)</span>
 </pre></div>
 </div>
 <p>Next, grab the signature for this tarball:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span><span class="c1"># wget http://nginx.org/download/nginx-1.10.1.tar.gz.asc</span>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> wget http://nginx.org/download/nginx-1.10.1.tar.gz.asc
 </pre></div>
 </div>
 <p>And finally, verify the signature:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span># gpg --verify nginx-1.10.1.tar.gz.asc nginx-1.10.1.tar.gz
-gpg: Signature made Tue 31 May 2016 06:58:32 AM PDT using RSA key ID A1C052F8
-gpg: Good signature from "Maxim Dounin &lt;mdounin@mdounin.ru&gt;"
-Primary key fingerprint: B0F4 2533 73F8 F6F5 10D4  2178 520A 9993 A1C0 52F8
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> gpg --verify nginx-1.10.1.tar.gz.asc nginx-1.10.1.tar.gz
+<span class="go">gpg: Signature made Tue 31 May 2016 06:58:32 AM PDT using RSA key ID A1C052F8</span>
+<span class="go">gpg: Good signature from "Maxim Dounin &lt;mdounin@mdounin.ru&gt;"</span>
+<span class="go">Primary key fingerprint: B0F4 2533 73F8 F6F5 10D4  2178 520A 9993 A1C0 52F8</span>
 </pre></div>
 </div>
 <p>From here, configure Nginx with the <cite>–add-module=</cite> option, pointing to the
 ModSecurity-nginx module that was previously downloaded:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span># tar -zxf nginx-1.10.1.tar.gz
-# cd nginx-1.10.1/
-~/nginx-1.10.1# ls
-    auto  CHANGES  CHANGES.ru  conf  configure
-    contrib  html  LICENSE  man README  src
-
-~/nginx-1.10.1# ./configure --add-module=/root/ModSecurity-nginx
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> tar -zxf nginx-1.10.1.tar.gz
+<span class="gp">[root@server]#</span> <span class="nb">cd</span> nginx-1.10.1/
+<span class="gp">[root@server]#</span> ./configure --add-module<span class="o">=</span>/root/ModSecurity-nginx
 </pre></div>
 </div>
 <p>From here, simply build and install Nginx:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>~/nginx-1.10.1# make &amp;&amp; make install
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> make <span class="o">&amp;&amp;</span> make install
 </pre></div>
 </div>
 </div>
@@ -113,28 +111,28 @@ modsecurity_rules '
 <p>These directives can be added inside the <cite>http</cite> block, or one or more <cite>server</cite>
 or <cite>location</cite> blocks. Once this is added, reload Nginx. This rule can now be
 tested by sending a regular request to Nginx and examining the output:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span># curl -D - -s -o /dev/null localhost/
-HTTP/1.1 200 OK
-Server: nginx/1.10.1
-Date: Wed, 13 Jul 2016 18:06:15 GMT
-Content-Type: text/html
-Content-Length: 612
-Last-Modified: Wed, 13 Jul 2016 18:01:34 GMT
-Connection: keep-alive
-ETag: "578681fe-264"
-Accept-Ranges: bytes
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> curl -D - -s -o /dev/null localhost/
+<span class="go">HTTP/1.1 200 OK</span>
+<span class="go">Server: nginx/1.10.1</span>
+<span class="go">Date: Wed, 13 Jul 2016 18:06:15 GMT</span>
+<span class="go">Content-Type: text/html</span>
+<span class="go">Content-Length: 612</span>
+<span class="go">Last-Modified: Wed, 13 Jul 2016 18:01:34 GMT</span>
+<span class="go">Connection: keep-alive</span>
+<span class="go">ETag: "578681fe-264"</span>
+<span class="go">Accept-Ranges: bytes</span>
 </pre></div>
 </div>
 <p>The single rule added via the <cite>modsecurity_rules</cite> directive will deny requests
 that have the word <cite>test</cite> inside a GET or POST argument. This can be seen by
 changing the curl test:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span># curl -D - -s -o /dev/null localhost/?a=test
-HTTP/1.1 403 Forbidden
-Server: nginx/1.10.1
-Date: Wed, 13 Jul 2016 18:06:19 GMT
-Content-Type: text/html
-Content-Length: 169
-Connection: keep-alive
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> curl -D - -s -o /dev/null localhost/?a<span class="o">=</span><span class="nb">test</span>
+<span class="go">HTTP/1.1 403 Forbidden</span>
+<span class="go">Server: nginx/1.10.1</span>
+<span class="go">Date: Wed, 13 Jul 2016 18:06:19 GMT</span>
+<span class="go">Content-Type: text/html</span>
+<span class="go">Content-Length: 169</span>
+<span class="go">Connection: keep-alive</span>
 </pre></div>
 </div>
 <p>A 403 response means that Nginx has blocked the request based on processing the

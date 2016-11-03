@@ -8,13 +8,13 @@
 <h2>Installing MariaDB</h2>
 <p>To install MariaDB on your system, run the following commands with the desired
 MariaDB version, such as:</p>
-<div class="code highlight-python"><div class="highlight"><pre>sudo yum install mariadb-server
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> yum install mariadb-server
 </pre></div>
 </div>
 <p>The install process asks you to confirm if you wish to install any additional
 packages needed for this installation of MariaDB.  Confirm by entering “<strong>y</strong>”
 and hitting enter.</p>
-<div class="code highlight-python"><div class="highlight"><pre>Dependencies Resolved
+<div class="code highlight-python"><div class="highlight"><pre><span></span>Dependencies Resolved
 
 ==============================================================================================
 Package                          Arch           Version                    Repository    Size
@@ -44,15 +44,15 @@ Is this ok [y/d/N]:
 </div>
 <p>After the installation completes, you should start the service and configure
 mariadb by running the following commands as root</p>
-<div class="code highlight-python"><div class="highlight"><pre>systemctl start mariadb
-mysql_secure_installation
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> systemctl start mariadb
+<span class="gp">[root@server]#</span> mysql_secure_installation
 </pre></div>
 </div>
 <p>If you enter a password, another dialog box will come up for you to re-enter
 the password to confirm.</p>
 <p>If you want MariaDB to start automatically after a reboot, run the following as
 root</p>
-<div class="code highlight-python"><div class="highlight"><pre>systemctl enable mariadb
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> systemctl <span class="nb">enable</span> mariadb
 </pre></div>
 </div>
 </div>
@@ -61,7 +61,7 @@ root</p>
 <p>The configuration files are stored in the /etc and /etc/my.cnf.d directories.
 If any changes are made, you must restart MariaDB for it to read the them.
 This can be done by logging in as root and running:</p>
-<div class="code highlight-python"><div class="highlight"><pre>systemctl restart mariadb
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> systemctl restart mariadb
 </pre></div>
 </div>
 <div id="main-configuration-file-etc-my-cnf">
@@ -78,7 +78,7 @@ the instance it is installed on.  If you want to connect to it from other
 DreamCompute instances, you can change this to your instances IPv4 or IPv6
 IP address.  Here is what an IPv6 configured MariaDB bind variable looks
 like:</p>
-<div class="code last highlight-python"><div class="highlight"><pre>bind-address            = 2607:f298:6050:8a28:f816:3eff:fe62:c9c3
+<div class="code last highlight-python"><div class="highlight"><pre><span></span>bind-address            = 2607:f298:6050:8a28:f816:3eff:fe62:c9c3
 </pre></div>
 </div>
 </dd>
@@ -99,7 +99,7 @@ machine with a lower setting for this value.  The default is 16M.</p>
 <h3>Resetting the root password</h3>
 <p>If you forget the root password, it can be reset by running this command and
 entering in a new password twice.</p>
-<div class="code highlight-python"><div class="highlight"><pre>/usr/bin/mysqladmin -u root password 'new-password' -p
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> /usr/bin/mysqladmin -u root password <span class="s1">'new-password'</span> -p
 </pre></div>
 </div>
 </div>
@@ -108,19 +108,19 @@ entering in a new password twice.</p>
 <p>To connect to your new MariaDB install, to setup new databases or configure new
 users, you can run these commands.</p>
 <p>Via socket (should work even if “bind” is changed in my.cnf):</p>
-<div class="code highlight-python"><div class="highlight"><pre>mysql -S /var/lib/mysql/mysql.sock -u root -p
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> mysql -S /var/lib/mysql/mysql.sock -u root -p
 </pre></div>
 </div>
 <p>Via IP address:</p>
-<div class="code highlight-python"><div class="highlight"><pre>mysql -h 10.10.10.X -u root -p
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> mysql -h 10.10.10.X -u root -p
 </pre></div>
 </div>
 <p>Via localhost:</p>
-<div class="code highlight-python"><div class="highlight"><pre>mysql -h localhost -u root -p
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> mysql -h localhost -u root -p
 </pre></div>
 </div>
 <p>or just:</p>
-<div class="code highlight-python"><div class="highlight"><pre>mysql -u root -p
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> mysql -u root -p
 </pre></div>
 </div>
 </div>

@@ -85,15 +85,15 @@ server:</p>
 <p>Next, you must create a database for WordPress and a user that has
 access to that database. Connect to the database as root by running
 the following:</p>
-<div class="code console highlight-python"><div class="highlight"><pre><span></span>[user@mysqlserver] mysql -u root -p
-Enter password:
-mysql&gt;
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@mysqlserver]$</span> mysql -u root -p
+<span class="go">Enter password:</span>
+<span class="go">mysql&gt;</span>
 </pre></div>
 </div>
 <p>Then, to create the database and a user that has access to it, run the
 following:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>mysql&gt; CREATE DATABASE wordpress;
-mysql&gt; GRANT ALL ON wordpress.* TO wordpress@'10.10.10.%' IDENTIFIED by 'PASSWORD';
+<div class="highlight-sql"><div class="highlight"><pre><span></span><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">CREATE</span> <span class="k">DATABASE</span> <span class="n">wordpress</span><span class="p">;</span>
+<span class="n">mysql</span><span class="o">&gt;</span> <span class="k">GRANT</span> <span class="k">ALL</span> <span class="k">ON</span> <span class="n">wordpress</span><span class="p">.</span><span class="o">*</span> <span class="k">TO</span> <span class="n">wordpress</span><span class="o">@</span><span class="s1">'10.10.10.%'</span> <span class="n">IDENTIFIED</span> <span class="k">by</span> <span class="s1">'PASSWORD'</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>The first command creates the database named “wordpress” — you can name
@@ -126,8 +126,8 @@ is one of the easiest ways to do this.</p>
 <p>You can install NFS on a separate server, but also you can simply use the
 same server as your MySQL server.</p>
 <p>To install NFS packages on Ubuntu:</p>
-<div class="code console highlight-python"><div class="highlight"><pre><span></span>[user@mysqlserver] sudo apt update
-[user@mysqlserver] sudo apt install nfs-kernel-server
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">[user@mysqlserver] sudo apt update</span>
+<span class="go">[user@mysqlserver] sudo apt install nfs-kernel-server</span>
 </pre></div>
 </div>
 </div>
@@ -135,8 +135,8 @@ same server as your MySQL server.</p>
 <h3>Configuration</h3>
 <p>To configure NFS, create a directory to be exported to other servers
 and make its content owned by the www-data user and group:</p>
-<div class="code console highlight-python"><div class="highlight"><pre><span></span>[user@mysqlserver] sudo mkdir -p /exports/www
-[user@mysqlserver] sudo chown www-data:www-data /exports/www
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">[user@mysqlserver] sudo mkdir -p /exports/www</span>
+<span class="go">[user@mysqlserver] sudo chown www-data:www-data /exports/www</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -172,10 +172,10 @@ once, as the code is installed to a volume shared by both servers.</p>
 <h4>Installing a LAMP stack</h4>
 <p>WordPress requires a webserver stack, such as Apache2 and PHP
 interpreter:</p>
-<div class="code console highlight-python"><div class="highlight"><pre><span></span>[user@web] sudo apt update
-[user@web] sudo apt install apache2
-[user@web] sudo apt install php-curl php-gd php-mbstring php-mcrypt \
-    php-xml php-xmlrpc php-common libapache2-mod-php php-cli php-mysql
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">[user@web] sudo apt update</span>
+<span class="go">[user@web] sudo apt install apache2</span>
+<span class="go">[user@web] sudo apt install php-curl php-gd php-mbstring php-mcrypt \</span>
+<span class="go">    php-xml php-xmlrpc php-common libapache2-mod-php php-cli php-mysql</span>
 </pre></div>
 </div>
 </div>
@@ -183,9 +183,9 @@ interpreter:</p>
 <h4>Mounting /exports/www</h4>
 <p>Before installing WordPress, configure both webservers to mount the
 /exports/www/ directory from the NFS server.</p>
-<div class="code console highlight-python"><div class="highlight"><pre><span></span>[user@web] sudo apt install nfs-common
-[user@web] sudo mkdir -p /var/www
-[user@web] sudo mount NFS-SERVER-IP:/exports/www /var/www
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">[user@web] sudo apt install nfs-common</span>
+<span class="go">[user@web] sudo mkdir -p /var/www</span>
+<span class="go">[user@web] sudo mount NFS-SERVER-IP:/exports/www /var/www</span>
 </pre></div>
 </div>
 <p>Then, edit the /etc/fstab file on both webservers to automatically mount
@@ -212,7 +212,7 @@ address of the MySQL server.</p>
 <h3>Configuration</h3>
 <p>In /var/www (the root of your WordPress site), edit the file
 config.php and add the following to it:</p>
-<div class="code php highlight-python"><div class="highlight"><pre><span></span>if ($_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') $_SERVER['HTTPS']='on';
+<div class="highlight-php"><div class="highlight"><pre><span></span><span class="x">if ($_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') $_SERVER['HTTPS']='on';</span>
 </pre></div>
 </div>
 <p>You must add this code as the website is served over SSL and WordPress must
@@ -238,8 +238,8 @@ private network and assign a floating IP to it.</p>
 <div id="id8">
 <h3>Installation</h3>
 <p>HAProxy is packaged in Ubuntu:</p>
-<div class="code console highlight-python"><div class="highlight"><pre><span></span>[user@haproxy] sudo apt update
-[user@haproxy] sudo apt install haproxy
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">[user@haproxy] sudo apt update</span>
+<span class="go">[user@haproxy] sudo apt install haproxy</span>
 </pre></div>
 </div>
 </div>
@@ -250,24 +250,24 @@ private network and assign a floating IP to it.</p>
 <p>Let’s Encrypt is a service that makes it easier to get SSL certificates and
 secure your website.</p>
 <p>First, download the Let’s Encrypt tools:</p>
-<div class="code console highlight-python"><div class="highlight"><pre><span></span>[user@haproxy] sudo -s
-[root@haproxy] cd /opt
-[root@haproxy] git clone git://github.com/letsencrypt/letsencrypt
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">[user@haproxy] sudo -s</span>
+<span class="go">[root@haproxy] cd /opt</span>
+<span class="go">[root@haproxy] git clone git://github.com/letsencrypt/letsencrypt</span>
 </pre></div>
 </div>
 <p>Then, request a certificate:</p>
-<div class="code console highlight-python"><div class="highlight"><pre><span></span>[root@haproxy] cd /opt/letsencrypt
-[root@haproxy] ./letsencrypt-auto certonly --standalone -d example.com
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">[root@haproxy] cd /opt/letsencrypt</span>
+<span class="go">[root@haproxy] ./letsencrypt-auto certonly --standalone -d example.com</span>
 </pre></div>
 </div>
 <p>When you finish answering the questions, you should have new SSL
 certificates and keys.</p>
 <p>Finally, put the certs into the right place:</p>
-<div class="code console highlight-python"><div class="highlight"><pre><span></span>[root@haproxy] mkdir -p /etc/ssl/example.com/privkey.pem
-[root@haproxy] cd /etc/letsencrypt/live/example.com/
-[root@haproxy] cat fullchain.pem privkey.pem &gt; /etc/ssl/example.com/privkey.pem
-[root@haproxy] chmod 600 /etc/ssl/example.com/privkey
-[root@haproxy] chmod 700 /etc/ssl/example.com
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">[root@haproxy] mkdir -p /etc/ssl/example.com/privkey.pem</span>
+<span class="go">[root@haproxy] cd /etc/letsencrypt/live/example.com/</span>
+<span class="go">[root@haproxy] cat fullchain.pem privkey.pem &gt; /etc/ssl/example.com/privkey.pem</span>
+<span class="go">[root@haproxy] chmod 600 /etc/ssl/example.com/privkey</span>
+<span class="go">[root@haproxy] chmod 700 /etc/ssl/example.com</span>
 </pre></div>
 </div>
 </div>

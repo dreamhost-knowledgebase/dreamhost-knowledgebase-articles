@@ -23,9 +23,9 @@ started:</p>
 <li>Install the <cite>helloworld</cite> Python package in this repository, <code class="docutils literal"><span class="pre">shade</span></code>, and
 <code class="docutils literal"><span class="pre">ansible</span></code>:</li>
 </ol>
-<div class="code bash highlight-python"><div class="highlight"><pre><span></span>virtualenv venv &amp;&amp; . venv/bin/activate
-git clone https://github.com/ryanpetrello/dreamcompute-hello-world.git hello-world
-cd hello-world &amp;&amp; pip install -e . shade ansible
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@localhost]$</span> virtualenv venv <span class="o">&amp;&amp;</span> . venv/bin/activate
+<span class="gp">[user@localhost]$</span> git clone https://github.com/ryanpetrello/dreamcompute-hello-world.git hello-world
+<span class="gp">[user@localhost]$</span> <span class="nb">cd</span> hello-world <span class="o">&amp;&amp;</span> pip install -e . shade ansible
 </pre></div>
 </div>
 </div>
@@ -35,7 +35,7 @@ cd hello-world &amp;&amp; pip install -e . shade ansible
 that responds to all HTTP requests with <code class="docutils literal"><span class="pre">Hello,</span> <span class="pre">World!</span></code> WSGI is a Python
 protocol that allows a web server to interface with a Python callable (or
 function) to handle each request. Our function looks like this:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">application</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="n">start_response</span><span class="p">):</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">application</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="n">start_response</span><span class="p">):</span>
       <span class="n">data</span> <span class="o">=</span> <span class="s2">"Hello, World!</span><span class="se">\n</span><span class="s2">"</span>
       <span class="n">start_response</span><span class="p">(</span><span class="s2">"200 OK"</span><span class="p">,</span> <span class="p">[</span>
           <span class="p">(</span><span class="s2">"Content-Type"</span><span class="p">,</span> <span class="s2">"text/plain"</span><span class="p">),</span>
@@ -65,15 +65,15 @@ how to download and use it.
 After the shell script downloads, open your
 computer’s command line and run the following (substituting the actual
 location of your downloaded file).</p>
-<div class="code bash highlight-python"><div class="highlight"><pre><span></span><span class="n">source</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">downloaded</span><span class="o">/</span><span class="nb">file</span><span class="o">/</span><span class="n">dhc123456789</span><span class="o">-</span><span class="n">openrc</span><span class="o">.</span><span class="n">sh</span>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@localhost]$</span> <span class="nb">source</span> /path/to/downloaded/file/dhc123456789-openrc.sh
 </pre></div>
 </div>
 <p>You are prompted for a password - it’s the one you use to log in to the
 DreamCompute Dashboard.</p>
 <p>At this point you should be ready to deploy your application. Do so by running
 the following commands:</p>
-<div class="code bash highlight-python"><div class="highlight"><pre><span></span>chmod 600 /path/to/keyname.pem
-ansible-playbook -vvvv -i "localhost," playbooks/deploy.yml --extra-vars "key_name=keyname private_key=/path/to/keyname.pem"
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@localhost]$</span> chmod <span class="m">600</span> /path/to/keyname.pem
+<span class="gp">[user@localhost]$</span> ansible-playbook -vvvv -i <span class="s2">"localhost,"</span> playbooks/deploy.yml --extra-vars <span class="s2">"key_name=keyname private_key=/path/to/keyname.pem"</span>
 </pre></div>
 </div>
 <p>You need to substitute the <code class="docutils literal"><span class="pre">keyname</span></code> key name value for the actual name
@@ -86,7 +86,7 @@ with the actual path to the PEM file you downloaded.</p>
 <div id="example-server-architecture">
 <h2>Example Server Architecture</h2>
 <p>If you <code class="docutils literal"><span class="pre">ssh</span></code> into your newly created server:</p>
-<div class="code bash highlight-python"><div class="highlight"><pre><span></span>ssh -i /path/to/keyname.pem user@1.2.3.4
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@localhost]$</span> ssh -i /path/to/keyname.pem user@1.2.3.4
 </pre></div>
 </div>
 <p>you find a variety of processes running in the following configuration:</p>

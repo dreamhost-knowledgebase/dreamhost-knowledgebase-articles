@@ -31,44 +31,44 @@ Nginx development team, and allows for additional security configurations (as
 we’ll see in a bit). Building from source requires a few steps. First, we need
 the source archive, which we’ll download from the office Nginx site. We’ll use
 the current stable branch as of this writing, 1.10.1:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span># grab the latest tarball from the official Nginx website
-# we will use the latest stable, not mainline, version
-$ wget http://nginx.org/download/nginx-1.10.1.tar.gz
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span> grab the latest tarball from the official Nginx website
+<span class="gp">#</span> we will use the latest stable, not mainline, version
+<span class="gp">[user@server]$</span> wget http://nginx.org/download/nginx-1.10.1.tar.gz
 </pre></div>
 </div>
 <p>We’ll also want to grab the developer’s signing key and verify the contents of
 our download. First, we’ll need the signing key, which we can download from
 a public PGP keyserver:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>$ gpg --keyserver pgp.mit.edu --recv a1c052f8
-gpg: requesting key A1C052F8 from hkp server pgp.mit.edu
-gpg: key A1C052F8: public key "Maxim Dounin &lt;mdounin@mdounin.ru&gt;" imported
-gpg: 3 marginal(s) needed, 1 complete(s) needed, PGP trust model
-gpg: depth: 0  valid:   3  signed:   5  trust: 0-, 0q, 0n, 0m, 0f, 3u
-gpg: depth: 1  valid:   5  signed:   0  trust: 4-, 0q, 0n, 0m, 1f, 0u
-gpg: next trustdb check due at 2017-11-22
-gpg: Total number processed: 1
-gpg:               imported: 1  (RSA: 1)
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> gpg --keyserver pgp.mit.edu --recv a1c052f8
+<span class="go">gpg: requesting key A1C052F8 from hkp server pgp.mit.edu</span>
+<span class="go">gpg: key A1C052F8: public key "Maxim Dounin &lt;mdounin@mdounin.ru&gt;" imported</span>
+<span class="go">gpg: 3 marginal(s) needed, 1 complete(s) needed, PGP trust model</span>
+<span class="go">gpg: depth: 0  valid:   3  signed:   5  trust: 0-, 0q, 0n, 0m, 0f, 3u</span>
+<span class="go">gpg: depth: 1  valid:   5  signed:   0  trust: 4-, 0q, 0n, 0m, 1f, 0u</span>
+<span class="go">gpg: next trustdb check due at 2017-11-22</span>
+<span class="go">gpg: Total number processed: 1</span>
+<span class="go">gpg:               imported: 1  (RSA: 1)</span>
 </pre></div>
 </div>
 <p>Next, we’ll grab the signature for this tarball:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>$ wget http://nginx.org/download/nginx-1.10.1.tar.gz.asc
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> wget http://nginx.org/download/nginx-1.10.1.tar.gz.asc
 </pre></div>
 </div>
 <p>And finally, we’ll verify the signature:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>$ gpg --verify nginx-1.10.1.tar.gz.asc nginx-1.10.1.tar.gz
-gpg: Signature made Tue 31 May 2016 06:58:32 AM PDT using RSA key ID A1C052F8
-gpg: Good signature from "Maxim Dounin &lt;mdounin@mdounin.ru&gt;"
-Primary key fingerprint: B0F4 2533 73F8 F6F5 10D4  2178 520A 9993 A1C0 52F8
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> gpg --verify nginx-1.10.1.tar.gz.asc nginx-1.10.1.tar.gz
+<span class="go">gpg: Signature made Tue 31 May 2016 06:58:32 AM PDT using RSA key ID A1C052F8</span>
+<span class="go">gpg: Good signature from "Maxim Dounin &lt;mdounin@mdounin.ru&gt;"</span>
+<span class="go">Primary key fingerprint: B0F4 2533 73F8 F6F5 10D4  2178 520A 9993 A1C0 52F8</span>
 </pre></div>
 </div>
 <p>From here, we will unpack the tarball, compile Nginx, and install it:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>$ tar -zxf nginx-1.10.1.tar.gz
-$ cd nginx-1.10.1/
-$ ls
-    auto  CHANGES  CHANGES.ru  conf  configure
-    contrib  html  LICENSE  man README  src
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> tar -zxf nginx-1.10.1.tar.gz
+<span class="gp">[user@server]$</span> <span class="nb">cd</span> nginx-1.10.1/
+<span class="gp">[user@server]$</span> ls
+<span class="go">    auto  CHANGES  CHANGES.ru  conf  configure</span>
+<span class="go">    contrib  html  LICENSE  man README  src</span>
 
-$ ./configure &amp;&amp; make &amp;&amp; make install
+<span class="gp">[user@server]$</span> ./configure <span class="o">&amp;&amp;</span> make <span class="o">&amp;&amp;</span> make install
 </pre></div>
 </div>
 </div>
@@ -82,8 +82,8 @@ and reduce the attack surface the Nginx presents to the world (for example, a
 vulnerability found in the uwsgi proxy would not be exploitable against a
 server that does not leverage the uswgi module). Removing modules can be done at
 compile-time via the configure script. For example:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span># disable the ngx_http_uwsgi_module
-$ ./configure --without-http_uwsgi_module
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span> disable the ngx_http_uwsgi_module
+<span class="gp">[user@server]$</span> ./configure --without-http_uwsgi_module
 </pre></div>
 </div>
 <p>The configure script provided with the Nginx script provides a large number of
@@ -126,13 +126,13 @@ Nginx can be configured to not display its version in the <cite>Server</cite> he
 (such as a PHP-FPM instance), it can be beneficial to hide certain headers sent
 in the upstream response (for example, the version of PHP running). For example,
 consider the following response from an Nginx server running a PHP application:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>$ curl -I http://example.com
-HTTP/1.1 200 OK
-Server: nginx
-Content-Type: text/html; charset=UTF-8
-Connection: keep-alive
-Vary: Accept-Encoding
-X-Powered-By: PHP/5.3.3
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> curl -I http://example.com
+<span class="go">HTTP/1.1 200 OK</span>
+<span class="go">Server: nginx</span>
+<span class="go">Content-Type: text/html; charset=UTF-8</span>
+<span class="go">Connection: keep-alive</span>
+<span class="go">Vary: Accept-Encoding</span>
+<span class="go">X-Powered-By: PHP/5.3.3</span>
 </pre></div>
 </div>
 <p>Disclosing the version of PHP can be undesirable; Nginx configurations make this
@@ -141,12 +141,12 @@ easy to hide with the <cite>proxy_hide_header</cite> directive:</p>
 </pre></div>
 </div>
 <p>Our request to the same server would now look like:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>$ curl -I http://example.com
-HTTP/1.1 200 OK
-Server: nginx
-Content-Type: text/html; charset=UTF-8
-Connection: keep-alive
-Vary: Accept-Encoding
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> curl -I http://example.com
+<span class="go">HTTP/1.1 200 OK</span>
+<span class="go">Server: nginx</span>
+<span class="go">Content-Type: text/html; charset=UTF-8</span>
+<span class="go">Connection: keep-alive</span>
+<span class="go">Vary: Accept-Encoding</span>
 </pre></div>
 </div>
 </div>
@@ -257,8 +257,8 @@ ssl_session_timeout 5m;
 implement forward secrecy (essentially, another layer on top of existing
 encrypted messages). Mitigating this attack is possible in Nginx by computing a
 unique set of Diffie-Hellman parameters and configuring Nginx to use this value:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span># build a 2048-bit DH prime
-$ openssl dhparam 2048 &gt; /path/to/dhparam
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span> build a 2048-bit DH prime
+<span class="gp">[user@server]$</span> openssl dhparam <span class="m">2048</span> &gt; /path/to/dhparam
 </pre></div>
 </div>
 <p>From here we only need to tell Nginx to use our custom values:</p>

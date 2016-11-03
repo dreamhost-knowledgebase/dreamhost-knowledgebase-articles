@@ -26,15 +26,16 @@ have root permissions. In order to start a root shell type <code class="docutils
 </div>
 <p>Once you have your server up and running the next step is to install all of
 Etherpad’s dependencies:</p>
-<div class="code bash highlight-python"><div class="highlight"><pre><span></span>apt-get install gzip git curl python libssl-dev pkg-config build-essential
-apt-get install nodejs npm
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> apt-get install gzip git curl python libssl-dev pkg-config <span class="se">\</span>
+<span class="go">    build-essential</span>
+<span class="gp">[root@server]#</span> apt-get install nodejs npm
 </pre></div>
 </div>
 <p>Next you must symlink /usr/bin/nodejs to /usr/bin/node because Etherpad will
 try to use that path. Most Linux distributions install nodejs in /usr/bin/node.
 This step is only necessary on Ubuntu servers since it doesn’t install nodejs
 in /usr/bin/node because of another package.</p>
-<div class="code bash highlight-python"><div class="highlight"><pre><span></span><span class="n">ln</span> <span class="o">-</span><span class="n">s</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">nodejs</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">node</span>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> ln -s /usr/bin/nodejs /usr/bin/node
 </pre></div>
 </div>
 </div>
@@ -42,7 +43,7 @@ in /usr/bin/node because of another package.</p>
 <h2>Installing Etherpad</h2>
 <p>Now that all the dependencies are installed the next step is to download
 Etherpad and run it. To clone Etherpad using git, run:</p>
-<div class="code bash highlight-python"><div class="highlight"><pre><span></span>git clone git://github.com/ether/etherpad-lite.git /srv/etherpad-lite
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> git clone git://github.com/ether/etherpad-lite.git /srv/etherpad-lite
 </pre></div>
 </div>
 <div id="configuration">
@@ -51,11 +52,11 @@ Etherpad and run it. To clone Etherpad using git, run:</p>
 <h4>Networking</h4>
 <p>Now comes the configuration of Etherpad. By default it runs on port 9001.
 Change it to run on port 8080 by editing /srv/etherpad-lite/settings.json:</p>
-<div class="code bash highlight-python"><div class="highlight"><pre><span></span>"port" : 9001,
+<div class="highlight-json"><div class="highlight"><pre><span></span>"port" : 9001,
 </pre></div>
 </div>
 <p>should be changed to:</p>
-<div class="code bash highlight-python"><div class="highlight"><pre><span></span>"port" : 8080,
+<div class="highlight-json"><div class="highlight"><pre><span></span>"port" : 8080,
 </pre></div>
 </div>
 <div class="admonition note">
@@ -72,19 +73,19 @@ testing. This tutorial uses MySQL to store data, but Etherpad supports other
 databases such as PostgreSQL and SQLite.</p>
 <p>If you don’t have MySQL running, follow <a class="reference external" href="215879487">this</a>. Once you have
 that running, connect to MySQL and create a database for Etherpad to use:</p>
-<div class="code bash highlight-python"><div class="highlight"><pre><span></span>$ mysql -u root -p
-Enter password:
-mysql&gt; CREATE DATABASE etherpad
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> mysql -u root -p
+<span class="go">Enter password:</span>
+<span class="go">mysql&gt; CREATE DATABASE etherpad</span>
 </pre></div>
 </div>
 <p>Finally edit settings.json and delete the configuration for dirtyDB:</p>
-<div class="code bash highlight-python"><div class="highlight"><pre><span></span>"dbSettings" : {
+<div class="highlight-json"><div class="highlight"><pre><span></span>"dbSettings" : {
                "filename" : "var/dirty.db"
                },
 </pre></div>
 </div>
 <p>And add the configuration for MySQL:</p>
-<div class="code bash highlight-python"><div class="highlight"><pre><span></span>"dbType" : "mysql",
+<div class="highlight-json"><div class="highlight"><pre><span></span>"dbType" : "mysql",
 "dbSettings" : {
                  "user"    : "etherpad",
                  "host"    : "localhost",
@@ -119,20 +120,20 @@ WantedBy=multi-user.target
 </pre></div>
 </div>
 <p>Next we need to create the user for etherpad-lite to run as.</p>
-<div class="code bash highlight-python"><div class="highlight"><pre><span></span>adduser --system --home=/srv/etherpad-lite --group etherpad-lite
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> adduser --system --home<span class="o">=</span>/srv/etherpad-lite --group etherpad-lite
 </pre></div>
 </div>
 <p>Now there is an <code class="docutils literal"><span class="pre">etherpad-lite</span></code> user, change the permissions of
 /srv/etherpad-lite so that it has access to the directory.</p>
-<div class="code bash highlight-python"><div class="highlight"><pre><span></span>chown -R etherpad-lite:etherpad-lite /srv/etherpad-lite
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> chown -R etherpad-lite:etherpad-lite /srv/etherpad-lite
 </pre></div>
 </div>
 </div>
 <div id="starting-etherpad">
 <h2>Starting Etherpad</h2>
 <p>Finally start the service and set it to start at boot</p>
-<div class="code bash highlight-python"><div class="highlight"><pre><span></span>systemctl enable etherpad-lite
-systemctl start etherpad-lite
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> systemctl <span class="nb">enable</span> etherpad-lite
+<span class="gp">[root@server]#</span> systemctl start etherpad-lite
 </pre></div>
 </div>
 <p>Etherpad is now running. Confirm it works by going to <a class="reference external" href="http://IP:8080">http://IP:8080</a>. Make

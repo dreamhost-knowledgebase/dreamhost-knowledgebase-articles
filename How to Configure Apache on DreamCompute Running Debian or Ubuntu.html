@@ -14,8 +14,8 @@ as they have their own specific configuration and file hierarchy.</p>
 <div id="installing-apache">
 <h2>Installing Apache</h2>
 <p>To install Apache on your system, run the following commands:</p>
-<div class="code bash highlight-python"><div class="highlight"><pre><span></span>$ sudo apt-get update
-$ sudo apt-get install apache2
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> sudo apt-get update
+<span class="gp">[user@server]$</span> sudo apt-get install apache2
 </pre></div>
 </div>
 <ul class="simple">
@@ -23,24 +23,24 @@ $ sudo apt-get install apache2
 additional packages needed for this instance of Apache.</li>
 <li>Enter “<strong>y</strong>” and hit enter to confirm.</li>
 </ul>
-<div class="code highlight-python"><div class="highlight"><pre><span></span># apt-get install apache2
-Reading package lists... Done
-Building dependency tree
-Reading state information... Done
-The following extra packages will be installed:
-apache2-mpm-worker apache2-utils apache2.2-bin apache2.2-common
-libapr1 libaprutil1 libaprutil1-dbd-sqlite3 libaprutil1-ldap
-ssl-cert
-Suggested packages:
-apache2-doc apache2-suexec apache2-suexec-custom openssl-blacklist
-The following NEW packages will be installed:
-apache2 apache2-mpm-worker apache2-utils apache2.2-bin
-apache2.2-common libapr1 libaprutil1 libaprutil1-dbd-sqlite3
-libaprutil1-ldap ssl-cert
-0 upgraded, 10 newly installed, 0 to remove and 0 not upgraded.
-Need to get 1,487 kB of archives.
-After this operation, 5,673 kB of additional disk space will be used.
-Do you want to continue [Y/n]? y
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> sudo apt-get install apache2
+<span class="go">Reading package lists... Done</span>
+<span class="go">Building dependency tree</span>
+<span class="go">Reading state information... Done</span>
+<span class="go">The following extra packages will be installed:</span>
+<span class="go">apache2-mpm-worker apache2-utils apache2.2-bin apache2.2-common</span>
+<span class="go">libapr1 libaprutil1 libaprutil1-dbd-sqlite3 libaprutil1-ldap</span>
+<span class="go">ssl-cert</span>
+<span class="go">Suggested packages:</span>
+<span class="go">apache2-doc apache2-suexec apache2-suexec-custom openssl-blacklist</span>
+<span class="go">The following NEW packages will be installed:</span>
+<span class="go">apache2 apache2-mpm-worker apache2-utils apache2.2-bin</span>
+<span class="go">apache2.2-common libapr1 libaprutil1 libaprutil1-dbd-sqlite3</span>
+<span class="go">libaprutil1-ldap ssl-cert</span>
+<span class="go">0 upgraded, 10 newly installed, 0 to remove and 0 not upgraded.</span>
+<span class="go">Need to get 1,487 kB of archives.</span>
+<span class="go">After this operation, 5,673 kB of additional disk space will be used.</span>
+<span class="go">Do you want to continue [Y/n]? y</span>
 </pre></div>
 </div>
 <ul class="simple">
@@ -124,7 +124,7 @@ high-traffic sites due to its speed and smaller memory footprint.</p>
 </ul>
 <p>To check which MPM configuration (and modules) exist, run the
 following:</p>
-<div class="code bash highlight-python"><div class="highlight"><pre><span></span>sudo apache2 -l
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> sudo apache2 -l
 </pre></div>
 </div>
 <p><em>The enabled modules are listed, ending with .c . In this case, the
@@ -168,14 +168,14 @@ directory.</li>
 but you can view a basic one for listening on port 80 (http) with
 custom logging here:</li>
 </ul>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>&lt;VirtualHost *:80&gt;
-ServerName example.com
-ServerAlias www.example.com
-DocumentRoot /var/www/www.example.com
+<div class="highlight-apacheconf"><div class="highlight"><pre><span></span><span class="nt">&lt;VirtualHost</span> <span class="s">*:80</span><span class="nt">&gt;</span>
+<span class="nb">ServerName</span> example.com
+<span class="nb">ServerAlias</span> www.example.com
+<span class="nb">DocumentRoot</span> <span class="sx">/var/www/www.example.com</span>
 
-CustomLog /var/log/apache/www.example.com-access.log combined
-ErrorLog /var/log/apache/www.example.com-error.log
-&lt;/VirtualHost&gt;
+<span class="nb">CustomLog</span> <span class="sx">/var/log/apache/www.example.com-access.log</span> combined
+<span class="nb">ErrorLog</span> <span class="sx">/var/log/apache/www.example.com-error.log</span>
+<span class="nt">&lt;/VirtualHost&gt;</span>
 </pre></div>
 </div>
 <ul class="simple">
@@ -183,7 +183,7 @@ ErrorLog /var/log/apache/www.example.com-error.log
 can use the following command replacing 1.1.1.1 with your real ip
 address:</li>
 </ul>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>&lt;VirtualHost 1.1.1.1:80&gt;
+<div class="highlight-apacheconf"><div class="highlight"><pre><span></span><span class="nt">&lt;VirtualHost</span> <span class="s">1.1.1.1:80</span><span class="nt">&gt;</span>
 </pre></div>
 </div>
 </div>
@@ -207,9 +207,9 @@ enable/disable it by entering the following commands:</p>
 <div id="modules">
 <h2>Modules</h2>
 <p>Modules can be enabled or disabled by the following commands:</p>
-<div class="code bash highlight-python"><div class="highlight"><pre><span></span>sudo a2enmod
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> sudo a2enmod
 
-sudo a2dismod
+<span class="gp">[user@server]$</span> sudo a2dismod
 </pre></div>
 </div>
 <ul>
@@ -219,7 +219,7 @@ enable or disable.</p>
 <li><p class="first">After you enable or disable a site, reload Apache to make the change
 live by using the following command:</p>
 <blockquote>
-<div><div class="code bash highlight-python"><div class="highlight"><pre><span></span>service apache2 reload
+<div><div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> service apache2 reload
 </pre></div>
 </div>
 </div></blockquote>

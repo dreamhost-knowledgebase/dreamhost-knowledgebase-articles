@@ -21,19 +21,19 @@ DreamCompute instance launched running Debian 8 (Jessie).</p>
 <p>Before installing anything, it’s usually a good idea to make sure that
 the rest of your system’s packages are up to date. For all of the
 commands in this section, ssh into your Debian instance, and run:</p>
-<div class="code bash highlight-python"><div class="highlight"><pre><span></span>sudo apt-get update &amp;&amp; sudo apt-get dist-upgrade
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> sudo apt-get update <span class="o">&amp;&amp;</span> sudo apt-get dist-upgrade
 </pre></div>
 </div>
 <p>Dokku’s repository is hosted on HTTPS, so the first step to installing
 it is:</p>
-<div class="code bash highlight-python"><div class="highlight"><pre><span></span>sudo apt-get install apt-transport-https
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> sudo apt-get install apt-transport-https
 </pre></div>
 </div>
 <p>Now, we’re going to import the keys for the Docker and Dokku
 repositories (the version of Docker that Debian Jessie ships with is too
 old for Dokku, so we’re going to use the upstream Docker repository).</p>
-<div class="code bash highlight-python"><div class="highlight"><pre><span></span>sudo apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 0x2C52609D # this is the Docker key
-sudo apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 0xD59097AB # this is the Dokku key
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> sudo apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 0x2C52609D <span class="c1"># this is the Docker key</span>
+<span class="gp">[user@server]$</span> sudo apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 0xD59097AB <span class="c1"># this is the Dokku key</span>
 </pre></div>
 </div>
 <p>If you’ve already pointed a wildcard <a class="reference external" href="215414867">DNS</a> entry at this
@@ -43,19 +43,19 @@ URLs like <code class="docutils literal"><span class="pre">project.example.com</
 entry pointing at this IP address, you should set vhost_enable to
 <code class="docutils literal"><span class="pre">false</span></code>.</p>
 <p>We’re going to preconfigure dokku before we install it using debconf:</p>
-<div class="code bash highlight-python"><div class="highlight"><pre><span></span>echo 'dokku dokku/web_config boolean false' | sudo debconf-set-selections
-echo 'dokku dokku/vhost_enable boolean true' | sudo debconf-set-selections
-echo 'dokku dokku/hostname string [your-domain]' | sudo debconf-set-selections
-echo 'dokku dokku/key_file string /home/admin/.ssh/id_rsa.pub' | sudo debconf-set-selections
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> <span class="nb">echo</span> <span class="s1">'dokku dokku/web_config boolean false'</span> <span class="p">|</span> sudo debconf-set-selections
+<span class="gp">[user@server]$</span> <span class="nb">echo</span> <span class="s1">'dokku dokku/vhost_enable boolean true'</span> <span class="p">|</span> sudo debconf-set-selections
+<span class="gp">[user@server]$</span> <span class="nb">echo</span> <span class="s1">'dokku dokku/hostname string [your-domain]'</span> <span class="p">|</span> sudo debconf-set-selections
+<span class="gp">[user@server]$</span> <span class="nb">echo</span> <span class="s1">'dokku dokku/key_file string /home/admin/.ssh/id_rsa.pub'</span> <span class="p">|</span> sudo debconf-set-selections
 </pre></div>
 </div>
 <p>You should modify the configuration to suit your own setup, and make
 sure that you point at the right SSH public key file.</p>
 <p>Once you have the keys installed and dokku pre-configured, it’s time to
 tell apt how to find the new repositories, and install dokku:</p>
-<div class="code bash highlight-python"><div class="highlight"><pre><span></span>echo 'deb https://apt.dockerproject.org/repo debian-jessie main' | sudo tee /etc/apt/sources.list.d/docker.list
-echo 'deb https://packagecloud.io/dokku/dokku/ubuntu/ trusty main' | sudo tee /etc/apt/sources.list.d/dokku.list
-sudo apt-get update &amp;&amp; sudo apt-get install dokku
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> <span class="nb">echo</span> <span class="s1">'deb https://apt.dockerproject.org/repo debian-jessie main'</span> <span class="p">|</span> sudo tee /etc/apt/sources.list.d/docker.list
+<span class="gp">[user@server]$</span> <span class="nb">echo</span> <span class="s1">'deb https://packagecloud.io/dokku/dokku/ubuntu/ trusty main'</span> <span class="p">|</span> sudo tee /etc/apt/sources.list.d/dokku.list
+<span class="gp">[user@server]$</span> sudo apt-get update <span class="o">&amp;&amp;</span> sudo apt-get install dokku
 </pre></div>
 </div>
 </div>
@@ -64,7 +64,7 @@ sudo apt-get update &amp;&amp; sudo apt-get install dokku
 <p>If you want to play with this and you don’t already have a
 buildpack-compatible project to deploy, you can clone this project I
 wrote in nodejs on your local machine to test your setup:</p>
-<div class="code bash highlight-python"><div class="highlight"><pre><span></span>local$ git clone git://github.com/clee/p90xcalgen
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@localhost]$</span> git clone git://github.com/clee/p90xcalgen
 </pre></div>
 </div>
 <p>nodejs projects require a <code class="docutils literal"><span class="pre">Procfile</span></code> specifying how to run the server,
@@ -74,19 +74,19 @@ and a <code class="docutils literal"><span class="pre">package.json</span></code
 </pre></div>
 </div>
 <p>And this <code class="docutils literal"><span class="pre">package.json</span></code>:</p>
-<div class="code json highlight-python"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"p90xcalgen"</span><span class="p">,</span>
-    <span class="s2">"version"</span><span class="p">:</span> <span class="s2">"0.3.9"</span><span class="p">,</span>
-    <span class="s2">"private"</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
-    <span class="s2">"dependencies"</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">"express"</span><span class="p">:</span> <span class="s2">"4.x.x"</span><span class="p">,</span>
-        <span class="s2">"body-parser"</span><span class="p">:</span> <span class="s2">"1.x.x"</span><span class="p">,</span>
-        <span class="s2">"errorhandler"</span><span class="p">:</span> <span class="s2">"1.x.x"</span><span class="p">,</span>
-        <span class="s2">"jade"</span><span class="p">:</span> <span class="s2">"&gt;= 1.x.x"</span><span class="p">,</span>
-        <span class="s2">"ejs"</span><span class="p">:</span> <span class="s2">"&gt;= 2.x.x"</span>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">"name"</span><span class="p">:</span> <span class="s2">"p90xcalgen"</span><span class="p">,</span>
+    <span class="nt">"version"</span><span class="p">:</span> <span class="s2">"0.3.9"</span><span class="p">,</span>
+    <span class="nt">"private"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nt">"dependencies"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">"express"</span><span class="p">:</span> <span class="s2">"4.x.x"</span><span class="p">,</span>
+        <span class="nt">"body-parser"</span><span class="p">:</span> <span class="s2">"1.x.x"</span><span class="p">,</span>
+        <span class="nt">"errorhandler"</span><span class="p">:</span> <span class="s2">"1.x.x"</span><span class="p">,</span>
+        <span class="nt">"jade"</span><span class="p">:</span> <span class="s2">"&gt;= 1.x.x"</span><span class="p">,</span>
+        <span class="nt">"ejs"</span><span class="p">:</span> <span class="s2">"&gt;= 2.x.x"</span>
     <span class="p">},</span>
-    <span class="s2">"engines"</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">"node"</span><span class="p">:</span>  <span class="s2">"&gt;= 5.7.1"</span>
+    <span class="nt">"engines"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">"node"</span><span class="p">:</span>  <span class="s2">"&gt;= 5.7.1"</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
@@ -104,12 +104,12 @@ services, like MySQL/PostgreSQL/redis/etc), but here’s the short version for
 a simple app with no database requirements like the example provided above.</p>
 <p>You’ll need to tell dokku about your project before you can deploy it.
 On your Debian instance:</p>
-<div class="code bash highlight-python"><div class="highlight"><pre><span></span>dokku apps:create [project_name]
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@localhost]$</span> dokku apps:create <span class="o">[</span>project_name<span class="o">]</span>
 </pre></div>
 </div>
 <p>On your local machine, in your project’s source folder:</p>
-<div class="code bash highlight-python"><div class="highlight"><pre><span></span>git remote add dokku dokku@[dreamcompute-IP]:[project_name]
-git push dokku master
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@localhost]$</span> git remote add dokku dokku@<span class="o">[</span>dreamcompute-IP<span class="o">]</span>:<span class="o">[</span>project_name<span class="o">]</span>
+<span class="gp">[user@localhost]$</span> git push dokku master
 </pre></div>
 </div>
 <p>And voila! Assuming that you have configured everything correctly, you

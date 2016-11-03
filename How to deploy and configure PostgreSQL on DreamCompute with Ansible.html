@@ -180,34 +180,34 @@ to create the new postgres DB using the Ansible module for PostgreSQL:</p>
 <div id="running-the-ansible-playbook">
 <h2>Running the Ansible Playbook</h2>
 <p>The Ansible playbook can be run with the following command:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>$ ansible-playbook postgresql-server.yaml
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@localhost]$</span> ansible-playbook postgresql-server.yaml
 </pre></div>
 </div>
 <p>You’ll soon see on <a class="reference external" href="https://iad2.dreamcompute.com/project/instances/">DreamHost Cloud web UI</a> the new instance
 and the new volume. Login into the new machine and check that the
 database is really there:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>ubuntu@postgres01:~$ psql -h localhost -d mydb -U dreamer
-Password for user dreamer:
-psql (9.5.3)
-SSL connection (protocol: TLSv1.2, cipher:
-ECDHE-RSA-AES256-GCM-SHA384, bits: 256, compression: off)
-Type "help" for help.
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> psql -h localhost -d mydb -U dreamer
+<span class="go">Password for user dreamer:</span>
+<span class="go">psql (9.5.3)</span>
+<span class="go">SSL connection (protocol: TLSv1.2, cipher:</span>
+<span class="go">ECDHE-RSA-AES256-GCM-SHA384, bits: 256, compression: off)</span>
+<span class="go">Type "help" for help.</span>
 
-mydb=&gt; \l
-                                  List of databases
-   Name    |  Owner   | Encoding  |   Collate   |    Ctype    | Access privileges
------------+----------+-----------+-------------+-------------+-----------------------
- mydb      | postgres | UTF8      | en_US.UTF-8 | en_US.UTF-8 | =Tc/postgres         +
-           |          |           |             |             | postgres=CTc/postgres+
-           |          |           |             |             | dreamer=CTc/postgres
- postgres  | postgres | SQL_ASCII | C           | C           |
- template0 | postgres | SQL_ASCII | C           | C           | =c/postgres          +
-           |          |           |             |             | postgres=CTc/postgres
- template1 | postgres | SQL_ASCII | C           | C           | =c/postgres          +
-           |          |           |             |             | postgres=CTc/postgres
-(4 rows)
+<span class="go">mydb=&gt; \l</span>
+<span class="go">                                  List of databases</span>
+<span class="go">   Name    |  Owner   | Encoding  |   Collate   |    Ctype    | Access privileges</span>
+<span class="go">-----------+----------+-----------+-------------+-------------+-----------------------</span>
+<span class="go"> mydb      | postgres | UTF8      | en_US.UTF-8 | en_US.UTF-8 | =Tc/postgres         +</span>
+<span class="go">           |          |           |             |             | postgres=CTc/postgres+</span>
+<span class="go">           |          |           |             |             | dreamer=CTc/postgres</span>
+<span class="go"> postgres  | postgres | SQL_ASCII | C           | C           |</span>
+<span class="go"> template0 | postgres | SQL_ASCII | C           | C           | =c/postgres          +</span>
+<span class="go">           |          |           |             |             | postgres=CTc/postgres</span>
+<span class="go"> template1 | postgres | SQL_ASCII | C           | C           | =c/postgres          +</span>
+<span class="go">           |          |           |             |             | postgres=CTc/postgres</span>
+<span class="go">(4 rows)</span>
 
-mydb=&gt;
+<span class="go">mydb=&gt;</span>
 </pre></div>
 </div>
 <p>Easy! Next steps are about securing the newly created server and

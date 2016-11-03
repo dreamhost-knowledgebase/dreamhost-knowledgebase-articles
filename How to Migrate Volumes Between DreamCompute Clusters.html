@@ -62,13 +62,13 @@ won’t be planning to keep it.</p>
 instead of SSH keys, however you can do it either way you prefer.  To setup
 the instances for password authentication, turn it on with the below
 commands.</p>
-<div class="code bash highlight-python"><div class="highlight"><pre><span></span>&lt;login to each instance&gt;
-sudo su -
-sed -i -e 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
-sed -i -e 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
-service ssh restart
-passwd root
-&lt;set a password&gt;
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">&lt;login to each instance&gt;</span>
+<span class="gp">[user@server]$</span> sudo su -
+<span class="gp">[root@server]#</span> sed -i -e <span class="s1">'s/PasswordAuthentication no/PasswordAuthentication yes/'</span> /etc/ssh/sshd_config
+<span class="gp">[root@server]#</span> sed -i -e <span class="s1">'s/PermitRootLogin without-password/PermitRootLogin yes/'</span> /etc/ssh/sshd_config
+<span class="gp">[root@server]#</span> service ssh restart
+<span class="gp">[root@server]#</span> passwd root
+<span class="go">&lt;set a password&gt;</span>
 </pre></div>
 </div>
 <p>3.  Create a matching volume in the destination cluster, that is the same size
@@ -79,8 +79,8 @@ destination cluster.  There is no need to mount them.</p>
 <p>5.  Determine the drive letter of the volumes on both instances.  Generally
 /dev/vda will be the boot drive of your instance, so it will be /dev/vdb or
 /dev/vdc.  You can check for it with a couple commands:</p>
-<div class="code bash highlight-python"><div class="highlight"><pre><span></span>fdisk -l /dev/vdb | grep Disk
-fdisk -l /dev/vdc | grep Disk
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> fdisk -l /dev/vdb <span class="p">|</span> grep Disk
+<span class="gp">[root@server]#</span> fdisk -l /dev/vdc <span class="p">|</span> grep Disk
 </pre></div>
 </div>
 <p>The one that matches the size of the volume is the one to use.  They may have
@@ -90,7 +90,7 @@ instance on the destination cluster, and use the IPv6 address for simplicity.
 Replace IPV6-OF-SOURCE-INSTANCE with the IPv6 address of the source instance
 and the first /dev/vdX with the drive letter of the source volume, and the
 second /dev/vdX with the drive letter of the destination volume.</p>
-<div class="code bash highlight-python"><div class="highlight"><pre><span></span>ssh root@IPV6-OF-SOURCE-INSTANCE "dd if=/dev/vdX | gzip -1 -" | dd of=/dev/vdX
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@destserver]#</span> ssh root@IPV6-OF-SOURCE-INSTANCE <span class="s2">"dd if=/dev/vdX | gzip -1 -"</span> <span class="p">|</span> dd <span class="nv">of</span><span class="o">=</span>/dev/vdX
 </pre></div>
 </div>
 <p>7.  Detach the destination volume from the instance, and check that it has the

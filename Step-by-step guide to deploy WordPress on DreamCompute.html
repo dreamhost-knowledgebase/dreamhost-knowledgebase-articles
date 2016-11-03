@@ -22,7 +22,7 @@ instances as they are permanent as opposed to ephemeral disks.</p>
 Ubuntu is perfect for WordPress. If necessary, you can follow the directions
 on <a class="reference external" href="215879467-How-to-Configure-LAMP-on-DreamCompute-running-Debian-or-Ubuntu">how to configure LAMP</a>
 but the overview is as follows:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>sudo apt-get install lamp-server^
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> sudo apt-get install lamp-server^
 </pre></div>
 </div>
 <p>This is interactive, so you’ll be asked ‘are you sure?’ in some places, and
@@ -30,11 +30,11 @@ in others it will want a password for SQL. Make up a secure password for SQL
 and save it as you will need this later to set up SQL for WordPress.</p>
 <p>After it runs, you’ll want to add mod_rewrite so WordPress can make pretty
 pages:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>sudo a2enmod rewrite
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> sudo a2enmod rewrite
 </pre></div>
 </div>
 <p>Finally restart apache:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>sudo service apache2 restart
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> sudo service apache2 restart
 </pre></div>
 </div>
 <p>At this point, your server will be accessible via its IP address.</p>
@@ -47,13 +47,13 @@ will limit the havoc caused should that account be hacked. This also limits the
 danger caused by rogue plugins or themes. The server itself will be safe,
 containing the damage just to that user account.</p>
 <p>To do this, we make a folder for the website:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>sudo mkdir /var/www/example.com
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> sudo mkdir /var/www/example.com
 </pre></div>
 </div>
 <p>And we create a user and give them access:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>sudo adduser wp_example
-sudo adduser wp_example www-data
-sudo chown -R wp_example:www-data /var/www/example.com/
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> sudo adduser wp_example
+<span class="gp">[user@server]$</span> sudo adduser wp_example www-data
+<span class="gp">[user@server]$</span> sudo chown -R wp_example:www-data /var/www/example.com/
 </pre></div>
 </div>
 <p>The reason we add the users to the www-data group is to allow Ubuntu to properly
@@ -65,12 +65,12 @@ manage WordPress updates and images.</p>
 WordPress. By default, this is disabled, so you will need to edit your config
 using a text editor, such as vi, emacs, or nano (this one is easiest for
 beginners).</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>sudo vi /etc/ssh/sshd_config
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> sudo vi /etc/ssh/sshd_config
 </pre></div>
 </div>
 <p>Look for the setting of PasswordAuthentication, change it to “yes”, and save
 your file. Remember to restart SSHD once you’ve done this.</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>sudo service sshd restart
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> sudo service sshd restart
 </pre></div>
 </div>
 <p>Will this make your server less secure? Not significantly. As this new account
@@ -83,28 +83,28 @@ for DreamCompute</a> for all your domains.</p>
 <p>Next you’ll want to configure VirtualHosts so your server knows how to handle
 the domain.</p>
 <p>To do this, you need to make a .conf file:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>sudo touch /etc/apache2/sites-available/example.com.conf
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> sudo touch /etc/apache2/sites-available/example.com.conf
 </pre></div>
 </div>
 <p>It’s recommended you name the file after your domain, so you can always know
 what file is for what domain.</p>
 <p>Edit that file and put this in:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>&lt;VirtualHost *:80&gt;
-    ServerName example.com
-    ServerAdmin admin@example.com
-    DocumentRoot /var/www/example.com
-    &lt;Directory /var/www/example.com&gt;
-            AllowOverride all
-    &lt;/Directory&gt;
+<div class="highlight-apacheconf"><div class="highlight"><pre><span></span><span class="nt">&lt;VirtualHost</span> <span class="s">*:80</span><span class="nt">&gt;</span>
+    <span class="nb">ServerName</span> example.com
+    <span class="nb">ServerAdmin</span> admin@example.com
+    <span class="nb">DocumentRoot</span> <span class="sx">/var/www/example.com</span>
+    <span class="nt">&lt;Directory</span> <span class="s">/var/www/example.com</span><span class="nt">&gt;</span>
+            <span class="nb">AllowOverride</span> <span class="k">all</span>
+    <span class="nt">&lt;/Directory&gt;</span>
 
-    ErrorLog ${APACHE_LOG_DIR}/example.com-error.log
-    CustomLog ${APACHE_LOG_DIR}/example.com-access.log combined
-&lt;/VirtualHost&gt;
+    <span class="nb">ErrorLog</span> ${APACHE_LOG_DIR}/example.com-error.log
+    <span class="nb">CustomLog</span> ${APACHE_LOG_DIR}/example.com-access.log combined
+<span class="nt">&lt;/VirtualHost&gt;</span>
 </pre></div>
 </div>
 <p>Once the site is added, we’ll need to enable it via a command called a2ensite
 (if you want to disable, it’s a2dissite):</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>sudo a2ensite
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> sudo a2ensite
 </pre></div>
 </div>
 <p>This will prompt you to pick what site you want to enable. Type it in, hit
@@ -119,25 +119,25 @@ To activate the new configuration, you need to run:
 </div>
 <p>Remember this command. It’s a fast way to enable sites without having to rename
 or mess with files. Finally bounce your apache service so it reads the changes:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>sudo service apache2 reload
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> sudo service apache2 reload
 </pre></div>
 </div>
 </div>
 <div id="create-the-database-and-users">
 <h2>Create the Database and Users</h2>
 <p>WordPress absolutely requires a database. You’ll want to create one</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>mysql -u root -p
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> mysql -u root -p
 </pre></div>
 </div>
 <p>Remember the password we set earlier? That’s what it’s for.</p>
 <p>Your command prompt will be <cite>mysql&gt;</cite> so let’s make the database:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>mysql&gt; CREATE DATABASE examplecom_wordpress;
-mysql&gt; GRANT ALL ON examplecom_wordpress.* TO examplecom@localhost IDENTIFIED by 'PASSWORD';
+<div class="highlight-sql"><div class="highlight"><pre><span></span><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">CREATE</span> <span class="k">DATABASE</span> <span class="n">examplecom_wordpress</span><span class="p">;</span>
+<span class="n">mysql</span><span class="o">&gt;</span> <span class="k">GRANT</span> <span class="k">ALL</span> <span class="k">ON</span> <span class="n">examplecom_wordpress</span><span class="p">.</span><span class="o">*</span> <span class="k">TO</span> <span class="n">examplecom</span><span class="o">@</span><span class="n">localhost</span> <span class="n">IDENTIFIED</span> <span class="k">by</span> <span class="s1">'PASSWORD'</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Remember to change PASSWORD to an actually secure password.</p>
 <p>You can check this by running the following command:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>mysql -u examplecom -p examplecom_wordpress
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> mysql -u examplecom -p examplecom_wordpress
 </pre></div>
 </div>
 </div>
@@ -146,17 +146,17 @@ mysql&gt; GRANT ALL ON examplecom_wordpress.* TO examplecom@localhost IDENTIFIED
 <p>While this is optional, we strongly recommend this. DreamHost includes <a class="reference external" href="http://wp-cli.org/">WP-CLI</a> on all servers due to its usefulness. To install, log
 in as your default user (not the web user we created earlier) and run the
 following:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>cd ~
-curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> <span class="nb">cd</span> ~
+<span class="gp">[user@server]$</span> curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 </pre></div>
 </div>
 <p>Check that it works:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>php wp-cli.phar --info
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> php wp-cli.phar --info
 </pre></div>
 </div>
 <p>And if it does move it so everyone can use it!</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>chmod +x wp-cli.phar
-sudo mv wp-cli.phar /usr/local/bin/wp
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> chmod +x wp-cli.phar
+<span class="gp">[user@server]$</span> sudo mv wp-cli.phar /usr/local/bin/wp
 </pre></div>
 </div>
 <p>That will make it accessible for all users.</p>
@@ -165,13 +165,13 @@ sudo mv wp-cli.phar /usr/local/bin/wp
 <h2>Install WordPress</h2>
 <p>Log into your server as your WordPress SSH account (wp_example) and go to your
 webfolder. If you’ve installed WP-CLI, then all you have to do is this:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>wp core download
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[wp_example@server]$</span> wp core download
 </pre></div>
 </div>
 <p>If you go to <a class="reference external" href="http://example.com">http://example.com</a> now you’ll get that 5 minute install page.</p>
 <p>Of course since you have wp-cli you can also do this:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>wp core config --dbname=examplecom_wordpress --dbuser=examplecom --dbpass=PASSWORD
-wp core install --url=http://example.com --title=DreamComputePress --admin_user=YOURUSERNAME --admin_password=PASSWORD --admin_email=admin@example.com --skip-email
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[wp_example@server]$</span> wp core config --dbname<span class="o">=</span>examplecom_wordpress --dbuser<span class="o">=</span>examplecom --dbpass<span class="o">=</span>PASSWORD
+<span class="gp">[wp_example@server]$</span> wp core install --url<span class="o">=</span>http://example.com --title<span class="o">=</span>DreamComputePress --admin_user<span class="o">=</span>YOURUSERNAME --admin_password<span class="o">=</span>PASSWORD --admin_email<span class="o">=</span>admin@example.com --skip-email
 </pre></div>
 </div>
 <p>If you use secure passwords like cWG8j8FPPj{T9UDL_PW8 then you MUST put quotes
@@ -182,14 +182,14 @@ around the password.</p>
 <h2>Miscellaneous Stuff</h2>
 <p>The following will make WordPress run even better, but aren’t required.</p>
 <p>Make sure apt has the latest and greatest.</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>sudo apt-get -y update
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> sudo apt-get -y update
 </pre></div>
 </div>
 </div>
 <div id="make-php-better">
 <h2>Make PHP Better</h2>
 <p>If you use a lot of media, install these to improve how PHP processes images.</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>sudo apt install php-imagick php7.0-gd
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> sudo apt install php-imagick php7.0-gd
 </pre></div>
 </div>
 <p>Run a restart of apache when you’re done:</p>
@@ -198,23 +198,23 @@ around the password.</p>
 <h2>Troubleshooting</h2>
 <p>If WordPress can’t save files, you probably forgot to put your user in the right
 group:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>sudo adduser wp_example www-data
-sudo chown -R wp_example:www-data /var/www/example.com/
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> sudo adduser wp_example www-data
+<span class="gp">[user@server]$</span> sudo chown -R wp_example:www-data /var/www/example.com/
 </pre></div>
 </div>
 <p>If that still doesn’t work, try this:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>sudo chgrp -R www-data /var/www/example.com/
-sudo chmod -R g+w /var/www/example.com/
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> sudo chgrp -R www-data /var/www/example.com/
+<span class="gp">[user@server]$</span> sudo chmod -R g+w /var/www/example.com/
 </pre></div>
 </div>
 <p>If pretty permalinks don’t work, make sure you installed rewrite:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>sudo a2enmod rewrite &amp;&amp; sudo service apache2 restart
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> sudo a2enmod rewrite <span class="o">&amp;&amp;</span> sudo service apache2 restart
 </pre></div>
 </div>
 <p>And make absolutely sure you have AllowOverride set to All in your Virtual Host:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>&lt;Directory /var/www/example.com&gt;
-    AllowOverride all
-&lt;/Directory&gt;
+<div class="highlight-apacheconf"><div class="highlight"><pre><span></span><span class="nt">&lt;Directory</span> <span class="s">/var/www/example.com</span><span class="nt">&gt;</span>
+    <span class="nb">AllowOverride</span> <span class="k">all</span>
+<span class="nt">&lt;/Directory&gt;</span>
 </pre></div>
 </div>
 <p>It won’t work without it.</p>
