@@ -50,14 +50,12 @@ containing the damage just to that user account.</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> sudo mkdir /var/www/example.com
 </pre></div>
 </div>
-<p>And we create a user and give them access:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> sudo adduser wp_example
-<span class="gp">[user@server]$</span> sudo adduser wp_example www-data
-<span class="gp">[user@server]$</span> sudo chown -R wp_example:www-data /var/www/example.com/
+<p>Then give your user access to that directory. This is so that you can install
+the WordPress site, later you will change ownership of that directory to
+www-data so Apache can access it.</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> sudo chown -R <span class="nv">$USER</span> /var/www/example.com/
 </pre></div>
 </div>
-<p>The reason we add the users to the www-data group is to allow Ubuntu to properly
-manage WordPress updates and images.</p>
 </div>
 <div id="add-ssh-access">
 <h2>Add SSH Access</h2>
@@ -163,20 +161,24 @@ following:</p>
 </div>
 <div id="install-wordpress">
 <h2>Install WordPress</h2>
-<p>Log into your server as your WordPress SSH account (wp_example) and go to your
-webfolder. If you’ve installed WP-CLI, then all you have to do is this:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[wp_example@server]$</span> wp core download
+<p>If you’ve installed WP-CLI, then all you have to do is this:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> wp core download
 </pre></div>
 </div>
 <p>If you go to <a class="reference external" href="http://example.com">http://example.com</a> now you’ll get that 5 minute install page.</p>
 <p>Of course since you have wp-cli you can also do this:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[wp_example@server]$</span> wp core config --dbname<span class="o">=</span>examplecom_wordpress --dbuser<span class="o">=</span>examplecom --dbpass<span class="o">=</span>PASSWORD
-<span class="gp">[wp_example@server]$</span> wp core install --url<span class="o">=</span>http://example.com --title<span class="o">=</span>DreamComputePress --admin_user<span class="o">=</span>YOURUSERNAME --admin_password<span class="o">=</span>PASSWORD --admin_email<span class="o">=</span>admin@example.com --skip-email
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> wp core config --dbname<span class="o">=</span>examplecom_wordpress --dbuser<span class="o">=</span>examplecom --dbpass<span class="o">=</span>PASSWORD
+<span class="gp">[user@server]$</span> wp core install --url<span class="o">=</span>http://example.com --title<span class="o">=</span>DreamComputePress --admin_user<span class="o">=</span>YOURUSERNAME --admin_password<span class="o">=</span>PASSWORD --admin_email<span class="o">=</span>admin@example.com --skip-email
 </pre></div>
 </div>
 <p>If you use secure passwords like cWG8j8FPPj{T9UDL_PW8 then you MUST put quotes
 around the password.</p>
 <p>I chose to skip-emails since I’m making it right there.</p>
+<p>Finally you must change ownership of the WordPress site to www-data and the
+group to www-data as well so that the Apache webserver can access the files:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> chown -R www-data:www-data /var/www/example.com
+</pre></div>
+</div>
 </div>
 <div id="miscellaneous-stuff">
 <h2>Miscellaneous Stuff</h2>
@@ -196,10 +198,9 @@ around the password.</p>
 </div>
 <div id="troubleshooting">
 <h2>Troubleshooting</h2>
-<p>If WordPress can’t save files, you probably forgot to put your user in the right
-group:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> sudo adduser wp_example www-data
-<span class="gp">[user@server]$</span> sudo chown -R wp_example:www-data /var/www/example.com/
+<p>If WordPress can’t save files, you probably forgot to change ownership of the
+WordPress site to www-data.</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> sudo chown -R www-data:www-data /var/www/example.com/
 </pre></div>
 </div>
 <p>If that still doesn’t work, try this:</p>

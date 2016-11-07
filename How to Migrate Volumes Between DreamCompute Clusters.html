@@ -90,7 +90,7 @@ instance on the destination cluster, and use the IPv6 address for simplicity.
 Replace IPV6-OF-SOURCE-INSTANCE with the IPv6 address of the source instance
 and the first /dev/vdX with the drive letter of the source volume, and the
 second /dev/vdX with the drive letter of the destination volume.</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@destserver]#</span> ssh root@IPV6-OF-SOURCE-INSTANCE <span class="s2">"dd if=/dev/vdX | gzip -1 -"</span> <span class="p">|</span> dd <span class="nv">of</span><span class="o">=</span>/dev/vdX
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@destserver]#</span> ssh root@IPV6-OF-SOURCE-INSTANCE <span class="s2">"dd if=/dev/vdX | gzip -1 -"</span> <span class="p">|</span> gunzip - <span class="p">|</span> dd <span class="nv">of</span><span class="o">=</span>/dev/vdX
 </pre></div>
 </div>
 <p>7.  Detach the destination volume from the instance, and check that it has the

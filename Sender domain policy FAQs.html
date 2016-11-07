@@ -1,44 +1,40 @@
-<h2><span class="mw-headline" id="What_is_the_sender_domain_policy.3F">What is the sender domain policy?</span></h2>
+<h2><span id="What_is_the_sender_domain_policy.3F" class="mw-headline">What is the sender domain policy?</span></h2>
 <p>DreamHost’s sender domain policy exists to ensure email that is sent from your website is legitimate. This policy requires two things:</p>
 <ul>
 <li>You must use a FROM address that’s on the same website you’re sending email from</li>
 <li>The email must be hosted at DreamHost.</li>
 </ul>
 <p>For example, if your website is example.com and you have a PHP mail form sending email, the FROM address in that email must be something like contact@example.com.</p>
-<p>Emails that are sent using a FROM address from somewhere else (such as Yahoo or Google) will be blocked and never sent. If this happens, you can see the mail failure in your <a href="https://dreamhosthelp.zendesk.com/hc/en-us/articles/215612917-FTP-overview">FTP</a> account, and emails will be in your user’s directory in the Maildir/new folder. Open the file in that directory to view why it failed to send. When emails are blocked by this policy, you’ll see the following error message:</p>
+<p>Emails that are sent using a FROM address from somewhere else (such as Yahoo or Google) will be blocked and never sent. If this happens, you can see the mail failure in your <a href="/hc/en-us/articles/215612917-FTP-overview">FTP</a> account, and emails will be in your user’s directory in the Maildir/new folder. Open the file in that directory to view why it failed to send. When emails are blocked by this policy, you’ll see the following error message:</p>
 <div class="preboxcontainer">
 <pre class="prebox">5.7.1 Sender domain not allowed
 </pre>
 </div>
 <div class="alert alert-note">
-<div class="alert-icon"><img alt="" height="60" src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
 <p>Emails sent through DreamHost's shared web servers must use a FROM address that is fully hosted at DreamHost. Forward only aliases will not work.</p>
 </div>
 </div>
-<h2><span class="mw-headline" id="When_was_this_policy_put_into_place.3F">When was this policy put into place?</span></h2>
+<h2><span id="When_was_this_policy_put_into_place.3F" class="mw-headline">When was this policy put into place?</span></h2>
 <p>The policy which restricts the 'from' address on emails was created in April of 2012. It was then slowly rolled out over the following months.</p>
-<p>You can review the following page for more information about the policy:</p>
-<ul>
-<li><a class="external text" href="http://www.dreamhoststatus.com/2012/04/04/improvements-to-outgoing-spam-prevention-policy/" rel="nofollow">Improvements to outgoing spam prevention policy</a></li>
-</ul>
-<h2><span class="mw-headline" id="Why_did_DreamHost_create_this_policy.3F">Why did DreamHost create this policy?</span></h2>
+<h2><span id="Why_did_DreamHost_create_this_policy.3F" class="mw-headline">Why did DreamHost create this policy?</span></h2>
 <p>Over time, spoofed emails sent from DreamHost’s servers began to negatively affect the reputation of DreamHost's mail servers. This in turn threatened the ability to host mail at all with DreamHost. To protect the reputation of DreamHost’s mail servers and provide a stable and reliable service to customers, this policy was created.</p>
-<h2><span class="mw-headline" id="How_does_this_policy_work.3F">How does this policy work?</span></h2>
+<h2><span id="How_does_this_policy_work.3F" class="mw-headline">How does this policy work?</span></h2>
 <p>The most accurate way to send email is to send them from the server where the domain's mail service is hosted. For example, email from Hotmail should be sent from Hotmail's servers and email from Google should be sent from Gmail's servers. DreamHost's mail policy states that emails sent through DreamHost's mail and shared web servers should only be 'from' domains that have their mail service hosted at DreamHost. So, when you send email from a DreamHost shared web server, you must do the following:</p>
 <ul>
 <li>The FROM address must be an email on your domain</li>
 <li>Your email must be hosted at DreamHost</li>
 </ul>
 <div class="alert alert-note">
-<div class="alert-icon"><img alt="" height="60" src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
-<p>This policy does not apply to DreamHost's <a href="https://dreamhosthelp.zendesk.com/hc/en-us/articles/215280058-Private-server-overview">VPS</a> and <a href="https://dreamhosthelp.zendesk.com/hc/en-us/articles/215279658-Dedicated-server-overview">Dedicated</a> servers. Emails sent from a VPS or Dedicated server using PHP's mail(), Sendmail, or SMTP via localhost, are sent directly through the server's postfix mail system and go out to the recipient without passing through any other DreamHost server.</p>
+<p>This policy does not apply to DreamHost's <a href="/hc/en-us/articles/215280058-Private-server-overview">VPS</a> and <a href="/hc/en-us/articles/215279658-Dedicated-server-overview">Dedicated</a> servers. Emails sent from a VPS or Dedicated server using PHP's mail(), Sendmail, or SMTP via localhost, are sent directly through the server's postfix mail system and go out to the recipient without passing through any other DreamHost server.</p>
 </div>
 </div>
-<h2><span class="mw-headline" id="What_domains_am_I_not_allowed_to_send_from.3F">What domains am I not allowed to send from?</span></h2>
-<p>The list of blocked domains does not include every single domain that does not use DreamHost mail service. Instead, it’s a dynamic list maintained by DreamHost's mail administrators. While you may occasionally be able to send an email using a FROM address with a domain that is not hosted at DreamHost, there is no guarantee it won't be blocked in the future. To ensure your emails will not be blocked, only use a FROM address on a domain that uses DreamHost-hosted mail service. The other option is to use SMTP authentication in any website form. When you use SMTP authentication, you can then use any FROM address you like. View the <a href="https://dreamhosthelp.zendesk.com/hc/en-us/articles/216140597-How-do-I-send-PHP-mail-via-SMTP-">Sending SMTP mail</a> article for an example.</p>
-<h2><span class="mw-headline" id="Where_do_blocked_emails_go.3F_How_do_I_find_out_if_emails_have_been_blocked_from_sending.3F">Where do blocked emails go? How do I find out if emails have been blocked from sending?</span></h2>
+<h2><span id="What_domains_am_I_not_allowed_to_send_from.3F" class="mw-headline">What domains am I not allowed to send from?</span></h2>
+<p>The list of blocked domains does not include every single domain that does not use DreamHost mail service. Instead, it’s a dynamic list maintained by DreamHost's mail administrators. While you may occasionally be able to send an email using a FROM address with a domain that is not hosted at DreamHost, there is no guarantee it won't be blocked in the future. To ensure your emails will not be blocked, only use a FROM address on a domain that uses DreamHost-hosted mail service. The other option is to use SMTP authentication in any website form. When you use SMTP authentication, you can then use any FROM address you like. View the <a href="/hc/en-us/articles/216140597-How-do-I-send-PHP-mail-via-SMTP-">Sending SMTP mail</a> article for an example.</p>
+<h2><span id="Where_do_blocked_emails_go.3F_How_do_I_find_out_if_emails_have_been_blocked_from_sending.3F" class="mw-headline">Where do blocked emails go? How do I find out if emails have been blocked from sending?</span></h2>
 <p>Blocked emails are returned to the sender as an 'undelivered' bounced email. Inside that bounced email are three things:</p>
 <ul>
 <li>A notification that the mail server could not deliver the email</li>
@@ -54,17 +50,21 @@
 <li>The website URL for the web form that may not be working properly</li>
 </ul>
 <div class="alert alert-note">
-<div class="alert-icon"><img alt="" height="60" src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
 <p>If you find that your website form isn’t delivering email as it should, look in your user’s directory on your webserver. Log in via FTP, and then navigate to the Maildir/new folder. This folder will list any emails that failed to send properly.</p>
 </div>
 </div>
-<h3><span class="mw-headline" id="The_Maildir_folder">The Maildir folder</span></h3>
+<h3><span id="The_Maildir_folder" class="mw-headline">The Maildir folder</span></h3>
 <p>Blocked emails will be filtered into your Maildir/new directory. A Maildir is a directory (often named Maildir) with three subdirectories named tmp, new, and cur. Maildir is a widely-used format for storing email that does not require application-level file locking to maintain message integrity as messages are added, moved and deleted. Each message is kept in a separate file with a unique name.</p>
-<h2><span class="mw-headline" id="Example_of_acceptable_FROM_addresses">Example of acceptable FROM addresses</span></h2>
+<h2><span id="Example_of_acceptable_FROM_addresses" class="mw-headline">Example of acceptable FROM addresses</span></h2>
 <table class="wikitable">
 <tbody>
-<tr><th bgcolor="#F2F2F2">How the email is sent</th><th bgcolor="#F2F2F2">FROM address used</th><th bgcolor="#F2F2F2">Explanation of address</th></tr>
+<tr>
+<th bgcolor="#F2F2F2">How the email is sent</th>
+<th bgcolor="#F2F2F2">FROM address used</th>
+<th bgcolor="#F2F2F2">Explanation of address</th>
+</tr>
 <tr>
 <td style="width: 29%;">
 <dl>
@@ -140,7 +140,7 @@
 </tr>
 </tbody>
 </table>
-<h2><span class="mw-headline" id="Examples_of_blocked_FROM_email_addresses">Examples of blocked FROM email addresses</span></h2>
+<h2><span id="Examples_of_blocked_FROM_email_addresses" class="mw-headline">Examples of blocked FROM email addresses</span></h2>
 <p>Emails should not be sent with a FROM address hosted somewhere else. For example:</p>
 <ul>
 <li>bob@hotmail.com</li>
@@ -148,7 +148,7 @@
 <li>bob@gmail.com</li>
 </ul>
 <p>If you need to use any address not hosted with DreamHost as your FROM address, you must use SMTP authentication.</p>
-<h2><span class="mw-headline" id="Example_of_a_complete_email">Example of a complete email</span></h2>
+<h2><span id="Example_of_a_complete_email" class="mw-headline">Example of a complete email</span></h2>
 <p>This is an example of an email sent by a website's contact form, such as when a site visitor fills out a submission form on your website. This example uses the domain example.com which is hosted at DreamHost:</p>
 <div class="preboxcontainer">
 <pre class="prebox">From: Site Visitor &lt;admin@example.com&gt;

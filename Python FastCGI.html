@@ -16,7 +16,7 @@
 <h2><span id="Bootstrap" class="mw-headline">Bootstrap</span></h2>
 <p>The following is a quick procedure for establishing a sanity-test FCGI application running Python.</p>
 <ol>
-<li>On the <a class="external text" href="http://panel.dreamhost.com" rel="nofollow">panel</a> configure your site for "Fast CGI Support?" found under (Domains-&gt;Manage Domains)-&gt;(<em>yourdomain.com</em>-&gt;Edit)-&gt;PHP Support</li>
+<li>On the <a class="external text" href="http://panel.dreamhost.com" rel="nofollow">panel</a> configure your site for "Fast CGI Support?" found under (Domains-&gt;Manage Domains)-&gt;(example<em>.com</em>-&gt;Edit)-&gt;PHP Support</li>
 <li>Download the Allan Saddi's <a class="external text" href="http://svn.saddi.com/py-lib/trunk/fcgi.py" rel="nofollow">fcgi.py</a>, placing it somewhere in your PYTHONPATH</li>
 <li>Create your default page handler, <code>dispatch.fcgi</code> (You must use dispatch.fcgi or you will find that the process is <a title="Killed" href="http://wiki.dreamhost.com/Killed">killed</a> in the middle of execution. This is explained <a title="Django" href="http://wiki.dreamhost.com/Django#500_errors_and_Incomplete_Header_in_logs">here</a>) You will need <em>#!/home/username/bin/python</em> not <em>#!/usr/bin/env python</em> for use with Pylons
 <pre>#!/usr/bin/env python
@@ -69,7 +69,7 @@ export PATH="$HOME/packages/bin:$PATH"</pre>
 python ez_setup.py</pre>
 <p>Lastly, I downloaded Allan Saddi's <a class="external text" href="http://svn.saddi.com/py-lib/trunk/fcgi.py" rel="nofollow">fcgi.py</a> and placed it in ~/packages/lib/python2.3/site-packages. You can alternately use Flup, as <a title="Python FastCGI" href="http://wiki.dreamhost.com/Python_FastCGI#Using_Flup">shown below</a>.</p>
 <p><strong>Warning:</strong> fcgi.py serves full Python Tracebacks in HTML by default, which is a security issue. You must override the [WSGI]Server.error() method.</p>
-<p>To test my virtual python and fcgi installation I loosely followed some instructions from <a title="Django" href="http://wiki.dreamhost.com/Django">Django</a>: I saved the following code in a file called dispatch.fcgi on ~/yourdomain.com</p>
+<p>To test my virtual python and fcgi installation I loosely followed some instructions from <a title="Django" href="http://wiki.dreamhost.com/Django">Django</a>: I saved the following code in a file called dispatch.fcgi on ~/example.com</p>
 <pre>#!/home/my-username/packages/bin/python
 from fcgi import WSGIServer
 def test_app(environ, start_response):
@@ -78,14 +78,14 @@ def test_app(environ, start_response):
 
 WSGIServer(test_app).run()</pre>
 <p>Then I made it executable and created a .htaccess file in the same directory as dispatch.fcgi:</p>
-<pre>chmod a+x ~/yourdomain.com/dispatch.fcgi</pre>
+<pre>chmod a+x ~/example.com/dispatch.fcgi</pre>
 <p>.htaccess</p>
 <pre>RewriteEngine On
 RewriteBase /
 RewriteRule ^dispatch\.fcgi/ - [L]
 RewriteRule ^(.*)$ dispatch.fcgi/$1 [L]
 </pre>
-<p>Finally, I waited a few minutes, and tried <a class="external free" href="http://www.mydomain.com/dispatch.fcgi" rel="nofollow">http://www.mydomain.com/dispatch.fcgi</a> and it worked! --<a class="new" title="User:CPUFreak91 (page does not exist)" href="http://wiki.dreamhost.com/index.php?title=User:CPUFreak91&amp;action=edit&amp;redlink=1">CPUFreak91</a></p>
+<p>Finally, I waited a few minutes, and tried <a class="external free" href="http://www.mydomain.com/dispatch.fcgi" rel="nofollow">http://www.example.com/dispatch.fcgi</a> and it worked! --<a class="new" title="User:CPUFreak91 (page does not exist)" href="http://wiki.dreamhost.com/index.php?title=User:CPUFreak91&amp;action=edit&amp;redlink=1">CPUFreak91</a></p>
 <h2><span id="Using_Flup" class="mw-headline">Using Flup</span></h2>
 <p>As an alternate to using fcgi.py, you can rely on Flup to use FastCGI on DreamHost. If you choose to do so (and this was the only way Python worked for me), you don't need to download or install fcgi.py. Simply install Flup with easy_install.</p>
 <pre>easy_install Flup
