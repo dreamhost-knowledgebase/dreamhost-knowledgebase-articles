@@ -70,13 +70,13 @@
 <h2>How does WordPress caching work on DreamPress?</h2>
 <p>Your DreamPress install comes with a plugin called "<a href="https://wordpress.org/plugins/varnish-http-purge">Varnish HTTP Purge</a>", written by DreamHost WordPress developers. When active, the plugin automatically detects changes to your post content (be it an edit, a new post, or a comment on a post) and will flush the appropriate cache for you. The plugin runs on its own and requires no configuration for the majority of users.</p>
 <p>If you edit content outside of WordPress such as uploading media via SFTP or editing CSS directly, you need to use the "<strong>Purge</strong>" button in your WordPress Toolbar.</p>
-<h2>Can I use CloudFlare and Varnish together?</h2>
-<p>When you use CloudFlare or any other similar service, there's a proxy in front of the Varnish proxy. In general, this isn't a bad thing. The problem arises when the DNS sends the purge request to your domain name. When you have an additional proxy like CloudFlare, you don't want the request to go to the proxy; you want it to go instead to the Varnish server.</p>
+<h2>Can I use Cloudflare and Varnish together?</h2>
+<p>When you use Cloudflare or any other similar service, there's a proxy in front of the Varnish proxy. In general, this isn't a bad thing. The problem arises when the DNS sends the purge request to your domain name. When you have an additional proxy like Cloudflare, you don't want the request to go to the proxy; you want it to go instead to the Varnish server.</p>
 <p>To fix this, add the following to your wp-config.php file:</p>
 <div class="preboxcontainer">
 <pre class="prebox">define('VHP_VARNISH_IP','123.45.67.89');</pre>
 </div>
-<p>Replace "123.45.67.89" with the IP of your Varnish Server (not CloudFlare, Varnish). DO NOT put in http in this define statement.</p>
+<p>Replace "123.45.67.89" with the IP of your Varnish Server (not Cloudflare, Varnish). DO NOT put in http in this define statement.</p>
 <p>You can also set the option vhp_varnish_ip in the database. This will NOT take precedence over the define; it's just there to let hosts who are using something like wp-cli do this for you in an automated fashion:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">wp option add vhp_varnish_ip 123.45.67.89</span></pre>

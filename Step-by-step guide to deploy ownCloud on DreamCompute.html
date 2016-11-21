@@ -26,14 +26,14 @@ with:</p>
 </pre></div>
 </div>
 <p>changing the IP to your server’s public IP address. Then run</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@localhost]$</span> sudo su -
-<span class="gp">[root@server]#</span>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@dbserver]$</span> sudo su -
+<span class="gp">[root@dbserver]#</span>
 </pre></div>
 </div>
 <p>this creates a root shell, which you will need because you have to have
 administrator rights to install things system-wide. Now that you have a root
 shell you can install mariadb by running:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> apt-get install mariadb-server
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@dbserver]#</span> apt-get install mariadb-server
 </pre></div>
 </div>
 <p>It will ask for a root password for the Database, enter whatever you want and
@@ -65,7 +65,7 @@ only listening on 127.0.0.1, which is localhost.</p>
 <p>Now our database will listen to connections from other servers, but we have
 to allow root to login from another IP address. We do this by logging into the
 DB as root with</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> mysql -u root -p
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@dbserver]#</span> mysql -u root -p
 </pre></div>
 </div>
 <p>then enter the root password for your database. Then run:</p>
@@ -83,7 +83,7 @@ this is not recommended, especially if your database server has a public IP
 address, because then anyone can try access it.</p>
 </div>
 <p>now restart the mariadb service so the new configs are loaded by running:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> service mysql restart
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@dbserver]#</span> service mysql restart
 </pre></div>
 </div>
 </div>
@@ -95,14 +95,14 @@ address, because then anyone can try access it.</p>
 <p>Now that we have a database that ownCloud can use, we need to deploy the
 frontend application. First login to the server that you will be
 installing ownCloud on. Create a root shell again by running</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@localhost]$</span> sudo su -
-<span class="gp">[root@server]#</span>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@webserver]$</span> sudo su -
+<span class="gp">[root@webserver]#</span>
 </pre></div>
 </div>
 <p>Then run</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> apt-get install apache2 libapache2-mod-php5
-<span class="gp">[root@server]#</span> apt-get install php5-gd php5-json php5-mysql php5-curl
-<span class="gp">[root@server]#</span> apt-get install php5-intl php5-mcrypt php5-imagick
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@webserver]#</span> apt-get install apache2 libapache2-mod-php5
+<span class="gp">[root@webserver]#</span> apt-get install php5-gd php5-json php5-mysql php5-curl
+<span class="gp">[root@webserver]#</span> apt-get install php5-intl php5-mcrypt php5-imagick
 </pre></div>
 </div>
 <p>to install the packages that ownCloud requires to run.</p>
@@ -112,13 +112,13 @@ installing ownCloud on. Create a root shell again by running</p>
 <p>Now we need to download the actual ownCloud application. Do this by going to
 <a class="reference external" href="https://owncloud.org/install/#instructions-server">https://owncloud.org/install/#instructions-server</a> in a browser and right click
 the <em>.tar.bz2</em> link and click <em>copy link location</em> then in your root shell run</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> wget <span class="nv">$URL</span>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@webserver]#</span> wget <span class="nv">$URL</span>
 </pre></div>
 </div>
 <p>where <strong>$URL</strong> is the URL you just copied. This will download a compressed
 copy of the ownCloud application. Decompress the file by running</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> bzip2 -d owncloud-9.0.0.tar.bz2
-<span class="gp">[root@server]#</span> tar -xvf owncloud-9.0.0.tar
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@webserver]#</span> bzip2 -d owncloud-9.0.0.tar.bz2
+<span class="gp">[root@webserver]#</span> tar -xvf owncloud-9.0.0.tar
 </pre></div>
 </div>
 <p>owncloud-9.0.0.tar.bz2 is the name of the file you just downloaded and
@@ -130,12 +130,12 @@ This should create a directory called “owncloud” in your current directory.<
 <h3>Setting up the owncloud directory</h3>
 <p>First we need to copy ownCloud to the right directory. We will be running it
 out of /var/www/owncloud. To copy it run</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> cp -R owncloud /var/www/
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@webserver]#</span> cp -R owncloud /var/www/
 </pre></div>
 </div>
 <p>Now we want to change the permissions of the owncloud directory so that the web
 user, www-data in our case, can access it. Do this by running</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> chown -R www-data:www-data /var/www/owncloud
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@webserver]#</span> chown -R www-data:www-data /var/www/owncloud
 </pre></div>
 </div>
 </div>
@@ -162,21 +162,21 @@ use it. To do this we must create a file in /etc/apache2/sites-available called
 </div>
 <p>Then symlink /etc/apache2/sites-enabled/owncloud.conf to
 /etc/apache2/sites-available/owncloud.conf by running</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> ln -s /etc/apache2/sites-available/owncloud.conf <span class="se">\</span>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@webserver]#</span> ln -s /etc/apache2/sites-available/owncloud.conf <span class="se">\</span>
 <span class="go">    /etc/apache2/sites-enabled/owncloud.conf</span>
 </pre></div>
 </div>
 <p>ownCloud also needs certain apache modules to run properly, enable them by
 running</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> a2enmod rewrite
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@webserver]#</span> a2enmod rewrite
 </pre></div>
 </div>
 <p>You should also use SSL with ownCloud to protect login information and data,
 Apache installed on Ubuntu comes with a self-signed cert. To enable SSL using
 that cert run</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> a2enmod ssl
-<span class="gp">[root@server]#</span> a2ensite default-ssl
-<span class="gp">[root@server]#</span> service apache2 restart
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@webserver]#</span> a2enmod ssl
+<span class="gp">[root@webserver]#</span> a2ensite default-ssl
+<span class="gp">[root@webserver]#</span> service apache2 restart
 </pre></div>
 </div>
 </div>

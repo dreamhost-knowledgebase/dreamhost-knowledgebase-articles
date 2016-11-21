@@ -64,29 +64,6 @@
 <ul>
 <li><a class="external free" href="https://letsencrypt.org/2015/10/19/lets-encrypt-is-trusted.html" rel="nofollow">https://letsencrypt.org/2015/10/19/lets-encrypt-is-trusted.html</a></li>
 </ul>
-<h3><span id="Why_doesn.27t_the_certificate_work_with_Windows_XP.3F">Why doesn't the certificate work with Windows XP?</span></h3>
-<p>Users running Windows XP are not able to use the certificate. View the following link for further details:</p>
-<ul>
-<li><a class="external free" href="https://github.com/letsencrypt/letsencrypt/issues/1660" rel="nofollow">https://github.com/letsencrypt/letsencrypt/issues/1660</a></li>
-</ul>
-<p>The solution is to add the following to your site's .htaccess file.</p>
-<div class="preboxcontainer">
-<pre class="prebox">&lt;IfModule mod_rewrite.c&gt;
-RewriteEngine on
-RewriteCond %{HTTPS} !=on
-RewriteCond "%{HTTP_USER_AGENT}" "!(Windows\ NT\ 5\.1|Windows\ NT\ 5\.2)" [NC]
-RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-&lt;/IfModule&gt;
-</pre>
-</div>
-<p>This prevents Windows XP users from being redirected to the HTTPS version of your site.</p>
-<h2>Does Let's Encrypt support internationalized domains?</h2>
-<p>Let's Encrypt does not currently support <a class="extiw" title="w:Internationalized domain name" href="http://en.wikipedia.org/wiki/Internationalized_domain_name">internationalized domains</a>, for example:</p>
-<ul>
-<li>www.xn--abcdef.com</li>
-<li>xn--abcef.example.com</li>
-</ul>
-<p>Let's Encrypt <em>does</em> support international domains, such as co.uk, com.br, and so on.</p>
 <h2><span id="See_also">See also</span></h2>
 <h3>Internal links</h3>
 <ul>
