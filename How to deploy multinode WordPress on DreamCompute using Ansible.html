@@ -4,13 +4,6 @@
 <div class="body" role="main">
 <div id="how-to-deploy-multinode-wordpress-on-dreamcompute-using-ansible">
 
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">This is a temporary article for deploying a multinode WordPress site using
-Ansible. A more complete article with more instructions on how to configure
-the Ansible playbook to your needs is coming later, this article is purely
-for demo purposes.</p>
-</div>
 <div id="why-ansible">
 <h2>Why Ansible?</h2>
 <p>Ansible is a configuration management tool that has OpenStack integration built
@@ -56,7 +49,7 @@ The way you do that is by running:</p>
 <div id="downloading-the-playbook">
 <h2>Downloading the playbook</h2>
 <p>Download the Ansible playbook by cloning the OpenStack Ops (osops) repository:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">[user@localhost] git clone https://github.com/openstack/osops-tools-contrib.git</span>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">[user@localhost] git clone https://github.com/squidboylan/osops-tools-contrib.git</span>
 </pre></div>
 </div>
 </div>
@@ -103,8 +96,8 @@ The way you do that is by running:</p>
 <span class="go">    "env=dreamhost action=apply password=yourpassword" site.yml</span>
 </pre></div>
 </div>
-<p>This will create your wordpress site, after it runs, visit the IP address of
-your balancer, and if everything worked you should see a wordpress site. The
+<p>This will create your WordPress site, after it runs, visit the IP address of
+your balancer, and if everything worked you should see a WordPress site. The
 full run of the playbook may take 8 - 12 minutes.</p>
 <p>In order to delete the site, run the following:</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">(venv)[user@localhost] ansible-playbook -e \</span>
@@ -115,7 +108,7 @@ full run of the playbook may take 8 - 12 minutes.</p>
 <div id="extra-configuration">
 <h2>Extra configuration</h2>
 <p>There are several configuration changes that can be made to the playbook to
-modify the wordpress site it creates. Take a look at the “vars/dreamhost.yml”
+modify the WordPress site it creates. Take a look at the “vars/dreamhost.yml”
 file:</p>
 <ul class="simple">
 <li><code class="docutils literal"><span class="pre">stack_size</span></code> is the variable that defines how many servers to use for your
@@ -124,7 +117,16 @@ site. The number of webservers you have is stack_size-2.</li>
 to whatver server flavor you want.</li>
 <li><code class="docutils literal"><span class="pre">volume_size</span></code> is the size of the volume to put your MySQL database on. A
 bigger site with more data will need a bigger volume.</li>
-<li><code class="docutils literal"><span class="pre">wp_theme</span></code> is the wordpress theme to use with the site.</li>
+<li><code class="docutils literal"><span class="pre">wp_theme</span></code> is the WordPress theme to use with the site.</li>
+<li><code class="docutils literal"><span class="pre">wp_title</span></code> is the title of the WordPress site</li>
+</ul>
+<p>The “group_vars/all.yml” file also has some configuration:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">db_user</span></code> is the database user that wordpress will use</li>
+<li><code class="docutils literal"><span class="pre">db_pass</span></code> is the password for the database user that wordpress will use, it
+also gets used as the admin password for the website. The default setting
+will generate a random password using ascii characters that is 8 letters long
+and store it in /tmp/sqlpassword</li>
 </ul>
 </div>
 </div>
