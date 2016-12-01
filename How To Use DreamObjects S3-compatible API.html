@@ -9,8 +9,8 @@
 <li><a class="reference internal" href="#rados-s3-api"><span>DreamObjects RADOS S3 API</span></a></li>
 <li><a class="reference internal" href="#common-entities-s3"><span>Common Entities</span></a></li>
 <li><a class="reference internal" href="#authentication-s3"><span>How To Authenticate to DreamObjects with S3 API</span></a></li>
-<li><a class="reference internal" href="#service-operations-s3"><span>Understand DreamObjects S3-compatible Service Operations</span></a></li>
-<li><a class="reference internal" href="#bucket-operations-s3"><span>Understand DreamObjects S3-compatible Bucket Operations</span></a></li>
+<li><a class="reference internal" href="#service-operations-s3"><span>Understanding DreamObjects S3-compatible Service Operations</span></a></li>
+<li><a class="reference internal" href="#bucket-operations-s3"><span>Understanding DreamObjects S3-compatible Bucket Operations</span></a></li>
 <li><a class="reference internal" href="#object-operations-s3"><span>Understand DreamObjects S3-compatible Object Operations</span></a></li>
 </ul>
 </div>
@@ -81,7 +81,7 @@ functional features:</p>
 <td> </td>
 </tr>
 <tr class="row-odd"><td>Bucket Website</td>
-<td>Not Supported</td>
+<td>Supported</td>
 <td> </td>
 </tr>
 <tr class="row-even"><td>Policy (Buckets, Objects)</td>
@@ -169,20 +169,20 @@ functional features:</p>
 <h3>Bucket and Host Name</h3>
 <p>There are two different modes of accessing the buckets. The first
 (preferred) method identifies the bucket as the top-level directory in
-the URI.</p>
+the URI:</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span>GET /mybucket HTTP/1.1
 Host: objects-us-west-1.dream.io
 </pre></div>
 </div>
 <p>The second method identifies the bucket via a virtual bucket host
-name. For example::</p>
+name. For example:</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span>GET / HTTP/1.1
 Host: mybucket.objects-us-west-1.dream.io
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">We prefer the first method, because the second method requires
+<p class="last">DreamHost prefers the first method, because the second method requires
 expensive domain certification and DNS wild cards.</p>
 </div>
 </div>
@@ -336,7 +336,7 @@ DreamObjects supports canned ACLs.</p>
 <h3>Authentication</h3>
 <p>Authenticating a request requires including an access key and a Hash-based
 Message Authentication Code (HMAC) in the request before it is sent to the
-RGW server. RGW uses an S3-compatible authentication approach.</p>
+RGW server. RGW uses an S3-compatible authentication approach:</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span>HTTP/1.1
 PUT /buckets/bucket/object.mpeg
 Host: objects-us-west-1.dream.io
@@ -350,7 +350,7 @@ Authorization: AWS {access-key}:{hash-of-header-and-secret}
 <p>In the foregoing example, replace <code class="docutils literal"><span class="pre">{access-key}</span></code> with the value for your access
 key ID followed by a colon (<code class="docutils literal"><span class="pre">:</span></code>). Replace <code class="docutils literal"><span class="pre">{hash-of-header-and-secret}</span></code> with
 a hash of the header string and the secret corresponding to the access key ID.</p>
-<p>To generate the hash of the header string and secret, you must:</p>
+<p>To generate the hash of the header string and secret:</p>
 <ol class="arabic simple">
 <li>Get the value of the header string.</li>
 <li>Normalize the request header string into canonical form.</li>
@@ -373,8 +373,8 @@ single field and separate the field values with a comma.</li>
 <p>Replace the <code class="docutils literal"><span class="pre">{hash-of-header-and-secret}</span></code> with the base-64 encoded HMAC string.</p>
 </div>
 </div>
-<div id="understand-dreamobjects-s3-compatible-access-control-list">
-<h2>Understand DreamObjects S3-compatible Access Control List</h2>
+<div id="understanding-dreamobjects-s3-compatible-access-control-list">
+<h2>Understanding DreamObjects S3-compatible Access Control List</h2>
 <p>DreamObjects supports S3-compatible Access Control List (ACL)
 functionality. An ACL is a list of access grants that specify which
 operations a user can perform on a bucket or on an object.  Each grant
@@ -416,8 +416,8 @@ object:</p>
 </tbody>
 </table>
 </div>
-<div id="understand-dreamobjects-s3-compatible-service-operations">
-<span id="service-operations-s3"></span><h2>Understand DreamObjects S3-compatible Service Operations</h2>
+<div id="understanding-dreamobjects-s3-compatible-service-operations">
+<span id="service-operations-s3"></span><h2>Understanding DreamObjects S3-compatible Service Operations</h2>
 <div id="list-buckets">
 <h3>List Buckets</h3>
 <p><code class="docutils literal"><span class="pre">GET</span> <span class="pre">/</span></code> returns a list of buckets created by the user making the
@@ -484,19 +484,19 @@ Authorization: AWS {access-key}:{hash-of-header-and-secret}
 </div>
 </div>
 </div>
-<div id="understand-dreamobjects-s3-compatible-bucket-operations">
-<span id="bucket-operations-s3"></span><h2>Understand DreamObjects S3-compatible Bucket Operations</h2>
+<div id="understanding-dreamobjects-s3-compatible-bucket-operations">
+<span id="bucket-operations-s3"></span><h2>Understanding DreamObjects S3-compatible Bucket Operations</h2>
 <div id="put-bucket">
 <h3>PUT Bucket</h3>
 <p>Creates a new bucket. To create a bucket, you must have a user ID and a valid AWS Access Key ID to authenticate requests. You may not
 create buckets as an anonymous user.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">We do not support request entities for <code class="docutils literal"><span class="pre">PUT</span> <span class="pre">/{bucket}</span></code> in this release.</p>
+<p class="last">DreamHost does not support request entities for <code class="docutils literal"><span class="pre">PUT</span> <span class="pre">/{bucket}</span></code> in this release.</p>
 </div>
 <div id="constraints">
 <h4>Constraints</h4>
-<p>In general, bucket names should follow domain name constraints.</p>
+<p>In general, bucket names should follow domain name constraints:</p>
 <ul class="simple">
 <li>Bucket names must be unique.</li>
 <li>Bucket names must begin and end with a lowercase letter.</li>
@@ -540,9 +540,9 @@ Authorization: AWS {access-key}:{hash-of-header-and-secret}
 </div>
 <div id="http-response">
 <h4>HTTP Response</h4>
-<p>If the bucket name is unique, within constraints and unused, the operation will succeed.
-If a bucket with the same name already exists and the user is the bucket owner, the operation will succeed.
-If the bucket name is already in use, the operation will fail.</p>
+<p>If the bucket name is unique, within constraints and unused, the operation succeeds.
+If a bucket with the same name already exists and the user is the bucket owner, the operation succeeds.
+If the bucket name is already in use, the operation fails.</p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="16%"></col>
@@ -687,7 +687,7 @@ Host: objects-us-west-1.dream.io
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">Name</span></code></td>
 <td>String</td>
-<td>The name of the bucket whose contents will be returned.</td>
+<td>The name of the bucket whose contents are returned.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">Prefix</span></code></td>
 <td>String</td>
@@ -703,15 +703,15 @@ Host: objects-us-west-1.dream.io
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">Delimiter</span></code></td>
 <td>String</td>
-<td>If set, objects with the same prefix will appear in the <code class="docutils literal"><span class="pre">CommonPrefixes</span></code> list.</td>
+<td>If set, objects with the same prefix appear in the <code class="docutils literal"><span class="pre">CommonPrefixes</span></code> list.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">IsTruncated</span></code></td>
 <td>Boolean</td>
-<td>If <code class="docutils literal"><span class="pre">true</span></code>, only a subset of the bucket’s contents were returned.</td>
+<td>If <code class="docutils literal"><span class="pre">true</span></code>, only a subset of the bucket’s contents are returned.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">CommonPrefixes</span></code></td>
 <td>Container</td>
-<td>If multiple objects contain the same prefix, they will appear in this list.</td>
+<td>If multiple objects contain the same prefix, they appear in this list.</td>
 </tr>
 </tbody>
 </table>
@@ -762,8 +762,8 @@ Host: objects-us-west-1.dream.io
 </div>
 <div id="get-bucket-acl">
 <h3>Get Bucket ACL</h3>
-<p>Retrieves the bucket access control list. The user needs to be the bucket
-owner or to have been granted <code class="docutils literal"><span class="pre">READ_ACP</span></code> permission on the bucket.</p>
+<p>Retrieves the bucket access control list. The user must be the bucket
+owner or be granted <code class="docutils literal"><span class="pre">READ_ACP</span></code> permission on the bucket.</p>
 <div id="id7">
 <h4>Syntax</h4>
 <p>Add the <code class="docutils literal"><span class="pre">acl</span></code> subresource to the bucket request as shown below.</p>
@@ -899,7 +899,7 @@ the service hasn’t completed all the uploads yet.</p>
 </div>
 <div id="id11">
 <h4>Parameters</h4>
-<p>You may specify parameters for <code class="docutils literal"><span class="pre">GET</span> <span class="pre">/{bucket}?uploads</span></code>, but none of them are required.</p>
+<p>You can specify parameters for <code class="docutils literal"><span class="pre">GET</span> <span class="pre">/{bucket}?uploads</span></code>, but none of them are required.</p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="20%"></col>
@@ -966,7 +966,7 @@ upload to list in lexicographical order at or following the <code class="docutil
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">Bucket</span></code></td>
 <td>String</td>
-<td>The bucket that will receive the bucket contents.</td>
+<td>The bucket that receives the bucket contents.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">KeyMarker</span></code></td>
 <td>String</td>
@@ -990,11 +990,11 @@ upload to list in lexicographical order at or following the <code class="docutil
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">Delimiter</span></code></td>
 <td>String</td>
-<td>If set, objects with the same prefix will appear in the <code class="docutils literal"><span class="pre">CommonPrefixes</span></code> list.</td>
+<td>If set, objects with the same prefix appear in the <code class="docutils literal"><span class="pre">CommonPrefixes</span></code> list.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">IsTruncated</span></code></td>
 <td>Boolean</td>
-<td>If <code class="docutils literal"><span class="pre">true</span></code>, only a subset of the bucket’s upload contents were returned.</td>
+<td>If <code class="docutils literal"><span class="pre">true</span></code>, only a subset of the bucket’s upload contents are returned.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">Upload</span></code></td>
 <td>Container</td>
@@ -1034,7 +1034,7 @@ upload to list in lexicographical order at or following the <code class="docutil
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">CommonPrefixes</span></code></td>
 <td>Container</td>
-<td>If multiple objects contain the same prefix, they will appear in this list.</td>
+<td>If multiple objects contain the same prefix, they appear in this list.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">CommonPrefixes.Prefix</span></code></td>
 <td>String</td>
@@ -1269,7 +1269,7 @@ x-amz-copy-source: {source-bucket}/{source-object}
 </thead>
 <tbody valign="top">
 <tr class="row-even"><td><strong>Content-Range</strong></td>
-<td>Data range, will only be returned if the range header field was specified in the request</td>
+<td>Data range. Returned only if the range header field was specified in the request.</td>
 </tr>
 </tbody>
 </table>
@@ -1277,8 +1277,8 @@ x-amz-copy-source: {source-bucket}/{source-object}
 </div>
 <div id="get-object-info">
 <h3>Get Object Info</h3>
-<p>Returns information about object. This request will return the same
-header information as with the Get Object request, but will include
+<p>Returns information about object. This request returns the same
+header information as with the Get Object request, but includes
 the metadata only, not the object data payload.</p>
 <div id="id20">
 <h4>Syntax</h4>
@@ -1520,7 +1520,7 @@ the metadata only, not the object data payload.</p>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">Bucket</span></code></td>
 <td>String</td>
-<td>The bucket that will receive the object contents.</td>
+<td>The bucket that receives the object contents.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">Key</span></code></td>
 <td>String</td>
@@ -1595,7 +1595,7 @@ the metadata only, not the object data payload.</p>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">Bucket</span></code></td>
 <td>String</td>
-<td>The bucket that will receive the object contents.</td>
+<td>The bucket that receives the object contents.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">Key</span></code></td>
 <td>String</td>
@@ -1639,7 +1639,7 @@ the metadata only, not the object data payload.</p>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">IsTruncated</span></code></td>
 <td>Boolean</td>
-<td>If <code class="docutils literal"><span class="pre">true</span></code>, only a subset of the object’s upload contents were returned.</td>
+<td>If <code class="docutils literal"><span class="pre">true</span></code>, only a subset of the object’s upload contents are returned.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">Part</span></code></td>
 <td>Container</td>
