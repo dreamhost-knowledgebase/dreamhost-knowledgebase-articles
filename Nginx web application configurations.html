@@ -1,7 +1,7 @@
 <div class="alert alert-important">
-<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-icon"><img alt="" height="60" src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60"/></div>
 <div class="alert-content">
-<p><strong>WARNING: POSSIBLE OUTDATED INFORMATION!</strong><br /><span style="font-size: 90%;">DreamHost does not directly support any of the features described on this page and is not responsible for keeping this content updated or accurate. Use at your own risk! </span></p>
+<p><strong>WARNING: POSSIBLE OUTDATED INFORMATION!</strong><br/><span style="font-size: 90%;">DreamHost does not directly support any of the features described on this page and is not responsible for keeping this content updated or accurate. Use at your own risk! </span></p>
 </div>
 </div>
 <p>Many web applications such as WordPress and MediaWiki are originally configured to work with Apache. Since .htaccess files are not supported with Nginx, there are some adjustments to be made to get your applications running properly. In all examples below, make sure to follow these steps:</p>
@@ -9,20 +9,20 @@
 <li>View the <a href="http://wiki.dreamhost.com/Nginx_web_application_configurations#Nginx.23Local_configuration_files">Local configuration files</a> section above to create your local <code>/nginx/example.com</code> directory.</li>
 <li>Create your .conf file in this <code>/nginx/example.com</code> directory.
 <div class="alert alert-note">
-<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-icon"><img alt="" height="60" src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60"/></div>
 <div class="alert-content">
 <p>The .conf file can be named anything. It just needs to end in .conf.</p>
 </div>
 </div>
 </li>
 <li>Add content to the .conf file.</li>
-<li>Make sure to <a title="Nginx" href="http://wiki.dreamhost.com/Nginx#Reloading_.26_restarting">reload Nginx</a> for the changes to take effect.</li>
+<li>Make sure to <a href="http://wiki.dreamhost.com/Nginx#Reloading_.26_restarting" title="Nginx">reload Nginx</a> for the changes to take effect.</li>
 </ol>
 <p>A list of examples for various web applications can be found here:</p>
 <ul>
-<li><a class="external text" href="http://wiki.nginx.org/Configuration" rel="nofollow">Nginx configuration examples</a></li>
+<li><a class=" " href="http://wiki.nginx.org/Configuration" rel="nofollow">Nginx configuration examples</a></li>
 </ul>
-<h2><span id="WordPress" class="mw-headline">WordPress</span></h2>
+<h2><span class="mw-headline" id="WordPress">WordPress</span></h2>
 <p>Create a <code>wordpress.conf</code> file in your <code>/home/username/nginx/example.com/</code> directory.</p>
 <p>This is where you'll put all your Nginx config rules.</p>
 <p>If you are going to share this WordPress configuration across multiple sites, create a default file. Then create symlinks for each of your sites. For example:</p>
@@ -47,7 +47,7 @@
 </div>
 </li>
 </ol>
-<h2><span id="Permalinks" class="mw-headline">Permalinks</span></h2>
+<h2><span class="mw-headline" id="Permalinks">Permalinks</span></h2>
 <p>The most basic set of WordPress rules that will get you up and running immediately are these:</p>
 <div class="preboxcontainer">
 <pre class="prebox">#######################
@@ -67,7 +67,7 @@ if (!-e $request_filename) {
 try_files $uri $uri/ /index.php?$args;
 </pre>
 </div>
-<h3><span id="Multisite" class="mw-headline">Multisite</span></h3>
+<h3><span class="mw-headline" id="Multisite">Multisite</span></h3>
 <p>If you're using Multisite, you will need slightly more advanced rules:</p>
 <div class="preboxcontainer">
 <pre class="prebox">######################
@@ -84,13 +84,13 @@ if (!-e $request_filename) {
 </pre>
 </div>
 <p>This will provide basic functionality for Multisite.</p>
-<h2><span id="W3_Total_Cache" class="mw-headline">W3 Total Cache</span></h2>
+<h2><span class="mw-headline" id="W3_Total_Cache">W3 Total Cache</span></h2>
 <p>The W3 Total Cache plugin for Wordpress will automatically recognize that it is running under Nginx and will create a default Nginx configuration file which you can copy into your /nginx/&lt;domain name&gt;/ directory.</p>
 <p>W3 Total Cache should also be setup to use XCache:</p>
 <dl>
-<dd>For the W3 settings, I basically turned on XCache support in my dreamhost config panel, then used it everywhere in the W3 settings. Then I enabled the Page Cache, Object Cache, and Browser Cache modules. All three are set to use the XCache to hold their data, so the cached info is stored in RAM, basically. The Page Cache does whole-page caching, and is nice and fast for repeated queries to the same pages, for logged in or anon users. The Object Cache does object caching, and causes my admin section to be nice and speedy, since things like posts and such are pulled from memory instead of the database. The Browser Cache basically just sets the proper expire headers on everything, thus images and such don’t have to be re-downloaded all the time. (Snarfed from <a class="external text" href="http://www.wptavern.com/wordpress-optimization-guide-by-dreamhost" rel="nofollow">here</a>)</dd>
+<dd>For the W3 settings, I basically turned on XCache support in my dreamhost config panel, then used it everywhere in the W3 settings. Then I enabled the Page Cache, Object Cache, and Browser Cache modules. All three are set to use the XCache to hold their data, so the cached info is stored in RAM, basically. The Page Cache does whole-page caching, and is nice and fast for repeated queries to the same pages, for logged in or anon users. The Object Cache does object caching, and causes my admin section to be nice and speedy, since things like posts and such are pulled from memory instead of the database. The Browser Cache basically just sets the proper expire headers on everything, thus images and such don’t have to be re-downloaded all the time. (Snarfed from <a class=" " href="http://www.wptavern.com/wordpress-optimization-guide-by-dreamhost" rel="nofollow">here</a>)</dd>
 </dl>
-<h2><span id="WP_Super_Cache" class="mw-headline">WP Super Cache</span></h2>
+<h2><span class="mw-headline" id="WP_Super_Cache">WP Super Cache</span></h2>
 <p>If you're using the WP Super Cache plugin, you'll want to use the following in place of the permalink rules above:</p>
 <div class="preboxcontainer">
 <pre class="prebox">#######################
@@ -133,8 +133,8 @@ if (!-e $request_filename) {
 }
 </pre>
 </div>
-<h2><span id="FeedBurner" class="mw-headline">FeedBurner</span></h2>
-<p>If you have your blog's RSS feed setup using <a class="external text" href="http://feedburner.google.com/" rel="nofollow">FeedBurner</a>, you'll want to add the following lines <strong>above</strong> the permalink or supercache lines mentioned previously:</p>
+<h2><span class="mw-headline" id="FeedBurner">FeedBurner</span></h2>
+<p>If you have your blog's RSS feed setup using <a class=" " href="http://feedburner.google.com/" rel="nofollow">FeedBurner</a>, you'll want to add the following lines <strong>above</strong> the permalink or supercache lines mentioned previously:</p>
 <div class="preboxcontainer">
 <pre class="prebox">#######################
 # FeedBurner
@@ -146,7 +146,7 @@ if ($http_user_agent !~ FeedBurner) {
 </pre>
 </div>
 <p>You'll need to replace the "your-comment-feed" and "your-feed" bits with the appropriate FeedBurner URLs you get when you add your feeds to their system.</p>
-<h2><span id="Drupal" class="mw-headline">Drupal</span></h2>
+<h2><span class="mw-headline" id="Drupal">Drupal</span></h2>
 <p>Before we get going here, you should create a <code>drupal.conf</code> file (the name doesn't really matter, but generally you want to at least give it a .conf extension) in the following location:</p>
 <div class="preboxcontainer">
 <pre class="prebox">/home/YOURUSER/nginx/example.com/</pre>
@@ -156,7 +156,7 @@ if ($http_user_agent !~ FeedBurner) {
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">nano /home/YOURUSER/nginx/example.com/drupal.conf</span></pre>
 </div>
 <p>This is where you'll put all your nginx config rules.</p>
-<h2><span id="Top_Level_Domain_Install" class="mw-headline">Top Level Domain Install</span></h2>
+<h2><span class="mw-headline" id="Top_Level_Domain_Install">Top Level Domain Install</span></h2>
 <p>If your Drupal is installed at the top level of your domain (i.e., <a class="external free" href="http://www.example.com/" rel="nofollow">http://www.example.com/</a> is your Drupal install), then you want to add these rules:</p>
 <div class="preboxcontainer">
 <pre class="prebox">#######################
@@ -166,7 +166,7 @@ if (!-e $request_filename) {
 rewrite ^/(.*)$ /index.php?q=$1 last;
 }</pre>
 </div>
-<h2><span id="Subdirectory_Install" class="mw-headline">Subdirectory Install</span></h2>
+<h2><span class="mw-headline" id="Subdirectory_Install">Subdirectory Install</span></h2>
 <p>If your Drupal is installed in a subdirectory (i.e., <a class="external free" href="http://www.example.com/drupal/" rel="nofollow">http://www.example.com/drupal/</a> is your Drupal install), then you want to add these rules:</p>
 <div class="preboxcontainer">
 <pre class="prebox">#######################
@@ -179,12 +179,12 @@ rewrite ^/(.*)$ /index.php?q=$1 last;
 }</pre>
 </div>
 <p>You would replace occurrences of "drupal" in the above with whatever your subdirectory is named.</p>
-<h2><span id="Enable_Clean_URLs" class="mw-headline">Enable Clean URLs</span></h2>
+<h2><span class="mw-headline" id="Enable_Clean_URLs">Enable Clean URLs</span></h2>
 <p>If you haven't already, you need to login to your Drupal admin user and go to the Administer -&gt; Site Configuration -&gt; Clean URLs area and turn Clean URLs on. If you have trouble finding it, then try browsing to http://www.example.com/index.php?q=admin/settings/clean-urls. If you get an error message saying Clean URLs aren't supported, make sure you remembered to reload your nginx configuration as discussed earlier in the article.</p>
-<h2><span id="Gotchas" class="mw-headline">Gotchas</span></h2>
+<h2><span class="mw-headline" id="Gotchas">Gotchas</span></h2>
 <p>Unfortunately, this configuration currently causes site searches that contain spaces to break. With Apache, when you search for "some thing" that gets converted to "search/node/some+thing". When this is processed by nginx the "+" gets encoded so you end up with "search/node/some%20thing". Thus, your search ends up looking for the string "some+thing" rather than "some thing". There are currently no known workarounds that were forthcoming.</p>
-<h2><span id="MediaWiki" class="mw-headline">MediaWiki</span></h2>
-<p><a title="MediaWiki" href="http://wiki.dreamhost.com/MediaWiki">MediaWiki</a> is a popular wiki software running this wiki and many others. It was developed by the founders of Wikipedia - which continues to use and maintain the software today. It is available for free and an open-source project. I moved a MediaWiki 1.17.0 site (using Clean URLs) off of <a class="mw-redirect" title="Apache" href="http://wiki.dreamhost.com/Apache">Apache</a> to nginx. First, create an <code>mediawiki.conf</code> file in the appropriate directory:</p>
+<h2><span class="mw-headline" id="MediaWiki">MediaWiki</span></h2>
+<p><a href="http://wiki.dreamhost.com/MediaWiki" title="MediaWiki">MediaWiki</a> is a popular wiki software running this wiki and many others. It was developed by the founders of Wikipedia - which continues to use and maintain the software today. It is available for free and an open-source project. I moved a MediaWiki 1.17.0 site (using Clean URLs) off of <a class="mw-redirect" href="http://wiki.dreamhost.com/Apache" title="Apache">Apache</a> to nginx. First, create an <code>mediawiki.conf</code> file in the appropriate directory:</p>
 <div class="preboxcontainer">
 <pre class="prebox">/home/YOURUSER/nginx/example.com/mediawiki.conf</pre>
 </div>
@@ -212,12 +212,12 @@ if ($request_uri ~* ^/(stats|failed_auth\.html).*$)
 	break;
 }</pre>
 </div>
-<h2><span id="phpBB" class="mw-headline">phpBB</span></h2>
-<h3><span id="Increase_FastCGI_Timeout" class="mw-headline">Increase FastCGI Timeout</span></h3>
+<h2><span class="mw-headline" id="phpBB">phpBB</span></h2>
+<h3><span class="mw-headline" id="Increase_FastCGI_Timeout">Increase FastCGI Timeout</span></h3>
 <p>Put this in a .conf file as described above</p>
 <div class="preboxcontainer">
 <pre class="prebox">fastcgi_read_timeout 120;</pre>
 </div>
 <p>Source: <a class="external free" href="https://www.phpbb.com/community/viewtopic.php?f=46&amp;t=1778165#p10746575" rel="nofollow">https://www.phpbb.com/community/viewtopic.php?f=46&amp;t=1778165#p10746575</a></p>
-<h2><span id="Sending_Mass_E-Mail_Settings" class="mw-headline">Sending Mass E-Mail Settings</span></h2>
+<h2><span class="mw-headline" id="Sending_Mass_E-Mail_Settings">Sending Mass E-Mail Settings</span></h2>
 <p>If you want to send mass emails with SMTP authentication you have to use POP-BEFORE-SMTP as the "Authentication method for SMTP".</p>
