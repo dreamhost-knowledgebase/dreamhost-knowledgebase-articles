@@ -1,26 +1,26 @@
 <p>It’s possible that when you visit your site, you see an error that states ‘Site Not Found’:</p>
 <dl>
-<dd><img alt="Site Not Found Dreambot.fw.png" height="463" src="https://objects-us-west-1.dream.io/kbimages/images/Site_Not_Found_Dreambot.fw.png" width="450"/></dd>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/Site_Not_Found_Dreambot.fw.png" alt="Site Not Found Dreambot.fw.png" width="450" height="463" /></dd>
 </dl>
 <p>This article guides you through why you may be seeing this error and how to resolve it.</p>
-<h2><span class="mw-headline" id="The_root_cause_of_the_error">The root cause of the error</span></h2>
+<h2><span id="The_root_cause_of_the_error" class="mw-headline">The root cause of the error</span></h2>
 <p>The 'Site Not Found' error means the IP address your domain is using is not pointed to the correct IP.</p>
 <p>More technically, the 'Site Not Found' error means that the DNS records for your domain are resolving to the IP address of an Apache web server service that is not configured for your domain.</p>
 <p>When this happens, the Apache web server is designed to just show the <em>first domain listed</em> in its config file. To make sure that nobody's site ever accidentally shows a random site hosted on the same Apache service, DreamHost makes the first domain in <strong>all</strong> its config files show the same custom error page.</p>
 <p>There are a few reasons why your IP may not be correctly pointed to your web server IP which are explained below.</p>
-<h2><span class="mw-headline" id="Viewing_your_site.E2.80.99s_IP_address_in_your_browser">Viewing your site’s IP address in your browser</span></h2>
+<h2><span id="Viewing_your_site.E2.80.99s_IP_address_in_your_browser" class="mw-headline">Viewing your site’s IP address in your browser</span></h2>
 <p>Due to the way that DreamHost configures Apache, unless you have purchased a Unique IP address for your domain, attempting to view your site by entering the IP address in your browser automatically gives you the <strong>Site not found</strong> error. This is because you’re viewing the shared IP of your web server, not the IP of your site.</p>
 <p>If you absolutely need to view your site through an IP address, you must purchase a Unique IP. You can read more about Unique IPs here:</p>
 <ul>
 <li><a href="/hc/en-us/articles/216109647-Unique-IP-overview">Unique IP</a></li>
 </ul>
-<h2><span class="mw-headline" id="DNS_changes">DNS changes</span></h2>
+<h2><span id="DNS_changes" class="mw-headline">DNS changes</span></h2>
 <p>Frequently this error appears due to a change in your IP address, which is commonly triggered by removing hosting for a domain and then setting up a MIRROR, REDIRECT, PARK, or CLOAK. While changes to the DreamHost DNS are nearly instantaneous, the new information doesn't reach other servers around the world until the other servers expire the old data that they are holding on to. This is referred to as <a href="/hc/en-us/articles/215840248-DNS-propagation-overview">DNS propagation</a>.</p>
 <p>The reason why you get this error during this period of time is that the DNS information you are receiving to your local computer is outdated, and the Apache instance that you are being incorrectly sent to no longer has any record of your site. Depending on your location, it can take up to several hours for DNS changes to propagate, so the best thing to do is leave your domain alone for a few hours before attempting any sort of fix.</p>
 <p>In addition, if you go to (<a class="external text" href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;" rel="nofollow">Panel &gt; ‘Domains’ &gt; ‘Manage Domains’</a>) and click the small 'DNS' link under a domain, you are presented with a DNS page. When you click the blue <strong>Go!</strong> button at the top, a DNS update is forced in DreamHost's system. But again, DNS propagation online may still take several hours.</p>
-<h2><span class="mw-headline" id="How_to_check_your_current_DNS_records">How to check your current DNS records</span></h2>
+<h2><span id="How_to_check_your_current_DNS_records" class="mw-headline">How to check your current DNS records</span></h2>
 <p>To check on the status of your DNS update, you can visit <a class="external text" href="http://www.whatsmydns.net" rel="nofollow"><strong>what's my DNS?</strong></a> to see what IP address your domain currently resolves to.</p>
-<h3><span class="mw-headline" id="Using_Linux_or_Apple_Mac">Using Linux or Apple Mac</span></h3>
+<h3><span id="Using_Linux_or_Apple_Mac" class="mw-headline">Using Linux or Apple Mac</span></h3>
 <p>If you’re using a Linux or Mac computer, you can also run some commands in your terminal to check the current IP of your site. Visit the SSH article regarding how to log in to your terminal:</p>
 <ul>
 <li><a href="/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
@@ -41,7 +41,7 @@
 <ul>
 <li><a href="/hc/en-us/articles/215680477-Flush-DNS-overview">Flush DNS overview</a></li>
 </ul>
-<h3><span class="mw-headline" id="Using_Windows">Using Windows</span></h3>
+<h3><span id="Using_Windows" class="mw-headline">Using Windows</span></h3>
 <p>Windows users can use the "nslookup" command using the command prompt. You can read more about using the command prompt in Windows here:</p>
 <ul>
 <li><a class="external free" href="http://windows.microsoft.com/en-us/windows-vista/open-a-command-prompt-window" rel="nofollow">http://windows.microsoft.com/en-us/windows-vista/open-a-command-prompt-window</a></li>
@@ -65,15 +65,17 @@ Address: 64.90.47.165</span>
 <ul>
 <li><a href="/hc/en-us/articles/215680477-Flush-DNS-overview">Flush DNS overview</a></li>
 </ul>
-<h2><span class="mw-headline" id="How_to_resolve_the_issue">How to resolve the issue</span></h2>
+<h2><span id="How_to_resolve_the_issue" class="mw-headline">How to resolve the issue</span></h2>
 <p>There are several ways to solve this problem.</p>
-<div class="alert-icon"><img alt="" height="60" src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60"/></div>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
 <p>If this problem appears shortly after making a configuration change for the domain in the control panel, this could be caused by the IP address changing for that domain. If that's the case, this error should go away within about 4 hours – once the DNS change propagates throughout the Internet. This is normal. If it doesn't go away after 6 hours, then try the following troubleshooting techniques.</p>
 </div>
-<h2><span class="mw-headline" id="Rebuilding_httpd_conf_via_DreamHost.27s_control_panel">Rebuilding httpd conf via DreamHost's control panel</span></h2>
+</div>
+<h2><span id="Rebuilding_httpd_conf_via_DreamHost.27s_control_panel" class="mw-headline">Rebuilding httpd conf via DreamHost's control panel</span></h2>
 <p>Go to (<a class="external text" href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;" rel="nofollow">Panel &gt; ‘Domains’ &gt; ‘Manage Domains’</a>) in your panel and click on the <strong>Edit</strong> button to the right of the domain under the ‘Web Hosting’ column. There's no need to change anything on this page. Simply save by pressing the blue <strong>Change settings</strong> button. Then wait up to 10 minutes to see if the problem is solved. With this solution you've simply rebuilt the httpd configuration file on the web server.</p>
-<h2><span class="mw-headline" id="If_you.27re_not_using_DreamHost.27s_DNS">If you're not using DreamHost's DNS</span></h2>
+<h2><span id="If_you.27re_not_using_DreamHost.27s_DNS" class="mw-headline">If you're not using DreamHost's DNS</span></h2>
 <p>If you aren't using DreamHost to manage your domain's DNS, most likely the IP address that points to DreamHost by your DNS provider is incorrect.</p>
 <p>You can figure out the correct IP by querying the DreamHost nameserver with one of the commands in the above section (depending on your Operating System).</p>
 <p>Here's another way to find the correct IP:</p>
@@ -84,15 +86,15 @@ Address: 64.90.47.165</span>
 <li>Update your A record with your DNS provider to point to this DreamHost IP.</li>
 </ol>
 <p>Once the DNS propagates, the sleepy DreamHost robot should no longer appear.</p>
-<h2><span class="mw-headline" id="Using_a_suspended_account">Using a suspended account</span></h2>
+<h2><span id="Using_a_suspended_account" class="mw-headline">Using a suspended account</span></h2>
 <p>For accounts that are suspended due to non-payment, DreamHost will stop serving the DNS for the account. Your sites will then show the 'Site Not Found' page until you are paid up and re-activate the account. Log in to your control panel or check your emails from DreamHost to see if this may be the case.</p>
-<h2><span class="mw-headline" id="Contacting_support">Contacting support</span></h2>
+<h2><span id="Contacting_support" class="mw-headline">Contacting support</span></h2>
 <p>If you cannot solve this problem using the suggestions above, please feel free to contact support for further assistance.</p>
 <p>You can contact support through your panel at (<a class="external text" href="https://panel.dreamhost.com/index.cgi?tree=support.msg&amp;" rel="nofollow">Panel &gt; ‘Support’ &gt; ‘Contact Support’</a>). Or visit the following article for other contact methods:</p>
 <ul>
 <li><a href="/hc/en-us/articles/218084068-Contacting-support-overview">Contacting DreamHost</a></li>
 </ul>
-<h2><span class="mw-headline" id="Using_Passenger_WSGI_enabled">Using Passenger WSGI enabled</span></h2>
+<h2><span id="Using_Passenger_WSGI_enabled" class="mw-headline">Using Passenger WSGI enabled</span></h2>
 <p>This problem, or one like it, occasionally manifests on domains that use <a href="/hc/en-us/articles/215769548-Passenger-and-Python-WSGI">Passenger WSGI</a>. In this case, the error appears differently in that the server error page does not get displayed.</p>
 <p>Symptoms may include:</p>
 <ul>
@@ -103,7 +105,7 @@ Address: 64.90.47.165</span>
 <p>In this instance, the solution is the same – edit the domain and click <strong>Change Settings</strong>. Then wait for it to propagate. You can also try disabling and re-enabling Passenger on the same domain edit page as well.</p>
 <p>This changes the domain configuration settings without altering the domain DNS records.</p>
 <div class="alert alert-note">
-<div class="alert-icon"><img alt="" height="60" src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
 <p>This will NOT work for cloaked domains since the cloaking service is on a special machine and the DNS will ALWAYS have to change when activating/deactivating cloaked domains.</p>
 </div>
