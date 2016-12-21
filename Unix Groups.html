@@ -1,5 +1,5 @@
 <p>The primary use of Unix Groups is to assign “group ownership” of files and directories. You can configure this in the panel on the (<a class=" " href="https://panel.dreamhost.com/index.cgi?tree=users.groups&amp;" rel="nofollow">Panel &gt; 'Users' &gt; 'Unix Groups'</a>) page. However, please note that only users with <a href="/hc/en-us/articles/215282088">Enhanced User Security</a> disabled can have their user group changed.</p>
-<h2><span class="mw-headline" id="Creating_a_Unix_Group">Creating a Unix Group</span></h2>
+<h2><span id="Creating_a_Unix_Group">Creating a Unix Group</span></h2>
 <p>To use UNIX Groups to give individual FTP users access to specific subdirectories of a website:</p>
 <ol>
 <li>Navigate to the (<a class=" " href="https://panel.dreamhost.com/index.cgi?tree=users.users&amp;" rel="nofollow">Panel &gt; 'Users' &gt; 'Manage Users'</a>) page.</li>
@@ -87,7 +87,7 @@
 <p>To upload or download files, 'contributor_unixgroup' must use <a href="/hc/en-us/articles/216107387-How-do-I-use-SFTP-to-connect-to-my-server-">SFTP</a>, because <a href="/hc/en-us/articles/215612917-FTP-overview">FTP</a> does not work with symbolic links.</p>
 </div>
 </div>
-<h2><span class="mw-headline" id="Caveats">Caveats</span></h2>
+<h2><span id="Caveats">Caveats</span></h2>
 <ul>
 <li>If you have any .cgi files, the above command makes them fail to run and generates HTTP 500 errors. Be sure that you leave the group for the .cgi and its parent directory as the default group. In other words, if your .cgi file is in <strong>/home/joe/example.com/cgi/fun.cgi</strong> then the following directories/files must be joe's default group:
 <ul>
@@ -99,7 +99,7 @@
 <ul>
 <li>Some file servers have an internal limit of 16 groups. If you are in more than 16 groups, only the first 16 (as listed by the "groups" command) are considered.</li>
 </ul>
-<h2><span class="mw-headline" id="Fundamentals_of_Unix_Groups_at_DreamHost">Fundamentals of Unix Groups at DreamHost</span></h2>
+<h2><span id="Fundamentals_of_Unix_Groups_at_DreamHost">Fundamentals of Unix Groups at DreamHost</span></h2>
 <ul>
 <li>Every DreamHost shared hosting account has a Unix Group in the form of pg####### (where each # is a [0-9] digit):</li>
 <li>This group is called "a default group" and there is exactly 1 per account.</li>
@@ -115,16 +115,16 @@
 <li>Every Unix Group of an account can contain any subset (combination) of Unix users which belong to that same DreamHost account.</li>
 <li>Unix Groups cannot be nested.</li>
 </ul>
-<h2><span class="mw-headline" id="Advanced:_Protecting_your_files_from_other_members_of_your_group">Advanced: Protecting your files from other members of your group</span></h2>
+<h2><span id="Advanced:_Protecting_your_files_from_other_members_of_your_group">Advanced: Protecting your files from other members of your group</span></h2>
 <p>The following sections are for advanced users with a solid knowledge of the Unix command-line.</p>
-<h3><span class="mw-headline" id="Option_one:_chgrp">Option one: chgrp</span></h3>
+<h3><span id="Option_one:_chgrp">Option one: chgrp</span></h3>
 <p>To keep other members of your group from accessing your files, you can create a new group in the panel and add <strong>only yourself</strong> to the group. Then, change the group of all of your files that you want to protect:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">chgrp -R my_group /home/user/directory</span>
 </pre>
 </div>
 <p>The down side to this is that you have to chgrp any new files when they are created in order to continue protecting them.</p>
-<h3><span class="mw-headline" id="Option_two:_chmod_g-x">Option two: chmod g-x</span></h3>
+<h3><span id="Option_two:_chmod_g-x">Option two: chmod g-x</span></h3>
 <p>To keep everyone from your group out, you can also use this method. Simply remove execute permissions from the directory you want to protect:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">chmod g-x /home/user/directory</span>
@@ -135,7 +135,7 @@
 <li>to do this for every folder that you create, and</li>
 <li>not to do it to any of your web folders.</li>
 </ul>
-<h3><span class="mw-headline" id="Option_three:_SetGID_bit">Option three: SetGID bit</span></h3>
+<h3><span id="Option_three:_SetGID_bit">Option three: SetGID bit</span></h3>
 <p>Set the GID bit on your root folder and any already existing folders:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">chgrp -R &lt;my_group&gt; ~/

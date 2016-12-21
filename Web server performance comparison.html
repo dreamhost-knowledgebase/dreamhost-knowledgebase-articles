@@ -7,7 +7,7 @@
 </div>
 </div>
 <p>This article examines the relative performance of each web server to see how they compare head-to-head. Keep in mind that this is not meant to be an exhaustive be-all end-all performance comparison. The hope is to simply give a relative performance comparison under common conditions.</p>
-<h2><span class="mw-headline" id="Testing_method">Testing method</span></h2>
+<h2><span id="Testing_method">Testing method</span></h2>
 <ul>
 <li>The method to test these web servers uses <a class=" " href="http://httpd.apache.org/docs/2.0/programs/ab.html" rel="nofollow">ApacheBench</a> (an HTTP server benchmarking tool).</li>
 </ul>
@@ -25,18 +25,18 @@
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">ab -n 25000 -c 50 http://www.example.com/dreamhost_logo.png</span></pre>
 </div>
 <p>where the <code>-c</code> flag increased with the concurrency level.</p>
-<h2><span class="mw-headline" id="Memory_usage">Memory usage</span></h2>
+<h2><span id="Memory_usage">Memory usage</span></h2>
 <p>This is important to measure, especially on a VPS where your memory usage has a hard cap and raising it costs you additional money. (Note that memory is in megabytes.)</p>
 <p><img alt="Webserver memory graph.jpg" height="444" src="https://objects-us-west-1.dream.io/kbimages/images/Webserver_memory_graph.jpg" width="500"/></p>
 <p>As you can see, both Lighttpd and Nginx come out as clear leaders in this test. In fact, the difference is SO dramatic it's almost a bit unbelievable. How can such a huge disparity exist?</p>
 <p>It has to do with how Apache handles scaling with more incoming requests. To handle additional requests, it spawns new threads (i.e., processes). As more and more connections come in, more and more Apache processes are spawned to handle them. This causes memory usage to grow fairly quickly.</p>
 <p>In comparison, you see that Nginx and Lighttpd both have fairly static memory usage. Lighttpd actually increases more over time (and purportedly has issues with memory leaking), whereas Nginx stays fairly static across the board from start to finish.</p>
-<h2><span class="mw-headline" id="Requests_per_second">Requests per second</span></h2>
+<h2><span id="Requests_per_second">Requests per second</span></h2>
 <p>This is essentially a measure of how fast the server can receive and serve requests at different levels of concurrency. The more requests they can handle per second, the more able the server is to handle large amounts of traffic. Here's how the servers compare in this arena:</p>
 <p><img alt="Webserver requests graph.jpg" height="450" src="https://objects-us-west-1.dream.io/kbimages/images/Webserver_requests_graph.jpg" width="464"/></p>
 <p>Nginx clearly dominates in the raw number of requests per second it can serve. At higher levels of concurrency, it can handle fewer requests per second, but still can serve double what Lighttpd does (which was already doing nearly 4x what Apache was able to do).</p>
 <p>Remember, the results shown are good only for measuring <em>relative</em> (and not absolute) performance, as the tests were conducted locally on the server.</p>
-<h2><span class="mw-headline" id="Caveat">Caveat</span></h2>
+<h2><span id="Caveat">Caveat</span></h2>
 <p>Remember, Apache supports a larger toolbox of things it can do immediately and is probably the most compatible across all web software out there today. Furthermore, most websites really don't get so many concurrent hits as to gain large performance/memory benefits from Lighttpd or Nginx – but you can check them out to see if they work best for your needs.</p>
 <h2><span id="See_also">See also</span></h2>
 <ul>

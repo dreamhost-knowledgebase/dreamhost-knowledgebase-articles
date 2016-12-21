@@ -1,5 +1,5 @@
-<h2><span class="mw-headline" id="Deny_access_to_files">Deny access to files</span></h2>
-<h3><span class="mw-headline" id="Denying_access_to_specific_file_extensions">Denying access to specific file extensions</span></h3>
+<h2><span id="Deny_access_to_files">Deny access to files</span></h2>
+<h3><span id="Denying_access_to_specific_file_extensions">Denying access to specific file extensions</span></h3>
 <p>The following code forces any file ending in .inc to throw a 404 Forbidden error when visited:</p>
 <div class="preboxcontainer">
 <pre class="prebox">&lt;Files ~ "\.inc$"&gt;  
@@ -8,20 +8,20 @@ Deny from All
 &lt;/Files&gt;
 </pre>
 </div>
-<h2><span class="mw-headline" id="Denying_access_to_.22hidden.22_files">Denying access to "hidden" files</span></h2>
+<h2><span id="Denying_access_to_.22hidden.22_files">Denying access to "hidden" files</span></h2>
 <p>File names beginning with a dot are considered "hidden" by UNIX. Usually, you don't want to serve them to visitors.</p>
 <p>DreamHost already disallows retrieving '.htaccess' and '.htpasswd', but you can recursively deny all access to all hidden files by placing the following into a top-level .htaccess:</p>
 <div class="preboxcontainer">
 <pre class="prebox">RedirectMatch 403 /\..*$</pre>
 </div>
-<h2><span class="mw-headline" id="Deny_access_to_folders">Deny access to folders</span></h2>
-<h3><span class="mw-headline" id="Denying_access_to_a_directory_listing">Denying access to a directory listing</span></h3>
+<h2><span id="Deny_access_to_folders">Deny access to folders</span></h2>
+<h3><span id="Denying_access_to_a_directory_listing">Denying access to a directory listing</span></h3>
 <p>If you don't have an index file in your directory, all of your files are listed in a directory list for anyone to view. The following code forces this directory listing to throw a 404 Forbidden error instead when visited:</p>
 <div class="preboxcontainer">
 <pre class="prebox">Options -Indexes
 </pre>
 </div>
-<h2><span class="mw-headline" id="Denying_access_during_a_specific_hour_of_the_day">Denying access during a specific hour of the day</span></h2>
+<h2><span id="Denying_access_during_a_specific_hour_of_the_day">Denying access during a specific hour of the day</span></h2>
 <p>If you wish to block access to files in a directory during a specific time of day, then you can do so by adding the following code to an .htaccess file:</p>
 <div class="preboxcontainer">
 <pre class="prebox">RewriteEngine On
@@ -40,14 +40,14 @@ RewriteCond %{TIME_HOUR} ^16|17|08$
 # Then deny all access
 RewriteRule ^.*$ - [F,L]</pre>
 </div>
-<h2><span class="mw-headline" id="Denying_access_to_a_directory">Denying access to a directory</span></h2>
+<h2><span id="Denying_access_to_a_directory">Denying access to a directory</span></h2>
 <p>If you have a directory named 'blah' that you want to block, but it can occur anywhere in your directory tree, use the following:</p>
 <div class="preboxcontainer">
 <pre class="prebox">RewriteEngine On
 RewriteRule (^|/)blah(/|$) - [F]
 </pre>
 </div>
-<h2><span class="mw-headline" id="Denying_access_from_specific_IP_addresses">Denying access from specific IP addresses</span></h2>
+<h2><span id="Denying_access_from_specific_IP_addresses">Denying access from specific IP addresses</span></h2>
 <p>If you have problems with certain visitors to your website, you can easily ban them. There are two different ways to ban visitors:</p>
 <ul>
 <li>using their IP address, or</li>
@@ -70,7 +70,7 @@ RewriteRule (^|/)blah(/|$) - [F]
 </ul>
 </dd>
 </dl>
-<h2><span class="mw-headline" id="Allowing_access_from_a_specific_IP">Allowing access from a specific IP</span></h2>
+<h2><span id="Allowing_access_from_a_specific_IP">Allowing access from a specific IP</span></h2>
 <p>If you need to deny access to your site to everyone while still allowing yourself or another specific IP address to visit it, you can use something like this:</p>
 <div class="preboxcontainer">
 <pre class="prebox">order deny,allow
@@ -78,7 +78,7 @@ deny from all
 allow from &lt;YOUR_IP_ADDRESS&gt;
 </pre>
 </div>
-<h2><span class="mw-headline" id="Denying_access_from_a_specific_domain">Denying access from a specific domain</span></h2>
+<h2><span id="Denying_access_from_a_specific_domain">Denying access from a specific domain</span></h2>
 <p>This denies access from anyone connecting to your site from www.example.com. If someone clicks on a link at example.com that redirects to your site, they then see a 403 Forbidden error:</p>
 <div class="preboxcontainer">
 <pre class="prebox">SetEnvIfNoCase Referer "example.com" bad_referer
