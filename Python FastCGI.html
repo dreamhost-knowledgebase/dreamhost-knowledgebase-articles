@@ -16,8 +16,8 @@
 <h2><span id="Bootstrap">Bootstrap</span></h2>
 <p>The following is a quick procedure for establishing a sanity-test FCGI application running Python.</p>
 <ol>
-<li>On the <a href="http://panel.dreamhost.com" rel="nofollow">panel</a> configure your site for "Fast CGI Support?" found under (Domains-&gt;Manage Domains)-&gt;(example<em>.com</em>-&gt;Edit)-&gt;PHP Support</li>
-<li>Download the Allan Saddi's <a href="http://svn.saddi.com/py-lib/trunk/fcgi.py" rel="nofollow">fcgi.py</a>, placing it somewhere in your PYTHONPATH</li>
+<li>On the <a href="http://panel.dreamhost.com">panel</a> configure your site for "Fast CGI Support?" found under (Domains-&gt;Manage Domains)-&gt;(example<em>.com</em>-&gt;Edit)-&gt;PHP Support</li>
+<li>Download the Allan Saddi's <a href="http://svn.saddi.com/py-lib/trunk/fcgi.py">fcgi.py</a>, placing it somewhere in your PYTHONPATH</li>
 <li>Create your default page handler, <code>dispatch.fcgi</code> (You must use dispatch.fcgi or you will find that the process is <a title="Killed" href="http://wiki.dreamhost.com/Killed">killed</a> in the middle of execution. This is explained <a title="Django" href="http://wiki.dreamhost.com/Django#500_errors_and_Incomplete_Header_in_logs">here</a>) You will need <em>#!/home/username/bin/python</em> not <em>#!/usr/bin/env python</em> for use with Pylons
 <pre>#!/usr/bin/env python
 
@@ -67,7 +67,7 @@ export PATH="$HOME/packages/bin:$PATH"</pre>
 <p>Optional: To install easy_install I ran:</p>
 <pre>wget http://peak.telecommunity.com/dist/ez_setup.py
 python ez_setup.py</pre>
-<p>Lastly, I downloaded Allan Saddi's <a href="http://svn.saddi.com/py-lib/trunk/fcgi.py" rel="nofollow">fcgi.py</a> and placed it in ~/packages/lib/python2.3/site-packages. You can alternately use Flup, as <a title="Python FastCGI" href="http://wiki.dreamhost.com/Python_FastCGI#Using_Flup">shown below</a>.</p>
+<p>Lastly, I downloaded Allan Saddi's <a href="http://svn.saddi.com/py-lib/trunk/fcgi.py">fcgi.py</a> and placed it in ~/packages/lib/python2.3/site-packages. You can alternately use Flup, as <a title="Python FastCGI" href="http://wiki.dreamhost.com/Python_FastCGI#Using_Flup">shown below</a>.</p>
 <p><strong>Warning:</strong> fcgi.py serves full Python Tracebacks in HTML by default, which is a security issue. You must override the [WSGI]Server.error() method.</p>
 <p>To test my virtual python and fcgi installation I loosely followed some instructions from <a title="Django" href="http://wiki.dreamhost.com/Django">Django</a>: I saved the following code in a file called dispatch.fcgi on ~/example.com</p>
 <pre>#!/home/my-username/packages/bin/python
@@ -90,8 +90,8 @@ RewriteRule ^(.*)$ dispatch.fcgi/$1 [L]
 <p>As an alternate to using fcgi.py, you can rely on Flup to use FastCGI on DreamHost. If you choose to do so (and this was the only way Python worked for me), you don't need to download or install fcgi.py. Simply install Flup with easy_install.</p>
 <pre>easy_install Flup
 </pre>
-<p>If you are planning on using a locally installed version of <strong>Python 3</strong>, then use the <a href="http://hg.saddi.com/flup-py3.0" rel="nofollow">version of Flup</a> that is compatible with Python 3. Simply use Mercurial to fetch the source.</p>
-<pre>hg clone <a href="http://hg.saddi.com/flup-py3.0" rel="nofollow">http://hg.saddi.com/flup-py3.0</a>
+<p>If you are planning on using a locally installed version of <strong>Python 3</strong>, then use the <a href="http://hg.saddi.com/flup-py3.0">version of Flup</a> that is compatible with Python 3. Simply use Mercurial to fetch the source.</p>
+<pre>hg clone <a href="http://hg.saddi.com/flup-py3.0">http://hg.saddi.com/flup-py3.0</a>
 cd flup-py3.0
 # make sure setup.py is executed by your local version of Python
 python setup.py install
