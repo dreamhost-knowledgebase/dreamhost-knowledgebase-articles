@@ -10,7 +10,7 @@
 </ul>
 </div>
 </div>
-<p><a href="/hc/en-us/articles/215769578-Passenger-overview">Passenger</a> is best known for being used with Ruby on Rails applications, however it can also serve up Python web applications which use the <a class="external text" href="http://www.python.org/dev/peps/pep-3333/" rel="nofollow">WSGI</a> interface, including any application which uses the <a href="/hc/en-us/articles/215319598-Django-overview">Django</a> framework. Since Passenger allows your application to temporarily reside in memory while it is being actively used, it will allow your site to respond significantly faster than is otherwise possible.</p>
+<p><a href="/hc/en-us/articles/215769578-Passenger-overview">Passenger</a> is best known for being used with Ruby on Rails applications, however it can also serve up Python web applications which use the <a href="http://www.python.org/dev/peps/pep-3333/" rel="nofollow">WSGI</a> interface, including any application which uses the <a href="/hc/en-us/articles/215319598-Django-overview">Django</a> framework. Since Passenger allows your application to temporarily reside in memory while it is being actively used, it will allow your site to respond significantly faster than is otherwise possible.</p>
 <p>Passenger's WSGI support works reasonably well, however another available option is Python FastCGI in case you run into problems.</p>
 <h2><span id="Setting_up_Passenger_WSGI">Setting up Passenger WSGI</span></h2>
 <p>To start an example Python site using Passenger WSGI, your first step should be to configure the domain to use Passenger as shown in the <a href="/hc/en-us/articles/216385637-How-do-I-enable-Passenger-on-my-domain-">Passenger article</a>. Note that the document root must end in "/public" for a Passenger application as this directory will be used to serve static media.</p>
@@ -48,7 +48,7 @@ application = loadapp('config:/home/path/to/site/production.ini')
 </div>
 <p>Note that if you're using a site created from one of the Pyramid starter templates, the <code>development.ini</code> config file wraps your site in the ErrorMiddleware layer, similar to what's done in the next section. However, ErrorMiddleware does not support environments where <code>wsgi.multiprocess</code> is <code>True</code>, so you must use the production config, or modify environ to set <code>wsgi.multiprocess</code> to <code>False</code>. (Note: This may cause problems if you manually override the settings). The following link may offer further assistance:</p>
 <dl>
-<dd><a class="external text" href="http://www.ricksresources.com/2012/07/pyramid-on-dreamhost/" rel="nofollow">Pyramid-on-DreamHost</a></dd>
+<dd><a href="http://www.ricksresources.com/2012/07/pyramid-on-dreamhost/" rel="nofollow">Pyramid-on-DreamHost</a></dd>
 </dl>
 <h2><span id="500_Errors_with_Passenger_WSGI_workaround">500 Errors with Passenger WSGI workaround</span></h2>
 <p>Passenger WSGI at the moment has difficulty dealing with errors. Namely, when your WSGI application (for example, but not limited to, Django) raises an uncaught exception, Passenger dies, a 500 page is displayed in the browser, and the error message is not recorded in the home/username/logs/sitename/http/error.log file. This makes debugging tricky.</p>
