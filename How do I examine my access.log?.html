@@ -1,15 +1,18 @@
 <p>You might find abuse from specific IPs, and often this is due to bots hitting your site. But, you may also find IPs that are not associated with bots over-browsing your site.</p>
-<p>This section lists a few commands you can run via <a href="https://dreamhosthelp.zendesk.com/hc/en-us/articles/216041267-SSH-overview">SSH</a> to help identify which IPs are hitting your site.</p>
+<p>This section lists a few commands you can run via <a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a> to help identify which IPs are hitting your site.</p>
 <h2><span id="Listing_IP_hits">Listing IP hits</span></h2>
 <div class="alert alert-important">
-<div class="alert-icon"><img alt="" height="60" src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
 <p>Make sure that after you log into the server via SSH that you are in your /logs/example.com/http directory. This is where you’ll run the following commands.</p>
 </div>
 </div>
 <table class="wikitable">
 <tbody>
-<tr style="font-style: bold;"><th bgcolor="#F2F2F2">Command</th><th bgcolor="#F2F2F2">Description</th></tr>
+<tr style="font-style: bold;">
+<th bgcolor="#F2F2F2">Command</th>
+<th bgcolor="#F2F2F2">Description</th>
+</tr>
 <tr>
 <td>
 <div class="preboxcontainer">
@@ -53,14 +56,17 @@ allow from all
 </pre>
 </div>
 </td>
-<td>Blocks the IP in an <a href="https://dreamhosthelp.zendesk.com/hc/en-us/articles/216456227--htaccess-overview">.htaccess</a> file. In this example, the .htaccess file blocks the above Google IP.</td>
+<td>Blocks the IP in an <a href="/hc/en-us/articles/216456227--htaccess-overview">.htaccess</a> file. In this example, the .htaccess file blocks the above Google IP.</td>
 </tr>
 </tbody>
 </table>
 <h2><span id="Listing_top_files.2C_folders.2C_and_domains">Listing top files, folders, and domains</span></h2>
 <table class="wikitable">
 <tbody>
-<tr style="font-style: bold;"><th bgcolor="#F2F2F2">Command</th><th bgcolor="#F2F2F2">Description</th></tr>
+<tr style="font-style: bold;">
+<th bgcolor="#F2F2F2">Command</th>
+<th bgcolor="#F2F2F2">Description</th>
+</tr>
 <tr>
 <td>
 <div class="preboxcontainer">
@@ -84,10 +90,19 @@ allow from all
 </tr>
 </tbody>
 </table>
-<h2><span id="If_you_have_a_VPS_or_Dedicated_plan">If you have a VPS or Dedicated plan</span></h2>
+<h2><span id="If_you_have_a_VPS_or_Dedicated_plan">SHELL users on a VPS or Dedicated plan</span></h2>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>The following commands only shows sites under a single <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Enabling-Shell-access">'Shell' user</a>. If you need to view all site logs on your server, view the section below titled 'Admin users on a Dedicated plan'</p>
+</div>
+</div>
 <table class="wikitable">
 <tbody>
-<tr style="font-style: bold;"><th bgcolor="#F2F2F2">Command</th><th bgcolor="#F2F2F2">Description</th></tr>
+<tr style="font-style: bold;">
+<th bgcolor="#F2F2F2">Command</th>
+<th bgcolor="#F2F2F2">Description</th>
+</tr>
 <tr>
 <td style="width: 44%;">
 <div class="preboxcontainer">
@@ -96,7 +111,68 @@ allow from all
 </td>
 <td>
 <ul>
-<li>Generates a list of all traffic for all domains (for multiple domains on a VPS or Dedicated server).</li>
+<li>Generates a list of all traffic for all domains under a single SHELL user.</li>
+<li>You can run this command from within any directory.</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td style="width: 44%;">
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">tail -f -q /home/*/logs/*/http/access.log</span></pre>
+</div>
+</td>
+<td>
+<ul>
+<li>Watches your server logs (under a single Shell user) in real-time to see if the issue presents itself with a specific IP (for intermittent issues).</li>
+<li>You can run this command from within any directory.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<h2><span id="If_you_have_a_VPS_or_Dedicated_plan">Admin users on a Dedicated plan</span></h2>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>The following commands only work if you have an <a href="https://help.dreamhost.com/hc/en-us/articles/215945467-How-do-I-add-users-to-a-Dedicated-server-">'Admin' user</a> on your server. You must then switch to your 'root' user. Only then will you see all logs for all sites on your server.</p>
+</div>
+</div>
+<h3>How to switch to the 'root' user after logging in as an 'admin' user</h3>
+<p>The following steps detail how to log in as a 'root' user on your server AFTER logging in as your 'admin' user first.</p>
+<ol>
+<li>Log into your server as your 'admin' user.</li>
+<li>Run 'sudo su':
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">sudo su</span>
+<span class="cmdoutput">[sudo] password for exampleuser:</span>
+</pre>
+</div>
+</li>
+<li>Enter your password for your 'admin' user.</li>
+<li>You're now logged in as the 'root' user. You can see this in the command prompt:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">root@ds123456#</span>
+</pre>
+</div>
+</li>
+</ol>
+<p>After you're logged in as the 'root' user, run the following commands to view logs for all sites on your server.</p>
+<table class="wikitable">
+<tbody>
+<tr style="font-style: bold;">
+<th bgcolor="#F2F2F2">Command</th>
+<th bgcolor="#F2F2F2">Description</th>
+</tr>
+<tr>
+<td style="width: 44%;">
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">for k in `ls -S /home/*/logs/*/http/access.log`; do wc -l $k | sort -r -n; done</span></pre>
+</div>
+</td>
+<td>
+<ul>
+<li>Generates a list of all traffic for all domains on a Dedicated server.</li>
 <li>You can run this command from within any directory.</li>
 </ul>
 </td>
@@ -120,6 +196,14 @@ allow from all
 <p>You may find in your access.log that your site’s Unique IP is making a lot of connections. This is not an issue and can be safely ignored.</p>
 <p>This occurs because Apache is internally generating these connections in order to shut down unneeded processes.</p>
 <p>You can read more about it <a href="http://wiki.apache.org/httpd/InternalDummyConnection">here</a>.</p>
+<h2>Troubleshooting</h2>
+<p>You may see the following error response after running the command to view all traffic for all domains on a server.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">for k in `ls -S /home/*/logs/*/http/access.log`; do wc -l $k | sort -r -n; done</span>
+<span class="cmdoutput">ls: cannot access /home/*/logs/*/http/access.log: No such file or directory
+</span></pre>
+</div>
+<p>This error occurs when you run the command as an SFTP user. You must run it as a 'Shell' user on a VPS or 'Shell' or 'Admin' user on a Dedicated server.</p>
 <h2>See also</h2>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
