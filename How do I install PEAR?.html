@@ -19,7 +19,7 @@
 <p>For these reasons, PHPMailer is worth taking a look at as an alternative to PEAR MAIL.</p>
 <h2><span id="Installing_PEAR_manually">Installing PEAR manually</span></h2>
 <div class="alert alert-important">
-<div class="alert-icon"><img alt="" height="60" src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
 <p>PEAR is not installed by default on DreamHost servers. If you require any PEAR package to operate on your site it must be installed manually using the following steps.</p>
 </div>
@@ -38,7 +38,7 @@
 </li>
 <li>Once you’ve logged into your server, make sure you're in your users directory. Run this command in your SHELL terminal:
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">pwd</span> <br/><span class="cmdoutput">/home/exampleuser</span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">pwd</span> <br /><span class="cmdoutput">/home/exampleuser</span></pre>
 </div>
 <ul>
 <li>User is named ‘exampleuser’.</li>
@@ -59,7 +59,7 @@ Resolving pear.php.net (pear.php.net)... 5.77.39.20
 Connecting to pear.php.net (pear.php.net)|5.77.39.20|:80... connected.
 HTTP request sent, awaiting response... 200 OK
 Length: 3673193 (3.5M) [application/octet-stream]
-Saving to: `go-pear.phar' <br/> <br/>100%[=====================&gt;] 3,673,193 1.26M/s in 2.8s
+Saving to: `go-pear.phar' <br /> <br />100%[=====================&gt;] 3,673,193 1.26M/s in 2.8s
 
 2015-01-26 10:27:06 (1.26 MB/s) - `go-pear.phar' saved [3673193/3673193] </span></pre>
 </div>
@@ -95,7 +95,7 @@ accept these locations.
 </li>
 <li>Click <strong>Enter</strong> on your keyboard to proceed with the installation.
 <div class="alert alert-note">
-<div class="alert-icon"><img alt="" height="60" src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
 <p>You can alter these later by editing your .pearrc file in your users directory.</p>
 </div>
@@ -139,7 +139,7 @@ Press Enter to continue:
 <dd><em>You’ll see these lines already in that file:</em></dd>
 </dl>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="cmdoutput"># ~/.bash_profile: executed by bash(1) for login shells. <br/> <br/>umask 002 <br/>PS1='[\h]$ '</span></pre>
+<pre class="prebox"><span class="cmdoutput"># ~/.bash_profile: executed by bash(1) for login shells. <br /> <br />umask 002 <br />PS1='[\h]$ '</span></pre>
 </div>
 </li>
 <li>At the bottom, enter these two lines:
@@ -177,7 +177,7 @@ export PATH=${HOME}/pear/bin:/usr/local/php56/bin:${PATH}</span></pre>
 <p>You've now installed PEAR – but for your environment to know where to find this installation, you must set up the include_path within your phprc file.</p>
 <h2><span id="Setting_the_include_path_in_your_phprc_file">Setting the include_path in your phprc file</span></h2>
 <div class="alert alert-note">
-<div class="alert-icon"><img alt="" height="60" src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
 <p>If you do not set up this include_path correctly, you may find your installation does not work as intended.</p>
 </div>
@@ -211,7 +211,34 @@ XML_Util         1.2.3   stable
 </div>
 </li>
 </ol>
-<p>Since you receive a response, you can see that PEAR is now functioning. You can install any other packages you like using the 'pear' command. For example, run the following to install the mail package:</p>
+<p>Since you receive a response, you can see that PEAR is now functioning.</p>
+<h2>Changing the /tmp directory pear uses</h2>
+<p>When you install pear, it uses the server's /tmp directory. On a shared server, this may cause the installation of packages to fail.</p>
+<p>To avoid this issue, make sure to adjust three configuration options in your pear config. For example, run the following to view the current /tmp directories:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">pear config-show | grep tmp</span>
+<span class="cmdoutput">PEAR Installer cache directory cache_dir        /tmp/pear/cache
+PEAR Installer download        download_dir     /tmp/pear/install
+PEAR Installer temp directory  temp_dir         /tmp/pear/install</span>
+</pre>
+</div>
+<p>You must update those three settings. First, create a /tmp directory in your user's directory:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd $HOME</span>
+<span class="server">[server]$ </span><span class="command">mkdir tmp</span>
+</pre>
+</div>
+<p>Then update the three configuration options. In these examples, change 'username' to the shell user you're currently running the commands under.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">pear config-set cache_dir /home/username/tmp</span>
+<span class="cmdoutput">config-set succeeded</span>
+<span class="server">[server]$ </span><span class="command">pear config-set download_dir /home/username/tmp</span>
+<span class="cmdoutput">config-set succeeded</span>
+<span class="server">[server]$ </span><span class="command">pear config-set temp_dir /home/username/tmp</span>
+<span class="cmdoutput">config-set succeeded</span>
+</pre>
+</div>
+<p>You are now able to install any packages you like using the 'pear' command. For example, run the following to install the mail package:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">pear install --onlyreqdeps Mail</span></pre>
 </div>
