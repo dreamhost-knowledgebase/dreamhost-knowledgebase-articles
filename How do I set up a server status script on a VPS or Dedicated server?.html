@@ -1,4 +1,4 @@
-<p>If you have a <a href="https://dreamhosthelp.zendesk.com/hc/en-us/articles/215280058-Virtual-Private-Server-overview-VPS-">VPS </a>or <a href="https://dreamhosthelp.zendesk.com/hc/en-us/articles/215279658-Dedicated-server-overview">Dedicated server</a>, you might be interested in finding the status of that server without having to wait at a terminal window. Instead, you can run a script that emails you this information about the status of your server.</p>
+<p>If you have a <a href="/hc/en-us/articles/215280058-Virtual-Private-Server-overview-VPS-">VPS </a>or <a href="/hc/en-us/articles/215279658-Dedicated-server-overview">Dedicated server</a>, you might be interested in finding the status of that server without having to wait at a terminal window. Instead, you can run a script that emails you this information about the status of your server.</p>
 <p>It works by outputing HTML 4.01 Strict compliant content containing information on your server, including:</p>
 <ul>
 <li>load average</li>
@@ -10,9 +10,9 @@
 <li>top snapshot of all running processes</li>
 </ul>
 <div class="alert alert-note">
-<div class="alert-icon"><img alt="" height="60" src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
-<p>This only applies to your web server. Shell access to <a href="https://dreamhosthelp.zendesk.com/hc/en-us/articles/215945917-MySQL-VPS-overview">MySQL VPS</a> is not available.</p>
+<p>This only applies to your web server. Shell access to <a href="/hc/en-us/articles/215945917-MySQL-VPS-overview">MySQL VPS</a> is not available.</p>
 </div>
 </div>
 <h2><span id="Installing_a_server_script">Installing a server script</span></h2>
@@ -22,10 +22,10 @@
 </ul>
 <dl>
 <dd><a href="https://cdn.rawgit.com/watsonian/server-status-report/master/status.rb">https://cdn.rawgit.com/watsonian/server-status-report/master/status.rb</a></dd>
-<dd><em>If you download the file by visiting the URL, you still must upload the file via <a href="https://dreamhosthelp.zendesk.com/hc/en-us/articles/215612917-FTP-overview">FTP</a>.</em></dd>
+<dd><em>If you download the file by visiting the URL, you still must upload the file via <a href="https://help.dreamhost.com/hc/en-us/articles/115000675027-FTP-overview-and-credentials">FTP</a>.</em></dd>
 </dl>
 <ul>
-<li>If you’re able to <a href="https://dreamhosthelp.zendesk.com/hc/en-us/articles/216041267-SSH-overview">SSH</a> into your VPS, you can simply run:</li>
+<li>If you’re able to <a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a> into your VPS, you can simply run:</li>
 </ul>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">curl -s -o status.rb https://cdn.rawgit.com/watsonian/server-status-report/master/status.rb</span></pre>
@@ -50,16 +50,16 @@
 </div>
 <p>then that means you need to install it.</p>
 <div class="alert alert-important">
-<div class="alert-icon"><img alt="" height="60" src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
-<p>You can only install mailx on a Dedicated server with an <a href="https://dreamhosthelp.zendesk.com/hc/en-us/articles/215945467-How-do-I-add-users-to-a-Dedicated-server-">admin user</a>. This is because it requires sudo. Once logged in, run the following command:</p>
+<p>You can only install mailx on a Dedicated server with an <a href="/hc/en-us/articles/215945467-How-do-I-add-users-to-a-Dedicated-server-">admin user</a>. This is because it requires sudo. Once logged in, run the following command:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">sudo apt-get install mailx</span></pre>
 </div>
 </div>
 </div>
 <h2><span id="Creating_a_cron_job">Creating a cron job</span></h2>
-<p>View the <a href="https://dreamhosthelp.zendesk.com/hc/en-us/articles/215088608-Crontab-overview">Crontab</a> article for details on how to create a cron job under your shell user. Enter the following command in the panel when creating the cron job:</p>
+<p>View the <a href="/hc/en-us/articles/215088608-Crontab-overview">Crontab</a> article for details on how to create a cron job under your shell user. Enter the following command in the panel when creating the cron job:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">/usr/bin/ruby /path/to/script/status.rb | /usr/bin/mail -a "Content-type: text/html;" -s "Status Report: $HOSTNAME" "some@example.com"</span></pre>
 </div>
@@ -79,7 +79,7 @@
 <h2><span id="Conclusion">Conclusion</span></h2>
 <p>If you set everything up properly, then you should start getting emails that look roughly like this:</p>
 <dl>
-<dd><img alt="Server status script preview.png" class="thumbborder" src="https://objects-us-west-1.dream.io/kbimages/images/Server_status_script_preview.png"/></dd>
+<dd><img class="thumbborder" src="https://objects-us-west-1.dream.io/kbimages/images/Server_status_script_preview.png" alt="Server status script preview.png" /></dd>
 </dl>
 <p>Keep in mind that this script is likely to update as time progresses if things change with server configurations. So, if this stops working on your server, be sure to check back to see if the script has updated. This was tested with the new SSD VPS on Ubuntu 12.04 LTS and so far there are no problems.</p>
 <h2><span id="See_also">See also</span></h2>
