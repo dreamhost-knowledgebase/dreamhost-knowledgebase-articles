@@ -1,0 +1,105 @@
+<div class="alert alert-warning">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-warning-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p><strong>POSSIBLE OUTDATED INFORMATION!</strong><br /> The information on this page may not function or work as intended. DreamHost support is unable to assist with any customizations. Use at your own risk!</p>
+</div>
+</div>
+<p>There are a couple of Python solutions for Dynamic DNS updates. They differ in how and where they run:</p>
+<ul>
+<li>dhdynamicdns runs as a script that lives in your DreamHost web space. DNS records are updated by accessing the script from a computer on your home network.</li>
+<li><tt>dhdynupdate</tt> runs as a daemon on your local Linux system, and supports updating AAAA (IPv6) addresses in DNS as well as A (IPv4) records.</li>
+</ul>
+<h2><span id="dhdynamicdns">dhdynamicdns</span></h2>
+<p>Tool is current as of 2015-02-19</p>
+<p>This is a turnkey solution for Dynamic DNS updates. The Python script lives on your DreamHost web space and you trigger updates by accessing the script from a computer on your home network. This article includes a section on how to schedule the script to trigger.</p>
+<h3><span id="Prerequisites">Prerequisites</span></h3>
+<ul>
+<li>Home computer with tools to schedule automatic requests of a URL</li>
+<li>DreamHost shell account</li>
+<li>Fully hosted DreamHost domain</li>
+<li>DreamHost API key with authorization to delete and create the domain you want to work with. Create one at: <a href="https://panel.dreamhost.com/?tree=home.api">https://panel.dreamhost.com/?tree=home.api</a></li>
+</ul>
+<h3><span id="Procedure">Procedure</span></h3>
+<p>The script uses python libraries that aren't available on DreamHost. This requires you set up a virtual python environment and install the required library. Open a terminal session and type the following shell commands in order. </p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wget http://pypi.python.org/packages/source/v/virtualenv/virtualenv-1.11.6.tar.gz</span>
+<span class="server">[server]$ </span><span class="command">tar -xvzf virtualenv-1.11.6.tar.gz</span>
+<span class="server">[server]$ </span><span class="command">python virtualenv-1.11.6/virtualenv.py  --system-site-packages $HOME/local</span>
+<span class="server">[server]$ </span><span class="command">cd ~/local/bin</span>
+<span class="server">[server]$ </span><span class="command">./pip install requests</span>
+</pre>
+</div>
+<p>Navigate to the directory of the website where you want to run the script from</p>
+<p>Put the code here from <a href="https://github.com/mattjm/dhdynamicdns">https://github.com/mattjm/dhdynamicdns</a>. You can use git for this:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">$git clone https://github.com/mattjm/dhdynamicdns</span>
+</pre>
+</div>
+<p>git will create a new folder with the script in it. Go to the folder and change the permissions on the script so it's executable.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd dhdynamicdns</span>
+<span class="server">[server]$ </span><span class="command">chmod 755 dns.py</span>
+</pre>
+</div>
+<p>Edit dns.py and fill in your own values for apiKey, domainName, and myPass.</p>
+<ul>
+<li><strong>apiKey</strong> is your dreamhost API key.</li>
+<li><strong>domainName</strong> is the full domain name you want to activate Dynamic DNS for such as my-dynamic-subdomain.example.com.</li>
+<li><strong>myPass</strong> is not a password for anything else. You must select one just for the script. It's a string that you later pass in the URL when you run the script. This prevents someone else on the Internet from being able to update your IP address.</li>
+<li>Also in the very first line of the script you need to change "username" to the username of the account that you're currently logged in as.</li>
+</ul>
+<p>At this point you can test the script by entering the URL into your web browser and including the password as a query string. For example: <a href="http://mydomain.com/dhdynamicdns/dns.py?password=oneseventhree">http://example.com/dhdynamicdns/dns.py?password=oneseventhree</a></p>
+<p>You should see some text on the screen indicating success. The script won't update the record if the address hasn't changed since the last update.</p>
+<h3><span id="Security">Security</span></h3>
+<p>The only thing stopping anyone in the world from changing your IP address is the password in the URL. This is relatively safe if you're triggering the script from your home network over a wired connection or encrypted wifi connection. But you should still set up SSL and run the script over https. Once this is done, you'll just trigger the script with "https" instead of "http"</p>
+<p>Note that a self-signed certificate may cause problems with some software. Make sure the automated process you have to trigger the script isn't choking on an SSL warning. You may have to use a special setting to ignore certificate checking, or add the certificate to a whitelist.</p>
+<h3><span id="Triggering">Triggering</span></h3>
+<p>You can easily trigger the script from a UNIX machine using cron and a tool like cURL. On Windows, the easiest way to do this without extra software is to create a .bat file with the following text (appropriately modified):</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="cmdoutput">start https://www.example.com/dhdynamicdns/dns.py?password=onethreeseven</span>
+</pre>
+</div>
+<p>Then use the Windows Task Scheduler to set up a scheduled task to run the .bat file. Microsoft has instructions on setting up a scheduled task at <a href="http://windows.microsoft.com/en-US/windows/schedule-task">http://windows.microsoft.com/en-US/windows/schedule-task</a>. Use the .bat file as the "program" you want the scheduled task to run. This method has the side effect of opening a new browser window every time it runs.</p>
+<h3><span id="Limitations">Limitations</span></h3>
+<ul>
+<li>Uses a fairly primitive method to determine your public IP address. It just asks the web server what IP address the request to run the script came from. This could break down under certain conditions.</li>
+<li>Only supports A records.</li>
+<li>Limited error handling.</li>
+<li>Security model is not great. A simple password in the URL is used for access control. SSL is not enabled by default on DreamHost.</li>
+</ul>
+<h3><span id="Errata">Errata</span></h3>
+<ul>
+<li>If you have multiple A records with the same name, the script will update whichever one is returned first in the list (the same record may not always be returned first). It might act weird if you have more than one A record with the same name.</li>
+<li>The script doesn't differentiate between A records and records of other types when it checks for an existing record. It won't delete or edit records of other types, but their presence may cause unwanted behavior.</li>
+</ul>
+<h2><span id="dhdynupdate">dhdynupdate</span></h2>
+<p>New tool as of Jan 22, 2016</p>
+<p><tt>dhdynupdate</tt> is a Python 3 tool which is designed to run as a dæmon from a local Linux machine. Currenly only Linux is tested to work with dhdynupdate.</p>
+<p>It's useful to execute on a machine in a home network where your ISP may be changing your IPv4 and/or IPv6 addresses frequently.</p>
+<p>dhdynudpate will query its configured network interfaces for their corresponding IPv4 and IPv6 addresses and update a configured hostname using the DreamHost API.</p>
+<h3><span id="Errata.2FNotes">Errata/Notes</span></h3>
+<p>dhdynupdate only supports one A and one AAAA record per hostname. If you have multiple A or AAAA records for the configured host, the other records will be deleted.</p>
+<h3><span id="dhdynupdate_configuration">dhdynupdate configuration</span></h3>
+<p>To see installation dependencies and read the full documentation, please see the README at the <a href="https://github.com/ttelford/dhdynupdate">dhdynupdate GitHub page</a></p>
+<ul>
+<li>It's useful to clone the repository into <tt>/usr/local/dhdynupdate</tt></li>
+<li>Copy <tt>dhdynupdate.conf</tt> to <tt>/etc/dhdynupdate.conf</tt></li>
+<li>Create a system dæmon user for dhdynupdate: <tt>useradd -r -g dhdynupdate dhdynupdate</tt></li>
+<li>Create a path for the dæmon log to be installed: <tt>mkdir -p /var/log/dhdynupdate &amp;&amp; chown dhdynupdate:dhdynupdate /var/log/dhdynupdate</tt></li>
+<li>A systemd service file is provided: <tt>dhdynupdate.service</tt>. Copy the service file to <tt>/lib/systemd/system</tt></li>
+</ul>
+<h3><span id="Security_2">Security</span></h3>
+<p>There shouldn't be any problems with the security of <tt>dhdynupdate</tt> as nothing exploitable is exposed to an eavesdropper.</p>
+<ul>
+<li><tt>dhdynupdate</tt> communicates only to <tt><a href="https://api.dreamhost.com">https://api.dreamhost.com</a></tt>.
+<ul>
+<li>It verifies the SSL certificate is valid before continuing, and all communications are encrypted.</li>
+<li>URL details (such as the DreamHost API key or the DNS record information being updated are not visible to a third party; the URL is encrypted.</li>
+</ul>
+</li>
+<li><tt>dhdynupdate</tt> executes locally as a non-priviliged user created specifically to run the dæmon.
+<ul>
+<li>It only attempts to update your DNS records in your domain hosted by DreamHost.</li>
+</ul>
+</li>
+</ul>

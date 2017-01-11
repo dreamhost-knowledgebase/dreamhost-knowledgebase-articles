@@ -1,19 +1,25 @@
-<div class="alert alert-important">
-<div class="alert-icon"><img alt="" height="60" src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60"/></div>
+<div class="alert alert-warning">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-warning-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
-<p><strong>WARNING: POSSIBLE OUTDATED INFORMATION!</strong><br/><span style="font-size: 90%;">DreamHost does not directly support any of the features described on this page and is not responsible for keeping this content updated or accurate. Use at your own risk! <br/><br/></span></p>
+<p><strong>POSSIBLE OUTDATED INFORMATION!</strong><br /> DreamHost does not directly support any of the features described on this page and is not responsible for keeping this content updated or accurate. Use at your own risk!</p>
 </div>
 </div>
-<p>As of February 4, 2008, DreamHost now officially supports the <a href="http://mongrel.rubyforge.org/">Mongrel</a> application server on all <a href="http://www.dreamhostps.com/">DreamHost VPS</a> and DreamHost Dedicated servers. If you have one of those hosting plans setup you can visit the <a href="https://panel.dreamhost.com/index.cgi?tree=domain.proxy&amp;">Mongrel and Proxy</a> section of the web panel to set one up.</p>
-<p>Note that Mongrel and Passenger provide much of the same functionality so you most likely do NOT want to be using both of them on the same website.</p>
-<h2><span id="Getting_Started">Getting Started</span></h2>
+<p> </p>
+<p>As of February 4, 2008, DreamHost officially supports the <a href="http://mongrel.rubyforge.org/">Mongrel</a> application server on all <a href="http://www.dreamhostps.com/">DreamHost VPS</a> and DreamHost Dedicated servers. If you have one of these hosting plans, you can visit the <a href="https://panel.dreamhost.com/index.cgi?tree=domain.proxy&amp;">Mongrel and Proxy</a> section of the web panel for setup options.</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Mongrel and Passenger provide much of the same functionality so you most likely do NOT want to use both of them on the same website.</p>
+</div>
+</div>
+<h2>Getting Started</h2>
 <ol>
 <li>Upload your working application.</li>
-<li>Configure your Mongrel server from <a href="https://panel.dreamhost.com/index.cgi?tree=domain.proxy&amp;">Mongrel and Proxy</a> section of the web panel</li>
-<li>Within a few minutes your application will be up and running on Mongrel.</li>
+<li>Configure your Mongrel server from the <a href="https://panel.dreamhost.com/index.cgi?tree=domain.proxy&amp;">Mongrel and Proxy</a> section of the web panel.</li>
 </ol>
-<h2><span id="Restarting_Your_Mongrel">Restarting Your Mongrel</span></h2>
-<p>Once your Mongrel application server is created you will need to restart it any time you change your application code. Unlike FastCGI, Mongrel does not automatically restart. To do this you must connect to the server via ssh, cd to the application directory, and then run one of these commands:</p>
+<p>Within a few minutes, your application will be up and running on Mongrel.</p>
+<h2>Restarting Mongrel</h2>
+<p>Once you create a Mongrel application server, you must restart it any time you change your application code. Unlike FastCGI, Mongrel does not automatically restart. To do this you must connect to the server via SSH, cd to the application directory, and then run one of the following commands:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">./mongrel-restart</span></pre>
 </div>
@@ -23,24 +29,26 @@
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">./mongrel-stop</span></pre>
 </div>
-<p>Those each do exactly what you'd expect from the name.</p>
-<h2><span id="Tips">Tips</span></h2>
-<p>It took some time to figure out how to properly configure the Mongrel server and Rails application. These are the steps I took to set up my Mongrel Server. The web panel is very useful, but there is no documentation on exactly what steps you have to take to make sure Mongrel is running properly, or how to tell if it is working.</p>
+<h2>Tips</h2>
+<p>It may take some time to figure out how to properly configure the Mongrel server and Rails application. The following are a few suggested steps to help you set up a Mongrel server:</p>
 <ol>
-<li>Create a directory "my_dir" in my web account. ( If the directory does not exist, then the mongrel-start, and stop apps don't appear in the directory.).</li>
-<li>Copy the rails application code to the directory, with the config and public appearing in the "my_dir" directory.</li>
-<li>Go to the web panel and use the form to specify the directory "http/my_dir" from the root of the user's account and the url for the application "www.example.com/my_rails_app" or leave blank for "www.example.com" to be proxied to the rails port. Although this is automatically done, there is not explanation that this is what is happening.</li>
-<li>After the proxy is set up (and the information appears in the Mongrel list, and the port number is listed), then ssh back into your site and you should find "mongrel-start, mongrel-stop, and mongrel-restart" applications copied into your "my_dir" directory.</li>
-<li>execute mongrel-start from the command line</li>
-<li>visit "www.example.com:300X" where 300X is your mongrel port. This should connect directly to your rails application which is already running via mongrel. If you have not executed "mongrel-start" from the command line, you should get see an error message.</li>
-<li>Finally, test that "www.example.com/my_rails_app" properly connects and proxies to your rails application. (or "www.example.com" if you want the root to work).</li>
+<li>Create the directory <span class="code">my_dir</span> in your web account. If the directory does not exist, then the mongrel-start and -stop apps don't appear in the directory.</li>
+<li>Copy the rails application code to the directory, with the config and public appearing in the <span class="code">my_dir</span> directory.</li>
+<li>Go to the panel and use the form to specify the directory <span class="code">http/my_dir</span> from the root of the user's account and the URL for the application "www.example.com/my_rails_app" or leave blank for "www.example.com" to be proxied to the rails port. Although this is automatically done, there is not explanation that this is what is happening.</li>
+<li>After the proxy is set up (and the information appears in the Mongrel list, and the port number is listed), then SSH back into your site and you should find "mongrel-start, mongrel-stop, and mongrel-restart" applications copied into your "my_dir" directory.</li>
+<li>Run <span class="code">mongrel-start</span> from the command line.</li>
+<li>Visit "www.example.com:300X" where 300X is your mongrel port. This should connect directly to your rails application which is already running via Mongrel. If you have not executed "mongrel-start" from the command line, you should see an error message.</li>
+<li>Test that "www.example.com/my_rails_app" properly connects and proxies to your rails application (or, "www.example.com" if you want the root to work).</li>
 </ol>
-<p>If you do not make the directory properly you might see only the following:</p>
-<p>The only thing I see is $ mongrel_rails start | stop | restart</p>
-<h2><span id="More_Advanced_Options">More Advanced Options</span></h2>
-<p>If you would like more control over the proxy setup of your Mongrel application, you can delete the proxy server automatically created when you created your Mongrel application, and then use mod_rewrite to proxy specific requests. You may want to do this if you have a lot of static files so those can be processed by Apache instead of passed to Mongrel.</p>
-<h2><span id="See_also">See also</span></h2>
+<p>If you do not create the directory properly, you may see only the following:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">mongrel_rails start | stop | restart</span>
+</pre>
+</div>
+<h2>Advanced options</h2>
+<p>If you would like more control over the proxy setup of your Mongrel application, you can delete the proxy server automatically created when you created your Mongrel application, and then use <span class="code">mod_rewrite</span> to proxy specific requests. You may want to do this if you have a lot of static files so those can be processed by Apache instead of passed to Mongrel.</p>
+<h2>See also</h2>
 <ul>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/215280058-Virtual-Private-Server-VPS-overview-">Private server overview</a></li>
+<li><a href="/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
+<li><a href="/hc/en-us/articles/215280058-Virtual-Private-Server-VPS-overview-">Private server overview</a></li>
 </ul>
