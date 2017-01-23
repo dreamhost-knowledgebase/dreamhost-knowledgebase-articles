@@ -65,7 +65,7 @@ go for the backup itself.</p>
 <p>First,  define some variables we know we’ll need later:</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">tmp_dir</span> <span class="o">=</span> <span class="s1">'tmp'</span>
 <span class="n">backup_bucket</span> <span class="o">=</span> <span class="s1">'website-backup'</span>
-<span class="n">target_dir</span> <span class="o">=</span> <span class="s1">'idallas.com'</span>
+<span class="n">target_dir</span> <span class="o">=</span> <span class="s1">'example.com'</span>
 </pre></div>
 </div>
 <p>Here’s what they will all be used for:
@@ -126,7 +126,7 @@ of the week today is, as a number.  Sunday is 0,  Monday is 1,
 Thursday is 4, etc.  We put that number into the “day_number”
 variable.</li>
 <li>Next, we define the file name for our backup file to be
-something like “idallas.com.backup.4.tar.gz”.  That’s what
+something like “example.com.backup.4.tar.gz”.  That’s what
 that backup_filename line works out to (on Thursdays).</li>
 <li>Then, we define the full path to the backup file.</li>
 </ul>
@@ -218,6 +218,51 @@ DreamObjects daily, but what if you want to do more
 with those backups?  In a future post, I’ll talk about
 how to list your available backups and choose one to
 restore from.</p>
+</div>
+<div id="id1">
+<h2>The Script</h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/python</span>
+
+<span class="kn">import</span> <span class="nn">tarfile</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="n">home_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">'HOME'</span><span class="p">)</span>
+<span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">home_dir</span><span class="p">)</span>
+
+<span class="n">tmp_dir</span> <span class="o">=</span> <span class="s1">'tmp'</span>
+<span class="n">backup_bucket</span> <span class="o">=</span> <span class="s1">'website-backup'</span>
+<span class="n">target_dir</span> <span class="o">=</span> <span class="s1">'example.com'</span>
+
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">tmp_dir</span><span class="p">):</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">tmp_dir</span><span class="p">)</span>
+
+<span class="n">tar</span> <span class="o">=</span> <span class="n">tarfile</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">backup_filepath</span><span class="p">,</span> <span class="s2">"w:gz"</span><span class="p">)</span>
+<span class="n">tar</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">target_dir</span><span class="p">)</span>
+<span class="n">tar</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="n">day_number</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">weekday</span><span class="p">()</span>
+
+<span class="n">backup_filename</span> <span class="o">=</span> <span class="s2">"{0}.backup.{1}.tar.gz"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+    <span class="n">target_dir</span><span class="p">,</span>
+    <span class="nb">str</span><span class="p">(</span><span class="n">day_number</span><span class="p">),</span>
+    <span class="p">)</span>
+<span class="n">backup_filepath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+    <span class="n">home_dir</span><span class="p">,</span>
+    <span class="n">tmp_dir</span><span class="p">,</span>
+    <span class="n">backup_filename</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="n">connection</span> <span class="o">=</span> <span class="n">boto</span><span class="o">.</span><span class="n">connect_s3</span><span class="p">(</span>
+    <span class="n">host</span><span class="o">=</span><span class="s1">'objects-us-west-1.dream.io'</span><span class="p">,</span>
+    <span class="p">)</span>
+
+<span class="n">bucket</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="n">backup_bucket</span><span class="p">)</span>
+<span class="n">key</span> <span class="o">=</span> <span class="n">bucket</span><span class="o">.</span><span class="n">new_key</span><span class="p">(</span><span class="n">backup_filename</span><span class="p">)</span>
+<span class="n">key</span><span class="o">.</span><span class="n">set_contents_from_file</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">backup_filepath</span><span class="p">,</span> <span class="s1">'rb'</span><span class="p">))</span>
+
+<span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">backup_filepath</span><span class="p">)</span>
+</pre></div>
+</div>
 </div>
 </div>
 </div>
