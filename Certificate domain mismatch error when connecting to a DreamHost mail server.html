@@ -11,34 +11,15 @@
 <li><a class="reference internal" href="#see_also">See also</a></li>
 </ul>
 </div>
-<p>You may receive a "domain mismatch" warning or an error when making a secure connection to the DreamHost mail servers when you use your DreamHost mail server subdomain. For example:</p>
+<p>You may receive a "domain mismatch" warning or an error when connecting to a DreamHost mail server if you use your DreamHost mail server subdomain. For example:</p>
 <div class="preboxcontainer">
 <pre class="prebox">mail.example.com</pre>
 </div>
-<div class="alert alert-important">
 <div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
-<p>On January 19, 2017, DreamHost updated the SSL certificates on all mail servers. Because the SSL certificate was updated, a message appears when you open your mail client. This message propmpts you to accept the new certificate. This certificate is completely safe for you to accept. Once your mail client saves the new certificate, your email client functions normally again. View the following article for futher details:</p>
-<ul>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/215306748-Certificate-domain-mismatch-error-when-connecting-to-a-DreamHost-mail-server">Certificate error when connecting to a server</a>
-<p><strong>Mac Mail users:</strong> There have been a few reported issues with Mac Mail not saving the new certificate at first. Try several times to accept the certificate with the 'Continue' button. Some users report that after a few tries, the certificate is saved. If it still cannot connect after these attempts, use your <a href="https://help.dreamhost.com/hc/en-us/articles/214918038#Server_names">mail cluster for the Mail Server name on your account</a>. For example, sub5.mail.dreamhost.com. You can see which mail cluster your account users in the panel on the <a href="https://panel.dreamhost.com/index.cgi?tree=support.dc&amp;">(Panel &gt; 'Support &gt; Data Centers')</a> page.</p>
-<p><strong>iPhone (iOS) users:</strong> First, try going to 'Settings &gt; Mail &gt; Accounts'. Click the account and address, and then re-enter the hostname. If this doesn't work, try setting up email as a new account. Go to 'Settings &gt; Mail &gt; Accounts &gt; Add Account'. When the message "Cannot Verify Server Identity" appears, click "Details" below that message. Be sure to click the <strong>Trust</strong> button in the top-right corner:</p>
-<dl>
-<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/iOS_cert_01.png" alt="iOS_cert_01.png" width="299" height="279" /></dd>
-</dl>
-<p>Similar to the suggestion above, you may need to repeat this process 2-3 times to take effect permanently. You can also use your <a href="https://help.dreamhost.com/hc/en-us/articles/214918038#Server_names">mail cluster for the server/host name</a> with this setup.</p>
-</li>
-</ul>
+<p>In the past, it was possible to use mail.example.com to connect (where example.com is your actual domain name). Due to how modern mail clients handle security, this is now NOT recommended as it may throw connection errors. Please ensure you are only using your mail cluster servername when connecting.</p>
 </div>
 </div>
-<h2><span id="why_happen">Why does this happen?</span></h2>
-<p>This happens because DreamHost's mail server certificate is assigned to *.mail.dreamhost.com, and not your specific domain. A connection where the specified domain is mail.example.com is still secure, but mail programs may show a warning about the domains not matching.</p>
-<p>Here is an example when viewing the certificate for mail.websitehelp.support:</p>
-<dl>
-<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/02_Domain_Mismatch.fw.png" alt="02 Domain Mismatch.fw.png" width="499" height="659" /></dd>
-</dl>
-<p>You should only turn off this warning if you have verified that you are connecting to DreamHost’s mail servers.</p>
-<p>The following sections provide information that helps you prevent this common warning message.</p>
 <h2><span id="connect_dh">Connecting directly to your DreamHost mail server</span></h2>
 <p>Instead of using mail.example.com, you can use the name of your specific DreamHost mail server instead.</p>
 <p>To determine which server name to use:</p>
@@ -71,68 +52,17 @@
 </tr>
 </tbody>
 </table>
-<ul>
-<li>This example shows homiemail-sub4. So you’d enter sub4.mail.dreamhost.com into your client to connect.</li>
-</ul>
+<p>This example shows homiemail-sub4. So you’d enter sub4.mail.dreamhost.com into your client to connect.</p>
 </li>
 </ol>
-<div class="alert alert-note">
-<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
-<div class="alert-content">
-<p>Some mail programs will still reject these hostnames as the asterisk (*) in the certificate's *.mail.dreamhost.com should ideally only match one level of subdomain.</p>
-</div>
-</div>
-<h2><span id="email_solutions">Email client solutions</span></h2>
-<p>There are various client-specific solutions, which most often involve simply turning off the warning about a domain mismatch.</p>
-<p>Below are some of the more common examples.</p>
-<h3>Thunderbird</h3>
-<p>Thunderbird prompts you to create an exception. Click the <strong>OK</strong> button in the warning dialog box and it won't bother you again until the mail server is reconfigured.</p>
-<h3>Mail.app (Mac OS X)</h3>
-<p>You must add an <code>/etc/hosts</code> entry for Mail.app version 7.2 on Mac OSX 10.9.2.</p>
-<p>To add:</p>
-<ol>
-<li>Open Mac’s terminal and open the hosts file. View the <a href="/hc/en-us/articles/216041267-SSH-overview">SSH article</a> for instructions on how to open your terminal.</li>
-<li>After you open terminal, find the IP by running the following command on your hostname:
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[macbook]$ </span><span class="command">dig +short sub4.mail.dreamhost.com</span> <br /><span class="cmdoutput">69.163.253.135</span></pre>
-</div>
-</li>
-<li>Run the following command to open the host file in order to edit it:
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[macbook]$ </span><span class="command">sudo nano /private/etc/hosts</span></pre>
-</div>
-</li>
-<li>In the host file, enter the IP address of the server followed by the servername.
-<dl>
-<dd><em>If you are on homiemail-sub4, insert the following:</em></dd>
-</dl>
-<div class="preboxcontainer">
-<pre class="prebox">69.163.253.135 sub4.mail.dreamhost.com</pre>
-</div>
-<ul>
-<li>If this still doesn't work, make sure the Trust for *.mail.dreamhost.com certificate in Keychain.app is set to "Always Trust."</li>
-</ul>
-</li>
-</ol>
+<h2>Recent updates to DreamHost's mail certificates</h2>
+<p>On January 19, 2017, DreamHost updated the SSL certificates on all mail servers. Because the SSL certificate was updated, a message appears when you open your mail client. This message propmpts you to accept the new certificate. This certificate is completely safe for you to accept. Once your mail client saves the new certificate, your email client functions normally again.</p>
+<p><strong>Mac Mail users:</strong> There have been a few reported issues with Mac Mail not saving the new certificate at first. Try several times to accept the certificate with the 'Continue' button. Some users report that after a few tries, the certificate is saved. If it still cannot connect after these attempts, use your <a href="https://help.dreamhost.com/hc/en-us/articles/214918038#Server_names">mail cluster for the Mail Server name on your account</a>. For example, sub5.mail.dreamhost.com. You can see which mail cluster your account users in the panel on the <a href="https://panel.dreamhost.com/index.cgi?tree=support.dc&amp;">(Panel &gt; 'Support &gt; Data Centers')</a> page.</p>
+<p><strong>iPhone (iOS) users:</strong> First, try going to 'Settings &gt; Mail &gt; Accounts'. Click the account and address, and then re-enter the hostname. If this doesn't work, try setting up email as a new account. Go to 'Settings &gt; Mail &gt; Accounts &gt; Add Account'. When the message "Cannot Verify Server Identity" appears, click "Details" below that message. Be sure to click the <strong>Trust</strong> button in the top-right corner:</p>
 <dl>
 <dd></dd>
-<dd></dd>
 </dl>
-<div class="alert alert-note">
-<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
-<div class="alert-content">
-<ul>
-<li>If you make changes to your system, DreamHost support cannot provide assistance for any errors that may occur as you are responsible for any changes that you make.</li>
-<li>The IP assigned to your cluster can change, which will prevent you from connecting. Please only make this change as a last resort or for a temporarily solution.</li>
-</ul>
-</div>
-</div>
-<h3>Trusting the certificate in Mail.app</h3>
-<p>For Mail.app version 8.1 on Mac OS X 10.10.1 and above, select “always trust” for the certificate, as shown below:</p>
-<dl>
-<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/03_Domain_Mismatch.fw.png" alt="03 Domain Mismatch.fw.png" width="599" height="621" /></dd>
-</dl>
-<p>See <a href="/hc/en-us/articles/216139917-How-to-re-trust-an-SSL-certificate-on-a-Mac">Re-Trust SSL Cert</a> for further details.</p>
+<p>Similar to the suggestion above, you may need to repeat this process 2-3 times to take effect permanently. You should also use your <a href="https://help.dreamhost.com/hc/en-us/articles/214918038#Server_names">mail cluster for the server/host name</a> with this setup.</p>
 <h2><span id="see_also">See also</span></h2>
 <ul>
 <li><a href="/hc/en-us/articles/214918038-Email-client-configuration-overview">Email client configuration overview</a></li>
@@ -141,7 +71,6 @@
 <li><a href="/hc/en-us/articles/216385987-MacMail-How-to-configure-email-with-Mac-OS-X-Yosemite">MacMail — How to configure email with Mac OS X Yosemite</a></li>
 </ul>
 <div class="clearer"> </div>
-</div>
 </div>
 </div>
 </div>
