@@ -14,14 +14,29 @@ RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 </pre>
 </div>
 <p>If this isn't working for you, first check your line endings. Copy/paste from your web browser into a text editor may not work right, so after pasting into your text editor you should delete each line break and add it back in (line break = return key).</p>
-<h2><span id="An_extra_secure_method_to_force_a_domain_to_only_use_SSL_.28HTTPS.29">An extra secure method to force a domain to only use SSL (HTTPS)</span></h2>
-<p>This method fixes a double login problem. If you wish to ensure that your server is only serving documents over an encrypted SSL channel (you wouldn't want visitors to submit an .htaccess password prompt on an unencrypted connection), then you must use the SSLRequireSSL directive with the +StrictRequire Option enabled:</p>
+<h2><span id="An_extra_secure_method_to_force_a_domain_to_only_use_SSL_.28HTTPS.29">Force a domain to only use SSL (HTTPS) when using an .htaccess file to create a login prompt</span></h2>
+<p>This method fixes a double login problem if you're using an <a href="https://help.dreamhost.com/hc/en-us/articles/216363187-How-do-I-password-protect-my-site-">.htaccess file to create a login prompt</a>. This prevents submission of an .htaccess password prompt on an unencrypted connection. If you wish to ensure that your server is only serving documents over an encrypted SSL channel, then you must use the SSLRequireSSL directive with the +StrictRequire Option enabled:</p>
 <div class="preboxcontainer">
 <pre class="prebox">SSLOptions +StrictRequire
 SSLRequireSSL
 SSLRequire %{HTTP_HOST} eq "example.com"
 ErrorDocument 403 https://example.com
 </pre>
+</div>
+<h2><span id="Forcing_HTTPS_with_WordPress">Forcing HTTPS with WordPress</span></h2>
+<p>It's possible for a visitor to enter in a direct HTTP URL on your WordPress site. To force any HTTP request to redirect to HTTPS, add the following to your WordPress .htaccess file:</p>
+<div class="preboxcontainer">
+<pre class="prebox">RewriteEngine On
+RewriteCond %{HTTPS} !=on
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301] 
+</pre>
+</div>
+<h2><span id="Forcing_HTTPS_with_DreamPress">Forcing HTTPS with DreamPress</span></h2>
+<p>It's possible for a visitor to enter in a direct HTTP URL on your DreamPress site. To force any HTTP request to redirect to HTTPS, add the following to your WordPress .htaccess file:</p>
+<div class="preboxcontainer">
+<pre class="prebox">RewriteEngine On
+RewriteCond %{HTTP:X-Forwarded-Proto} !https
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301] </pre>
 </div>
 <h2><span id="See_also">See also</span></h2>
 <ul>
