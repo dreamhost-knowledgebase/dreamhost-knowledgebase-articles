@@ -1,5 +1,6 @@
 <p>Node.js is a newer runtime environment that has become very popular among web developers. It uses JavaScript, traditionally a front end programming language on the server side.</p>
-<p>DreamHost does not support Node.js on shared web servers, as the <a href="http://grsecurity.net/">security setup</a> on DreamHost shared servers is incompatible with compiling or running Node.js.</p>
+<h2>Can Node.js be used on shared servers?</h2>
+<p>No. DreamHost does not support Node.js on shared web servers, as the <a href="http://grsecurity.net/">security setup</a> on DreamHost shared servers is incompatible with compiling or running Node.js.</p>
 <p>If you try to compile Node.js on one of the shared web servers, your user will automatically be banned through grsec (taking down all the PHP websites that run under that user) and the server will have to be rebooted before your user can be unbanned. If you do it one more time, you will be forced to move to a <a href="/hc/en-us/articles/215280058-Private-server-overview">VPS</a>.</p>
 <p>DreamHost's VPS and <a href="/hc/en-us/articles/215279658-Dedicated-server-overview">Dedicated</a> servers can run Node.js just fine.</p>
 <h2><span id="Enabling_Node.js_using_the_DreamHost_panel">Deploying Node.js with Passenger using the DreamHost panel</span></h2>
@@ -24,7 +25,7 @@
 </li>
 <li>Visit the following page to determine what version of NVM to install:
 <ul>
-<li><a href="https://github.com/creationix/nvm">https://github.com/creationix/nvm</a></li>
+<li><a href="https://github.com/creationix/nvm#install-script">https://github.com/creationix/nvm</a></li>
 </ul>
 </li>
 <li>Run the following command to download NVM. Change the version number as needed:
@@ -65,13 +66,13 @@
 </li>
 <li>Install any version of Node.js you wish:
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">nvm install 7.5.0</span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">nvm install 6.10.0</span></pre>
 </div>
 </li>
 <li>Check which version of Node.js is running by entering the following:
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">node -v</span>
-<span class="cmdoutput">v7.5.0</span>
+<span class="cmdoutput">v6.10.0</span>
 </pre>
 </div>
 </li>
@@ -143,7 +144,7 @@ http.createServer(function(request, response) {
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">node server.js</span></pre>
 </div>
 </li>
-<li>Visit the page in a browser with port 8888 appended to the end. For example, http://example.com:8888.
+<li>If you have <a href="/hc/en-us/articles/216635318-How-to-enable-Node-js">enabled Node.js in the panel</a>, you can just visit your site to see the file functioning. If you have not enabled Node.js in the panel, visit the page in a browser with port 8888 appended to the end. For example, http://example.com:8888.
 <p>If running correctly, your site will display the text <code>Hello World!</code>.</p>
 </li>
 </ol>
@@ -153,12 +154,6 @@ http.createServer(function(request, response) {
 <p>This example was taken from <a href="http://www.nodebeginner.org/#building-the-application-stack">http://www.nodebeginner.org/#building-the-application-stack</a>.</p>
 </div>
 </div>
-<h2>Using Node.js with Passenger</h2>
-<p>If you're using Node.js with Passenger you need to add the following to your site's .htaccess file:</p>
-<div class="preboxcontainer">
-<pre class="prebox">PassengerNodejs /home/USERNAME/.nvm/VERSION/node/bin/node</pre>
-</div>
-<p>Make sure to change USERNAME to your actual shell user and VERSION to the version you're using.</p>
 <h2><span id="See_also">See also</span></h2>
 <h3>Internal links</h3>
 <ul>
