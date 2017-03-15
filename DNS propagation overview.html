@@ -2,7 +2,7 @@
 <p>Additionally, DNS Propagation is a rather inaccurate term used to describe the process of <a href="/hc/en-us/articles/215413857-DreamHost-DNS-overview">DNS</a> resolution. The word "propagation" implies that DNS changes spread from DNS server to DNS server, and that you have no control over how quickly it happens. In fact, DNS servers check in with your local DNS server as needed, and the administrator of your local DNS server controls the 'time to live' (TTL) values for all DNS records in your domain.</p>
 <p>This page provides details on DNS Propagation, DNS Caching, TTL, Flushing DNS cache, and tools for checking propagation status.</p>
 <div class="alert alert-note">
-<div class="alert-icon"><img alt="" height="60" src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
 <p>DreamHost cannot control how fast your DNS propagates throughout the Internet.</p>
 </div>
@@ -19,7 +19,16 @@
 <p>It’s important to note that since it can take several hours for DNS records to resolve in all locations, different computers in different locations see the update at different times.</p>
 <p>Many people incorrectly refer to a mysterious 48 hour or 72 hour propagation time when you make a DNS change. When you change the nameserver records for your domain or the IP addresses for hostnames of authoritative DNS servers using one's domain (if any), there can be a lengthy period of time before all DNS servers use the new information. This is because those records are handled by the zone parent DNS servers (for example, the .com DNS servers if your domain is example.com), which typically cache those records for 48 hours. However, those DNS changes are immediately available for any DNS servers that do not have them cached. And, any DNS changes on your domain other than the nameserver records and authoritative DNS server names can be nearly instantaneous, if you so choose (by lowering the TTL ahead of time, and waiting until the old TTL expires before making the change).</p>
 <h2><span id="Adjusting_Time_To_Live_.28TTL.29">Adjusting Time To Live (TTL)</span></h2>
-<p>If for some reason you need to speed up or slow down the TTL for a domain:</p>
+<p>The Time-To-Live (TTL) value for a domain is how long a website is cached (stored in memory) on a web server. The average time is 4 hours.</p>
+<p>If you are moving a domain from one hosting provider to another, it may be a good idea to drop the TTL as low as possible BEFORE you initiate the migration. This allows your DNS records at your current host to expire faster so you do not need to wait the full 4 hours until the records change.</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>After the TTL for a domain is dropped, you must continue to wait until the current TTL expires. This could be 4 hours (depending on your hosting provider's TTL). Only after the current TTL has expired will the new TTL value control DNS updates.</p>
+</div>
+</div>
+<p>Once the 4 hours has expired and your new TTL is active, you should update your DNS to point to the new hosting provider.</p>
+<p>If for some reason you need to speed up or slow down the TTL for a domain hosted at DreamHost:</p>
 <ul>
 <li>Create a ticket on the (<a href="https://panel.dreamhost.com/index.cgi?tree=support.msg&amp;">Panel &gt; 'Support' &gt; 'Contact Support'</a>) page in your panel and DreamHost support will adjust it for you.</li>
 <li>Make sure you let support know to make the change at least four hours before the time you’d like to update your DNS, as it will take that long to enable the new TTL.</li>

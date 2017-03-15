@@ -1,0 +1,109 @@
+<h2>Local package installation</h2>
+<p>To install a package locally, navigate to your site's application directory (not the /public directory). The command to install a package is:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">npm install &lt;package_name&gt;</span></pre>
+</div>
+<p>For example, this installs a packages called 'lodash'.:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">npm install lodash</span>
+<span class="cmdoutput">/home/username/example.com
+└── lodash@4.17.4
+
+npm WARN enoent ENOENT: no such file or directory, open '/home/username/example.com/package.json'
+npm WARN example.com No description
+npm WARN example.com No repository field.
+npm WARN example.com No README data
+npm WARN example.com No license field.
+</span></pre>
+</div>
+<p>This creates a directory in your site's application directory called /node_modules.</p>
+<p>You should then check to confirm it was correctly installed. You must be in your site's application directory where the local /node_modules directory resides:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">ls node_modules</span>
+<span class="cmdoutput">lodash</span></pre>
+</div>
+<h3>Testing your locally installed package</h3>
+<p>This example is taken from <a href="https://docs.npmjs.com/getting-started/installing-npm-packages-locally">docs.npmjs.com</a>.</p>
+<p>Create a file named index.js, with the following code:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="cmdoutput">// index.js 
+var lodash = require('lodash');
+ 
+var output = lodash.without([1, 2, 3], 1);
+console.log(output);</span>
+</pre>
+</div>
+<p>Run the file using <strong>node index.js</strong>. It should output <strong>[2, 3]</strong>.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">node index.js</span>
+<span class="cmdoutput">[ 2, 3 ]</span>
+</pre>
+</div>
+<p>If the module was not correctly installed, an error would be thrown.</p>
+<h2>Creating a packages.json file for locally installed packages</h2>
+<p>It's a good idea to create a local packages.json file in your site's application directory where the /node_modules directory resides. This package.json file helps to manage your locally installed packages.</p>
+<p>To be clear, this package.json file is different than the package.json file within any locally installed package. For example:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="command">Local site package.json file location:<span class="cmdoutput"> /example.com/package.json</span>
+<span class="command">Locally installed package package.json file:</span> <span class="cmdoutput">/example.com/node_modules/&lt;module_name&gt;/package.json</span></span></pre>
+</div>
+<h2>Global package installation</h2>
+<p>Use the -g flag to install a package globally:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">npm install -g &lt;package_name&gt;</span></pre>
+</div>
+<p>For example, this installs a packages called 'jshint':</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">npm install -g jshint</span>
+<span class="cmdoutput">/home/username/.nvm/versions/node/v6.10.0/bin/jshint -&gt; /home/username/.nvm/versions/node/v6.10.0/lib/node_modules/jshint/bin/jshint
+/home/username/.nvm/versions/node/v6.10.0/lib
+└─┬ jshint@2.9.4
+  ├─┬ cli@1.0.1
+  │ └─┬ glob@7.1.1
+  │   ├── fs.realpath@1.0.0
+  │   ├─┬ inflight@1.0.6
+  │   │ └── wrappy@1.0.2
+  │   ├── inherits@2.0.3
+  │   ├── once@1.4.0
+  │   └── path-is-absolute@1.0.1
+  ├─┬ console-browserify@1.1.0
+  │ └── date-now@0.1.4
+  ├── exit@0.1.2
+  ├─┬ htmlparser2@3.8.3
+  │ ├── domelementtype@1.3.0
+  │ ├── domhandler@2.3.0
+  │ ├─┬ domutils@1.5.1
+  │ │ └─┬ dom-serializer@0.1.0
+  │ │   ├── domelementtype@1.1.3
+  │ │   └── entities@1.1.1
+  │ ├── entities@1.0.0
+  │ └─┬ readable-stream@1.1.14
+  │   ├── core-util-is@1.0.2
+  │   ├── isarray@0.0.1
+  │   └── string_decoder@0.10.31
+  ├── lodash@3.7.0
+  ├─┬ minimatch@3.0.3
+  │ └─┬ brace-expansion@1.1.6
+  │   ├── balanced-match@0.4.2
+  │   └── concat-map@0.0.1
+  ├── shelljs@0.3.0
+  └── strip-json-comments@1.0.4</span>
+</pre>
+</div>
+<p>As you can see from the output, global modules are installed under your user in the following directory:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="cmdoutput">/home/username/.nvm/versions/node/v6.10.0/lib/node_modules</span></pre>
+</div>
+<p>You can confirm which packages are installed globally by running the following:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">npm list -g --depth=0</span>
+<span class="cmdoutput">/home/username/.nvm/versions/node/v6.10.0/lib
+├── jshint@2.9.4
+└── npm@4.4.1</span></pre>
+</div>
+<h2>See also</h2>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/217185397-Node-js-overview">Node.js overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115004265527-Node-js-packages-npm-">Node.js packages (npm)</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216635318-How-to-enable-Node-js">How to enable Node.js</a></li>
+</ul>
