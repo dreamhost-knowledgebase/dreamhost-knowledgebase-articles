@@ -10,22 +10,22 @@ export G_FILENAME_ENCODING=UTF-8</span></pre>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">locale</span>
 <span class="cmdoutput">LANG=en_US.UTF-8
-LANGUAGE= <br/>LC_CTYPE="en_US.UTF-8"
-LC_NUMERIC="en_US.UTF-8" <br/>LC_TIME="en_US.UTF-8"
+LANGUAGE= <br />LC_CTYPE="en_US.UTF-8"
+LC_NUMERIC="en_US.UTF-8" <br />LC_TIME="en_US.UTF-8"
 LC_COLLATE=C
 LC_MONETARY="en_US.UTF-8"
 LC_MESSAGES="en_US.UTF-8"
-LC_PAPER="en_US.UTF-8" <br/>LC_NAME="en_US.UTF-8"
-LC_ADDRESS="en_US.UTF-8" <br/>LC_TELEPHONE="en_US.UTF-8"
+LC_PAPER="en_US.UTF-8" <br />LC_NAME="en_US.UTF-8"
+LC_ADDRESS="en_US.UTF-8" <br />LC_TELEPHONE="en_US.UTF-8"
 LC_MEASUREMENT="en_US.UTF-8"
-LC_IDENTIFICATION="en_US.UTF-8" <br/>LC_ALL= </span></pre>
+LC_IDENTIFICATION="en_US.UTF-8" <br />LC_ALL= </span></pre>
 </div>
 <p>You can see the first line is LANG=en_US.UTF-8. If for some reason this still doesn’t work, it’s most likely the terminal client you’re using. In PuTTY you can manually adjust the translation option to UTF-8.</p>
 <p>To adjust the translation option, follow these steps:</p>
 <ol>
 <li>Open the PuTTY general configuration.
 <dl>
-<dd><img alt="06 charset trans.fw.png" height="488" src="https://objects-us-west-1.dream.io/kbimages/images/06_charset_trans.fw.png" width="509"/></dd>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/06_charset_trans.fw.png" alt="06 charset trans.fw.png" width="509" height="488" /></dd>
 </dl>
 </li>
 <li>In the left Category list section, select ‘Window &gt; Translation’.</li>
@@ -41,11 +41,33 @@ LC_IDENTIFICATION="en_US.UTF-8" <br/>LC_ALL= </span></pre>
 <li>In the field ‘Seconds between keepalives (0 to turn off)', enter 15.</li>
 <li>Check the box for ‘Enable TCP keepalives (SO_KEEPALIVE option)'.
 <dl>
-<dd><img alt="07 connection.fw.png" height="495" src="https://objects-us-west-1.dream.io/kbimages/images/07_connection.fw.png" width="518"/></dd>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/07_connection.fw.png" alt="07 connection.fw.png" width="518" height="495" /></dd>
 </dl>
 </li>
 </ol>
 <p>The SSH client asks the server for a sign of life every 15 seconds, thus keeping the connection open.</p>
+<h2>Connection issues</h2>
+<p>You may see the following error when connecting:</p>
+<p><strong>No supported authentication methods available (server sent public key)</strong></p>
+<p>This could be an issue with how the public key was saved. PuttyGen will create a public key file that looks like this:</p>
+<div class="preboxcontainer">
+<pre class="prebox">---- BEGIN SSH2 PUBLIC KEY ----
+Comment: "rsa-key-20121022"
+AAAAB3NzaC1yc2CAAAABJQAAAIEAhGF6GIuMY8FJ1+CNApnSY1N2YSlkYz72Yvwu
+a6N1nFpBklz1+dsIMg4rcTLcF34M/tW5Yz+NUDAw2AEbxQ32FPgw7sAOIXktkYOH
+tr7mmimiTjkoSCrJh1kqalPSpi8rglT/Bp67Ql2SZwvUFfMzHISryR0EZC4rXP/u
+vObrJe8=
+---- END SSH2 PUBLIC KEY ----
+</pre>
+</div>
+<p>The key needs to be saved on a single line. Open the key in PuttyGen and copy it from there and paste it into a program like notepad. This results in the key saved on 1 line:</p>
+<div class="preboxcontainer">
+<pre class="prebox">ssh-rsa AAAAB3NzaC1yc2CAAAABJQAAAIEAhGF6GIuMY8FJ1+CNApnSY1N2YSlkYz72Yvwua6N1nFpBklz1+dsIMg4rcTLcF34M/tW5Yz+NUDAw2AEbxQ32FPgw7sAOIXktkYOHtr7mmimiTjkoSCrJh1kqalPSpi8rglT/Bp67Ql2SZwvUFfMzHISryR0EZC4rXP/uvObrJe8= rsa-key-20121022</pre>
+</div>
+<p>Paste this from notepad into the authorized_keys file on your server and it should work. View the following page for a more detailed explanation:</p>
+<ul>
+<li><a href="http://askubuntu.com/questions/204400/ssh-public-key-no-supported-authentication-methods-available-server-sent-publ#204415">SSH Public Key - No supported authentication methods available (server sent public key)</a></li>
+</ul>
 <h2>See also</h2>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215464538-How-do-I-configure-PuTTY-">How do I configure PuTTY?</a></li>
