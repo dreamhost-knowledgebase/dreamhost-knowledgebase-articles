@@ -1,0 +1,84 @@
+<body role="document">
+<div class="document">
+<div class="documentwrapper">
+<div class="body" role="main">
+<div id="deploying-discourse-with-ansible-on-dreamcompute">
+
+<p>&lt;WHAT IS DISCOURSE GOES HERE&gt;</p>
+<div id="prerequisites">
+<h2>Prerequisites</h2>
+<p>There are a few prerequisites for setting up Discourse using Ansible:
+* Ansible 2.0+ installed in your system
+* An SMTP server that you can send emails from
+* A clouds.yml file that has your credentials to authenticate to DreamCompute
+* Git installed on your local computer</p>
+<p>If you dont have an SMTP server take a look at the <a class="reference external" href="https://github.com/discourse/discourse/blob/master/docs/INSTALL-email.md">recommended email providers
+for Discourse.</a></p>
+</div>
+<div id="downloading-the-ansible-playbook">
+<h2>Downloading the Ansible playbook</h2>
+<p>The first step to installing Discourse using an Ansible playbook is to download
+the playbook to use. Do this by running the following:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@localhost]$</span> git clone https://github.com/squidboylan/discourse-dreamcompute.git
+</pre></div>
+</div>
+<p>You should now see a discourse-dreamcompute directory, which is what you will
+use to deploy Discourse, but first you must make some configurations.</p>
+</div>
+<div id="configuration">
+<h2>Configuration</h2>
+<p>The Ansible playbook has an example configuration file. Copy this to the actual
+configuration file by running the following:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@localhost]$</span> cp vars/dreamcompute.yml.example vars/dreamcompute.yml
+</pre></div>
+</div>
+<p>Open the <code class="docutils literal"><span class="pre">vars/dreamcompute.yml</span></code> file in your favorite editor, and then make the following
+changes:</p>
+<ul class="simple">
+<li>Change auth.cloud to be the name of your cloud configured in your clouds.yml
+file</li>
+<li>Change key_name to be the name of your public key to put on the new server</li>
+<li>Change discourse.hostname to be the DNS record for your new server that will
+be created, the DNS record does not need to exist yet, it will be created
+after the playbook is run</li>
+<li>Change discourse.admin_email to be an email you own, this will be the email
+used to send the confirmation email when you register an admin account</li>
+<li>Change discourse.smtp_server to be the hostname of your SMTP server</li>
+<li>Change discourse.smtp_port to be the port of your SMTP server</li>
+<li>Change discourse.smtp_user to be the username to use to authenticate to your
+SMTP server</li>
+<li>Change discourse.smtp_password to be the password to use to authenticate to
+your SMTP server</li>
+<li>discourse.smtp_authentication can be changed to set the kind of SMTP
+authentication to use, if you are unsure, leave this empty</li>
+<li>If you wish to use a Let’s Encrypt SSL cert, set
+discourse.lets_encrypt_email to your email you wish to use with Let’s
+Encrypt</li>
+</ul>
+</div>
+<div id="running-the-playbook">
+<h2>Running the playbook</h2>
+<p>Now you are ready to run your playbook. Do this by running the following:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@localhost]$</span> ansible-playbook site.yml
+</pre></div>
+</div>
+<p>This takes a while to run, and can take up to 20 minutes.</p>
+<p>The last thing to do is create a DNS record for your new server. Do this by
+following the <a class="reference external" href="215414867-How-do-I-add-custom-DNS-records-">documentation on creating DNS records.</a></p>
+<p>If you have
+configured everything correctly,  visit the new site in a browser and
+finish the installation.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="clearer"></div>
+</div>
+<div class="footer">
+</div>
+<!--DreamCompute Button-->
+<div class="dream-sign-up">
+<h2>Deploy Your Apps On Cloud Servers Today</h2>
+<a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a>
+</div>
+</body>
