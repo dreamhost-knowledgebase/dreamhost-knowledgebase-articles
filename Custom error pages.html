@@ -1,4 +1,10 @@
 <p>Custom error pages enable you to customize the pages that are displayed when an error occurs. Not only do they make your website more professional, they can also save you from losing visits to your site. If a visitor sees a generic error page, they are likely to leave your site. However, if they see a helpful error page, they may continue to stay because they can simply click a link to go to another page within your site.</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>The following instructions are for an Apache server. If you're running Nginx, jump to the section at the bottom titled '<a href="#nginx">Creating custom error pages with Nginx</a>'.</p>
+</div>
+</div>
 <h2><span id="Simple_configuration">Simple configuration</span></h2>
 <p>To create a custom error page for your domain, add the following line to an <a href="/hc/en-us/articles/216456227--htaccess-overview">.htaccess</a> file located in your domain’s web directory:</p>
 <div class="preboxcontainer">
@@ -117,12 +123,42 @@ switch(getenv("REDIRECT_STATUS"))
 </pre>
 </div>
 <p>Style the page so that it fits with the rest of your site and you're done with basic error handling.</p>
+<h2><span id="nginx">Creating custom error pages with Nginx</span></h2>
+<p>You can also create custom error pages if you're running Nginx instead of Apache.</p>
+<ol>
+<li>First, view the following article to understand where your config files should go:
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216455077-Nginx-configuration-file-locations">Nginx configuration file locations</a></li>
+</ul>
+</li>
+<li>Create a file named error.conf in the following directory:
+<div class="preboxcontainer">
+<pre class="prebox">/home/username/nginx/example.com/error.conf</pre>
+</div>
+This assumes your username is 'username' and your site is 'example.com'.</li>
+<li>In the error.conf file, add the following:
+<div class="preboxcontainer">
+<pre class="prebox">error_page 404 /404.html;
+location  /404.html {
+  internal;
+}</pre>
+</div>
+</li>
+<li>Next, navigate to your site directory. For example:
+<div class="preboxcontainer">
+<pre class="prebox">/home/username/example.com</pre>
+</div>
+</li>
+<li>In that directory create a page titled 404.html with any error message you wish to display.</li>
+<li>Restart your server (if on a VPS). If on Dedicated, you can <a href="https://help.dreamhost.com/hc/en-us/articles/216454967-How-to-reload-and-restart-Nginx-Dedicated-servers-only-">reload Nginx yourself</a>.</li>
+<li>If you now visit a page on your site that doesn't exist, your custom error page will display.</li>
+</ol>
 <h2>See also</h2>
 <h3>Internal links</h3>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/214202188-PHP-overview">PHP overview</a></li>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/217738987-What-can-I-do-with-an-htaccess-file-" style="background-color: #ffffff;"><span>What can I do with an .htaccess file?</span></a></li>
+<li><a style="background-color: #ffffff;" href="https://help.dreamhost.com/hc/en-us/articles/217738987-What-can-I-do-with-an-htaccess-file-">What can I do with an .htaccess file?</a></li>
 </ul>
 <h3>External links</h3>
 <ul>
