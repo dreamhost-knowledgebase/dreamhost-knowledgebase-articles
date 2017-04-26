@@ -1,17 +1,18 @@
 <div class="alert alert-note">
 <div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
-<p>As of August 2015, DreamHost currently runs Python v2.7.3.</p>
+<p>As of May 2017, DreamHost currently runs Python v2.7.3.</p>
 </div>
 </div>
 <p>To install a custom version of Python, you must download it from python.org.</p>
 <ul>
-<li><a href="https://www.python.org/downloads/">https://www.python.org/downloads/</a></li>
+<li><a href="https://www.python.org/downloads/source/">https://www.python.org/downloads/</a></li>
 </ul>
 <p>For the following commands, replace VERSION with the version of Python you wish to install.</p>
 <ol>
 <li>Log into your web server via <a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a>.</li>
-<li>Run the following command to download your desired version of Python:
+<li>Visit the downloads page above. Right click the link titled "Gzipped source tarball" for the version you wish to install. From the dropdown choose "Copy link address".</li>
+<li>In your terminal, type 'wget' and paste the link you just copied. This is what it will look like:
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">wget http://www.python.org/ftp/python/2.7.7/Python-2.7.7.tgz</span></pre>
 </div>
@@ -36,10 +37,25 @@
 <li>This installs your local version of Python to <code>/home/&lt;username&gt;/opt/python-2.7.7</code>.</li>
 </ul>
 </li>
-<li>Include the path in order to use this version of Python over the system default by adding the following to your .bash_profile file which is located in your user’s directory:
+</ol>
+<h2>Change the python version your shell uses</h2>
+<p>Now that python is installed, you must add an alias to your .bash_profile file. Once added, you can type 'python' and it will use your newly installed version.</p>
+<ol>
+<li>Navigate to your user's home directory.
 <div class="preboxcontainer">
-<pre class="prebox">export PATH=$HOME/opt/python-2.7.7/bin:$PATH
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd $HOME</span></pre>
+</div>
+</li>
+<li>Add the following line to your .bash_profile file. Make sure to adjust the line to show your actual username and version of python:
+<div class="preboxcontainer">
+<pre class="prebox">alias python='/home/USERNAME/opt/python-3.6.1/bin/python3'
 </pre>
+</div>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>NOTE: The alias above assumes you installed python 3.6.1. Make sure to adjust the line to reflect the version you actually installed.</p>
+</div>
 </div>
 </li>
 <li>Run the following to update to .bash_profile:
@@ -47,26 +63,24 @@
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">. ~/.bash_profile</span></pre>
 </div>
 </li>
+<li>Add the following line to your .bashrc file:
+<div class="preboxcontainer">
+<pre class="prebox">source .bash_profile</pre>
+</div>
+</li>
 <li>Check which version of Python you're now using:
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">python -V</span></pre>
 </div>
-<dl>
-<dd></dd>
-<dd></dd>
-</dl>
-<div class="alert alert-note">
-<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
-<div class="alert-content">
+</li>
+</ol>
+<p>When you now type in the command 'python', it will use the version you just installed.</p>
+<h2>pip installation</h2>
 <p>In order to install various Python packages, and Django in particular, you'll want pip. This is pre-installed on shared servers, but if necessary, you can use the following to download:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">curl https://bootstrap.pypa.io/get-pip.py &gt; ~/tmp/get-pip.py python ~/tmp/get-pip.py --user</span>
 </pre>
 </div>
-</div>
-</div>
-</li>
-</ol>
 <h2>See also</h2>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216137717-Python-overview">Python overview</a></li>
