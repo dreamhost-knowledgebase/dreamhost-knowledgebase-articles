@@ -2,38 +2,36 @@
 <h2>Backing up your account</h2>
 <p>When you open the ‘Backup Your Account’ page, you see the One-Click option near the bottom of the page:</p>
 <dl>
-<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/03_Backup_your_account_page.fw.png" alt="03 Backup your account page.fw.png" width="1051" height="179" />Click the <strong>Back me up!</strong> button. The backup process begins and takes some time to complete based on how much content there is to backup. You are notified via email once this completes as shown in the image below:</dd>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/03_Backup_your_account_page.fw.png" alt="03 Backup your account page.fw.png" width="922" height="157" />Click the <strong>Back me up!</strong> button. The backup process begins and takes some time to complete based on how much content there is to backup. You are notified via email once this completes.</dd>
 </dl>
 <h2>Confirmation of your backup</h2>
 <dl>
-<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/04_Backup_scheduled.fw.png" alt="04 Backup scheduled.fw.png" width="804" height="135" />The notification email you receive links you back to the ‘Backup Your Account’ page where you see the details below:</dd>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/04_Backup_scheduled.fw.png" alt="04 Backup scheduled.fw.png" width="804" height="135" /></dd>
 </dl>
+<p>The notification email you receive links you back to the ‘Backup Your Account’ page where you see the details below:</p>
 <h2>Viewing your backup</h2>
+<p>Once the backup completes, you'll see all of your files listed in your panel with .tar.gz or .sql.gz extensions.</p>
 <dl>
 <dd><img src="https://objects-us-west-1.dream.io/kbimages/images/05_Backup_complete.fw.png" alt="05 Backup complete.fw.png" width="534" height="151" /></dd>
-<dd>Under the ‘FileName’ column, you see everything that was backed up listed as individual links to download. You'll see links like these:</dd>
 </dl>
+<p>You'll see links like these:</p>
+<p><strong>Mail users appear like this:</strong></p>
 <dl>
-<dd><strong>Mail users appear like this:</strong></dd>
 <dd>mail/user@example.com.tar.gz</dd>
 </dl>
+<p><strong>Databases appear like this:</strong></p>
 <dl>
-<dd><strong>Databases appear like this:</strong></dd>
 <dd>mysql/databasename.sql.gz</dd>
 </dl>
+<p><strong>Users appear like this:</strong></p>
 <dl>
-<dd></dd>
-<dd><strong>Users appear like this:</strong></dd>
 <dd>user/servername_username.tar.gz</dd>
-<dd></dd>
 </dl>
-<dl>
-<dd>The ‘Size’ column shows the size of each file. All of the backups are listed as a ‘.tar.gz’ file for you to download locally.</dd>
-</dl>
+<p>The ‘Size’ column shows the size of each file. All of the backups are listed as a ‘.tar.gz’ or .sql.gz files for you to download locally.</p>
 <h2>Downloading your backup via command line</h2>
-<p>After the backup is complete you'll see files like this in your panel on the <a href="https://panel.dreamhost.com/index.cgi?tree=billing.backup&amp;">(Panel &gt; 'Billing &amp; Account &gt; Backup Your Account')</a> page.</p>
-<p><strong>user/servername_username.tar.gz</strong></p>
-<p>You can download these files directly to your server or Mac OSX / Linux computer using either 'curl' or 'wget'. Here is an example of how to download a single file using the 'curl' command.</p>
+<p> </p>
+<p>You can download these files directly to your server or Mac OSX / Linux computer using either 'curl' or 'wget'. If you're running Windows you'll need to <a href="https://curl.haxx.se/download.html">install curl</a>. You'll need to download the zip file from the Win64 - Generic section.</p>
+<p>Here is an example of how to download a single file using the 'curl' command.</p>
 <ol>
 <li>In your panel, right-click on the backup link. In this example it's user/servername_username.tar.gz.</li>
 <li>From the popout menu choose 'Copy Link Location'. Paste this into a simple text editor to save for now. It will be a very long URL.</li>
@@ -53,6 +51,12 @@
 </div>
 </div>
 <p>Here is full 'curl' example:</p>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Make sure you put the full URL in double quotes. If you do not, the command will not download the file.</p>
+</div>
+</div>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">curl --insecure --output servername_username.tar.gz "https://objects-us-west-1.dream.io/accountbackup/1358572/2016-12-06-SLRG8WEQ57K6CQTE/user/server_username.tar.gz?AWSAccessKeyId=2XoecBOZcL8WQXo9DT9E&amp;Signature=9HWxQE28LaYxxGXX6NsvcEELAwE%3D&amp;Expires=1451659279"</span></pre>
 </div>
@@ -62,14 +66,27 @@
 <pre class="prebox"><span class="command">wget --no-check-certificate --output-document=filename.tar.gz "COPIED_LINK_LOCATION"</span>
 </pre>
 </div>
-<p>Here is full 'curl' example:</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>The filename.tar.gz is one of the file names in your panel on the <a href="https://panel.dreamhost.com/index.cgi?tree=billing.backup&amp;">(Panel &gt; 'Billing &amp; Account &gt; Backup Your Account')</a> page. Make sure you <strong>DO NOT</strong> include the first part of the filename before the forward slash. If the link in the panel is 'user/servername_username.tar.gz', the filename would just be 'servername_username.tar.gz'.</p>
+<p>The COPIED_LINK_LOCATION is the link you copied when you right-clicked the filename and saved the link.</p>
+</div>
+</div>
+<p>Here is full 'wget' example:</p>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Make sure you put the full URL in double quotes. If you do not, the command will not download the file.</p>
+</div>
+</div>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">wget --no-check-certificate --output-document=servername_username.tar.gz "https://objects-us-west-1.dream.io/accountbackup/1358572/2016-12-06-SLRG8WEQ57K6CQTE/user/server_username.tar.gz?AWSAccessKeyId=2XoecBOZcL8WQXo9DT9E&amp;Signature=9HWxQE28LaYxxGXX6NsvcEELAwE%3D&amp;Expires=1451659279"</span></pre>
 </div>
 <h2>Clicking the file link to download</h2>
 <p>You can also click on each file to download them one at a time to your computer. There is unfortunately no way to download all files at once.</p>
+<h2>Decompressing the downloaded files</h2>
 <ol>
-<li>Click on the file link to download.</li>
 <li>Once it's downloaded to your computer it will be in a compressed .tar.gz or .sql.gz file format.</li>
 <li>If you're using a Windows computer you'll need a program to decompress the file type.</li>
 <li>If you're using a Mac or Linux computer you can run the following command to decompress the .tar.gz file:
