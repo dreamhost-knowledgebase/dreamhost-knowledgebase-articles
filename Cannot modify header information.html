@@ -2,8 +2,22 @@
 <div class="preboxcontainer">
 <pre class="prebox">Warning: Cannot modify header information - headers already sent by (output started at...'''</pre>
 </div>
-<p>This is essentially an issue with how the site is coded. Most often, this simply means something was sent to the browser before the header() was called. Technically speaking, once the header block has already been sent, you cannot add additional header lines. Most often this is caused by your code sending output to the browser before the header() function. Make sure your header() function is set in your code before any output.</p>
-<p>If you do not want to make any adjustments to your code, you can add the following in your phprc file to resolve this.</p>
+<p>This is essentially an issue with how the site is coded. Most often, this simply means something was sent to the browser before the PHP header() function was called. Technically speaking, once the header block has already been sent, you cannot add additional header lines.</p>
+<h2>Fixing the error within the PHP code (advanced)</h2>
+<p>Most often this is caused by your code sending output to the browser before the header() function. Make sure your header() function is set in your code before any output. This would require a developer to edit the existing code of your site.</p>
+<h2>Fixing the error with a phprc file (easy)</h2>
+<p>If you do not want to make any adjustments to your code, you can create a phprc file and a few lines to it that will resolve this.</p>
+<p>View the following articles for instructions on how to create a phprc file.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214894037-How-do-I-create-a-phprc-file-via-FTP-">How do I create a phprc file via FTP? </a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214200668-How-do-I-create-a-phprc-file-via-SSH-">How do I create a phprc file via SSH?</a></li>
+</ul>
+<p>If the file already exists, view the following articles for instructions on how to update it (depending on if you're using an FTP client or SSH):</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115000098272-Creating-and-editing-a-file-using-Filezilla">Creating and editing a file using Filezilla</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Creating and editing a file via SSH</a></li>
+</ul>
+<p>Once created, add the following lines to the phprc file:</p>
 <div class="preboxcontainer">
 <pre class="prebox">output_buffering = 4096</pre>
 </div>

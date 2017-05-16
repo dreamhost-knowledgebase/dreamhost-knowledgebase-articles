@@ -1,9 +1,25 @@
+<h2>Initial setup</h2>
+<p>First, make sure you've installed a custom version of Python and created a virtual environment in your website's directory:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115000218612-Installing-a-custom-version-of-Python">Installing a custom version of Python</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215489338-Installing-virtualenv-and-custom-modules-in-Python">Installing virtualenv and custom modules in Python</a></li>
+</ul>
+<p>Next, install Django into your virtualenv:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215317948-How-to-install-Django-using-virtualenv">How to install Django using virtualenv</a></li>
+</ul>
+<p>Finally, enable Passenger on your domain.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216385637-How-do-I-enable-Passenger-on-my-domain-">How do I enable Passenger on my domain?</a></li>
+</ul>
+<h2>Creating a Django project</h2>
+<p>The following instructions assume you've created a virtual environment titled 'my_project' using the links above.</p>
 <ol>
-<li>Run the following commands in order:
+<li>Run the following commands in order to create your Django project within this environment:
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">cd $HOME/example.com</span>
-<span class="server">[server]$ </span><span class="command">source $HOME/example/env/bin/activate</span>
-<span class="server">[server]$ </span><span class="command">python env/bin/django-admin.py startproject &lt;projectname&gt;</span></pre>
+<span class="server">[server]$ </span><span class="command">source $HOME/example/my_project/bin/activate</span>
+<span class="server">[server]$ </span><span class="command">python my_project/bin/django-admin.py startproject &lt;projectname&gt;</span></pre>
 </div>
 <ul>
 <li>Replace 'example' with your domain name.</li>
@@ -11,26 +27,26 @@
 <div class="alert alert-note">
 <div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
-<p>When you run the 'startproject' command, it creates a new folder in your site directory named whatever your project name is.</p>
+<p>When you run the 'startproject' command, it creates a new folder in your site directory named whatever your Django project name is.</p>
 </div>
 </div>
 </li>
-<li>In order for Passenger to pick up your project, create a passenger_wsgi.py file within your site's top level directory (/home/username/domain). Add the following:
+<li>In order for Passenger to pick up your project, create a passenger_wsgi.py file within your site's top level directory (/home/username/example.com). Add the following:
 <div class="preboxcontainer">
 <pre class="prebox">import sys, os
-INTERP = "/home/&lt;username&gt;/local/bin/python"
+INTERP = "<span class="command">/home/&lt;username&gt;/local/bin/python</span>"
 #INTERP is present twice so that the new python interpreter knows the actual executable path 
 if sys.executable != INTERP: os.execl(INTERP, INTERP, *sys.argv)
 
 cwd = os.getcwd()
 sys.path.append(cwd)
-sys.path.append(cwd + '/projectname')  #You must add your project here
+sys.path.append(cwd + '/<span class="command">projectname</span>')  #You must add your project here
 
 sys.path.insert(0,cwd+'/env/bin')
 sys.path.insert(0,cwd+'/env/lib/python2.7/site-packages/django')
 sys.path.insert(0,cwd+'/env/lib/python2.7/site-packages')
 
-os.environ['DJANGO_SETTINGS_MODULE'] = "projectname.settings"
+os.environ['DJANGO_SETTINGS_MODULE'] = "<span class="command">projectname</span>.settings"
 from django.core.wsgi import get_wsgi_application
 application = get_wsgi_application()
 </pre>
@@ -40,7 +56,12 @@ application = get_wsgi_application()
 <div class="alert-content">
 <p>Be sure to replace the following:</p>
 <ul>
-<li>The path to your local python version in line #2. This will be something like /home/username/opt/python-2.7.7/bin/python.</li>
+<li>The path to your local python version in line #2. Run <strong>which python</strong> to confirm:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">which python</span>
+<span class="cmdoutput">/home/username/example.com/my_project/bin/python</span></pre>
+</div>
+</li>
 <li>The two instances of 'projectname' with your actual project name in lines 8 and 14.</li>
 </ul>
 </div>
@@ -48,18 +69,22 @@ application = get_wsgi_application()
 </li>
 <li>Set up Django's static file settings in order to correctly serve images, CSS, and JavaScript as you will need this for the admin interface to work. For example:
 <ul>
-<li>Within the projects settings.py file, found at example.com/projectname/projectname/settings.py you will find that the STATIC_URL is probably configured to /static/.</li>
+<li>Open the projects settings.py file found at <strong>example.com/projectname/projectname/settings.py</strong>. Scroll to the bottom and you will find that the STATIC_URL is probably configured to /static/.</li>
 <li>Add another line to set the location on the server of the actual static directory:</li>
 </ul>
 <dl>
 <dd>
 <div class="preboxcontainer">
-<pre class="prebox">STATIC_ROOT = os.path.dirname(BASE_DIR) + '/public/static/'</pre>
+<pre class="prebox">STATIC_ROOT = os.path.dirname(BASE_DIR) + '/static/'</pre>
 </div>
 </dd>
 </dl>
 </li>
 <li>In your /home/username/example.com/public directory, make sure to create this /static directory.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd $HOME/example.com/public</span>
+<span class="server">[server]$ </span><span class="command">mkdir static</span></pre>
+</div>
 <ul>
 <li>This will be the location where Django will put all of your static files – you shouldn't put stuff here manually as it gets overwritten. View the following link for further details:</li>
 </ul>
@@ -101,33 +126,31 @@ application = get_wsgi_application()
 </div>
 <ul>
 <li>The default is to use sqlite3, which may be suitable for the smallest of sites, but it's likely you'll want to set up a mysql database.</li>
-<li>Once configured, run a syncdb in your project directory:</li>
 </ul>
+</li>
+<li>Also in your settings.py file, update the ALLOWED_HOSTS field with your domain name. At first, it appears like this:
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">python manage.py syncdb</span>
-Creating tables ...
-Creating table django_admin_log
-Creating table auth_permission
-Creating table auth_group_permissions
-Creating table auth_group
-Creating table auth_user_user_permissions
-Creating table auth_user_groups
-Creating table auth_user
-Creating table auth_message
-Creating table django_content_type
-Creating table django_session
-
-You just installed Django's auth system, which means you don't have any superusers defined.
-<strong>Would you like to create one now? (yes/no): yes</strong>
-<strong>Username (Leave blank to use 'yourusername'):</strong>
-<strong>E-mail address: username@example.com</strong>
-<strong>Password:</strong>
-<strong>Password (again):</strong>
-Superuser created successfully.
-Installing custom SQL ...
-Installing indexes ...
-No fixtures found.
-</pre>
+<pre class="prebox">ALLOWED_HOSTS = []</pre>
+</div>
+Update it to include your domain name.
+<div class="preboxcontainer">
+<pre class="prebox">ALLOWED_HOSTS = ['example.com' , 'www.example.com']</pre>
+</div>
+</li>
+<li>Once configured, run migrate in your project directory:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">python manage.py migrate</span>
+Operations to perform:<br /> Apply all migrations: admin, auth, contenttypes, sessions<br />Running migrations:<br /> Applying contenttypes.0001_initial... OK<br /> Applying auth.0001_initial... OK<br /> Applying admin.0001_initial... OK<br /> Applying admin.0002_logentry_remove_auto_add... OK<br /> Applying contenttypes.0002_remove_content_type_name... OK<br /> Applying auth.0002_alter_permission_name_max_length... OK<br /> Applying auth.0003_alter_user_email_max_length... OK<br /> Applying auth.0004_alter_user_username_opts... OK<br /> Applying auth.0005_alter_user_last_login_null... OK<br /> Applying auth.0006_require_contenttypes_0002... OK<br /> Applying auth.0007_alter_validators_add_error_messages... OK<br /> Applying auth.0008_alter_user_username_max_length... OK<br /> Applying sessions.0001_initial... OK</pre>
+</div>
+</li>
+<li>Create a superuser:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">python manage.py createsuperuser</span>
+<span class="cmdoutput">Username (leave blank to use 'username'): my_django_user
+Email address: email@example.com
+Password:
+Password (again):
+Superuser created successfully.</span></pre>
 </div>
 </li>
 <li>In your /home/username/example.com directory, add a /tmp/restart.txt file:
@@ -143,7 +166,12 @@ No fixtures found.
 </div>
 </li>
 </ol>
-<p>You should now see the standard Django holding page at your domain and be able to access the admin console at /admin/.</p>
+<h2>Confirming the installation was successfull</h2>
+<p>Visit your website.</p>
+<dl>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/Django_success_message.png" alt="Django_success_message.png" width="816" height="816" /></dd>
+</dl>
+<p>You should now see the standard Django holding page and be able to access the admin console at example.com/admin/.</p>
 <h2>See also</h2>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215319598-Django-overview">Django overview</a></li>

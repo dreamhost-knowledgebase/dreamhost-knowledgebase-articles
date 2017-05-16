@@ -1,16 +1,17 @@
 <p>To process files with PHP whose names don't end with ".php", you can use a directive in .htaccess.</p>
-<p>For example, create a file named myfile.test with the following code:</p>
+<p>For example, <a href="https://help.dreamhost.com/hc/en-us/articles/115000098272-Creating-and-editing-a-file-using-Filezilla">create a file</a> named myfile.test with the following code:</p>
 <div class="preboxcontainer">
 <pre class="prebox">&lt;?php
 echo ‘testing an extension using PHP’;
 ?&gt;</pre>
 </div>
-<p>The extension .test doesn’t exist. But, you can force it to run as PHP by adding this code to your .htaccess file:</p>
+<p>The extension .test doesn’t exist. But, you can force it to run as PHP by adding this code to your <a href="https://help.dreamhost.com/hc/en-us/articles/216456227--htaccess-overview">.htaccess file</a>:</p>
 <div class="preboxcontainer">
 <pre class="prebox">AddHandler fcgid-script .test
 FCGIWrapper "/dh/cgi-system/php56.cgi" .test</pre>
 </div>
 <p>If you load the file in a browser, it will now load as a normal PHP file.</p>
+<h2>CGI and FCGI</h2>
 <p>In the above example, files with the extension .test are using PHP 5.6 with FastCGI.</p>
 <p>If you do not want to change the version of PHP but want PHP to use CGI (instead of FastCGI), use this line in your .htaccess file:</p>
 <div class="preboxcontainer">
@@ -21,7 +22,7 @@ FCGIWrapper "/dh/cgi-system/php56.cgi" .test</pre>
 <pre class="prebox">AddHandler php-cgi .test</pre>
 </div>
 <div class="alert alert-note">
-<div class="alert-icon"><img alt="" height="60" src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
 <p>If you use either the ‘php5-cgi’ or ‘php-cgi’ directive in a FastCGI environment you'll force all PHP code in the specified extensions to be run using CGI regardless of what option you choose in the panel.</p>
 </div>

@@ -1,5 +1,15 @@
+<h2>Creating an .htaccess file on your DreamHost web server</h2>
+<p>View the following article for instructions on how to create an .htaccess file on your web server:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216456227#Creating_an_.htaccess_file">Creating an .htaccess file on your DreamHost web server</a></li>
+</ul>
+<p>If the file already exists, view the following articles for instructions on how to update it (depending on if you're using an FTP client or SSH):</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115000098272-Creating-and-editing-a-file-using-Filezilla">Creating and editing a file using Filezilla</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Creating and editing a file via SSH</a></li>
+</ul>
 <h2><span id="GZIP">GZIP</span></h2>
-<p>DEFLATE is a lossless data compression algorithm similar to gzip, but it works in Apache 2. In the past, mod_gzip was a recommended tool. But DreamHost uses Apache 2 and mod_deflate, which calls gzip on the back end automatically. If you want to, you can add additional encoding types to the filter for things like XML or JSON. For example:</p>
+<p>DEFLATE is a lossless data compression algorithm similar to gzip, but it works in Apache 2. In the past, mod_gzip was a recommended tool. But DreamHost uses Apache 2 and mod_deflate, which calls gzip on the back end automatically. If you want to, you can add additional encoding types to the filter for things like XML or JSON. For example, add the following to your .htaccess file:</p>
 <div class="preboxcontainer">
 <pre class="prebox">#Gzip
 &lt;ifmodule mod_deflate.c&gt;
@@ -13,7 +23,7 @@ AddOutputFilterByType DEFLATE text/text text/html text/plain text/xml text/css a
 <li><a href="http://httpd.apache.org/docs/2.2/mod/mod_deflate.html">mod_deflate</a></li>
 </ul>
 <h2><span id="Browser_caching">Browser caching</span></h2>
-<p>Using <a href="http://httpd.apache.org/docs/2.2/mod/mod_expires.html">mod_expires</a>, you can tell visiting browsers to hold on to certain files longer (likes images, which are rarely changed). This example shows how to cache specific file types for specific periods of time:</p>
+<p>Using <a href="http://httpd.apache.org/docs/2.2/mod/mod_expires.html">mod_expires</a>, you can tell visiting browsers to hold on to certain files longer (likes images, which are rarely changed). This .htaccess example shows how to cache specific file types for specific periods of time:</p>
 <div class="preboxcontainer">
 <pre class="prebox"># BEGIN Expire headers  
 &lt;ifModule mod_expires.c&gt;  

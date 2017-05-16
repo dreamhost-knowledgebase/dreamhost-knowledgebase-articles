@@ -1,3 +1,6 @@
+<h2>Overview</h2>
+<p>Every installation of PHP comes with default settings which are usually fine for most websites. Occasionally, the needs of a website makes it necessary to adjust these PHP settings. For example, your site may need to increase the memory limit to allow a process to complete. In that case, you would need to create a <a href="https://help.dreamhost.com/hc/en-us/articles/214200688-php-ini-overview">php.ini (phprc)</a> file and update this value.</p>
+<h2>The DreamHost phprc file</h2>
 <p>The standard term for a PHP configuration file is php.ini. However, DreamHost uses the term "phprc" file instead. This acts the same way – only the name is different. In this article, only the term phprc is used.</p>
 <div class="alert alert-note">
 <div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
@@ -5,20 +8,42 @@
 <p>Some variables (in particular, <code>memory_limit</code>, <code>post_max_size</code> and <code>upload_max_filesize</code>) are subject to internal limitations; increasing them significantly beyond the default values will not work correctly and will cause issues with your site.</p>
 </div>
 </div>
+<h2>Why increase the PHP memory limit?</h2>
+<p>PHP allows a default amount of memory to be used when processing a website. Sometimes, a website needs more than the default amount of memory. If that's the case, you can increase it to fit the needs of your site.</p>
+<p>You may also receive an error on your site indicating that the memory limit has been reached. It may appear like this:</p>
+<div class="preboxcontainer">
+<pre class="prebox">Fatal error: Allowed memory size of 94371840 bytes exhausted (tried to allocate 5072 bytes)</pre>
+</div>
+<p>This error means your site needs more memory than is currently available. If you see an error like this, try increasing your memory limit by 10MB. Then continue to adjust as necessary.</p>
 <h2><span id="Increasing_the_PHP_memory_limit">Increasing the PHP memory limit</span></h2>
+<p>The default memory limit is 90M and this is usually more than sufficient for most needs. If you need to raise this limit, you must create a phprc file. View the following articles for instructions on how to create a phprc file.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214894037-How-do-I-create-a-phprc-file-via-FTP-">How do I create a phprc file via FTP? </a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214200668-How-do-I-create-a-phprc-file-via-SSH-">How do I create a phprc file via SSH?</a></li>
+</ul>
+<p>If the file already exists, view the following articles for instructions on how to update it (depending on if you're using an FTP client or SSH):</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115000098272-Creating-and-editing-a-file-using-Filezilla">Creating and editing a file using Filezilla</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Creating and editing a file via SSH</a></li>
+</ul>
+<p>If you wish to increase this limit, add the following line:</p>
+<div class="preboxcontainer">
+<pre class="prebox">memory_limit = 128M</pre>
+</div>
 <div class="alert alert-note">
 <div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
 <p>If you find you're increasing the memory a large amount, it's time to consider moving off of shared hosting, as your website has greater needs than shared hosting can reliably provide.</p>
 </div>
 </div>
-<p>The default memory limit is 90M and this is usually more than sufficient for most needs.</p>
-<p>If you wish to increase this limit, you'll want to add the following:</p>
-<div class="preboxcontainer">
-<pre class="prebox">memory_limit = 128M</pre>
-</div>
 <h2>Kill off all running php processes</h2>
 <p>Make sure to <a href="https://help.dreamhost.com/hc/en-us/articles/214200748-My-phprc-file-isn-t-updating">kill running php processes</a> to ensure your new settings take effect.</p>
+<h2>Confirming your changes</h2>
+<p>After you've edited the file and killed off all PHP processes, you should check to confirm the values have updated. You can do this by creating a <a href="https://help.dreamhost.com/hc/en-us/articles/214895287-How-do-I-view-my-PHP-environment-settings-">phpinfo.php file</a>.</p>
+<p>If you do not see your changes have updated, try killing off your PHP processes again:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214200748-My-phprc-file-isn-t-updating">My phprc file isn't updating</a></li>
+</ul>
 <h2>See also</h2>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/214200688-php-ini-overview">php.ini overview</a></li>
