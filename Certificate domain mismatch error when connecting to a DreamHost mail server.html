@@ -1,33 +1,28 @@
-<div class="document">
-<div class="documentwrapper">
-<div class="body">
-<div id="cert domain mismatch error">
-<div class="altTitle">Cert mismatch error</div>
-<div class="table-of-content container">
-<ul class="simple">
-<li><a class="reference internal" href="#why_happen">Why does this happen?</a></li>
-<li><a class="reference internal" href="#connect_dh">Connecting directly to your DreamHost mail server</a></li>
-<li><a class="reference internal" href="#email_solutions">Email client solutions</a></li>
-<li><a class="reference internal" href="#see_also">See also</a></li>
-</ul>
-</div>
 <p>You may receive a "domain mismatch" warning or an error when connecting to a DreamHost mail server if you use your DreamHost mail server subdomain. For example:</p>
 <div class="preboxcontainer">
 <pre class="prebox">mail.example.com</pre>
 </div>
-<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
+<p>The following information shows you how to resolve this situation.</p>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
-<p>In the past, it was possible to use mail.example.com to connect (where example.com is your actual domain name). Due to how modern mail clients handle security, this is now NOT recommended as it may throw connection errors. Please ensure you are only using your mail cluster servername when connecting.</p>
+<p>In the past, it was possible to use mail.example.com to connect (where example.com is your actual domain name). Due to how modern mail clients handle security, this is now NOT recommended as it may cause connection errors. Please ensure you are only using your email cluster servername (shown below) when connecting.</p>
 </div>
 </div>
-<h2><span id="connect_dh">Connecting directly to your DreamHost mail server</span></h2>
+<h2>Connecting directly to your DreamHost mail server</h2>
 <p>Instead of using mail.example.com, you can use the name of your specific DreamHost mail server instead.</p>
 <p>To determine which server name to use:</p>
 <ol>
 <li>Log into your <a href="http://panel.dreamhost.com">DreamHost Panel</a>.</li>
-<li>Navigate to the <a href="https://panel.dreamhost.com/index.cgi?tree=support.dc&amp;">(Panel &gt; 'Support' &gt; 'Data Centers'</a>) page. <img src="https://objects-us-west-1.dream.io/kbimages/images/04_mail_servernames.png" alt="04 mail servernames.png" width="927" height="174" /></li>
-<li>Under the 'Mail service' section you'll see your mail server to the right of any domain. In this example it’s homiemail-sub4.</li>
-<li>Use the matching server name in the table below for the incoming AND outgoing server in your mail program.
+<li>Navigate to the (<a href="https://panel.dreamhost.com/index.cgi?tree=support.dc&amp;">Panel &gt; 'Support' &gt; 'Data Centers'</a>) page.
+<p><em>Under the 'Mail service' section, your mail server appears to the right of any domain. In the following example, it’s <strong>homiemail-sub4</strong>:</em></p>
+<dl>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/04_mail_servernames.png" alt="04_mail_servernames.png" width="927" height="174" /></dd>
+</dl>
+</li>
+<li>Use the matching server name in the following table for the incoming <strong>AND</strong> outgoing server in your mail program.
+<dl>
+<dd>
 <table class="wikitable">
 <tbody>
 <tr>
@@ -52,25 +47,24 @@
 </tr>
 </tbody>
 </table>
-<p>This example shows homiemail-sub4. So you’d enter sub4.mail.dreamhost.com into your client to connect.</p>
+</dd>
+</dl>
+<p>This example shows homiemail-sub4, so enter 'sub4.mail.dreamhost.com' into your mail client to connect.</p>
 </li>
 </ol>
-<h2>Recent updates to DreamHost's mail certificates</h2>
+<h2><span id="mail_mis">Recent updates to DreamHost's mail certificates</span></h2>
 <p>On January 19, 2017, DreamHost updated the SSL certificates on all mail servers. Because the SSL certificate was updated, a message appears when you open your mail client and prompts you to accept the new certificate. This certificate is completely safe for you to accept. Once your mail client saves the new certificate, your email client functions normally again.</p>
-<p><strong>Mac Mail users:</strong> There have been a few reported issues with Mac Mail not saving the new certificate at first. Try several times to accept the certificate with the 'Continue' button. Some users report that after a few tries, the certificate is saved. If it still cannot connect after these attempts, use your <a href="https://help.dreamhost.com/hc/en-us/articles/214918038#Server_names">mail cluster for the Mail Server name on your account</a>. For example, sub5.mail.dreamhost.com. You can see which mail cluster your account users in the panel on the <a href="https://panel.dreamhost.com/index.cgi?tree=support.dc&amp;">(Panel &gt; 'Support &gt; Data Centers')</a> page.</p>
-<p><strong>iPhone (iOS) users:</strong> First, try going to 'Settings &gt; Mail &gt; Accounts'. Click the account and address, and then re-enter the hostname. If this doesn't work, try setting up email as a new account. Go to 'Settings &gt; Mail &gt; Accounts &gt; Add Account'. When the message "Cannot Verify Server Identity" appears, click "Details" below that message. Be sure to click the <strong>Trust</strong> button in the top-right corner:</p>
+<p><strong>Mac Mail users:</strong> There have been a few reported issues with Mac Mail not saving the new certificate at first. You may need to accept the certificate several times with the 'Continue' button. Some users report that after a few tries, the certificate is saved. If it still cannot connect after these attempts, make sure you use the <a href="/hc/en-us/articles/214918038#Server_names">mail cluster</a> for the Mail Server name on your account (e.g., sub5.mail.dreamhost.com). You can see which mail cluster your account users in the panel on the (<a href="https://panel.dreamhost.com/index.cgi?tree=support.dc&amp;">Panel &gt; 'Support' &gt; 'Data Centers'</a>) page.</p>
+<p><strong>iPhone (iOS) users:</strong> Open 'Settings &gt; Mail &gt; Accounts', tap the account and address, and then re-enter the hostname. If this doesn't work, try <a href="/hc/en-us/articles/216385537-How-to-set-up-email-on-an-iPhone">setting up</a> email as a new account. Go to 'Settings &gt; Mail &gt; Accounts &gt; Add Account'. If the message 'Cannot Verify Server Identity' appears, tap the 'Details' option below that message, and then tap the <strong>Trust</strong> button in the top-right corner:</p>
 <dl>
-<dd></dd>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/IPhone7.fw.png" alt="IPhone7.fw.png" width="299" height="531" /></dd>
 </dl>
-<p>Similar to the suggestion above, you may need to repeat this process 2-3 times to take effect permanently. You should also use your <a href="https://help.dreamhost.com/hc/en-us/articles/214918038#Server_names">mail cluster for the server/host name</a> with this setup.</p>
-<h2><span id="see_also">See also</span></h2>
+<p>Be sure to save your changes. If needed, repeat this process 2–3 times to take effect permanently. You should also use your <a href="/hc/en-us/articles/214918038#Server_names">mail cluster</a> for the Mail Server name on your account with this setup. You can visit the <a href="/hc/en-us/articles/216385537-How-to-set-up-email-on-an-iPhone">setting up email on an iPhone</a> for more information.</p>
+<h2>See also</h2>
 <ul>
 <li><a href="/hc/en-us/articles/214918038-Email-client-configuration-overview">Email client configuration overview</a></li>
 <li><a href="/hc/en-us/articles/215612887-Email-client-protocols-and-port-numbers">Email client protocols and port numbers</a></li>
 <li><a href="/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/221993547-MacMail-Configuring-email-with-Mac-OS-X-El-Capitan-and-Sierra">MacMail — Configuring email with Mac OS X El Capitan and Sierra</a></li>
+<li><a href="/hc/en-us/articles/221993547-MacMail-Configuring-email-with-Mac-OS-X-El-Capitan-and-Sierra">MacMail — Configuring email with Mac OS X El Capitan and Sierra</a></li>
+<li><a href="/hc/en-us/articles/216385537-How-to-set-up-email-on-an-iPhone">How to set up email on an iPhone</a></li>
 </ul>
-<div class="clearer"> </div>
-</div>
-</div>
-</div>
