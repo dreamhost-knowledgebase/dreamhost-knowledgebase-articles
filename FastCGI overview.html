@@ -1,10 +1,14 @@
 <p>FastCGI is a way to have CGI scripts execute time-consuming code (like opening a database) only once, rather than every time the script is loaded. In technical terms, FastCGI is a language independent, scalable, open extension to CGI that provides high performance without the limitations of server specific APIs.</p>
-<h2><span id="Language-specific_code_guides">Language-specific code guides</span></h2>
-<p>If you wish to get started quickly, these are the best places to start:</p>
-<ul>
-<li><a href="/hc/en-us/articles/216512598-Perl-overview">Perl FastCGI</a></li>
-<li><a href="/hc/en-us/articles/214895317-How-do-I-change-the-PHP-version-of-my-site-">PHP FastCGI</a></li>
-</ul>
+<h2>Difference between FCGI and CGI</h2>
+<h3>CGI</h3>
+<p><a href="https://en.wikipedia.org/wiki/Common_Gateway_Interface">CGI</a> is a protocol for web servers to execute dynamic web programs.</p>
+<p>CGI creates new processes for each request which makes CGI programs simple to implement, but limits efficiency and scalability. At high loads, CGI process creation overhead becomes significant.</p>
+<h3>FCGI</h3>
+<p><a href="https://en.wikipedia.org/wiki/Common_Gateway_Interface">FCGI</a> is a newer variation on CGI that helps to reduce overhead associated with CGI programs, allowing a server to handle more web page requests at once.</p>
+<p>FCGI uses persistent processes to handle a series of requests. Each individual FastCGI process can handle many requests over its lifetime, thereby avoiding the overhead of per-request process creation and termination.</p>
+<h3>Differences</h3>
+<p>FCGI is an improved version of CGI that runs faster, however, since FCGI processes are always running, more memory is used by the server.</p>
+<p>In general, FCGI is recommended.</p>
 <h2><span id="Configuration_details">Configuration details</span></h2>
 <p>This is the current FastCGI (mod_fastcgi) configuration at DreamHost:</p>
 <div class="preboxcontainer">
