@@ -8,8 +8,14 @@
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/115000098272-Creating-and-editing-a-file-using-Filezilla">Creating and editing a file using Filezilla</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Creating and editing a file via SSH</a></li>
 </ul>
+<h2>What are http headers?</h2>
+<p>HTTP headers are part of an HTTP request and response. They define the operating parameters of an HTTP transaction. View the following link for further details.</p>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/List_of_HTTP_header_fields">List of HTTP header fields</a></li>
+</ul>
+<p>You can use an .htaccess file to adjust or add headers to your HTTP response headers.</p>
 <h2><span id="Adding_a_content-type.3DUTF-8_header">Adding a content-type=UTF-8 header</span></h2>
-<p>Use either one of the following in an .htaccess file to force the specific content-type header. This adds the header without having to use a meta tag:</p>
+<p>Use either one of the following in an .htaccess file to force the specific content-type header. A <a href="https://www.w3.org/International/articles/http-charset/index">charset header</a> specifies the character encoding of the document. This adds the header without having to use a meta tag:</p>
 <div class="preboxcontainer">
 <pre class="prebox">AddDefaultCharset UTF-8   
 AddDefaultCharset ISO-8859-1
@@ -20,6 +26,40 @@ AddDefaultCharset ISO-8859-1
 <div class="preboxcontainer">
 <pre class="prebox">DefaultLanguage en-us</pre>
 </div>
+<h2>Cache-Control headers</h2>
+<p>One of the most common headers to add to a page is Cache-Control. This defines the amount of time a file should be cached.</p>
+<p>For example, if the Cache-Control header is set to 5 minutes, a browser will download the file and cache it for five minutes. After 5 minutes has expired, the file will have to be retrieved again from the server.</p>
+<h3>Example</h3>
+<p>This example allows any visitor to cache the page for 5 minutes.</p>
+<div class="preboxcontainer">
+<pre class="prebox">Header set Cache-Control "max-age=300, public"</pre>
+</div>
+<h3>Sytax</h3>
+<p><strong>max-age</strong> is set in seconds.</p>
+<p>The caching directive is next. It can be 'public', 'private', or 'no-store'. Most often, you want to keep this as 'public' so it applies to all visitors.</p>
+<h2>Using the 'Vary' HTTP header for mobile sites</h2>
+<p>View the following link from Google that explains in detail how to use the 'Vary' header for a mobile site:</p>
+<ul>
+<li><a href="https://developers.google.com/webmasters/mobile-sites/mobile-seo/dynamic-serving#the-vary-http-header">The Vary HTTP Header</a></li>
+</ul>
+<h2>Security</h2>
+<h3>Content-Security-Policy</h3>
+<p>The Content-Security-Policy header helps reduce XSS risks. View the following page for further details:</p>
+<ul>
+<li><a href="https://content-security-policy.com/">https://content-security-policy.com/</a></li>
+</ul>
+<h3>Strict-Transport-Security</h3>
+<p>Tells browsers to ONLY interact with the site using HTTPS and never HTTP. View the following pages for further details.</p>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security">https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security</a></li>
+<li><a href="https://www.owasp.org/index.php/HTTP_Strict_Transport_Security_Cheat_Sheet">https://www.owasp.org/index.php/HTTP_Strict_Transport_Security_Cheat_Sheet</a></li>
+</ul>
+<h2>Enabling CORS</h2>
+<p><a href="https://en.wikipedia.org/wiki/Cross-origin_resource_sharing">Cross Origin Resource Sharing</a> (CORS) allows restricted resources on a website to be requested from another domain outside the domain from which it was originally served. View the following pages for further details.</p>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security">https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security</a></li>
+<li><a href="https://www.owasp.org/index.php/HTTP_Strict_Transport_Security_Cheat_Sheet">https://www.owasp.org/index.php/HTTP_Strict_Transport_Security_Cheat_Sheet</a></li>
+</ul>
 <h2><span id="See_also">See also</span></h2>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216456227--htaccess-overview">.htaccess overview</a></li>
