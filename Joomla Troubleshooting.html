@@ -1,0 +1,75 @@
+<div class="alert alert-important">
+<div class="alert-icon"><img alt="" height="60" src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60"/></div>
+<div class="alert-content">
+<p><strong>WARNING: POSSIBLE OUTDATED INFORMATION!</strong><br/>DreamHost does not directly support any of the features described on this page and is not responsible for keeping this content updated or accurate. Use at your own risk!</p>
+</div>
+</div>
+<h2><span id="Diagnosis">Diagnosis</span></h2>
+<p>The first step in pinning down a problem with any software program is to make sure you have the latest version installed. If you do not, please go to the<a href="http://www.joomla.org/">Joomla website</a>, download the latest version, and follow the program's instructions on how to upgrade. Also check for security patches and releases. Many high load situations are due to hackers using a vulnerable script to execute high-load commands on the server, or to send out thousands of spam email messages. This taxes the shared servers.</p>
+<p>The <strong>Joomla! documentation</strong> is at <a href="http://help.joomla.org/">http://help.joomla.org/</a> . Read that, of course. Also, take a look at the <strong>Joomla! Forums</strong>, <a href="http://forum.joomla.org/">http://forum.joomla.org/</a>. There's a lot of other users who have already posted questions and answers, and the Joomla! developers often speak up with answers. Anyone can search and read, but you must register in order to post.</p>
+<h2><span id="Performance_impact_of_SEF_URLs">Performance impact of SEF URLs</span></h2>
+<p>As of this writing, there has been a <a href="http://forum.joomla.org/index.php/topic,27067.0.html">heated debate</a> in the Joomla forums on SEF (<a class="new" href="http://wiki.dreamhost.com/index.php?title=Search_Engine_Friendly_URL&amp;action=edit&amp;redlink=1" title="Search Engine Friendly URL (page does not exist)">Search Engine Friendly URLs</a>) core and .htaccess in Joomla. Trying disabling SEF and waiting a day or two to see how that affects your usage. SEF core is disabled in Joomla by default, so if you are unsure whether it is enabled, it more than likely is not since you need to enable it. If you do not remember how it is enabled, set $mosConfig_sef= "0" in configuration.php and rename htaccess.txt to .htaccess . It is also recommended that you watch your logs for bots and block any that seem to be hitting your site too hard.</p>
+<p>If Joomla is still using a lot of resources, it could be that your website has become very popular. While our shared hosting servers are very good at handling quite a bit of traffic from our customers, there does come a point sometimes where a site will outgrow shared hosting and need to move onto the next step - a shiny new <a href="http://www.dreamhostps.com/">VPS (Virtual Private server)</a>!</p>
+<h2><span id="Register_Globals">Register Globals</span></h2>
+<p>When installing Joomla!, at the <strong>pre-installation check</strong> page, the setting "Register Globals:" is listed as expected to be "OFF:", but it may be "ON". This is not an actual problem, but perhaps it's a potential problem and worth correcting. Here is some backgroud on this issue.</p>
+<ul>
+<li><a href="http://forum.joomla.org/index.php?topic=1030.msg92433">FAQ: How to change register globals to OFF</a>, from Joomla! Forum, advises: "Just open your .htaccess file and add this line in the end of it: <tt>php_flag register_globals off</tt>." There is further discussion, explanation, and alternative approaches in this article.</li>
+<li>What does Register Globals mean? The article <a href="http://en.wikibooks.org/wiki/Programming:PHP:Register_Globals">http://en.wikibooks.org/wiki/Programming:PHP:Register_Globals</a> sums it up, but "You gotta have a little understanding of PHP", per user <a href="http://forum.joomla.org/index.php?action=profile;u=77">MystaMax</a> in the Register Globals FAQ item above.</li>
+<li><a href="http://forum.joomla.org/index.php?topic=3041.5">Register Globals</a> article in Joomla! forums has further discussion and suggestions. "Registering Globals is not a Joomla! security issue but a potential (!!) PHP security issue. 'Potential' because properly written code shouldn't have a security issue at all with globals on. However, there's plenty of code available from not so good coders (who write fine code otherwise, no FUD about that) which overlook the security issue posed with globals on. Now, what security issue is there? The best answer can be found on the PHP site itself: <a href="http://uk2.php.net/register_globals">http://uk2.php.net/register_globals</a> . No need to repeat it here; too long a story." (by user <a href="http://forum.joomla.org/index.php?action=profile;u=2639">jdg</a>).</li>
+</ul>
+<h2><span id="Symptom:_.22Template_File_Not_Found.21_Looking_for_template:.22">Symptom: "Template File Not Found! Looking for template:"</span></h2>
+<p><a href="http://wiki.dreamhost.com/User:JimDeLaHunt" title="User:JimDeLaHunt">User:JimDeLaHunt</a> writes: on the evening of my first day using Joomla!, I came to the main page of my site, and found a page that was blank except for the words</p>
+<pre>Template File Not Found! Looking for template:
+</pre>
+<p>in green letters. I went to the Admin logon page, and it looked normal, but when I tried to log in as <a href="http://help.joomla.org/content/view/228/153/">Joomla! SuperAdministrator</a>, I got an error message:</p>
+<pre>You cannot login. There are no administrators set up. [OK]
+</pre>
+<p>Here are some postings from the Joomla! forums that seemed relevant to my situation. Note, though, that they had text after the message "Looking for template:", while I had no text there.</p>
+<ul>
+<li><a href="http://forum.joomla.org/index.php?topic=62921.msg332650">Topic: please help Template File Not Found! Looking for template:rt_showcar</a></li>
+<li><a href="http://forum.joomla.org/index.php?/topic,55487.0.html">Topic: Template File Not Found! Looking for template:rhuk_solarflare_ii</a></li>
+</ul>
+<p>Following a tip in <a href="http://wiki.dreamhost.com/MySQL#MySQL_Usage" title="MySQL">MySQL#MySQL Usage</a>, I checked that status of my MySQL database, using the <a href="https://panel.dreamhost.com/index.cgi?tree=status.mysql">MySQL Usage</a> section of the <a class="mw-redirect" href="http://wiki.dreamhost.com/Control_Panel" title="Control Panel">panel</a>. It showed 0.004MB of data in the database. This seemed small. Then I noticed that the physical computer hosting that MySQL server had failed, and data was backed up to after I had created the database, but before I had completed the Browser Installation. Thus my MySQL database was essentially empty. It didn't have any of the user IDs, sample data, or any of the early changes I made to my site!</p>
+<p>Here's how I fixed the problem:</p>
+<ul>
+<li>I restored the <tt>installation/*</tt> directory that was deleted in step 17 of the installation instructions. (I had saved a copy.)</li>
+<li>I renamed the file <tt>configuration.php</tt>, so that Joomla! would think it wasn't there.</li>
+<li>I opened the root page of my site. The pre-installation check page appeared. This put me back to step 10 of the installation process, following the link in the "installation email".</li>
+<li>I re-did the installation instructions from "11. Pre-installation check" through "18. Return to the step 4 page...".</li>
+</ul>
+<p>This was successful. Note: the resulting configuration.php was identical to my earlier version, except for a different value in the line <tt>$mosConfig_secret = ...</tt>. The values were both 16-character alphanumeric data strings, so I'm guessing they were supposed to be different.</p>
+<h2><span id="Symptom:_text_corrupted_in_PDF_files_generated_from_non-Latin_script_text">Symptom: text corrupted in PDF files generated from non-Latin script text</span></h2>
+<p>The built-in PDF generator in Joomla 1.0.x apparently doesn't work with text encoded in any character encoding different from ISO-8859-1. This means that text using a script different from <a class="new" href="http://wiki.dreamhost.com/index.php?title=Latin_script&amp;action=edit&amp;redlink=1" title="Latin script (page does not exist)">Latin script</a>, e.g. languages outside of Western Europe such as Greek, Russion, Chinese, Japanese, will have corrupted or missing text in PDF files which Joomla! generates from that text.</p>
+<p><a href="http://www.webpr.gr/joomla/2006/07/updated-international-characters.html">patch to use invision-graphics.comj</a> for PDF generation is one work-around.</p>
+<p><a href="http://forum.joomla.org/index.php?topic=64413.0">Joomla! Forum "greek fonts on pdf pop up"</a> refers to the patch to use invision-graphics.com.</p>
+<p><em>[Note: as of this writing these patches haven't been tested. If you test them, please update this article with your findings.]</em></p>
+<h2><span id="Symptom:_503_errors">Symptom: 503 errors</span></h2>
+<p>It looks like Joomla and mod_security don't always go together. It you're experiencing 503 errors wen using Joomla on your site (even the latest version), try unchecking the Extra Web Security option for the domain and its mirror sites. You can find that by editing the domain's Web Hosting in the panel under<a href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;">Manage Domains</a> A known example for this Joomla working with Virtuemart.</p>
+<h2><span id=".22302_Found_and_Error_500.22_when_using_Joomla_and_SEF">"302 Found and Error 500" when using Joomla and SEF</span></h2>
+<p>If you use Joomla! and a SEF extension on your Dreamhost domain, then the wrong choice in the <a href="http://wiki.dreamhost.com/Domains_Control_Panel" title="Domains Control Panel">Domains Control Panel</a> for "www" handling can cause a problem. Take Symptoms are (using <em>example.com</em> as the domain):</p>
+<ul>
+<li>Go to <tt>http://example.com/</tt> (no "<strong>www.</strong>"), and site works fine</li>
+<li>Go to <tt>http://www.example.com/</tt> (with "<strong>www.</strong>"), and site throws this error:</li>
+</ul>
+<pre>302 Found
+Found
+The document has moved here. [where "here" is a link to http://www.example.com]
+Additionally, a 500 Internal Server Error error was encountered while trying to use
+an ErrorDocument to handle the request.
+</pre>
+<ul>
+<li>turn SEF off using its control panel. Go to <tt>http://www.example.com/</tt> (with "<strong>www.</strong>"). Now site works fine!</li>
+</ul>
+<p>Web searches will turn up many others who had this problem. It is a problem with the <strong><a class="mw-redirect" href="http://wiki.dreamhost.com/.htaccess" title=".htaccess">.htaccess</a></strong> file which controls the <a class="mw-redirect" href="http://wiki.dreamhost.com/Apache" title="Apache">Apache</a> web server. However, the solution is host-dependent.</p>
+<p>For Dreamhost, the solution is to go to the <a href="http://wiki.dreamhost.com/Domains_Control_Panel" title="Domains Control Panel">Domains Control Panel</a>, and change the setting <strong>How do you like the www in your URL?</strong> My domain was set to "respond either with www. or without", and I saw the problem. I change the setting to "respond to www. only", saved changes, and waited for the change to take effect. This fixed the problem.</p>
+<p>Now you go to <tt>http://www.example.com/</tt> (with "<strong>www.</strong>"), and the site should work fine.</p>
+<h2><span id="Suppressing_Unwanted_PHP_Error_and_Warning_Output">Suppressing Unwanted PHP Error and Warning Output</span></h2>
+<p>Other areas of the wiki have recommended running a customized PHP-CGI binary, or wrapping a DreamHost PHP-CGI binary so you can manage your own custom php.ini file, but this turned out to be a royal pain when I tried it. If you really just want to suppress the errors and warnings quick-n-dirty and<em>only</em> in Joomla, you can do so by editing two files in the Joomla install. (<strong>Note:</strong> Tested with Joomla 1.0.15 only so far.)</p>
+<p>Insert the following lines into the two files <tt>/home/username/example.com/index.php</tt> and <tt>/home/username/example.com/administrator/index2.php</tt>directly after the &lt;PHP tag at the start of the file (and of course, edit the <tt>/username/example.com/</tt> bit of the "error_log" path as appropriate for your site):</p>
+<pre>ini_set('display_errors', 'off');
+ini_set('display_startup_errors', 'off');
+ini_set('html_errors', 'off');
+ini_set('log_errors', 'on');
+ini_set('error_log', '/home/username/example.com/php_errors.log');</pre>
+<p>This will turn off all onscreen display of errors and instead log them to php_errors.log, which may be good enough for most people's purposes.</p>
+<p>Don't forget to make a backup copy of the lines somewhere, as future security patches may well overwrite the index files!</p>
