@@ -1,0 +1,207 @@
+<div><strong>WARNING: POSSIBLE OUTDATED INFORMATION!</strong><br />DreamHost does not directly support any of the features described on this page and is not responsible for keeping this content updated or accurate. Use at your own risk! <br />There may be additional information on the <a title="Talk:Getting Started with Ruby on Rails" href="http://wiki.dreamhost.com/Talk:Getting_Started_with_Ruby_on_Rails">talk page</a>.</div>
+<div id="toc" class="toc">
+<div id="toctitle">
+<h2>Contents</h2>
+<span class="toctoggle"> [<a id="togglelink" href="http://wiki.dreamhost.com/Getting_Started_with_Ruby_on_Rails">hide</a>] </span></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="http://wiki.dreamhost.com/Getting_Started_with_Ruby_on_Rails#Overview"><span class="tocnumber">1</span> <span class="toctext">Overview</span></a></li>
+<li class="toclevel-1 tocsection-2"><a href="http://wiki.dreamhost.com/Getting_Started_with_Ruby_on_Rails#Creating_Your_Rails_Application"><span class="tocnumber">2</span> <span class="toctext">Creating Your Rails Application</span></a></li>
+<li class="toclevel-1 tocsection-3"><a href="http://wiki.dreamhost.com/Getting_Started_with_Ruby_on_Rails#Creating_a_Database_for_Your_Application"><span class="tocnumber">3</span> <span class="toctext">Creating a Database for Your Application</span></a></li>
+<li class="toclevel-1 tocsection-4"><a href="http://wiki.dreamhost.com/Getting_Started_with_Ruby_on_Rails#Adding_the_Domain_to_your_Account"><span class="tocnumber">4</span> <span class="toctext">Adding the Domain to your Account</span></a></li>
+<li class="toclevel-1 tocsection-5"><a href="http://wiki.dreamhost.com/Getting_Started_with_Ruby_on_Rails#Uploading_Your_Application"><span class="tocnumber">5</span> <span class="toctext">Uploading Your Application</span></a></li>
+<li class="toclevel-1 tocsection-6"><a href="http://wiki.dreamhost.com/Getting_Started_with_Ruby_on_Rails#Configuring_Your_Domain_to_Use_Passenger"><span class="tocnumber">6</span> <span class="toctext">Configuring Your Domain to Use Passenger</span></a></li>
+<li class="toclevel-1 tocsection-7"><a href="http://wiki.dreamhost.com/Getting_Started_with_Ruby_on_Rails#Test_Your_Application"><span class="tocnumber">7</span> <span class="toctext">Test Your Application</span></a>
+<ul>
+<li class="toclevel-2 tocsection-8"><a href="http://wiki.dreamhost.com/Getting_Started_with_Ruby_on_Rails#Resolving_the_common_mysql2_problem"><span class="tocnumber">7.1</span> <span class="toctext">Resolving the common mysql2 problem</span></a></li>
+<li class="toclevel-2 tocsection-9"><a href="http://wiki.dreamhost.com/Getting_Started_with_Ruby_on_Rails#Resolving_the_dreaded_rake_10.0.x_problem"><span class="tocnumber">7.2</span> <span class="toctext">Resolving the dreaded rake 10.0.x problem</span></a></li>
+</ul>
+</li>
+</ul>
+</div>
+<h1><span id="Overview" class="mw-headline">Overview</span></h1>
+<p>Deploying a simple Rails application is relatively easy, but there are still a number of steps that need to be taken. You need to create your application on your computer, add the domain to your account, create a database for your application in the panel, upload your application to DreamHost's servers, set your domain to use Passenger in the panel, and make sure the version of Rails and any gems you're using are available. These steps will be outlined in this article and should get you well on your way to having your application up and running.</p>
+<h1><span id="Creating_Your_Rails_Application" class="mw-headline">Creating Your Rails Application</span></h1>
+<p>To create your Rails application, you'll want to follow these steps (if you already have a Rails application to upload, you can skip this section).</p>
+<p>First, you'll need to make sure Rails is installed. To see if this works, run this command from your terminal window:</p>
+<pre>gem list --local | grep rails
+</pre>
+<p>You should see something like this:</p>
+<pre>rails (3.0.3, 2.3.8, 2.3.5, 2.3.4, 2.3.3, 2.2.2, 2.1.2, 2.1.1, 2.1.0, 2.0.5, 2.0.2)
+</pre>
+<p>You may see more versions listed, but so long as it shows up you should be good to go. After confirming that Rails is installed, run this command:</p>
+<pre>rails new test_app --database=mysql --freeze
+</pre>
+<p>That command will generate a new Rails application in the "test_app" folder. The --database=mysql parameter tells it to generate a MySQL database.yml template and the --freeze parameter tells it to <a class="mw-redirect" title="Freezing Gems" href="http://wiki.dreamhost.com/Freezing_Gems">freeze</a> the version of Rails you're using to the application, which is always highly recommended. When you run that command, you should see something like this:</p>
+<pre>$ rails new test_app --database=mysql --freeze
+     create  
+     create  app/controllers
+     create  app/helpers
+     create  app/models
+     create  app/views/layouts
+     create  config/environments
+     create  config/initializers
+     create  config/locales
+     create  db
+     create  doc
+     create  lib
+     create  lib/tasks
+     create  log
+     create  public/images
+     create  public/javascripts
+     create  public/stylesheets
+     create  script/performance
+     create  test/fixtures
+     create  test/functional
+     create  test/integration
+     create  test/performance
+     create  test/unit
+     create  vendor
+     create  vendor/plugins
+     create  tmp/sessions
+     create  tmp/sockets
+     create  tmp/cache
+     create  tmp/pids
+     create  Rakefile
+     create  README
+     create  app/controllers/application_controller.rb
+     create  app/helpers/application_helper.rb
+     create  config/database.yml
+     create  config/routes.rb
+     create  config/locales/en.yml
+     create  db/seeds.rb
+     create  config/initializers/backtrace_silencers.rb
+     create  config/initializers/inflections.rb
+     create  config/initializers/mime_types.rb
+     create  config/initializers/new_rails_defaults.rb
+     create  config/initializers/session_store.rb
+     create  config/environment.rb
+     create  config/boot.rb
+     create  config/environments/production.rb
+     create  config/environments/development.rb
+     create  config/environments/test.rb
+     create  script/about
+     create  script/console
+     create  script/dbconsole
+     create  script/destroy
+     create  script/generate
+     create  script/runner
+     create  script/server
+     create  script/plugin
+     create  script/performance/benchmarker
+     create  script/performance/profiler
+     create  test/test_helper.rb
+     create  test/performance/browsing_test.rb
+     create  public/404.html
+     create  public/422.html
+     create  public/500.html
+     create  public/index.html
+     create  public/favicon.ico
+     create  public/robots.txt
+     create  public/images/rails.png
+     create  public/javascripts/prototype.js
+     create  public/javascripts/effects.js
+     create  public/javascripts/dragdrop.js
+     create  public/javascripts/controls.js
+     create  public/javascripts/application.js
+     create  doc/README_FOR_APP
+     create  log/server.log
+     create  log/production.log
+     create  log/development.log
+     create  log/test.log
+rm -rf vendor/rails
+mkdir -p vendor/rails
+cd vendor/rails
+mv activesupport-2.3.4 activesupport
+mv activerecord-2.3.4 activerecord
+mv actionpack-2.3.4 actionpack
+mv actionmailer-2.3.4 actionmailer
+mv activeresource-2.3.4 activeresource
+cd -
+froze
+</pre>
+<p>At this point, you *should* have a fully functional, vanilla Rails application in your "test_app" directory.</p>
+<h1><span id="Creating_a_Database_for_Your_Application" class="mw-headline">Creating a Database for Your Application</span></h1>
+<p>Sqlite is currently the default database for Rails, however this is yet to be supported by Dreamhost. You must switch to MySQL for your application to work correctly.</p>
+<p>You'll want to create a database for your application by going to the <a class="external text" href="https://panel.dreamhost.com/index.cgi?tree=goodies.mysql&amp;" rel="nofollow">MySQL Databases</a> area of your webpanel. Scroll to the bottom of the page and fill out the form to create a new database. In a production environment, you would usually have at least a development and production database, but for the purposes of this guide we'll just make a production database. Fill out the form and click the "Add new database now!" link.</p>
+<p><a class="image" href="http://wiki.dreamhost.com/File:Rails_create_database.jpg"><img class="thumbborder" src="http://wiki.dreamhost.com/images/thumb/7/75/Rails_create_database.jpg/600px-Rails_create_database.jpg" srcset="/images/thumb/7/75/Rails_create_database.jpg/900px-Rails_create_database.jpg 1.5x, /images/7/75/Rails_create_database.jpg 2x" alt="Rails create database.jpg" width="600" height="301" /></a></p>
+<p>Now that you have a database to use go back to your Rails application and edit the config/database.yml file. Edit the production area with the appropriate information. For the application being setup above, it would look something like this:</p>
+<pre>production:
+  adapter: mysql
+  encoding: utf8
+  reconnect: false
+  database: test_app_prod
+  pool: 5
+  username: my_rails_user
+  password: aFk3!pQ93mw1
+  host: mysql.railsexample.dreamhosters.com
+</pre>
+<h1><span id="Adding_the_Domain_to_your_Account" class="mw-headline">Adding the Domain to your Account</span></h1>
+<p>Now you want to add the domain to your account via the <a class="external text" href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;" rel="nofollow">Manage Domains</a> area of your webpanel.</p>
+<p><a class="image" href="http://wiki.dreamhost.com/File:Rails_add_new_domain.jpg"><img src="http://wiki.dreamhost.com/images/b/b2/Rails_add_new_domain.jpg" alt="Rails add new domain.jpg" width="317" height="41" /></a></p>
+<p>Just fill out the form like you would for any other domain. Usually the default options will work, although you may want to change the "Do you want the www in your URL?" option to "Leave it alone".</p>
+<p><a class="image" href="http://wiki.dreamhost.com/File:Rails_domain_settings.jpg"><img class="thumbborder" src="http://wiki.dreamhost.com/images/thumb/4/4a/Rails_domain_settings.jpg/600px-Rails_domain_settings.jpg" srcset="/images/thumb/4/4a/Rails_domain_settings.jpg/900px-Rails_domain_settings.jpg 1.5x, /images/4/4a/Rails_domain_settings.jpg 2x" alt="Rails domain settings.jpg" width="600" height="426" /></a></p>
+<p>At this point, don't change the web directory path or worry about checking the Passenger checkbox. Just click the "Fully host this domain" button. Note that it may take some time for the domain's DNS to propagate once you add it (this can take anywhere from a couple hours to a couple days depending upon your exact location and ISP).</p>
+<h1><span id="Uploading_Your_Application" class="mw-headline">Uploading Your Application</span></h1>
+<p>At this point, your domain is setup and has a web directory on the server. So, you now need to get your application uploaded to the server. Usually, if you're going to be doing a lot of development where you deploy frequently, you'll be using some kind of version control system like Subversion or Git and can use Capistrano to deploy. For the purposes of this guide though, we'll simply upload the application via FTP.</p>
+<p>Log into your server via whatever FTP client you use. For the purposes of this guide FileZilla is being used. In the left pane, navigate to your "test_app" directory. Once you get there, select all the files and folders from the left panel and drag them to the yourdomain.com folder in the right panel.</p>
+<p><a class="image" href="http://wiki.dreamhost.com/File:Rails_filezilla_upload.jpg"><img class="thumbborder" src="http://wiki.dreamhost.com/images/thumb/e/ea/Rails_filezilla_upload.jpg/600px-Rails_filezilla_upload.jpg" srcset="/images/thumb/e/ea/Rails_filezilla_upload.jpg/900px-Rails_filezilla_upload.jpg 1.5x, /images/e/ea/Rails_filezilla_upload.jpg 2x" alt="Rails filezilla upload.jpg" width="600" height="198" /></a></p>
+<p>The upload may take a while since you have the entire Rails framework frozen to your application, so there's quite a number of files. There are lots of more efficient ways of doing this that will be discussed elsewhere, so if you know a better way of doing this, feel free. If you don't, then the above will work fine even if it does take a while.</p>
+<p>It will be quicker if you zip the app, upload the single zipfile and then unzip it on the server. <a class="external text" href="http://wiki.dreamhost.com/SSH#Decompress_ZIP_Archives_-_Upload_a_gazillion_files_at_once_-_Mini_Windows.2FSSH.2FPutty_tutorial" rel="nofollow">Here</a> are some instructions to help you.</p>
+<p> </p>
+<h1><span id="Configuring_Your_Domain_to_Use_Passenger" class="mw-headline">Configuring Your Domain to Use Passenger</span></h1>
+<p>Now that your application is uploaded, you need to set your domain up to use Passenger so the application will actually run. Go to the <a class="external text" href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;" rel="nofollow">Manage Domains</a>area of the webpanel and Edit your domain's Web Hosting options.</p>
+<p>The first thing you'll likely notice is that the Passenger option under the Web Options area on the edit page isn't available to check. This is because Passenger needs to have the web directory of your domain point to the public folder inside your application.</p>
+<p><a class="image" href="http://wiki.dreamhost.com/File:Rails_domain_settings_prepassenger.jpg"><img class="thumbborder" src="http://wiki.dreamhost.com/images/thumb/f/f4/Rails_domain_settings_prepassenger.jpg/600px-Rails_domain_settings_prepassenger.jpg" srcset="/images/f/f4/Rails_domain_settings_prepassenger.jpg 1.5x, /images/f/f4/Rails_domain_settings_prepassenger.jpg 2x" alt="Rails domain settings prepassenger.jpg" width="600" height="258" /></a></p>
+<p>Since you uploaded the contents of your "test_app" directory to the root of your web directory, just update the web directory field and add a "/public" to the end like this:</p>
+<p><a class="image" href="http://wiki.dreamhost.com/File:Rails_domain_settings_passenger.jpg"><img class="thumbborder" src="http://wiki.dreamhost.com/images/thumb/4/49/Rails_domain_settings_passenger.jpg/600px-Rails_domain_settings_passenger.jpg" srcset="/images/4/49/Rails_domain_settings_passenger.jpg 1.5x, /images/4/49/Rails_domain_settings_passenger.jpg 2x" alt="Rails domain settings passenger.jpg" width="600" height="251" /></a></p>
+<p>Once you've done that click the "Change settings" button. It may take up to 10 minutes or so for this change to go into effect.</p>
+<h1><span id="Test_Your_Application" class="mw-headline">Test Your Application</span></h1>
+<p>At this point, your application should be up and running! If you browse to it, you should see something like this:</p>
+<p><a class="image" href="http://wiki.dreamhost.com/File:Rails_welcome_page.jpg"><img class="thumbborder" src="http://wiki.dreamhost.com/images/thumb/f/fd/Rails_welcome_page.jpg/600px-Rails_welcome_page.jpg" srcset="/images/f/fd/Rails_welcome_page.jpg 1.5x, /images/f/fd/Rails_welcome_page.jpg 2x" alt="Rails welcome page.jpg" width="600" height="427" /></a></p>
+<p>Note that the "About your application's environment" link will display an error if you try clicking it. That's normal. It uses an internal route that Rails disables in production mode, which is what Passenger runs all the applications in. At this point, there's not much to test since no controllers or actions were created, however, if you had created any they would be available to see at this point.</p>
+<p>Since this article was just covering getting a basic, vanilla Rails application setup on DreamHost, it doesn't cover getting your gems working. For the most part, simply <a class="mw-redirect" title="Freezing Gems" href="http://wiki.dreamhost.com/Freezing_Gems">freezing your gems</a> to your application will do what you need, but a quick spin around Google turns up some common problems, some of which are discussed in the following sections.</p>
+<h2><span id="Resolving_the_common_mysql2_problem" class="mw-headline">Resolving the common mysql2 problem</span></h2>
+<p>Now that you've come this far, you'd expect you could do the following:</p>
+<pre>$ bundle install # NOTE this line in the output: "Installing mysql2 (0.3.11) with native extensions!"
+$ bundle package
+$ rails generate controller home index
+</pre>
+<p>However, you may end up with a WARNING like:</p>
+<pre>WARNING: This version of mysql2 (0.3.11) doesn't ship with the ActiveRecord adapter bundled anymore as it's now part of Rails 3.1
+WARNING: Please use the 0.2.x releases if you plan on using it in Rails &lt;= 3.0.x
+</pre>
+<p>To fix this, edit your Gemfile to specify an older version of the mysql2 gem. Edit the line that reads <tt>gem 'mysql2'</tt> like this:</p>
+<pre>...
+gem 'mysql2', '&lt; 0.3'
+...
+</pre>
+<p>Save and:</p>
+<pre>$ bundle install # NOTE this line in the output: "Installing mysql2 (0.2.x) with native extensions"
+$ bundle package
+</pre>
+<p>The "x" in in the preceeding snippet will be whatever the highest available version lower than 0.3 is. (In my case, it's <tt>0.2.18</tt>.)</p>
+<h2><span id="Resolving_the_dreaded_rake_10.0.x_problem" class="mw-headline">Resolving the dreaded <tt>rake 10.0.x</tt> problem</span></h2>
+<p>Many users run into a problem where the version of rake is not compatible with the other gem versions in the Dreamhost stack by default. When running<tt>rake db:migrate</tt>, for example, Bad Things™ may happen:</p>
+<pre>$ rake --trace db:migrate
+rake aborted!
+ERROR: 'rake/rdoctask' is obsolete and no longer supported. Use 'rdoc/task' (available in RDoc 2.4.2+) instead.
+    C:/Programs/Ruby193/lib/ruby/gems/1.9.1/gems/rake-10.0.3/lib/rake/rdoctask.rb:1:in `&lt;top (required)&gt;'
+    C:/Programs/Ruby193/lib/ruby/gems/1.9.1/gems/railties-3.0.3/lib/rails/tasks/documentation.rake:2:in `require'
+    ...
+</pre>
+<p>To resolve this, downgrade rake:</p>
+<pre>$ gem install rake -v 0.8.7
+$ gem uninstall rake -v 10.0.3
+</pre>
+<p>Then, edit your <tt>Gemfile.lock</tt>. Change the rake line to read like this:</p>
+<pre>...
+rake (0.8.7)
+...
+</pre>
+<p>Then, carry on:</p>
+<pre>$ bundle install
+$ bundle package
+$ rake --version
+rake, version 0.8.7
+</pre>
+<p>Hope this helps!</p>

@@ -1,0 +1,102 @@
+<div style="background-color: #fee; margin: 1em; padding: 10px; border: 1px solid #aaa; text-align: center;"><strong>WARNING: POSSIBLE OUTDATED INFORMATION!</strong><br /><span style="font-size: 90%;">DreamHost does not directly support any of the features described on this page and is not responsible for keeping this content updated or accurate. Use at your own risk! <br />There may be additional information on the <a title="Talk:Rails troubleshooting" href="http://wiki.dreamhost.com/Talk:Rails_troubleshooting"> talk page</a>.</span></div>
+<div style="background-color: #fee; margin: 1em; padding: 10px; border: 1px solid #aaa; text-align: center;"><strong>WARNING</strong><br /><span style="font-size: 90%;">Ruby on Rails is considered an advanced topic and is not recommended for anyone new to webhosting or programming.<br />To familiarize or update your Rails knowledge I recommend viewing the Ruby On Rails web site <a class="external autonumber" href="http://www.rubyonrails.org" rel="nofollow">[1]</a></span></div>
+<div id="toc" class="toc">
+<div id="toctitle">
+<h2>Contents</h2>
+</div>
+</div>
+<div id="toc" class="toc">
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="http://wiki.dreamhost.com/Rails_troubleshooting#General_Troubleshooting_Techniques"><span class="tocnumber">1</span> <span class="toctext">General Troubleshooting Techniques</span></a>
+<ul>
+<li class="toclevel-2 tocsection-2"><a href="http://wiki.dreamhost.com/Rails_troubleshooting#Use_the_Console"><span class="tocnumber">1.1</span> <span class="toctext">Use the Console</span></a></li>
+<li class="toclevel-2 tocsection-3"><a href="http://wiki.dreamhost.com/Rails_troubleshooting#Check_the_Logs"><span class="tocnumber">1.2</span> <span class="toctext">Check the Logs</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-4"><a href="http://wiki.dreamhost.com/Rails_troubleshooting#A_folder_named_.27public.27"><span class="tocnumber">2</span> <span class="toctext">A folder named 'public'</span></a></li>
+<li class="toclevel-1 tocsection-5"><a href="http://wiki.dreamhost.com/Rails_troubleshooting#Stats.2FPHPMyAdmin_missing.3F"><span class="tocnumber">3</span> <span class="toctext">Stats/PHPMyAdmin missing?</span></a></li>
+<li class="toclevel-1 tocsection-6"><a href="http://wiki.dreamhost.com/Rails_troubleshooting#Passenger_picky_with_which_Rails"><span class="tocnumber">4</span> <span class="toctext">Passenger picky with which Rails</span></a></li>
+<li class="toclevel-1 tocsection-7"><a href="http://wiki.dreamhost.com/Rails_troubleshooting#We.27re_sorry.2C_but_something_went_wrong."><span class="tocnumber">5</span> <span class="toctext">We're sorry, but something went wrong.</span></a></li>
+<li class="toclevel-1 tocsection-8"><a href="http://wiki.dreamhost.com/Rails_troubleshooting#Database_connection_issues"><span class="tocnumber">6</span> <span class="toctext">Database connection issues</span></a></li>
+</ul>
+</div>
+<h2><span id="General_Troubleshooting_Techniques" class="mw-headline">General Troubleshooting Techniques</span></h2>
+<p>There are a number of things that can go wrong when attempting to get your Rails application working. Most of these problems are related to gems not loading properly. Here are some tips on how to determine what's going on with your application if it isn't loading properly.</p>
+<h3><span id="Use_the_Console" class="mw-headline">Use the Console</span></h3>
+<p>Rails comes with a very handy tool named the console. You can fire this up by logging into your server via <a title="SSH" href="http://wiki.dreamhost.com/SSH">SSH</a>, cd'ing to your app's root directory and running this command:</p>
+<pre>ruby script/console production
+</pre>
+<p>For an application that's setup properly, it should load like this:</p>
+<pre>$ ruby script/console production
+Loading production environment (Rails 2.3.5)
+&gt;&gt; 
+</pre>
+<p>The "&gt;&gt;" is a prompt. At that point you could execute any arbitrary Ruby code you want to see it's output. Essentially, you have a fully running copy of your application that's connected to your database. The useful thing about this technique is that when it <strong>doesn't</strong> work all of the errors it encounters get dumped out right there. For instance, here's a very common error to see:</p>
+<pre>Missing the Rails 2.3.5 gem. Please `gem install -v=2.3.5 rails`, update your RAILS_GEM_VERSION 
+setting in config/environment.rb for the Rails version you do have installed, or comment out 
+RAILS_GEM_VERSION to use the latest version installed.
+</pre>
+<p>Generally, this is caused because your application was created using the version of Rails specified in the error message and that version of Rails isn't installed. One thing that's important to note is that Passenger loads your application without your user environment, so if you have a custom gem installation involving a custom GEM_HOME and GEM_PATH in your .bash_profile, then none of the gems you installed at that location will show up for Passenger. Unfortunately, this can create a case where loading the console doesn't reveal any issues because it find the gems due to having loaded your user environment, but Passenger does get errors. To get around this, comment out the custom GEM_HOME and GEM_PATH lines in your .bash_profile, logout and log back into your server. At that point you'll see what Passenger sees for the most part and if you're having trouble you'll likely see errors that weren't showing up before.</p>
+<p>To resolve the issue above, all you need to do is <a class="mw-redirect" title="Freezing Gems" href="http://wiki.dreamhost.com/Freezing_Gems#Freezing_Rails_Gems">freeze Rails to your application</a>. You should either do this locally on your development machine before you deploy to your DreamHost server or you can do it on the DreamHost server if you've installed that version of Rails to your custom gem install (note that you'll have to re-enable the GEM_HOME and GEM_PATH environment variables to do this if you take this route).</p>
+<p>Another common thing to see here is a missing gem:</p>
+<pre>Loading production environment (Rails 2.3.5)
+Missing these required gems:
+  aws-s3
+</pre>
+<p>This can be resolved by <a class="mw-redirect" title="Freezing Gems" href="http://wiki.dreamhost.com/Freezing_Gems">freezing the missing gems</a> to your application.</p>
+<p>In summary, the console feature will help you find a large number of problems with your application and will usually get you pointed in the right direction.</p>
+<h3><span id="Check_the_Logs" class="mw-headline">Check the Logs</span></h3>
+<p>This may seem obvious, but a lot of people don't realize that some very helpful information can be found in the production.log file in your application's log directory. Whenever your application is loading with a Rails application error, this is the place to look as the exception causing the error will show up there. The important bits of the exception are always near the top -- usually within the first couple of lines.</p>
+<p>If you find that nothing is being written to the production.log, then there is most likely a problem that's keeping Passenger from loading your app at all. This is most commonly due to an error in the config/database.yml file that's keeping it from connecting to the database. You can get more information about this particular problem <a title="Passenger Troubleshooting" href="http://wiki.dreamhost.com/Passenger_Troubleshooting">here</a>.</p>
+<p>If you can't find out what's going on from either the console or the production.log file, Passenger will also sometimes dump some exceptions to the global apache error log that you won't have access to. You can write into support and ask if they can check that log for you in that case. There isn't always something there, but when there is it can prove quite useful in many cases.</p>
+<h2><span id="A_folder_named_.27public.27" class="mw-headline">A folder named 'public'</span></h2>
+<p>Starting in June 2008 all Passenger (mod_rails) enabled sites will need to point to a folder named public. This started after many customers who has no need for passenger / rails innocently enabled it for their domains (thus needlessly increasing the load on the server). If you use symlinks for your site, simply make sure your symlink is named “public”</p>
+<h2><span id="Stats.2FPHPMyAdmin_missing.3F" class="mw-headline">Stats/PHPMyAdmin missing?</span></h2>
+<p>One of the few drawbacks with passenger is that it disabled any re-write rules you or we have setup for your domain. Unfortunately this will break your site's stats and phpMyAdmin pages.</p>
+<p>To view your stats you will need to <a class="external text" href="http://wiki.dreamhost.com/Making_stats_accessible_with_htaccess#Alternative_text_mode_method" rel="nofollow">use the command line</a></p>
+<p>To access phpMyadmin you will need to use an alternative MySQL hostname to connect to (any valid mysql hostname not under a passenger enabled domain should do)</p>
+<h2><span id="Passenger_picky_with_which_Rails" class="mw-headline">Passenger picky with which Rails</span></h2>
+<p>One of the benefits with passenger is how quickly and efficiently it can load up the rails libraries. This is also a drawback, as the only version of Rail you will be able to load up is whichever current version we have bundled with passenger (currently 2.0 as of July 2008)</p>
+<h2><span id="We.27re_sorry.2C_but_something_went_wrong." class="mw-headline">We're sorry, but something went wrong.</span></h2>
+<p>Rails can be a bit tricky with its "something went wrong" error. Luckily, it's not hard to track down what went wrong if you know where to look.</p>
+<p>The first place to look for any errors in your application is in the logs/production.log (or appropriate environment log file, development.log, test.log or fastcgi-crash.log if running fastCGI). This will tell you exactly what went wrong and where.</p>
+<p>Common environment .log errors:</p>
+<pre>ActionView::TemplateError (undefined method `jibberish' for #&lt;Post:0x4130fd54&gt;) on line #11 of posts/show.html.erb:
+8:   &lt;%=h @post.data %&gt;
+9: &lt;/p&gt;
+10: 
+11: &lt;%= @post.jibberish %&gt;
+12: 
+13: &lt;%= link_to 'Edit', edit_post_path(@post) %&gt; |
+14: &lt;%= link_to 'Back', posts_path %&gt;
+/usr/lib/ruby/gems/1.8/gems/activerecord-2.0.2/lib/active_record/attribute_methods.rb:205:in `method_missing'
+</pre>
+<pre>Processing PostsController#show [GET]
+Session ID:   BAh7BzoMY3NyZl9pZCIlMjU0MjFkOGU0ZjZiYjRkZThiNzY3MWc74cf7a1cb49d1c2f59c5314d2963c
+Parameters: {"action"=&gt;"show", "id"=&gt;"2", "controller"=&gt;"posts"}
+NoMethodError (undefined method `bad_call' for #&lt;Class:0x41305f70&gt;):
+/usr/lib/ruby/gems/1.8/gems/activerecord-2.0.2/lib/active_record/base.rb:1532:in `method_missing'
+</pre>
+<p>These types of errors probably mean you either have not updated your database or controller to handle the methods outlined in your views. A possible fix would be to run rake db:migrate or update your view, model or controller file (as appropriate) to correct the failure (line #11 of posts/show.html.erb or the bad_call method listed in the Post controller (under show))</p>
+<h2><span id="Database_connection_issues" class="mw-headline">Database connection issues</span></h2>
+<p>A properly setup database.yml will look something like this:</p>
+<pre>development:
+ adapter: mysql
+ database: developmentDatabaseName
+ username: DBuserName
+ password: yourSecretPassword
+ host: mysql.yourdomain.com
+test:
+ adapter: mysql
+ database: testDatabaseName
+ username: DBuserName
+ password: yourSecretPassword
+ host: mysql.yourdomain.com
+production:
+ adapter: mysql
+ database: productionDatabaseName
+ username: DBuserName
+ password: yourSecretPassword
+ host: mysql.yourdomain.com
+</pre>
+<p>Using SQLite is not recommended, more importantly using “localhost” as the host for MySQL will not work.</p>

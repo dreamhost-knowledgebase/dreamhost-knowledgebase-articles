@@ -1,0 +1,55 @@
+<div style="background-color: #fee; margin: 1em; padding: 10px; border: 1px solid #aaa; text-align: center;"><strong>WARNING: POSSIBLE OUTDATED INFORMATION!</strong><br /><span style="font-size: 90%;">DreamHost does not directly support any of the features described on this page and is not responsible for keeping this content updated or accurate. Use at your own risk! <br />There may be additional information on the <a class="new" title="Talk:Rack (page does not exist)" href="http://wiki.dreamhost.com/index.php?title=Talk:Rack&amp;action=edit&amp;redlink=1"> talk page</a>.</span></div>
+<div id="toc" class="toc">
+<div id="toctitle">
+<h2>Contents</h2>
+</div>
+</div>
+<div id="toc" class="toc">
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="http://wiki.dreamhost.com/Rack#Overview"><span class="tocnumber">1</span> <span class="toctext">Overview</span></a></li>
+<li class="toclevel-1 tocsection-2"><a href="http://wiki.dreamhost.com/Rack#Basic_Flow_of_Control"><span class="tocnumber">2</span> <span class="toctext">Basic Flow of Control</span></a></li>
+<li class="toclevel-1 tocsection-3"><a href="http://wiki.dreamhost.com/Rack#Hello_World.21_Example"><span class="tocnumber">3</span> <span class="toctext">Hello World! Example</span></a></li>
+<li class="toclevel-1 tocsection-4"><a href="http://wiki.dreamhost.com/Rack#Getting_Passenger.2FRack_to_Recognize_Changes_in_Application_Code.2FConfiguration_Files"><span class="tocnumber">4</span> <span class="toctext">Getting Passenger/Rack to Recognize Changes in Application Code/Configuration Files</span></a></li>
+<li class="toclevel-1 tocsection-5"><a href="http://wiki.dreamhost.com/Rack#Using_Rack_with_Other_Web_Frameworks"><span class="tocnumber">5</span> <span class="toctext">Using Rack with Other Web Frameworks</span></a></li>
+<li class="toclevel-1 tocsection-6"><a href="http://wiki.dreamhost.com/Rack#See_Also"><span class="tocnumber">6</span> <span class="toctext">See Also</span></a>
+<ul>
+<li class="toclevel-2 tocsection-7"><a href="http://wiki.dreamhost.com/Rack#External_Links"><span class="tocnumber">6.1</span> <span class="toctext">External Links</span></a></li>
+</ul>
+</li>
+</ul>
+</div>
+<h2><span id="Overview" class="mw-headline">Overview</span></h2>
+<p><strong>Rack</strong> is an interface implemented by <a title="Passenger" href="http://wiki.dreamhost.com/Passenger">Passenger</a> which operates between the <a title="Apache HTTP Server" href="http://wiki.dreamhost.com/Apache_HTTP_Server"> Apache HTTP Server </a> and web applications developed in the <a class="mw-redirect" title="Ruby" href="http://wiki.dreamhost.com/Ruby"> Ruby programming language</a>. Rack boils down the API for web servers, web frameworks, and software in between (the so-called middleware) into a single method call. Rack is particularly popular as an interface to the <a title="Ruby on Rails" href="http://wiki.dreamhost.com/Ruby_on_Rails">Ruby on Rails</a> web framework.</p>
+<p>You do not have to install any software to use Rack's interface at Dreamhost. It is implemented automatically as part of Passenger.</p>
+<p>Under normal circumstances (e.g. when used to invoke a Ruby on Rails application), Rack provides a light-weight and straightforward pass-through interface. However, Rack has the ability to provided very effective interface features for a variety of web software. (See the links at the end of this page for further information.)</p>
+<h2><span id="Basic_Flow_of_Control" class="mw-headline">Basic Flow of Control</span></h2>
+<p>When a request is made to a domain (or subdomain) with Passenger enabled, the <a title="Apache HTTP Server" href="http://wiki.dreamhost.com/Apache_HTTP_Server"> Apache HTTP Server </a> invokes Passenger which in turn invokes the Rack interface module. Rack in turn invokes a file with the name "config.ru" that is located in the domain's root directory (i.e. the parent of the domain's "public" directory.) The Ruby code contained in config.ru in turn invokes the desired web framework or application.</p>
+<p>The Ruby code responds with a three element Ruby array containing the return code, header information, and response body respectively.</p>
+<h2><span id="Hello_World.21_Example" class="mw-headline">Hello World! Example</span></h2>
+<p>If a domain or subdomain at Dreamhost is configured to use <a title="Passenger" href="http://wiki.dreamhost.com/Passenger">Passenger</a>, then the following single line of Ruby code can be placed in a file named "config.ru" in the domain's root directory to provide a minimally functional example website -</p>
+<pre>run Proc.new {|env| [200, {"Content-Type" =&gt; "text/html"}, "Hello World!&lt;br /&gt;"+env.inspect]}
+</pre>
+<p>NOTE: "config.ru" is NOT placed in the domain's "public" directory but rather in the directory above (i.e. the parent of) the "public" directory.</p>
+<p>Once config.ru is created and Passenger/Rack is reinitialized (see next section), any request to the designated domain/subdomain (except those that map to files that exist in the "public" subdirectory) will be dispatched to the Ruby code contained in config.ru.</p>
+<p>See link below to the Passenger documentation for a more complete "Hello World!" example.</p>
+<h2><span id="Getting_Passenger.2FRack_to_Recognize_Changes_in_Application_Code.2FConfiguration_Files" class="mw-headline">Getting Passenger/Rack to Recognize Changes in Application Code/Configuration Files</span></h2>
+<p>Whenever the code or configuration files for your application has changed, creating or updating the modification date of the file "tmp/restart.txt" in the domain's root directory tree will tell Passenger to reinitialize the application. Passenger caches many resources and so changes will generally not be recognized unless the modification date of "tmp/restart.txt" is changed. The most common method to make this change is to invoke "touch tmp/restart.txt" from the shell. (Ruby on Rails automatically creates a directory named "tmp". If you are creating non-RoR application, you may need to create the "tmp" directory manually.)</p>
+<p> </p>
+<h2><span id="Using_Rack_with_Other_Web_Frameworks" class="mw-headline">Using Rack with Other Web Frameworks</span></h2>
+<p>Passenger is most often used in conjunction with Ruby on Rails. However, it has been known to work with a variety of other Rack-compliant web frameworks including (but not limited to) <a class="new" title="Camping (page does not exist)" href="http://wiki.dreamhost.com/index.php?title=Camping&amp;action=edit&amp;redlink=1">Camping</a>, Padrino, <a title="Sinatra" href="http://wiki.dreamhost.com/Sinatra">Sinatra</a>, and Ramaze. However, little or no support is provided by Dreamhost for these other frameworks. It is also possible to write ones own custom Rack-compliant applications and frameworks.</p>
+<h2><span id="See_Also" class="mw-headline">See Also</span></h2>
+<ul>
+<li><a class="mw-redirect" title="Ruby" href="http://wiki.dreamhost.com/Ruby">Ruby</a></li>
+<li><a title="Ruby on Rails" href="http://wiki.dreamhost.com/Ruby_on_Rails">Ruby on Rails</a></li>
+</ul>
+<h3><span id="External_Links" class="mw-headline">External Links</span></h3>
+<ul>
+<li><a class="extiw" title="wikipedia:Rack (Web server interface)" href="http://en.wikipedia.org/wiki/Rack_%28Web_server_interface%29">Wikipedia:Rack (Web_server_interface)</a></li>
+<li><a class="external text" href="http://www.modrails.com/documentation/Users%20guide%20Apache.html#_deploying_a_rack_based_ruby_application" rel="nofollow">The Passenger documentation on Rack deployment</a> - At Dreamhost, Ruby on Rails applications are reached through the Rack interface. So the relevant Passenger documentation is in the "Rack Deployment" section not the "Ruby on Rails Deployment" section. Also, you do not need to concern yourself with the Apache configuration files. Dreamhost automatically configures those for you. This page also includes a more complete "Hello World!" tutorial.</li>
+<li><a class="external text" href="http://rack.rubyforge.org/doc/files/SPEC.html" rel="nofollow">The Rack Spec</a></li>
+<li><a class="external text" href="http://rack.github.com/" rel="nofollow">Rack at Github</a></li>
+<li><a class="external text" href="http://rack.rubyforge.org/" rel="nofollow">Rack homepage at Rubyforge</a></li>
+<li><a class="external text" href="http://rack.rubyforge.org/doc/README.html" rel="nofollow">Rack README at Rubyforge</a></li>
+<li><a class="external text" href="http://m.onkey.org/ruby-on-rack-1-hello-rack" rel="nofollow">Tutorial Introduction - Part 1 of 2</a></li>
+<li><a class="external text" href="http://m.onkey.org/ruby-on-rack-2-the-builder" rel="nofollow">Tutorial Introduction - Part 2 of 2</a></li>
+</ul>
