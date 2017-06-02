@@ -1,0 +1,130 @@
+<div><strong>WARNING: POSSIBLE OUTDATED INFORMATION!</strong><br/>DreamHost does not directly support any of the features described on this page and is not responsible for keeping this content updated or accurate. Use at your own risk! <br/>There may be additional information on the <a href="http://wiki.dreamhost.com/Talk:Bugzilla" title="Talk:Bugzilla">talk page</a>.</div>
+<div>
+<table>
+<tbody>
+<tr>
+<td><strong>The instructions provided in this article or section are considered advanced.</strong><br/>
+<p>You are expected to be knowledgeable in the UNIX shell.<br/><em>Support for these instructions is <strong>not available</strong> from DreamHost tech support.</em><br/><strong><em>Server changes performed by DreamHost may break your modifications. You, as the user, are responsible for troubleshooting and resolving issues with your customizations.</em></strong> <strong><em><br/></em></strong></p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="toc" id="toc">
+<div id="toctitle">
+<h2>Contents</h2>
+<span class="toctoggle"> [<a href="http://wiki.dreamhost.com/Bugzilla" id="togglelink">hide</a>] </span></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="http://wiki.dreamhost.com/Bugzilla#Introduction"><span class="tocnumber">1</span> <span class="toctext">Introduction</span></a></li>
+<li class="toclevel-1 tocsection-2"><a href="http://wiki.dreamhost.com/Bugzilla#Installing_Bugzilla"><span class="tocnumber">2</span> <span class="toctext">Installing Bugzilla</span></a>
+<ul>
+<li class="toclevel-2 tocsection-3"><a href="http://wiki.dreamhost.com/Bugzilla#Before_you_begin"><span class="tocnumber">2.1</span> <span class="toctext">Before you begin</span></a></li>
+<li class="toclevel-2 tocsection-4"><a href="http://wiki.dreamhost.com/Bugzilla#Creating_the_MySQL_Database"><span class="tocnumber">2.2</span> <span class="toctext">Creating the MySQL Database</span></a></li>
+<li class="toclevel-2 tocsection-5"><a href="http://wiki.dreamhost.com/Bugzilla#Configuring_Bugzilla"><span class="tocnumber">2.3</span> <span class="toctext">Configuring Bugzilla</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-6"><a href="http://wiki.dreamhost.com/Bugzilla#Killed"><span class="tocnumber">3</span> <span class="toctext">Killed</span></a></li>
+<li class="toclevel-1 tocsection-7"><a href="http://wiki.dreamhost.com/Bugzilla#UBUNTU_upgrade_Problem"><span class="tocnumber">4</span> <span class="toctext">UBUNTU upgrade Problem</span></a></li>
+</ul>
+</div>
+<h2><span id="Introduction">Introduction</span></h2>
+<p>Bugzilla is a web-based tool for "change management", i.e. reporting and tracking changes (or requests for changes) to a product. It is typically used by software developers to allow a user to report a bug, provide a discussion forum for the bug, and to track any fixes (or other resolution) for the bug. However, Bugzilla is flexible enough that it can be used to manage any kind of requests for any kind of product or service. For example, it can be used by employees to request a service, such as asking the I.T. department to fix a paper jam in the printer in room 3E.</p>
+<p>More information can be found at the Bugzilla web site: <a href="http://www.bugzilla.org/about/">http://www.bugzilla.org/about/</a></p>
+<p> </p>
+<h2><span id="Installing_Bugzilla">Installing Bugzilla</span></h2>
+<p>Current versions of Bugzilla require a couple of extra <a href="http://wiki.dreamhost.com/Perl" title="Perl">perl</a> modules that Dreamhost does not have installed by default. Bugzilla's installer will tell you how to install them. When the installer prompts you to edit the "localconfig" file before continuing, make sure to set the 'suexec' variable to 1 for it to work with Dreamhost.</p>
+<p>You really shouldn't run an older version of Bugzilla on Dreamhost as most of them contain unpatched security bugs which have been fixed in newer versions, but if you really need to install an older version for some reason, see <a class="mw-redirect" href="http://wiki.dreamhost.com/Bugzilla/OldInstructions" title="Bugzilla/OldInstructions">Bugzilla/OldInstructions</a>.</p>
+<h3><span id="Before_you_begin">Before you begin</span></h3>
+<p>Go to the Dreamhost Manage Domain sub-panel of Domains (<a href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;">https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;</a>) and create the HTTP domain bugs.myOwnDomain.com to host the web interface to Bugzilla.</p>
+<p>Hint: creating a sub-domain is cheaper (free) and faster than creating a new domain (the latter can take days to become active).</p>
+<h3><span id="Creating_the_MySQL_Database">Creating the MySQL Database</span></h3>
+<p>Bugzilla uses <a href="http://wiki.dreamhost.com/MySQL" title="MySQL">MySQL</a> as the database back-end. Fortunately, Dreamhost's MySQL support makes it real easy to set it up for Bugzilla. All you need to do is create a single database with some standard values.</p>
+<p>Go the Dreamhost MySQL Web Admin panel (<a href="https://panel.dreamhost.com/index.cgi?tree=goodies.mysql">https://panel.dreamhost.com/index.cgi?tree=goodies.mysql</a>), and enter in the following information:</p>
+<p>DB name: <tt><em>user</em>bugs</tt><br/>DB Hostname: <tt>mysql.myOwnDomain.com</tt><br/>DB Username: <tt><em>user</em>bugs</tt><br/>DB Password: <tt><em>password</em></tt><br/>Repeat PW: <tt><em>password</em></tt></p>
+<p>where <em>user</em> is your userid and <em>password</em> is some password you've chosen.</p>
+<p>After filling in all five fields, press the button labeled "Add a new database now!". The database will be ready to use in about 15 minutes, so if you complete all of the other steps before the database is ready, you'll just need to wait a little longer.</p>
+<h3><span id="Configuring_Bugzilla">Configuring Bugzilla</span></h3>
+<div>
+<table>
+<tbody>
+<tr>
+<td><strong>The instructions provided in this article or section require <a href="http://wiki.dreamhost.com/Shell" title="Shell">shell</a> access unless otherwise stated.</strong><br/>
+<p>You can use the <a href="http://wiki.dreamhost.com/PuTTY" title="PuTTY">PuTTY</a> client on Windows, or <a href="http://wiki.dreamhost.com/SSH" title="SSH">SSH</a> on <a href="http://wiki.dreamhost.com/Category:UNIX" title="Category:UNIX">UNIX</a> and UNIX-like systems such as Linux or Mac OS X.<br/>Your account must be configured for shell access in the <a class="mw-redirect" href="http://wiki.dreamhost.com/Control_Panel" title="Control Panel">Control Panel</a>.<br/>More information may be available on the article's <a href="http://wiki.dreamhost.com/Talk:Bugzilla" title="Talk:Bugzilla">talk page</a>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ol>
+<li>Log in to your account using <a href="http://wiki.dreamhost.com/SSH" title="SSH">SSH</a>.</li>
+<li>Download the bugzilla tarball:
+<pre>wget http://ftp.mozilla.org/pub/mozilla.org/webtools/bugzilla-STABLE.tar.gz</pre>
+</li>
+<li>Change to your html directory (i.e. the directory that will store files for bugs.myOwnDomain.com) using the command
+<pre>cd myOwnDomain.com/bugs</pre>
+(Hint, if that directory does not exist you can make it with
+<pre>mkdir $HOME/myOwnDomain.com/bugs</pre>
+</li>
+<li>Untar the Bugzilla tarball into your html directory:
+<pre>tar zxf ../bugzilla-STABLE.tar.gz</pre>
+</li>
+<li>Change to the bugzilla directory with the command:
+<pre>cd bugzilla-###</pre>
+where ### is the version number on the folder that you just extracted.</li>
+<li>Create the default localconfig file by entering the command:
+<pre>nice -n 19 ./checksetup.pl</pre>
+<p>You should see output similar to the following:</p>
+<div><tt><tt>* This is Bugzilla 4.2.4 on perl 5.10.0 * Running on Linux 2.6.32.8-grsec-2.1.14-modsign-xeon-64 #2 SMP Sat Mar 13 00:42:43 PST 2010  </tt></tt>
+<p>Checking perl modules... Checking for CGI.pm (v3.51) ok: found v3.62 Checking for Digest-SHA (any) ok: found v5.45 Checking for TimeDate (v2.21) ok: found v2.22 Checking for DateTime (v0.28) ok: found v0.42 Checking for DateTime-TimeZone (v0.71) ok: found v0.7701 Checking for DBI (v1.41) ok: found v1.605 Checking for Template-Toolkit (v2.22) found v2.19 Checking for Email-Send (v2.00) not found Checking for Email-MIME (v1.904) not found Checking for URI (v1.37) found v1.35 Checking for List-MoreUtils (v0.22) ok: found v0.22 Checking for Math-Random-ISAAC (v1.0.1) not found   Checking available perl DBD modules... Checking for DBD-Pg (v1.45) ok: found v2.8.7 Checking for DBD-mysql (v4.001) ok: found v4.007 Checking for DBD-SQLite (v1.29) found v1.14 Checking for DBD-Oracle (v1.19) not found   The following Perl modules are optional: Checking for GD (v1.20) ok: found v2.39 Checking for Chart (v2.1) ok: found v2.4.1 Checking for Template-GD (any) ok: found v1.56 Checking for GDTextUtil (any) ok: found v0.86 Checking for GDGraph (any) ok: found v1.44 Checking for MIME-tools (v5.406) ok: found v5.427 Checking for libwww-perl (any) ok: found v5.813 Checking for XML-Twig (any) ok: found v3.32 Checking for PatchReader (v0.9.6) found v0.9.5 Checking for perl-ldap (any) ok: found v0.36 Checking for Authen-SASL (any) ok: found v2.12 Checking for RadiusPerl (any) not found Checking for SOAP-Lite (v0.712) found v0.710.08 Checking for JSON-RPC (any) not found Checking for JSON-XS (v2.0) ok: found v2.01 Checking for Test-Taint (any) not found Checking for HTML-Parser (v3.40) ok: found v3.56 Checking for HTML-Scrubber (any) ok: found v0.08 Checking for Encode (v2.21) ok: found v2.23 Checking for Encode-Detect (any) not found Checking for Email-MIME-Attachment-Stripper (any) not found Checking for Email-Reply (any) not found Checking for TheSchwartz (any) not found Checking for Daemon-Generic (any) not found Checking for mod_perl (v1.999022) not found Checking for Apache-SizeLimit (v0.96) not found *********************************************************************** * REQUIRED MODULES * *********************************************************************** * Bugzilla requires you to install some Perl modules which are either * * missing from your system, or the version on your system is too old. * * See below for commands to install these modules. * *********************************************************************** * OPTIONAL MODULES * *********************************************************************** * Certain Perl modules are not required by Bugzilla, but by * * installing the latest version you gain access to additional * * features. * * * * The optional modules you do not have installed are listed below, * * with the name of the feature they enable. Below that table are the * * commands to install each module. * *********************************************************************** * MODULE NAME * ENABLES FEATURE(S) * *********************************************************************** * PatchReader * Patch Viewer * * RadiusPerl * RADIUS Authentication * * SOAP-Lite * XML-RPC Interface * * JSON-RPC * JSON-RPC Interface * * Test-Taint * JSON-RPC Interface, XML-RPC Interface * * Encode-Detect * Automatic charset detection for text attachments * * Email-MIME-Attachment-Stripper * Inbound Email * * Email-Reply * Inbound Email * * TheSchwartz * Mail Queueing * * Daemon-Generic * Mail Queueing * * mod_perl * mod_perl * * Apache-SizeLimit * mod_perl * *********************************************************************** COMMANDS TO INSTALL OPTIONAL MODULES:   PatchReader: /usr/bin/perl install-module.pl PatchReader RadiusPerl: /usr/bin/perl install-module.pl Authen::Radius SOAP-Lite: /usr/bin/perl install-module.pl SOAP::Lite JSON-RPC: /usr/bin/perl install-module.pl JSON::RPC Test-Taint: /usr/bin/perl install-module.pl Test::Taint Encode-Detect: /usr/bin/perl install-module.pl Encode::Detect Email-MIME-Attachment-Stripper: /usr/bin/perl install-module.pl Email::MIME::Attachment::Stripper Email-Reply: /usr/bin/perl install-module.pl Email::Reply TheSchwartz: /usr/bin/perl install-module.pl TheSchwartz Daemon-Generic: /usr/bin/perl install-module.pl Daemon::Generic mod_perl: /usr/bin/perl install-module.pl mod_perl2 Apache-SizeLimit: /usr/bin/perl install-module.pl Apache2::SizeLimit   COMMANDS TO INSTALL REQUIRED MODULES (You *must* run all these commands and then re-run checksetup.pl):   /usr/bin/perl install-module.pl Template /usr/bin/perl install-module.pl Email::Send /usr/bin/perl install-module.pl Email::MIME /usr/bin/perl install-module.pl URI /usr/bin/perl install-module.pl Math::Random::ISAAC   To attempt an automatic install of every required and optional module with one command, do:   /usr/bin/perl install-module.pl --all</p>
+<tt>*** Installation aborted. Read the messages above. ***</tt></div>
+<p><strong>Note: mod_perl cannot be used on Dreamhost shared hosting accounts. It can be used on Dreamhost VPS accounts, but only if the web server is changed to 'unmanaged'. This configuration is not supported by Dreamhost.</strong></p>
+<p>If you see any output in red text then there's something you need to do manually before continuing. Read what it says needs to be done, and do it, then run checksetup.pl again the same way you ran it the first time.</p>
+<p>When the instructions it gives you tell you to run install-module.pl, it is worth using "nice" to stop it from being too processor intensive, as DreamHost servers will kill processes it deems as using too much of the server resources, giving install errors. For example, to add MySQL support you would run <strong><tt>nice -n 19 /usr/bin/perl install-module.pl DBD::mysql</tt></strong> to install with a lower process priority.</p>
+<p>Once all of the dependencies are taken care of, that red text should prompt you to edit the localconfig file:</p>
+<pre>This version of Bugzilla contains some variables that you may want to
+change and adapt to your local settings. The following variables are
+new to ./localconfig since you last ran checksetup.pl:
+
+create_htaccess, webservergroup, use_suexec, db_driver, db_host,
+db_name, db_user, db_pass, db_port, db_sock, db_check, index_html,
+cvsbin, interdiffbin, diffpath, site_wide_secret
+
+Please edit the file ./localconfig and then re-run checksetup.pl
+to complete your installation.
+</pre>
+<p>At this point, continue to the following steps.</p>
+</li>
+<li>Find out your primary group. On the command line, run:
+<pre>groups</pre>
+and make note of the group listed there. If there is more than one, you want the first one. Remember this, you'll need it in the next step.</li>
+<li>Edit localconfig with your favorite text editor. Make the following changes:
+<ol>
+<li>Change <strong><tt>$webservergroup = "apache"</tt></strong> to <strong><tt>$webservergroup = "<em>yourgroup</em>"</tt></strong> where <em>yourgroup</em> is your primary group (which you looked up in the previous step). <strong>NOTE:</strong> Previous instructions here suggested to set $webservergroup = "" -- you do <strong>not</strong> want to do this as it will let anyone else hosted on the same machine with you screw with your bugzilla settings!</li>
+<li>Change <strong><tt>$use_suexec = 0;</tt></strong> to <strong><tt>$use_suexec = 1;</tt></strong></li>
+<li>Change <strong><tt>$db_host = "localhost"</tt></strong> to <strong><tt>$db_host = "mysql.<em>myOwnDomain.com</em>"</tt></strong> (the value specified in "DB Hostname" above).</li>
+<li>Change <strong><tt>$db_name = "bugs"</tt></strong> to <strong><tt>$db_name = "<em>user</em>bugs"</tt></strong> (the value specified in "DB name" above).</li>
+<li>Change <strong><tt>$db_user = "bugs"</tt></strong> to <strong><tt>$db_user = "<em>user</em>bugs"</tt></strong> (the value specified in "DB Username" above).</li>
+<li>Change <strong><tt>$db_pass = '';</tt></strong> to <strong><tt>$db_pass = '<em>password</em>';</tt></strong>, where <em>password</em> is the password you chose for "DB Password" above.</li>
+</ol>
+</li>
+<li>re-run checksetup.pl:
+<pre>nice -n 12 ./checksetup.pl</pre>
+<p>This time it should prompt you to create your administrator account. Just fill in the blanks:</p>
+<div><tt><tt>Looks like we don't have an administrator set up yet. Either this is</tt></tt>
+<p>your first time using Bugzilla, or your administrator's privileges might have accidentally been deleted.   Enter the e-mail address of the administrator: <strong>youremail@yourdomain.com</strong> Enter the real name of the administrator: <strong>Your Name</strong> Enter a password for the administrator account: <strong>password won't show while you type it</strong> Please retype the password to verify: <strong>password won't show while you type it</strong> youremail@yourdomain.com is now set up as an administrator. Creating initial dummy product 'TestProduct'...   Now that you have installed Bugzilla, you should visit the 'Parameters' page (linked in the footer of the Administrator account) to ensure it is set up as you wish - this includes setting the 'urlbase' option to the correct URL.</p>
+<tt>checksetup.pl complete.</tt></div>
+</li>
+</ol>
+<p>The green text means you're done. That should be it. Launch your web browser and point it to <tt>http://www.<em>myOwnDomain.com</em>/bugs/bugzilla-###</tt>. You should see the Bugzilla front page. Log in using the username and password you just created above, then go to Parameters and set the parameters appropriately.</p>
+<h2><span id="Killed">Killed</span></h2>
+<p>The bugzilla install script may be killed prematurely by the procwatch daemon - see <a href="http://wiki.dreamhost.com/Killed" title="Killed">Killed</a></p>
+<h2><span id="UBUNTU_upgrade_Problem">UBUNTU upgrade Problem</span></h2>
+<p>After my shared server (hanover) was upgraded to UBUNTU, accessing my bugzilla web site caused an Internal Server Error message and produced the following error log records:</p>
+<pre> 
+[Mon Oct 20 14:38:34 2014] [error] [client xxx.xxx.xxx.xxx] /usr/bin/perl: symbol lookup error: lib/x86_64-linux-gnu-thread-multi/auto/List/MoreUtils/MoreUtils.so: undefined symbol: Perl_Gthr_key_ptr
+[Mon Oct 20 14:38:34 2014] [error] [client xxx.xxx.xxx.xxx] Premature end of script headers: index.cgi
+[Mon Oct 20 14:38:34 2014] [error] [client xxx.xxx.xxx.xxx] File does not exist: /home/xxxxxxxx/bugs.board18.org/internal_error.html
+</pre>
+<p><a href="http://ubuntuforums.org/showthread.php?t=1973209">I found this thread on ubuntu forums</a> which pointed me in the correct direction.</p>
+<p>I fixed the ubuntu/bugzilla problem by removing the folder called "x86_64-linux-gnu-thread-multi" from the folder at ~/my.website.com/lib.</p>
+<p>From the Bugzilla developers: the correct fix for this is to remove the "lib" folder in your Bugzilla install and use installmodule.pl (as described in the installation section above) to re-install any Perl modules that become missing. The root cause of this error is that the binary perl modules installed in that directory need to be recompiled for the newer version of Perl that came with the server upgrade.</p>

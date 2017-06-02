@@ -1,0 +1,109 @@
+<p>Postfix is a <a class="extiw" href="http://en.wikipedia.org/wiki/Mail_transfer_agent" title="w:Mail transfer agent">Mail transfer agent</a> (MTA) like <a href="http://wiki.dreamhost.com/Sendmail" title="Sendmail">Sendmail</a> which is used to route and deliver email.</p>
+<p>There is no access to alter your Postfix configuration since all DreamHost email is on shared mail servers. However, you can install a custom version of Postfix on your <a href="http://wiki.dreamhost.com/VPS" title="VPS">VPS</a> or <a href="http://wiki.dreamhost.com/Dedicated" title="Dedicated">Dedicated</a> server.</p>
+<div style="background-color: #fee; margin: 1em; padding: 10px; border: 1px solid #aaa; text-align: center;"><strong>WARNING: POSSIBLE OUTDATED INFORMATION!</strong><br/><span style="font-size: 90%;">DreamHost does not directly support any of the features described on this page and is not responsible for keeping this content updated or accurate. Use at your own risk! <br/>There may be additional information on the <a class="new" href="http://wiki.dreamhost.com/index.php?title=Talk:Postfix&amp;action=edit&amp;redlink=1" title="Talk:Postfix (page does not exist)"> talk page</a>.</span></div>
+<div>
+<table style="text-align: center; background-color: #ffefef; border: 1px solid #FF9F9F; padding: 0px; margin: 0 auto 2em auto; width: 80%;">
+<tbody>
+<tr>
+<td><strong>The instructions provided in this article or section are considered advanced.</strong><br/>
+<p>You are expected to be knowledgeable in the UNIX shell.<br/> <span style="font-size: 1.1em; text-decoration: blink;"><em>Support for these instructions is <strong>not available</strong> from DreamHost tech support.</em></span><br/> <span style="font-size: 1.1em;"><strong><em>Server changes performed by DreamHost may break your modifications. You, as the user, are responsible for troubleshooting and resolving issues with your customizations.</em></strong> </span><strong><em><br/></em></strong></p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2><span id="Postfix_configuration">Postfix configuration</span></h2>
+<h3><span id="Relay_to_Dreamhost">Relay to Dreamhost</span></h3>
+<p>For main configuration:</p>
+<p><tt>/etc/postfix/main.cf</tt></p>
+<pre>relayhost = [mail.yourdomain.com]:587
+smtp_sasl_auth_enable = yes
+smtp_sasl_password_maps = hash:/etc/postfix/smtp_pass
+smtp_sasl_security_options =
+</pre>
+<p>You may prefer to instead use the name of the underlying DreamHost server, to prevent <a href="http://wiki.dreamhost.com/Certificate_Domain_Mismatch_Error" title="Certificate Domain Mismatch Error">Certificate Domain Mismatch Errors</a> when using TLS, as described below. To determine your server name, see the “domain mismatch” page:</p>
+<pre>relayhost = [someservername.mail.dreamhost.com]:587
+</pre>
+<p>This:</p>
+<ul>
+<li>uses the A record, not the MX record, for IP lookup (that’s what the brackets [] around the domain name are for) – this agrees with (many?) Windows clients’ incorrect usage.</li>
+<li>uses <a class="mw-redirect" href="http://wiki.dreamhost.com/SMTP_Port_587" title="SMTP Port 587">Port 587</a>, which is the default for <a class="extiw" href="http://en.wikipedia.org/wiki/mail_submission_agent" title="w:mail submission agent">mail submission</a>, as some ISPs <a href="http://wiki.dreamhost.com/Port_25_Blocking" title="Port 25 Blocking">block port 25</a>.</li>
+<li>enables <a class="extiw" href="http://en.wikipedia.org/wiki/Simple_Authentication_and_Security_Layer" title="wikipedia:Simple Authentication and Security Layer">Simple Authentication and Security Layer</a> for logging in.</li>
+<li>the blank <tt>smtp_sasl_security_options =</tt> overrides the default <tt>noplaintext</tt> value, allowing plaintext authentication, notably <tt>PLAIN</tt> and <tt>LOGIN</tt> which DreamHost uses as of 2009 ((many?) Windows clients only use LOGIN).</li>
+</ul>
+<p>You probably also want to ensure you have good values for:</p>
+<pre>myhostname = yourdomain.com
+mydomain = yourdomain.com
+</pre>
+<p>For a personal server, you likely want to receive all error notification (postfix defaults to only reporting serious errors, leaving the rest for logs), which you can turn via:</p>
+<pre># Warn on everything
+notify_classes = bounce, delay, policy, protocol, resource, software
+</pre>
+<h3><span id="Authentication">Authentication</span></h3>
+<p>Create a dreamhost mail account to be used for relays. (relay@yourdomain.com) <a href="https://panel.dreamhost.com/index.cgi?tree=mail.addresses&amp;">https://panel.dreamhost.com/index.cgi?tree=mail.addresses&amp;</a></p>
+<p>For authentication, put the login information in:</p>
+<p><tt>/etc/postfix/smtp_pass</tt></p>
+<pre>[mail.yourdomain.com]:587 relay@yourdomain.com:password
+</pre>
+<p>Note that the key value ( [mail.yourdomain.com]:587 ) must <em>exactly</em> match the <tt>relayhost</tt> in main.cf – including brackets and port number, if present, otherwise no login information will be sent and you’ll likely receive refused mail with SMTP 554 errors. Also note that the brackets surrounding [mail.yourname.com] are important! They ensure that the hostname doesn't get converted to a different address after IP lookup.</p>
+<p>Note that username must be of the form user@domain</p>
+<p>Next do the following:</p>
+<pre>$ sudo postmap /etc/postfix/smtp_pass
+</pre>
+<p>This creates a <tt>/etc/postfix/smtp_pass.db</tt> for the hash</p>
+<p>Finally, restart postfix so it reads in the new configuration.</p>
+<pre> sudo postfix restart
+</pre>
+<p>or</p>
+<pre> sudo /etc/init.d/postfix restart
+</pre>
+<p>And monitor your logs (or notify messages in inbox) to debug,</p>
+<pre> sudo tail -f /var/log/mail.info
+</pre>
+<p>whilst firing off:</p>
+<pre>echo test | mail someone@gmail.com
+</pre>
+<p>If this works, remove <tt>/etc/postfix/smtp_pass</tt> since the password is in clear text.</p>
+<pre> sudo rm /etc/postfix/smtp_pass
+</pre>
+<h3><span id="TLS">TLS</span></h3>
+<p>To enable TLS, use the following in main.cf:</p>
+<pre>smtp_tls_security_level = secure
+smtp_tls_CAfile = /etc/postfix/ndn.ca.crt
+</pre>
+<p>…and download the <a class="new" href="http://wiki.dreamhost.com/index.php?title=NDN_Certificate&amp;action=edit&amp;redlink=1" title="NDN Certificate (page does not exist)">NDN Certificate</a> from:</p>
+<ul>
+<li><a href="https://dreamhost.com/ca/ndn.ca.crt">https://dreamhost.com/ca/ndn.ca.crt</a></li>
+</ul>
+<p>and place it at <tt>/etc/postfix/ndn.ca.crt</tt></p>
+<p>The requires that there are no <a href="http://wiki.dreamhost.com/Certificate_Domain_Mismatch_Error" title="Certificate Domain Mismatch Error">Certificate Domain Mismatch Error</a>, i.e., that the relayhost is of the form <tt>*.mail.dreamhost.com,</tt> (like <tt>spacey.mail.dreamhost.com</tt>) not <tt>mail.yourserver.com.</tt> If you cannot or do not wish to resolve these errors (you prefer to use your server’s DNS name), use instead:</p>
+<pre>smtp_tls_security_level = encrypt
+</pre>
+<p>…which still uses encryption, but turns off certificate checking.</p>
+<p>See <tt><a href="http://www.postfix.org/postconf.5.html#smtp_tls_security_level">postconf(5): smtp_tls_security level</a></tt> for further details.</p>
+<h3><span id="SPF">SPF</span></h3>
+<p>So that <a href="http://wiki.dreamhost.com/SPF" title="SPF">SPF</a> works without your having to set up separate SPF records for your host (not just your domain), you may wish to use:</p>
+<pre>myorigin = yourdomain.com
+</pre>
+<p>This way the <a class="extiw" href="http://en.wikipedia.org/wiki/envelope_sender" title="wikipedia:envelope sender">envelope sender</a> (the MAIL RCPT value in SMTP) will be set to <tt>user@yourdomain.com,</tt> rather than <tt>user@host.yourdomain.com</tt> (it will omit the <tt>host</tt>).</p>
+<p>This is useful if you can’t or don’t want to set up an SPF record for your host, for example if it’s a redirect (CNAME) to a <a class="extiw" href="http://en.wikipedia.org/wiki/dynamic_DNS" title="wikipedia:dynamic DNS">dynamic DNS</a> address, in which case you’d need to set up your SPF address with the dynamic DNS registrar, not DreamHost – and they may not provide this.</p>
+<p>If you make this change, be sure to test (and check logs)!</p>
+<h2><span id="Use">Use</span></h2>
+<h3><span id="Finding_which_version_of_Postfix_you_are_running">Finding which version of Postfix you are running</span></h3>
+<pre>$ postconf mail_version
+mail_version = 2.1.5
+</pre>
+<h3><span id="Monitor_your_logs">Monitor your logs</span></h3>
+<p>You can follow the log via:</p>
+<pre>tail -f /var/log/mail.log
+</pre>
+<p>or, better (because you can page back):</p>
+<pre>less +F /var/log/mail.log
+</pre>
+<h2><span id="Reference">Reference</span></h2>
+<pre>$ man 5 postconf # postconf(5) manual
+</pre>
+<p>on the web at:</p>
+<ul>
+<li><a href="http://www.postfix.org/postconf.5.html">http://www.postfix.org/postconf.5.html</a></li>
+</ul>

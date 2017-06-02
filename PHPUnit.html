@@ -1,0 +1,80 @@
+<div style="background-color: #fee; margin: 1em; padding: 10px; border: 1px solid #aaa; text-align: center;"><strong>WARNING: POSSIBLE OUTDATED INFORMATION!</strong><br/><span style="font-size: 90%;">DreamHost does not directly support any of the features described on this page and is not responsible for keeping this content updated or accurate. Use at your own risk! <br/>There may be additional information on the <a class="new" href="http://wiki.dreamhost.com/index.php?title=Talk:Phpunit&amp;action=edit&amp;redlink=1" title="Talk:Phpunit (page does not exist)"> talk page</a>.</span></div>
+<p><strong>PHPUnit</strong> is an open-source unit testing framework, which is an integral part of best-practices development. It is an important part of the Agile methodology and Extreme Programming.</p>
+<p> </p>
+<div class="toc" id="toc">
+<div id="toctitle">
+<h2>Contents</h2>
+</div>
+</div>
+<div class="toc" id="toc">
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="http://wiki.dreamhost.com/Phpunit#Installation"><span class="tocnumber">1</span> <span class="toctext">Installation</span></a></li>
+<li class="toclevel-1 tocsection-2"><a href="http://wiki.dreamhost.com/Phpunit#Enabling_Code_Coverage_Capability"><span class="tocnumber">2</span> <span class="toctext">Enabling Code Coverage Capability</span></a></li>
+<li class="toclevel-1 tocsection-3"><a href="http://wiki.dreamhost.com/Phpunit#Troubleshooting"><span class="tocnumber">3</span> <span class="toctext">Troubleshooting</span></a></li>
+<li class="toclevel-1 tocsection-4"><a href="http://wiki.dreamhost.com/Phpunit#External_Links"><span class="tocnumber">4</span> <span class="toctext">External Links</span></a></li>
+</ul>
+</div>
+<h2><span id="Installation">Installation</span></h2>
+<p>You can use PEAR on Dreamhost to install PHPUnit. The instructions here are for the latest-and-greatest PHPUnit build which you can download from the PHPUnit website. <a href="http://www.phpunit.de/">http://www.phpunit.de/</a></p>
+<p>First, download the package and untar to your directory.</p>
+<pre>$ tar -zxvf PHPUnit-vX.XXX.tar.gz
+</pre>
+<p>Next, create a local bin directory if you don't have one already.</p>
+<pre>$ mkdir -p $HOME/local/bin
+</pre>
+<p>Copy the phpunit executable into local/bin.</p>
+<pre>$ cp PHPunit-vXXX/bin/phpunit $HOME/local/bin
+</pre>
+<p>Next, add the local bin to your path (if you don't have it already) by adding this line to the end of your .bash_profile:</p>
+<pre>PATH="/home/&lt;username&gt;/local/bin:$PATH"
+</pre>
+<p>Now, test to ensure phpunit is working properly.</p>
+<pre>$ phpunit --help
+</pre>
+<p>You should get a detailed list of help on all the options without any sort of error message.</p>
+<h2><span id="Enabling_Code_Coverage_Capability">Enabling Code Coverage Capability</span></h2>
+<dl>
+<dd></dd>
+<dd></dd>
+</dl>
+<table border="1" cellpadding="15" cellspacing="0" width="70%">
+<tbody>
+<tr>
+<td style="border: 1px solid #CC1100; width: 11%; valign=center; white-space: nowrap;"><a class="image" href="http://wiki.dreamhost.com/File:Important_icon.png"><img alt="Important icon.png" height="40" src="http://wiki.dreamhost.com/images/1/13/Important_icon.png" width="48"/></a> <span style="color: #00000;"><big><strong>Important:</strong></big></span></td>
+<td style="border: 1px solid #CC1100;">It's highly recommended that you upgrade to the latest version of PHP as DreamHost will officially EOL PHP versions 5.3 and 5.4 on all hosting plans on January 26, 2016. Please visit the following pages to view information on how to update to the latest PHP version:
+<ul>
+<li><a href="http://wiki.dreamhost.com/PHP" title="PHP">PHP</a></li>
+<li><a href="http://wiki.dreamhost.com/Updating_PHP:_Overview_and_FAQs" title="Updating PHP: Overview and FAQs">Updating PHP: Overview and FAQs</a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Note, the key aspects to installing this properly is to create a wrapper script to call a custom php.ini which will load xdebug.so and disable the ZendOptimizer because they are incompatible.</p>
+<p>First, create a wrapper script in your $HOME/local/bin/php-wrapper using an editor like vi or emacs. The contents of the script should be:</p>
+<pre>#!/bin/sh
+exec /usr/local/php5/bin/php -c $HOME/phpunit-php.ini
+</pre>
+<p>Now, copy the existing php.ini from the system to your local folder.</p>
+<pre>$ cp /etc/php5/php.ini $HOME/phpunit-php.ini
+</pre>
+<p>Next, copy the xdebug.so binary from this link, and place it in $HOME/local/lib</p>
+<pre>$ cp &lt;xdebug.so&gt; $HOME/local/lib
+</pre>
+<p>Next, change the phpunit-php.ini by commenting out the following line:</p>
+<pre> # zend_extension=/some/path/to/ZendOptimizer
+</pre>
+<p>And add the following line:</p>
+<pre> zend_extension=/home/&lt;username&gt;/local/lib/xdebug.so
+</pre>
+<p>Now, modify the local/bin/phpunit application to use your wrapper script by changing the first line to:</p>
+<pre>#! /home/&lt;yourusername&gt;/local/bin/php-wrapper
+</pre>
+<p>Again, test phpunit to ensure that it is working:</p>
+<pre>$ phpunit --help
+</pre>
+<p>This time, you should see flags for --code-coverage which indicates you have successfully set-up the custom ini file with xdebug.so. Sweet.</p>
+<h2><span id="Troubleshooting">Troubleshooting</span></h2>
+<p>Nothing here, yet.</p>
+<h2><span id="External_Links">External Links</span></h2>
+<p>Official Site: <a href="http://pear.php.net">http://pear.php.net</a></p>

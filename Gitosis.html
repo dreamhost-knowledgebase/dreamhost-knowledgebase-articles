@@ -1,0 +1,183 @@
+<div><strong>WARNING: POSSIBLE OUTDATED INFORMATION!</strong><br/>DreamHost does not directly support any of the features described on this page and is not responsible for keeping this content updated or accurate. Use at your own risk! <br/>There may be additional information on the <a href="http://wiki.dreamhost.com/Talk:Gitosis" title="Talk:Gitosis">talk page</a>.</div>
+<div class="toc" id="toc">
+<div id="toctitle">
+<h2>Contents</h2>
+<span class="toctoggle"> [<a href="http://wiki.dreamhost.com/Gitosis" id="togglelink">hide</a>] </span></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="http://wiki.dreamhost.com/Gitosis#Note"><span class="tocnumber">1</span> <span class="toctext">Note</span></a></li>
+<li class="toclevel-1 tocsection-2"><a href="http://wiki.dreamhost.com/Gitosis#Git_with_Gitosis"><span class="tocnumber">2</span> <span class="toctext">Git with Gitosis</span></a>
+<ul>
+<li class="toclevel-2 tocsection-3"><a href="http://wiki.dreamhost.com/Gitosis#Installing_Git_and_Gitosis_.E2.80.93_An_Overview"><span class="tocnumber">2.1</span> <span class="toctext">Installing Git and Gitosis – An Overview</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-4"><a href="http://wiki.dreamhost.com/Gitosis#Installing_Git_and_Gitosis_.E2.80.93_The_Details"><span class="tocnumber">3</span> <span class="toctext">Installing Git and Gitosis – The Details</span></a>
+<ul>
+<li class="toclevel-2 tocsection-5"><a href="http://wiki.dreamhost.com/Gitosis#Create_a_user_account"><span class="tocnumber">3.1</span> <span class="toctext">Create a user account</span></a></li>
+<li class="toclevel-2 tocsection-6"><a href="http://wiki.dreamhost.com/Gitosis#SSH_keys"><span class="tocnumber">3.2</span> <span class="toctext">SSH keys</span></a></li>
+<li class="toclevel-2 tocsection-7"><a href="http://wiki.dreamhost.com/Gitosis#Setting_Persistent_Environment_Variables"><span class="tocnumber">3.3</span> <span class="toctext">Setting Persistent Environment Variables</span></a></li>
+<li class="toclevel-2 tocsection-8"><a href="http://wiki.dreamhost.com/Gitosis#Configuring_Python"><span class="tocnumber">3.4</span> <span class="toctext">Configuring Python</span></a></li>
+<li class="toclevel-2 tocsection-9"><a href="http://wiki.dreamhost.com/Gitosis#Installing_Gitosis"><span class="tocnumber">3.5</span> <span class="toctext">Installing Gitosis</span></a></li>
+<li class="toclevel-2 tocsection-10"><a href="http://wiki.dreamhost.com/Gitosis#Initializing_Gitosis"><span class="tocnumber">3.6</span> <span class="toctext">Initializing Gitosis</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-11"><a href="http://wiki.dreamhost.com/Gitosis#Using_Gitosis"><span class="tocnumber">4</span> <span class="toctext">Using Gitosis</span></a>
+<ul>
+<li class="toclevel-2 tocsection-12"><a href="http://wiki.dreamhost.com/Gitosis#Adding_a_Repository_and_.28optional.29_User"><span class="tocnumber">4.1</span> <span class="toctext">Adding a Repository and (optional) User</span></a></li>
+<li class="toclevel-2 tocsection-13"><a href="http://wiki.dreamhost.com/Gitosis#Creating_a_New_Repository"><span class="tocnumber">4.2</span> <span class="toctext">Creating a New Repository</span></a></li>
+<li class="toclevel-2 tocsection-14"><a href="http://wiki.dreamhost.com/Gitosis#Cloning_a_Repository"><span class="tocnumber">4.3</span> <span class="toctext">Cloning a Repository</span></a></li>
+<li class="toclevel-2 tocsection-15"><a href="http://wiki.dreamhost.com/Gitosis#Additional_Usage_Information"><span class="tocnumber">4.4</span> <span class="toctext">Additional Usage Information</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-16"><a href="http://wiki.dreamhost.com/Gitosis#Upgrading_.28draft.29"><span class="tocnumber">5</span> <span class="toctext">Upgrading (draft)</span></a>
+<ul>
+<li class="toclevel-2 tocsection-17"><a href="http://wiki.dreamhost.com/Gitosis#Login_to_gitosis_account"><span class="tocnumber">5.1</span> <span class="toctext">Login to gitosis account</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-18"><a href="http://wiki.dreamhost.com/Gitosis#External_References"><span class="tocnumber">6</span> <span class="toctext">External References</span></a></li>
+</ul>
+</div>
+<h2><span id="Note">Note</span></h2>
+<p>Note that Gitosis is deprecated in the git community (see <a href="http://serverfault.com/questions/225495/ubuntu-server-gitosis-user-naming-convention">the discussion here</a>) and <a href="http://wiki.dreamhost.com/Gitolite" title="Gitolite">gitolite</a> is now recommended.</p>
+<h2><span id="Git_with_Gitosis">Git with Gitosis</span></h2>
+<p><a href="http://wiki.dreamhost.com/Git" title="Git">Git</a> by itself, out of the box, provides no method of access control. If you know a URL for a git repository, you can clone it. Without some mechanism of access control, you can commit to it as well. Gitosis is a wrapper that provides fine grained access control to your publicly visible git repositories.</p>
+<p>You can configure gitosis such that each user has different authentication and authorization levels for each repository in the set of repositories contained in the directories of a user account.</p>
+<p>This article describes how to install git and gitosis on a Dreamhost shared hosting account such that you have control over who can clone and commit to your git repositories.</p>
+<p>This article was built by plagarizing, with permission, an article by <a href="http://blog.marcoborromeo.com/post/211830434/how-to-install-gitosis-on-a-dreamhost-shared-account">Marco Borromeo</a>. Thanks to Marco for his good work!</p>
+<p>There are other methods of using git with your Dreamhost account. <a href="http://wiki.dreamhost.com/Git" title="Git">This article</a> describes some of those methods. – That article links here. For additional features not found in Gitosis, see <a href="http://wiki.dreamhost.com/Gitolite" title="Gitolite">Gitolite</a>.</p>
+<p>NOTE: This article has been updated and simplified to reflect the most recent DH server configuration. If your DH server has python version &lt; 2.4 or git version &lt; 1.6, you may need to look for a version of this document from before 2011-04-22 for instructions on building your own copies of those programs.</p>
+<h3><span id="Installing_Git_and_Gitosis_.E2.80.93_An_Overview">Installing Git and Gitosis – An Overview</span></h3>
+<p>Installing Git and Gitosis requires a number of steps. Though none of the steps is difficult, the number of steps can be intimidating. Don't let it get to you. If you make a mistake, wipe it clean and start over.</p>
+<p>Gitosis has some pre-requisites for it to do its job. You will need:</p>
+<ul>
+<li>A user account on Dreamhost. This account will be used for the git repositories and nothing else.</li>
+</ul>
+<dl>
+<dd>Note that after successfully installing gitosis, you will NOT be able to login to this account. You can login to a different user account and su to this account if you need shell access.</dd>
+</dl>
+<ul>
+<li>SSH installed on your desktop computer. SSH is used both as a secure tunnel from your desktop computer to your Dreamhost user account and for authenticating your identity to gitosis. Each user of a gitosis managed repository will also require SSH on his desktop computer.</li>
+<li>A current version of Gitosis. You will retrieve the gitosis package using git.</li>
+</ul>
+<h2><span id="Installing_Git_and_Gitosis_.E2.80.93_The_Details">Installing Git and Gitosis – The Details</span></h2>
+<p>The procedures here presume your desktop computer is a PC running Linux.</p>
+<p>For purposes of this tutorial the user name "repoman" will be used as the name of the user account that will hold your git repositories. The domain name "example.com" is used for your domain name. The directory "testrepo" will be used as exactly that: a test repository.</p>
+<h3><span id="Create_a_user_account">Create a user account</span></h3>
+<p>Using your Dreamhost account control panel, create a user account with shell access.</p>
+<h3><span id="SSH_keys">SSH keys</span></h3>
+<p>If you are not already using SSH generated public and private keys, you will need to have SSH on your desktop computer. After installing SSH, you will need to generate the public/private key pair. See: <a href="http://wiki.dreamhost.com/SSH" title="SSH">SSH</a> for the How-To.</p>
+<p><strong>NOTE</strong>: do NOT add your RSA public key to the gitosis user's .ssh/authorized_keys. If you do this, you can still access this new account after installation, but gitosis will not able to let you push new repository, and you need to type full path when cloning gitosis-admin.conf later. Instead, use password to login this new account.</p>
+<p>After creating your SSH key pair, use scp to copy your id_rsa.pub public key from your desktop computer to your DH user account as: $HOME/id_rsa.pub. This makes your public key available to the gitosis initialization. The gitosis initialization step is described later.</p>
+<pre>scp ~/.ssh/id_rsa.pub repoman@example.com:~/
+</pre>
+<h3><span id="Setting_Persistent_Environment_Variables">Setting Persistent Environment Variables</span></h3>
+<p>You will set some environment variables on your DH user account that will cause the correct instances of python to be invoked. SSH into your "repoman" account and do the following.</p>
+<pre>cd
+echo "export PATH=$HOME/bin:$PATH" &gt;&gt; .bashrc
+echo "export PATH=$HOME/bin:$PATH" &gt;&gt; .bash_profile
+source .bash_profile
+</pre>
+<h3><span id="Configuring_Python">Configuring Python</span></h3>
+<p>You need to set up a virtual python installation in your user directory in order to do local installations of python apps like Gitosis. The following is extracted from the method found here: <a href="http://peak.telecommunity.com/DevCenter/EasyInstall#creating-a-virtual-python">http://peak.telecommunity.com/DevCenter/EasyInstall#creating-a-virtual-python</a>.</p>
+<pre>mkdir ~/src
+cd ~/src
+wget <a href="http://peak.telecommunity.com/dist/virtual-python.py">http://peak.telecommunity.com/dist/virtual-python.py</a>
+python virtual-python.py
+cd
+</pre>
+<h3><span id="Installing_Gitosis">Installing Gitosis</span></h3>
+<p>You will clone the gitosis repository and install from that repository.</p>
+<pre>cd ~/src
+git clone <a href="git://eagain.net/gitosis.git">git://eagain.net/gitosis.git</a>
+# Or try "git clone <a href="https://github.com/tv42/gitosis.git">https://github.com/tv42/gitosis.git</a>"
+cd gitosis/
+python setup.py install --prefix=$HOME
+cd
+</pre>
+<h3><span id="Initializing_Gitosis">Initializing Gitosis</span></h3>
+<p>Remember copying your public key to your user directory in an earlier step? You will use it in the following step to initialize gitosis. Afterwards it can be deleted since gitosis keeps its own copy of it.</p>
+<pre>cd
+gitosis-init &lt; id_rsa.pub
+rm id_rsa.pub
+</pre>
+<p>You <strong>may</strong> have to change permissions on the post-update hook in the gitosis-admin repository. For me, gitosis didn't work without this step.</p>
+<pre>chmod 750 $HOME/repositories/gitosis-admin.git/hooks/post-update
+</pre>
+<p>Don't ask. It's magic. See this article [<a class="external autonumber" href="http://scie.nti.st/2007/11/14/hosting-git-repositories-the-easy-and-secure-way">[1]</a>]. The article discusses setting execute permissions on the post-update hook.</p>
+<p>NOTE: Gitosis, by default, closes you out from SSH access; to re-gain access to your user account used to host Gitosis, reconnect to Dreamhost server with another user account, and become the Gitosis user using “su” command.</p>
+<h2><span id="Using_Gitosis">Using Gitosis</span></h2>
+<p>Administering gitosis uses gitosis itself. Your public key gives you access to a repository called gitosos-admin.git. The gitosis-admin.git repository was created when you initialized gitosis in the previous step. To get access to this repository and its files, you will clone that repository from your Dreamhost user account to your desktop computer.</p>
+<pre># on your desktop computer
+cd projects  # or where ever you keep work in progress
+git clone repoman@example.com:gitosis-admin.git
+cd gitosis-admin
+</pre>
+<p>NOTE: The above didn't work for me, I had to change the 'git clone ...' line to:</p>
+<pre>git clone repoman@example.com:~/repositories/gitosis-admin.git
+</pre>
+<p>NOTE: When using TortoiseGit on Windows if you try to use <em>repoman@example.com:~/repositories/gitosis-admin.git</em> style URL you will get the error<strong>arguments to command look dangerous</strong>. Instead use <em>repoman@example.com:gitosis-admin.git</em> style of URL.</p>
+<p>You now have the gitosis configuration file(s) on your desktop computer. Using these files you will add users and repositories to your remote host repositories.</p>
+<h3><span id="Adding_a_Repository_and_.28optional.29_User">Adding a Repository and (optional) User</span></h3>
+<p>To add a repository to your remote host, edit the gitosis.conf file in the gitosis-admin repository. After adding the repository to the gitosis controls, you will create the repository and push it to the remote host.</p>
+<p>On your desktop computer, edit the gitosis.conf file. add a group and a repository</p>
+<pre>[group testrepogroup]
+members = repoman@usershost
+writable = testrepo
+</pre>
+<p>Where:</p>
+<ul>
+<li>testrepogroup is the name of a group (not the repository)</li>
+<li>members is the list of users permitted access to the testrepo repository (SSH public key identification)</li>
+<li>writable = testrepo identifies the repository.</li>
+</ul>
+<p>When you are adding new users, you will have to copy their public key into the directory 'keydir'. Follow the admonitions about spurious newline characters in SSH public keys.</p>
+<p>Push the gitosis-admin repository back to the remote host.</p>
+<pre># on your desktop computer
+git commit -a -m"Add repository: testrepo, writable by repoman"
+git push
+</pre>
+<p>The gitosis-admin repository is now back on your DH user account.</p>
+<h3><span id="Creating_a_New_Repository">Creating a New Repository</span></h3>
+<p>On your desktop computer do this:</p>
+<pre>cd projects   # or where ever you keep stuff
+mkdir testrepo
+cd testrepo
+git init
+git remote add origin repoman@example.com:testrepo.git
+# do some work, git add and commit files
+git push origin master:refs/heads/master
+</pre>
+<p>Subsequent push to the remote repository does NOT require anything more than just "push". (This was not true for me on the original repo. It required editing .git/config. However, newly cloned versions of the repo did work with just "push".)</p>
+<p>Your repository is now on your account at Dreamhost</p>
+<h3><span id="Cloning_a_Repository">Cloning a Repository</span></h3>
+<p>To clone your repository, do this:</p>
+<pre>git clone repoman@example.com:testrepo
+# do some work. edit, add, delete, commit.
+git push 
+</pre>
+<p>That should do the trick!</p>
+<h3><span id="Additional_Usage_Information">Additional Usage Information</span></h3>
+<p>The gitosis you cloned from eagain.net has additional information. See these files in the gitosis directory.</p>
+<pre>example.conf
+README.rst
+gitweb.conf
+</pre>
+<p><strong>Note!</strong> There may be security holes in this setup. Use it at your own risk.</p>
+<p>No consideration has been given to issues of upgrading the configuration over time.</p>
+<h2><span id="Upgrading_.28draft.29">Upgrading (draft)</span></h2>
+<h3><span id="Login_to_gitosis_account">Login to gitosis account</span></h3>
+<p>Gitosis initialization blocks direct ssh connection with password, but you can login (with ssh) to you regular dreamhost account (the one you use to host your websites) and do a:</p>
+<pre> su your_gitosis_account
+</pre>
+<p>(put your gitosis account where you read <strong>your_gitosis_account</strong>)</p>
+<p>After it asks for your gitosis account password, you will have shell access to that account so you can proceed to upgrade gitosis/fix permissions, etc.</p>
+<h2><span id="External_References">External References</span></h2>
+<p><a href="http://blog.marcoborromeo.com/how-to-install-gitosis-on-a-dreamhost-shared-account/17">Marco Borromeo's tutorial</a> on installing Gitosis on Dreamhost. Thank you Marco for this excellent tutorial. Marco's tutorial, with Marco's permission, is the source for much of this article.</p>
+<p><a href="http://git-scm.com/">git-scm.com</a> is the "home" for git.</p>
+<p><a href="http://python.org/">python.org</a> is the "home for python.</p>
+<p><a href="http://pypi.python.org/pypi/setuptools">pypi.python.org/pypi/setuptools</a> is the "home" for python setuptools.</p>
+<p><a href="http://eagain.net/">eagain.net</a> is the home site for gitosis. He doesn't say much. You can clone the repository by saying</p>
+<pre>git clone <a href="git://eagain.net/gitosis.git">git://eagain.net/gitosis.git</a>
+</pre>
+<p><a href="http://scie.nti.st/2007/11/14/hosting-git-repositories-the-easy-and-secure-way">Hosting git repositories the easy and secure way</a>. This article presumes you are installing gitosis on a server where you have root access. Some steps in this article will not work on your Dreamhost account. The article is nonetheless informative.</p>
+<p><a href="http://github.com/">Github</a> provides secure git hosting. Don't want to host your own git repositories? Maybe this is a good solution. Open source projects are hosted free. Private git hosting is available for a fee.</p>
+<p>Oct 14, 2010. I tried the above and it didn't work for me, I've got <a class="mw-redirect" href="http://wiki.dreamhost.com/Oct14_gitosis" title="Oct14 gitosis">another page</a> where I'm hoping people can assist in getting up to date instructions.</p>
