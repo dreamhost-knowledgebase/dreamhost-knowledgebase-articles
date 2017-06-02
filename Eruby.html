@@ -1,0 +1,66 @@
+<div><strong>WARNING: POSSIBLE OUTDATED INFORMATION!</strong><br />DreamHost does not directly support any of the features described on this page and is not responsible for keeping this content updated or accurate. Use at your own risk! <br />There may be additional information on the <a class="new" title="Talk:Eruby (page does not exist)" href="http://wiki.dreamhost.com/index.php?title=Talk:Eruby&amp;action=edit&amp;redlink=1">talk page</a>.</div>
+<p>Eruby is a way to embed <a class="mw-redirect" title="Ruby" href="http://wiki.dreamhost.com/Ruby">ruby</a> in HTML.</p>
+<div id="toc" class="toc">
+<div id="toctitle">
+<h2>Contents</h2>
+<span class="toctoggle"> [<a id="togglelink" href="http://wiki.dreamhost.com/Eruby">hide</a>] </span></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="http://wiki.dreamhost.com/Eruby#Setup"><span class="tocnumber">1</span> <span class="toctext">Setup</span></a></li>
+<li class="toclevel-1 tocsection-2"><a href="http://wiki.dreamhost.com/Eruby#Testing"><span class="tocnumber">2</span> <span class="toctext">Testing</span></a></li>
+<li class="toclevel-1 tocsection-3"><a href="http://wiki.dreamhost.com/Eruby#Encoding_issues"><span class="tocnumber">3</span> <span class="toctext">Encoding issues</span></a></li>
+<li class="toclevel-1 tocsection-4"><a href="http://wiki.dreamhost.com/Eruby#See_Also"><span class="tocnumber">4</span> <span class="toctext">See Also</span></a></li>
+<li class="toclevel-1 tocsection-5"><a href="http://wiki.dreamhost.com/Eruby#External_Links"><span class="tocnumber">5</span> <span class="toctext">External Links</span></a></li>
+</ul>
+</div>
+<h2><span id="Setup" class="mw-headline">Setup</span></h2>
+<p>First, obtain a copy of eruby. This is most easily done by using <a title="SSH" href="http://wiki.dreamhost.com/SSH">SSH</a> and simply copying /usr/bin/eruby. Name the file eruby.cgi and stick it in the root of the site you'd like to enable ruby on.</p>
+<pre> cp /usr/bin/eruby ~/mysite.com/eruby.cgi
+</pre>
+<p>Next, create or edit an <a class="mw-redirect" title=".htaccess" href="http://wiki.dreamhost.com/.htaccess">.htaccess</a> file. There are two important things to do: make sure .rhtml files get parsed by eruby and make sure apache knows to look for an index.rhtml.</p>
+<pre> DirectoryIndex index.rhtml index.html index.htm
+ AddHandler rubypage .rhtml
+ Action rubypage /eruby.cgi
+</pre>
+<h2><span id="Testing" class="mw-headline">Testing</span></h2>
+<p>You can use the following simple test to make sure everything is working.</p>
+<pre>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"&gt;
+&lt;html&gt;
+ &lt;head&gt;
+  &lt;title&gt;Eruby!&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+  &lt;h1&gt;A Test of Eruby&lt;/h1&gt;
+  &lt;em&gt;The current time should be printed below.&lt;/em&gt;
+  &lt;p&gt;&lt;% print Time.now %&gt;&lt;/p&gt;
+ &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+<h2><span id="Encoding_issues" class="mw-headline">Encoding issues</span></h2>
+<p>Note that the compiled in default charset of the eruby program is the iso-8859-1 charset. The charset header produced by eruby is independent of the content of the page served. All pages served by the eruby filter must be of the same charset, preferably UTF-8, or mismatched charset headers will be produced. The compiled in program default will very likely be changed to UTF-8 in a future version of the program but at the time of this writing is still iso-8859-1.</p>
+<p>There are two solutions.</p>
+<ul>
+<li>Compile eruby with the configure.rb --with-charset=UTF-8 option to change the default charset.</li>
+<li>Override the default charset with the eruby -C UTF-8 command line option.</li>
+</ul>
+<p>It is probably easiest is to override the default character set with the command line option. It avoids needing to use a customized eruby program. It is self-documenting as to the behavior. Instead of copying the eruby program binary as described above to eruby.cgi create a shell script wrapper eruby.cgi that calls the eruby binary with the -C UTF-8 option.</p>
+<pre> #!/bin/sh
+ cd $(dirname ${PATH_TRANSLATED:-/})
+ exec /usr/bin/eruby -C UTF-8 "$@"
+</pre>
+<ul>
+<li>Path seems to be /usr/bin/eruby, but was previously noted as /usr/local/bin/eruby. It is possible this is different by server. Perhaps admin could add a symlink in order to avoid confusion.</li>
+</ul>
+<p>This has two advantages. One is that the eruby binary is in the expected system location and can be updated there normally when other system upgrades occur. This example illustrated a location in /usr/local/bin/eruby which is typical for locally compiled and installed programs but your site may use /usr/bin/eruby. Use the appropriate path there. A second advantage is that the working directory in this script is changed to the page directory making this compatible with mod_ruby behavior.</p>
+<h2><span id="See_Also" class="mw-headline">See Also</span></h2>
+<ul>
+<li><a title="ERB" href="http://wiki.dreamhost.com/ERB">ERB</a></li>
+<li><a class="mw-redirect" title=".htaccess" href="http://wiki.dreamhost.com/.htaccess">.htaccess</a></li>
+<li><a class="mw-redirect" title="Ruby" href="http://wiki.dreamhost.com/Ruby">Ruby</a></li>
+<li><a title="Ruby on Rails" href="http://wiki.dreamhost.com/Ruby_on_Rails">Ruby on Rails</a></li>
+<li><a title="SSH" href="http://wiki.dreamhost.com/SSH">SSH</a></li>
+</ul>
+<h2><span id="External_Links" class="mw-headline">External Links</span></h2>
+<ul>
+<li><a class="external text" href="http://www.modruby.net/" rel="nofollow">www.modruby.net</a></li>
+<li><a class="external text" href="http://www.kuwata-lab.com/erubis/" rel="nofollow">Erubis</a> (a much faster alternative to ERB and eruby)</li>
+</ul>

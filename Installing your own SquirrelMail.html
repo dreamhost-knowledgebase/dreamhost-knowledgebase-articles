@@ -1,0 +1,204 @@
+<p><a title="Webmail" href="http://wiki.dreamhost.com/Webmail#SquirrelMail_and_RoundCube">SquirrelMail</a> is the default mail interface that comes with your domain and hosting service with DreamHost. The application provided by DreamHost is limited regarding the available customizations, however you are able to install your own version of SquirrelMail which allows you to customize the program as you like.</p>
+<dl>
+<dd></dd>
+<dd></dd>
+</dl>
+<table border="0" width="70%" cellspacing="0" cellpadding="10">
+<tbody>
+<tr>
+<td><a class="image" href="http://wiki.dreamhost.com/File:Dh-kb-note-icon.fw.png"><img src="http://wiki.dreamhost.com/images/a/a9/Dh-kb-note-icon.fw.png" alt="Dh-kb-note-icon.fw.png" width="51" height="51" /></a> <big><strong>Note:</strong></big></td>
+<td>If you have anti-spam filters enabled, you won’t be able to access the default ‘Junk_Mail’ folder through the custom install of SquirrelMail like you can with the default install by DreamHost. You can change the <a title="Anti-spam" href="http://wiki.dreamhost.com/Anti-spam#Changing_the_quarantine_location">‘quarantine to IMAP’ location</a> or access it via the mailboxes subdomain instead.</td>
+</tr>
+</tbody>
+</table>
+<p> </p>
+<h2><span id="Important_security_note" class="mw-headline">Important security note</span></h2>
+<p>If you’re creating a custom installation on a shared server, you must use insecure ports. This is because the secure SMTP ports are not open by default and you have no access to open them. Visit the following article for further information:</p>
+<ul>
+<li><a class="external text" href="http://squirrelmail.org/docs/admin/admin-8.html" rel="nofollow">SquirrelMail Security</a></li>
+</ul>
+<p>If you require your custom installation to be secure, you must purchase an <a title="Secure Hosting" href="http://wiki.dreamhost.com/Secure_Hosting">SSL Certificate</a> and open the necessary ports on your <a title="VPS" href="http://wiki.dreamhost.com/VPS">VPS</a> or Dedicated server. DreamHost support is also unable to assist with this.</p>
+<h2><span id="Installing_SquirrelMail" class="mw-headline">Installing SquirrelMail</span></h2>
+<p>This guide explains how to install SquirrelMail into a subdirectory. If you wish to install into a subdomain instead, such as mywebmail.example.com, you must first create the subdomain. View <a title="Adding Domains &amp; Subdomains" href="http://wiki.dreamhost.com/Adding_Domains_%26_Subdomains">Adding Domains &amp; Subdomains</a> for full instructions.</p>
+<ol>
+<li>Download the SquirrelMail application as a .zip file directly from <a class="external text" href="http://squirrelmail.org/download.php" rel="nofollow">SquirrelMail</a>.
+<dl>
+<dd></dd>
+<dd></dd>
+</dl>
+<table border="0" width="70%" cellspacing="0" cellpadding="10">
+<tbody>
+<tr>
+<td><a class="image" href="http://wiki.dreamhost.com/File:Dh-kb-note-icon.fw.png"><img src="http://wiki.dreamhost.com/images/a/a9/Dh-kb-note-icon.fw.png" alt="Dh-kb-note-icon.fw.png" width="51" height="51" /></a> <big><strong>Note:</strong></big></td>
+<td>This guide is based on SquirrelMail version 1.4.22.</td>
+</tr>
+</tbody>
+</table>
+<p> </p>
+</li>
+<li>Log into your server via <a title="FTP" href="http://wiki.dreamhost.com/FTP">FTP</a> and upload the tar.gz file that you just downloaded into your site’s web directory.
+<dl>
+<dd></dd>
+<dd></dd>
+</dl>
+<table border="0" width="70%" cellspacing="0" cellpadding="10">
+<tbody>
+<tr>
+<td><a class="image" href="http://wiki.dreamhost.com/File:Dh-kb-note-icon.fw.png"><img src="http://wiki.dreamhost.com/images/a/a9/Dh-kb-note-icon.fw.png" alt="Dh-kb-note-icon.fw.png" width="51" height="51" /></a> <big><strong>Notes:</strong></big></td>
+<td>
+<ul>
+<li>This guide uses a subdirectory instead of a subdomain. If you're using a subdirectory, avoid folder names that are already taken such as ‘/tmp’.</li>
+<li>If using a subdomain, avoid using subdomain names like ‘mail.’ or ‘webmail.’ since that is already applied to your domain.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p> </p>
+</li>
+<li>After uploading the installation file, decompress it. For example, you can run the following command via <a title="SSH" href="http://wiki.dreamhost.com/SSH">SSH</a>:
+<pre>tar xvfz squirrelmail-webmail-1.4.22.tar.gz</pre>
+<dl>
+<dd><em>This creates a new folder named /squirrelmail-webmail-1.4.22 in your domain’s directory.</em></dd>
+</dl>
+</li>
+<li>Rename this folder:
+<pre>mv squirrelmail-webmail-1.4.22 SqurrelMail</pre>
+<dl>
+<dd><em>If set up properly, when you visit example.com/SquirrelMail it shows the following error before the webmail interface setup is complete:</em></dd>
+</dl>
+<pre>ERROR: Config file "config/config.php" not found. You need to configure SquirrelMail before you can use it.</pre>
+</li>
+<li>Log into your server via <a title="SSH" href="http://wiki.dreamhost.com/SSH">SSH</a>.</li>
+<li>Navigate to your /example.com/SquirrelMail directory.</li>
+<li>Run the following command:
+<pre>./config/conf.pl</pre>
+<dl>
+<dd><em>The following menu options appear:</em></dd>
+</dl>
+<dl>
+<dd><a class="image" href="http://wiki.dreamhost.com/File:01_SquirrelMail.fw.png"><img src="http://wiki.dreamhost.com/images/4/46/01_SquirrelMail.fw.png" alt="01 SquirrelMail.fw.png" width="610" height="445" /></a></dd>
+</dl>
+</li>
+</ol>
+<h3><span id="Server_Settings_menu" class="mw-headline">Server Settings menu</span></h3>
+<ol start="8">
+<li>Type in the number 2 (<strong>Server Settings</strong>) and then click ‘Enter’.
+<dl>
+<dd><em>The following menu options appear:</em></dd>
+<dd><a class="image" href="http://wiki.dreamhost.com/File:03_SquirrelMail.fw.png"><img src="http://wiki.dreamhost.com/images/0/0c/03_SquirrelMail.fw.png" alt="03 SquirrelMail.fw.png" width="501" height="365" /></a></dd>
+</dl>
+<ul>
+<li><strong>Domain</strong>: Enter the domain name that the install is configured to use. If you are using a subdomain, enter the subdomain name for this section.</li>
+<li><strong>Invert Time</strong>: You can keep this set to ‘false’ by default.</li>
+<li><strong>Sendmail or SMTP</strong>: This should be set to SMTP by default and kept that way.</li>
+</ul>
+</li>
+<li>Type in the letter A (<strong>Update IMAP Settings</strong>) and then click 'Enter':
+<dl>
+<dd><em>The following IMAP options appear:</em></dd>
+<dd><a class="image" href="http://wiki.dreamhost.com/File:04_SquirrelMail.fw.png"><img src="http://wiki.dreamhost.com/images/1/1e/04_SquirrelMail.fw.png" alt="04 SquirrelMail.fw.png" width="388" height="185" /></a></dd>
+</dl>
+<ul>
+<li><strong>IMAP Server</strong>: This is the host server the program is connecting to via IMAP for incoming mail. This example uses mail.example.com.</li>
+<li><strong>IMAP Port</strong>: This defaults to 143 for standard IMAP. You must keep this as-is for a shared installation. View the <a href="http://wiki.dreamhost.com/Installing_your_own_SquirrelMail#Important_security_note">important security note</a> section above.</li>
+<li><strong>Authentication type</strong>: This authenticates your user upon login. Keep this as is.</li>
+<li><strong>Secure IMAP (TLS)</strong>: Keep this set to false as secure ports are not set up on the web server by default. View the <a class="external text" href="http://squirrelmail.org/docs/admin/admin-8.html" rel="nofollow">SquirrelMail Security article</a>for further details.</li>
+<li><strong>Secure software</strong>: This is set to ‘other’ and can be left as is.</li>
+<li><strong>Delimiter</strong>: This is set to ‘detect’ by default and can be left as is.</li>
+</ul>
+</li>
+<li>Type in the letter B (<strong>Update SMTP Settings</strong>) and then click 'Enter':
+<dl>
+<dd><em>The following SMTP options appear:</em></dd>
+<dd><a class="image" href="http://wiki.dreamhost.com/File:05_SquirrelMail.fw.png"><img src="http://wiki.dreamhost.com/images/9/9d/05_SquirrelMail.fw.png" alt="05 SquirrelMail.fw.png" width="385" height="187" /></a></dd>
+</dl>
+<ul>
+<li><strong>SMTP Server</strong>: The mail server for incoming should be the same as outgoing. You can use the same mail host server as IMAP:</li>
+</ul>
+<dl>
+<dd>
+<pre>mail.example.com</pre>
+</dd>
+</dl>
+<ul>
+<li><strong>SMTP Port</strong>: By default, Port 25 appears. This port is often blocked by major ISPs, so it is suggested to use the alternate Port 587 instead.</li>
+<li><strong>POP before SMTP</strong>: This is set to ‘false’ and can be left as is.</li>
+<li><strong>SMTP Authentication</strong>: Opt to check for an option and select ‘login’ once the selection comes up.</li>
+<li><strong>Secure SMTP (TLS)</strong>: You must manually configure your VPS or Dedicated server to support secure ports. If you’re on a shared server, keep this as ‘false’.</li>
+<li><strong>Header encryption key</strong>: You can keep this blank.</li>
+</ul>
+<dl>
+<dd></dd>
+<dd></dd>
+</dl>
+<table border="0" width="70%" cellspacing="0" cellpadding="10">
+<tbody>
+<tr>
+<td><a class="image" href="http://wiki.dreamhost.com/File:Dh-kb-note-icon.fw.png"><img src="http://wiki.dreamhost.com/images/a/a9/Dh-kb-note-icon.fw.png" alt="Dh-kb-note-icon.fw.png" width="51" height="51" /></a> <big><strong>Note:</strong></big></td>
+<td>This setup does not support SSL, so you cannot use Port 993 for IMAP or Port 465 for SMTP. This results in a ‘Connection dropped by IMAP connection’ error, so make sure you have port settings correctly configured as noted above.</td>
+</tr>
+</tbody>
+</table>
+<p> </p>
+</li>
+<li>Proceed to the <a href="http://wiki.dreamhost.com/Installing_your_own_SquirrelMail#General_Options_menu">General Options menu section</a> to finish the setup.</li>
+</ol>
+<h3><span id="General_Options_menu" class="mw-headline">General Options menu</span></h3>
+<p>The General Options menu is the only remaining menu you must complete in order to finish the setup of SquirrelMail so it can be used on your domain.</p>
+<ol start="12">
+<li>Return to the main menu, type in the number 4 (<strong>General Options</strong>), and then click ‘Enter’.
+<dl>
+<dd><em>The following menu options appear:</em></dd>
+</dl>
+<dl>
+<dd><a class="image" href="http://wiki.dreamhost.com/File:06_SquirrelMail.fw.png"><img src="http://wiki.dreamhost.com/images/b/b3/06_SquirrelMail.fw.png" alt="06 SquirrelMail.fw.png" width="667" height="587" /></a></dd>
+</dl>
+<dl>
+<dd></dd>
+<dd></dd>
+</dl>
+<table border="0" width="70%" cellspacing="0" cellpadding="10">
+<tbody>
+<tr>
+<td><a class="image" href="http://wiki.dreamhost.com/File:Dh-kb-note-icon.fw.png"><img src="http://wiki.dreamhost.com/images/a/a9/Dh-kb-note-icon.fw.png" alt="Dh-kb-note-icon.fw.png" width="51" height="51" /></a> <big><strong>Note:</strong></big></td>
+<td>Only the necessary settings are discussed in the following to get the install to work.</td>
+</tr>
+</tbody>
+</table>
+<p> </p>
+<ul>
+<li><strong>Data Directory</strong>: This is the directory path where the files are stored:</li>
+</ul>
+<dl>
+<dd>
+<pre>/home/exampleuser/example.com/SquirrelMail/data/</pre>
+</dd>
+</dl>
+<dl>
+<dd>Make sure that the ‘/data/ folder is created there as the path shows.</dd>
+</dl>
+<ul>
+<li><strong>Attachment Directory</strong>: This is where the attachments are stored for the mail:</li>
+</ul>
+<dl>
+<dd>
+<pre>/home/exampleuser/example.com/SquirrelMail/attach/</pre>
+</dd>
+</dl>
+<dl>
+<dd>Make sure the ‘attach’ folder exists within the install.</dd>
+</dl>
+</li>
+<li>Once you finish entering these settings, save the changes you made to the config file.</li>
+<li>Refresh the Webmail page with the error on it and it should now load the login page for SquirrelMail.
+<ul>
+<li>You’ll need to enter the full email address (username and domain) with which you use to log in.</li>
+</ul>
+</li>
+</ol>
+<h2><span id="See_also" class="mw-headline">See also</span></h2>
+<ul>
+<li><a class="external text" href="http://squirrelmail.org/docs/admin/admin-8.html" rel="nofollow">SquirrelMail security</a></li>
+<li><a class="external text" href="http://squirrelmail.org/download.php" rel="nofollow">SquirrelMail download page</a></li>
+</ul>

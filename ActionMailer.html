@@ -1,0 +1,41 @@
+<div><strong>WARNING: POSSIBLE OUTDATED INFORMATION!</strong><br />DreamHost does not directly support any of the features described on this page and is not responsible for keeping this content updated or accurate. Use at your own risk! <br />There may be additional information on the <a title="Talk:ActionMailer" href="http://wiki.dreamhost.com/Talk:ActionMailer">talk page</a>.</div>
+<p>Action Mailer is used by Ruby On Rails to easily send or receive emails from with in your Rails application.</p>
+<p>More on how to use Action Mailer can be read <a class="external text" href="http://wiki.rubyonrails.org/rails/pages/ActionMailer" rel="nofollow">Here</a></p>
+<p>To configure Action mailer to work with a dream host account add this configuration to your environment.rb file:</p>
+<pre>Rails::Initializer.run do |config|
+  # Your application configuration
+  ...
+  # configure action_mailer
+config.action_mailer.delivery_method = :smtp
+config.action_mailer.smtp_settings = {
+  :address =&gt; 'mail.your.domain',
+  :port =&gt; 587,
+  :domain =&gt; 'your.domain',
+  :authentication =&gt; :login,
+  :user_name =&gt; 'username@your.domain',
+  :password =&gt; 'password'
+}
+config.action_mailer.raise_delivery_errors = true
+config.action_mailer.perform_deliveries = true
+config.action_mailer.default_charset = 'utf-8'
+end
+</pre>
+<p>Action mailer 2.2.2 has a bug that prevents sending mail via ssl connection from dream host servers. If your production.log file contains error message "hostname was not match with the server certificate" then try changing :address key in smtp_settings.</p>
+<p>Previous directions included checking the mail cluster on the (<a class="external text" href="https://panel.dreamhost.com/?tree=support.dc&amp;" rel="nofollow">Panel &gt; ‘Support’ &gt; ‘Data Centers’</a>) page. These were incorrect. The address in the smtp_settings should be: mail.your.domain. Also, if you're getting the SSL certificate error, you might benefit from turning off auto TLS for e-mail by setting enable_starttls_auto in smtp_settings to false</p>
+<p>If you have changed your email over to Google Apps then the following settings are needed in environment.rb:</p>
+<pre># configure action_mailer
+config.action_mailer.delivery_method = :smtp
+config.action_mailer.smtp_settings = {
+  :enable_starttls_auto =&gt; true,
+  :address =&gt; 'smtp.gmail.com',
+  :port =&gt; 587,
+  :domain =&gt; 'your.domain',
+  :authentication =&gt; :plain,
+  :user_name =&gt; 'user@your.domain',
+  :password =&gt; 'password'
+}
+config.action_mailer.raise_delivery_errors = true
+config.action_mailer.perform_deliveries = true
+config.action_mailer.default_charset = 'utf-8'
+</pre>
+<p>Note that the mail prefix is not needed before your domain.</p>
