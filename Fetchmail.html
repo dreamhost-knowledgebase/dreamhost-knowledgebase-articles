@@ -1,0 +1,154 @@
+<div><strong>WARNING: POSSIBLE OUTDATED INFORMATION!</strong><br/>DreamHost does not directly support any of the features described on this page and is not responsible for keeping this content updated or accurate. Use at your own risk! <br/>There may be additional information on the <a href="http://wiki.dreamhost.com/Talk:Fetchmail" title="Talk:Fetchmail">talk page</a>.</div>
+<p><strong><a href="http://www.fetchmail.info/">Fetchmail</a></strong> is an open source mail fetcher. It allows you to <em>fetch</em> messages from a POP or IMAP account and deliver it locally or via SMTP.</p>
+<p> </p>
+<div>
+<table>
+<tbody>
+<tr>
+<td><strong>This article or section may require a <a href="http://wiki.dreamhost.com/Category:Cleanup" title="Category:Cleanup">cleanup</a>.</strong><br/>We are hoping to create articles that meet certain <a href="http://wiki.dreamhost.com/Category:Cleanup" title="Category:Cleanup">standards</a>. Please discuss this issue on the <a href="http://wiki.dreamhost.com/Talk:Fetchmail" title="Talk:Fetchmail">talk page</a>. <a href="http://wiki.dreamhost.com/Help:Editing" title="Help:Editing">Editing help</a> is available.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div>
+<table>
+<tbody>
+<tr>
+<td><strong>The instructions provided in this article or section require <a href="http://wiki.dreamhost.com/Shell" title="Shell">shell</a> access unless otherwise stated.</strong><br/>
+<p>You can use the <a href="http://wiki.dreamhost.com/PuTTY" title="PuTTY">PuTTY</a> client on Windows, or <a href="http://wiki.dreamhost.com/SSH" title="SSH">SSH</a> on <a href="http://wiki.dreamhost.com/Category:UNIX" title="Category:UNIX">UNIX</a> and UNIX-like systems such as Linux or Mac OS X.<br/>Your account must be configured for shell access in the <a class="mw-redirect" href="http://wiki.dreamhost.com/Control_Panel" title="Control Panel">Control Panel</a>.<br/>More information may be available on the article's <a href="http://wiki.dreamhost.com/Talk:Fetchmail" title="Talk:Fetchmail">talk page</a>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div>
+<table>
+<tbody>
+<tr>
+<td><strong>The instructions provided in this article or section are considered advanced.</strong><br/>
+<p>You are expected to be knowledgeable in the UNIX shell.<br/><em>Support for these instructions is <strong>not available</strong> from DreamHost tech support.</em><br/><strong><em>Server changes performed by DreamHost may break your modifications. You, as the user, are responsible for troubleshooting and resolving issues with your customizations.</em></strong> <strong><em><br/></em></strong></p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="toc" id="toc">
+<div id="toctitle">
+<h2>Contents</h2>
+<span class="toctoggle"> [<a href="http://wiki.dreamhost.com/Fetchmail" id="togglelink">hide</a>] </span></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="http://wiki.dreamhost.com/Fetchmail#Downloading_and_installing_Fetchmail"><span class="tocnumber">1</span> <span class="toctext">Downloading and installing Fetchmail</span></a></li>
+<li class="toclevel-1 tocsection-2"><a href="http://wiki.dreamhost.com/Fetchmail#Setting_Up_Fetchmail"><span class="tocnumber">2</span> <span class="toctext">Setting Up Fetchmail</span></a>
+<ul>
+<li class="toclevel-2 tocsection-3"><a href="http://wiki.dreamhost.com/Fetchmail#running_with_ssl"><span class="tocnumber">2.1</span> <span class="toctext">running with ssl</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-4"><a href="http://wiki.dreamhost.com/Fetchmail#Troubleshooting"><span class="tocnumber">3</span> <span class="toctext">Troubleshooting</span></a></li>
+<li class="toclevel-1 tocsection-5"><a href="http://wiki.dreamhost.com/Fetchmail#External_Links"><span class="tocnumber">4</span> <span class="toctext">External Links</span></a></li>
+</ul>
+</div>
+<h2><span id="Downloading_and_installing_Fetchmail">Downloading and installing Fetchmail</span></h2>
+<p>You have to <em>prepare</em> your shell account as shown in <strong><a href="http://wiki.dreamhost.com/Unix_account_setup" title="Unix account setup">unix account setup</a></strong>.</p>
+<ul>
+<li>Download and open the latest version of <a href="http://www.fetchmail.info/">Fetchmail</a> (the example will use version 6.3.17, current as of Jun 2010) from <a class="external autonumber" href="http://developer.berlios.de/project/showfiles.php?group_id=1824">[1]</a>.</li>
+</ul>
+<pre>cd ${HOME}/soft
+FMVERSION=6.3.17
+wget http://download.berlios.de/fetchmail/fetchmail-${FMVERSION}.tar.bz2
+tar xvjf fetchmail-${FMVERSION}.tar.bz2
+cd fetchmail-${FMVERSION}
+</pre>
+<ul>
+<li>Configure, compile and install.</li>
+</ul>
+<pre>./configure --prefix ${RUN}
+make
+make install
+</pre>
+<h2><span id="Setting_Up_Fetchmail">Setting Up Fetchmail</span></h2>
+<p><em>NOTE: In all steps below, replace <strong>example.net</strong> with your domain name, remoteuser/remotepassword with user name and password at Dreamhost, and localuser and localhost with the local user name and local host name. Local host name can be 'localhost'.</em></p>
+<ul>
+<li>Edit $HOME/.fetchmailrc</li>
+<li>Add the following lines:</li>
+</ul>
+<pre># Configuration created Sun Apr 14 09:44:05 2002 by fetchmailconf
+set postmaster "localuser"
+#set bouncemail
+set no spambounce
+set properties ""
+
+poll mail.example.net with proto POP3
+       user 'remoteuser' there with password 'remotepassword' is 'localuser' here smtpname &lt;you@yourdomainname.com&gt; 
+</pre>
+<p><em>UPDATE: Sometime in April 2012, Dreamhost's security policy seems to have changed. In order to prevent spam, senders of mail via SMTP must be identified. This doesn't affect VPS-owners, who can be identified by their VPS. However, users sending e-mails from shared-hosting shell accounts have to use ESMTP to identify themselves.</em></p>
+<p>Here's an updated $HOME/.fetchmailrc file.</p>
+<pre>set postmaster "localuser"
+#set bouncemail
+set no spambounce
+set properties ""
+
+poll mail.example.net with proto POP3
+       esmtpname 'localuser' esmtppassword 'localuserpassword'
+       user 'remoteuser' there with password 'remotepassword' is 'localuser' here smtpname &lt;you@yourdomainname.com&gt; 
+</pre>
+<ul>
+<li>Try the setup running:</li>
+</ul>
+<pre> fetchmail -b 1 -B 1 -c -v
+</pre>
+<ul>
+<li>The specified flags are:</li>
+</ul>
+<table>
+<tbody>
+<tr>
+<td>-b 1</td>
+<td>Limit to one e-mail to be sent to SMTP</td>
+</tr>
+<tr>
+<td>-B 1</td>
+<td>Limit to one e-mail being fetched from POP3</td>
+</tr>
+<tr>
+<td>-c</td>
+<td>Check only without removing any e-mail from the server</td>
+</tr>
+<tr>
+<td>-v</td>
+<td>Be more verbose</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Once fetchmail retrieves e-mails correctly, add it to <a href="http://wiki.dreamhost.com/Crontab" title="Crontab">crontab</a> with something like:</li>
+</ul>
+<pre>#m   h   d   m   w
+*/15   *   *   *   * $HOME/run/bin/fetchmail &gt;&gt; /dev/null 2&gt;&amp;1
+</pre>
+<h3><span id="running_with_ssl">running with ssl</span></h3>
+<p>This prevents man-in-the-middle attacks. Note this doesn't encrypt your communication with the mailserver....</p>
+<p>First get the certificate Dreamhost uses (this may change once in a while)</p>
+<pre>openssl s_client -connect homie.mail.dreamhost.com:995 -showcerts | tee -a /tmp/dreamhost_openssl.txt
+</pre>
+<p>Then create a fingerprint out of this certificate</p>
+<pre>openssl x509 -fingerprint -md5 -noout -in /tmp/dreamhost_openssl.txt
+</pre>
+<p>Lastly, add the fingerprint to fetchmailrc like this:</p>
+<pre>set postmaster "localuser"
+#set bouncemail
+set no spambounce
+set properties ""
+
+poll mail.example.net with proto POP3
+       esmtpname 'localuser' esmtppassword 'localuserpassword'
+       user 'remoteuser' there with password 'remotepassword' is 'localuser' here smtpname &lt;you@yourdomainname.com&gt; sslfingerprint 'xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx:xx'
+</pre>
+<h2><span id="Troubleshooting">Troubleshooting</span></h2>
+<ul>
+<li>Keep in mind any mail received through Fetchmail counts towards Dreamhost's <a href="http://wiki.dreamhost.com/SMTP_quota" title="SMTP quota">SMTP quota</a>. If you receive a lot of mail (or just a few of those chain letters my wife receives), you will lose mail! 100 recipients an hour is easy to hit in this scenario. It's also quite confusing for whoever is sending you the mail. They will receive a SENDER_QUOTA_REJECTION from your dreamhost domain rather than your ISP's domain, and this will get really confusing ("I thought I sent it to bob@earthlink.net, why is it saying it tried to send it to bobearthlinkpop@mydomain.com?")</li>
+</ul>
+<p> </p>
+<h2><span id="External_Links">External Links</span></h2>
+<ul>
+<li><a href="http://www.fetchmail.info/">Fetchmail Web Page</a></li>
+</ul>

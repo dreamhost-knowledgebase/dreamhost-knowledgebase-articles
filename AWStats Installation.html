@@ -1,0 +1,405 @@
+<p><a href="http://awstats.sourceforge.net/">AWStats</a> is an alternative Web log analyzer that offers a wider range of statistics than <a href="http://wiki.dreamhost.com/Analog" title="Analog">Analog</a>.</p>
+<p>This guide assumes that your username is <tt>yourusername</tt> and your domain is <tt>example.com</tt>. You should change it to fit your username and domain.</p>
+<div>
+<table>
+<tbody>
+<tr>
+<td><strong>The instructions provided in this article or section require <a href="http://wiki.dreamhost.com/Shell" title="Shell">shell</a> access unless otherwise stated.</strong><br/>
+<p>You can use the <a href="http://wiki.dreamhost.com/PuTTY" title="PuTTY">PuTTY</a> client on Windows, or <a href="http://wiki.dreamhost.com/SSH" title="SSH">SSH</a> on <a href="http://wiki.dreamhost.com/Category:UNIX" title="Category:UNIX">UNIX</a> and UNIX-like systems such as Linux or Mac OS X.<br/>Your account must be configured for shell access in the <a class="mw-redirect" href="http://wiki.dreamhost.com/Control_Panel" title="Control Panel">Control Panel</a>.<br/>More information may be available on the article's <a href="http://wiki.dreamhost.com/Talk:AWStats_Installation" title="Talk:AWStats Installation">talk page</a>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p> </p>
+<div class="toc" id="toc">
+<div id="toctitle">
+<h2>Contents</h2>
+<span class="toctoggle"> [<a href="http://wiki.dreamhost.com/AWStats_Installation" id="togglelink">hide</a>] </span></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="http://wiki.dreamhost.com/AWStats_Installation#Download"><span class="tocnumber">1</span> <span class="toctext">Download</span></a></li>
+<li class="toclevel-1 tocsection-2"><a href="http://wiki.dreamhost.com/AWStats_Installation#Installation"><span class="tocnumber">2</span> <span class="toctext">Installation</span></a>
+<ul>
+<li class="toclevel-2 tocsection-3"><a href="http://wiki.dreamhost.com/AWStats_Installation#Static_Pages"><span class="tocnumber">2.1</span> <span class="toctext">Static Pages</span></a>
+<ul>
+<li class="toclevel-3 tocsection-4"><a href="http://wiki.dreamhost.com/AWStats_Installation#Changing_the_Directory_Structure"><span class="tocnumber">2.1.1</span> <span class="toctext">Changing the Directory Structure</span></a></li>
+<li class="toclevel-3 tocsection-5"><a href="http://wiki.dreamhost.com/AWStats_Installation#Setting_up_the_Domain_Name"><span class="tocnumber">2.1.2</span> <span class="toctext">Setting up the Domain Name</span></a></li>
+<li class="toclevel-3 tocsection-6"><a href="http://wiki.dreamhost.com/AWStats_Installation#Configuration"><span class="tocnumber">2.1.3</span> <span class="toctext">Configuration</span></a></li>
+<li class="toclevel-3 tocsection-7"><a href="http://wiki.dreamhost.com/AWStats_Installation#Checking_AWStats"><span class="tocnumber">2.1.4</span> <span class="toctext">Checking AWStats</span></a></li>
+<li class="toclevel-3 tocsection-8"><a href="http://wiki.dreamhost.com/AWStats_Installation#CRON_Script"><span class="tocnumber">2.1.5</span> <span class="toctext">CRON Script</span></a></li>
+<li class="toclevel-3 tocsection-9"><a href="http://wiki.dreamhost.com/AWStats_Installation#.htaccess_file"><span class="tocnumber">2.1.6</span> <span class="toctext">.htaccess file</span></a>
+<ul>
+<li class="toclevel-4 tocsection-10"><a href="http://wiki.dreamhost.com/AWStats_Installation#Alternative"><span class="tocnumber">2.1.6.1</span> <span class="toctext">Alternative</span></a></li>
+</ul>
+</li>
+<li class="toclevel-3 tocsection-11"><a href="http://wiki.dreamhost.com/AWStats_Installation#AWStats_For_Another_Domain"><span class="tocnumber">2.1.7</span> <span class="toctext">AWStats For Another Domain</span></a></li>
+</ul>
+</li>
+<li class="toclevel-2 tocsection-12"><a href="http://wiki.dreamhost.com/AWStats_Installation#Dynamic_pages"><span class="tocnumber">2.2</span> <span class="toctext">Dynamic pages</span></a></li>
+<li class="toclevel-2 tocsection-13"><a href="http://wiki.dreamhost.com/AWStats_Installation#Quick"><span class="tocnumber">2.3</span> <span class="toctext">Quick</span></a>
+<ul>
+<li class="toclevel-3 tocsection-14"><a href="http://wiki.dreamhost.com/AWStats_Installation#Remove_.27Useless.27_Files"><span class="tocnumber">2.3.1</span> <span class="toctext">Remove 'Useless' Files</span></a></li>
+<li class="toclevel-3 tocsection-15"><a href="http://wiki.dreamhost.com/AWStats_Installation#Configuration_2"><span class="tocnumber">2.3.2</span> <span class="toctext">Configuration</span></a></li>
+<li class="toclevel-3 tocsection-16"><a href="http://wiki.dreamhost.com/AWStats_Installation#Update_the_Stats"><span class="tocnumber">2.3.3</span> <span class="toctext">Update the Stats</span></a></li>
+<li class="toclevel-3 tocsection-17"><a href="http://wiki.dreamhost.com/AWStats_Installation#Changing_the_Permissions"><span class="tocnumber">2.3.4</span> <span class="toctext">Changing the Permissions</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-18"><a href="http://wiki.dreamhost.com/AWStats_Installation#Installing_JAWStats_for_use_with_AWStats"><span class="tocnumber">3</span> <span class="toctext">Installing JAWStats for use with AWStats</span></a>
+<ul>
+<li class="toclevel-2 tocsection-19"><a href="http://wiki.dreamhost.com/AWStats_Installation#Getting_JAWStats"><span class="tocnumber">3.1</span> <span class="toctext">Getting JAWStats</span></a></li>
+<li class="toclevel-2 tocsection-20"><a href="http://wiki.dreamhost.com/AWStats_Installation#Installation_2"><span class="tocnumber">3.2</span> <span class="toctext">Installation</span></a></li>
+<li class="toclevel-2 tocsection-21"><a href="http://wiki.dreamhost.com/AWStats_Installation#Moving_the_files_into_place"><span class="tocnumber">3.3</span> <span class="toctext">Moving the files into place</span></a></li>
+<li class="toclevel-2 tocsection-22"><a href="http://wiki.dreamhost.com/AWStats_Installation#JAWStats_configuration"><span class="tocnumber">3.4</span> <span class="toctext">JAWStats configuration</span></a></li>
+<li class="toclevel-2 tocsection-23"><a href="http://wiki.dreamhost.com/AWStats_Installation#Wrap-up_and_CRON_Script_changes"><span class="tocnumber">3.5</span> <span class="toctext">Wrap-up and CRON Script changes</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-24"><a href="http://wiki.dreamhost.com/AWStats_Installation#Importing_your_old_log_files"><span class="tocnumber">4</span> <span class="toctext">Importing your old log files</span></a>
+<ul>
+<li class="toclevel-2 tocsection-25"><a href="http://wiki.dreamhost.com/AWStats_Installation#Alternative_old_log_files_import"><span class="tocnumber">4.1</span> <span class="toctext">Alternative old log files import</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-26"><a href="http://wiki.dreamhost.com/AWStats_Installation#Notes"><span class="tocnumber">5</span> <span class="toctext">Notes</span></a></li>
+<li class="toclevel-1 tocsection-27"><a href="http://wiki.dreamhost.com/AWStats_Installation#External_Links"><span class="tocnumber">6</span> <span class="toctext">External Links</span></a></li>
+</ul>
+</div>
+<h1><span id="Download">Download</span></h1>
+<p>Get into the correct directory - in this example it assumes you're installing the awstats in your local directory so go to your local home root:</p>
+<pre>cd ~/
+</pre>
+<p>Download AWStats, get latest from <a class="external autonumber" href="http://awstats.sourceforge.net/">[1]</a>.</p>
+<pre>wget <a href="http://prdownloads.sourceforge.net/awstats/awstats-6.95.tar.gz">http://prdownloads.sourceforge.net/awstats/awstats-6.95.tar.gz</a>
+</pre>
+<p>Extract the TAR</p>
+<pre>tar xfzv awstats-6.95.tar.gz
+</pre>
+<p>Rename the awstats folder and then go to the awstats folder.</p>
+<pre>mv awstats-6.95 awstats
+cd awstats
+</pre>
+<p>You should now have a directory:</p>
+<pre>/home/yourusername/awstats
+</pre>
+<h1><span id="Installation">Installation</span></h1>
+<h2><span id="Static_Pages">Static Pages</span></h2>
+<h3><span id="Changing_the_Directory_Structure">Changing the Directory Structure</span></h3>
+<p>Create a directory named 'data' and change the permissions.</p>
+<pre>cd ~/awstats
+mkdir data
+chmod 755 data
+</pre>
+<p>Move the files in the <tt>/home/yourusername/awstats/wwwroot/cgi-bin/</tt> directory into <tt>/home/yourusername/awstats/</tt>.</p>
+<pre>mv ~/awstats/wwwroot/cgi-bin ~/awstats
+</pre>
+<h3><span id="Setting_up_the_Domain_Name">Setting up the Domain Name</span></h3>
+<p>Create a directory in your domain folder (substitute your domain for "domainname.com").</p>
+<pre>mkdir ~/domainname.com/statistics
+</pre>
+<p>Copy the following:</p>
+<ul>
+<li>icon</li>
+<li>css</li>
+<li>js</li>
+</ul>
+<p>To the statistics folder in your domain folder. (substitute your domain for "domainname.com")</p>
+<pre>cp -r ~/awstats/wwwroot/{icon,css,js} ~/domainname.com/statistics
+</pre>
+<p><br/>It should be noted that you should not call the directory 'stats'. DH uses 'domainname.com/stats' as a default for their <a href="http://wiki.dreamhost.com/Analog" title="Analog">Analog</a> statistics.</p>
+<h3><span id="Configuration">Configuration</span></h3>
+<p>In the <tt>awstats/cgi-bin/</tt> folder, copy <tt>awstats.model.conf</tt> to <tt>awstats.domainname.com.conf</tt>, where "domainname.com" is actually <strong>your</strong> website domain.</p>
+<pre>cp ~/awstats/cgi-bin/awstats.model.conf ~/awstats/cgi-bin/awstats.domainname.com.conf
+</pre>
+<p>You may need to make the file writable before editing.</p>
+<pre>chmod 644 ~/awstats/cgi-bin/awstats.domainname.com.conf
+</pre>
+<p>Open the file for editing</p>
+<pre>vi ~/awstats/cgi-bin/awstats.domainname.com.conf
+</pre>
+<p>Change the following parameters in the file</p>
+<ol>
+<li>Set the changes to the following changing the <strong>yourusername</strong> and <strong>example.com</strong> to your information.</li>
+<li>Save or upload the file if you didn't use 'vi'.</li>
+</ol>
+<pre>#Dreamhost rotates the logs and the logresolvemerge.pl below makes sure that you get the previous logs too. 
+LogFile="/home/yourusername/awstats/tools/logresolvemerge.pl  /home/yourusername/logs/domainname.com/http/access.log*|"
+LogFormat="%host %other %other %time1 %methodurl %code %bytesd %refererquot %uaquot"
+SiteDomain="domainname.com"
+HostAliases="www.domainname.com"
+DNSLookup=0
+DirData="/home/yourusername/awstats/data/"
+DirIcons="icon"
+SaveDatabaseFilesWithPermissionsForEveryone=0
+DefaultFile="index.php index.html"
+</pre>
+<p><br/>If you did use 'vi', hit Esc, type <strong>:x</strong>, and hit Enter. This will save your changes and exit you out of the editor.</p>
+<h3><span id="Checking_AWStats">Checking AWStats</span></h3>
+<p>Verify that all of your *.pl files are with 755 permissions. The first column of output should read: <tt>-rwxr-xr-x</tt>.</p>
+<pre>ls -o
+</pre>
+<p>If some don't look like that, then you can run this:</p>
+<pre>find . -name '*.pl' | xargs chmod 755
+</pre>
+<p>Then run</p>
+<pre>ls -o
+</pre>
+<p>again to see that they're all correct now.</p>
+<p>Check that everything is working</p>
+<pre>perl /home/yourusername/awstats/tools/awstats_buildstaticpages.pl -config=domainname.com -update \
+-awstatsprog=/home/yourusername/awstats/cgi-bin/awstats.pl -dir=/home/yourusername/domainname.com/statistics/
+</pre>
+<dl>
+<dd><strong>The above has been entered as two lines. If entered in one line, remove the backslash (\)</strong></dd>
+</dl>
+<p>Check the output folder (<tt>/statistics/</tt>) in your browser. Look at the <tt>awstats.domainname.com.html</tt> file. Does everything look good? Great! Then let's setup a cron job to do this automatically.</p>
+<p><strong>NOTE</strong>: If you have a <a href="http://wiki.dreamhost.com/Ruby_on_Rails" title="Ruby on Rails">Ruby on Rails</a> site, you will not be able to see this output with your browser. One way to get around this problem is to change the last part of the command to this:</p>
+<pre>-dir=/home/yourusername/domainname.com/<strong>public</strong>/statistics/
+</pre>
+<h3><span id="CRON_Script">CRON Script</span></h3>
+<p>The <a href="http://wiki.dreamhost.com/Crontab" title="Crontab">Crontab</a> page will be of some use if you are having trouble. For example, you have to fill out the MAILTO="" field in order for Dreamhost to use your crontab.</p>
+<p>Edit the crontab</p>
+<pre>crontab -e
+</pre>
+<p>Insert the following</p>
+<dl>
+<dd>If the line is too large in the default editor than it will fall to the next line, you will have to manually go back and press delete to make sure it is all on the same line. It all must be on the same line.</dd>
+<dd>As always, change the <strong>yourusername</strong> and <strong>domainname.com</strong> to your information.</dd>
+<dd><strong>The following has been moved to three lines to save from side scrolling, it still needs to be one line.</strong></dd>
+</dl>
+<pre>0 3 * * * /usr/bin/perl /home/yourusername/awstats/tools/awstats_buildstaticpages.pl
+-config=domainname.com -update -awstatsprog=/home/yourusername/awstats/cgi-bin/awstats.pl
+-dir=/home/yourusername/domainname.com/statistics/ &gt;/dev/null 2&gt;&amp;1
+</pre>
+<p>The &gt;/dev/null 2&gt;&amp;1 is to prevent the job from mailing you the results every time the script runs. The mail ends up in /home/username/MailDir</p>
+<p>Replace with &gt;/dev/null to just receive errors</p>
+<p>Save and close</p>
+<pre>CTRL + O To Save
+Press Enter To Overwrite the File
+CTRL + X To Quit
+</pre>
+<ul>
+<li>Note about crontab: you must specify a full path to perl or the script will not work.</li>
+</ul>
+<h3><span id=".htaccess_file">.htaccess file</span></h3>
+<p>Edit the .htaccess file in the output directory (domainname.com/statistics/) and type the following.</p>
+<pre>DirectoryIndex awstats.example.com.html
+</pre>
+<p>That will show the stats overview as the default index when you open "www.example.com/statistics/". You might also want to <a href="http://wiki.dreamhost.com/Password-protecting_directories" title="Password-protecting directories">password protect</a> it.</p>
+<h4><span id="Alternative">Alternative</span></h4>
+<p>If for some reason .htaccess files do not work, creating a symbolic link can achieve the same result</p>
+<pre>ln -s ~/domainname.com/statistics/awstats.example.com.html ~/domainname.com/statistics/index.html
+</pre>
+<h3><span id="AWStats_For_Another_Domain">AWStats For Another Domain</span></h3>
+<ol>
+<li>Repeat the 'Configure' step for the domain name.</li>
+<li>Repeat the 'Setting up the Domain Name' step and copy the folders to the domain name.</li>
+<li>Repeat 'Crontab' step by adding a new line and changing the details for the other domain name.
+<ul>
+<li>Change the new crontab time by changing the first number to increments of 15 or whatever number besides that of the last one and the second number to the same unless you would have two running at the same time.</li>
+</ul>
+</li>
+<li>Repeat the '.htaccess file' step for the new domain.</li>
+<li>And run this to create the stats for the first time.</li>
+</ol>
+<pre>perl /home/yourusername/awstats/tools/awstats_buildstaticpages.pl -config=example2.com \
+-update -awstatsprog=/home/yourusername/awstats/cgi-bin/awstats.pl \
+-dir=/home/yourusername/example2.com/statistics/
+</pre>
+<h2><span id="Dynamic_pages">Dynamic pages</span></h2>
+<ul>
+<li>There's an dynamic setup available here: <a class="mw-redirect" href="http://wiki.dreamhost.com/AWStats_Installation_(alternative)" title="AWStats Installation (alternative)">AWStats_Installation_(alternative)</a>. It allows the data to be dynamically updated through the browser (real-time data update), and access to previous months (or yearly) data.</li>
+</ul>
+<h2><span id="Quick">Quick</span></h2>
+<h3><span id="Remove_.27Useless.27_Files">Remove 'Useless' Files</span></h3>
+<p>Go to the awstats folder (if you renamed the directory then go to that)</p>
+<pre>cd awstats
+</pre>
+<p>Remove all the files except for the wwwroot folder</p>
+<pre>rm -rf README.TXT
+rm -rf docs
+</pre>
+<p>Then move the contents of wwwroot to the current directory</p>
+<pre>mv wwwroot/* .
+</pre>
+<h3><span id="Configuration_2">Configuration</span></h3>
+<p>Change to the cgi-bin folder</p>
+<pre>cd cgi-bin
+</pre>
+<p>Here there is an example configuration.</p>
+<ol>
+<li>Want to copy and edit this.</li>
+<li>Do this for as many domains as you have.</li>
+</ol>
+<pre>cp awstats.model.conf awstats.mydomain1.com.conf
+cp awstats.model.conf awstats.mydomain2.com.conf
+cp awstats.model.conf awstats.mydomain3.com.conf
+</pre>
+<p>Now, editing the config. Things should be set as follows: (You can skip this bit and use the <a href="http://o.thisdomainwasfree.com/awstats/awstats-config-generator.php">Config Generator</a>)</p>
+<pre>LogFile="/home/<strong>YourUserName</strong>/logs/<strong>YourDomain</strong>/http/access.log"
+SiteDomain="<strong>YourDomain</strong>"
+HostAliases="localhost 127.0.0.1 REGEX[<strong>YourDomain</strong>\.<strong>TLD</strong>$]"
+DirData="/home/<strong>YourUserName</strong>/<strong>YourDomain</strong>/<strong>AWStatsFolder</strong>"
+AllowToUpdateStatsFromBrowser=1
+</pre>
+<p>That should do it, to test it out open</p>
+<pre>http://<strong>YourDomain</strong>/<strong>AwStatsDir</strong>/cgi-bin/awstats.pl?config=<strong>YourDomain</strong>
+</pre>
+<h3><span id="Update_the_Stats">Update the Stats</span></h3>
+<p>You can update the stats from your browser.</p>
+<p>If you want to use crontab</p>
+<pre>crontab -e
+</pre>
+<p>Then type on a line, which will update the stats every hour.</p>
+<pre>0 * * * * /home/<strong>YourUserName</strong>/<strong>YourDomain</strong>/<strong>AwStatsDir</strong>/cgi-bin/awstats.pl -config=<strong>mysite</strong> -update &gt;/dev/null
+</pre>
+<h3><span id="Changing_the_Permissions">Changing the Permissions</span></h3>
+<p>If you changed the awstats folder, just replace the <tt>awstats-6.5</tt> to that of your awstats folder.</p>
+<pre>chmod -R 755 awstats-6.5
+</pre>
+<p>This will fix the <strong>500 Internal Server Error</strong> and <strong>Premature end of script headers</strong> in your server error log.</p>
+<h1><span id="Installing_JAWStats_for_use_with_AWStats">Installing JAWStats for use with AWStats</span></h1>
+<p>Note: JAWStats hasn't been actively developed for a year, you might want to look at the MAWStats fork: <a href="http://mawstats.lingnu.com/index.php">http://mawstats.lingnu.com/index.php</a></p>
+<p>JAWStats is not an AWStats replacement. Instead it runs in conjunction with AWStats and produces attractive, clear and informative charts, graphs and tables about your website visitors.</p>
+<p><br/><a class="image" href="http://wiki.dreamhost.com/File:Jawstats_400px.jpg"><img alt="Jawstats 400px.jpg" height="263" src="http://wiki.dreamhost.com/images/3/3e/Jawstats_400px.jpg" width="400"/></a></p>
+<p><br/>The steps required to install JAWStats begin with the installation of AWStats as outlined above (which a few very minor changes).</p>
+<p>Once you've completed and confirmed your AWStats is working this section should help you get JAWStats up and running successfully.</p>
+<h3><span id="Getting_JAWStats">Getting JAWStats</span></h3>
+<p>For this you'll want to go to the JAWStats download page located a <a href="http://www.jawstats.com/download">http://www.jawstats.com/download</a>.</p>
+<p>Alternatively, you can download the current version (at the time of writing) from the command line:</p>
+<pre>wget <a href="http://static.jawstats.com/src/jawstats-0.7beta.tar.gz">http://static.jawstats.com/src/jawstats-0.7beta.tar.gz</a>
+</pre>
+<p>If you've downloaded it using the command line before you untar it you'll want to have it inside the directory (because it'll untar without it's own container file).</p>
+<p>So for example:</p>
+<pre>mkdir ~/jawstats/
+mv ~/jawstats-0.7beta.tar.gz ~/jawstats/
+cd ~/jawstats/
+tar xfzv jawstats-0.7beta.tar.gz
+rm -f .jawstats-0.7beta.tar.gz (<strong>just cleaning up the archive</strong>)
+</pre>
+<p>You should now have a directory:</p>
+<pre>/home/yourusername/jawstats/
+</pre>
+<p>Who's contents should look like this:</p>
+<pre>clsAWStats.php
+config.dist.php
+index.php
+js
+readme.txt
+swf
+themes
+xml_history.php
+xml_pages.php
+xml_stats.php
+xml_update.php
+</pre>
+<p>These are the main application files for JAWStats.</p>
+<h3><span id="Installation_2">Installation</span></h3>
+<p>The installation of JAWStats is very simple. If you've followed the instructions for the AWStats installation above and have it working then we will only make a few simple changes and you'll be up and running!</p>
+<h3><span id="Moving_the_files_into_place">Moving the files into place</span></h3>
+<p>In the section <em>Setting up the Domain Name</em> above we copied some AWStats files into the folder we'd using to view/access AWStats, as shown below:</p>
+<pre>cp -r ~/awstats/wwwroot/{icon,css,js} ~/domainname.com/statistics
+</pre>
+<p>For JAWStats we won't actually need those. Instead we'll be using the JAWStats files you just downloaded and extracted.</p>
+<p>So lets clear out the AWStats files in our <em>domain folder</em> and copy our new JAWStats files into place:</p>
+<pre>rm -fr ~/domainname.com/statistics/*
+cp -R ~/jawstats/* ~/domainname.com/statistics/
+</pre>
+<h3><span id="JAWStats_configuration">JAWStats configuration</span></h3>
+<p>Now that all the files are in place we've got to do a quick bit of configuring to let JAWStats know where to find AWStats and the files it will need to display your data.</p>
+<p><br/>First, lets move into the directory.</p>
+<pre>cd ~/domainname.com/statistics/
+</pre>
+<p>You'll see a few files in here, but you can ignore everything but a file called <strong>config.dist.php</strong>.</p>
+<p><br/>This is the file that will become your configuration, lets rename it:</p>
+<pre>cp ./config.dist.php ./config.php
+</pre>
+<p>and open the file for editing</p>
+<pre>vi config.php
+</pre>
+<p>What you see might look confusing, but we only need to worry about the site configuration section(s) which look like this:</p>
+<pre> // individual site configuration
+ $aConfig["site1"] = array(
+   "statspath"   =&gt; "/path/to/data/",
+   "updatepath"  =&gt; "/path/to/awstats.pl/",
+   "siteurl"     =&gt; "<a href="http://www.my-1st-domain.com/">http://www.my-1st-domain.com</a>",
+   "theme"       =&gt; "default",
+   "fadespeed"   =&gt; 250,
+   "password"    =&gt; "my-1st-password",
+   "includes"    =&gt; ""
+ );
+</pre>
+<p>The line we'll be editing are:</p>
+<pre>$aConfig["site1"] = array(
+"statspath"   =&gt; "/path/to/data/",
+"updatepath"  =&gt; "/path/to/awstats.pl/",
+"siteurl"     =&gt; "<a href="http://www.my-1st-domain.com/">http://www.my-1st-domain.com</a>",
+"password"    =&gt; "my-1st-password",
+</pre>
+<p>And the changes are actually pretty straight froward. Using the AWStats configuration as an example we'll end up with something like this:</p>
+<pre> // individual site configuration
+ $aConfig["<strong>domainname.com</strong>"] = array(
+   "statspath"   =&gt; "<strong>/home/yourusername/awstats/data/</strong>",
+   "updatepath"  =&gt; "<strong>/home/yourusername/awstats/cgi-bin/</strong>",
+   "siteurl"     =&gt; "<strong><a href="http://www.domainname.com/">http://www.domainname.com</a></strong>",
+   "theme"       =&gt; "default",
+   "fadespeed"   =&gt; 250,
+   "password"    =&gt; "<strong>mynewsupersecretpassword</strong>",
+   "includes"    =&gt; ""
+ );
+</pre>
+<p><strong>domainname.com</strong> is the website domain name you used in naming your awstats.domainname.com.conf file.</p>
+<p><strong>statspath</strong> is the DirData setting you added to the awstats.domainname.com.conf file</p>
+<p><strong>updatepath</strong> is the location of the cgi-bin which you moved in the <strong>Changing the Directory Structure</strong> section.</p>
+<p><strong>siteurl</strong> is simply the domain name which JAWStats will display in heading making it easy to know what it is you're looking at.</p>
+<p><strong>password</strong> is pretty self explanatory but it's a good idea to change this and if you leave <strong>$bConfigUpdateSites</strong> option in the section above in it's default state (<strong>true</strong>) you'll be asked to input the password you configure here to run an update on the sites stats (an handy feature for the stats obsessed!).</p>
+<h3><span id="Wrap-up_and_CRON_Script_changes">Wrap-up and CRON Script changes</span></h3>
+<p>That covers basic configuration. You'll notice the JAWStats file has (by default) 2 example site sections. You can add additional sites to the configuration as above, as long as each site has a matching (and working!) AWStats configuration you can quickly and easily switch between viewing statistics for each domain from the JAWStats interface.</p>
+<p>Testing and CRON setup with JAWStats is pretty much the same. But you'll want to change the line you'll be using for you CRON script.</p>
+<p>The AWStats example looked like this:</p>
+<pre>0 3 * * * /usr/bin/perl /home/yourusername/awstats/tools/awstats_buildstaticpages.pl
+-config=domainname.com -update -awstatsprog=/home/yourusername/awstats/cgi-bin/awstats.pl
+-dir=/home/yourusername/domainname.com/statistics/ &gt;/dev/null 2&gt;&amp;1
+</pre>
+<p>However JAWStats doesn't need AWStats to do as much work, we only need to generate the data files. So instead you can use something like this:</p>
+<pre>0 * * * * perl /home/yourusername/awstats/tools/awstats_updateall.pl now 
+-configdir=/home/yourusername/awstats/cgi-bin/ -awstatsprog=/home/yourusername/awstats/cgi-bin/awstats.pl
+</pre>
+<p>Notice we've skipped the <strong>awstats_buildstaticpages.pl</strong> because we'll be using JAWStats to provide much nicer looking pages. I also use the<strong>awstats_updateall.pl</strong> which is under the AWStats tools directory. This script is will process all the files in your <strong>-configdir</strong> automatically (excluding the awstats.model.conf file). So if you have more then a single domain setup you can use a single CRON script and process them all rather then installing one AWStats CRON job for every domain.</p>
+<p>If everything goes right you should now have an attractive and easy to use interface setup to use your AWStats datafiles. Enjoy!</p>
+<h1><span id="Importing_your_old_log_files">Importing your old log files</span></h1>
+<p>To run AWStats on all of your old logs, you can create a shell script (found at <a href="http://floatingsun.net/blog/articles/awstats-textdrive/">http://floatingsun.net/blog/articles/awstats-textdrive/</a>).</p>
+<p>Make sure your AWStats <tt>data</tt> directory is empty before you run the script.</p>
+<p>In a text editor (like vi or pico), create a shell script.</p>
+<pre>pico parse_old_stats
+</pre>
+<p>Enter the following</p>
+<pre>for log in $(ls -rt ~/logs/example.com/http/access*.gz)
+do
+   echo $log
+   echo “zcat”
+   zcat $log &gt; ~/tmp/access_log
+   sleep 5
+   echo “awstats.pl”
+   ./awstats/cgi-bin/awstats.pl -update -config=example.com -LogFile=/home/yourusername/tmp/access_log
+   sleep 5
+done
+</pre>
+<p>Make sure the script can run</p>
+<pre>chmod 755 parse_old_stats
+</pre>
+<p>The <tt>sleep</tt> commands give AWStats enough time to process between log files.</p>
+<h2><span id="Alternative_old_log_files_import">Alternative old log files import</span></h2>
+<p>You can also use the Logresolvemerge tool provided with AWStats (in tools directory) replacing:</p>
+<pre>LogFile="/home/yourusername/awstats/tools/logresolvemerge.pl /home/yourusername/logs/example.com/http/access*.* |"
+</pre>
+<p>in the <tt>awstats.domainname.com.conf</tt> configuration file for the first run. See the Awstats FAQs:<a href="http://awstats.sourceforge.net/docs/awstats_faq.html#OLDLOG">http://awstats.sourceforge.net/docs/awstats_faq.html#OLDLOG</a> and <a href="http://awstats.sourceforge.net/docs/awstats_faq.html#MULTILOG">http://awstats.sourceforge.net/docs/awstats_faq.html#MULTILOG</a> for details.</p>
+<h1><span id="Notes">Notes</span></h1>
+<ul>
+<li>You can make any other changes you deem useful to the config file, it's decently commented. Also, if your log files are very large (you get lots of hits), you'll probably have to run awstats once daily to put less strain on the server. There are some guidelines for that on the AwStats website. You'd have to change the logfile location in that case too, to use the current log.</li>
+</ul>
+<h1><span id="External_Links">External Links</span></h1>
+<ul>
+<li><a href="http://discussion.dreamhost.com/showthreaded.pl?Cat=&amp;Board=3rdparty&amp;Number=13050&amp;page=&amp;view=&amp;sb=&amp;o=&amp;vc=1#Post13050">Notes by Skybly</a> - in the DreamHost forums on installation info.</li>
+<li><a href="http://www.bazon.net/mishoo/home.epl?NEWS_ID=1106">AWStats Hack</a> - Discussion regarding a hack of awstats that over-writes your index.php files. Only for dynamic installations and in versions previous than 6.4.</li>
+<li><a href="http://awstats.sourceforge.net/docs/awstats_config.html">AWStats Configuration</a> - List of configuration directives with instructions. Easier on the eyes than what's in the config files.</li>
+</ul>

@@ -1,0 +1,111 @@
+<div><strong>WARNING: POSSIBLE OUTDATED INFORMATION!</strong><br/>DreamHost does not directly support any of the features described on this page and is not responsible for keeping this content updated or accurate. Use at your own risk! <br/>There may be additional information on the <a href="http://wiki.dreamhost.com/Talk:Gitolite" title="Talk:Gitolite">talk page</a>.</div>
+<div>
+<table>
+<tbody>
+<tr>
+<td><strong>The instructions provided in this article or section are considered advanced.</strong><br/>
+<p>You are expected to be knowledgeable in the UNIX shell.<br/><em>Support for these instructions is <strong>not available</strong> from DreamHost tech support.</em><br/><strong><em>Server changes performed by DreamHost may break your modifications. You, as the user, are responsible for troubleshooting and resolving issues with your customizations.</em></strong> <strong><em><br/></em></strong></p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="toc" id="toc">
+<div id="toctitle">
+<h2>Contents</h2>
+<span class="toctoggle"> [<a href="http://wiki.dreamhost.com/Gitolite" id="togglelink">hide</a>] </span></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="http://wiki.dreamhost.com/Gitolite#Git_with_Gitolite"><span class="tocnumber">1</span> <span class="toctext">Git with Gitolite</span></a></li>
+<li class="toclevel-1 tocsection-2"><a href="http://wiki.dreamhost.com/Gitolite#Pre-Requisites"><span class="tocnumber">2</span> <span class="toctext">Pre-Requisites</span></a></li>
+<li class="toclevel-1 tocsection-3"><a href="http://wiki.dreamhost.com/Gitolite#Installation"><span class="tocnumber">3</span> <span class="toctext">Installation</span></a></li>
+<li class="toclevel-1 tocsection-4"><a href="http://wiki.dreamhost.com/Gitolite#Admistration"><span class="tocnumber">4</span> <span class="toctext">Admistration</span></a>
+<ul>
+<li class="toclevel-2 tocsection-5"><a href="http://wiki.dreamhost.com/Gitolite#Add_Users"><span class="tocnumber">4.1</span> <span class="toctext">Add Users</span></a></li>
+<li class="toclevel-2 tocsection-6"><a href="http://wiki.dreamhost.com/Gitolite#Add_Repos"><span class="tocnumber">4.2</span> <span class="toctext">Add Repos</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-7"><a href="http://wiki.dreamhost.com/Gitolite#Alternatives"><span class="tocnumber">5</span> <span class="toctext">Alternatives</span></a></li>
+<li class="toclevel-1 tocsection-8"><a href="http://wiki.dreamhost.com/Gitolite#References"><span class="tocnumber">6</span> <span class="toctext">References</span></a></li>
+</ul>
+</div>
+<h2><span id="Git_with_Gitolite">Git with Gitolite</span></h2>
+<p><a href="http://wiki.dreamhost.com/Git" title="Git">Git</a> does not come with any access control out of the box. If you know a URL for a git repository, you can clone and commit to it. Gitolite serves to fill in this gap and provide fine grained access control to git repositories.</p>
+<h2><span id="Pre-Requisites">Pre-Requisites</span></h2>
+<p>This guide assumes that you are using a recent version of linux.</p>
+<p>Before you begin you will need the following:</p>
+<ul>
+<li>A user account on Dreamhost dedicated to gitolite.
+<ul>
+<li>This account will be used to access the git repo and nothing else</li>
+<li>After installation you will NOT be able to log in normally for this account. Either log in under a different account and the su, or run ssh with the "-o PubkeyAuthentication=no" or "-o preferredauthentications=password" option.</li>
+</ul>
+</li>
+<li>SSH installed on your local machine</li>
+<li>SSH keys generated for your local machine
+<ul>
+<li>See <a href="http://wiki.dreamhost.com/SSH" title="SSH">SSH</a> for more information</li>
+<li><strong>NOTE</strong>: Do NOT add your RSA public key to .ssh/authorized_keys on the server. Use a password to log in. Adding the public key will break things. Just trust us on this.</li>
+</ul>
+</li>
+</ul>
+<h2><span id="Installation">Installation</span></h2>
+<p>Below is an overview of <a href="http://sitaramc.github.com/gitolite/pictures.html">these directions.</a></p>
+<ol>
+<li>Copy your public key to the server as "git-admin-name.pub". The name chosen here can be anything, but it will be the name of your git admin.</li>
+<li>Log into the server.</li>
+<li>Ensure that $HOME/bin is in your path. If it isn't, fiddle with the appropriate rc file for your shell to add it. This snippit will take care of it in bash: <code>echo "export PATH=$HOME/bin:$PATH" &gt;&gt; .bashrc; source .bashrc</code></li>
+<li>Run the following commands, replacing git-admin-name.pub with path of your copied public key file:</li>
+</ol>
+<pre>   cd $HOME
+   git clone <a href="git://github.com/sitaramc/gitolite">git://github.com/sitaramc/gitolite</a>
+   gitolite/install -ln
+   gitolite setup -pk git-admin-name.pub
+</pre>
+<p>Gitolite is now installed. You can remove the git-admin-name.pub file if desired.</p>
+<h2><span id="Admistration">Admistration</span></h2>
+<p>Gitolite administration is NEVER done on the server itself. It is done by cloning the special gitolite-admin repo, making changes, and pushing the changes back to the server.</p>
+<p>To clone the gitolite-admin repo:</p>
+<pre>   git clone username@exampleserver.com:gitolite-admin
+</pre>
+<h3><span id="Add_Users">Add Users</span></h3>
+<ol>
+<li>Obtain public keys from each user.</li>
+<li>Rename each received key file to the name of the user, with a ".pub" at the end.</li>
+<li>Copy it into keydir/ in the gitolite-admin repo you cloned.</li>
+<li>Commit and push the repo:</li>
+</ol>
+<pre>   git add keydir
+   git commit
+   git push
+</pre>
+<p>You do NOT need to add users as real (Unix) users. You do NOT add their keys directly anywhere on the server; you do it by cloning, adding keys, and pushing.</p>
+<h3><span id="Add_Repos">Add Repos</span></h3>
+<ol>
+<li>Edit conf/gitolite.conf in the gitolite-admin repo.</li>
+<li>Add repo paragraphs (example below) and save the file.</li>
+<li>Commit and push the gitolite-admin repo</li>
+</ol>
+<pre>   git add conf/gitolite.conf
+   git commit
+   git push
+</pre>
+<p>You do NOT add the repos directly anywhere on the server; you do it by cloning, adding keys, and pushing.</p>
+<p>Example repo paragraph:</p>
+<pre>   repo foo
+       RW+     =   alice
+       RW      =   bob
+</pre>
+<h2><span id="Alternatives">Alternatives</span></h2>
+<ul>
+<li><a href="http://wiki.dreamhost.com/Gitosis" title="Gitosis">Gitosis</a> (<strong>NOTE: this project is no longer undergoing maintenance</strong>)</li>
+<li><a class="mw-redirect" href="http://wiki.dreamhost.com/Gitorious" title="Gitorious">Gitorious</a> (Local Install)</li>
+<li><a href="http://gitorious.org/">Gitorious</a> (Hosted)</li>
+<li><a href="http://github.com/">Github</a></li>
+</ul>
+<h2><span id="References">References</span></h2>
+<ul>
+<li><a href="http://sitaramc.github.com/gitolite/">Official Documentation for Gitolite</a></li>
+<li><a href="http://sitaramc.github.com/gitolite/master-toc.html">Gitolit Documentation TOC</a></li>
+<li><a href="https://sites.google.com/site/senawario/home/gitolite-tutorial">Gitolit Tutorial</a></li>
+<li><a href="http://progit.org/book/ch4-8.html">Pro Git Chapter</a></li>
+</ul>
