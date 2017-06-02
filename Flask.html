@@ -1,0 +1,50 @@
+<div><strong>WARNING: POSSIBLE OUTDATED INFORMATION!</strong><br />DreamHost does not directly support any of the features described on this page and is not responsible for keeping this content updated or accurate. Use at your own risk! <br />There may be additional information on the <a title="Talk:Flask" href="http://wiki.dreamhost.com/Talk:Flask">talk page</a>.</div>
+<p><strong><a class="external text" href="http://flask.pocoo.org/" rel="nofollow">Flask</a> is a microframework for <a class="external text" href="http://www.python.org/" rel="nofollow">Python</a> based on <a class="external text" href="http://werkzeug.pocoo.org/" rel="nofollow">Werkzeug</a>, <a class="external text" href="http://jinja.pocoo.org/" rel="nofollow">Jinja 2</a> and good intentions. And before you ask: It's BSD licensed! Flask runs on Dreamhost via <a class="mw-redirect" title="Passenger WSGI" href="http://wiki.dreamhost.com/Passenger_WSGI">Passenger WSGI</a>.</strong></p>
+<h1><span id="Quickstart" class="mw-headline">Quickstart</span></h1>
+<ol>
+<li>Set up an environment using <a title="Python" href="http://wiki.dreamhost.com/Python#Virtualenv">virtualenv</a>
+<ul>
+<li>virtualenv-1.5.2/virtualenv.py --no-site-packages --distribute $HOME/flask_env</li>
+</ul>
+</li>
+<li>Activate it and install Flask
+<ul>
+<li>cd flask_env</li>
+<li>source bin/activate</li>
+<li>easy_install pip</li>
+<li>pip install Flask</li>
+</ul>
+</li>
+<li>Use the Dreamhost Control Panel to create a Passenger WSGI domain inside of your virtualenv
+<ul>
+<li>Web directory: /home/username/flask_env/public</li>
+<li>Passenger (Ruby/Python apps only): Yes!</li>
+</ul>
+</li>
+<li>Put your Flask site inside of the virtualenv, but not inside of the public dir
+<ul>
+<li>cd $HOME/flask_env</li>
+<li>mkdir mysite</li>
+</ul>
+</li>
+<li>Put a passenger_wsgi.py file inside of the virtualenv.</li>
+</ol>
+<h1><span id="Example_passenger_wsgi.py" class="mw-headline">Example passenger_wsgi.py</span></h1>
+<pre>import sys, os
+INTERP = os.path.join(os.environ['HOME'], 'flask_env', 'bin', 'python')
+if sys.executable != INTERP:
+    os.execl(INTERP, INTERP, *sys.argv)
+sys.path.append(os.getcwd())
+from mysite import app as application
+
+# Uncomment next two lines to enable debugging
+# from werkzeug.debug import DebuggedApplication
+# application = DebuggedApplication(application, evalex=True)
+</pre>
+<h1><span id="Refresh_After_Changes" class="mw-headline">Refresh After Changes</span></h1>
+<p>To force a refresh of your site after making changes, touch restart.txt:</p>
+<ul>
+<li>cd $HOME/flask_env</li>
+<li>mkdir tmp</li>
+<li>touch tmp/restart.txt</li>
+</ul>

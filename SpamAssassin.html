@@ -1,0 +1,283 @@
+<div style="background-color: #fee; margin: 1em; padding: 10px; border: 1px solid #aaa; text-align: center;"><strong>WARNING: POSSIBLE OUTDATED INFORMATION!</strong><br /><span style="font-size: 90%;">DreamHost does not directly support any of the features described on this page and is not responsible for keeping this content updated or accurate. Use at your own risk! <br />There may be additional information on the <a title="Talk:SpamAssassin" href="http://wiki.dreamhost.com/Talk:SpamAssassin"> talk page</a>.</span></div>
+<p>For current information on email filters supported by DreamHost, please view the following links:</p>
+<ul>
+<li><a title="Message Filters" href="http://wiki.dreamhost.com/Message_Filters">Message Filters</a></li>
+<li><a title="Anti-spam" href="http://wiki.dreamhost.com/Anti-spam">Anti-spam</a></li>
+<li><a title="Spam" href="http://wiki.dreamhost.com/Spam">Spam</a></li>
+</ul>
+<div>
+<table style="text-align: center; background-color: #fee; border: 1px solid #AAA; padding: 0px; margin: 0 auto 2em auto; width: 80%;">
+<tbody>
+<tr>
+<td><strong>WARNING</strong><br />
+<p><span style="font-size: 90%;"><strong>This no longer works due to a system change as of April, 2008.<br />New and existing email address may no longer be tied to a shell user if they are not already, though email may be <em>forwarded</em> to a shell account.<br />See <a class="mw-redirect" title="Shell-linked E-mail" href="http://wiki.dreamhost.com/Shell-linked_E-mail">Shell-linked E-mail</a> for details.</strong></span></p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div>
+<table style="text-align: center; background-color: #ffefef; border: 1px solid #FF9F9F; padding: 0px; margin: 0 auto 2em auto; width: 80%;">
+<tbody>
+<tr>
+<td><strong>The instructions provided in this article or section are considered advanced.</strong><br />
+<p>You are expected to be knowledgeable in the UNIX shell.<br /> <span style="font-size: 1.1em; text-decoration: blink;"><em>Support for these instructions is <strong>not available</strong> from DreamHost tech support.</em></span><br /> <span style="font-size: 1.1em;"><strong><em>Server changes performed by DreamHost may break your modifications. You, as the user, are responsible for troubleshooting and resolving issues with your customizations.</em></strong> </span><strong><em><br /></em></strong></p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="toc" class="toc">
+<div id="toctitle">
+<h2>Contents</h2>
+</div>
+</div>
+<div id="toc" class="toc">
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="http://wiki.dreamhost.com/SpamAssassin#Introduction"><span class="tocnumber">1</span> <span class="toctext">Introduction</span></a></li>
+<li class="toclevel-1 tocsection-2"><a href="http://wiki.dreamhost.com/SpamAssassin#DreamHost.27s_Junk_Mail_system"><span class="tocnumber">2</span> <span class="toctext">DreamHost's Junk Mail system</span></a></li>
+<li class="toclevel-1 tocsection-3"><a href="http://wiki.dreamhost.com/SpamAssassin#Using_SpamAssassin"><span class="tocnumber">3</span> <span class="toctext">Using SpamAssassin</span></a>
+<ul>
+<li class="toclevel-2 tocsection-4"><a href="http://wiki.dreamhost.com/SpamAssassin#.7E.2F.forward.postfix"><span class="tocnumber">3.1</span> <span class="toctext">~/.forward.postfix</span></a></li>
+<li class="toclevel-2 tocsection-5"><a href="http://wiki.dreamhost.com/SpamAssassin#.7E.2F.procmailrc"><span class="tocnumber">3.2</span> <span class="toctext">~/.procmailrc</span></a>
+<ul>
+<li class="toclevel-3 tocsection-6"><a href="http://wiki.dreamhost.com/SpamAssassin#Automatic_Sorting"><span class="tocnumber">3.2.1</span> <span class="toctext">Automatic Sorting</span></a></li>
+<li class="toclevel-3 tocsection-7"><a href="http://wiki.dreamhost.com/SpamAssassin#Shorcuts"><span class="tocnumber">3.2.2</span> <span class="toctext">Shorcuts</span></a></li>
+</ul>
+</li>
+<li class="toclevel-2 tocsection-8"><a href="http://wiki.dreamhost.com/SpamAssassin#.7E.2F.spamassassin.2Fuser_prefs"><span class="tocnumber">3.3</span> <span class="toctext">~/.spamassassin/user_prefs</span></a>
+<ul>
+<li class="toclevel-3 tocsection-9"><a href="http://wiki.dreamhost.com/SpamAssassin#trusted_networks"><span class="tocnumber">3.3.1</span> <span class="toctext">trusted_networks</span></a></li>
+<li class="toclevel-3 tocsection-10"><a href="http://wiki.dreamhost.com/SpamAssassin#rewrite_header"><span class="tocnumber">3.3.2</span> <span class="toctext">rewrite_header</span></a></li>
+</ul>
+</li>
+<li class="toclevel-2 tocsection-11"><a href="http://wiki.dreamhost.com/SpamAssassin#Bayes_Training"><span class="tocnumber">3.4</span> <span class="toctext">Bayes Training</span></a>
+<ul>
+<li class="toclevel-3 tocsection-12"><a href="http://wiki.dreamhost.com/SpamAssassin#Basic_Training"><span class="tocnumber">3.4.1</span> <span class="toctext">Basic Training</span></a></li>
+<li class="toclevel-3 tocsection-13"><a href="http://wiki.dreamhost.com/SpamAssassin#Automated_Training_Using_Cron"><span class="tocnumber">3.4.2</span> <span class="toctext">Automated Training Using Cron</span></a></li>
+<li class="toclevel-3 tocsection-14"><a href="http://wiki.dreamhost.com/SpamAssassin#Country_Training"><span class="tocnumber">3.4.3</span> <span class="toctext">Country Training</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-15"><a href="http://wiki.dreamhost.com/SpamAssassin#Installing_v3.1.0_into_your_account"><span class="tocnumber">4</span> <span class="toctext">Installing v3.1.0 into your account</span></a>
+<ul>
+<li class="toclevel-2 tocsection-16"><a href="http://wiki.dreamhost.com/SpamAssassin#adding_SA_for_all_the_domain.27s_mail_accounts"><span class="tocnumber">4.1</span> <span class="toctext">adding SA for all the domain's mail accounts</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-17"><a href="http://wiki.dreamhost.com/SpamAssassin#Notes"><span class="tocnumber">5</span> <span class="toctext">Notes</span></a>
+<ul>
+<li class="toclevel-2 tocsection-18"><a href="http://wiki.dreamhost.com/SpamAssassin#Determine_Your_SpamAssassin_Version"><span class="tocnumber">5.1</span> <span class="toctext">Determine Your SpamAssassin Version</span></a></li>
+</ul>
+</li>
+</ul>
+</div>
+<h2><span id="Introduction" class="mw-headline">Introduction</span></h2>
+<p><a class="external text" href="http://spamassassin.apache.org/" rel="nofollow">SpamAssassin</a> is one of the best spam filtering tools available, freely under the <a class="external text" href="http://www.apache.org/licenses" rel="nofollow">Apache license</a>.</p>
+<p>There are basically three different ways to take advantage of SpamAssassin within DreamHost's environment (Listed in order from easiest to advanced)</p>
+<ol>
+<li>Use DreamHost's <a class="mw-redirect" title="Junk Mail" href="http://wiki.dreamhost.com/Junk_Mail">Junk Mail</a> system
+<ul>
+<li>Easy setup via the DreamHost panel</li>
+<li>Maintained by DreamHost</li>
+<li>Spam can be reviewed only via webmail, or in IMAP client with IMAP filtering option</li>
+<li>Bayes rules (but no trainable Bayes db)</li>
+<li>Delivery delays have been noted</li>
+</ul>
+</li>
+<li>Run DreamHost's version of SpamAssassin on your assigned host
+<ul>
+<li>High level of control over spam scoring and routing</li>
+<li>Straightforward setup - some knowledge of shell commands is necessary</li>
+<li>DreamHost may (or may not) update the version of SpamAssassin on your server</li>
+<li>You can lose mail if you configure this wrong</li>
+</ul>
+</li>
+<li>Install a newer or customized version of SpamAssassin on your assigned host
+<ul>
+<li>Even higher level of control</li>
+<li>Run the latest version of SpamAssassin</li>
+<li>Setup is straightforward, but more involved</li>
+<li>DreamHost won't update - If your version has a security issue, you must patch/update it yourself.</li>
+<li>You can lose mail if you configure this wrong</li>
+</ul>
+</li>
+</ol>
+<p><br /> The version installed on DreamHost's mail servers usually lags behind the current version (3.1.7 as of October 25, 2006, versus DreamHost's v3.03 or so). Therefore, you have two options: either use the version provided by Dreamhost, or install the latest version into your account.</p>
+<p>NOTE: Custom versions are only recommended to be installed on a Private Server with courier enabled, so you can check the filtered mail on the command line. Forwarding mail back for IMAP checking is not supported either on shared or PS.</p>
+<p>Some portions of the following instructions may be prepared on a local PC and transferred to the server with <a title="SFTP" href="http://wiki.dreamhost.com/SFTP">SFTP</a>, but much must be done in the <a title="Shell" href="http://wiki.dreamhost.com/Shell">Shell</a>, using <a class="mw-redirect" title="Shell Commands" href="http://wiki.dreamhost.com/Shell_Commands">Shell Commands</a> with <a title="SSH" href="http://wiki.dreamhost.com/SSH">SSH</a>.</p>
+<h2><span id="DreamHost.27s_Junk_Mail_system" class="mw-headline">DreamHost's Junk Mail system</span></h2>
+<p>Basic SPAM filtering can be set up via the control panel. Instructions can be found here: <a class="mw-redirect" title="Junk Mail" href="http://wiki.dreamhost.com/Junk_Mail#Enabling_Junk_Filter">Junk_Mail#Enabling_Junk_Filter</a></p>
+<h2><span id="Using_SpamAssassin" class="mw-headline">Using SpamAssassin</span></h2>
+<p>By default, all your mail is delivered by a program called Postfix. To use Spam Assassin, you must first tell postfix to send mail to procmail (a mail processing program), and then configure procmail to use Spam Assassin. Sounds confusing? It's not.</p>
+<h3><span id=".7E.2F.forward.postfix" class="mw-headline">~/.forward.postfix</span></h3>
+<p>Create a file named <code>.forward.postfix</code> in your home directory (<code>/home/<em>username</em>/</code>) which contains the following line (<em>The quotes are important!</em>):</p>
+<pre>"|/usr/bin/procmail -t"
+</pre>
+<h3><span id=".7E.2F.procmailrc" class="mw-headline">~/.procmailrc</span></h3>
+<p>Create a file named <code>.procmailrc</code> in your home directory and type the following in it:</p>
+<pre># PROCMAIL ENVIRONMENT
+# Directory for storing procmail files
+PMDIR=$HOME/.procmail
+
+# Procmail log file
+LOGFILE=$PMDIR/log
+
+# Shell to use for recipes
+SHELL=/bin/sh
+
+# MAIL PROCESSING RECIPES
+# Pipe any messges under 512 K through spamassassin for scoring
+:0fw:spamassassin-lock
+* &lt; 524288
+| spamassassin -P
+</pre>
+<p><strong>Note:</strong> The option <code>-P</code> is not needed on Spam Assassin version 3 or greater. It 'is' needed for version 2. Some of the shell systems are running SpamAssassin 3.0.3, while others are not (See <a title="SpamAssassin" href="http://wiki.dreamhost.com/SpamAssassin#Determine_Your_SpamAssassin_Version">Determine Your SpamAssassin Version</a>).</p>
+<h4><span id="Automatic_Sorting" class="mw-headline">Automatic Sorting</span></h4>
+<p>If you want Procmail to automatically put messages that SpamAssassin identifies as spam in a specific folder (eg. a folder named "Spam"), add the following lines to the end of your <code>.procmailrc</code> file:</p>
+<pre># Dump spam messages in the spam folder
+:0
+* ^X-Spam-Status: Yes
+$HOME/Maildir/.Spam/
+</pre>
+<p>This identifies the mail header <code>X-Spam-Status</code> that SpamAssassin adds to spam messages, and then causes that mail to be placed in the .Spam/ folder. Examining some mail I receive through a university account, I also find that the <code>X-PMX-Spam</code> header can hold useful information:</p>
+<pre># Dump more spam messages in the spam folder
+:0
+* ^X-PMX-Spam: Gauge=XXXXXX
+$HOME/Maildir/.Spam/
+</pre>
+<p>To test that your rules are working, try setting a test subject, then sending yourself mail with that subject from another account. It should be delivered to your Spam folder:</p>
+<pre># Filtering test
+:0
+* ^Subject: SPAMTEST
+$HOME/Maildir/.Spam/
+</pre>
+<h4><span id="Shorcuts" class="mw-headline">Shorcuts</span></h4>
+<p>You may find it tedious to update the Spam folder location in the above recipes. To avoid this, add</p>
+<pre>SPAMDIR=$HOME/Maildir/.Spam/
+</pre>
+<p>to the top half of the file, then filter your mail to <code>$SPAMDIR</code>:</p>
+<pre>:0
+* ^X-Spam-Status: Yes
+$SPAMDIR
+</pre>
+<p>Using these recipes, I don't have to use <code>rewrite_header</code> in my <code>user_prefs</code> file, or use any filters in my mail client.</p>
+<h3><span id=".7E.2F.spamassassin.2Fuser_prefs" class="mw-headline">~/.spamassassin/user_prefs</span></h3>
+<p>Spamassassin's default settings are pretty good, but there are a few changes that you can make which will increase your spam capture rate considerably. Global settings are stored in <code>/etc/spamassassin/local.cf</code>. As of this writing on my server, local.cf is basically empty (comments only). Your personal preferences are stored in <code>~/.spamassassin/user_prefs</code>. If you have not had any mail delivered, you may have to create this folder and file.</p>
+<p>System documentation on SpamAssassin will help with editing the rules. This documentation is available with the commands:</p>
+<pre>$ man spamassassin
+$ man Mail::SpamAssassin::Conf
+</pre>
+<h4><span id="trusted_networks" class="mw-headline">trusted_networks</span></h4>
+<p>By default, Spamassassin is a bit too trusting and will score down e-mails with the "ALL_TRUSTED" test; the result is that more spam gets through. You can use the <code>trusted_networks</code> configuration setting to tell Spam Assassin which networks are to be trusted. In a terminal, type</p>
+<pre>$ dig spf.dreamhosters.com txt
+</pre>
+<p>to get the latest list of trusted DreamHost mail servers, then add the following lines (or similar) to your <code>user_prefs</code> file:</p>
+<pre>trusted_networks  66.33.192.0/19 66.201.54.64/26 205.196.208.0/20
+trusted_networks  64.111.96.0//18 208.113.128.0/19
+</pre>
+<p>perhaps via e.g.,</p>
+<pre>$ dig spf.dreamhosters.com txt|perl -lnwe 'push @m,(/ip4:(\S+)/g);END{print "trusted_networks @m"}'
+trusted_networks 66.33.192.0/19 66.201.54.64/26 205.196.208.0/20 64.111.96.0//18 208.113.128.0/17 67.205.0.0/19
+</pre>
+<h4><span id="rewrite_header" class="mw-headline">rewrite_header</span></h4>
+<p>If you use filters in your mail client (eg. Thunderbird or Evolution) to sort spam, it may be helpful to prepend "[SPAM]" to the subject of add. Add the following line (or similar) to your <code>user_prefs</code> file:</p>
+<pre>rewrite_header subject [SPAM]
+</pre>
+<p>... or use any other text you'd like.</p>
+<h3><span id="Bayes_Training" class="mw-headline">Bayes Training</span></h3>
+<p><a class="external text" href="http://en.wikipedia.org/wiki/Bayesian_spam_filtering" rel="nofollow">Bayesian filtering</a> allows SpamAssassin to learn how to recognize spam messages. To do so, it has to be 'trained' with some messages that are known to be spam and ham (not spam).</p>
+<p>If you want to use the <a class="external text" href="http://wiki.apache.org/spamassassin/BayesInSpamAssassin" rel="nofollow">Bayes</a> tests:</p>
+<ol>
+<li>you must be running SpamAssassin 3.0 or newer (See <a title="SpamAssassin" href="http://wiki.dreamhost.com/SpamAssassin#Determine_Your_SpamAssassin_Version">Determine Your SpamAssassin Version</a>).</li>
+<li>you can only train using full SHELL USER accounts (the m######## accounts exist only on DreamHost's mail server, which you do not have access to from the shell)</li>
+<li>you must first train the database with at least 200 spam email messages AND 200 ham email messages (non-spam messages).</li>
+</ol>
+<h4><span id="Basic_Training" class="mw-headline">Basic Training</span></h4>
+<p>Sort some existing e-mail into spam and non-spam folders. Let's assume you have a sub-folder of your INBOX called "Spam", another subfolder called "Ham", and some other folders (with no spam in them). Find out where the utility <code>sa-learn</code> is. If you are using DreamHost's version of SpamAssassin, this will probably be something like <code>/usr/bin/sa-learn</code>. If you installed your own version, it may be elsewhere. In a terminal, type:</p>
+<pre>$ which sa-learn
+</pre>
+<p>Train using a folder full of spam. In a terminal, type (replace <code>/usr/bin/sa-learn</code> with the path you determined above. Capitals are important!):</p>
+<pre>$ /usr/bin/sa-learn --no-sync --spam ~/Maildir/.Spam/cur
+</pre>
+<p>Train using a single ham folder:</p>
+<pre>$ /usr/bin/sa-learn --no-sync --ham ~/Maildir/.Ham/cur
+</pre>
+<p>Train using many ham folders. Typically, all your folders, with the exception of .Spam, are containers for non-spam email. To train using these as ham:</p>
+<pre>$ /usr/bin/sa-learn --no-sync --ham `find ~/Maildir -name cur|grep -v .Spam`
+</pre>
+<p>Synchronize (save) the learned rules:</p>
+<pre>$ /usr/bin/sa-learn --sync
+</pre>
+<p>You can also view the rules that SpamAssassin has learned by typing</p>
+<pre>$ /usr/bin/sa-learn --dump magic
+</pre>
+<h4><span id="Automated_Training_Using_Cron" class="mw-headline">Automated Training Using Cron</span></h4>
+<p>Create a file (I use <code>~/.spamassassin/learn-spam.sh</code>) using some of the above rules:</p>
+<pre>#!/bin/bash
+# Automated Bayesian Training
+
+# Train ham (ignore outgoing mail &amp; deleted mail that may be spam or ham)
+# Do each directory in turn so that procwatch doesn't kill sa-learn
+#
+find ~/Maildir -name cur | egrep -v '(.Spam)|(.Trash)|(.Sent)' |while read i; do
+ /usr/bin/sa-learn --no-sync --ham "$i"
+done
+
+# Train spam
+/usr/bin/sa-learn --no-sync --spam ~/Maildir/.Spam/cur
+
+# Save
+/usr/bin/sa-learn --sync
+
+# Delete learned spam
+mv ~/Maildir/.Spam/cur/* ~/Maildir/.Trash/cur
+</pre>
+<p>Make the script executable:</p>
+<pre> $ chmod 700 ~/.spamassassin/learn-spam.sh</pre>
+<p>Add a job to your <a title="Crontab" href="http://wiki.dreamhost.com/Crontab">Crontab</a> that runs <code>~/.spamassassin/learn-spam.sh</code> daily or less. More frequently may be problematic with large mailboxes.</p>
+<p>Using the DBS Block List (<code>trusted_domains</code>) tests and the Bayes tests, I've found SpamAssassin to be incredibly accurate at detecting both spam and ham.</p>
+<h4><span id="Country_Training" class="mw-headline">Country Training</span></h4>
+<p>SpamAssassin comes with a plugin to add information to the headers of messages about which country the messages were relayed through. If this plugin is activated and enough spam messages are relayed through certain countries, the Bayes feature will begin to detect this as spam.</p>
+<p>To enable the plugin:</p>
+<ol>
+<li>Use CPAN to install IP::Country::Fast as above.</li>
+<li>Uncomment the 'loadplugin' line in the ~/saetc/mail/spamassassin/init.pre file for Mail::SpamAssassin::Plugin::RelayCountry.</li>
+</ol>
+<p>That's it. Now you can examine the headers of your new mail messages to see if the relay countries are added to the headers. See <a class="external free" href="http://wiki.apache.org/spamassassin/RelayCountryPlugin" rel="nofollow">http://wiki.apache.org/spamassassin/RelayCountryPlugin</a> for more information.</p>
+<h2><span id="Installing_v3.1.0_into_your_account" class="mw-headline">Installing v3.1.0 into your account</span></h2>
+<p>There is a good <a class="external text" href="http://www.unsaturated.com/projects/spamassassin-for-dreamhost/" rel="nofollow">guide</a> available, but it doesn't include instructions for installing the Perl CPAN modules necessary for the DNS-based tests to succeed (this is necessary because the DreamHost version of the needed CPAN modules are too old). The instructions here for installing CPAN modules don't seem sufficent. These <a class="external text" href="http://www.dev411.com/wiki/Using_CPAN" rel="nofollow">instructions</a> were quite helpful.</p>
+<p>After following the guide, you will also need to follow these steps for the DNS-based tests to succeed:</p>
+<ol>
+<li><a title="SSH" href="http://wiki.dreamhost.com/SSH">SSH</a> in to your account. (Use the same account you installed SpamAssassin to, the one where your maildir is.)</li>
+<li>Run <em>cpan</em>, then type <em>exit</em>. That should create <em>~/.cpan/CPAN/MyConfig.pm</em>.</li>
+<li>Open <em>~/.cpan/CPAN/MyConfig.pm</em> in your text editor (I like <em>nano</em>). Find the <em>makepl_arg</em> variable, and add <em>PREFIX=/home/your_username</em> to it, with a space separating any other arguments. Save and quit. The line should look like: '<em>makepl_arg' =&gt; q[PREFIX=/home/username INSTALLEDIRS=site],</em></li>
+<li>Run <em>export PERL5LIB=$HOME/lib/perl/5.8.4/:$HOME/share/perl/5.8.4/</em> so that cpan can find modules that it installs (when checking dependencies)</li>
+<li>Run <em>cpan</em>, and then install the following modules by typing <em>install modulename</em> (These three modules may want to install additional modules to support these; in my case I answered yes to everything.):
+<ul>
+<li><em>Net::IP</em></li>
+<li><em>Net::DNS</em></li>
+<li><em>Mail::DomainKeys</em></li>
+<li><em>Crypt::OpenSSL::Random</em></li>
+<li><em>Crypt::OpenSSL::RSA</em></li>
+</ul>
+</li>
+<li><em>exit</em> CPAN when you've finished installing all of the modules.</li>
+<li><em>ln -s ~/lib/perl/5.8.4/Net/* ~/share/perl/5.8.4/Net</em></li>
+</ol>
+<p>Now send yourself some test e-mails, preferably spams you still have. Once received, look at the headers to check their scores and see which tests were run. On most spams, you should see DNS-based tests like URIBL, SpamCop, etc. being run, and giving your spams quite high scores.</p>
+<p>If things don't go quite right, or even if they do, you may want to look at <em>~/.procmail/log</em> and see if SpamAssassin is reporting any problems. I believe these instructions are correct, but I could have left out a few things, so you may need to install some additional modules that I forgot.</p>
+<p>You can incorporate <a title="ClamAV" href="http://wiki.dreamhost.com/ClamAV">ClamAV</a> into your SpamAssassin installation with <a class="external text" href="http://drivel.com/clamassassin/" rel="nofollow">Clamassassin</a> (A <a class="external text" href="http://jhcore.com/2007/03/10/clamav-email-checking-on-a-shared-host/" rel="nofollow">guide</a> for installing ClamAV and Clamassassin on DreamHost).</p>
+<h3><span id="adding_SA_for_all_the_domain.27s_mail_accounts" class="mw-headline">adding SA for all the domain's mail accounts</span></h3>
+<p><a class="external text" href="http://discussion.dreamhost.com/showthreaded.pl?Cat=&amp;Board=forum_troubleshooting&amp;Number=60396" rel="nofollow">In the forum</a>, user <em>stoneyb</em> writes: "I have SA set up for a whole domain (twice). Install it into the domain home, the one with the web sites, using the personal install instructions, and have the users in the domain use the full path to the domain's SA in their procmailrc files. This works quite well for me."</p>
+<p>To be more specific:</p>
+<p>Create the ~/procmail/spam.rc file, as instructed in the guide referenced above, but when you reach this line:</p>
+<p>| $HOME/sausr/bin/spamassassin</p>
+<p>Remove the variable $HOME, substituting the full path to the domain you installed it to, ie:</p>
+<p>| /home/myaccountwithcustomsa/sausr/bin/spamassassin</p>
+<p>You may want to actually try running "/home/myaccountwithcustomsa/sausr/bin/spamassassin -V" from the account whose spam.rc file you're modifying, just to ensure you have the appropriate permissions, but it should work as long as both accounts are under the Dreamhost account.</p>
+<h2><span id="Notes" class="mw-headline">Notes</span></h2>
+<h3><span id="Determine_Your_SpamAssassin_Version" class="mw-headline">Determine Your SpamAssassin Version</span></h3>
+<p>In a terminal, type</p>
+<pre>$ spamassassin -V
+</pre>

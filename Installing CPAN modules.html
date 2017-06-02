@@ -1,0 +1,52 @@
+<div><strong>WARNING: POSSIBLE OUTDATED INFORMATION!</strong><br />DreamHost does not directly support any of the features described on this page and is not responsible for keeping this content updated or accurate. Use at your own risk! <br />There may be additional information on the <a class="new" title="Talk:InstallCpanModules (page does not exist)" href="http://wiki.dreamhost.com/index.php?title=Talk:InstallCpanModules&amp;action=edit&amp;redlink=1">talk page</a>.</div>
+<p>This is my contribution after several frustrating hours of trying to install CPAN modules on Dreamhost servers. Thanks to <a title="User:Andrew F" href="http://wiki.dreamhost.com/User:Andrew_F">Andrew</a> for reviewing this page and simplifying the heck out of the instructions.</p>
+<div id="toc" class="toc">
+<div id="toctitle">
+<h2>Contents</h2>
+<span class="toctoggle"> [<a id="togglelink" href="http://wiki.dreamhost.com/InstallCpanModules">hide</a>] </span></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="http://wiki.dreamhost.com/InstallCpanModules#Basics"><span class="tocnumber">1</span> <span class="toctext">Basics</span></a></li>
+<li class="toclevel-1 tocsection-2"><a href="http://wiki.dreamhost.com/InstallCpanModules#Update_your_profile"><span class="tocnumber">2</span> <span class="toctext">Update your profile</span></a></li>
+<li class="toclevel-1 tocsection-3"><a href="http://wiki.dreamhost.com/InstallCpanModules#Update_your_current_session"><span class="tocnumber">3</span> <span class="toctext">Update your current session</span></a></li>
+<li class="toclevel-1 tocsection-4"><a href="http://wiki.dreamhost.com/InstallCpanModules#Start_clean"><span class="tocnumber">4</span> <span class="toctext">Start clean</span></a></li>
+<li class="toclevel-1 tocsection-5"><a href="http://wiki.dreamhost.com/InstallCpanModules#Install_cpanminus"><span class="tocnumber">5</span> <span class="toctext">Install cpanminus</span></a></li>
+<li class="toclevel-1 tocsection-6"><a href="http://wiki.dreamhost.com/InstallCpanModules#Test_your_install"><span class="tocnumber">6</span> <span class="toctext">Test your install</span></a></li>
+<li class="toclevel-1 tocsection-7"><a href="http://wiki.dreamhost.com/InstallCpanModules#Consider_installing_modules_with_tests_enabled"><span class="tocnumber">7</span> <span class="toctext">Consider installing modules with tests enabled</span></a></li>
+<li class="toclevel-1 tocsection-8"><a href="http://wiki.dreamhost.com/InstallCpanModules#Install_some_modules"><span class="tocnumber">8</span> <span class="toctext">Install some modules</span></a></li>
+</ul>
+</div>
+<h2><span id="Basics" class="mw-headline">Basics</span></h2>
+<p>The basic idea is to use <a class="external text" href="http://search.cpan.org/~miyagawa/App-cpanminus-1.4002/bin/cpanm" rel="nofollow">cpanminus</a> to install all modules which is <em>much</em> easier to use than cpan. We set it up to not run the tests when installing modules. While this is potentially unsafe, it means that you typically don't have to deal with the <strong>Killed</strong> message if your processes use up too much CPU and/or memory.</p>
+<h2><span id="Update_your_profile" class="mw-headline">Update your profile</span></h2>
+<p>Update your <em>.profile</em> or <em>.bashrc</em> files to include the following lines (assuming your local directory is <em>perl5</em> under your home directory, change the first line if you want it to be called something else)</p>
+<pre>export PERLMOD=perl5 # name of directory under home where perl modules are installed
+export PATH="$PATH:$HOME/$PERLMOD/bin"
+export PERL5LIB="$HOME/$PERLMOD/lib/perl5"
+export PERL_CPANM_OPT="--local-lib=$HOME/$PERLMOD --notest"
+</pre>
+<h2><span id="Update_your_current_session" class="mw-headline">Update your current session</span></h2>
+<pre>cd 
+source .bashrc # or .profile if that is the file you updated
+echo $PERL_CPANM_OPT # should show the correct value
+</pre>
+<h2><span id="Start_clean" class="mw-headline">Start clean</span></h2>
+<p>If you have had prior failed attempts to install local modules using cpan or cpanminus, it is better you start clean. If not, just skip this section.</p>
+<pre>cd $HOME
+rm -rf .cpan/ .cpanm/ perl5/ # assuming perl5/ is the local directory that you set up
+</pre>
+<h2><span id="Install_cpanminus" class="mw-headline">Install cpanminus</span></h2>
+<pre>curl -L http://cpanmin.us | perl - --self-upgrade
+</pre>
+<p>The code above installs <em>cpanminus</em> for local install of CPAN modules under <em>~/${PERLMOD}</em> (<em>~/perl5</em> in the above example)</p>
+<h2><span id="Test_your_install" class="mw-headline">Test your install</span></h2>
+<p>Install a module from CPAN and verify that it installs correctly. I'm using the <em>Acme</em> module as an example.</p>
+<pre>cpanm Acme # should install Acme under ~/perl5 (or whatever local directory you are using)
+perl -MAcme -e0 # should return without errors
+</pre>
+<h2><span id="Consider_installing_modules_with_tests_enabled" class="mw-headline">Consider installing modules with tests enabled</span></h2>
+<p>If you want to install packages and run the tests, change your <em>.profile</em> or <em>.bashrc</em> for the line that sets cpanminus options and remove the <em>--notest</em> option</p>
+<pre>export PERL_CPANM_OPT="--local-lib=$HOME/$PERLMOD "
+</pre>
+<p><strong>Note:</strong> This should not result in the <strong>Killed</strong> message since cpanminus installs are not subject to being killed.</p>
+<h2><span id="Install_some_modules" class="mw-headline">Install some modules</span></h2>
+<pre>cpanm Catalyst Catalyst::Devel # etc.</pre>
