@@ -1,37 +1,25 @@
-<body role="document">
 <div class="document">
 <div class="documentwrapper">
-<div class="body" role="main">
+<div class="body">
 <div id="how-to-remove-multi-part-upload-mpu-data-and-free-up-bucket-space">
-
 <div id="overview">
 <h2>Overview</h2>
-<p>For larger file uploads, most S3 clients make use of the multi-part-upload
-(MPU) feature of the S3 protocol. This allows the client to break large files
-into smaller chunks, upload these smaller chunks, and re-try any chunks that
-failed without having to start over.</p>
-<p>Most S3 clients are good about cleaning up MPU data that it no longer needs,
-but if a connection drops or the client crashes, it could leave this data
-behind. The data is generally not used again, and silently uses additional
-disk space on your account until it is removed. It is worthwhile to check for
-and remove this MPU data if disk storage costs appear larger than expected.</p>
-<p>Most S3 clients don’t have a MPU data purge feature, so in the following example
-python and the boto library is used to check for and clean up this data.</p>
+<p>For larger file uploads, most S3 clients make use of the multi-part-upload (MPU) feature of the S3 protocol. This allows the client to break large files into smaller chunks, upload these smaller chunks, and re-try any chunks that failed without having to start over.</p>
+<p>Most S3 clients are good about cleaning up MPU data that it no longer needs, but if a connection drops or the client crashes, it could leave this data behind. The data is generally not used again, and silently uses additional disk space on your account until it is removed. It is worthwhile to check for and remove this MPU data if disk storage costs appear larger than expected.</p>
+<p>Most S3 clients don’t have a MPU data purge feature, so in the following example python and the boto library is used to check for and clean up this data.</p>
 </div>
 <div id="using-the-clean-up-script">
 <h2>Using the clean-up script</h2>
-<p>This script is an all-in-one solution that prompts you for the access and
-secret key, and then iterates over all buckets checking for MPU data. If
-any is found, it displays the file name, the date it was uploaded, and its
-size, and then prompts you if it should be deleted.</p>
+<p>This script is an all-in-one solution that prompts you for the access and secret key, and then iterates over all buckets checking for MPU data. If any is found, it displays the file name, the date it was uploaded, and its size, and then prompts you if it should be deleted.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Once the MPU data is deleted, it cannot be recovered. Please be sure you
-don’t need the data before removing it!</p>
+<p class="last">Once the MPU data is deleted, it cannot be recovered. Please be sure you don’t need the data before removing it!</p>
 </div>
 <div id="clean-up-script-code">
 <h3>Clean-up script code</h3>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/python</span>
+<div class="highlight-python">
+<div class="highlight">
+<pre><span class="ch">#!/usr/bin/python</span>
 
 <span class="kn">import</span> <span class="nn">boto</span>
 
@@ -62,12 +50,20 @@ don’t need the data before removing it!</p>
         <span class="k">print</span> <span class="s1">'MPU data deleted!'</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">print</span> <span class="s1">'No changes made to bucket.'</span>
-</pre></div>
+</pre>
+</div>
+</div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If path-style format is required (for example if your bucket was accidentally created with uppercase characters), you need to add `calling_format=boto.s3.connection.OrdinaryCallingFormat()` to the boto.connect_s3 call. Example: `c = boto.connect_s3(accesskey, secretkey, host='objects-us-west-1.dream.io', calling_format=boto.s3.connection.OrdinaryCallingFormat())`</p>
 </div>
 </div>
 <div id="clean-up-script-example-output">
 <h3>Clean-up script example output</h3>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>Access Key:  ACCESS KEY
+<div class="code highlight-python">
+<div class="highlight">
+<pre>Access Key:  ACCESS KEY
 Secret Key:  SECRET KEY
 
 Bucket: homemovies
@@ -91,20 +87,17 @@ MPU data deleted!
 Bucket: workbackup
 Total: 0.00GB
 No changes made to bucket.
-</pre></div>
+</pre>
 </div>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="clearer"></div>
 </div>
-<div class="footer">
-</div>
+<div class="clearer"> </div>
+<div class="footer"> </div>
 <!--DreamObjects Button-->
 <div class="dream-sign-up">
 <h2>Start Storing Your Data Today!</h2>
-<a href="https://www.dreamhost.com/cloud/storage/">Sign Up for DreamObjects</a>
-</div>
-</body>
+<a href="https://www.dreamhost.com/cloud/storage/">Sign Up for DreamObjects</a></div>
