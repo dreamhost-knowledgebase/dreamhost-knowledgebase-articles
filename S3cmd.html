@@ -1,0 +1,184 @@
+<body role="document">
+<div class="document">
+<div class="documentwrapper">
+<div class="body" role="main">
+<div id="how-to-use-s3cmd-with-dreamobjects">
+
+<div id="overview">
+<h2>Overview</h2>
+<p><a class="reference external" href="http://s3tools.org/s3cmd">S3cmd</a> is a command-line tool for
+uploading, retrieving, and managing data in cloud storage service
+providers that use the S3 protocol such as DreamHost DreamObjects. It
+is ideal for scripts, automated backups triggered from cron, and so on.</p>
+<p>The following instructions help you install and configure s3cmd to work with
+DreamObjects.</p>
+</div>
+<div id="installing-s3cmd">
+<h2>Installing S3cmd</h2>
+<p>These instructions were performed with <strong>s3cmd v1.6.1</strong>. If you’d like to
+install a different version, you’ll need to modify the file names
+appropriately.</p>
+<ol class="arabic">
+<li><p class="first">Log in to your account using SSH.</p>
+</li>
+<li><p class="first">Create a bin directory in your home directory if you don’t have one
+already.</p>
+<blockquote>
+<div><div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@localhost]$</span> mkdir ~/bin
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">Download the <a class="reference external" href="https://github.com/s3tools/s3cmd/releases">latest release of s3cmd from GitHub</a>.</p>
+<blockquote>
+<div><div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@localhost]$</span> curl -O -L https://github.com/s3tools/s3cmd/archive/v1.6.1.tar.gz
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">Untar the file.</p>
+<blockquote>
+<div><div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@localhost]$</span> tar xzf v1.6.1.tar.gz
+</pre></div>
+</div>
+<p>You should now have a directory called <cite>s3cmd-1.6.1</cite>.</p>
+</div></blockquote>
+</li>
+<li><p class="first">Change into that directory</p>
+<blockquote>
+<div><div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@localhost]$</span> <span class="nb">cd</span> s3cmd-1.6.1
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">Copy the s3cmd executable and S3 folder into the bin directory created
+earlier</p>
+<blockquote>
+<div><div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@localhost]$</span> cp -R s3cmd S3 ~/bin
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">Add the bin directory to your path so that you can execute the newly
+installed script.</p>
+<blockquote>
+<div><div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This assumes you’re using the default bash shell. If you’re
+using a different shell, you’ll have to set the path in
+the proper place.</p>
+</div>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@localhost]$</span> <span class="nb">echo</span> <span class="s2">"export PATH=</span><span class="nv">$HOME</span><span class="s2">/bin:</span><span class="nv">$PATH</span><span class="s2">"</span> &gt;&gt; ~/.bashrc
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">Execute your bash profile for it to take effect</p>
+<blockquote>
+<div><div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@localhost]$</span> . ~/.bashrc
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ol>
+</div>
+<div id="configuring-s3cmd">
+<h2>Configuring S3cmd</h2>
+<p>Instead of following the instructions on the s3cmd site to configure it, just
+do the following:</p>
+<ol class="arabic simple">
+<li>Create a file in your home directory called .s3cfg (note the leading “dot”)</li>
+<li>Copy the content of the code block below into it.</li>
+<li>Include your access key and secret key from the <a class="reference external" href="https://panel.dreamhost.com/index.cgi?tree=cloud.objects&amp;">DreamObjects control panel</a>.</li>
+</ol>
+<div class="code highlight-python"><div class="highlight"><pre><span></span>[default]
+access_key = Your_DreamObjects_Access_Key
+secret_key = Your_DreamObjects_Secret_Key
+host_base = objects-us-west-1.dream.io
+host_bucket = %(bucket)s.objects-us-west-1.dream.io
+enable_multipart = True
+multipart_chunk_size_mb = 15
+use_https = True
+sig_version = 2
+</pre></div>
+</div>
+</div>
+<div id="example-commands">
+<h2>Example Commands</h2>
+<p><strong>Making a bucket</strong></p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@localhost]$</span> s3cmd mb s3://s3cmd-justin
+<span class="go">Bucket 's3://s3cmd-justin/' created</span>
+</pre></div>
+</div>
+<p><strong>Listing all buckets</strong></p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@localhost]$</span> s3cmd ls
+<span class="go">2014-02-28 16:28  s3://s3cmd-justin</span>
+</pre></div>
+</div>
+<p><strong>Uploading a file into a bucket</strong></p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@localhost]$</span> s3cmd put testfile.txt s3://s3cmd-justin/
+<span class="go">testfile.txt -&gt; s3://s3cmd-justin/testfile.txt  [1 of 1]</span>
+<span class="go">127 of 127   100% in    0s  1522.87 B/s  done</span>
+</pre></div>
+</div>
+<p><strong>Listing the contents of a bucket</strong></p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@localhost]$</span> s3cmd ls s3://s3cmd-justin
+<span class="go">2014-02-28 16:29       127   s3://s3cmd-justin/testfile.txt</span>
+</pre></div>
+</div>
+<p><strong>Downloading a file from a bucket</strong></p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@localhost]$</span> s3cmd get s3://s3cmd-justin/testfile.txt
+<span class="go">s3://s3cmd-justin/testfile.txt -&gt; ./testfile.txt  [1 of 1]</span>
+<span class="go">127 of 127   100% in    0s     3.46 kB/s  done</span>
+</pre></div>
+</div>
+<p><strong>Deleting a file in a bucket</strong></p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@localhost]$</span> s3cmd del s3://s3cmd-justin/testfile.txt
+<span class="go">File s3://s3cmd-justin/testfile.txt deleted</span>
+</pre></div>
+</div>
+<p><strong>Listing the size of a bucket</strong></p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@localhost]$</span> s3cmd du -H s3://s3cmd-justin
+<span class="go">40G      s3://s3cmd-justin</span>
+</pre></div>
+</div>
+<p><strong>Recursively make every object in a bucket public</strong></p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@localhost]$</span> s3cmd setacl s3://3cmd-justin --acl-public --recursive
+</pre></div>
+</div>
+<p><strong>Recursively make every object in a bucket private</strong></p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@localhost]$</span> s3cmd setacl s3://3cmd-justin --acl-private --recursive
+</pre></div>
+</div>
+<p><strong>Disable Directory Listing in a bucket</strong></p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@localhost]$</span> s3cmd setacl s3://3cmd-justin --acl-private
+</pre></div>
+</div>
+<p><strong>Work with multiple accounts</strong></p>
+<p>It’s possible to use different configuration files, one for each
+accounts on DreamObjects. By default s3cmd puts its configuration
+file in ~/.s3cfg, but you can override a configuration file with the
+<cite>-c</cite> option and specify a different configuration file.</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@localhost]$</span> s3cmd -c .s3cfg-another-identity ls
+</pre></div>
+</div>
+<p>For convenience, you can use bash aliases in the <cite>~/.bashrc</cite> file:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="c1"># s3cmd aliases for different s3 accounts</span>
+<span class="nb">alias</span> <span class="nv">s3my</span><span class="o">=</span><span class="s1">'s3cmd -c ~/.s3cfg-main-identity'</span>
+<span class="nb">alias</span> <span class="nv">s3alt</span><span class="o">=</span><span class="s1">'s3cmd -c ~/.s3cfg-another-identity'</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="clearer"></div>
+</div>
+<div class="footer">
+</div>
+<!--DreamObjects Button-->
+<div class="dream-sign-up">
+<h2>Start Storing Your Data Today!</h2>
+<a href="https://www.dreamhost.com/cloud/storage/">Sign Up for DreamObjects</a>
+</div>
+</body>
