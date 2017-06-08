@@ -1,0 +1,235 @@
+<div class="document">
+<div class="documentwrapper">
+<div class="body">
+<div id="simple-website-backups-with-dreamobjects">
+<p>This tutorial walks you through writing a short python script that backs up your DreamHost website to DreamObjects. This is an automated script that runs daily. Using this, you will have backups you can access at any time if you need to restore a file.</p>
+<p>For simplicity, the script keeps 7 daily backups, but this general approach can be used for any amount of backups with any schedule you like.</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>This script does not back up your databases in this version, but you could extend it to do that as well.</p>
+</div>
+</div>
+<h2>The Steps</h2>
+<ol>
+<li>First, set up a DreamObjects account and a bucket to store the backups.</li>
+<li>Create a .boto config file and configure a virtualenv.</li>
+<li>Next, write the python backup script step by step.</li>
+<li>Finally, add a cron job in the DreamHost Control Panel to make the backup script run daily.</li>
+</ol>
+<p>A finished version of the script for you to download is at the end of this tutorial, but it will help if you follow along first.</p>
+</div>
+<div id="set-up-dreamobjects-and-create-a-bucket">
+<h2>Enable DreamObjects and create a Bucket</h2>
+<p>Follow <a class="reference external" href="https://help.dreamhost.com/hc/en-us/articles/215986327-DreamObjects-Users">DreamObjects Users</a> and <a class="reference external" href="https://help.dreamhost.com/hc/en-us/articles/215321178-DreamObjects-Buckets">DreamObjects Bucket tutorials</a> to create a user and bucket in your DreamObjects account.</p>
+</div>
+<div id="piecing-together-the-backup-script">
+<h2>Create a .boto config file</h2>
+<p>This script uses the popular programming language <a href="https://help.dreamhost.com/hc/en-us/articles/216137717-Python-overview">Python</a>, and a library of code called <a href="https://help.dreamhost.com/hc/en-us/articles/217473218-How-to-use-boto-rsync-with-DreamObjects">boto</a>. Boto provides the magic to communicate with DreamObjects, but first needs to be set up before beginning.</p>
+<div id="brief-setup">
+<ol>
+<li>Log into your website via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH</a>.</li>
+<li>Navigate to your user's home directory.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd $HOME</span></pre>
+</div>
+</li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Create a .boto file</a> (note the leading dot) that stores your Keys. View the following article for instructions:
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/217473228-Using-Python-boto-scripts-to-manage-DreamObjects">Using Python boto scripts to manage DreamObjects</a></li>
+</ul>
+</li>
+<li>Once the .boto file has been created, proceed to the next section.</li>
+</ol>
+<h2>Create a virtualenv for boto</h2>
+<p>The system version of boto on DreamHost is outdated. To run boto, you must create a virtualenv and install boto locally. Make sure you're still in your user's HOME directory. Then view the following article to create a virtualenv:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215489338-Installing-and-using-Python-s-virtualenv">Installing and using Python's virtualenv</a></li>
+</ul>
+<p>You do not need to install your own version of Python, but it's recommended. You can name your virtualenv anything you like. Let's say you named it DHO_Backup. Activate it by running the following:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">source DHO_Backup/bin/activate</span></pre>
+</div>
+<p>You can then install boto by running the following:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">(DHO_Backup) [server]$ </span><span class="command">pip install boto</span></pre>
+</div>
+<p>Once installed, proceed with the following steps.</p>
+<h2>Create the script file</h2>
+<ol>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Create a Python file</a> with the extension ”.py” at the end. You can name it anything you like. The very first line of your script must be this:
+<div class="preboxcontainer">
+<pre class="prebox">#!/usr/bin/python</pre>
+</div>
+</li>
+<li>Next, make it executable so it can be ran. The easiest way to do that is to run:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">(DHO_Backup) [server]$ </span><span class="command">chmod a+x SCRIPT_NAME.py</span></pre>
+</div>
+</li>
+</ol>
+<h2>Adding code to the Python script</h2>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>The following code examples follow in order. Add a blank line between each section to make your code more readable.</p>
+</div>
+</div>
+<h3>Import modules</h3>
+<p>Your script needs several modules to run the code. Add these three lines at the top of your script (below #!/usr/bin/python):</p>
+<div class="preboxcontainer">
+<pre class="prebox">import tarfile
+import datetime
+import os</pre>
+</div>
+<h3>Define the home directory</h3>
+<p>Just below the import statements, add the following to make sure the script is running from your home directory.</p>
+<div class="preboxcontainer">
+<pre class="prebox">home_dir = os.getenv('HOME')
+os.chdir(home_dir)</pre>
+</div>
+<h3>Define variables</h3>
+<p>This part of the script consists of defining a few variables and making sure everything is ready to go for the backup itself. Below the os.chdir(home_dir) lines, define some variables:</p>
+<div class="preboxcontainer">
+<pre class="prebox">tmp_dir = 'tmp'
+backup_bucket = 'website-backup'
+target_dir = 'example.com'</pre>
+</div>
+<p>Here’s what they will all be used for:</p>
+<ul>
+<li><strong><em>tmp_dir</em></strong> defines where the backup file is temporarily stored.</li>
+<li><strong><em>backup_bucket</em></strong> defines the bucket name where backups will be stored. This is the name of the bucket you created in the panel.</li>
+<li><strong><em>target_dir</em></strong> defines the name of the directory used as the basis for backups. This example assumes it’s just your website directory. Change 'example.com' to your actual website.</li>
+</ul>
+<h3>Create a temporary directory if it doesn’t exist already</h3>
+<p>Add these lines below your defined variables:</p>
+<div class="preboxcontainer">
+<pre class="prebox">if not os.path.isdir(tmp_dir):
+    os.makedirs(tmp_dir)</pre>
+</div>
+<h3>Define time frame and path to the backup file</h3>
+<div class="preboxcontainer">
+<pre class="prebox">day_number = datetime.datetime.today().weekday()
+
+backup_filename = "{0}.backup.{1}.tar.gz".format(
+    target_dir,
+    str(day_number),
+    )
+backup_filepath = os.path.join(
+    home_dir,
+    tmp_dir,
+    backup_filename,
+    )</pre>
+</div>
+<p>This example keeps 7 day backups, each day overwriting the backup from one week previous. This bit of code defines a name and location for the backup that will be created.</p>
+<ul class="simple">
+<li>First, use the datetime library to figure out what day of the week today is as a number. Sunday is 0, Monday is 1, Thursday is 4, etc. Then, put that number into the “day_number” variable.</li>
+<li>Next, define the file name for the backup file to be something like “example.com.backup.4.tar.gz”. That’s what that backup_filename line works out to (on Thursdays).</li>
+<li>Finally, define the full path to the backup file.</li>
+</ul>
+<h3>Create the backup file</h3>
+<p>The next few lines create the backup file:</p>
+<div class="preboxcontainer">
+<pre class="prebox">tar = tarfile.open(backup_filepath, "w:gz")
+tar.add(target_dir)
+tar.close()</pre>
+</div>
+<p>In the above code, the tar file is created, the website is added to it (defined earlier as “target_dir”) and then it's closed.</p>
+<h3>Upload the backup file to DreamObjects</h3>
+</div>
+<div id="upload-the-backup-file-to-dreamobjects">
+<p>Now that the backup file is created, copy it to DreamObjects. First, open a connection to DreamObjects:</p>
+<div class="preboxcontainer">
+<pre class="prebox">connection = boto.connect_s3(
+    host='objects-us-west-1.dream.io',
+    )</pre>
+</div>
+<p>That’s only a single line because we already defined the access key and secret key in the .boto file earlier.</p>
+<h3>Upload the tarfile</h3>
+<p>Next, upload the tarfile to DreamObjects:</p>
+<div class="preboxcontainer">
+<pre class="prebox">bucket = connection.get_bucket(backup_bucket)
+key = bucket.new_key(backup_filename)
+key.set_contents_from_file(open(backup_filepath, 'rb'))</pre>
+</div>
+<p>The first line of this code defines the bucket to be used with DreamObjects (“backup_bucket”).</p>
+<p>The second line creates the object in DreamObjects with the name defined earlier (“backup_filename”).</p>
+<p>The third line sends the file stored locally (“backup_filepath”) up to DreamObjects.</p>
+</div>
+<div id="clean-up">
+<h3>Clean up</h3>
+<p>At this point, a backup file is still sitting around on the hosting server where it doesn’t belong. Add thsi line to the bottom to get rid of it:</p>
+<div class="preboxcontainer">
+<pre class="prebox">os.remove(backup_filepath)</pre>
+</div>
+<h2>The Cron Job</h2>
+<p>Now that the script is complete, you can create a cron job to run daily. This runs the script every day to back up your website to DreamObjects.</p>
+<ol>
+<li>First, make sure the <a href="https://help.dreamhost.com/hc/en-us/articles/214694298-What-are-the-different-types-of-DreamHost-users-">website user</a> of your domain is a <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Enabling-Shell-access">shell user</a>.</li>
+<li>View the '<a href="https://help.dreamhost.com/hc/en-us/articles/215088668-How-do-I-create-a-cron-job-">How do I create a cron job</a>' article to set up a daily cron in your panel.</li>
+<li>In the <strong>'Command to run'</strong> field, you would enter the command 'python', followed by the location of your script. For example, let's say you create a script titled SCRIPT_NAME.py in your user's home directory. You would enter this as the 'Command to run':
+<div class="preboxcontainer">
+<pre class="prebox">source DHO_Backup/bin/activate
+python $HOME/SCRIPT_NAME.py</pre>
+</div>
+</li>
+</ol>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Make sure to change DHO_Backup to the name of your virtualenv and SCRIPT_NAME.py to the name of your Python file.</p>
+</div>
+</div>
+<h2>The full script</h2>
+<div class="preboxcontainer">
+<pre class="prebox">#!/usr/bin/python
+
+import tarfile
+import datetime
+import os
+
+home_dir = os.getenv('HOME')
+os.chdir(home_dir)
+
+tmp_dir = 'tmp'
+backup_bucket = 'website-backup'
+target_dir = 'example.com'
+
+if not os.path.isdir(tmp_dir):
+    os.makedirs(tmp_dir)
+
+day_number = datetime.datetime.today().weekday()
+
+backup_filename = "{0}.backup.{1}.tar.gz".format(
+    target_dir,
+    str(day_number),
+    )
+backup_filepath = os.path.join(
+    home_dir,
+    tmp_dir,
+    backup_filename,
+    )
+
+tar = tarfile.open(backup_filepath, "w:gz")
+tar.add(target_dir)
+tar.close()
+
+connection = boto.connect_s3(
+    host='objects-us-west-1.dream.io',
+    )
+
+bucket = connection.get_bucket(backup_bucket)
+key = bucket.new_key(backup_filename)
+key.set_contents_from_file(open(backup_filepath, 'rb'))
+
+os.remove(backup_filepath)</pre>
+</div>
+<!--DreamObjects Button-->
+<div class="dream-sign-up">
+<h2>Start Storing Your Data Today!</h2>
+<a href="https://www.dreamhost.com/cloud/storage/">Sign Up for DreamObjects</a></div>
+</div>
+</div>
+</div>
+</div>
+</div>
