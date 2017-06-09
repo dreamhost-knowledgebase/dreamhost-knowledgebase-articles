@@ -13,7 +13,7 @@
 <h2>The Steps</h2>
 <ol>
 <li>First, set up a DreamObjects account and a bucket to store the backups.</li>
-<li>Create a .boto config file and configure a virtualenv.</li>
+<li>Create a .boto config file.</li>
 <li>Next, write the python backup script step by step.</li>
 <li>Finally, add a cron job in the DreamHost Control Panel to make the backup script run daily.</li>
 </ol>
@@ -41,20 +41,6 @@
 </li>
 <li>Once the .boto file has been created, proceed to the next section.</li>
 </ol>
-<h2>Create a virtualenv for boto</h2>
-<p>The system version of boto on DreamHost is outdated. To run boto, you must create a virtualenv and install boto locally. Make sure you're still in your user's HOME directory. Then view the following article to create a virtualenv:</p>
-<ul>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/215489338-Installing-and-using-Python-s-virtualenv">Installing and using Python's virtualenv</a></li>
-</ul>
-<p>You do not need to install your own version of Python, but it's recommended. You can name your virtualenv anything you like. Let's say you named it DHO_Backup. Activate it by running the following:</p>
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">source DHO_Backup/bin/activate</span></pre>
-</div>
-<p>You can then install boto by running the following:</p>
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">(DHO_Backup) [server]$ </span><span class="command">pip install boto</span></pre>
-</div>
-<p>Once installed, proceed with the following steps.</p>
 <h2>Create the script file</h2>
 <ol>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Create a Python file</a> with the extension ”.py” at the end. You can name it anything you like. The very first line of your script must be this:
@@ -64,7 +50,7 @@
 </li>
 <li>Next, make it executable so it can be ran. The easiest way to do that is to run:
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">(DHO_Backup) [server]$ </span><span class="command">chmod a+x SCRIPT_NAME.py</span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">chmod a+x SCRIPT_NAME.py</span></pre>
 </div>
 </li>
 </ol>
@@ -169,17 +155,10 @@ key.set_contents_from_file(open(backup_filepath, 'rb'))</pre>
 <li>View the '<a href="https://help.dreamhost.com/hc/en-us/articles/215088668-How-do-I-create-a-cron-job-">How do I create a cron job</a>' article to set up a daily cron in your panel.</li>
 <li>In the <strong>'Command to run'</strong> field, you would enter the command 'python', followed by the location of your script. For example, let's say you create a script titled SCRIPT_NAME.py in your user's home directory. You would enter this as the 'Command to run':
 <div class="preboxcontainer">
-<pre class="prebox">source DHO_Backup/bin/activate
-python $HOME/SCRIPT_NAME.py</pre>
+<pre class="prebox"><span class="command">python $HOME/SCRIPT_NAME.py</span></pre>
 </div>
 </li>
 </ol>
-<div class="alert alert-note">
-<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
-<div class="alert-content">
-<p>Make sure to change DHO_Backup to the name of your virtualenv and SCRIPT_NAME.py to the name of your Python file.</p>
-</div>
-</div>
 <h2>The full script</h2>
 <div class="preboxcontainer">
 <pre class="prebox">#!/usr/bin/python
