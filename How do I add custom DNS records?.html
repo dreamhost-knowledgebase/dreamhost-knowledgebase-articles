@@ -1,11 +1,13 @@
-<h2>Setting your domain to DNS only</h2>
 <p>You can add custom DNS records for a fully hosted domain as well as a domain set to DNS only. It all depends on what records you are creating and why you need them.</p>
-<p>Generally speaking, if you want your site hosted on DreamHost's servers, keep your site as Fully Hosted. </p>
-<p>However, if you want your site to point away from DreamHost by creating an A or CNAME record, the first step is to remove the hosting service already applied to your domain at DreamHost. The following steps explain how to set a domain to DNS only.</p>
+<p>Generally speaking, if you want your site hosted on DreamHost's servers, keep your site as Fully Hosted. However, if you want your site to point away from DreamHost by creating A or CNAME records, the first step is to remove the hosting service already applied to your domain at DreamHost.</p>
+<p>The following steps explain how to set a domain to DNS only (if necessary) and create different types of custom DNS records.</p>
+<h2>Setting your domain to DNS only</h2>
+<p>When your domain is 'Fully Hosted', it has several DreamHost IP addresses (A records) assigned to it that control where the site is hosted. If your site's <a href="https://help.dreamhost.com/hc/en-us/articles/215769408-What-are-DreamHost-s-nameservers-">nameservers</a> are pointing to DreamHost and your site is 'Fully Hosted', your site is hosted on DreamHost's servers.</p>
+<p>If your site's <a href="https://help.dreamhost.com/hc/en-us/articles/215769408-What-are-DreamHost-s-nameservers-">nameservers</a> are pointing to DreamHost but you do <strong>NOT</strong> want to host the site at DreamHost, you must remove hosting which removes these IP addresses. Setting the site to 'DNS only' removes hosting and your site's A records. You are then able to add custom A records to point your site to another hosting company.</p>
 <ol>
 <li>Navigate to the (<a href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;">Panel &gt; ‘Domains’ &gt; ‘Manage Domains’</a>) page.</li>
 <li>Click the <strong>Edit</strong> button under the ‘Web Hosting’ column for the domain.</li>
-<li>On the following page, scroll down to the ‘DNS Only’ section: <img src="https://objects-us-west-1.dream.io/kbimages/images/01_Blogger.fw.png" alt="01 Blogger.fw.png" width="717" height="303" /></li>
+<li>On the following page, scroll down to the ‘DNS Only’ section: <img src="https://objects-us-west-1.dream.io/kbimages/images/01_Blogger.fw.png" alt="01 Blogger.fw.png" width="535" height="226" /></li>
 <li>Click the <strong>Host DNS only!</strong> button to change your hosting for this domain from ‘Fully Hosted’ to ‘dns’.</li>
 <li>Navigate to the (<a href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;">Panel &gt; ‘Domains’ &gt; ‘Manage Domains’</a>) page.
 <dl>
@@ -14,7 +16,14 @@
 </li>
 <li>To the right of the domain under the 'Web Hosting' column, click the <strong>Remove</strong> button. This sets the domain to DNS only.</li>
 </ol>
-<p>This also changes the non-editable DNS records into Custom DNS records that you can delete. The only remaining non-editable records are MX records which you can change on the <a href="https://panel.dreamhost.com/index.cgi?tree=mail.mx&amp;">(Panel &gt; 'Mail' &gt; 'Custom MX'</a>) page.</p>
+<h3>What DNS records are removed?</h3>
+<p>When you set a domain to 'DNS only', you remove the following DNS A records:</p>
+<ul>
+<li>non-www A record</li>
+<li>www A record</li>
+<li>ssh A record</li>
+<li>ftp A record</li>
+</ul>
 <p>Below are a few things to note regarding these changes:</p>
 <ul>
 <li>Do not press the <strong>Delete</strong> button for the domain through the (<a href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;">Panel &gt; ‘Domains’ &gt; ‘Manage Domains’</a>) page. This removes the domain from the account along with the contents that were previously hosted under it.</li>
@@ -29,6 +38,15 @@
 </div>
 </div>
 <h2><span id="A_record">A record</span></h2>
+<p>A records are <a href="https://help.dreamhost.com/hc/en-us/articles/217294917-IP-Address">IP addresses</a>. They can be added to point your website to a different hosting company, or different subdomains of your site to external services.</p>
+<h3>Pointing a subdomain to a specific IP address</h3>
+<p>The following example shows how to point a subdomain of example.com to a specific IP address. For example, if your site is example.com and it's using DreamHost's <a href="https://help.dreamhost.com/hc/en-us/articles/215769408-What-are-DreamHost-s-nameservers-">nameservers</a>, you could create a site called <strong>blog</strong>.example.com, or <strong>store</strong>.example.com. You can then set this subdomain to point to an outside hosting company. This is useful if you want a subdomain to point to an <a href="https://help.dreamhost.com/hc/en-us/sections/203242327-Third-Party-Applications">external host</a>.</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>The example below shows how to create a subdomain called <strong>subdomain.example.com</strong> and point that to an IP. Make sure to change the IP address to the IP the external hosting service gives you.</p>
+</div>
+</div>
 <ol>
 <li>Click the <strong>DNS</strong> link located under your domain on the (<a href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;">Panel &gt; ‘Domains’ &gt; ‘Manage Domains’</a>) page.
 <dl>
