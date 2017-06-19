@@ -1,78 +1,62 @@
-<body role="document">
 <div class="document">
 <div class="documentwrapper">
-<div class="body" role="main">
+<div class="body">
 <div id="how-to-create-static-websites-with-dreamobjects">
-
-<p>You can configure a DreamObjects bucket to serve static web pages
-created with HTML, CSS, and JavaScript. This allows you to host an
-entire website that is simple to build and very inexpensive.</p>
-<p>Static web pages are usually HTML pages that are served in their
-stored form, instead of being built dynamically by a web application
-such as WordPress, Django, and similar ones. There are a lot of tools
-that help generate and maintain static web pages: the site <a class="reference external" href="https://www.staticgen.com/">StaticGen</a> maintains a list of open source static
-site generators that you can use to create the files to upload in your
-new DreamObjects website bucket.</p>
-<p>This tutorial covers how to <strong>serve</strong> a static website from a
-DreamObjects bucket, and doesn’t cover how to create the files for the
-static website itself.</p>
+<p>You can configure a DreamObjects bucket to serve static web pages created with HTML, CSS, and JavaScript. This allows you to host an entire website that is simple to build and very inexpensive.</p>
+<p>Static web pages are usually HTML pages that are served in their stored form, instead of being built dynamically by a web application such as WordPress, Django, and similar ones. There are a lot of tools that help generate and maintain static web pages: the site <a class="reference external" href="https://www.staticgen.com/">StaticGen</a> maintains a list of open source static site generators that you can use to create the files to upload in your new DreamObjects website bucket.</p>
+<p>This tutorial covers how to <strong>serve</strong> a static website from a DreamObjects bucket, and doesn’t cover how to create the files for the static website itself.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Make sure you have a working <a class="reference external" href="215916627">installation of S3cmd</a> before proceeding.</p>
+<p class="last">Make sure you have a working <a class="reference external" href="215916627">installation of S3cmd</a> (version 1.6 or greater) before proceeding.</p>
 </div>
 <div id="creating-the-bucket">
 <h2>Creating the bucket</h2>
-<p>The name of the bucket must be the same name of the DNS entry. For
-example, if your website is www.example.com, name the bucket
-<cite>www.example.com</cite>:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@localhost]$</span> s3cmd mb s3://www.example.com
+<p>The name of the bucket must be the same name of the DNS entry. For example, if your website is www.example.com, name the bucket <cite>www.example.com</cite>:</p>
+<div class="highlight-console">
+<div class="highlight">
+<pre><span class="gp">[user@localhost]$</span> s3cmd mb s3://www.example.com
 <span class="go">Bucket 's3://www.example.com/' created</span>
-</pre></div>
+</pre>
+</div>
 </div>
 </div>
 <div id="creating-the-website-for-the-bucket">
 <h2>Creating the website for the bucket</h2>
-<p>Once the bucket is created, use s3cmd to configure the bucket as a
-website. The option <cite>ws-create</cite> takes many arguments but for this
-example the default index page is configured:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@localhost]$</span> s3cmd ws-create --ws-index index.html s3://www.example.com
+<p>Once the bucket is created, use s3cmd to configure the bucket as a website. The option <cite>ws-create</cite> takes many arguments but for this example the default index page is configured:</p>
+<div class="highlight-console">
+<div class="highlight">
+<pre><span class="gp">[user@localhost]$</span> s3cmd ws-create --ws-index index.html s3://www.example.com
 <span class="go">Bucket 's3://www.example.com/': website configuration created.</span>
-</pre></div>
+</pre>
 </div>
-<p>You can also configure a default error page, using the <cite>–ws-error</cite>
-argument for the <cite>ws-create</cite> command. Read the full <a class="reference external" href="http://manpages.org/s3cmd">S3cmd man page</a> for more details.</p>
-<p>Check the results of the command with <cite>ws-info</cite> — it should look like
-the following example:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@localhost]$</span> s3cmd ws-info s3://www.example.com
+</div>
+<p>You can also configure a default error page, using the <cite>–ws-error</cite> argument for the <cite>ws-create</cite> command. Read the full <a class="reference external" href="http://manpages.org/s3cmd">S3cmd man page</a> for more details.</p>
+<p>Check the results of the command with <cite>ws-info</cite> — it should look like the following example:</p>
+<div class="highlight-console">
+<div class="highlight">
+<pre><span class="gp">[user@localhost]$</span> s3cmd ws-info s3://www.example.com
 <span class="go">Bucket s3://www.example.com/: Website configuration</span>
 <span class="go">Website endpoint: http://www.example.com.objects-website-us-west-1.dream.io/</span>
 <span class="go">Index document:   index.html</span>
 <span class="go">Error document:   None</span>
-</pre></div>
+</pre>
+</div>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">s3cmd configuration needs <cite>website_endpoint</cite> set to output
-this value correctly. If you use the default, things will
-still work, but the printed output here will be
-<cite>http://www.example.com.s3-website-us-east-1.amazonaws.com/</cite>.</p>
+<p class="last">s3cmd configuration needs <cite>website_endpoint</cite> set to output this value correctly. If you use the default, things will still work, but the printed output here will be <cite>http://www.example.com.s3-website-us-east-1.amazonaws.com/</cite>.</p>
 </div>
 </div>
 <div id="setting-the-policy-for-the-bucket-and-upload-the-static-files">
 <h2>Setting the policy for the bucket and upload the static files</h2>
-<p>At this point, the bucket is ready and all you need to do is upload
-the HTML files, JavaScript, CSS, images, and any videos you may have
-in your static website. From the root folder of your website, upload
-these files with the <cite>sync</cite> command, setting the files public <cite>-P</cite> and
-recursively <cite>-r</cite>.</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@localhost]$</span> s3cmd -Pr sync . s3://www.example.com
-</pre></div>
+<p>At this point, the bucket is ready and all you need to do is upload the HTML files, JavaScript, CSS, images, and any videos you may have in your static website. From the root folder of your website, upload these files with the <cite>sync</cite> command, setting the files public <cite>-P</cite> and recursively <cite>-r</cite>.</p>
+<div class="highlight-console">
+<div class="highlight">
+<pre><span class="gp">[user@localhost]$</span> s3cmd -Pr sync . s3://www.example.com
+</pre>
 </div>
-<p>This process takes awhile, depending on the size of your site and the
-upload bandwidth. Once it completes, visit the website endpoint with
-your browser (in the example,
-<a class="reference external" href="http://www.example.com.objects-website-us-west-1.dream.io/">http://www.example.com.objects-website-us-west-1.dream.io/</a>). You
-should see the content of your index.html file.</p>
+</div>
+<p>This process takes awhile, depending on the size of your site and the upload bandwidth. Once it completes, visit the website endpoint with your browser (in the example, <a class="reference external" href="http://www.example.com.objects-website-us-west-1.dream.io/">http://www.example.com.objects-website-us-west-1.dream.io/</a>). You should see the content of your index.html file.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Support for HTTPS will be added soon.</p>
@@ -80,29 +64,20 @@ should see the content of your index.html file.</p>
 </div>
 <div id="creating-the-dns-entry">
 <h2>Creating the DNS entry</h2>
-<p>As a last step, you can create a more attractive name for your site,
-such as www.example.com. Go to the <a class="reference external" href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;">Panel -&gt; Domains</a> and add
-a custom DNS record to the domain. Pick <cite>CNAME</cite> and insert
-<cite>www.example.com.objects-website-us-west-1.dream.io</cite>.</p>
+<p>As a last step, you can create a more attractive name for your site, such as www.example.com. Go to the <a class="reference external" href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;">Panel -&gt; Domains</a> and add a custom DNS record to the domain. Pick <cite>CNAME</cite> and insert <cite>www.example.com.objects-website-us-west-1.dream.io</cite>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The endpoint for website is
-<cite>objects-website-us-west-1.dream.io</cite> while the API endpoint
-for DreamObjects is <cite>objects-us-west-1.dream.io</cite>.</p>
+<p class="last">The endpoint for website is <cite>objects-website-us-west-1.dream.io</cite> while the API endpoint for DreamObjects is <cite>objects-us-west-1.dream.io</cite>.</p>
 </div>
-<p>As soon as DNS information propagates, your site is reachable in your
-browser at <a class="reference external" href="http://www.example.com">http://www.example.com</a>.</p>
+<p>As soon as DNS information propagates, your site is reachable in your browser at <a class="reference external" href="http://www.example.com">http://www.example.com</a>.</p>
 </div>
 </div>
 </div>
 </div>
-<div class="clearer"></div>
+<div class="clearer"> </div>
 </div>
-<div class="footer">
-</div>
+<div class="footer"> </div>
 <!--DreamObjects Button-->
 <div class="dream-sign-up">
 <h2>Start Storing Your Data Today!</h2>
-<a href="https://www.dreamhost.com/cloud/storage/">Sign Up for DreamObjects</a>
-</div>
-</body>
+<a href="https://www.dreamhost.com/cloud/storage/">Sign Up for DreamObjects</a></div>
