@@ -2,13 +2,13 @@
 <div class="document">
 <div class="documentwrapper">
 <div class="body" role="main">
-<div id="how-to-change-the-size-of-your-dreamcompute-server">
+<div id="how-to-change-the-resource-limits-of-a-dreamcompute-instance">
 
-<p>Change the size of a server by changing its flavor.</p>
+<p>To change the resource limits (vCPU/RAM) of a specific instance, change its flavor.</p>
 <ol class="arabic">
-<li><p class="first">Show information about your server, including its size, which is shown
+<li><p class="first">Show information about an instance, including its size, which is shown
 as the value of the flavor property:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova show myCirrosServer
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova show myCirrosInstance
 <span class="go">+--------------------------------------+----------------------------------------------------------+</span>
 <span class="go">| Property                             | Value                                                    |</span>
 <span class="go">+--------------------------------------+----------------------------------------------------------+</span>
@@ -29,7 +29,7 @@ as the value of the flavor property:</p>
 <span class="go">| image                                | Ubuntu-14.04 (03f89ff2-d66e-49f5-ae61-656a006bbbe9)      |</span>
 <span class="go">| key_name                             | -                                                        |</span>
 <span class="go">| metadata                             | {}                                                       |</span>
-<span class="go">| name                                 | myCirrosServer                                           |</span>
+<span class="go">| name                                 | myCirrosInstance                                         |</span>
 <span class="go">| os-extended-volumes:volumes_attached | []                                                       |</span>
 <span class="go">| private-network network              | 10.10.10.3                                               |</span>
 <span class="go">| progress                             | 0                                                        |</span>
@@ -41,7 +41,7 @@ as the value of the flavor property:</p>
 <span class="go">+--------------------------------------+----------------------------------------------------------+</span>
 </pre></div>
 </div>
-<p>The size (flavor) of the server is <code class="docutils literal"><span class="pre">gp1.subsonic</span> <span class="pre">(100)</span></code>.</p>
+<p>In that example, the size (flavor) of the instance is <code class="docutils literal"><span class="pre">gp1.subsonic</span> <span class="pre">(100)</span></code>.</p>
 </li>
 <li><p class="first">List the available flavors with the following command:</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova flavor-list
@@ -58,56 +58,47 @@ as the value of the flavor property:</p>
 </pre></div>
 </div>
 </li>
-<li><p class="first">To resize the server, use the <strong class="command">nova resize</strong> command and add
-the server ID or name and the new flavor. Include the <cite>–poll</cite>
+<li><p class="first">To resize the instance, use the <strong class="command">openstack server resize</strong> command specifying
+the instance ID/name and the new flavor. Include the <cite>–-wait</cite>
 parameter to display the resize progress. For example:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">  $</span> nova resize myCirrosServer <span class="m">200</span> --poll
-
-<span class="go">Instance resizing... 100% complete</span>
-<span class="go">Finished</span>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">  $</span> openstack server resize --flavor <span class="m">100</span> --wait  myCirrosInstance
+<span class="go">Complete</span>
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>By default, the <strong class="command">nova resize</strong> command gives the guest operating
-system a chance to perform a controlled shutdown before the instance
+<p>By default, the <strong class="command">openstack server resize</strong> command gives the guest operating
+system 60 seconds to perform a controlled shutdown before the instance
 is powered off and the instance is resized.
-The shutdown behavior is configured by the
-<code class="docutils literal"><span class="pre">shutdown_timeout</span></code> parameter that can be set in the
-<code class="docutils literal"><span class="pre">nova.conf</span></code> file. Its value stands for the overall
-period (in seconds) a guest operation system is allowed
-to complete the shutdown. The default timeout is 60 seconds.
-See <a class="reference external" href="http://docs.openstack.org/liberty/config-reference/content/list-of-compute-config-options.html">Description of Compute configuration options</a>
-for details.</p>
 <p class="last">The timeout value can be overridden on a per image basis
 by means of <code class="docutils literal"><span class="pre">os_shutdown_timeout</span></code> that is an image metadata
 setting allowing different types of operating systems to specify
 how much time they need to shut down cleanly.</p>
 </div>
 </li>
-<li><p class="first">Show the status for your server.</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova list
-<span class="go">+----------------------+----------------+--------+-----------------------------------------+</span>
-<span class="go">| ID                   | Name           | Status | Networks                                |</span>
-<span class="go">+----------------------+----------------+--------+-----------------------------------------+</span>
-<span class="go">| 84c6e57d-a6b1-44b... | myCirrosServer | RESIZE | private=172.16.101.6, public=10.4.113.6 |</span>
-<span class="go">+----------------------+----------------+--------+-----------------------------------------+</span>
+<li><p class="first">Show the status for the instance.</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> openstack server list
+<span class="go">+----------------------+------------------+---------------+-----------------------------------------+</span>
+<span class="go">| ID                   | Name             | Status        | Networks                                |</span>
+<span class="go">+----------------------+------------------+---------------+-----------------------------------------+</span>
+<span class="go">| 84c6e57d-a6b1-44b... | myCirrosInstance | VERIFY_RESIZE | private=172.16.101.6, public=10.4.113.6 |</span>
+<span class="go">+----------------------+------------------+---------------+-----------------------------------------+</span>
 </pre></div>
 </div>
 <p>When the resize completes, the status becomes VERIFY_RESIZE.</p>
 </li>
-<li><p class="first">Confirm the resize,for example:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova resize-confirm 84c6e57d-a6b1-44b6-81eb-fcb36afd31b5
+<li><p class="first">Confirm the resize, for example:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> openstack server resize --confirm 84c6e57d-a6b1-44b6-81eb-fcb36afd31b5
 </pre></div>
 </div>
-<p>The server status becomes ACTIVE.</p>
+<p>The instance status becomes ACTIVE.</p>
 </li>
-<li><p class="first">If the resize fails or does not work as expected, you can revert the
+<li><p class="first">If the resize fails or does not work as expected, revert the
 resize. For example:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova resize-revert 84c6e57d-a6b1-44b6-81eb-fcb36afd31b5
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> openstack server resize --revert 84c6e57d-a6b1-44b6-81eb-fcb36afd31b5
 </pre></div>
 </div>
-<p>The server status becomes ACTIVE.</p>
+<p>The instance status becomes ACTIVE.</p>
 </li>
 </ol>
 </div>
