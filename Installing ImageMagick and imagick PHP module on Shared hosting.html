@@ -1,0 +1,114 @@
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>This article only explains how to install a newer version of ImageMagick and the PHP module. It does not explain how to use it.</p>
+</div>
+</div>
+<p>ImageMagick is a free software suite used to convert and edit images and is installed by default on all DreamHost servers. To view the current version, log in to your server via <a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a> and then run the following command:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">dpkg -l | grep magick
+</span></pre>
+</div>
+<p>For further details on this software, visit the following site:</p>
+<ul>
+<li><a href="http://www.imagemagick.org/script/index.php">http://www.imagemagick.org/script/index.php</a></li>
+</ul>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Please visit the following article for instructions on using DreamHost's pre-installed ImageMagick with MediaWiki One-Click Installs on DreamHost:</p>
+<ul>
+<li><a href="/hc/en-us/articles/217253627-Image-Magick-overview">Image Magick</a></li>
+</ul>
+</div>
+</div>
+<h2><span id="Preparing_the_environment">Preparing the environment</span></h2>
+<ol>
+<li>Log into your server via <a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a>.</li>
+<li>Make sure you're in your user's main directory, not your domain's directory.</li>
+<li>Create a "build" directory where all the required tools are downloaded, configured, and then compiled:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">mkdir build</span></pre>
+</div>
+</li>
+<li>Create a "local" directory where all the required tools are deployed:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">mkdir local</span></pre>
+</div>
+</li>
+</ol>
+<h2><span id="Installing_ImageMagick">Installing ImageMagick</span></h2>
+<p>Once you have created the /build and /local directories, proceed with the following commands. This example uses version 6.0.2-0.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd build</span>
+<span class="server">[server]$ </span><span class="command">wget "http://www.imagemagick.org/download/ImageMagick-6.9.2-0.tar.gz"</span>
+<span class="server">[server]$ </span><span class="command">tar zxvf ImageMagick-6.9.2-0.tar.gz</span>
+<span class="server">[server]$ </span><span class="command">cd ImageMagick-6.9.2-0</span>
+<span class="server">[server]$ </span><span class="command">./configure --prefix=$HOME/local --enable-shared --enable-symbol-prefix</span>
+<span class="server">[server]$ </span><span class="command">make</span>
+<span class="server">[server]$ </span><span class="command">make install</span>
+</pre>
+</div>
+<p>If everything runs smoothly, up-to-date ImageMagick binaries, libs collection, documentation and so on are available in your "local" directory (and sub-directory).</p>
+<p>Start using this "local" directory by running the following command:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">export PATH=$HOME/local/bin:$PATH</span></pre>
+</div>
+<h2><span id="Building_the_Imagick_PHP_module">Building the Imagick PHP module</span></h2>
+<ol>
+<li>Navigate to your /build directory.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd $HOME/build</span>
+</pre>
+</div>
+</li>
+<li>Visit <a href="http://pecl.php.net/package/imagick">http://pecl.php.net/package/imagick</a> and choose the version you wish to use.</li>
+<li>Run the following commands based on the version you're using. This example uses 3.3.0RC2.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wget "https://pecl.php.net/get/imagick-3.3.0RC2.tgz"</span>
+<span class="server">[server]$ </span><span class="command">tar zxvf imagick-3.3.0RC2.tgz</span>
+<span class="server">[server]$ </span><span class="command">cd imagick-3.3.0RC2</span>
+</pre>
+</div>
+</li>
+<li>Run the following to ensure that imagick compiles more smoothly:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">/usr/local/php56/bin/phpize</span>
+<span class="server">[server]$ </span><span class="command">export PKG_CONFIG_PATH=$HOME/local/lib/pkgconfig</span>
+<span class="server">[server]$ </span><span class="command">ln -s $HOME/local/include/ImageMagick-6 $HOME/local/include/ImageMagick</span>
+<span class="server">[server]$ </span><span class="command">./configure --prefix=$HOME/local --with-imagick=$HOME/local --with-php-config=/usr/local/php56/bin/php-config</span>
+<span class="server">[server]$ </span><span class="command">make</span>
+</pre>
+</div>
+<p>You may see a few compilation warnings, and you can safely ignore these; but, look for the following which ensures successful installation:</p>
+<div class="preboxcontainer">
+<pre class="prebox">Libraries have been installed in:
+  /home/exampleuser/build/imagick-3.3.0RC2/modules
+</pre>
+</div>
+</li>
+</ol>
+<h2><span id="Configuring_PHP_to_use_this_extension">Configuring PHP to use this extension</span></h2>
+<p>Visit the following article for details on how to create a phprc file via SSH.</p>
+<ul>
+<li><a href="&lt;li&gt;&lt;a href=&quot;https://help.dreamhost.com/hc/en-us/articles/214200668-How-do-I-create-a-phprc-file-via-SSH-&quot;&gt;How do I create a phprc file via SSH?&lt;/a&gt;&lt;/li&gt;">Creating and editing a file via SSH</a></li>
+</ul>
+<p>In this example the domain is running under PHP 5.6. So your phprc file would be in this directory:</p>
+<div class="preboxcontainer">
+<pre class="prebox">/home/username/.php/5.6/phprc
+</pre>
+</div>
+<p>Run the following to create your /extensions directory, copy the module and add it to the phprc file:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd $HOME/.php/5.6</span>
+<span class="server">[server]$ </span><span class="command">mkdir extensions</span>
+<span class="server">[server]$ </span><span class="command">cp $HOME/build/imagick-3.3.0RC2/modules/imagick.so extensions</span>
+<span class="server">[server]$ </span><span class="command">echo "extension = $HOME/.php/5.6/extensions/imagick.so" &gt;&gt; phprc</span>
+</pre>
+</div>
+<h2><span id="See_also">See also</span></h2>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/217253627-Image-Magick-overview">Image Magick overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215075007-GraphicsMagick-and-gmagick-PHP-module-on-Shared-hosting">GraphicsMagick and gmagick PHP module on Shared hosting</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
+</ul>

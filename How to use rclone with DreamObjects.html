@@ -1,9 +1,3 @@
-<div class="document">
-<div class="documentwrapper">
-<div class="body">
-<div id="how-to-use-rclone-with-dreamobjects">
-<div id="overview">
-<h2>Overview</h2>
 <p><a class="reference external" href="https://rclone.org">Rclone</a> is an rsync-like tool for Windows, Mac OS Linux and other operating systems designed for cloud storage such as DreamObjects.</p>
 <p>It features:</p>
 <ul class="simple">
@@ -13,36 +7,33 @@
 <li>Copy mode to just copy new/changed files</li>
 <li>Sync (one way) mode to make a directory identical</li>
 <li>Check mode to check for file hash equality</li>
-<li>Can sync to and from network, eg two different cloud accounts</li>
+<li>Can sync to and from network, e.g., two different cloud accounts</li>
 <li>Optional encryption (Crypt)</li>
 <li>Optional FUSE mount (rclone mount)</li>
 </ul>
-</div>
 <div id="configure-rclone">
 <h2>Configure rclone</h2>
-<p>After you <a class="reference external" href="http://rclone.org/downloads/">download</a> and install rclone on your operating system, proceed to configure it for DreamObjects using the interactive configuration tool:</p>
-<div class="highlight-console">
-<div class="highlight">
-<pre><span class="gp">[user@localhost]$</span> $ rclone config
-<span class="go">No remotes found - make a new one</span>
-<span class="go">n) New remote</span>
-<span class="go">s) Set configuration password</span>
-<span class="go">q) Quit config</span>
-<span class="go">n/s/q&gt; n</span>
-</pre>
+<ol>
+<li>After you <a class="reference external" href="http://rclone.org/downloads/">download</a> and install rclone on your operating system, proceed to configure it for DreamObjects using the interactive configuration tool:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">rclone config</span>
+<span class="cmdoutput">No remotes found - make a new one
+n) New remote
+s) Set configuration password
+q) Quit config
+n/s/q&gt; n</span></pre>
 </div>
+</li>
+<li>
+<p>Enter <cite>n.</cite> </p>
+<div class="preboxcontainer">
+<pre class="prebox">name &gt; remote</pre>
 </div>
-<p>enter <cite>n</cite> and pick a name you want to assign to this connection, for example <cite>remote</cite>:</p>
-<div class="code bash highlight-python">
-<div class="highlight">
-<pre><span class="n">name</span><span class="o">&gt;</span> <span class="n">remote</span>
-</pre>
-</div>
-</div>
-<p>Next configure the type of storage as <cite>Amazon S3</cite>, option <cite>2</cite>:</p>
-<div class="code bash highlight-python">
-<div class="highlight">
-<pre>Type of storage to configure.
+</li>
+<li>
+<p>Pick a name you want to assign to this connection, for example <code>remote</code>: </p>
+<div class="preboxcontainer">
+<pre class="prebox">Type of storage to configure.
 Choose a number from below, or type in your own value
  1 / Amazon Drive
    \ "amazon cloud drive"
@@ -71,11 +62,10 @@ Choose a number from below, or type in your own value
 Storage&gt; 2
 </pre>
 </div>
-</div>
-<p>Get ready to insert the Access Key and the corresponding Secret Key you can take from the <a class="reference external" href="https://panel.dreamhost.com/index.cgi?tree=cloud.objects&amp;">DreamObjects Control Panel</a>:</p>
-<div class="code bash highlight-python">
-<div class="highlight">
-<pre>Get AWS credentials from runtime (environment variables or EC2 meta data if no env vars). Only applies if access_key_id and secret_access_key is blank.
+</li>
+<li>Next configure the type of storage as <cite>Amazon S3</cite>, option <cite>2</cite>: 
+<div class="preboxcontainer">
+<pre class="prebox">Get AWS credentials from runtime (environment variables or EC2 meta data if no env vars). Only applies if access_key_id and secret_access_key is blank.
 Choose a number from below, or type in your own value
  1 / Enter AWS credentials in the next step
    \ "false"
@@ -91,11 +81,11 @@ runtime credentials.
 secret_access_key&gt; your_secret_key
 </pre>
 </div>
-</div>
-<p>Pick option <cite>12</cite> and specify API access point:</p>
-<div class="code bash highlight-python">
-<div class="highlight">
-<pre>Region to connect to.
+</li>
+<li>
+<p>Get ready to insert the Access Key and the corresponding Secret Key you can take from the <a class="reference external" href="https://panel.dreamhost.com/index.cgi?tree=cloud.objects&amp;">DreamObjects Control Panel</a>: </p>
+<div class="preboxcontainer">
+<pre class="prebox">Region to connect to.
 Choose a number from below, or type in your own value
    / The default endpoint - a good choice if you are unsure.
  1 | US Region, Northern Virginia or Pacific Northwest.
@@ -141,21 +131,20 @@ Choose a number from below, or type in your own value
 region&gt; 12
 </pre>
 </div>
-</div>
-<p>Next you need to set DreamObject’s endpoint API:</p>
-<div class="code bash highlight-python">
-<div class="highlight">
-<pre>Endpoint for S3 API.
+</li>
+<li>
+<p>Pick option <cite>12</cite> and specify API access point: </p>
+<div class="preboxcontainer">
+<pre class="prebox">Endpoint for S3 API.
 Leave blank if using AWS to use the default endpoint for the region.
 Specify if using an S3 clone such as Ceph.
 endpoint&gt; objects-us-west-1.dream.io
 </pre>
 </div>
-</div>
-<p>Leave the location constraint empty:</p>
-<div class="code bash highlight-python">
-<div class="highlight">
-<pre>Location constraint - must be set to match the Region. Used when
+</li>
+<li>Next you need to set DreamObject’s endpoint API: 
+<div class="preboxcontainer">
+<pre class="prebox">Location constraint - must be set to match the Region. Used when
 creating buckets only.
 Choose a number from below, or type in your own value
  1 / Empty for US Region, Northern Virginia or Pacific Northwest.
@@ -183,11 +172,10 @@ Choose a number from below, or type in your own value
 location_constraint&gt; 1
 </pre>
 </div>
-</div>
-<p>Set the canned ACL based on how you want to use rclone:</p>
-<div class="code bash highlight-python">
-<div class="highlight">
-<pre>Canned ACL used when creating buckets and/or storing objects in S3.
+</li>
+<li>Leave the location constraint empty:
+<div class="preboxcontainer">
+<pre class="prebox">&gt;Canned ACL used when creating buckets and/or storing objects in S3.
 For more info visit
 http://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html#canned-acl
 Choose a number from below, or type in your own value
@@ -209,15 +197,14 @@ Choose a number from below, or type in your own value
 acl&gt; private
 </pre>
 </div>
+</li>
+<li>Set the canned ACL based on how you want to use rclone:
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">Read more about <a href="https://help.dreamhost.com/hc/en-us/articles/217590537-How-To-Use-DreamObjects-S3-compatible-API"><cite>DreamObjects S3-compatible APIs</cite></a>. </div>
 </div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Read more about <a href="https://help.dreamhost.com/hc/en-us/articles/217590537-How-To-Use-DreamObjects-S3-compatible-API"><cite>DreamObjects S3-compatible APIs</cite></a>.</p>
-</div>
-<p>Pick <cite>1</cite> for server-side encryption option (DreamObjects doesn’t support it at the moment):</p>
-<div class="code bash highlight-python">
-<div class="highlight">
-<pre>The server-side encryption algorithm used when storing this object in S3.
+<div class="preboxcontainer">
+<pre class="prebox">The server-side encryption algorithm used when storing this object in S3.
 Choose a number from below, or type in your own value
  1 / None
    \ ""
@@ -226,11 +213,10 @@ Choose a number from below, or type in your own value
 server_side_encryption&gt; 1
 </pre>
 </div>
-</div>
-<p>Leave the storage class empty:</p>
-<div class="code bash highlight-python">
-<div class="highlight">
-<pre>The storage class to use when storing objects in S3.
+</li>
+<li>Pick <cite>1</cite> for server-side encryption option (DreamObjects doesn’t support it at the moment):
+<div class="preboxcontainer">
+<pre class="prebox">The storage class to use when storing objects in S3.
 Choose a number from below, or type in your own value
  1 / Default
    \ ""
@@ -243,11 +229,10 @@ Choose a number from below, or type in your own value
 storage_class&gt;
 </pre>
 </div>
-</div>
-<p>Finally, review the remote just configured, save it, and exit the configuration wizard:</p>
-<div class="code bash highlight-python">
-<div class="highlight">
-<pre>Remote config
+</li>
+<li>Leave the storage class empty:
+<div class="preboxcontainer">
+<pre class="prebox">Remote config
 --------------------
 [remote]
 env_auth = false
@@ -278,14 +263,13 @@ q) Quit config
 e/n/d/s/q&gt; q
 </pre>
 </div>
-</div>
-</div>
-<div id="using-rclone">
+</li>
+<li>Finally, review the remote just configured, save it, and exit the configuration wizard:</li>
+</ol>
 <h2>Using rclone</h2>
 <p>With the remote set, you can list the buckets in it with the command:</p>
-<div class="code bash highlight-python">
-<div class="highlight">
-<pre>[user@localhost]$ rclone lsd remote:
+<div class="preboxcontainer">
+<pre class="prebox">[user@localhost]$ rclone lsd remote:
           -1 2016-03-04 02:19:25        -1 samplebucket
           -1 2016-05-16 22:06:53        -1 anotherbucket
           -1 2015-10-15 21:33:25        -1 greatbucket
@@ -297,37 +281,24 @@ Transferred:            0
 Elapsed time:       100ms
 </pre>
 </div>
-</div>
 <p>Make a new bucket:</p>
-<div class="highlight-console">
-<div class="highlight">
-<pre><span class="gp">[user@localhost]$</span> rclone mkdir dho:bucket
-</pre>
-</div>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">rclone mkdir dho:bucket
+</span></pre>
 </div>
 <p>List the contents of a bucket:</p>
-<div class="highlight-console">
-<div class="highlight">
-<pre><span class="gp">[user@localhost]$</span> rclone ls dho:bucket
-</pre>
-</div>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">rclone ls dho:bucket
+</span></pre>
 </div>
 <p>Sync /home/local/directory to the remote bucket, deleting any excess files in the bucket:</p>
-<div class="highlight-console">
-<div class="highlight">
-<pre><span class="gp">[user@localhost]$</span> rclone sync /home/local/directory remote:bucket
-</pre>
-</div>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">rclone sync /home/local/directory remote:bucket
+</span></pre>
 </div>
 <p>Check <a class="reference external" href="http://rclone.org/docs/">rclone’s official documentation</a> for more examples on how to use the software.</p>
-</div>
-</div>
-</div>
-</div>
-<div class="clearer"> </div>
-</div>
-<div class="footer"> </div>
 <!--DreamObjects Button-->
 <div class="dream-sign-up">
 <h2>Start Storing Your Data Today!</h2>
 <a href="https://www.dreamhost.com/cloud/storage/">Sign Up for DreamObjects</a></div>
+</div>
