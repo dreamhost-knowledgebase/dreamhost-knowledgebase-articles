@@ -1,0 +1,55 @@
+<div class="document">
+<div class="documentwrapper">
+<div class="body">
+<div id="upload-screen-shots-to-dreamobjects">
+<p>This article explains how to use a script on a Linux machine that was originally written to work on Mac OS. You can download the code from <a class="reference external" href="https://github.com/dreamhost/screencaps">https://github.com/dreamhost/screencaps</a>.</p>
+<div id="getting-setup">
+<h2>Setting up your Linux environment</h2>
+<p>The code is written in Python and requires the boto library to connect to DreamObjects. You can install boto by opening the Terminal and typing:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[local]$ </span><span class="command">pip install boto</span>
+</pre>
+</div>
+<p>You may see the following error when running the 'pip' command:</p>
+<div class="preboxcontainer">
+<pre class="prebox">-bash: pip: command not found</pre>
+</div>
+<p>This means you do not have pip installed on your system. You can type this in the Terminal instead to install it on Ubuntu (it will require an admin password):</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[local]$ </span><span class="command">sudo apt-get install python-boto
+</span></pre>
+</div>
+<p>You will also need a program to take the screenshot. I use 'scrot'. To install scrot on Ubuntu run the command below.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[local]$ </span><span class="command">sudo apt-get install scrot</span>
+</pre>
+</div>
+<div id="installation">
+<h2>Installation</h2>
+<p>Create a folder called 'bin' in your home directory and copy <a href="https://github.com/dreamhost/screencaps">dhdo-screencap.py</a> file into it. Open dhdo-screencap.py <a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">with a text editor</a> and paste in your DreamObjects <a href="https://help.dreamhost.com/hc/en-us/articles/215986357-DreamObjects-Keys">Access Key, Secret Key</a> and <a href="https://help.dreamhost.com/hc/en-us/articles/215321178-DreamObjects-Buckets">bucket name</a> (ensure each of these are surrounded by single quotes).</p>
+<p>If you are running the script on Linux you will need to change some things in the dhdo-screencap.py file, such as set the program that will take the screenshot</p>
+<div class="preboxcontainer">
+<pre class="prebox">result = subprocess.call(['screencapture', '-i', f.name])
+</pre>
+</div>
+<p>should be</p>
+<div class="preboxcontainer">
+<pre class="prebox">result = subprocess.call(['scrot', f.name])
+</pre>
+</div>
+<p>The above code is equivalent to running the following command in a shell.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[local]$ </span><span class="command">scrot filename.png</span></pre>
+</div>
+</div>
+<p>Save and close it. Now you can run the script and it will take a screenshot and upload it to the bucket you specified. It is a good idea to assign this to a keyboard shortcut. How you do this depends on what desktop environment or window manager you use.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="footer"> </div>
+<!--DreamObjects Button-->
+<div class="dream-sign-up">
+<h2>Start Storing Your Data Today!</h2>
+<a href="https://www.dreamhost.com/cloud/storage/">Sign Up for DreamObjects</a></div>

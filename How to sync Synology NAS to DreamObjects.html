@@ -1,101 +1,51 @@
-<body role="document">
 <div class="document">
 <div class="documentwrapper">
-<div class="body" role="main">
+<div class="body">
 <div id="how-to-sync-synology-nas-to-dreamobjects">
-
-<p>NAS devices are great, but what if your house goes up in flames? You
-could stand to lose everything! Family photos from years ago, all of
-your music, videos, tax returns, digital financial documents… all
-gone!</p>
-<p>That’s why you should back up your NAS regularly. Synology’s made this
-easy by providing both native cloud backup functionality and an
-optional (free) cloud “sync” app.</p>
+<p><a href="https://en.wikipedia.org/wiki/Network-attached_storage">NAS devices</a> (Network-attached storage) are great, but what if your house goes up in flames? You could stand to lose everything! Family photos from years ago, all of your music, videos, tax returns, digital financial documents… all gone!</p>
+<p>That’s why you should back up your NAS regularly. Synology’s made this easy by providing both native cloud backup functionality and an optional (free) cloud “sync” app.</p>
 <div id="setting-up-synologys-cloud-sync">
 <h2>Setting up Synology’s Cloud Sync</h2>
-<p>You’ll need  a private bucket on DreamObjects — this where your data
-will live. All in all, you need to have three things: a <em>public key</em>, a
-<em>secret key</em>, and a <em>bucket name</em>.</p>
-<p>Once you’re all set on the DreamHost side of things, log in to your
-Synology device. Doesn’t matter if it’s a RackStation or a
-DiskStation, or whatever! The great thing about the Synology platform
-is that every model runs the same <a class="reference external" href="https://www.synology.com/dsm">DSM management software</a>!</p>
-<p>Click over to the Package Center, navigate to the <a class="reference external" href="https://www.synology.com/en-global/dsm/app_packages/CloudSync">Cloud Sync</a> app,
-and click to Install/Open it!</p>
-<div class="figure">
-<img alt="../../_images/cloudsync.jpg" src="https://dreamhosthelp.zendesk.com/hc/article_attachments/208922748/cloudsync.jpg"/>
-</div>
-<p>If you just installed Cloud Sync, navigate to your list of installed
-apps where you’ll see that it now stands proudly, beaming beneath a
-spotlight while twinkles of newness surround it on all sides.</p>
-<div class="figure">
-<img alt="../../_images/cloudsyncicon.jpg" src="https://dreamhosthelp.zendesk.com/hc/article_attachments/208922768/cloudsyncicon.jpg"/>
-</div>
-<p>Launch Cloud Sync. You’ll be asked to select a public cloud to use.
-Navigate to <em>S3 Storage</em>.</p>
-<div class="figure">
-<img alt="../../_images/s3.jpg" src="https://dreamhosthelp.zendesk.com/hc/article_attachments/208948367/s3.jpg"/>
-</div>
-<p>Your <em>S3 Server</em> should be a Custom Server URL. Fill in
-objects-us-west-1.dream.io for the <em>Server address</em>. Once you provide
-your access key (public key) and secret keys, all of your available
-DreamObjects buckets will populate the dropdown list. Select the one
-that you want to use (you might only have one.)</p>
-<div class="figure">
-<img alt="../../_images/synccredentials.png" src="https://dreamhosthelp.zendesk.com/hc/article_attachments/208922788/synccredentials.png"/>
-</div>
-<p>Now you’ll need to give this sync job a name and tell Cloud Sync which
-directories to include.</p>
-<div class="figure">
-<img alt="../../_images/namesync.jpg" src="https://dreamhosthelp.zendesk.com/hc/article_attachments/208922808/namesync.jpg"/>
-</div>
-<p>You’ll also need to choose which direction your sync should operate —
-if you’re counting on DreamObjects to maintain the latest copies of
-all your data silently in the background until disaster strikes,
-“Upload local changes only” is what you’ll want. If you intend to make
-some changes to the data within your buckets directly (this is not
-likely if you’re using DreamObjects in this context) go with
-“Bidirectional”.</p>
-<p>Data Encryption is an option that you should consider enabling. Your
-files will be encrypted before they’re ever transmitted to
-DreamObjects, and not even DreamHost will be able to decrypt them for
-you – all encryption is handled automatically on your end by the Cloud
-Sync app.</p>
-<p>Note that Synology’s data encryption comes with one disappointing
-shortcoming — your file names will not be encrypted.</p>
-<p>Now select which subdirectories you’d like to include in your sync:</p>
-<div class="figure">
-<img alt="../../_images/dirs.jpg" src="https://dreamhosthelp.zendesk.com/hc/article_attachments/208922828/dirs.jpg"/>
-</div>
-<p>Click Apply, and if all goes as planned, you should now see a screen
-like this:</p>
-<div class="figure">
-<img alt="../../_images/syncinprocess.jpg" src="https://dreamhosthelp.zendesk.com/hc/article_attachments/208948387/syncinprocess.jpg"/>
-</div>
-<p>Your personal data is now syncing to DreamObjects, and you can kick
-back and never worry about having to retrieve it until you have to!</p>
-<p>Soon you’ll see this screen, and all will be right with the world.</p>
-<div class="figure">
-<img alt="../../_images/done.jpg" src="https://dreamhosthelp.zendesk.com/hc/article_attachments/208948407/done.jpg"/>
-</div>
-<p>To restore your data after a colossal breakdown, just repeat this
-whole process on new Synology hardware with the “Download remote
-changes only” option. Easy!</p>
-<p>Synology’s own <a class="reference external" href="https://www.synology.com/en-us/dsm/data_backup">Backup &amp; Replication</a> app is another option for
-performing more traditional backups. However, while it also supports
-S3, it doesn’t allow you to specify your own hostname! This one fatal
-flaw limits its functionality terribly.</p>
+<p>You need to have three things:</p>
+<ul>
+<li>a <em>public key</em></li>
+<li>a <em>secret key</em></li>
+<li>a <em>bucket name</em></li>
+</ul>
+<p>Once you’re all set on the DreamHost side of things, log in to your Synology device. Doesn’t matter if it’s a RackStation or a DiskStation. The great thing about the Synology platform is that every model runs the same <a class="reference external" href="https://www.synology.com/dsm">DSM management software</a>.</p>
+<p>Click over to the Package Center, navigate to the <a class="reference external" href="https://www.synology.com/en-global/dsm/app_packages/CloudSync">Cloud Sync</a> app, and click to Install/Open it.</p>
+<div class="figure"><img src="https://help.dreamhost.com/hc/article_attachments/208922748/cloudsync.jpg" alt="../../_images/cloudsync.jpg" /></div>
+<p>If you just installed Cloud Sync, navigate to your list of installed apps where you’ll see it listed.</p>
+<div class="figure"><img src="https://help.dreamhost.com/hc/article_attachments/208922768/cloudsyncicon.jpg" alt="../../_images/cloudsyncicon.jpg" /></div>
+<p>Launch Cloud Sync. You are asked to select a public cloud to use. Navigate to <em>S3 Storage</em>.</p>
+<div class="figure"><img src="https://help.dreamhost.com/hc/article_attachments/208948367/s3.jpg" alt="../../_images/s3.jpg" /></div>
+<p>Your <em>S3 Server</em> should be a Custom Server URL. Fill in objects-us-west-1.dream.io for the <em>Server address</em>. Once you provide your access key (public key) and secret keys, all of your available DreamObjects buckets will populate in the dropdown list. Select the one you want to use (you might only have one.)</p>
+<div class="figure"><img src="https://help.dreamhost.com/hc/article_attachments/208922788/synccredentials.png" alt="../../_images/synccredentials.png" /></div>
+<p>Give this sync job a name and tell Cloud Sync which directories to include.</p>
+<div class="figure"><img src="https://help.dreamhost.com/hc/article_attachments/208922808/namesync.jpg" alt="../../_images/namesync.jpg" /></div>
+<p>You’ll also need to choose which direction your sync should operate:</p>
+<ul>
+<li><strong>Upload local changes only: </strong>If you’re counting on DreamObjects to maintain the latest copies of all your data silently in the background until disaster strikes, “Upload local changes only” is what you’ll want.</li>
+<li><strong>Bidirectional: </strong>If you intend to make some changes to the data within your buckets directly (this is not likely if you’re using DreamObjects in this context) go with “Bidirectional”.</li>
+</ul>
+<p>Data Encryption is an option that you should consider enabling. Your files will be encrypted before they’re ever transmitted to DreamObjects, and not even DreamHost will be able to decrypt them for you. All encryption is handled automatically on your end by the Cloud Sync app.</p>
+<p>Note that Synology’s data encryption comes with one disappointing shortcoming — your file names will not be encrypted.</p>
+<div class="figure"><img src="https://help.dreamhost.com/hc/article_attachments/208922828/dirs.jpg" alt="../../_images/dirs.jpg" /></div>
+<p>Now select which subdirectories you’d like to include in your sync, then click <strong>Apply</strong>. </p>
+<div class="figure"><img src="https://help.dreamhost.com/hc/article_attachments/208948387/syncinprocess.jpg" alt="../../_images/syncinprocess.jpg" /></div>
+<p>Your personal data is now syncing to DreamObjects. </p>
+<div class="figure"><img src="https://help.dreamhost.com/hc/article_attachments/208948407/done.jpg" alt="../../_images/done.jpg" /></div>
+<p>Finally, a confirmation message confirms everything is up to date.</p>
+<h2>Restoring your data</h2>
+<p>To restore your data after a colossal breakdown, just repeat this whole process on new Synology hardware with the “Download remote changes only” option.</p>
+<h2>More traditional backups</h2>
+<p>Synology’s own <a class="reference external" href="https://www.synology.com/en-us/dsm/data_backup">Backup &amp; Replication</a> app is another option for performing more traditional backups. However, while it also supports S3, it doesn’t allow you to specify your own hostname. This one fatal flaw limits its functionality terribly.</p>
 </div>
 </div>
 </div>
-</div>
-<div class="clearer"></div>
-</div>
-<div class="footer">
 </div>
 <!--DreamObjects Button-->
 <div class="dream-sign-up">
 <h2>Start Storing Your Data Today!</h2>
-<a href="https://www.dreamhost.com/cloud/storage/">Sign Up for DreamObjects</a>
+<a href="https://www.dreamhost.com/cloud/storage/">Sign Up for DreamObjects</a></div>
 </div>
-</body>

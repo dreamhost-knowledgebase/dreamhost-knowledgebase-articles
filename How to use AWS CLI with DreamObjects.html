@@ -1,115 +1,91 @@
-<body role="document">
-<div class="document">
-<div class="documentwrapper">
-<div class="body" role="main">
-<div id="how-to-use-aws-cli-with-dreamobjects">
-
-<div id="overview">
-<h2>Overview</h2>
 <dl class="docutils">
-<dt><a class="reference external" href="https://aws.amazon.com/cli/">AWS CLI</a> is:</dt>
-<dd><ul class="first last simple">
-<li>a command-line tool for uploading, retrieving, and managing data in
-Amazon S3 and other Cloud Storage Service Providers that use the S3
-protocol such as DreamHost DreamObjects.</li>
-<li>best suited for power users who don’t fear command line.</li>
-<li>ideal for scripts, automated backups triggered from cron, and so on.</li>
-</ul>
-</dd>
+<dt><a class="reference external" href="https://aws.amazon.com/cli/">AWS CLI</a> is a command-line tool for uploading, retrieving, and managing data in Amazon S3 and other Cloud Storage Service Providers that use the S3 protocol such as DreamHost DreamObjects. It's best suited for power users who don’t fear command line and is ideal for scripts, automated backups triggered from cron.</dt>
 </dl>
-<p>The following instructions help you install and configure AWS CLI to work with
-DreamObjects.</p>
-</div>
+<p>The following instructions help you install and configure AWS CLI to work with DreamObjects.</p>
 <div id="installing-aws-cli">
 <h2>Installing AWS CLI</h2>
 <p>Depending on the operating system you are running, there are several options.</p>
-<p>For Windows there are files in .msi format that can be installed directly.</p>
-<p>For Mac and Linux, the suggested installation is through python “pip”.  To do
-this, run the following command on your local computer:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@localhost]$</span> pip install awscli
-</pre></div>
+<p><strong>Windows: </strong>For Windows, there are files in .msi format that can be installed directly.</p>
+<p><strong>Mac and Linux: </strong>For Mac and Linux, the suggested installation is by running the <a href="https://help.dreamhost.com/hc/en-us/articles/115000221112-Using-pip-to-install-Python-modules">Python “pip” command</a>. To do this, run the following command on your local computer:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">pip install awscli</span>
+</pre>
 </div>
-<p>To install the client on a DreamHost shared, VPS or dedicated server will
-require the use of python virtualenv and then using its “pip” to install the
-AWS CLI client locally with the same pip install command above.  Please see
-the <a class="reference external" href="215489338-Installing-virtualenv-and-custom-modules-in-Python">Python</a> article for
-specifics on how to accomplish this.</p>
+<p>To install the client on a DreamHost Shared, VPS, or Dedicated server will require the use of <a href="https://help.dreamhost.com/hc/en-us/articles/215489338-Installing-virtualenv-and-custom-modules-in-Python">Python's virtualenv</a>. Then use “pip” to install the AWS CLI client locally with the same pip install command above. Please see the <a class="reference external" href="215489338-Installing-virtualenv-and-custom-modules-in-Python">Python</a> article for specifics on how to accomplish this.</p>
 </div>
 <div id="configuring-aws-cli">
 <h2>Configuring AWS CLI</h2>
-<p>This client has features that apply to many services offered by Amazon, but
-for this tutorial we only are concerned with using the S3 functionality in
-combination with DreamObjects. To use the S3 features, you must ensure a few
-things. Run the following command to input your access and secret keys for AWS
-CLI to store them encrypted for you. Accept the default region and output
-format by hitting enter.</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@localhost]$</span> aws configure
-<span class="go">AWS Access Key ID [None]:</span>
-<span class="go">AWS Secret Access Key [None]:</span>
-<span class="go">Default region name [None]:</span>
-<span class="go">Default output format [None]:</span>
-</pre></div>
-</div>
+<p>This client has features that apply to many services offered by Amazon, but for this tutorial, we're only concerned with using the S3 functionality in combination with DreamObjects. To use the S3 features, you must ensure a few things. Run the following command to input your access and secret keys for AWS CLI to store them encrypted for you. Accept the default region and output format by hitting enter.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">aws configure</span>
+<span class="cmdoutput">AWS Access Key ID [None]:
+AWS Secret Access Key [None]:
+Default region name [None]:
+Default output format [None]:</span>
+</pre>
 </div>
 <div id="example-commands">
 <h2>Example Commands</h2>
-<p><strong>Making a bucket</strong></p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@localhost]$</span> aws --endpoint-url https://objects-us-west-1.dream.io s3 mb s3://newbucketname
-<span class="go">make_bucket: s3://newbucketname/</span>
-</pre></div>
+<h3>Making a bucket</h3>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">aws --endpoint-url https://objects-us-west-1.dream.io s3 mb s3://newbucketname</span>
+<span class="cmdoutput">make_bucket: s3://newbucketname/</span>
+</pre>
 </div>
-<p><strong>Listing all buckets</strong></p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@localhost]$</span> aws --endpoint-url https://objects-us-west-1.dream.io s3 ls
-<span class="go">2016-01-27 20:14:46 newbucketname</span>
-</pre></div>
+<h3>Listing all buckets</h3>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">aws --endpoint-url https://objects-us-west-1.dream.io s3 ls</span>
+<span class="cmdoutput">2016-01-27 20:14:46 newbucketname</span>
+</pre>
 </div>
-<p><strong>Uploading a file into a bucket</strong></p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@localhost]$</span> aws --endpoint-url https://objects-us-west-1.dream.io s3 cp testfile.txt s3://newbucketname/testfile.txt
-<span class="go">upload: ./testfile.txt to s3://newbucketname/testfile.txt</span>
-</pre></div>
+<h3>Uploading a file into a bucket</h3>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">aws --endpoint-url https://objects-us-west-1.dream.io s3 cp testfile.txt s3://newbucketname/testfile.txt</span>
+<span class="cmdoutput">upload: ./testfile.txt to s3://newbucketname/testfile.txt</span>
+</pre>
 </div>
-<p><strong>Listing the contents of a bucket</strong></p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@localhost]$</span> aws --endpoint-url https://objects-us-west-1.dream.io s3 ls s3://newbucketname
-<span class="go">2016-01-27 19:30:21       8803 testfile.txt</span>
-</pre></div>
+<h3>Listing the contents of a bucket</h3>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">aws --endpoint-url https://objects-us-west-1.dream.io s3 ls s3://newbucketname</span>
+<span class="cmdoutput">2016-01-27 19:30:21       8803 testfile.txt</span>
+</pre>
 </div>
-<p><strong>Downloading a file from a bucket</strong></p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@localhost]$</span> aws --endpoint-url https://objects-us-west-1.dream.io s3 cp s3://newbucketname/testfile.txt testfile.txt
-<span class="go">download: s3://newbucketname/testfile.txt to ./testfile.txt</span>
-</pre></div>
+<h3>Downloading a file from a bucket</h3>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">aws --endpoint-url https://objects-us-west-1.dream.io s3 cp s3://newbucketname/testfile.txt testfile.txt</span>
+<span class="cmdoutput">download: s3://newbucketname/testfile.txt to ./testfile.txt</span>
+</pre>
 </div>
-<p><strong>Deleting a file in a bucket</strong></p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@localhost]$</span> aws --endpoint-url https://objects-us-west-1.dream.io s3 rm s3://newbucketname/testfile.txt
-<span class="go">delete: s3://newbucketname/testfile.txt</span>
-</pre></div>
+<h3>Deleting a file in a bucket</h3>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">aws --endpoint-url https://objects-us-west-1.dream.io s3 rm s3://newbucketname/testfile.txt</span>
+<span class="cmdoutput">delete: s3://newbucketname/testfile.txt</span>
+</pre>
 </div>
-<p><strong>Deleting an empty bucket</strong></p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@localhost]$</span> aws --endpoint-url https://objects-us-west-1.dream.io s3 rb s3://newbucketname/
+<h3>Deleting an empty bucket</h3>
+<div class="highlight-console">
+<div class="highlight">
+<pre><span class="gp">[user@localhost]$</span> aws --endpoint-url https://objects-us-west-1.dream.io s3 rb s3://newbucketname/
 <span class="go">remove_bucket: s3://newbucketname/</span>
-</pre></div>
+</pre>
 </div>
-<p><strong>Sync a directory and its files to or from a bucket</strong></p>
-<p>This will only upload new and changed files, and not delete any files.  You
-can specify other params such as –delete to remove files from the destination
-that aren’t on the source.  An additional useful flag is –acl which accepts
-values such as “private” or “public-read”.</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@localhost]$</span> aws --endpoint-url https://objects-us-west-1.dream.io s3 sync syncdir s3://newbucketname/
+</div>
+<h3>Sync a directory and its files to or from a bucket</h3>
+<p>This will only upload new and changed files, and not delete any files. You can specify other params such as <strong>–delete</strong> to remove files from the destination that aren’t on the source. An additional useful flag is <strong>–acl</strong> which accepts values such as “private” or “public-read”.</p>
+<div class="highlight-console">
+<div class="highlight">
+<pre><span class="gp">[user@localhost]$</span> aws --endpoint-url https://objects-us-west-1.dream.io s3 sync syncdir s3://newbucketname/
 <span class="go">upload: syncdir/file3 to s3://newbucketname/file3</span>
 <span class="go">upload: syncdir/file1 to s3://newbucketname/file1</span>
 <span class="go">upload: syncdir/file2 to s3://newbucketname/file2</span>
-</pre></div>
+</pre>
 </div>
 </div>
 </div>
-</div>
-</div>
-<div class="clearer"></div>
-</div>
-<div class="footer">
-</div>
+<div class="clearer"> </div>
+<div class="footer"> </div>
 <!--DreamObjects Button-->
 <div class="dream-sign-up">
 <h2>Start Storing Your Data Today!</h2>
-<a href="https://www.dreamhost.com/cloud/storage/">Sign Up for DreamObjects</a>
+<a href="https://www.dreamhost.com/cloud/storage/">Sign Up for DreamObjects</a></div>
 </div>
-</body>
