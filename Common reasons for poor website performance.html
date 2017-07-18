@@ -1,49 +1,115 @@
 <p>This article offers a few tips on how to improve your website performance and diagnose why it may not be running as efficiently as possible. </p>
-<h2><span id="Optimizing_your_site">Optimizing your site</span></h2>
-<h3><span id="Markup">Markup</span></h3>
-<p>Make sure your web documents embody the best practices in web page development. These include, but are not limited to:</p>
-<dl>
-<dt><strong>Use semantically-appropriate and valid markup</strong> </dt>
-<dd>HTML or XHTML elements should be used to describe their content. For example, a <code>blockquote</code> element should contain quoted text and not be used to create a text indentation. Your documents should be validated and (where appropriate) <a class="new" title="W:Well-formed element (page does not exist)" href="https://en.wikipedia.org/wiki/Well-formed_element">well-formed</a>.</dd>
-<dt><strong>Use absolute or relative paths</strong> </dt>
-<dd>When linking to local resources (images, video, JavaScript, etc.) within your documents, use either <em>absolute</em> (also called <em>relative from root</em>) or relative paths. Using a remote path (such as a URL) will cause an additional and unnecessary HTTP request.</dd>
-<dt><strong>Use CSS</strong> </dt>
-<dd>Use CSS for controlling the presentation of your documents. External CSS files are cached by the browser, reducing overall page-load times. Do not use HTML tables to control page layout (unless presenting tabulated data) because they significantly increase a document's markup footprint. When possible, external JavaScript and CSS files should be combined. It is always faster to load one large file than it is to load a few dozen small files.</dd>
-</dl>
-<h3><span id="Media">Media</span></h3>
-<p>You can reduce the file size of media such as images, videos, and music by using compression techniques. Background images, particularly those that are tiled, can usually stand up to extra compression. Make use of separate image thumbnails where large images are not needed. Try to avoid high definition images on the majority of your pages. Having a megabyte or more of images will seriously slow down your site because it takes longer to download all of the site files.</p>
-<h3><span id="Scripting">Scripting</span></h3>
-<p>Sometimes a poorly-written script, or a script that conflicts with other site elements can lead to a slow site and poor performance. Try running a full page test at: <a href="http://tools.pingdom.com/fpt/">http://tools.pingdom.com/fpt/</a></p>
-<p>Any scripts that take a long time to load should be investigated to see if they can be better optimized. It may also be worthwhile to turn off any scripts that look problematic to test and see if deactivating them leads to an improved performance.</p>
-<h3><span id="PHP">PHP</span></h3>
-<p>Try installing <a href="/hc/en-us/articles/217298967-FastCGI-overview">PHP FastCGI</a>. It keeps <a href="/hc/en-us/articles/214202188-PHP-overview">PHP</a> sessions running so it doesn't have to instantiate every time someone hits your web site.</p>
-<p><a href="/hc/en-us/articles/215280058-Virtual-Private-Server-overview-VPS-">DreamHost VPS</a> users can use <a href="/hc/en-us/articles/215945977-How-do-I-use-XCache-on-a-private-server-">XCache</a>. It caches compiled PHP code in memory for later requests.</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>This optimization article is for any websites that were custom built using HTML/CSS/JS and any other backend language such as PHP, not by using a <a href="https://help.dreamhost.com/hc/en-us/sections/203242317-One-Click-Installs">One-Click Install</a>.</p>
+<p>If you instead built your site using a One-Click Install, please view the following article instead for optimization options.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215837998-How-do-I-optimize-my-CMS-software-">How do I optimize my CMS software?</a></li>
+</ul>
+</div>
+</div>
+<h2>Optimizing your CSS and JavaScript</h2>
+<h3>Use a CDN to load jQuery</h3>
+<p>If your site is using jQuery, load it into your HTML document using a CDN as opposed to a local version on your webserver. Loading jQuery from a CDN such as Google can help to speed up page load. This is because your visitors most likely have already visited several sites that are using a jQuery CDN (like Google or Microsoft). Because they have already downloaded the jQuery library to their browser, it is already cached and will not need to be downloaded again. The following pages lists options jQuery CDN options:</p>
+<ul>
+<li><a href="https://code.jquery.com/">https://code.jquery.com/</a></li>
+<li><a href="https://developers.google.com/speed/libraries/#jquery">https://developers.google.com/speed/libraries/#jquery</a></li>
+<li><a href="https://docs.microsoft.com/en-us/aspnet/ajax/cdn/overview">https://docs.microsoft.com/en-us/aspnet/ajax/cdn/overview</a></li>
+<li><a href="https://www.w3schools.com/jquery/jquery_get_started.asp">https://www.w3schools.com/jquery/jquery_get_started.asp</a></li>
+<li><a href="https://cdnjs.com/libraries/jquery/">https://cdnjs.com/libraries/jquery/</a></li>
+</ul>
+<h3>Optimize JavaScript delivery</h3>
+<p>JavaScript is rendered as the browser reads the webpage (top-down). When a JavaScript file is encountered, the browser stops rendering the page until the JavaScript file has been fully read. This is called '<a href="https://developers.google.com/speed/docs/insights/BlockingJS">JavaScript Render-Blocking</a>' and could cause a delay as the page loads.</p>
+<p>If a script is not needed to load the page, defer the loading of it until the page has fully loaded. This can help the most important parts of the page to load first. View the following articles for further information:</p>
+<ul>
+<li><a href="https://developers.google.com/speed/docs/insights/BlockingJS">https://developers.google.com/speed/docs/insights/BlockingJS</a></li>
+<li><a href="https://varvy.com/pagespeed/defer-loading-javascript.html">https://varvy.com/pagespeed/defer-loading-javascript.html</a></li>
+<li><a href="https://www.w3schools.com/tags/att_script_defer.asp">https://www.w3schools.com/tags/att_script_defer.asp</a></li>
+</ul>
+<h3>Optimize CSS delivery</h3>
+<p>CSS can also be optimized to improve the initial page load. View the following articles for further details:</p>
+<ul>
+<li><a href="https://developers.google.com/speed/docs/insights/OptimizeCSSDelivery">https://developers.google.com/speed/docs/insights/OptimizeCSSDelivery</a></li>
+<li><a href="https://developers.google.com/web/fundamentals/performance/critical-rendering-path/render-blocking-css">https://developers.google.com/web/fundamentals/performance/critical-rendering-path/render-blocking-css</a></li>
+<li><a href="https://varvy.com/pagespeed/render-blocking-css.html">https://varvy.com/pagespeed/render-blocking-css.html</a></li>
+</ul>
+<h3><span id="Scripting">Check for poorly written scripts</span></h3>
+<p>Sometimes a poorly-written script, or a script that conflicts with other site elements can lead to a slow site and poor performance. Try running a full page test at any of the following sites:</p>
+<ul>
+<li><a href="http://tools.pingdom.com/fpt/">http://tools.pingdom.com/fpt/</a></li>
+<li><a href="http://www.webpagetest.org/">http://www.webpagetest.org/</a></li>
+<li><a href="http://gtmetrix.com/">http://gtmetrix.com/</a></li>
+</ul>
+<p>Any scripts that take a long time to load should be investigated to see if they can be better optimized. It may also be worthwhile to turn off any scripts that look problematic to test and see if deactivating them leads to an improved performance. </p>
+<h3><span id="Scripting">Minify your scripts</span></h3>
+<p>CSS and JavaScript files have lots of empty space which makes them easier for humans to read. When you minify the code, it strips out all of that empty space. This makes the file smaller and can help them to load faster.</p>
+<ul>
+<li><a href="https://www.keycdn.com/support/how-to-minify-css-js-and-html/">https://www.keycdn.com/support/how-to-minify-css-js-and-html/</a></li>
+</ul>
+<h2>Optimizing Media</h2>
+<h3>Images</h3>
+<p>Images are often a primary source of slow page. Having a megabyte or more of images will seriously slow down your site because it takes longer to download all of the site files. Optimizing your images will go a long way to reduce your page load time.</p>
+<p>View the following links for further information:</p>
+<ul>
+<li><a href="https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/image-optimization">https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/image-optimization</a></li>
+</ul>
+<h3>Video</h3>
+<p>Make sure you compress your videos to reduce the total size. If they are too large, the videos may pause/buffer as the user attempts to view them.</p>
+<p>It's also a good idea to convert your videos to a format <a href="https://www.w3schools.com/html/html5_video.asp">compatible with HTML5</a>. This ensures the greatest number of browsers are able to view them.</p>
+<h2><span id="PHP">PHP</span></h2>
+<p>If your site is built on PHP, it's recommended to enable OPcache which is a caching engine for PHP. View the following article for further details:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216660668-OPcache-overview">OPcache overview</a></li>
+</ul>
 <p>Make sure to test all PHP scripts. PHP scripts that do not properly end can cause processes to be skipped for hitting the FCGI process limit, which can cause site slowness.</p>
-<h3><span id="Caching">Caching</span></h3>
-<p>For WordPress, review the <a href="/hc/en-us/sections/203242637-Optimization">WordPress optimization</a> and '<a href="https://help.dreamhost.com/hc/en-us/articles/214588698-Installing-WP-Super-Cache">WP Super Cache</a>' articles.</p>
-<p>For MediaWiki, enabling the file cache can improve performance. Here's <a href="http://www.mediawiki.org/wiki/Manual:File_cache">more info</a> on how to enable the file cache.</p>
-<h3><span id="Databases">Databases</span></h3>
+<h2><span id="Caching">Caching</span></h2>
+<p>A Cache is a temporary storage area for different types of computerized data. For example, browser caching allows webpage files like images, CSS, and JavaScript to be cached (stored) in the browser. Since those files are already stored, the next time you visit the same website your browser does not need to download them again, resulting in a faster browsing experience.</p>
+<p>There are many different types of caching options for websites. Below are just a few common examples:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215873088-Cloudflare-overview">Cloudflare</a> — (external CDN)</li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216660668-OPcache-overview">OPcache</a> — (PHP cache)</li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215945977-How-do-I-use-XCache-on-a-private-server-">XCache</a> — (PHP opcode cacher available on <a href="https://help.dreamhost.com/hc/en-us/articles/215280058-Virtual-Private-Server-VPS-overview-">VPS</a> machines)</li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/217212317-Memcached-overview">Memcached</a> — (Available on <a href="https://help.dreamhost.com/hc/en-us/articles/215279658-Dedicated-server-overview">Dedicated</a> servers) </li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215916677-What-is-DreamSpeed-">DreamSpeed CDN</a> — (DreamHost's CDN)</li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214588698-Installing-WP-Super-Cache">WordPress WP Super Cache</a> — (Caching plugin for WordPress sites)</li>
+</ul>
+<h2><span id="Databases">Databases</span></h2>
+<h3>Optimizing in phpMyAdmin</h3>
 <p>Your <a href="/hc/en-us/articles/215099117-MySQL-overview">MySQL</a> database might run slowly if it has a lot of overhead. Overhead is caused by rows being deleted, leaving empty space. The more active a database is, the more overhead there may be.</p>
-<p>You can cleanup overhead within phpMyAdmin. For example, log into <a href="/hc/en-us/articles/214395638-phpMyAdmin-overview">phpMyAdmin</a> and view the Structure of your database. At the bottom, click 'Check tables having overhead'. Then select the pulldown 'Optimize Tables'.</p>
-<p>You can also cleanup overhead via a shell script and/or cron job. You may want to run a monthly cron job to do this for you. A cron job entry might look like so:</p>
+<p>You can cleanup overhead within phpMyAdmin. View the following article for detailed instructions:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215036388-How-do-I-optimize-my-database-">How do I optimize my database?</a></li>
+</ul>
+<h3>Optimizing via SSH</h3>
+<p>You can also cleanup overhead via a shell script and/or cron job using <a href="https://dev.mysql.com/doc/refman/5.7/en/mysqlcheck.html">mysqlcheck</a> which checks, repairs, and optimizes tables. It's a good idea to run a monthly <a href="https://help.dreamhost.com/hc/en-us/articles/215088668-How-do-I-create-a-cron-job-">cron job</a> to do this for you. The cron job might look like this:</p>
 <div class="preboxcontainer">
 <pre class="prebox">#!/bin/sh
 /usr/bin/mysqlcheck -o -v -u USER -p PASSWORD -h MYSQL.EXAMPLE.COM DATABASENAME;
 </pre>
 </div>
-<p>Replace the items in all-caps with values appropriate for your site.</p>
-<p>Make sure that spam comments are not making it take longer to access your database. Akismet is a very useful plugin for WordPress that helps you eliminate spam comments which can speed up your site.</p>
+<p>Replace the items in all-caps with the actual <a href="https://help.dreamhost.com/hc/en-us/articles/221610868-Finding-your-database-login-credentials">credentials for your database</a>.</p>
 <h2><span id="Internet_issues">Internet issues</span></h2>
-<p>Data passing between a user agent and a web server traverses the Internet by means of a packet switching system that may encompass a dozen or more nodes, depending on the physical locations of the user and the web server.</p>
 <h3><span id="Traceroute">Traceroute</span></h3>
-<p>Main article: <a href="/hc/en-us/articles/215840708-Traceroute">Traceroute</a></p>
-<p>One major reason for poor site performance is when one or more "hops" taken by data packets passing through the Internet are obstructed or delayed. Traceroute is often used for network troubleshooting. By showing a list of routers traversed, it allows the user to identify the path taken to reach a particular destination on the network. This can help identify routing problems or firewalls that may be blocking access to a site.</p>
+<p>One major reason for poor site performance is when one or more "hops" taken by data packets passing through the Internet are obstructed or delayed. The 'Traceroute' tool is often used for network troubleshooting. By showing a list of routers traversed, it allows the user to identify the path taken to reach a particular destination on the network. This can help identify routing problems or firewalls that may be blocking access to a site. View the Traceroute article for further information:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215840708-Traceroute">Traceroute</a></li>
+</ul>
 <h3><span id="ISP">ISP</span></h3>
-<p>Some users may suffer from a poorer performance more than others. This may be the result of problems with a particular Internet Service Provider (most often, if it is one of the large Online Service Providers, such as AOL). Network congestion, bandwidth throttling and restrictions, data discrimination and filtering, and even content filtering can all result in poor site performance.</p>
-<h2><span id="Network_issues">Network issues</span></h2>
-<p>Make sure to test your own local Internet speed at a site such as speedtest.net. This may help to confirm where the slowness is originating.</p>
-<h3><span id="Web_server">Web server</span></h3>
-<p>Check the load, users, uptime, and so on.</p>
+<p>Some users may suffer from a poorer performance more than others. This may be the result of problems with a particular Internet Service Provider. Network congestion, bandwidth throttling and restrictions, data discrimination and filtering, and even content filtering can all result in poor site performance. Check with your ISP to see if they are currently having connectivity issues.</p>
+<h2><span id="Network_issues">Network tools</span></h2>
+<p>Make sure to test your own local Internet speed at a site such as <a href="http://speedtest.net">speedtest.net</a>. This may help to confirm if your local connection is having connectivity problems.</p>
+<p>There are also several online tools to check different parts of a network. View the 'Website tools' article for a list of <a href="https://help.dreamhost.com/hc/en-us/articles/216560958#Network_tools">network tools</a> and <a href="https://help.dreamhost.com/hc/en-us/articles/216560958#Website_loading_tools">site loading tools</a>.</p>
+<h2><span id="Web_server">Web server</span></h2>
+<p>It's also possible that there could be a problem with the DreamHost web server your site is hosted on. View the following article for command line examples you can use to troubleshoot your site and server:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115000335532">Commands to troubleshoot your website</a></li>
+</ul>
+<h2>Browser plugin</h2>
+<p>There are also browser plugins/extensions you can add that help you investiage the cause of slowness. YSlow is a good one to try out:</p>
+<ul>
+<li><a href="http://yslow.org/">SLow</a></li>
+</ul>
 <h2><span id="See_also">See also</span></h2>
 <ul>
 <li><a href="/hc/en-us/categories/202186727">List of website troubleshooting articles</a></li>
