@@ -75,20 +75,11 @@
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/214588698-Installing-WP-Super-Cache">WordPress WP Super Cache</a> — (Caching plugin for WordPress sites)</li>
 </ul>
 <h2><span id="Databases">Databases</span></h2>
-<h3>Optimizing in phpMyAdmin</h3>
-<p>Your <a href="/hc/en-us/articles/215099117-MySQL-overview">MySQL</a> database might run slowly if it has a lot of overhead. Overhead is caused by rows being deleted, leaving empty space. The more active a database is, the more overhead there may be.</p>
-<p>You can cleanup overhead within phpMyAdmin. View the following article for detailed instructions:</p>
+<p>Your <a href="/hc/en-us/articles/215099117-MySQL-overview">MySQL</a> database might run slowly if it has a lot of overhead. If tables in your database have excessive "overhead" (unused empty space), it can cause queries to the database to take longer, and may result in the web server timing out before it can receive the response from the database server. </p>
+<p>View the following article for detailed instructions on how to optimize your database using <a href="https://help.dreamhost.com/hc/en-us/articles/214395638-phpMyAdmin-overview">phpMyAdmin</a> or <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH</a>.</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215036388-How-do-I-optimize-my-database-">How do I optimize my database?</a></li>
 </ul>
-<h3>Optimizing via SSH</h3>
-<p>You can also cleanup overhead via a shell script and/or cron job using <a href="https://dev.mysql.com/doc/refman/5.7/en/mysqlcheck.html">mysqlcheck</a> which checks, repairs, and optimizes tables. It's a good idea to run a monthly <a href="https://help.dreamhost.com/hc/en-us/articles/215088668-How-do-I-create-a-cron-job-">cron job</a> to do this for you. The cron job might look like this:</p>
-<div class="preboxcontainer">
-<pre class="prebox">#!/bin/sh
-/usr/bin/mysqlcheck -o -v -u USER -p PASSWORD -h MYSQL.EXAMPLE.COM DATABASENAME;
-</pre>
-</div>
-<p>Replace the items in all-caps with the actual <a href="https://help.dreamhost.com/hc/en-us/articles/221610868-Finding-your-database-login-credentials">credentials for your database</a>.</p>
 <h2><span id="Internet_issues">Internet issues</span></h2>
 <h3><span id="Traceroute">Traceroute</span></h3>
 <p>One major reason for poor site performance is when one or more "hops" taken by data packets passing through the Internet are obstructed or delayed. The 'Traceroute' tool is often used for network troubleshooting. By showing a list of routers traversed, it allows the user to identify the path taken to reach a particular destination on the network. This can help identify routing problems or firewalls that may be blocking access to a site. View the Traceroute article for further information:</p>
@@ -108,12 +99,12 @@
 <h2>Browser plugin</h2>
 <p>There are also browser plugins/extensions you can add that help you investiage the cause of slowness. YSlow is a good one to try out:</p>
 <ul>
-<li><a href="http://yslow.org/">SLow</a></li>
+<li><a href="http://yslow.org/">YSLow</a></li>
 </ul>
 <h2><span id="See_also">See also</span></h2>
 <ul>
 <li><a href="/hc/en-us/categories/202186727">List of website troubleshooting articles</a></li>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/215837928-What-diagnostics-can-I-run-on-my-slow-site-">What diagnostics can I run on my slow site?</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215458038-How-do-I-view-my-access-log-">How do I view my access.log? </a></li>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/216105097-How-do-I-examine-my-access-log-">How do I examine my access.log? </a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216105097-How-do-I-examine-my-access-log-">How do I examine my access.log?</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215836488-Troubleshooting-site-slowness">Troubleshooting site slowness</a></li>
 </ul>

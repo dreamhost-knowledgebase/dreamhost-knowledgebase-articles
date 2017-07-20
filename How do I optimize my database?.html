@@ -12,12 +12,12 @@
 <li>Select your database from the list.
 <dl>
 <dd><em>In the center panel, a list of your tables appears:</em></dd>
-<dd><img alt="01 Optimizing Database.fw.png" height="381" src="https://objects-us-west-1.dream.io/kbimages/images/01_Optimizing_Database.fw.png" width="864"/></dd>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/01_Optimizing_Database.fw.png" alt="01 Optimizing Database.fw.png" width="864" height="381" /></dd>
 </dl>
 </li>
 <li>Look at the ‘Overhead’ column to the far right – if you see any numerical values, those tables can be optimized. In the example above, only those tables have been selected.
 <div class="alert alert-note">
-<div class="alert-icon"><img alt="" height="60" src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
 <p>You can also click the ‘Check All’ link on the bottom left which selects all tables.</p>
 </div>
@@ -25,16 +25,16 @@
 </li>
 <li>At the bottom of your table list, click the ‘With selected’ dropdown menu.
 <dl>
-<dd><img alt="02 Optimizing Database.fw.png" height="187" src="https://objects-us-west-1.dream.io/kbimages/images/02_Optimizing_Database.fw.png" width="113"/></dd>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/02_Optimizing_Database.fw.png" alt="02 Optimizing Database.fw.png" width="113" height="187" /></dd>
 </dl>
 </li>
 <li>From the dropdown menu, select ‘Optimize table’.
 <dl>
 <dd><em>The optimization may take time to complete depending how large the database is. Once it completes, the page displays the query ran along with a success message:</em></dd>
-<dd><img alt="03 Optimizing Database.fw.png" height="325" src="https://objects-us-west-1.dream.io/kbimages/images/03_Optimizing_Database.fw.png" width="567"/></dd>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/03_Optimizing_Database.fw.png" alt="03 Optimizing Database.fw.png" width="567" height="325" /></dd>
 </dl>
 <div class="alert alert-note">
-<div class="alert-icon"><img alt="" height="60" src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
 <p>You can safely disregard the “Table does not support optimize, doing recreate + analyze instead” message as it's just informational.</p>
 </div>
@@ -44,7 +44,7 @@
 <h2><span id="Repairing_tables">Repairing tables</span></h2>
 <p>In addition to optimizing a table, you can also 'repair' a table. Follow all steps mentioned above. In step #3, choose 'Repair table' from the dropdown menu.</p>
 <dl>
-<dd><img alt="01 Optimizing Database repair table.fw.png" height="187" src="https://objects-us-west-1.dream.io/kbimages/images/01_Optimizing_Database_repair_table.fw.png" width="113"/></dd>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/01_Optimizing_Database_repair_table.fw.png" alt="01 Optimizing Database repair table.fw.png" width="113" height="187" /></dd>
 </dl>
 <p>The two options are similar but used under different circumstances:</p>
 <ul>
@@ -69,8 +69,16 @@
 <div class="preboxcontainer">
 <pre class="prebox">&gt;&gt; results.txt</pre>
 </div>
+<h3> Using a cron job to optimize</h3>
+<p>You can also cleanup overhead via a shell script and/or cron job using <a href="https://dev.mysql.com/doc/refman/5.7/en/mysqlcheck.html">mysqlcheck</a> which checks, repairs, and optimizes tables. It's a good idea to run a monthly <a href="https://help.dreamhost.com/hc/en-us/articles/215088668-How-do-I-create-a-cron-job-">cron job</a> to do this for you. The cron job might look like this:</p>
+<div class="preboxcontainer">
+<pre class="prebox">#!/bin/sh
+/usr/bin/mysqlcheck -o -v -u USER -p PASSWORD -h MYSQL.EXAMPLE.COM DATABASENAME;
+</pre>
+</div>
+<p>Replace the items in all-caps with the actual <a href="https://help.dreamhost.com/hc/en-us/articles/221610868-Finding-your-database-login-credentials">credentials for your database</a>.</p>
 <h3><span id="Repairing_via_SSH">Repairing via SSH</span></h3>
-<p>You can run a very similar command to repair a table instead of optimizing it:</p>
+<p>You can also run a command to repair a table instead of optimizing it:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">mysql -u <em>username</em> -p<em>password</em> -h <em>hostname</em> <em>databasename</em> -e "show tables" | grep -v Tables_in | grep -v "+" | gawk '{print "repair table " $1 ";"}' | mysql -u <em>username</em> -p<em>password</em> -h <em>hostname</em> <em>databasename</em> </span></pre>
 </div>
