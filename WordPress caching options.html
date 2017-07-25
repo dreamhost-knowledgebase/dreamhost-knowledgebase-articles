@@ -1,64 +1,28 @@
-<p>If spam isn't your problem, then the server is probably hitting your MySQL database more than it should. Since WordPress depends a lot on the database, it can make quite a few requests while trying to get the information needed to render your pages. This can be really inefficient and cause astronomical loads when sites like Reddit, Digg, Slashdot, and BoingBoing link to you.</p>
-<h2><span id="Caching_tools.2Fplugins">Caching tools/plugins</span></h2>
-<p>There are several caching plugins available which promise to improve your loading times and decrease server load, allowing your site to handle large spikes in traffic like the <a class="new" title="W:Slashdot effect (page does not exist)" href="https://en.wikipedia.org/wiki/Slashdot_effect">Slashdot effect</a>. Please note however that since your site is being cached the user may not see any immediate updates.</p>
-<p>There are plenty of plugins that cache MySQL requests by building static content to load instead of hitting the database for every request. Below are some that work the best on DreamHost's servers:</p>
-<dl>
-<dt><a href="http://ocaoimh.ie/wp-super-cache/">WP Super Cache</a></dt>
-</dl>
-<ul>
-<li>This plugin creates a static file cache of your site and loads that instead of using PHP to generate the page. Picking up where WP-Cache left off, this plugin has included advanced features as well as a plugin and hooks system. It is included with all new deluxe One-Click Installs of WordPress done by DreamHost. If you're on shared hosting, this is the best option. An installation guide can be found here: <a href="/hc/en-us/articles/214588698-Installing-WP-Super-Cache">Installing WP Super Cache</a></li>
-</ul>
-<dl>
-<dt><a href="https://wordpress.org/plugins/hyper-cache/">Hyper Cache</a></dt>
-</dl>
-<ul>
-<li>This is probably one of the most user-friendly caching plugins out there and is an outstanding alternative for most end users.</li>
-</ul>
-<dl>
-<dt><a href="http://wordpress.org/extend/plugins/w3-total-cache/">W3 Total Cache</a></dt>
-</dl>
-<ul>
-<li>This plugin is also excellent, and gaining a lot of traction in the community, in part due to its inclusion of CDN features.</li>
-</ul>
-<dl>
-<dt><a href="https://wordpress.org/plugins/search.php?q=widget+cache">Widget Cache</a></dt>
-</dl>
-<ul>
-<li>This type of plugin works together with caching plugins above to further speed up your site – in particular if you're using many widgets.</li>
-</ul>
-<dl>
-<dt>Page Speed Optimization</dt>
-</dl>
-<ul>
-<li>Google Pagespeed is actually a cache. What it does is minify your files (make them smaller) and serves up those files instead of making WordPress process them. You can use 'Page Speed Optimization' as needed. View the following article for further details:
+<p>There are several caching plugins available for WordPress sites which can help to improve your website loading time and overall performance. They can also help your site to handle large spikes in traffic like the <a class="new" title="W:Slashdot effect (page does not exist)" href="https://en.wikipedia.org/wiki/Slashdot_effect">Slashdot effect</a>. Below are some that work the best on DreamHost's servers:</p>
+<h3><a href="https://wordpress.org/plugins/wp-super-cache/">WP Super Cache</a></h3>
+<p>This plugin creates a static file cache of your site and loads that instead of using PHP to generate the page. Picking up where WP-Cache left off, this plugin has included advanced features as well as a plugin and hooks system. It is included with all new deluxe One-Click Installs of WordPress done by DreamHost. If you're on shared hosting, this is the best option. An installation guide can be found here: <a href="/hc/en-us/articles/214588698-Installing-WP-Super-Cache">Installing WP Super Cache</a></p>
+<h3><a href="https://wordpress.org/plugins/hyper-cache/">Hyper Cache</a></h3>
+<p>This is probably one of the most user-friendly caching plugins out there and is an outstanding alternative for most end users.</p>
+<h3><a href="http://wordpress.org/extend/plugins/w3-total-cache/">W3 Total Cache</a></h3>
+<p>This plugin is also excellent, and gaining a lot of traction in the community, in part due to its inclusion of CDN features.</p>
+<h3>Page Speed Optimization</h3>
+<p>Google Pagespeed is actually a cache. What it does is minify your files (make them smaller) and serves up those files instead of making WordPress process them. You can use 'Page Speed Optimization' as needed. View the following article for further details:</p>
 <ul>
 <li><a href="/hc/en-us/articles/216961947#Using%20Page%20Speed%20with%20WordPress">Using Page Speed with WordPress</a></li>
 </ul>
-</li>
-</ul>
-<dl>
-<dt>Varnish</dt>
-</dl>
-<ul>
-<li>If you've used <a href="/hc/en-us/articles/214581158-DreamPress-overview">DreamPress</a>, you'll know Varnish Caching is used on the servers, which is a great thing for non-logged in users. But Memcached is also used on those servers to speed up things for logged in users. However these features are currently only available for DreamPress sites.</li>
-</ul>
-<dl>
-<dt><a href="/hc/en-us/articles/215945977-How-do-I-use-XCache-on-a-private-server-">XCache</a></dt>
-</dl>
-<ul>
-<li>Normal VPS users have XCache available in the DreamHost panel which ties in with W3TC. If instead you want to self-install Memcached, try using the plugin <a href="http://wordpress.org/plugins/batcache/">Batcache</a> to speed up WP.</li>
-</ul>
-<dl>
-<dt><a href="/hc/en-us/articles/215916677-What-is-DreamSpeed-">Setting Up DreamSpeed CDN</a></dt>
-</dl>
-<ul>
-<li>Using DreamSpeed, your static content will be cached on the CDN which will ease the load on your account and can speed up your WordPress installation. Once you have signed up for DreamSpeed CDN from the DreamHost panel you can then log into your WordPress dashboard and enable the plugin.</li>
-</ul>
+<h2>VPS servers only</h2>
+<h3><a href="/hc/en-us/articles/215945977-How-do-I-use-XCache-on-a-private-server-">XCache</a></h3>
+<p>Normal VPS users have XCache available in the DreamHost panel which ties in with W3TC. If instead you want to self-install Memcached, try using the plugin <a href="http://wordpress.org/plugins/batcache/">Batcache</a> to speed up WP.</p>
+<h2>DreamPress only</h2>
+<h3>Varnish</h3>
+<p><a href="/hc/en-us/articles/214581158-DreamPress-overview">DreamPress</a> uses Varnish Caching on the server which is a great thing for non-logged in users. Logged-in users benefit from Memcached which is also installed with DreamPress.</p>
+<h2>DreamHost's CDN</h2>
+<h3><a href="/hc/en-us/articles/215916677-What-is-DreamSpeed-">Setting Up DreamSpeed CDN</a></h3>
+<p>Using DreamSpeed, your static content will be cached on the CDN which will ease the load on your account and can speed up your WordPress installation. Once you have signed up for DreamSpeed CDN, you can log into your WordPress dashboard and <a href="https://wordpress.org/plugins/dreamspeed-cdn/">enable the plugin</a>.</p>
 <h2>See also</h2>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215525287-WordPress-overview">WordPress overview</a></li>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/215527147-Troubleshooting-WordPress-plugins">Troubleshooting WordPress plugins</a></li>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/215300817-Fine-tuning-your-WordPress-plugins">Fine tuning your WordPress plugins </a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215300817-Managing-WordPress-plugins">Managing WordPress plugins</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215300747-How-to-set-your-One-Click-WordPress-installation-to-automatically-update">How to set your One-Click WordPress installation to automatically update </a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/214586458-Fine-tuning-your-WordPress-JavaScript">Fine tuning your WordPress JavaScript </a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/214586518-Fine-tuning-WordPress-revisions">Fine tuning WordPress revisions </a></li>
