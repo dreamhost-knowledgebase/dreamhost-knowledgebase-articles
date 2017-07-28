@@ -1,4 +1,4 @@
-<p>In <a href="/hc/en-us/articles/215525287-WordPress-overview">WordPress</a>, the wp-config.php file is the most important file which, in plain text, contains the DB information (including passwords). A misconfiguration of this file can cause a WordPress site to go down.</p>
+<p>In <a href="/hc/en-us/articles/215525287-WordPress-overview">WordPress</a>, the wp-config.php file is the most important file which, in plain text, contains the database information (including passwords). A misconfiguration of this file can cause a WordPress site to go down.</p>
 <p>If you're unfamiliar with this, read the <a href="http://codex.wordpress.org/Editing_wp-config.php">WordPress Codex: Editing wp-config.php article</a> before you begin.</p>
 <h2><span id="Standard_content">Standard content</span></h2>
 <p>Certain settings are put in the wp-config.php by default. All of these must be there for the file to work.</p>
@@ -15,8 +15,7 @@ define('DB_COLLATE', '');
 </pre>
 </div>
 <h3><span id="Authentication_unique_keys_and_salts">Authentication unique keys and salts</span></h3>
-<p>You can generate these using the WordPress.org secret-key service and every site should have these. If you don't have them, please add them in.</p>
-<p>If you've been hacked, you can replace them. No data will be lost.</p>
+<p>WordPress uses security keys to protect logged in users. You can generate these using the <a href="https://api.wordpress.org/secret-key/1.1/salt/">WordPress.org secret-key API.</a> If you don't see them in the file, you should add them. If you've been hacked, you can replace them. No data will be lost.</p>
 <div class="preboxcontainer">
 <pre class="prebox">define('AUTH_KEY',         'hvKlL_)w&amp;k{ybi{4cHV3G9x3t[]!@y$e*jW?Qt@bqkiRlr.Wy8]t6)/*&lt;y1![S!P');
 define('SECURE_AUTH_KEY',  'O=oxZd%3fks%6ne+w+-A|B.`X-YcTCjD`&lt;aF_H-vbQ[vMd4d?C;u,X$@q|t-dE28');
@@ -28,8 +27,12 @@ define('LOGGED_IN_SALT',   'rl45Nq@h|Va3P+ML? -r&amp;7`xay)4$a+Zp (#pw!(4C^WV:7[
 define('NONCE_SALT',       'Vnor?.uqj+/`KS+&lt;r]$G_.)gBmbyxI4S|?1+t&lt;jR|+wh[$i%+vvv|KA)E#g?jn.f');
 </pre>
 </div>
+<p>View the following link for further details:</p>
+<ul>
+<li><a href="https://codex.wordpress.org/Editing_wp-config.php#Security_Keys">Security Keys</a></li>
+</ul>
 <h3><span id="Database_prefix">Database prefix</span></h3>
-<p>The default here is actually just wp_ but if you use the <a href="/hc/en-us/articles/215915837-How-do-I-install-a-One-Click-Install-">One-Click Installer</a>, the prefix includes some random letters and numbers. It must always end with an underscore, and it's best if the last letter is actually a letter and not a number. Ending with a number does funny things with Multisite:</p>
+<p>The default here is actually just wp_ but if you use the <a href="/hc/en-us/articles/215915837-How-do-I-install-a-One-Click-Install-">One-Click Installer</a>, the prefix includes some random letters and numbers. It must always end with an underscore, and it's best if the last letter is actually a letter and not a number. Ending with a number does funny things with <a href="https://help.dreamhost.com/hc/en-us/articles/215525477-WordPress-Multisite-overview">Multisite</a>:</p>
 <div class="preboxcontainer">
 <pre class="prebox">$table_prefix = 'wp_2hdy121d_';</pre>
 </div>
@@ -39,7 +42,7 @@ define('NONCE_SALT',       'Vnor?.uqj+/`KS+&lt;r]$G_.)gBmbyxI4S|?1+t&lt;jR|+wh[$
 <div class="preboxcontainer">
 <pre class="prebox">define('WPLANG',);</pre>
 </div>
-<p>For example, if you wanted to use Canadian, it would be this:</p>
+<p>For example, if you wanted to use Canadian English, it would be this:</p>
 <div class="preboxcontainer">
 <pre class="prebox">define('WPLANG', 'en_CA');</pre>
 </div>
@@ -48,7 +51,7 @@ define('NONCE_SALT',       'Vnor?.uqj+/`KS+&lt;r]$G_.)gBmbyxI4S|?1+t&lt;jR|+wh[$
 <ul>
 <li><a href="https://codex.wordpress.org/WordPress_in_Your_Language">WordPress Codex:WordPress in Your Language</a></li>
 </ul>
-<h3><span id="Debug_mode">Debug mode</span></h3>
+<h2><span id="Debug_mode">Debug mode</span></h2>
 <p>Defaults to off, but if you're debugging, it's not a bad thing:</p>
 <div class="preboxcontainer">
 <pre class="prebox">define('WP_DEBUG', false);</pre>
@@ -104,7 +107,7 @@ define('W3TC_EDGE_MODE', true); // Added by W3 Total Cache
 </div>
 <h2><span id="Rebuilding">Rebuilding</span></h2>
 <p>It the wp-config.php file has gone missing, you can actually rebuild it pretty easily. Grab a copy of the sample from <a href="https://core.trac.wordpress.org/browser/trunk/wp-config-sample.php">WordPress Core</a>. Just fill in the database settings and the Authentication keys and you'll be able to log back in.</p>
-<p>You do not have to use the same keys/salts, so don't worry about that. You can find your database information in the panel:</p>
+<p>You do not have to use the same keys/salts, so don't worry about that. You can find your database information <a href="/hc/en-us/articles/221610868-phpMyAdmin-Finding-your-login-credentials">in the panel</a>:</p>
 <h2><span id="See_also">See also</span></h2>
 <ul>
 <li><a href="/hc/en-us/articles/215525287-WordPress-overview">WordPress overview</a></li>

@@ -22,14 +22,14 @@
 </div>
 </div>
 <h2><span id="Migrating_all_of_your_files_manually">Migrating all of your files manually</span></h2>
-<p>You are also able to manually migrate the entire site. In order to manually migrate your data, you'll need to:</p>
+<p>In order to manually migrate your data, you'll need to:</p>
 <ol>
 <li>Backup your database as a .sql file from your previous host.</li>
 <li>Backup your web files via FTP from your previous host.</li>
 <li>Create a MySQL hostname and database at DreamHost for the new installation.</li>
-<li>Upload these files via FTP/SFTP/SSH to your DreamHost server.</li>
-<li>Import your database to your DreamHost database server.</li>
-<li>Update your wp-config.php file to point to your DreamHost database.</li>
+<li>Upload these files via <a href="https://help.dreamhost.com/hc/en-us/articles/115000675027-FTP-overview-and-credentials">FTP</a>/SFTP/<a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH</a> to your DreamHost server.</li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215039938-How-do-I-migrate-my-database-to-DreamHost-">Import your database</a> to your DreamHost database server.</li>
+<li>Update your <a href="https://help.dreamhost.com/hc/en-us/articles/214693268-WordPress-wp-config-php-overview">wp-config.php</a> file to point to your DreamHost database.</li>
 </ol>
 <h2><span id="Step_one_.E2.80.93_Backing_up_your_database">Step one – Backing up your database</span></h2>
 <p>Before you do anything else, back up your MySQL database at your current host. The method of creating a backup differs from host to host. The simplest method is to use <a href="/hc/en-us/articles/214395638-phpMyAdmin-overview">phpMyAdmin</a>, a web-based SQL manager available in many hosts' panels.</p>
@@ -50,9 +50,9 @@
 </div>
 </div>
 <h2><span id="Step_three_.E2.80.93_Creating_a_hostname_and_database_in_your_DreamHost_panel">Step three – Creating a hostname and database in your DreamHost panel</span></h2>
-<p>Once you have the backup files saved to your computer, make a new SQL hostname and a new, empty database for your WordPress installation in your DreamHost panel. You can create these on the (<a href="https://panel.dreamhost.com/index.cgi?tree=goodies.mysql&amp;">Panel &gt; ‘Goodies’ &gt; ‘MySQL Databases’</a>) page.</p>
+<p>Once you have the backup files saved to your computer, make a new MySQL hostname and a new, empty database for your WordPress installation in your DreamHost panel. You can create these on the (<a href="https://panel.dreamhost.com/index.cgi?tree=goodies.mysql&amp;">Panel &gt; ‘Goodies’ &gt; ‘MySQL Databases’</a>) page.</p>
 <dl>
-<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/05_Move_WordPress_create_mysql.fw.png" alt="05 Move WordPress create mysql.fw.png" width="534" height="358" /></dd>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/05_Move_WordPress_create_mysql.fw.png" alt="05 Move WordPress create mysql.fw.png" /></dd>
 </dl>
 <div class="alert alert-tip">
 <div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-tip-icon.svg" alt="" width="60" height="60" /></div>
@@ -83,27 +83,30 @@
 <h2><span id="Step_five_.E2.80.93_Editing_wp-config.php">Step five – Editing wp-config.php</span></h2>
 <p>It's likely that the hostname, database, username and password that you created in your DreamHost panel differs from the one on your previous host. If that's the case you'll need to update your wp-config.php file to make sure that the information matches the login credentials for your new database in the DreamHost panel.</p>
 <p>Open the wp-config.php file and you’ll see the following contents:</p>
-<dl>
-<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/06_Move_WordPress_wpconfig.fw.png" alt="06 Move WordPress wpconfig.fw.png" width="506" height="341" /></dd>
-</dl>
-<dl>
-<dd></dd>
-<dd></dd>
-</dl>
+<div class="preboxcontainer">
+<pre class="prebox">define('DB_NAME', ‘exampledatabase’);
+define('DB_USER', 'exampledbuser');
+define('DB_PASSWORD', ‘database password here’);
+define('DB_HOST', 'mysql.example.com');
+define('DB_CHARSET', 'utf8');
+define('DB_COLLATE', '');
+
+$table_prefix = 'wp_2hdy121d_';</pre>
+</div>
 <div class="alert alert-note">
 <div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
 <p>Make sure that the table_prefix setting in wp-config.php matches your backup table prefix, otherwise WordPress will prompt you to install from scratch.</p>
 </div>
 </div>
-<p>To confirm the table prefix, use phpMyAdmin to log into the database at DreamHost you’ve just imported in Step#4 above.</p>
+<p>To confirm the table prefix, use <a href="https://help.dreamhost.com/hc/en-us/articles/221610868-Finding-your-database-login-credentials">phpMyAdmin</a> to log into the database at DreamHost you just imported in Step#4 above.</p>
 <dl>
-<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/07_Move_Wordpress_database_tables.fw.png" alt="07_Move_Wordpress_database_tables.fw.png" width="194" height="199" /></dd>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/07_Move_Wordpress_database_tables.fw.png" alt="07_Move_Wordpress_database_tables.fw.png" /></dd>
 </dl>
 <ul>
 <li>Once logged in, click your database name on the left. You'll see the tables appear underneath.</li>
 <li>The first part of the table is the prefix. In the above example, the prefix is wp_q2e97u_.</li>
-<li>Update your wp-config.php file's prefix field to match this table prefix.</li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115000098272-Creating-and-editing-a-file-using-Filezilla">Update your wp-config.php file's prefix</a> field to match this table prefix.</li>
 </ul>
 <h2>Viewing your site and updating DNS</h2>
 <p>If your DNS is not pointed to DreamHost, view the following article to create a 'Mirror' domain. This allows you to see your site at DreamHost before changing your DNS.</p>
