@@ -26,6 +26,12 @@ RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 <p>If this isn't working for you, first check your line endings. Copy/paste from your web browser into a text editor may not work right, so after pasting into your text editor you should delete each line break and add it back in (line break = return key).</p>
 <h2><span id="An_extra_secure_method_to_force_a_domain_to_only_use_SSL_.28HTTPS.29">Force a domain to only use SSL (HTTPS) when using an .htaccess file to create a login prompt</span></h2>
 <p>This method fixes a double login problem if you're using an <a href="https://help.dreamhost.com/hc/en-us/articles/216363187-How-do-I-password-protect-my-site-">.htaccess file to create a login prompt</a>. This prevents submission of an .htaccess password prompt on an unencrypted connection. If you wish to ensure that your server is only serving documents over an encrypted SSL channel, then you must use the SSLRequireSSL directive with the +StrictRequire Option enabled:</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>The code below may cause a '<a href="https://help.dreamhost.com/hc/en-us/articles/216539558-Let-s-Encrypt-SSL-certificate-overview">Let's Encrypt</a>' certificate to not renew properly. If you have added a 'Let's Encrypt' certificate to your domain, make sure to disable the code below in your .htaccess file when your certificate is about to renew. Once renewed, you can re-enable the code below.</p>
+</div>
+</div>
 <div class="preboxcontainer">
 <pre class="prebox">SSLOptions +StrictRequire
 SSLRequireSSL
