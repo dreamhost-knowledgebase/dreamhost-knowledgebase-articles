@@ -1,0 +1,118 @@
+<p>If your Ruby application won't start because of a missing gem, then you must install it locally using <a href="http://bundler.io/">Bundler</a>.</p>
+<p>Bundler provides a consistent environment for Ruby projects by tracking and installing the exact gems and versions that you need. Bundler prevents dependencies and ensures that the gems you need are present in development, staging, and production. Starting work on a project is as simple as running the <span class="code">bundle install</span> command.</p>
+<p>The following describes how to set up and use Bundler for your RubyGem applications.</p>
+<h2>Setting up Bundler</h2>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>This article assumes you've already set up a Ruby on Rails site based on the following installation guides:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/217185247-Ruby-Version-Manager-RVM-">Ruby Version Manager (RVM)</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/217185437-How-to-enable-RVM">How to enable RVM</a></li>
+</ul>
+</div>
+</div>
+<ol>
+<li>Open a terminal window and run the following command:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">gem install bundler</span>
+</pre>
+</div>
+</li>
+<li>Navigate to your project root directory.</li>
+<li>Specify your dependencies in a <a href="http://bundler.io/gemfile.html">Gemfile</a>:
+<div class="preboxcontainer">
+<pre class="prebox">source 'https://rubygems.org'
+gem 'nokogiri'
+gem 'rack', '~&gt;1.1'
+gem 'rspec', :require =&gt; 'spec'
+</pre>
+</div>
+</li>
+<li>Install all of the required gems from your specified sources:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">bundle install</span>
+<span class="server">[server]$ </span><span class="command">git add Gemfile Gemfile.lock</span>
+</pre>
+</div>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>The second command adds the <span class="code">Gemfile</span> and <span class="code">Gemfile.lock</span> to your repository, which ensures that other developers on your app, as well as your deployment environment, all use the same third-party code that you are using now.</p>
+</div>
+</div>
+</li>
+<li>Inside your app, load up the <a href="http://bundler.io/v1.12/bundler_setup.html">bundled environment</a>:
+<div class="preboxcontainer">
+<pre class="prebox">require 'rubygems'
+require 'bundler/setup'
+
+# require your gems as usual
+require 'nokogiri'
+</pre>
+</div>
+</li>
+<li>Run an executable that comes with a gem in your bundle:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">bundle exec rspec spec/models</span>
+</pre>
+</div>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>In some cases, running executables without <span class="code">bundle exec</span> may work, if the executable happens to be installed in your system and does not pull in any gems that conflict with your bundle. However, this is unreliable and not recommended. Even if it looks like it works, it may not work in the future or on another machine.</p>
+</div>
+</div>
+</li>
+<li>To create a shortcut to gems in your bundle, run the following:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">bundle install --binstubs</span>
+</pre>
+</div>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">bin/rspec spec/models</span>
+</pre>
+</div>
+</li>
+</ol>
+<p>The <a href="http://bundler.io/man/bundle-exec.1.html">executables</a> installed into bin are scoped to the bundle, and will always work.</p>
+<h2>Creating a RubyGem with Bundler</h2>
+<p>Bundler is also an easy way to create new gems. Just like you might create a standard Rails project using rails new, you can create a standard gem project with bundle gem. Create a new gem with a README, .gemspec, Rakefile, directory structure, and all the basic boilerplate you need to describe, test, and publish a gem:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">bundle gem my_gem</span>
+<span class="cmdoutput">
+create  my_gem/Gemfile
+      create  my_gem/.gitignore
+      create  my_gem/lib/my_gem.rb
+      create  my_gem/lib/my_gem/version.rb
+      create  my_gem/my_gem.gemspec
+      create  my_gem/Rakefile
+      create  my_gem/README.md
+      create  my_gem/bin/console
+      create  my_gem/bin/setup
+      create  my_gem/CODE_OF_CONDUCT.md
+      create  my_gem/LICENSE.txt
+      create  my_gem/.travis.yml
+      create  my_gem/test/test_helper.rb
+      create  my_gem/test/my_gem_test.rb
+Initializing git repo in ./my_gem
+</span>
+</pre>
+</div>
+<h2>Using Bundler with Ruby applications</h2>
+<ul>
+<li><a href="http://bundler.io/rubygems.html">Using Bundler with Rubygem gemspecs</a></li>
+<li><a href="http://bundler.io/rubymotion.html">Using Bundler with RubyMotion</a></li>
+</ul>
+<h2>See also</h2>
+<h3>Bundler external links</h3>
+<ul>
+<li><a href="http://bundler.io/">What is Bundler?</a></li>
+<li><a href="http://bundler.io/v1.12/#getting-started">Getting started</a></li>
+<li><a href="http://bundler.io/whats_new.html">What's new in each release</a></li>
+<li><a href="http://bundler.io/rationale.html">Bundler's purpose and rationale</a></li>
+<li><a href="http://bundler.io/gemfile.html">Gemfiles</a></li>
+<li><a href="http://bundler.io/bundle_install.html"><span class="code">bundle install</span></a></li>
+<li><a href="http://bundler.io/man/bundle-gem.1.html"><span class="code">bundle gem</span></a></li>
+<li><a href="http://bundler.io/man/bundle-exec.1.html">Executables</a></li>
+</ul>

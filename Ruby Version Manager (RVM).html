@@ -3,7 +3,7 @@
 <div class="alert-content">
 <p>If your Ruby application won't start because of a missing gem, then you must install it locally using Bundler. For more information about using Bundler, please visit the following page:</p>
 <ul>
-<li><a href="http://bundler.io/v1.12/#getting-started">Getting Started with Bundler</a></li>
+<li><a href="/hc/en-us/articles/115001070131-Using-Bundler-to-install-Ruby-gems">Using Bundler to install Ruby gems</a></li>
 </ul>
 </div>
 </div>
@@ -12,15 +12,20 @@
 <h2><span id="Installing_RVM">Installing RVM</span></h2>
 <p>To get started, you'll first need to install RVM under your shell user and set it up to load automatically. Visit the <a href="/hc/en-us/articles/216385837-Enabling-Shell-access">Enabling Shell Access</a> article to make sure your user is a Shell user. Then you can log in to your server via <a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a> to run the following commands in your users directory.</p>
 <ol>
-<li>Install RVM's public keys:
+<li>Make sure you're in your user's home directory:
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3</span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~</span></pre>
+</div>
+</li>
+<li><a href="https://rvm.io/rvm/install">Install RVM's public keys</a>:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB</span></pre>
 </div>
 <p>This creates a new folder under your user named /.gnupg with the public key.</p>
 </li>
 <li>Install the latest stable version of RVM:
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">curl -sSL https://get.rvm.io | bash -s stable</span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">curl -sSL https://get.rvm.io | bash -s stable --ruby</span></pre>
 </div>
 <p>This command does the following three things:</p>
 <ul>
@@ -40,7 +45,7 @@
 <dl>
 <dd>
 <div class="preboxcontainer">
-<pre class="prebox">export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting</pre>
+<pre class="prebox"># Add RVM to PATH for scripting. Make sure this is the last PATH variable change.<br />export PATH="$PATH:$HOME/.rvm/bin"</pre>
 </div>
 </dd>
 </dl>
@@ -55,9 +60,9 @@
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">source ~/.rvm/scripts/rvm</span></pre>
 </div>
 </li>
-<li>Add this to your .bashrc file
+<li>View the <a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">creating and editing a file via SSH</a> article for instructions on how to edit your existing .bash_profile. In this file, add the following line.
 <div class="preboxcontainer">
-<pre class="prebox">source .bash_profile</pre>
+<pre class="prebox">source ~/.bashrc</pre>
 </div>
 </li>
 <li>Run this command to update your .bash_profile:
@@ -67,8 +72,8 @@
 </li>
 <li>Now check if RVM is installed and functioning:
 <div class="preboxcontainer">
-<pre class="prebox">rvm --version
-rvm 1.26.11 (latest) by Wayne E. Seguin &lt;wayneeseguin@gmail.com&gt;, Michal Papis &lt;mpapis@gmail.com&gt; [https://rvm.io/]</pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">rvm --version</span>
+rvm 1.29.2 (latest) by Michal Papis, Piotr Kuczynski, Wayne E. Seguin [https://rvm.io/]</pre>
 </div>
 </li>
 </ol>
@@ -86,20 +91,20 @@ rvm 1.26.11 (latest) by Wayne E. Seguin &lt;wayneeseguin@gmail.com&gt;, Michal P
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">rvm list known</span></pre>
 </div>
 </li>
-<li>Install the exact version of Ruby you require. This example installs version 2.2.2:
+<li>Install the exact version of Ruby you require. This example installs version 2.4.0:
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">rvm install 2.2.2</span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">rvm install 2.4.0</span></pre>
 </div>
 </li>
 <li>You can now tell your system to use this version by default:
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">rvm use 2.2.2 --default</span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">rvm use 2.4.0 --default</span></pre>
 </div>
 </li>
 <li>Check the version of Ruby to confirm it's been updated.
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">ruby -v</span>
-<span class="cmdoutput">ruby 2.2.2p95 (2015-04-13 revision 50295) [x86_64-linux]</span></pre>
+ruby 2.4.0p0 (2016-12-24 revision 57164) [x86_64-linux]</pre>
 </div>
 </li>
 </ol>
