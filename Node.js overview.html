@@ -159,6 +159,30 @@ http.createServer(function(request, response) {
 <p>This example was taken from <a href="http://www.nodebeginner.org/#building-the-application-stack">http://www.nodebeginner.org/#building-the-application-stack</a>.</p>
 </div>
 </div>
+<h2>Troubleshooting</h2>
+<h3>Passenger is not using your custom version of Node.js</h3>
+<p>If you find the custom version you installed is not being used, add the following code to an .htaccess file in your project's directory:</p>
+<div class="preboxcontainer">
+<pre class="prebox">PassengerNodejs /home/username/.nvm/versions/node/v6.0.0/bin/node</pre>
+</div>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Make sure to change the username and version to the version you have installed.</p>
+</div>
+</div>
+<p>Next, reload Passenger my running the following command in the app's directory:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">mkdir tmp &amp;&amp; touch restart.txt</span></pre>
+</div>
+<p>In the future, you just need to touch the restart.txt file to restart the application.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">touch tmp/restart.txt</span></pre>
+</div>
+<p>View the following page for further details:</p>
+<ul>
+<li><a href="https://www.phusionpassenger.com/library/config/apache/reference/">https://www.phusionpassenger.com/library/config/apache/reference/</a></li>
+</ul>
 <h2><span id="See_also">See also</span></h2>
 <h3>Internal links</h3>
 <ul>
