@@ -4,7 +4,6 @@
 <p>POSSIBLE OUTDATED INFORMATION!<br /> DreamHost does not directly support any of the features described on this page and is not responsible for keeping this content updated or accurate. Use at your own risk!</p>
 </div>
 </div>
-<p> </p>
 <p>Many web applications such as WordPress and MediaWiki are originally configured to work with Apache. Since .htaccess files are not supported with Nginx, there are some adjustments you can make to get your applications running properly. In all the examples below, make sure to follow these steps:</p>
 <ol>
 <li>View the <a href="/hc/en-us/articles/216455077-Nginx-configuration-file-locations">Local configuration files</a> section to create your local <span class="code">/nginx/example.com</span> directory.</li>
@@ -34,16 +33,12 @@
 </pre>
 </div>
 </li>
-<li>In this /default-wp directory, create <span class="code">wordpress.conf</span> file:
+<li>In this /default-wp directory, create <span class="code">wordpress.conf</span> file. View the '<a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Creating and editing a file via SSH</a>' article for instructions on creating the file.
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">nano /home/YOURUSER/nginx/default-wp/wordpress.conf</span>
-</pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">nano /home/YOURUSER/nginx/default-wp/wordpress.conf</span></pre>
 </div>
-View the following article for further details on how to use 'nano'.
-<ul>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Creating and editing a file via SSH</a></li>
-</ul>
 </li>
+<li>Save and close the file to return to your shell.</li>
 <li>Create symlinks from this directory, to each of your sites' config directories:
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">ln -s /home/username/nginx/default-wp/ /home/username/nginx/example.com</span>
@@ -156,14 +151,10 @@ if ($http_user_agent !~ FeedBurner) {
 <div class="preboxcontainer">
 <pre class="prebox">/home/YOURUSER/nginx/example.com/</pre>
 </div>
-<p>Like so:</p>
+<p>View the '<a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Creating and editing a file via SSH</a>' article for instructions on creating the file.</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">nano /home/YOURUSER/nginx/example.com/drupal.conf</span></pre>
 </div>
-<p>View the following article for further details on how to use 'nano'.</p>
-<ul>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Creating and editing a file via SSH</a></li>
-</ul>
 <p>This is where you'll put all your nginx config rules.</p>
 <h2>Top Level Domain Install</h2>
 <p>If your Drupal is installed at the top level of your domain (i.e., <a href="http://www.example.com/">http://www.example.com/</a> is your Drupal install), then add these rules:</p>
