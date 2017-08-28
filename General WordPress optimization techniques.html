@@ -5,49 +5,63 @@
 <div class="table-of-content container">
 <div class="altTitle">WordPress optimization</div>
 <ul class="simple">
-<li><a class="reference internal" href="#Tools">Online tools</a></li>
-<li><a class="reference internal" href="#Database">Optimizing your database</a></li>
-<li><a class="reference internal" href="#Image_Size">Image size</a></li>
 <li><a class="reference internal" href="#Caching">Caching</a></li>
-<li><a class="reference internal" href="#Minify">Minify your scripts</a></li>
-<li><a class="reference internal" href="#Themes">Themes</a></li>
-<li><a class="reference internal" href="#CDN">Use a CDN</a></li>
-<li><a class="reference internal" href="#Upgrading_to_DreamPress_or_a_Private_Server">Upgrading your server</a></li>
-<li><a class="reference internal" href="#Widgets">Widgets</a></li>
-<li><a class="reference internal" href="#XML-RPC">XML-RPC</a></li>
-<li><a class="reference internal" href="#Other_common_reasons">Other reasons for poor performance</a></li>
+<li><a class="reference internal" href="#Tools">Using online tools</a></li>
+<li><a class="reference internal" href="#Database">How to Optimize your database</a></li>
+<li><a class="reference internal" href="#Image_Size">Optimizing image sizes</a></li>
+<li><a class="reference internal" href="#Minify">Minifying your scripts</a></li>
+<li><a class="reference internal" href="#Themes">Checking your theme</a></li>
+<li><a class="reference internal" href="#CDN">Using a CDN to deliver static files</a></li>
+<li><a class="reference internal" href="#Upgrading_to_DreamPress_or_a_Private_Server">Upgrading to DreamPress or a Private Server</a></li>
+<li><a class="reference internal" href="#Widgets">Using widgets</a></li>
+<li><a class="reference internal" href="#XML-RPC">Handling the XML-RPC file</a></li>
+<li><a class="reference internal" href="#Other_common_reasons">Other common issues for poor performance</a></li>
 <li><a class="reference internal" href="#access_log">Viewing your site's access.log file</a></li>
-<li><a class="reference internal" href="#Missing_files">Missing files</a></li>
+<li><a class="reference internal" href="#Missing_files">Are there any missing files in my WordPress installation?</a></li>
+<li><a class="reference internal" href="#See_also">See also</a></li>
 </ul>
 </div>
-<p>Over time, you may notice that your WordPress site runs slower or doesn't run as well as it should. There are several reasons this could occur. This article walks you through some of the most common issues and provides solutions to help you resolve them.</p>
-<h2><span id="Tools">Online tools</span></h2>
-<h3>Site load analyzation tools</h3>
-<p>First, use an online tool to analyze your website. You'll receive a breakdown of what may be causing your site to load slower than expected and it will give you insights to troubleshoot further.</p>
+<p>Over time, you may notice that your WordPress site runs slower or doesn't run as well as it should. There are several reasons this can occur.</p>
+<p>The following describes some of the most common issues you may experience and provides solutions to help you resolve them.</p>
+<h2><span id="Caching">Caching</span></h2>
+<h3>Using a caching plugin</h3>
+<p>Caching creates static versions of your site, which means a lot less has to be processed by the server when a customer visits your site. This allows your site to load a bit faster, and also helps manage larger amounts of traffic. There are a few ways to set up caching for WordPress with plugins, which are described on the following page:</p>
 <ul>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/216560958#Website_loading_tools">Website loading tools</a></li>
+<li><a href="/hc/en-us/articles/214586538-WordPress-caching-options">WordPress caching options</a></li>
+</ul>
+<h3>PHP Cache</h3>
+<p>Opcache is a caching engine built into PHP, and enabling it can help speed up your site significantly. You can find instructions on how to do that in the following article:</p>
+<ul>
+<li><a href="/hc/en-us/articles/216660668-OPcache-overview">OPcache overview</a></li>
+</ul>
+<h2><span id="Tools">Using online tools</span></h2>
+<h3>Site load analyzation tools</h3>
+<p>You can use an online tool to analyze your website. These tools provide an overview of possible issues that are causing your site to load slower than expected as well as recommending any solutions to help you troubleshoot further. See the following:</p>
+<ul>
+<li><a href="/hc/en-us/articles/216560958#Website_loading_tools">Website loading tools</a></li>
 </ul>
 <h3>Browser tools</h3>
-<p>Here are a few browser tools to help you troubleshoot performance issues with your WordPress site:</p>
+<p>The following are a few recommended browser tools to help you troubleshoot performance issues with your WordPress site:</p>
 <ul>
-<li><a href="https://addons.mozilla.org/en-US/firefox/addon/1843">Firebug</a>: A very handy tool that displays what is loading and how long it takes.</li>
-<li><a href="https://addons.mozilla.org/en-US/firefox/addon/5369">YSlow</a>: A companion to Firebug that might give you some pointers on what to fix and how.</li>
-<li><a href="http://trac.webkit.org/wiki/WebInspector">Web Inspector</a>: Built into Chrome and Safari, it gives you much of the same information as Firebug.</li>
+<li><a href="https://addons.mozilla.org/en-US/firefox/addon/1843">Firebug</a> — A very handy tool that displays what is loading and how long it takes.</li>
+<li><a href="https://addons.mozilla.org/en-US/firefox/addon/5369">YSlow</a> — A companion to Firebug that can provide some pointers on what to fix and how.</li>
+<li><a href="http://trac.webkit.org/wiki/WebInspector">Web Inspector</a> — Built into Chrome and Safari, it provides much of the same information as Firebug.</li>
 </ul>
-<p><strong>Only use the following if you are using a VPS or Dedicated server:</strong></p>
+<h3>If you're running WordPress on a VPS or Dedicated server</h3>
+<p>You can use the following tool to check your VPS or Dedicated server:</p>
 <ul>
-<li><a href="http://loadimpact.com">Load Impact</a>: A load testing service that hits your server with many simultaneous users. A free version does a 50 user test. Be sure that you have caching enabled before running. During this process, you can watch the CPU load with '<a href="https://help.dreamhost.com/hc/en-us/articles/115000683852-Using-the-top-command-to-troubleshoot-your-website">top</a>', and RAM levels with '<a href="https://help.dreamhost.com/hc/en-us/articles/214879348#Using_the_free_command">free -m</a>' - or both with 'vmstat 1' (Ctrl-c to stop).</li>
+<li><a href="http://loadimpact.com">Load Impact</a> — A load testing service that hits your server with many simultaneous users. The free version provides a 50-user test. Be sure that you have caching enabled before running it. During this process, you can watch the CPU load with '<a href="/hc/en-us/articles/115000683852-Using-the-top-command-to-troubleshoot-your-website">top</a>', and RAM levels with '<a href="/hc/en-us/articles/214879348#Using_the_free_command">free -m</a>', or both with 'vmstat 1' (Ctrl-c to stop).</li>
 </ul>
-<h2><span id="Database">Optimizing your database</span></h2>
+<h2><span id="Database">How to Optimize your database</span></h2>
 <h3>Using the WP-DBManager plugin</h3>
-<p>You should routinely optimize your MySQL database to avoid a "fragmentation" effect. The easiest way to do this is to use the <a href="https://wordpress.org/plugins/wp-dbmanager/">WP-DBManager</a> plugin which includes a function to optimize your database as well as the capability to schedule this optimization to run at an appropriate time frame (recommended once per month at least).</p>
-<p>Once installed, click 'Database' in the left pane.</p>
+<p>You should routinely optimize your MySQL database to avoid a "fragmentation" effect. The simplist way to do this is to use the <a href="https://wordpress.org/plugins/wp-dbmanager/">WP-DBManager</a> plugin which includes a function to optimize your database as well as the ability to schedule this optimization to run at a desired time (recommended once per month at least).</p>
+<p>Once installed, click 'Database' in the left pane:</p>
 <dl>
 <dd><img src="https://objects-us-west-1.dream.io/kbimages/images/WP-DBManager.png" alt="WP-DBManager" width="754" height="754" /></dd>
 </dl>
-<p>Under 'Database', click 'Optimize DB'. Finally, click the 'Optimize' button.</p>
+<p>Under 'Database', click 'Optimize DB' and then click the <strong>Optimize</strong> button.</p>
 <h3>Using wp-cli</h3>
-<p><a href="https://help.dreamhost.com/hc/en-us/articles/214693248-WordPress-wp-cli-overview">wp-cli</a> can also be used to optimize your database. Log into your server via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH</a>. Make sure you're in your WordPress site's directory, then run the following command to view all database command options:</p>
+<p>You can also use <a href="/hc/en-us/articles/214693248-WordPress-wp-cli-overview">wp-cli</a> to optimize your database. Log into your server via <a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a> and make sure you're in your WordPress site's directory. Run the following command to view all database command options:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">wp help db</span></pre>
 </div>
@@ -56,98 +70,88 @@
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">wp db optimize</span></pre>
 </div>
 <h3>Using SSH to optimize your database</h3>
-<p>View the following article for details on how to optimize the database via SSH:</p>
+<p>See the following article for details on how to optimize the database via SSH:</p>
 <ul>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/215036388#Optimizing_via_SSH">Optimizing your database using SSH</a></li>
+<li><a href="/hc/en-us/articles/215036388#Optimizing_via_SSH">Optimizing your database using SSH</a></li>
 </ul>
 <h3>Optimizing via phpMyAdmin</h3>
-<p>View the following article for details on how to optimize the database via phpMyAdmin:</p>
+<p>See the following article for details on how to optimize the database via phpMyAdmin:</p>
 <ul>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/215036388-How-do-I-optimize-my-database-">Optimizing your database using phpMyAdmin</a></li>
+<li><a href="/hc/en-us/articles/215036388-How-do-I-optimize-my-database-">Optimizing your database using phpMyAdmin</a></li>
 </ul>
-<h2><span id="Image_Size">Image Size</span></h2>
-<p>The size of your images is very often the cause of a slow loading site. The larger your images, the longer it will take for it to download on the user's end, so you'll want to make sure that your images are as small as possible while still preserving their quality. Please read over these instructions on how to <a href="http://en.support.wordpress.com/media/image-optimization/">optimize your images</a>. You can also use a plugin such as:</p>
+<h2><span id="Image_Size">Optimizing image sizes</span></h2>
+<p>The size of your images can often cause a site to load slowly. The larger an image, the longer it takes for it to download on the visitor's end, so you'll want to make sure that your images are as small as possible while still preserving their quality. You can read more about how to <a href="http://en.support.wordpress.com/media/image-optimization/">optimize your images</a>, as well as using a plugin to help you do that, such as:</p>
 <ul>
 <li><a href="https://wordpress.org/plugins/wp-smushit/">Smush Image Compression &amp; Optimization</a></li>
 </ul>
-<h2><span id="Caching">Caching</span></h2>
-<h3>PHP Cache</h3>
-<p>Enabling OPcache can help to improve PHP performance.</p>
-<ul>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/216660668-OPcache-overview">OPcache overview</a></li>
-</ul>
-<h3>Using a caching plugin</h3>
-<p>Using a WordPress plugin to cache your data can also help. View the following article for further details:</p>
-<ul>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/214586538-WordPress-caching-options">WordPress caching options</a></li>
-</ul>
-<h2><span id="Minify">Minify your scripts</span></h2>
-<p>You should also try to minify your HTML/CSS/JavaScript code as this can help shorten the time it takes your site to load. These types of plugins do not work however, so there's a little trial and error to find what works best for your site. Here are a few options:</p>
+<h2><span id="Minify">Minifying your scripts</span></h2>
+<p>You can also minify your HTML/CSS/JavaScript code to help improve the time it takes to load your site. There are various plugins you can install to help you minify this code, and you may need to do a little trial and error to find which one works best for your site. Here are a couple options:</p>
 <ul>
 <li><a href="https://wordpress.org/plugins/fast-velocity-minify/">Fast Velocity Minify</a></li>
 <li><a href="https://wordpress.org/plugins/autoptimize/">Autoptimize</a></li>
 </ul>
-<h2><span id="Themes">Themes</span></h2>
-<p>Using a good theme can be challenging. While the ones on wordpress.org are free and safe to use, some are going to be better than others. When shopping for a theme, do some Google searches to see if people have complained about site speed with that theme. You'd be surprised what you find out.</p>
-<p>A fast way to see if your theme is the problem is to change to the default theme (such as TwentySeventeen) and see if that helps your site.</p>
+<h2><span id="Themes">Checking your theme</span></h2>
+<p>Using the optimal theme can be a challenge. While the available themes on wordpress.org are free and safe to use, some are better than others. When shopping for a theme, be sure to search Google to determine if any users have complained about site speed with that theme. These results can greatly help you determine which theme is best for you.</p>
+<p>A quick way to check if your theme is causing issues with your site is to revert back to the default theme (such as TwentySeventeen) and see if that resolves any issues with your site.</p>
+<p>To change the default theme:</p>
 <ol>
 <li>Log into your WordPress site's panel.</li>
-<li>On the left click 'Appearance &gt; Themes'.
+<li>On the left pane, click 'Appearance &gt; Themes'.
 <dl>
 <dd><img src="https://objects-us-west-1.dream.io/kbimages/images/WP_activate_theme.png" alt="WP_activate_theme" width="542" height="542" /></dd>
 </dl>
 </li>
-<li>Search for the default 'Twenty Seventeen' theme and click 'Activate'.</li>
+<li>Search for the default 'Twenty Seventeen' theme, and then click the <strong>Activate</strong> button.</li>
 </ol>
-<p>Your site will change its appearance to this new theme. Use the online tools above to check if this helped with your issue.</p>
+<p>Your site changes its appearance to the TwentySeventeen theme. Use the online tools above to check if this improves your site's performance.</p>
 <h3>Making your theme Mobile Friendly</h3>
-<p>It's a very good idea to make sure your WordPress theme is mobile friendly. This helps to ensure all visitors (not just those on a desktop or laptop) will be able to view your site in an appropriate way for their mobile device. View the following link for further information:</p>
+<p>It's highly recommended to make sure your WordPress theme is mobile friendly. This helps to ensure that your site is rendered appropriately on a visitor's mobile device (not just those on a desktop or laptop). See the following DreamHost blog article for more information:</p>
 <ul>
 <li><a href="https://www.dreamhost.com/blog/how-to-optimize-your-wordpress-website-for-mobile/">How to Optimize Your WordPress Website for Mobile</a></li>
 </ul>
-<h2><span id="CDN">Use a CDN to deliver static files</span></h2>
-<p>You can use a CDN to deliver static files such as images, video, CSS and JavaScript files. This can help speed up their delivery to the end user. View the following article for details on DreamHost's CDN and how to upload and link static files from DreamObjects.</p>
+<h2><span id="CDN">Using a CDN to deliver static files</span></h2>
+<p>You can use a Content Delivery Network (CDN) to deliver static files such as images, video, CSS, and JavaScript files, which can help improve the speed in delivering these files to your site's visitors. See the following article for more information on DreamHost's CDN and how to upload and link static files from DreamObjects:</p>
 <ul>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/215916677-What-is-DreamSpeed-">What is DreamSpeed?</a></li>
+<li><a href="/hc/en-us/articles/215916677-What-is-DreamSpeed-">What is DreamSpeed?</a></li>
 </ul>
 <h2><span id="Upgrading_to_DreamPress_or_a_Private_Server">Upgrading to DreamPress or a Private Server</span></h2>
-<p>If you've tried the plugins and suggestions but are still seeing a high load on the server, then it could be that the traffic to your site has outgrown shared hosting. At this point you may wish to consider adding a <a href="http://dreamhostps.com/">Private Server</a> or <a href="https://www.dreamhost.com/hosting/wordpress/">DreamPress</a> to your hosting package.</p>
-<p>If you have any questions about adding DreamPress or a Private Server to your account, please <a href="https://help.dreamhost.com/hc/en-us/articles/218084068-Contacting-support-overview">contact DreamHost support</a> for more info.</p>
-<h2><span id="Widgets">Widgets</span></h2>
-<p>Be suspicious of all widgets (or sidebar content) that will force the user to poll other DNS servers. This may delay the loading of the site.</p>
-<p>Also, check if your theme is using custom widgets to draw recent comments of posts. If this is not handled correctly, it will poll the database every time which increases your site's load considerably.</p>
-<p>If you're using a lot of widgets, a good option is to use a <a href="https://wordpress.org/plugins/search.php?q=widget+cache">Widget Cache</a> plugin (in addition to standard caching) to reduce the processing time for their output.</p>
-<h2><span id="XML-RPC">XML-RPC</span></h2>
-<p>WordPress uses the xmlrpc.php file for remote administration purposes such as posting via third party applications. However, this file can be a target for attackers.</p>
-<p>To protect your site, DreamHost has implemented rate-limiting on this file. You can disable xmlrpc.php although some plugins which depend on it (like Jetpack) may no longer work if you do.</p>
-<h2><span id="Other_common_reasons">Other common reasons for poor performance</span></h2>
-<p>There are many more reasons a site could run slower than expected. View the following article for further information on how to troubleshoot other issues such as CSS, JavaScript, and internet issues.</p>
+<p>If you've tested the various plugins and suggestions as described in this article and still seeing a high load on the server, then it could be that the traffic to your site has outgrown shared hosting. If this is the case, you can consider adding a <a href="http://dreamhostps.com/">Private Server</a> or <a href="https://www.dreamhost.com/hosting/wordpress/">DreamPress</a> to your hosting package.</p>
+<p>If you have any questions about adding DreamPress or a Private Server to your account, please <a href="/hc/en-us/articles/218084068-Contacting-support-overview">contact DreamHost support</a> for more info.</p>
+<h2><span id="Widgets">Using widgets</span></h2>
+<p>Be careful when using any widget (or sidebar content) that forces the user to poll other DNS servers, as this can delay the loading of your site.</p>
+<p>Also, check if your theme is using any custom widgets to draw recent comments on posts. If this is not handled correctly, it can poll the database every time which increases your site's load considerably.</p>
+<p>If you're using a lot of widgets, a better option is to use a <a href="https://wordpress.org/plugins/search.php?q=widget+cache">Widget Cache</a> plugin (in addition to standard caching) to reduce the processing time for their output.</p>
+<h2><span id="XML-RPC">Handling the XML-RPC file</span></h2>
+<p>WordPress uses the <span class="code">xmlrpc.php</span> file for remote administration purposes such as posting via third-party applications. However, this file can become vulnerable to attacks.</p>
+<p>To protect your site, DreamHost has implemented rate-limiting on this file. You can disable the xmlrpc.php file although some plugins which depend on it (such as Jetpack) may no longer work if you do.</p>
+<h2><span id="Other_common_reasons">Other common issues for poor performance</span></h2>
+<p>There are many more reasons why a site may run slower than you expect. See the following article for further information on how to troubleshoot other issues such as CSS, JavaScript, and other internet issues:</p>
 <ul>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/216349808-Common-reasons-for-poor-website-performance">Common reasons for poor website performance</a></li>
+<li><a href="/hc/en-us/articles/216349808-Common-reasons-for-poor-website-performance">Common reasons for poor website performance</a></li>
 </ul>
 <h2><span id="access_log">Viewing your site's access.log file</span></h2>
-<p>Every DreamHost website stores access.log information about the site. These logs can become very large and difficult to read, so there are a few commands you can run to quickly tell which site is getting the most traffic. View the following article for further details:</p>
+<p>Every DreamHost website stores access.log information about the site. These logs can become very large and difficult to read, so there are a few commands you can run to quickly tell which site is receiving the most traffic. See the following article for further information:</p>
 <ul>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/216105097-How-do-I-examine-my-access-log-">How do I examine my access.log file?</a></li>
+<li><a href="/hc/en-us/articles/216105097-How-do-I-examine-my-access-log-">How do I examine my access.log file?</a></li>
 </ul>
-<h2><span id="Missing_files">Missing files</span></h2>
-<p>Sometimes, due to upgrades or some poorly coded pre-packaged themes, your WordPress install might have some missing files. Missing files make the server expend a little extra effort and can drive up load considerably on a popular site. One of the most common missing files is the favicon (favicon.ico). If you've recently used the <a href="https://help.dreamhost.com/hc/en-us/articles/215915837-How-do-I-install-a-One-Click-Install-">One-Click Installer</a>, a favicon should be generated for you — but it never hurts to make sure one exists in the main directory for your site.</p>
-<p>Adding a favicon if one doesn't already exist is easy. It does require <a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a> access however. In the root directory of your site (i.e. /home/username/example.com/), type:</p>
+<h2><span id="Missing_files">Are there any missing files in my WordPress installation?</span></h2>
+<p>Your WordPress installation might include some missing files, which may occur due to an upgrade or a poorly coded pre-packaged theme. Missing files can cause the server to work harder and can drive up load time considerably on a popular site. One of the most common missing files is the favicon (favicon.ico) file. If you've recently used the <a href="/hc/en-us/articles/215915837-How-do-I-install-a-One-Click-Install-">One-Click Installer</a>, a favicon should be generated for you — but it never hurts to make sure one exists in the main directory for your site.</p>
+<p>Adding a favicon if one doesn't already exist is simple to do, though it does require <a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a> access. In the root directory of your site (i.e., /home/username/example.com/), type:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">touch favicon.ico</span></pre>
 </div>
-<p>This command creates a blank favicon.ico file. But a blank icon is far better than one that is missing.</p>
-<p>To check for any other missing files, you can run your site through <a href="http://tools.pingdom.com/">Pingdom Tools</a>. A single pass through their site will point out any missing files that could be causing your site to load slowly. Just look for filenames in red and then either replace them or remove references to them in your themes or posts.</p>
+<p>This command creates a blank favicon.ico file. A blank icon is far better than one that is missing, since your server will not work harder looking for it.</p>
+<p>To check for any other missing files, you can run your site through <a href="http://tools.pingdom.com/">Pingdom Tools</a>. A single pass through the site shows you any missing files that can cause your site to load slowly. Simply look for filenames in red and then either replace them or remove references to them in your themes or posts.</p>
 <h2><span id="See_also">See also</span></h2>
 <h3>Internal links</h3>
 <ul>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/215300817-Managing-WordPress-plugins">Managing WordPress plugins</a></li>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/215300747-How-to-set-your-One-Click-WordPress-installation-to-automatically-update">How to set your One-Click WordPress installation to automatically update</a></li>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/214586458-Fine-tuning-your-WordPress-JavaScript">Fine tuning your WordPress JavaScript </a></li>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/214586538-WordPress-caching-options">WordPress caching options</a></li>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/214586518-Fine-tuning-WordPress-revisions">Fine tuning WordPress revisions</a></li>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/215300907-WordPress-SPAM-plugins">WordPress SPAM plugins </a></li>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/215527157-Managing-WordPress-themes">Managing WordPress themes</a></li>
+<li><a href="/hc/en-us/articles/215300817-Managing-WordPress-plugins">Managing WordPress plugins</a></li>
+<li><a href="/hc/en-us/articles/215300747-How-to-set-your-One-Click-WordPress-installation-to-automatically-update">How to set your One-Click WordPress installation to automatically update</a></li>
+<li><a href="/hc/en-us/articles/214586458-Fine-tuning-your-WordPress-JavaScript">Fine tuning your WordPress JavaScript </a></li>
+<li><a href="/hc/en-us/articles/214586538-WordPress-caching-options">WordPress caching options</a></li>
+<li><a href="/hc/en-us/articles/214586518-Fine-tuning-WordPress-revisions">Fine tuning WordPress revisions</a></li>
+<li><a href="/hc/en-us/articles/215300907-WordPress-SPAM-plugins">WordPress SPAM plugins </a></li>
+<li><a href="/hc/en-us/articles/215527157-Managing-WordPress-themes">Managing WordPress themes</a></li>
 </ul>
 <h3>External links</h3>
 <ul>
@@ -163,3 +167,4 @@
 </div>
 </div>
 </div>
+<div class="clearer"> </div>

@@ -33,6 +33,46 @@
 </li>
 <li>Enter your new filter settings and click Add Filter.</li>
 </ol>
+<h2>How does the 'execute' option work?</h2>
+<p>The last option in the filter is to set 'execute and continue' or 'execute and stop'. Choosing this setting affects how forwarding works. Here are a few examples:</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>In these examples, email is being sent to admin@example.com while forwarding to forward@example.com.</p>
+</div>
+</div>
+<h3>Example #1 (execute and stop)</h3>
+<p>Let's say you have two filters:</p>
+<ul>
+<li>First, forward emails with <strong>Test</strong> in the <strong>subject</strong> to admin@example.com and then stop.</li>
+<li>Finally, add <strong>(execute and stop)</strong> to the subject of emails with <strong>Test</strong> in the <strong>subject</strong> and then stop.</li>
+</ul>
+<p>When the original email is sent to admin@example.com, it correctly forwards to forward@example.com without any text being added to the subject.</p>
+<p>The second rule is never triggered so the email never arrives at admin@example.com.</p>
+<h3>Example #2 (execute and stop)</h3>
+<p>This example reverses the two rules above::</p>
+<ul>
+<li>First, add <strong>(execute and stop)</strong> to the subject of emails with <strong>Test</strong> in the <strong>subject</strong> and then stop.</li>
+<li>Finally, forward emails with <strong>Test</strong> in the <strong>subject</strong> to admin@example.com and then stop.</li>
+</ul>
+<p>When the original email is sent to admin@example.com, <strong>it does not arrive</strong>, but the subject text is added correctly.</p>
+<p>The second rule then forwards to forward@example.com in addition to adding the (execute and stop) text to the subject.</p>
+<h3>Example #3 (execute and continue)</h3>
+<p>This is the same as example #1, except the last rule is now 'execute and continue'.</p>
+<ul>
+<li>First, forward a copy emails with <strong>Test</strong> in the <strong>subject</strong> to admin@example.com and then continue.</li>
+<li>Finally, add <strong>(execute and continue)</strong> to the subject of emails with <strong>Test</strong> in the <strong>subject</strong> and then continue.</li>
+</ul>
+<p>When the original email is sent to admin@example.com, it forwards to forward@example.com, but the (execute and continue) text <strong>is not</strong> added to the subject.</p>
+<p>The email also arrives at the original address of admin@example.com <strong>with</strong> the (execute and continue) text added.</p>
+<h3>Example #4 (execute and continue)</h3>
+<p>This is the same as example #2, except the last rule is now 'execute and continue'.</p>
+<ul>
+<li>First, add <strong>(execute and continue)</strong> to the subject of emails with <strong>Test</strong> in the <strong>subject</strong> and then continue.</li>
+<li>Finally, forward a copy emails with <strong>Test</strong> in the <strong>subject</strong> to admin<em>@example.com</em> and then continue.</li>
+</ul>
+<p>When the original email is sent to admin@example.com, it arrives with (execute and continue) added to the subject line.</p>
+<p>The email also arrives at forward@example.com with the subject text added.</p>
 <h2>See also</h2>
 <ul>
 <li><a style="background-color: #ffffff;" href="https://help.dreamhost.com/hc/en-us/articles/215030758-Custom-filters-Explanation-of-the-message-filter-fields">Explanation of the message filter fields</a></li>
