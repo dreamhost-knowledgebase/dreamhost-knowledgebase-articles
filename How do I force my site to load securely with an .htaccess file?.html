@@ -8,15 +8,14 @@
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215613037-How-do-I-show-hidden-files-on-my-FTP-client-">How do I show hidden files in my FTP client?</a></li>
 </ul>
-<h2><span id="Forcing_the_domain_to_serve_securely_using_HTTPS">Forcing the domain to serve securely using HTTPS</span></h2>
-<p>The following forces any http request to be rewritten using https. For example, the following code forces a request to <a href="http://example.com">http://example.com</a> to load <a href="https://example.com">https://example.com</a>:</p>
-<div class="preboxcontainer">
-<pre class="prebox">RewriteEngine On
-RewriteCond %{HTTPS} !=on
-RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-</pre>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>If you've enabled <a href="https://help.dreamhost.com/hc/en-us/articles/215873088-Cloudflare-overview">Cloudflare</a> in the DreamHost panel, your site must use the 'www' subdomain. Make sure your .htaccess file does not have any redirects to the non-www version of your URL. If it does and you're using Cloudflare, you may experience a 'Too many redirects' error in your browser.</p>
 </div>
-<p>The following alternative also forces directly linked resources (images, css, etc.) to use https:</p>
+</div>
+<h2><span id="Forcing_the_domain_to_serve_securely_using_HTTPS">Forcing the domain to serve securely using HTTPS</span></h2>
+<p>The following forces any http request to be rewritten using https. For example, the following code forces a request to <a href="http://example.com">http://example.com</a> to load <a href="https://example.com">https://example.com</a>. It also forces directly linked resources (images, css, etc.) to use https:</p>
 <div class="preboxcontainer">
 <pre class="prebox">RewriteEngine On
 RewriteCond %{HTTPS} !=on
@@ -36,8 +35,13 @@ RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 <pre class="prebox">SSLOptions +StrictRequire
 SSLRequireSSL
 SSLRequire %{HTTP_HOST} eq "example.com"
-ErrorDocument 403 https://example.com
 </pre>
+</div>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Make sure the URL you enter next to SSLRequire is your site's base URL. If you're securing a subdirectory such as 'example.com/blog', this URL would still be 'example.com'.</p>
+</div>
 </div>
 <h2><span id="Forcing_HTTPS_with_WordPress">Forcing HTTPS with WordPress</span></h2>
 <p>It's possible for a visitor to enter in a direct HTTP URL on your WordPress site. To force any HTTP request to redirect to HTTPS, add the following to your WordPress .htaccess file:</p>

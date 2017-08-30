@@ -1,4 +1,10 @@
 <p><a href="https://github.com/drush-ops/drush"><strong>Drush</strong></a> is a command-line shell and scripting interface for <a href="/hc/en-us/articles/216691848-Drupal">Drupal</a>. To use, you must have a <a href="/hc/en-us/articles/216385837-Enabling-Shell-access">shell user enabled</a> and knowledge of the Unix <a href="/hc/en-us/articles/216041267-SSH-overview">shell</a>.</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>If you're installing on a Shared server, you may hit your user's memory limits when running the commands below. If so, you need to <a href="https://help.dreamhost.com/hc/en-us/articles/218084068-Contacting-support-overview">contact support</a> and ask that your user's memory limits be lifted so you can complete the installation.</p>
+</div>
+</div>
 <h2>Installing Drush using Composer</h2>
 <p><a href="https://getcomposer.org/">Composer</a> is a tool for dependency management in PHP. It allows you to declare the libraries your project depends on and it will manage (install/update) them for you.</p>
 <p>Follow the instructions at <a href="https://github.com/drush-ops/drush">https://github.com/drush-ops/drush</a>:</p>
@@ -29,7 +35,10 @@ suhosin.executor.include.whitelist = phar</pre>
 </pre>
 </div>
 </li>
-<li>In your user’s directory, run the following command:
+<li>Navigate to your your user’s directory.
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~</span></pre>
+</li>
+<li>Then run the following command:
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">curl -sS https://getcomposer.org/installer | php</span>
 <span class="cmdoutput">#!/usr/bin/env php
@@ -42,14 +51,13 @@ Use it: php composer.phar</span>
 </div>
 </li>
 </ol>
-<h3>Installing Drush on Shared</h3>
+<h3>Installing Drush</h3>
 <p>Once you have installed Composer, run the following commands to install Drush.</p>
 <ol>
 <li>Run the following commands in your user’s directory:
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">php composer.phar global require drush/drush:dev-master</span>
-<span class="server">[server]$ </span><span class="command">php composer.phar global require drush/drush</span>
-<span class="server">[server]$ </span><span class="command">php .config/composer/vendor/bin/drush.php</span> </pre>
+<pre class="prebox"><span class="server">[server]$</span><span class="command"> composer require drush/drush</span>
+<span class="server">[server]$ </span><span class="command">drush init</span></pre>
 </div>
 <div class="alert alert-note">
 <div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
@@ -58,23 +66,12 @@ Use it: php composer.phar</span>
 </div>
 </div>
 </li>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Edit the .bash_profile file</a> and add this line to it:
-<div class="preboxcontainer">
-<pre class="prebox">export PATH="$PATH:~/.config/composer/vendor/bin"</pre>
-</div>
-</li>
-<li>Close the file and return to your shell.</li>
 <li>Run the following command to confirm drush is functioning:
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">drush topic</span>
-</pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">drush topic</span></pre>
 </div>
 </li>
 </ol>
-<h3>Installing Drush on VPS</h3>
-<ul>
-<li><a href="http://web.archive.org/web/20140104153752/http://www.pru8.com/install-drush-on-dreamhost-vps">Install Drush on DreamHost VPS</a></li>
-</ul>
 <h2>See also</h2>
 <h3>Internal links</h3>
 <ul>
