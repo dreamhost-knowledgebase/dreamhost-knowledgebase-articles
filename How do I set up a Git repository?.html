@@ -1,9 +1,11 @@
-<p><a href="http://git.or.cz/">Git</a> is a free and open source distributed version control system designed to handle everything from small to very large projects with speed and efficiency. For further details, view the following page at Wikipedia:</p>
-<ul>
-<li><a class="new" href="https://en.wikipedia.org/wiki/Git_%28software%29" title="W:Git (software) (page does not exist)">Git at Wikipedia</a></li>
-</ul>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>This article assumes you're setting up your git repository on your DreamHost server. View the <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH overview article</a> for instructions on how to log into your server.</p>
+</div>
+</div>
 <h2><span id="Pre-installed_Git">Pre-installed Git</span></h2>
-<p>Git is installed on all DreamHost servers. As of August 2016, the following version is installed:</p>
+<p>Git is installed on all DreamHost servers. As of Sept 2017, the following version is installed:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">which git</span>
 <span class="cmdoutput">/usr/bin/git</span>
@@ -16,6 +18,7 @@
 <ul>
 <li><a href="http://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup">First time Git setup</a></li>
 </ul>
+<p>You can also just proceed with the following steps for a basic setup.</p>
 <h2><span id="Creating_your_identity">Creating your identity</span></h2>
 <p>The following two commands create your username and email address to be used with Git. View the SSH article for details on how to log into your server:</p>
 <div class="preboxcontainer">
@@ -30,7 +33,7 @@
         email = johndoe@example.com
 </pre>
 </div>
-<p>Then, check your settings that Git can find by running the following:</p>
+<p>Check to confirm git can find those settings by running the following:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">git config --list</span>
 <span class="cmdoutput">user.name=John Doe
@@ -39,15 +42,20 @@ user.email=johndoe@example.com</span>
 </div>
 <h2><span id="Setting_up_the_repository_and_commit">Setting up the repository and commit</span></h2>
 <ol>
-<li>Navigate to the directory of your application. In the example below, the application is in the directory named /mygitapp.</li>
+<li>Navigate to the directory of your application (or website). This example sets up git in your website's directory.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd /home/username/example.com</span>
+</pre>
+</div>
+</li>
 <li>Run the following to initialize the new repository:
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">git init
-<span class="cmdoutput">Initialized empty Git repository in /home/username/mygitapp/.git/</span>
+<span class="cmdoutput">Initialized empty Git repository in /home/username/example.com/.git/</span>
 </span></pre>
 </div>
 <dl>
-<dd>This command creates the /.git directory.</dd>
+<dd>This command creates the /.git directory and your git repository.</dd>
 </dl>
 </li>
 <li>Add all files in your app to the Git repository. The following command shows how to add all files:
@@ -62,43 +70,53 @@ user.email=johndoe@example.com</span>
 <li>Run the <a href="http://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository">status command</a> to confirm which files are in the staging area:
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">git status</span>
-<span class="cmdoutput"># On branch master
-#
-# Initial commit
-#
-# Changes to be committed:
-#   (use "git rm --cached &lt;file&gt;..." to unstage)
-#
-#       new file:   file1.txt
-#       new file:   file2.txt
-#       new file:   file3.txt
-#       new file:   subdirectory1/file4.txt
-#</span>
+<br />Initial commit
+
+Changes to be committed:
+  (use "git rm --cached ..." to unstage)
+<span class="green">
+        new file:   favicon.ico
+        new file:   images/image1.jpg
+        new file:   images/image2.jpg
+        new file:   images/image3.jpg
+        new file:   index.html
+        new file:   mystyles.css</span>
 </pre>
 </div>
 <div class="alert alert-note">
-<div class="alert-icon"><img alt="" height="60" src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
-<p>In this example, you can see the following files are being tracked and ready to be committed:</p>
+<p>In this example, you can see the following files and folder are being tracked and ready to be committed:</p>
 <ul>
-<li>file1.txt</li>
-<li>file2.txt</li>
-<li>file3.txt</li>
-<li>file4.txt (Note how this file is in the /subdirectory1 directory)</li>
+<li>favicon.ico</li>
+<li>images/image1.jpg</li>
+<li>images/image2.jpg</li>
+<li>images/image3.jpg</li>
+<li>index.html</li>
+<li>mystyles.css</li>
 </ul>
 </div>
 </div>
 </li>
-<li>If you're sure you're ready to commit these versions of the files, run the following command:
+<li>If you're sure you're ready to commit (save) these versions of the files to your git repository, run the following command:
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Make sure to add a short and clear message that explains what this commit was for. View the following article for details on how to create a good commit message.</p>
+<ul>
+<li><a href="https://github.com/erlang/otp/wiki/Writing-good-commit-messages">Writing good commit messages</a></li>
+</ul>
+</div>
+</div>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">git commit -m "first commit"</span>
-<span class="cmdoutput">
-[master (root-commit) 0bd2848] first commit
- 0 files changed
- create mode 100644 file1.txt
- create mode 100644 file2.txt
- create mode 100644 file3.txt
- create mode 100644 subdirectory1/file4.txt</span>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">git commit -m "Committing website files for the first time"</span>
+[master (root-commit) e11cdb7] Committing website files for the first time
+ 6 files changed, 34 insertions(+)
+ create mode 100644 favicon.ico
+ create mode 100644 images/image1.jpg
+ create mode 100644 images/image2.jpg
+ create mode 100644 images/image3.jpg
+ create mode 100644 index.html<br /> create mode 100644 mystyles.css
 </pre>
 </div>
 <dl>
@@ -106,14 +124,18 @@ user.email=johndoe@example.com</span>
 </dl>
 </li>
 </ol>
-<p>This creates your first commit which records the snapshot you set up in your staging area. View the following link for further examples and explanations:</p>
+<p>This creates your first commit. You can see your commit history by running the following:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">git log --oneline</span>
+e11cdb7 Committing website files for the first time</pre>
+</div>
+<p>You don't need the --oneline flag, this just shortens the response so it's easier to read. View the following link for further examples and explanations:</p>
 <ul>
 <li><a href="http://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository">Recording changes to the repository</a></li>
 </ul>
-<h2><span id="Access_control_with_Gitolite">Access control with Gitolite</span></h2>
-<p>Gitolite allows you to set up fine-grained access controls as other features. Visit the <a href="http://github.com/sitaramc/gitolite/">Gitolite GitHub page</a> for further details.</p>
 <h2>See also</h2>
 <ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115000677931-git-overview">git overview</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216445197-How-to-push-your-Git-repository-to-an-external-server">How do I push my Git repository to an external server?</a></li>
 </ul>
