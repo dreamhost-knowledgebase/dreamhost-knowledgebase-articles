@@ -1,24 +1,48 @@
+<div class="document">
+<div class="documentwrapper">
+<div class="body">
+<div id="ARTICLE-TITLE-NAME">
+<div class="table-of-content container">
+<ul class="simple">
+<li><a class="reference internal" href="#configure">Configuring WordPress permalinks</a></li>
+<li><a class="reference internal" href="#setting">How to set up WP Super Cache</a></li>
+<li><a class="reference internal" href="#activate">Activating WP Super Cache</a></li>
+<li><a class="reference internal" href="#verify">Verifying WP Super Cache is actually working</a></li>
+<li><a class="reference internal" href="#types">Changing the caching type</a></li>
+<li><a class="reference internal" href="#speed">Using Page Speed Optimization with WP Super Cache</a></li>
+<li><a class="reference internal" href="#nginx">Making WP Super Cache work with Nginx</a></li>
+<li><a class="reference internal" href="#see">See also</a></li>
+</ul>
+</div>
 <div class="alert alert-important">
-<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
-<p>If you are using <a href="https://help.dreamhost.com/hc/en-us/articles/214581158-DreamPress-overview">DreamPress</a>, (DreamHost's managed WordPress hosting service), caching plugins and optimizations come preinstalled and preconfigured by default. Because of this, DreamPress sites do not need to install WP Super Cache.</p>
+<p>If you are using <a href="/hc/en-us/articles/214581158-DreamPress-overview">DreamPress</a> (DreamHost's managed WordPress hosting service), caching plugins and optimizations come preinstalled and preconfigured by default. Because of this, DreamPress sites do not need to install WP Super Cache.</p>
 </div>
 </div>
-<p><a href="/hc/en-us/articles/215525287-WordPress-overview">WordPress</a> is a popular tool that generally works very well to run your website.</p>
-<p>However, once your site begins to receive a significant amount of traffic, you may notice that WordPress runs less efficiently. This is because whenever a page is visited, it must be processed by PHP and then served via the server which can consume vast amounts of memory if your site gets even a moderate traffic spike.</p>
-<h2>Caching plugins</h2>
-<p>Installing a cache plugin can help cut down on memory usage by serving cached static files instead of requiring each request to retrieve the same information from the server. This also helps your site survive large traffic spikes and keep it up and running in DreamHost's shared hosting environment.</p>
-<p>View the <a href="/hc/en-us/articles/214586538-WordPress-caching-options">WordPress caching options</a> page for further details. This article explains how to set up <a href="https://wordpress.org/plugins/wp-super-cache/">WP Super Cache</a>.</p>
-<h2><span id="Configuring_WordPress_permalinks">Configuring WordPress permalinks</span></h2>
-<p><span style="font-weight: 400;">WP Super Cache requires the use of permalinks. If you install WordPress utilizing the DreamHost <a href="https://help.dreamhost.com/hc/en-us/articles/215915837-How-do-I-install-a-One-Click-Install-">One-Click Installer</a>, these will already be set by default. However, older WordPress installations may need to set up Permalinks prior to using WP Super Cache.</span></p>
-<p><span style="font-weight: 400;">When configuring permalinks within WordPress, you’ll notice several options available. Please note that all permalink settings work with WP Super Cache except for the ‘Plain’ setting.</span><span style="font-weight: 400;"><br /></span><span style="font-weight: 400;"><br /></span><span style="font-weight: 400;">To change the settings, follow these instructions:</span></p>
+<p>Though <a href="/hc/en-us/articles/215525287-WordPress-overview">WordPress</a> is extremely versatile, your site may run less efficiently when it begins to receive more traffic. Since every WordPress page is processed by PHP, it can consume large amounts of memory on your web sever when you experience even a moderate amount of traffic. Because WP-Super Cache creates a static file cache of your site and loads that instead of using PHP to generate a page (thus reducing memory usage on your server), it's an outstanding plugin to help improve your site's load time and overall performance.</p>
+<p>If you wish to read more about other WordPress caching plugin options, please see the following article:</p>
+<ul>
+<li><a href="/hc/en-us/articles/214586538-WordPress-caching-options">WordPress caching options</a></li>
+</ul>
+<p>The following describes how to set up and use <a href="https://wordpress.org/plugins/wp-super-cache/">WP Super Cache</a>.</p>
+<h2><span id="configure">Configuring WordPress permalinks</span></h2>
+<p>Because WP Super Cache requires the use of permalinks, you may need to install them before you proceed, especially if you are using an older WordPress installation.</p>
+<p>If you install WordPress utilizing the DreamHost <a href="/hc/en-us/articles/215915837-How-do-I-install-a-One-Click-Install-">One-Click Installer</a>, permalinks are already set by default.</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>When you configure permalinks within WordPress, there are several options available. All permalink settings work with WP Super Cache except for the ‘Plain’ setting.</p>
+</div>
+</div>
+<p>To change the permalinks settings:</p>
 <ol>
-<li>Go to your WordPress dashboard (example.com/wp-admin).
+<li>Open the WordPress Admin dashboard (e.g., 'example.com/wp-admin').
 <dl>
 <dd><img src="https://objects-us-west-1.dream.io/kbimages/images/01_WP_Super_Cache.fw.png" alt="01 WP Super Cache.fw.png" /></dd>
 </dl>
 </li>
-<li>Navigate to ‘Settings -&gt; Permalinks’.
+<li>Navigate to ‘Settings’ &gt; ‘Permalinks’.
 <dl>
 <dd><em>Any of the options aside from Default will work, so your settings should look something like this:</em></dd>
 <dd><img src="https://objects-us-west-1.dream.io/kbimages/images/02_WP_Super_Cache.fw.png" alt="02 WP Super Cache.fw.png" /></dd>
@@ -26,20 +50,20 @@
 </li>
 <li>Click the <strong>Save Changes</strong> button to save your new settings.</li>
 </ol>
-<h2><span id="Setting_up_WP_Super_Cache">Setting up WP Super Cache</span></h2>
-<h3><span id="Before_you_install_WP_Super_Cache">Before you install WP Super Cache</span></h3>
-<p>If you have previously installed any other caching plugin, you should deactivate and remove it. In general, double caching is a bad idea and can create conflicts that could slow down your WordPress site. Known plugins that conflict are WP Cache and W3 Total Cache.</p>
-<p>Make sure you <a href="https://help.dreamhost.com/hc/en-us/articles/215300817#Disabling_plugins">remove or disable</a> them fully before installing WP Super Cache. This can be done from the WordPress Dashboard – click ‘Plugins’ on the left to view and edit your list of plugins.</p>
-<h3><span id="Installing_WP_Super_Cache">Installing WP Super Cache</span></h3>
-<p>To install WP Super Cache:</p>
+<h2><span id="setting">How to set up WP Super Cache</span></h2>
+<h3>Before you install WP Super Cache</h3>
+<p>If you have previously installed any other caching plugin, you should <a href="/hc/en-us/articles/215300817#Disabling_plugins">disable and remove</a> it before installing WP Super Cache. In general, double caching is not recommended and can create conflicts that could slow down your WordPress site. Known plugins that conflict with each other are WP Cache and W3 Total Cache.</p>
+<p>To remove previously installed caching plugins, open the WordPress Admin dashboard and then click ‘Plugins’ on the left to view and edit your list of plugins.</p>
+<h3>Installing WP Super Cache</h3>
+<p>To download and install WP Super Cache plugin:</p>
 <ol>
-<li>Download the WP Super Cache plugin via your WordPress Admin Dashboard at example.com/wp-admin.
+<li>Open the WordPress Admin dashboard (e.g., 'example.com/wp-admin').
 <dl>
 <dd><img src="https://objects-us-west-1.dream.io/kbimages/images/03_WP_Super_Cache.fw.png" alt="03 WP Super Cache.fw.png" /></dd>
 </dl>
 </li>
-<li>Once logged in, click ‘Plugins &gt; Add New’.</li>
-<li>Towards the top right of the screen, search for WP Super Cache (or wp-super-cache).
+<li>Once logged in, click ‘Plugins’ &gt; ‘Add New’.</li>
+<li>Towards the top right of the screen, search for WP Super Cache (or, wp-super-cache).
 <dl>
 <dd><img src="https://objects-us-west-1.dream.io/kbimages/images/04_WP_Super_Cache.fw.png" alt="04 WP Super Cache.fw.png" /></dd>
 </dl>
@@ -47,18 +71,20 @@
 <li>Click the <strong>Install Now</strong> button next to WP Super Cache.
 <dl></dl>
 </li>
-<li>In the pop-up that displays, click the <strong>OK </strong>button to save your changes.
+<li>In the pop-up that displays, click the <strong>OK </strong>button to save your changes.
 <dl>
-<dd><em>This will install WP Super-Cache and allow you to immediately activate it.</em></dd>
+<dd><em>WP Super Cache installs and allows you to immediately activate it:</em></dd>
 <dd><img src="https://objects-us-west-1.dream.io/kbimages/images/06_WP_Super_Cache.fw.png" alt="06 WP Super Cache.fw.png" /></dd>
 </dl>
 </li>
 </ol>
-<h2><span id="Activating_WP_Super_Cache">Activating WP Super Cache</span></h2>
+<h2><span id="activate">Activating WP Super Cache</span></h2>
 <p>To activate the WP Super Cache plugin:</p>
+<ol>
+<li>Select one of the following:
 <ul>
-<li>Click the 'Activate Plugin' link on the installing page (see previous section), or</li>
-<li>Go to the Plugins area of your admin dashboard (Plugins -&gt; Installed Plugins), and then click the 'Activate' link.</li>
+<li>Click the ‘Activate Plugin’ link on the Installing Plugin page (see previous section), or</li>
+<li>Go to the Plugins area of your admin dashboard (‘Plugins’ &gt; ‘Installed Plugins’), and then click the ‘Activate’ link.</li>
 </ul>
 <dl>
 <dd><em>When you activate the WP Super Cache plugin, the following appears:</em></dd>
@@ -66,20 +92,29 @@
 <dl>
 <dd><img src="https://objects-us-west-1.dream.io/kbimages/images/07_WP_Super_Cache.fw.png" alt="07 WP Super Cache.fw.png" /></dd>
 </dl>
-<ul>
+</li>
 <li>Click the ‘Settings’ link to open the WP Super Cache configuration page.</li>
-</ul>
+<li>Adjust your settings as needed. The following shows you a typical WP Super Cache Settings setup page:
 <dl>
-<dd><em>From there, adjust your settings to look similar to the following:</em></dd>
 <dd><img src="https://objects-us-west-1.dream.io/kbimages/images/08_WP_Super_Cache.fw.png" alt="08 WP Super Cache.fw.png" /></dd>
 </dl>
-<p>Click the radio button titled 'Caching On (Recommended). Then click the '<strong>Update Status</strong>' button.</p>
-<p>WP Super Cache automatically adds the following line to your wp-config.php file:</p>
+</li>
+<li>Click the ‘Caching On <em>(Recommended)</em>’ radio button, and then click the <strong>Update Status</strong> button.
+<dl>
+<dd><em>WP Super Cache automatically adds the following line to your wp-config.php file:</em></dd>
+</dl>
 <div class="preboxcontainer">
 <pre class="prebox">define( 'WP_CACHE', true );</pre>
 </div>
-<p>If it fails to do so, WordPress provides links to its own troubleshooting documents.</p>
-<h2><span id="Verifying_WP_Super_Cache_is_actually_working">Verifying WP Super Cache is actually working</span></h2>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>If WP Super Cache fails to install, WordPress will provide links to its own troubleshooting documents.</p>
+</div>
+</div>
+</li>
+</ol>
+<h2><span id="verify">Verifying WP Super Cache is actually working</span></h2>
 <p>To test WP Super Cache:</p>
 <ol>
 <li>Open the WP Super Cache admin page and click the 'Easy' tab.
@@ -87,14 +122,14 @@
 <dd><img src="https://objects-us-west-1.dream.io/kbimages/images/09_WP_Super_Cache.fw.png" alt="09 WP Super Cache.fw.png" /></dd>
 </dl>
 </li>
-<li>Click the <strong>Test Cache</strong> button which tests if WP Super Cache is functioning.
+<li>Click the <strong>Test Cache</strong> button, which tests if WP Super Cache is functioning.
 <dl>
 <dd><em>The following appears when you click the Test Cache button:</em></dd>
 <dd><img src="https://objects-us-west-1.dream.io/kbimages/images/10_WP_Super_Cache.fw.png" alt="10 WP Super Cache.fw.png" /></dd>
 </dl>
 </li>
 </ol>
-<h2><span id="Caching_types">Caching types</span></h2>
+<h2><span id="types">Changing the caching type</span></h2>
 <p>Click the 'Advanced' tab to view the different caching types. WP Super Cache supports two modes:</p>
 <ul>
 <li>Simple</li>
@@ -104,25 +139,27 @@
 <dl>
 <dd><img src="https://objects-us-west-1.dream.io/kbimages/images/11_WP_Super_Cache.fw.png" alt="11 WP Super Cache.fw.png" /></dd>
 </dl>
-<p>There are pros and cons to each option. However, in terms of performance or if your content is not going to change that often, you will most likely use 'Expert' (mod_rewrite) mode which speeds up the Time to First Byte (TTFB) by orders of magnitude. This is because it doesn't have to search for additional PHP handlers to parse the cached file. Instead, it writes the content as raw HTML, and then serves the HTML by itself.</p>
-<p>If you're using NGINX, you'll want to use 'Simple' mode.</p>
-<h3><span id="mod_rewrite_mode">mod_rewrite mode</span></h3>
-<p>If you switch to using 'Expert' mode, mod_rewrite options appear further down on the page.</p>
+<p>There are pros and cons for each option. If performance is a priority or if your content is not updating that often, use the 'Expert' (mod_rewrite) mode which speeds up the Time to First Byte (TTFB) by orders of magnitude. This is because it doesn't have to search for additional PHP handlers to parse the cached file. Instead, it writes the content as raw HTML and then serves the HTML by itself.</p>
+<p>If you're using Nginx, use 'Simple' mode instead.</p>
+<h3>Using Expert (mod_rewrite) mode</h3>
+<p>If you switch to using 'Expert' mode, mod_rewrite options appear further below on the page.</p>
+<dl>
+<dd><em>Within the 'Cache Location' section, 'step 5' appears:</em></dd>
+</dl>
 <dl>
 <dd><img src="https://objects-us-west-1.dream.io/kbimages/images/WP_Super_Cache_Mod_Rewrite.png" alt="WP_Super_Cache_Mod_Rewrite" /></dd>
 </dl>
-<p>Under the 'Cache Location' section, step#5 appears.</p>
-<p>Below that is a new section titled 'Mod Rewrite Rules'. As it says, you do not need to update the rules unless a warning displays in that location.</p>
-<h2><span id="Page_Speed_Optimization">Page Speed Optimization with WP Super Cache</span></h2>
-<p>View the following article for further details on how to combine these two:</p>
+<p>In the new section titled 'Mod Rewrite Rules', you do not need to update the rules unless a warning shows in the section.</p>
+<h2><span id="speed">Using Page Speed Optimization with WP Super Cache</span></h2>
+<p>See the following article for further information on how to use Page Speed Optimization with WP Super Cache:</p>
 <ul>
 <li><a href="/hc/en-us/articles/216961947#Using%20Page%20Speed%20with%20WordPress">Using Page Speed with WordPress</a></li>
 </ul>
-<h2>Making WP Super Cache work with Nginx</h2>
+<h2><span id="nginx">Making WP Super Cache work with Nginx</span></h2>
 <p>The following lines are just a snippet from a whole wordpress.conf file. You can find this on your Nginx server in the following directory:</p>
-<ul>
-<li><strong>/home/username/nginx/example.com/wordpress.conf</strong></li>
-</ul>
+<div class="preboxcontainer">
+<pre class="prebox">/home/username/nginx/example.com/wordpress.conf</pre>
+</div>
 <div class="preboxcontainer">
 <pre class="prebox">###### rest of wordpress.conf above...
 ###
@@ -142,20 +179,25 @@ if (!-e $request_filename) {
   rewrite ^.*$ /index.php last;
 }</pre>
 </div>
-<p>View the following article for further details</p>
+<p>See the following article for further information on using WordPress with Nginx:</p>
 <ul>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/214824958-How-to-make-statistics-and-permalinks-work-with-WordPress-and-Nginx">How to make statistics and permalinks work with WordPress and Nginx</a></li>
+<li><a href="/hc/en-us/articles/214824958-How-to-make-statistics-and-permalinks-work-with-WordPress-and-Nginx">How to make statistics and permalinks work with WordPress and Nginx</a></li>
 </ul>
-<h2><span id="See_also">See also</span></h2>
+<h2><span id="see">See also</span></h2>
 <h3>Internal links</h3>
 <ul>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/215525287-WordPress-overview">WordPress overview</a></li>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/215300817-Managing-WordPress-plugins">Managing WordPress plugins</a></li>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/214586538-WordPress-caching-options">WordPress caching options</a></li>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/215300867-General-WordPress-optimization-techniques">General WordPress optimization techniques</a></li>
+<li><a href="/hc/en-us/articles/215525287-WordPress-overview">WordPress overview</a></li>
+<li><a href="/hc/en-us/articles/215300817-Managing-WordPress-plugins">Managing WordPress plugins</a></li>
+<li><a href="/hc/en-us/articles/214586538-WordPress-caching-options">WordPress caching options</a></li>
+<li><a href="/hc/en-us/articles/215300867-General-WordPress-optimization-techniques">General WordPress optimization techniques</a></li>
 </ul>
 <h3>External links</h3>
 <ul>
 <li><a href="http://ocaoimh.ie/wp-super-cache/">WP Super Cache Homepage</a></li>
 <li><a href="http://wordpress.org/extend/plugins/wp-super-cache/">WordPress.org's WP Super Cache listing</a></li>
 </ul>
+</div>
+</div>
+</div>
+</div>
+<div class="clearer"> </div>
