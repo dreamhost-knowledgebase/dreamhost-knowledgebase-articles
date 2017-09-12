@@ -19,7 +19,7 @@
 <div id="authenticate">
 <h2>Authenticate</h2>
 <p>Add the following code to a file or copy and paste them in an interactive shell, when available. Make sure to use your username, password and project ID.</p>
-<p>Create a configuration file to store your user name, password, project_name in <code class="file docutils literal"><span class="pre">~/.config/openstack/clouds.yml</span></code>.</p>
+<p>Create a configuration file to store your user name, password, project_name in <code class="file docutils literal"><span class="pre">~/.config/openstack/clouds.yaml</span></code>.</p>
 <div class="highlight-yaml">
 <div class="highlight">
 <pre><span class="l l-Scalar l-Scalar-Plain">clouds</span><span class="p p-Indicator">:</span>
@@ -54,7 +54,7 @@
 <div class="highlight">
 <pre><span class="n">images</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">list_images</span><span class="p">()</span>
 <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">images</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+    yaml.safe_dump<span class="p">(image</span><span class="p">)</span>
 
 </pre>
 </div>
@@ -93,7 +93,7 @@ visibility: public
 <div class="highlight">
 <pre><span class="n">flavors</span> <span class="o">=</span>  <span class="n">conn</span><span class="o">.</span><span class="n">list_flavors</span><span class="p">()</span>
 <span class="k">for</span> <span class="n">flavor</span> <span class="ow">in</span> <span class="n">flavors</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">flavor</span><span class="p">)</span>
+    <span class="nb">yaml.safe_dump(flavor)</span>
 
 </pre>
 </div>
@@ -131,7 +131,7 @@ vcpus: 1
 <div class="highlight">
 <pre><span class="n">image_name</span> <span class="o">=</span> <span class="s1">'Ubuntu-14.04'</span>
 <span class="n">image</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">get_image</span><span class="p">(</span><span class="n">image_name</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+<span class="nb">yaml.safe_dump(image)</span>
 
 </pre>
 </div>
@@ -167,7 +167,7 @@ visibility: public
 <div class="highlight">
 <pre><span class="n">flavor_name</span> <span class="o">=</span> <span class="s1">'gp1.semisonic'</span>
 <span class="n">flavor</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">get_flavor</span><span class="p">(</span><span class="n">flavor_name</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">flavor</span><span class="p">)</span>
+<span class="nb">yaml.safe_dump(flavor)</span>
 
 </pre>
 </div>
@@ -213,7 +213,7 @@ vcpus: 1
     <span class="n">flavor</span><span class="o">=</span><span class="n">flavor</span><span class="p">[</span><span class="s1">'id'</span><span class="p">],</span>
     <span class="n">network</span><span class="o">=</span><span class="s1">'public'</span>
     <span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">testing_instance</span><span class="p">)</span>
+<span class="nb">yaml.safe_dump</span><span class="p">(</span><span class="n">testing_instance</span><span class="p">)</span>
 
 </pre>
 </div>
@@ -223,7 +223,7 @@ vcpus: 1
 <div class="highlight">
 <pre><span class="n">instances</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">list_servers</span><span class="p">()</span>
 <span class="k">for</span> <span class="n">instance</span> <span class="ow">in</span> <span class="n">instances</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span>
+    <span class="nb">yaml.safe_dump</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span>
 
 </pre>
 </div>
