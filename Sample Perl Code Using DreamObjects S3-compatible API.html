@@ -20,184 +20,138 @@
 <div id="creating-a-connection"><span id="s3-perl-creating-a-connection"></span>
 <h2>Creating a Connection</h2>
 <p>This creates a connection so that you can interact with the server.</p>
-<div class="highlight-perl">
-<div class="highlight">
-<pre><span class="k">use</span> <span class="nn">Amazon::</span><span class="n">S3</span><span class="p">;</span>
-<span class="k">my</span> <span class="nv">$access_key</span> <span class="o">=</span> <span class="s">'put your access key here!'</span><span class="p">;</span>
-<span class="k">my</span> <span class="nv">$secret_key</span> <span class="o">=</span> <span class="s">'put your secret key here!'</span><span class="p">;</span>
+<div class="preboxcontainer">
+<pre class="prebox">use Amazon::S3;
+my $access_key = 'put your access key here!';
+my $secret_key = 'put your secret key here!';
 
-<span class="k">my</span> <span class="nv">$conn</span> <span class="o">=</span> <span class="nn">Amazon::</span><span class="n">S3</span><span class="o">-&gt;</span><span class="k">new</span><span class="p">({</span>
-        <span class="n">aws_access_key_id</span>     <span class="o">=&gt;</span> <span class="nv">$access_key</span><span class="p">,</span>
-        <span class="n">aws_secret_access_key</span> <span class="o">=&gt;</span> <span class="nv">$secret_key</span><span class="p">,</span>
-        <span class="n">host</span>                  <span class="o">=&gt;</span> <span class="s">'objects-us-west-1.dream.io'</span><span class="p">,</span>
-        <span class="n">secure</span>                <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span>
-        <span class="n">retry</span>                 <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span>
-<span class="p">});</span>
-</pre>
-</div>
-</div>
+my $conn = Amazon::S3-&gt;new({
+        aws_access_key_id     =&gt; $access_key,
+        aws_secret_access_key =&gt; $secret_key,
+        host                  =&gt; 'objects-us-west-1.dream.io',
+        secure                =&gt; 1,
+        retry                 =&gt; 1,
+});</pre>
 </div>
 <div id="listing-owned-buckets"><span id="s3-perl-listing-owned-buckets"></span>
 <h2>Listing Owned Buckets</h2>
 <p>This gets a list of Amazon::S3::Bucket objects that you own. We’ll also print out the bucket name and creation date of each bucket.</p>
-<div class="highlight-perl">
-<div class="highlight">
-<pre><span class="k">my</span> <span class="nv">@buckets</span> <span class="o">=</span> <span class="nv">@</span><span class="p">{</span><span class="nv">$conn</span><span class="o">-&gt;</span><span class="n">buckets</span><span class="o">-&gt;</span><span class="p">{</span><span class="n">buckets</span><span class="p">}</span> <span class="o">||</span> <span class="o">[]</span><span class="p">};</span>
-<span class="k">foreach</span> <span class="k">my</span> <span class="nv">$bucket</span> <span class="p">(</span><span class="nv">@buckets</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">print</span> <span class="nv">$bucket</span><span class="o">-&gt;</span><span class="n">bucket</span> <span class="o">.</span> <span class="s">"\t"</span> <span class="o">.</span> <span class="nv">$bucket</span><span class="o">-&gt;</span><span class="n">creation_date</span> <span class="o">.</span> <span class="s">"\n"</span><span class="p">;</span>
-<span class="p">}</span>
-</pre>
-</div>
+<div class="preboxcontainer">
+<pre class="prebox">my @buckets = @{$conn-&gt;buckets-&gt;{buckets} || []};
+foreach my $bucket (@buckets) {
+        print $bucket-&gt;bucket . "\t" . $bucket-&gt;creation_date . "\n";
+}</pre>
 </div>
 <p>The output will look something like this:</p>
-<div class="highlight-python">
-<div class="highlight">
-<pre>mahbuckat1   2011-04-21T18:05:39.000Z
+<div class="preboxcontainer">
+<pre class="prebox">mahbuckat1   2011-04-21T18:05:39.000Z
 mahbuckat2   2011-04-21T18:05:48.000Z
-mahbuckat3   2011-04-21T18:07:18.000Z
-</pre>
-</div>
-</div>
+mahbuckat3   2011-04-21T18:07:18.000Z</pre>
 </div>
 <div id="creating-a-bucket"><span id="s3-perl-creating-a-bucket"></span>
 <h2>Creating a Bucket</h2>
 <p>This creates a new bucket called <code class="docutils literal"><span class="pre">my-new-bucket</span></code></p>
-<div class="highlight-perl">
-<div class="highlight">
-<pre><span class="k">my</span> <span class="nv">$bucket</span> <span class="o">=</span> <span class="nv">$conn</span><span class="o">-&gt;</span><span class="n">add_bucket</span><span class="p">({</span> <span class="n">bucket</span> <span class="o">=&gt;</span> <span class="s">'my-new-bucket'</span> <span class="p">});</span>
-</pre>
-</div>
-</div>
+<div class="preboxcontainer">
+<pre class="prebox">my $bucket = $conn-&gt;add_bucket({ bucket =&gt; 'my-new-bucket' });</pre>
 </div>
 <div id="listing-a-bucket-s-content"><span id="s3-perl-listing-a-buckets-content"></span>
 <h2>Listing a Bucket’s Content</h2>
 <p>This gets a list of hashes with info about each object in the bucket. We’ll also print out each object’s name, the file size, and last modified date.</p>
-<div class="highlight-perl">
-<div class="highlight">
-<pre><span class="k">my</span> <span class="nv">@keys</span> <span class="o">=</span> <span class="nv">@</span><span class="p">{</span><span class="nv">$bucket</span><span class="o">-&gt;</span><span class="n">list_all</span><span class="o">-&gt;</span><span class="p">{</span><span class="nb">keys</span><span class="p">}</span> <span class="o">||</span> <span class="o">[]</span><span class="p">};</span>
-<span class="k">foreach</span> <span class="k">my</span> <span class="nv">$key</span> <span class="p">(</span><span class="nv">@keys</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">print</span> <span class="s">"$key-&gt;{key}\t$key-&gt;{size}\t$key-&gt;{last_modified}\n"</span><span class="p">;</span>
-<span class="p">}</span>
-</pre>
-</div>
+<div class="preboxcontainer">
+<pre class="prebox">my @keys = @{$bucket-&gt;list_all-&gt;{keys} || []};
+foreach my $key (@keys) {
+        print "$key-&gt;{key}\t$key-&gt;{size}\t$key-&gt;{last_modified}\n";
+}</pre>
 </div>
 <p>The output will look something like this:</p>
-<div class="highlight-python">
-<div class="highlight">
-<pre>myphoto1.jpg 251262  2011-08-08T21:35:48.000Z
-myphoto2.jpg 262518  2011-08-08T21:38:01.000Z
-</pre>
-</div>
-</div>
+<div class="preboxcontainer">
+<pre class="prebox">myphoto1.jpg 251262  2011-08-08T21:35:48.000Z
+myphoto2.jpg 262518  2011-08-08T21:38:01.000Z</pre>
 </div>
 <div id="deleting-a-bucket"><span id="s3-perl-deleting-a-bucket"></span>
 <h2>Deleting a Bucket</h2>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The Bucket must be empty! Otherwise it won’t work!</p>
-</div>
-<div class="highlight-perl">
-<div class="highlight">
-<pre><span class="nv">$conn</span><span class="o">-&gt;</span><span class="n">delete_bucket</span><span class="p">(</span><span class="nv">$bucket</span><span class="p">);</span>
-</pre>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>The Bucket must be empty! Otherwise it won’t work!</p>
 </div>
 </div>
+<div class="preboxcontainer">
+<pre class="prebox">$conn-&gt;delete_bucket($bucket);</pre>
 </div>
 <div id="forced-delete-for-non-empty-buckets"><span id="s3-perl-forced-delete-for-non-empty-buckets"></span>
 <h2>Forced Delete for Non-empty Buckets</h2>
-<div class="admonition attention">
-<p class="first admonition-title">Attention</p>
-<p class="last">not available in the <a class="reference external" href="http://search.cpan.org/~tima/Amazon-S3-0.441/lib/Amazon/S3.pm">Amazon::S3</a> perl module</p>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>not available in the <a href="http://search.cpan.org/~tima/Amazon-S3-0.441/lib/Amazon/S3.pm">Amazon::S3</a> perl module</p>
 </div>
 </div>
 <div id="creating-an-object"><span id="s3-perl-creating-an-object"></span>
 <h2>Creating an Object</h2>
 <p>This creates a file <code class="docutils literal"><span class="pre">hello.txt</span></code> with the string <code class="docutils literal"><span class="pre">"Hello</span> <span class="pre">World!"</span></code></p>
-<div class="highlight-perl">
-<div class="highlight">
-<pre><span class="nv">$bucket</span><span class="o">-&gt;</span><span class="n">add_key</span><span class="p">(</span>
-        <span class="s">'hello.txt'</span><span class="p">,</span> <span class="s">'Hello World!'</span><span class="p">,</span>
-        <span class="p">{</span> <span class="n">content_type</span> <span class="o">=&gt;</span> <span class="s">'text/plain'</span> <span class="p">},</span>
-<span class="p">);</span>
-</pre>
-</div>
-</div>
+<div class="preboxcontainer">
+<pre class="prebox">$bucket-&gt;add_key(
+        'hello.txt', 'Hello World!',
+        { content_type =&gt; 'text/plain' },
+);</pre>
 </div>
 <div id="change-an-object-s-acl"><span id="s3-perl-change-an-objects-acl"></span>
 <h2>Change an Object’s ACL</h2>
 <p>This makes the object <code class="docutils literal"><span class="pre">hello.txt</span></code> to be publicly readable and <code class="docutils literal"><span class="pre">secret_plans.txt</span></code> to be private.</p>
-<div class="highlight-perl">
-<div class="highlight">
-<pre><span class="nv">$bucket</span><span class="o">-&gt;</span><span class="n">set_acl</span><span class="p">({</span>
-        <span class="n">key</span>       <span class="o">=&gt;</span> <span class="s">'hello.txt'</span><span class="p">,</span>
-        <span class="n">acl_short</span> <span class="o">=&gt;</span> <span class="s">'public-read'</span><span class="p">,</span>
-<span class="p">});</span>
-<span class="nv">$bucket</span><span class="o">-&gt;</span><span class="n">set_acl</span><span class="p">({</span>
-        <span class="n">key</span>       <span class="o">=&gt;</span> <span class="s">'secret_plans.txt'</span><span class="p">,</span>
-        <span class="n">acl_short</span> <span class="o">=&gt;</span> <span class="s">'private'</span><span class="p">,</span>
-<span class="p">});</span>
-</pre>
-</div>
-</div>
+<div class="preboxcontainer">
+<pre class="prebox">$bucket-&gt;set_acl({
+        key       =&gt; 'hello.txt',
+        acl_short =&gt; 'public-read',
+});
+$bucket-&gt;set_acl({
+        key       =&gt; 'secret_plans.txt',
+        acl_short =&gt; 'private',
+});</pre>
 </div>
 <div id="download-an-object-to-a-file"><span id="s3-perl-download-an-object"></span>
 <h2>Download an Object (to a file)</h2>
 <p>This downloads the object <code class="docutils literal"><span class="pre">perl_poetry.pdf</span></code> and saves it in <code class="docutils literal"><span class="pre">/home/larry/documents/</span></code></p>
-<div class="highlight-perl">
-<div class="highlight">
-<pre><span class="nv">$bucket</span><span class="o">-&gt;</span><span class="n">get_key_filename</span><span class="p">(</span><span class="s">'perl_poetry.pdf'</span><span class="p">,</span> <span class="nb">undef</span><span class="p">,</span>
-        <span class="s">'/home/larry/documents/perl_poetry.pdf'</span><span class="p">);</span>
-</pre>
-</div>
-</div>
+<div class="preboxcontainer">
+<pre class="prebox">$bucket-&gt;get_key_filename('perl_poetry.pdf', undef,
+        '/home/larry/documents/perl_poetry.pdf');</pre>
 </div>
 <div id="delete-an-object"><span id="s3-perl-delete-an-object"></span>
 <h2>Delete an Object</h2>
 <p>This deletes the object <code class="docutils literal"><span class="pre">goodbye.txt</span></code></p>
-<div class="highlight-perl">
-<div class="highlight">
-<pre><span class="nv">$bucket</span><span class="o">-&gt;</span><span class="n">delete_key</span><span class="p">(</span><span class="s">'goodbye.txt'</span><span class="p">);</span>
-</pre>
-</div>
-</div>
+<div class="preboxcontainer">
+<pre class="prebox">$bucket-&gt;delete_key('goodbye.txt');</pre>
 </div>
 <div id="generate-object-download-urls-signed-and-unsigned"><span id="s3-perl-generate-object-download-urls"></span>
 <h2>Generate Object Download URLs (signed and unsigned)</h2>
 <p>This generates an unsigned download URL for <code class="docutils literal"><span class="pre">hello.txt</span></code>. This works because we made <code class="docutils literal"><span class="pre">hello.txt</span></code> public by setting the ACL above. Then this generates a signed download URL for <code class="docutils literal"><span class="pre">secret_plans.txt</span></code> that will work for 1 hour. Signed download URLs will work for the time period even if the object is private (when the time period is up, the URL will stop working).</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The <a class="reference external" href="http://search.cpan.org/~tima/Amazon-S3-0.441/lib/Amazon/S3.pm">Amazon::S3</a> module does not have a way to generate download URLs, so we’re going to be using another module instead. Unfortunately, most modules for generating these URLs assume that you are using Amazon, so we’ve had to go with using a more obscure module, <a class="reference external" href="http://search.cpan.org/~mike/Muck-0.02/">Muck::FS::S3</a>. This should be the same as Amazon’s sample S3 perl module, but this sample module is not in CPAN. So, you can either use CPAN to install <a class="reference external" href="http://search.cpan.org/~mike/Muck-0.02/">Muck::FS::S3</a>, or install Amazon’s sample S3 module manually. If you go the manual route, you can remove <code class="docutils literal"><span class="pre">Muck::FS::</span></code> from the example below.</p>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>The <a class="reference external" href="http://search.cpan.org/~tima/Amazon-S3-0.441/lib/Amazon/S3.pm">Amazon::S3</a> module does not have a way to generate download URLs, so we’re going to be using another module instead. Unfortunately, most modules for generating these URLs assume that you are using Amazon, so we’ve had to go with using a more obscure module, <a class="reference external" href="http://search.cpan.org/~mike/Muck-0.02/">Muck::FS::S3</a>. This should be the same as Amazon’s sample S3 perl module, but this sample module is not in CPAN. So, you can either use CPAN to install <a class="reference external" href="http://search.cpan.org/~mike/Muck-0.02/">Muck::FS::S3</a>, or install Amazon’s sample S3 module manually. If you go the manual route, you can remove <code class="docutils literal"><span class="pre">Muck::FS::</span></code> from the example below.</p>
 </div>
-<div class="highlight-perl">
-<div class="highlight">
-<pre><span class="k">use</span> <span class="nn">Muck::FS::S3::</span><span class="n">QueryStringAuthGenerator</span><span class="p">;</span>
-<span class="k">my</span> <span class="nv">$generator</span> <span class="o">=</span> <span class="nn">Muck::FS::S3::</span><span class="n">QueryStringAuthGenerator</span><span class="o">-&gt;</span><span class="k">new</span><span class="p">(</span>
-        <span class="nv">$access_key</span><span class="p">,</span>
-        <span class="nv">$secret_key</span><span class="p">,</span>
-        <span class="mi">0</span><span class="p">,</span> <span class="c1"># 0 means use 'http'. set this to 1 for 'https'</span>
-        <span class="s">'objects-us-west-1.dream.io'</span><span class="p">,</span>
-<span class="p">);</span>
-
-<span class="k">my</span> <span class="nv">$hello_url</span> <span class="o">=</span> <span class="nv">$generator</span><span class="o">-&gt;</span><span class="n">make_bare_url</span><span class="p">(</span><span class="nv">$bucket</span><span class="o">-&gt;</span><span class="n">bucket</span><span class="p">,</span> <span class="s">'hello.txt'</span><span class="p">);</span>
-<span class="k">print</span> <span class="nv">$hello_url</span> <span class="o">.</span> <span class="s">"\n"</span><span class="p">;</span>
-
-<span class="nv">$generator</span><span class="o">-&gt;</span><span class="n">expires_in</span><span class="p">(</span><span class="mi">3600</span><span class="p">);</span> <span class="c1"># 1 hour = 3600 seconds</span>
-<span class="k">my</span> <span class="nv">$plans_url</span> <span class="o">=</span> <span class="nv">$generator</span><span class="o">-&gt;</span><span class="n">get</span><span class="p">(</span><span class="nv">$bucket</span><span class="o">-&gt;</span><span class="n">bucket</span><span class="p">,</span> <span class="s">'secret_plans.txt'</span><span class="p">);</span>
-<span class="k">print</span> <span class="nv">$plans_url</span> <span class="o">.</span> <span class="s">"\n"</span><span class="p">;</span>
-</pre>
 </div>
+<div class="preboxcontainer">
+<pre class="prebox">use Muck::FS::S3::QueryStringAuthGenerator;
+my $generator = Muck::FS::S3::QueryStringAuthGenerator-&gt;new(
+        $access_key,
+        $secret_key,
+        0, # 0 means use 'http'. set this to 1 for 'https'
+        'objects-us-west-1.dream.io',
+);
+
+my $hello_url = $generator-&gt;make_bare_url($bucket-&gt;bucket, 'hello.txt');
+print $hello_url . "\n";
+
+$generator-&gt;expires_in(3600); # 1 hour = 3600 seconds
+my $plans_url = $generator-&gt;get($bucket-&gt;bucket, 'secret_plans.txt');
+print $plans_url . "\n";</pre>
 </div>
 <p>The output will look something like this:</p>
-<div class="highlight-python">
-<div class="highlight">
-<pre>http://objects-us-west-1.dream.io:80/my-bucket-name/hello.txt
+<div class="preboxcontainer">
+<pre class="prebox">http://objects-us-west-1.dream.io:80/my-bucket-name/hello.txt
 http://objects-us-west-1.dream.io:80/my-bucket-name/secret_plans.txt?Signature=XXXXXXXXXXXXXXXXXXXXXXXXXXX&amp;Expires=1316027075&amp;AWSAccessKeyId=XXXXXXXXXXXXXXXXXXX
 </pre>
-</div>
-</div>
-</div>
-</div>
-</div>
 </div>
 <div class="clearer"> </div>
 </div>
@@ -206,3 +160,17 @@ http://objects-us-west-1.dream.io:80/my-bucket-name/secret_plans.txt?Signature=X
 <div class="dream-sign-up">
 <h2>Start Storing Your Data Today!</h2>
 <a href="https://www.dreamhost.com/cloud/storage/">Sign Up for DreamObjects</a></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>

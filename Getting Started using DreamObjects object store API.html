@@ -1,381 +1,342 @@
-<body role="document">
 <div class="document">
 <div class="documentwrapper">
-<div class="body" role="main">
+<div class="body">
 <div id="getting-started-using-dreamobjects-object-store-api">
-
 <div class="table-of-content container">
 <ul class="simple">
-<li><a class="reference internal" href="#guide-introduction"><span>Introduction</span></a></li>
-<li><a class="reference internal" href="#guide-sample-output"><span>Sample Output</span></a></li>
-<li><a class="reference internal" href="#guide-annotated-script"><span>Annotated Script</span></a></li>
-<li><a class="reference internal" href="#guide-digging-deeper"><span>Digging Deeper</span></a></li>
+<li><a class="reference internal" href="#guide-introduction">Introduction</a></li>
+<li><a class="reference internal" href="#guide-sample-output">Sample Output</a></li>
+<li><a class="reference internal" href="#guide-annotated-script">Annotated Script</a></li>
+<li><a class="reference internal" href="#guide-digging-deeper">Digging Deeper</a></li>
 </ul>
 </div>
-<div id="introduction">
-<span id="guide-introduction"></span><h2>Introduction</h2>
-<p>This guide will help you get started using DreamObjects via the S3 API. We will
-walk through a runnable demo script that exercises many of the functions of
-DreamObjects. The script is implemented in the <a class="reference external" href="http://python.org">Python programming language</a> using the popular <a class="reference external" href="http://pypi.python.org/pypi/boto">boto S3 library</a>. Before we get started, you’ll need to
-create a user with an S3 key in your DreamObjects account in the DreamHost
-Panel.</p>
-<p>You can download <a class="reference external" href="https://raw.githubusercontent.com/dreamhost/dreamcloud-docs/master/source/dreamobjects/api-docs/demo/demo.py">the example script</a>, and then run it using the following
-command:</p>
-<div class="highlight-sh"><div class="highlight"><pre><span></span>./demo.py --access-key<span class="o">=</span>&lt;access-key&gt; --secret-key<span class="o">=</span>&lt;secret-key&gt;
-</pre></div>
+<div id="introduction"><span id="guide-introduction"></span>
+<h2>Introduction</h2>
+<p>This guide will help you get started using DreamObjects via the S3 API. We will walk through a runnable demo script that exercises many of the functions of DreamObjects. The script is implemented in the <a class="reference external" href="http://python.org">Python programming language</a> using the popular <a class="reference external" href="http://pypi.python.org/pypi/boto">boto S3 library</a>. Before we get started, you’ll need to create a user with an S3 key in your DreamObjects account in the DreamHost Panel.</p>
+<p>You can download <a class="reference external" href="https://raw.githubusercontent.com/dreamhost/dreamcloud-docs/master/source/dreamobjects/api-docs/demo/demo.py">the example script</a>, and then run it using the following command:</p>
+<div class="preboxcontainer">
+<pre class="prebox">./demo.py --access-key<span class="o">=</span>&lt;access-key&gt; --secret-key<span class="o">=</span>&lt;secret-key&gt;
+</pre>
 </div>
-<p>The script will walk you through an interactive demonstration that illustrates
-creating buckets, storing objects, linking to objects, setting permissions, and
-removing objects and buckets. The script will also print out the HTTP traffic
-that gets sent to DreamObjects.</p>
+<p>The script will walk you through an interactive demonstration that illustrates creating buckets, storing objects, linking to objects, setting permissions, and removing objects and buckets. The script will also print out the HTTP traffic that gets sent to DreamObjects.</p>
 </div>
-<div id="sample-output">
-<span id="guide-sample-output"></span><h2>Sample Output</h2>
-<p>The following is a sample of the output from running the script for your
-reference.</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">DreamObjects Interactive Demo</span>
-<span class="go">=============================</span>
+<div id="sample-output"><span id="guide-sample-output"></span>
+<h2>Sample Output</h2>
+<p>The following is a sample of the output from running the script for your reference.</p>
+<div class="preboxcontainer">
+<pre class="prebox">DreamObjects Interactive Demo
+=============================
 
-<span class="go">This demonstration will walk through the process of creating a bucket,</span>
-<span class="go">storing objects in the bucket, setting permissions on objects, deleting</span>
-<span class="go">objects and buckets, and even viewing objects by URL in your web</span>
-<span class="go">browser.</span>
+This demonstration will walk through the process of creating a bucket,
+storing objects in the bucket, setting permissions on objects, deleting
+objects and buckets, and even viewing objects by URL in your web
+browser.
 
-<span class="go">Press ENTER to continue...</span>
+Press ENTER to continue...
 
-<span class="go">Connecting to DreamObjects</span>
-<span class="go">--------------------------</span>
+Connecting to DreamObjects
+--------------------------
 
-<span class="go">DreamObjects can be connected to via the Amazon S3 protocol. By</span>
-<span class="go">supplying an "access key" and a "secret key", and setting the hostname</span>
-<span class="go">for connections to "objects-us-west-1.dream.io", you can use most standard</span>
-<span class="go">Amazon S3 access libraries.</span>
+DreamObjects can be connected to via the Amazon S3 protocol. By
+supplying an "access key" and a "secret key", and setting the hostname
+for connections to "objects-us-west-1.dream.io", you can use most standard
+Amazon S3 access libraries.
 
-<span class="go">This demonstration is implemented in Python, with the Boto library.</span>
+This demonstration is implemented in Python, with the Boto library.
 
-<span class="go">Credentials used for this demo:</span>
-<span class="go">Access Key: [redacted]</span>
-<span class="go">Secret Key: [redacted]</span>
+Credentials used for this demo:
+Access Key: [redacted]
+Secret Key: [redacted]
 
-<span class="go">Press ENTER to continue...</span>
+Press ENTER to continue...
 
-<span class="go">Creating connection to DreamObjects...</span>
-<span class="go">-&gt; success!</span>
+Creating connection to DreamObjects...
+-&gt; success!
 
-<span class="go">Creating Buckets</span>
-<span class="go">----------------</span>
+Creating Buckets
+----------------
 
-<span class="go">DreamObjects supports the standard notions of "buckets" and "objects".</span>
-<span class="go">Bucket names are globally unique, so for the purposes of this demo,</span>
-<span class="go">we'll be generating a sample bucket name that should be available:</span>
+DreamObjects supports the standard notions of "buckets" and "objects".
+Bucket names are globally unique, so for the purposes of this demo,
+we'll be generating a sample bucket name that should be available:
 
-<span class="go">Bucket Name: 3c7478c6-6684-4a8d-9179-8e1390d73623</span>
+Bucket Name: 3c7478c6-6684-4a8d-9179-8e1390d73623
 
-<span class="go">Press ENTER to continue...</span>
+Press ENTER to continue...
 
-<span class="go">Creating bucket...</span>
-<span class="go">send: 'PUT / HTTP/1.1\r\nHost: 3c7478c6-6684-4a8d-9179-8e1390d73623.objects-us-west-1.dream.io\r\nAccept-Encoding: identity\r\nDate: Wed, 18 Jul 2012 21:45:19 GMT\r\nContent-Length: 0\r\nAuthorization: AWS b7fasgg8A8tTPkt773Tgd:asdf987jlj43209808s=\r\nUser-Agent: Boto/2.3.0 (darwin)\r\n\r\n'</span>
-<span class="go">reply: 'HTTP/1.1 200 OK\r\n'</span>
-<span class="go">header: Date: Wed, 18 Jul 2012 21:45:21 GMT</span>
-<span class="go">header: Server: Apache</span>
-<span class="go">header: Connection: close</span>
-<span class="go">header: Transfer-Encoding: chunked</span>
-<span class="go">header: Content-Type: application/xml</span>
-<span class="go">-&gt; success!</span>
+Creating bucket...
+send: 'PUT / HTTP/1.1\r\nHost: 3c7478c6-6684-4a8d-9179-8e1390d73623.objects-us-west-1.dream.io\r\nAccept-Encoding: identity\r\nDate: Wed, 18 Jul 2012 21:45:19 GMT\r\nContent-Length: 0\r\nAuthorization: AWS b7fasgg8A8tTPkt773Tgd:asdf987jlj43209808s=\r\nUser-Agent: Boto/2.3.0 (darwin)\r\n\r\n'
+reply: 'HTTP/1.1 200 OK\r\n'
+header: Date: Wed, 18 Jul 2012 21:45:21 GMT
+header: Server: Apache
+header: Connection: close
+header: Transfer-Encoding: chunked
+header: Content-Type: application/xml
+-&gt; success!
 
-<span class="go">Creating Objects</span>
-<span class="go">----------------</span>
+Creating Objects
+----------------
 
-<span class="go">Objects live inside buckets and represent a chunk of data, which</span>
-<span class="go">frequently correspond to files. In this case, we're going to store</span>
-<span class="go">an object inside the bucket that is the DreamHost logo in PNG</span>
-<span class="go">format. Object names are unique within a bucket.</span>
+Objects live inside buckets and represent a chunk of data, which
+frequently correspond to files. In this case, we're going to store
+an object inside the bucket that is the DreamHost logo in PNG
+format. Object names are unique within a bucket.
 
-<span class="go">Object Name: dreamhost-logo.png</span>
+Object Name: dreamhost-logo.png
 
-<span class="go">Press ENTER to continue...</span>
+Press ENTER to continue...
 
-<span class="go">Storing object in bucket...</span>
-<span class="go">send: 'PUT /dreamhost-logo.png HTTP/1.1\r\nHost: 3c7478c6-6684-4a8d-9179-8e1390d73623.objects-us-west-1.dream.io\r\nAccept-Encoding: identity\r\nContent-Length: 18236\r\nContent-MD5: lxpmHnApXXb3gBUWpnZ+WQ==\r\nExpect: 100-Continue\r\nDate: Wed, 18 Jul 2012 21:45:23 GMT\r\nUser-Agent: Boto/2.3.0 (darwin)\r\nContent-Type: image/png\r\nAuthorization: AWS asdf08asdf789798asd:231497asdf7890asdf789=\r\n\r\n'</span>
-<span class="go">-&gt; success!</span>
+Storing object in bucket...
+send: 'PUT /dreamhost-logo.png HTTP/1.1\r\nHost: 3c7478c6-6684-4a8d-9179-8e1390d73623.objects-us-west-1.dream.io\r\nAccept-Encoding: identity\r\nContent-Length: 18236\r\nContent-MD5: lxpmHnApXXb3gBUWpnZ+WQ==\r\nExpect: 100-Continue\r\nDate: Wed, 18 Jul 2012 21:45:23 GMT\r\nUser-Agent: Boto/2.3.0 (darwin)\r\nContent-Type: image/png\r\nAuthorization: AWS asdf08asdf789798asd:231497asdf7890asdf789=\r\n\r\n'
+-&gt; success!
 
-<span class="go">Linking to Objects</span>
-<span class="go">------------------</span>
+Linking to Objects
+------------------
 
-<span class="go">Objects can be referenced by a public URL, which is of the format:</span>
+Objects can be referenced by a public URL, which is of the format:
 
-<span class="go">http://&lt;bucket-name&gt;.objects-us-west-1.dream.io/&lt;object-name&gt;</span>
+http://.objects-us-west-1.dream.io/
 
-<span class="go">The URL for our object will thus be:</span>
+The URL for our object will thus be:
 
-<span class="go">http://3c7478c6-6684-4a8d-9179-8e1390d73623.objects-us-west-1.dream.io/dreamhost-logo.png</span>
+http://3c7478c6-6684-4a8d-9179-8e1390d73623.objects-us-west-1.dream.io/dreamhost-logo.png
 
-<span class="go">Press ENTER to continue...</span>
+Press ENTER to continue...
 
-<span class="go">Getting public reference to object...</span>
-<span class="go">-&gt; success!</span>
+Getting public reference to object...
+-&gt; success!
 
-<span class="go">Object Permissions</span>
-<span class="go">------------------</span>
+Object Permissions
+------------------
 
-<span class="go">Object access is governed by a set of permissions on that object.</span>
-<span class="go">These "ACLs" can be applied after the object has been created. The</span>
-<span class="go">default ACL for objects is private, meaning that we won't be able to</span>
-<span class="go">actually access the object via its public URL.</span>
+Object access is governed by a set of permissions on that object.
+These "ACLs" can be applied after the object has been created. The
+default ACL for objects is private, meaning that we won't be able to
+actually access the object via its public URL.
 
-<span class="go">Let's open the URL in a web browser to illustrate that point.</span>
+Let's open the URL in a web browser to illustrate that point.
 
-<span class="go">Press ENTER to continue...</span>
+Press ENTER to continue...
 
-<span class="go">Opening URL in browser window....</span>
-<span class="go">-&gt; success!</span>
+Opening URL in browser window....
+-&gt; success!
 
-<span class="go">Signed URLs</span>
-<span class="go">-----------</span>
+Signed URLs
+-----------
 
-<span class="go">One way to grant access to an object that isn't publicly readable</span>
-<span class="go">is to generate a "signed" URL that expires after a certain period</span>
-<span class="go">of time. Let's generate one for our object.</span>
+One way to grant access to an object that isn't publicly readable
+is to generate a "signed" URL that expires after a certain period
+of time. Let's generate one for our object.
 
-<span class="go">Press ENTER to continue...</span>
+Press ENTER to continue...
 
-<span class="go">Generating a signed URL for the object...</span>
-<span class="go">-&gt; success!</span>
+Generating a signed URL for the object...
+-&gt; success!
 
-<span class="go">Viewing Signed URLs</span>
-<span class="go">-------------------</span>
+Viewing Signed URLs
+-------------------
 
-<span class="go">Let's illustrate that our signed URL grants us access to our object</span>
-<span class="go">by viewing it in a web browser.</span>
+Let's illustrate that our signed URL grants us access to our object
+by viewing it in a web browser.
 
-<span class="go">Signed Url: http://3c7478c6-6684-4a8d-9179-8e1390d73623.objects-us-west-1.dream.io/dreamhost-logo.png?Signature=%2F7oDsF8vkvSyVwcMY0EsBFTn1uU%3D&amp;Expires=1342651528&amp;AWSAccessKeyId=U6f9dy7aA8tTPktHKTgd</span>
+Signed Url: http://3c7478c6-6684-4a8d-9179-8e1390d73623.objects-us-west-1.dream.io/dreamhost-logo.png?Signature=%2F7oDsF8vkvSyVwcMY0EsBFTn1uU%3D&amp;Expires=1342651528&amp;AWSAccessKeyId=U6f9dy7aA8tTPktHKTgd
 
-<span class="go">Press ENTER to continue...</span>
+Press ENTER to continue...
 
-<span class="go">Opening signed URL in browser window...</span>
-<span class="go">-&gt; success!</span>
+Opening signed URL in browser window...
+-&gt; success!
 
-<span class="go">Setting Object Permissions</span>
-<span class="go">--------------------------</span>
+Setting Object Permissions
+--------------------------
 
-<span class="go">DreamObjects supports the full spectrum of S3-like ACLs, including</span>
-<span class="go">some "canned" ACLs that provide commonly used permissions. Let's mark</span>
-<span class="go">our object with the "public-read" canned ACL.</span>
+DreamObjects supports the full spectrum of S3-like ACLs, including
+some "canned" ACLs that provide commonly used permissions. Let's mark
+our object with the "public-read" canned ACL.
 
-<span class="go">Press ENTER to continue...</span>
+Press ENTER to continue...
 
-<span class="go">Setting permissions to "public-read" on object...</span>
-<span class="go">send: 'PUT /dreamhost-logo.png?acl HTTP/1.1\r\nHost: 3c7478c6-6684-4a8d-9179-8e1390d73623.objects-us-west-1.dream.io\r\nAccept-Encoding: identity\r\nDate: Wed, 18 Jul 2012 21:45:32 GMT\r\nContent-Length: 0\r\nx-amz-acl: public-read\r\nAuthorization: AWS 098123597123478asdf:9asf89778+ieW6DE2WDM=\r\nUser-Agent: Boto/2.3.0 (darwin)\r\n\r\n'</span>
-<span class="go">reply: 'HTTP/1.1 200 OK\r\n'</span>
-<span class="go">header: Date: Wed, 18 Jul 2012 21:45:32 GMT</span>
-<span class="go">header: Server: Apache</span>
-<span class="go">header: Connection: close</span>
-<span class="go">header: Transfer-Encoding: chunked</span>
-<span class="go">header: Content-Type: application/xml</span>
-<span class="go">-&gt; success!</span>
+Setting permissions to "public-read" on object...
+send: 'PUT /dreamhost-logo.png?acl HTTP/1.1\r\nHost: 3c7478c6-6684-4a8d-9179-8e1390d73623.objects-us-west-1.dream.io\r\nAccept-Encoding: identity\r\nDate: Wed, 18 Jul 2012 21:45:32 GMT\r\nContent-Length: 0\r\nx-amz-acl: public-read\r\nAuthorization: AWS 098123597123478asdf:9asf89778+ieW6DE2WDM=\r\nUser-Agent: Boto/2.3.0 (darwin)\r\n\r\n'
+reply: 'HTTP/1.1 200 OK\r\n'
+header: Date: Wed, 18 Jul 2012 21:45:32 GMT
+header: Server: Apache
+header: Connection: close
+header: Transfer-Encoding: chunked
+header: Content-Type: application/xml
+-&gt; success!
 
-<span class="go">Let's prove that we've successfully set the ACL by opening the</span>
-<span class="go">public URL for the object in a browser again. This time, we should</span>
-<span class="go">see the DreamHost logo load.</span>
+Let's prove that we've successfully set the ACL by opening the
+public URL for the object in a browser again. This time, we should
+see the DreamHost logo load.
 
-<span class="go">Press ENTER to continue...</span>
+Press ENTER to continue...
 
-<span class="go">Viewing object in browser...</span>
-<span class="go">-&gt; success!</span>
+Viewing object in browser...
+-&gt; success!
 
-<span class="go">Deleting Buckets and Objects</span>
-<span class="go">----------------------------</span>
+Deleting Buckets and Objects
+----------------------------
 
-<span class="go">DreamObjects supports deleting both objects and buckets via the S3 API.</span>
-<span class="go">Let's try and delete our bucket.</span>
+DreamObjects supports deleting both objects and buckets via the S3 API.
+Let's try and delete our bucket.
 
-<span class="go">Press ENTER to continue...</span>
+Press ENTER to continue...
 
-<span class="go">Deleting bucket...</span>
-<span class="go">send: 'DELETE / HTTP/1.1\r\nHost: 3c7478c6-6684-4a8d-9179-8e1390d73623.objects-us-west-1.dream.io\r\nAccept-Encoding: identity\r\nDate: Wed, 18 Jul 2012 21:45:35 GMT\r\nContent-Length: 0\r\nAuthorization: AWS a908asdf987asd897a:asdf098asdf987asdf7/B/3tAOU=\r\nUser-Agent: Boto/2.3.0 (darwin)\r\n\r\n'</span>
-<span class="go">reply: 'HTTP/1.1 409 Conflict\r\n'</span>
-<span class="go">header: Date: Wed, 18 Jul 2012 21:45:35 GMT</span>
-<span class="go">header: Server: Apache</span>
-<span class="go">header: Accept-Ranges: bytes</span>
-<span class="go">header: Content-Length: 80</span>
-<span class="go">header: Connection: close</span>
-<span class="go">header: Content-Type: application/xml</span>
-<span class="go">-&gt; The bucket could not be deleted because it still contains an object!</span>
-<span class="go">-&gt; success!</span>
+Deleting bucket...
+send: 'DELETE / HTTP/1.1\r\nHost: 3c7478c6-6684-4a8d-9179-8e1390d73623.objects-us-west-1.dream.io\r\nAccept-Encoding: identity\r\nDate: Wed, 18 Jul 2012 21:45:35 GMT\r\nContent-Length: 0\r\nAuthorization: AWS a908asdf987asd897a:asdf098asdf987asdf7/B/3tAOU=\r\nUser-Agent: Boto/2.3.0 (darwin)\r\n\r\n'
+reply: 'HTTP/1.1 409 Conflict\r\n'
+header: Date: Wed, 18 Jul 2012 21:45:35 GMT
+header: Server: Apache
+header: Accept-Ranges: bytes
+header: Content-Length: 80
+header: Connection: close
+header: Content-Type: application/xml
+-&gt; The bucket could not be deleted because it still contains an object!
+-&gt; success!
 
-<span class="go">Let's delete the object in the bucket, so that we can then delete</span>
-<span class="go">the bucket.</span>
+Let's delete the object in the bucket, so that we can then delete
+the bucket.
 
-<span class="go">Press ENTER to continue...</span>
+Press ENTER to continue...
 
-<span class="go">Deleting object...</span>
-<span class="go">send: 'DELETE /dreamhost-logo.png HTTP/1.1\r\nHost: 3c7478c6-6684-4a8d-9179-8e1390d73623.objects-us-west-1.dream.io\r\nAccept-Encoding: identity\r\nDate: Wed, 18 Jul 2012 21:45:36 GMT\r\nContent-Length: 0\r\nAuthorization: AWS asd9f87as9d8f7asdf9807:asd798asdf987asdf=\r\nUser-Agent: Boto/2.3.0 (darwin)\r\n\r\n'</span>
-<span class="go">reply: 'HTTP/1.1 204 No Content\r\n'</span>
-<span class="go">header: Date: Wed, 18 Jul 2012 21:45:36 GMT</span>
-<span class="go">header: Server: Apache</span>
-<span class="go">header: Connection: close</span>
-<span class="go">header: Content-Type: application/xml</span>
-<span class="go">-&gt; success!</span>
+Deleting object...
+send: 'DELETE /dreamhost-logo.png HTTP/1.1\r\nHost: 3c7478c6-6684-4a8d-9179-8e1390d73623.objects-us-west-1.dream.io\r\nAccept-Encoding: identity\r\nDate: Wed, 18 Jul 2012 21:45:36 GMT\r\nContent-Length: 0\r\nAuthorization: AWS asd9f87as9d8f7asdf9807:asd798asdf987asdf=\r\nUser-Agent: Boto/2.3.0 (darwin)\r\n\r\n'
+reply: 'HTTP/1.1 204 No Content\r\n'
+header: Date: Wed, 18 Jul 2012 21:45:36 GMT
+header: Server: Apache
+header: Connection: close
+header: Content-Type: application/xml
+-&gt; success!
 
-<span class="go">Let's prove that the object is gone by trying to view it in our</span>
-<span class="go">browser.</span>
+Let's prove that the object is gone by trying to view it in our
+browser.
 
-<span class="go">Press ENTER to continue...</span>
+Press ENTER to continue...
 
-<span class="go">Re-opening object URL...</span>
-<span class="go">-&gt; success!</span>
+Re-opening object URL...
+-&gt; success!
 
-<span class="go">Finally, let's clean up after ourselves and delete the bucket.</span>
+Finally, let's clean up after ourselves and delete the bucket.
 
-<span class="go">Press ENTER to continue...</span>
+Press ENTER to continue...
 
-<span class="go">Deleting bucket...</span>
-<span class="go">send: 'DELETE / HTTP/1.1\r\nHost: 3c7478c6-6684-4a8d-9179-8e1390d73623.objects-us-west-1.dream.io\r\nAccept-Encoding: identity\r\nDate: Wed, 18 Jul 2012 21:45:44 GMT\r\nContent-Length: 0\r\nAuthorization: AWS asd90f8asdf897asdf897:asdf98asdf897asdf+mdrC9ilIA=\r\nUser-Agent: Boto/2.3.0 (darwin)\r\n\r\n'</span>
-<span class="go">reply: 'HTTP/1.1 204 No Content\r\n'</span>
-<span class="go">header: Date: Wed, 18 Jul 2012 21:45:44 GMT</span>
-<span class="go">header: Server: Apache</span>
-<span class="go">header: Connection: close</span>
-<span class="go">header: Content-Type: application/xml</span>
-<span class="go">-&gt; success!</span>
+Deleting bucket...
+send: 'DELETE / HTTP/1.1\r\nHost: 3c7478c6-6684-4a8d-9179-8e1390d73623.objects-us-west-1.dream.io\r\nAccept-Encoding: identity\r\nDate: Wed, 18 Jul 2012 21:45:44 GMT\r\nContent-Length: 0\r\nAuthorization: AWS asd90f8asdf897asdf897:asdf98asdf897asdf+mdrC9ilIA=\r\nUser-Agent: Boto/2.3.0 (darwin)\r\n\r\n'
+reply: 'HTTP/1.1 204 No Content\r\n'
+header: Date: Wed, 18 Jul 2012 21:45:44 GMT
+header: Server: Apache
+header: Connection: close
+header: Content-Type: application/xml
+-&gt; success!
 
-<span class="go">Let's prove that the bucket is gone by trying to view it in our</span>
-<span class="go">browser.</span>
+Let's prove that the bucket is gone by trying to view it in our
+browser.
 
-<span class="go">Press ENTER to continue...</span>
+Press ENTER to continue...
 
-<span class="go">Re-opening object URL (again)...</span>
-<span class="go">-&gt; success!</span>
-</pre></div>
+Re-opening object URL (again)...
+-&gt; success!</pre>
 </div>
-</div>
-<div id="annotated-script">
-<span id="guide-annotated-script"></span><h2>Annotated Script</h2>
-<p>Let’s walk through the interesting portions of the script, to better understand
-how it uses boto to talk to DreamObjects via the S3 API.</p>
+<div id="annotated-script"><span id="guide-annotated-script"></span>
+<h2>Annotated Script</h2>
+<p>Let’s walk through the interesting portions of the script, to better understand how it uses boto to talk to DreamObjects via the S3 API.</p>
 <div id="connecting-to-dreamobjects">
 <h3>Connecting to DreamObjects</h3>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">create_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-        <span class="n">aws_access_key_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">access_key</span><span class="p">,</span>
-        <span class="n">aws_secret_access_key</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">secret_key</span><span class="p">,</span>
-        <span class="p">)</span>
+<div class="preboxcontainer">
+<pre class="prebox">def create_connection(self):
+    kwargs = dict(
+        aws_access_key_id=self.access_key,
+        aws_secret_access_key=self.secret_key,
+        )
 
-    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">show_http_traffic</span><span class="p">:</span>
-        <span class="n">kwargs</span><span class="p">[</span><span class="s1">'debug'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
+    if self.show_http_traffic:
+        kwargs['debug'] = 2
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_s3</span><span class="p">:</span>
-        <span class="n">kwargs</span><span class="p">[</span><span class="s1">'host'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'objects-us-west-1.dream.io'</span>
+    if not self.use_s3:
+        kwargs['host'] = 'objects-us-west-1.dream.io'
 
-    <span class="c1"># create a connection via the S3 protocol to DreamObjects</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">conn</span> <span class="o">=</span> <span class="n">boto</span><span class="o">.</span><span class="n">connect_s3</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-</pre></div>
+    # create a connection via the S3 protocol to DreamObjects
+    self.conn = boto.connect_s3(**kwargs)</pre>
 </div>
-<p>The boto <code class="docutils literal"><span class="pre">connect_s3</span></code> function call requires the credentials for accessing the
-S3 endpoint and a hostname. The hostname for DreamObjects is
-<code class="docutils literal"><span class="pre">objects-us-west-1.dream.io</span></code>. Boto will use the credentials to sign requests sent to
-DreamObjects for security purposes.</p>
+<p>The boto <code class="docutils literal"><span class="pre">connect_s3</span></code> function call requires the credentials for accessing the S3 endpoint and a hostname. The hostname for DreamObjects is <code class="docutils literal"><span class="pre">objects-us-west-1.dream.io</span></code>. Boto will use the credentials to sign requests sent to DreamObjects for security purposes.</p>
 </div>
 <div id="creating-buckets">
 <h3>Creating Buckets</h3>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">create_bucket</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conn</span><span class="o">.</span><span class="n">create_bucket</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket_name</span><span class="p">)</span>
-</pre></div>
+<div class="preboxcontainer">
+<pre class="prebox">def create_bucket(self):
+    self.bucket = self.conn.create_bucket(self.bucket_name)</pre>
 </div>
-<p>Creating a bucket is as simple as calling the <code class="docutils literal"><span class="pre">create_bucket</span></code> method on your
-connection object and providing a bucket name. Note that the namespace for
-buckets is global, and you’ll need to be careful to properly handle bucket name
-collisions.</p>
+<p>Creating a bucket is as simple as calling the <code class="docutils literal"><span class="pre">create_bucket</span></code> method on your connection object and providing a bucket name. Note that the namespace for buckets is global, and you’ll need to be careful to properly handle bucket name collisions.</p>
 </div>
 <div id="storing-objects">
 <h3>Storing Objects</h3>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">store_object</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">new_key</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">object_name</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">set_contents_from_filename</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">object_name</span><span class="p">)</span>
-</pre></div>
+<div class="preboxcontainer">
+<pre class="prebox">def store_object(self):
+    self.key = self.bucket.new_key(self.object_name)
+    self.key.set_contents_from_filename(self.object_name)</pre>
 </div>
-<p>Boto allows you to upload objects to buckets by calling the <code class="docutils literal"><span class="pre">new_key</span></code> method on
-your bucket object, which returns a key object. Key objects allow you to
-manipulate the object, including uploading the contents of the object using the
-<code class="docutils literal"><span class="pre">set_contents_from_filename</span></code> method.</p>
+<p>Boto allows you to upload objects to buckets by calling the <code class="docutils literal"><span class="pre">new_key</span></code> method on your bucket object, which returns a key object. Key objects allow you to manipulate the object, including uploading the contents of the object using the <code class="docutils literal"><span class="pre">set_contents_from_filename</span></code> method.</p>
 </div>
 <div id="linking-to-objects">
 <h3>Linking to Objects</h3>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_public_reference</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">public_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">generate_url</span><span class="p">(</span>
-        <span class="n">expires_in</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-        <span class="n">query_auth</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-        <span class="n">force_http</span><span class="o">=</span><span class="bp">True</span>
-        <span class="p">)</span>
-</pre></div>
+<div class="preboxcontainer">
+<pre class="prebox">def get_public_reference(self):
+    self.public_url = self.key.generate_url(
+        expires_in=0,
+        query_auth=False,
+        force_http=True
+        )</pre>
 </div>
-<p>Linking to objects in DreamObjects is as simple as generating a link using a
-simple pattern. Boto provides a shortcut via the <code class="docutils literal"><span class="pre">generate_url</span></code> method on key
-objects. DreamObjects supports two formats for public links to objects:</p>
-<p>If the object that you are attempting to link to isn’t accessible because of
-permissions on the object, you can generate a “signed” URL for the object that
-can be active for a limited period of time.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">generate_signed_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">signed_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">generate_url</span><span class="p">(</span>
-        <span class="n">expires_in</span><span class="o">=</span><span class="mi">3600</span><span class="p">,</span>
-        <span class="n">query_auth</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
-        <span class="n">force_http</span><span class="o">=</span><span class="bp">True</span>
-        <span class="p">)</span>
-</pre></div>
+<p>Linking to objects in DreamObjects is as simple as generating a link using a simple pattern. Boto provides a shortcut via the <code class="docutils literal"><span class="pre">generate_url</span></code> method on key objects. DreamObjects supports two formats for public links to objects:</p>
+<p>If the object that you are attempting to link to isn’t accessible because of permissions on the object, you can generate a “signed” URL for the object that can be active for a limited period of time.</p>
+<div class="preboxcontainer">
+<pre class="prebox">def generate_signed_url(self):
+    self.signed_url = self.key.generate_url(
+        expires_in=3600,
+        query_auth=True,
+        force_http=True
+        )</pre>
 </div>
-<p>Key objects in boto provide a utility method for generating signed URLs. Simply
-call the <code class="docutils literal"><span class="pre">generate_url</span></code> method and pass a number of seconds for the link to
-be active (to a maximum of one week), and pass the <code class="docutils literal"><span class="pre">query_auth</span></code> keyword
-argument as <code class="docutils literal"><span class="pre">True</span></code>.</p>
+<p>Key objects in boto provide a utility method for generating signed URLs. Simply call the <code class="docutils literal"><span class="pre">generate_url</span></code> method and pass a number of seconds for the link to be active (to a maximum of one week), and pass the <code class="docutils literal"><span class="pre">query_auth</span></code> keyword argument as <code class="docutils literal"><span class="pre">True</span></code>.</p>
 </div>
 <div id="setting-acls">
 <h3>Setting ACLs</h3>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">set_permissions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">set_canned_acl</span><span class="p">(</span><span class="s1">'public-read'</span><span class="p">)</span>
-</pre></div>
+<div class="preboxcontainer">
+<pre class="prebox">def set_permissions(self):
+    self.key.set_canned_acl('public-read')</pre>
 </div>
-<p>DreamObjects provides a series of “canned ACLs” compliant with the S3 API that
-can be easily set on objects using the <code class="docutils literal"><span class="pre">set_canned_acl</span></code> method. In this case,
-we are setting our object to have the <code class="docutils literal"><span class="pre">public-read</span></code> ACL so that it is
-accessible via public links.</p>
+<p>DreamObjects provides a series of “canned ACLs” compliant with the S3 API that can be easily set on objects using the <code class="docutils literal"><span class="pre">set_canned_acl</span></code> method. In this case, we are setting our object to have the <code class="docutils literal"><span class="pre">public-read</span></code> ACL so that it is accessible via public links.</p>
 </div>
 <div id="deleting-objects-and-buckets">
 <h3>Deleting Objects and Buckets</h3>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">delete_bucket_fail</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">conn</span><span class="o">.</span><span class="n">delete_bucket</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket_name</span><span class="p">)</span>
-    <span class="k">except</span><span class="p">:</span>
-        <span class="k">print</span><span class="p">(</span><span class="s1">'   -&gt; The bucket could not be deleted because '</span> <span class="o">+</span>
-                     <span class="s1">'it still contains an object!'</span><span class="p">)</span>
+<div class="preboxcontainer">
+<pre class="prebox">def delete_bucket_fail(self):
+    try:
+        self.conn.delete_bucket(self.bucket_name)
+    except:
+        print('   -&gt; The bucket could not be deleted because ' +
+                     'it still contains an object!')
 
-<span class="k">def</span> <span class="nf">delete_object</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">delete_key</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">object_name</span><span class="p">)</span>
+def delete_object(self):
+    self.bucket.delete_key(self.object_name)
 
-<span class="k">def</span> <span class="nf">delete_bucket</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">conn</span><span class="o">.</span><span class="n">delete_bucket</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket_name</span><span class="p">)</span>
-</pre></div>
+def delete_bucket(self):
+    self.conn.delete_bucket(self.bucket_name)</pre>
 </div>
-<p>Deleting objects and buckets is also a simple method call away using boto.
-Note that buckets that contain objects cannot be deleted until all of the
-objects within the bucket have been deleted. Deleting objects is simply a matter
-of calling the <code class="docutils literal"><span class="pre">delete_key</span></code> method on a bucket. Deleting buckets is achieved
-by calling the <code class="docutils literal"><span class="pre">delete_bucket</span></code> method on a connection.</p>
+<p>Deleting objects and buckets is also a simple method call away using boto. Note that buckets that contain objects cannot be deleted until all of the objects within the bucket have been deleted. Deleting objects is simply a matter of calling the <code class="docutils literal"><span class="pre">delete_key</span></code> method on a bucket. Deleting buckets is achieved by calling the <code class="docutils literal"><span class="pre">delete_bucket</span></code> method on a connection.</p>
 </div>
 </div>
-<div id="digging-deeper">
-<span id="guide-digging-deeper"></span><h2>Digging Deeper</h2>
-<p>Now that you’ve walked through this simple guide, you should be ready to dive
-deeper into DreamObjects! Take a look at the api documentation</p>
+<div id="digging-deeper"><span id="guide-digging-deeper"></span>
+<h2>Digging Deeper</h2>
+<p>Now that you’ve walked through this simple guide, you should be ready to dive deeper into DreamObjects! Take a look at the api documentation</p>
 </div>
 </div>
 </div>
 </div>
-<div class="clearer"></div>
 </div>
-<div class="footer">
-</div>
+<div class="footer"> </div>
 <!--DreamObjects Button-->
 <div class="dream-sign-up">
 <h2>Start Storing Your Data Today!</h2>
-<a href="https://www.dreamhost.com/cloud/storage/">Sign Up for DreamObjects</a>
+<a href="https://www.dreamhost.com/cloud/storage/">Sign Up for DreamObjects</a></div>
 </div>
-</body>

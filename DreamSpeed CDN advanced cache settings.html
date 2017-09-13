@@ -46,30 +46,36 @@
 <ol class="arabic">
 <li>
 <p class="first">Open Cyberduck and select a file.</p>
-<blockquote>
+<dl>
+<dd>
 <div>
 <div class="figure"><img src="https://help.dreamhost.com/hc/article_attachments/217740447/01_DreamSpeed_CDN_Cache_Settings.fw.png" alt="../../_images/01_DreamSpeed_CDN_Cache_Settings.fw.png" /></div>
 </div>
-</blockquote>
+</dd>
+</dl>
 </li>
 <li>
 <p class="first">Click the <strong>Get Info</strong> button.</p>
-<blockquote>
+<dl>
+<dd>
 <div>
 <div class="figure"><img src="https://help.dreamhost.com/hc/article_attachments/217539508/02_DreamSpeed_CDN_Cache_Settings.fw.png" alt="../../_images/02_DreamSpeed_CDN_Cache_Settings.fw.png" /></div>
 </div>
-</blockquote>
+</dd>
+</dl>
 </li>
 <li>
 <p class="first">Select the ‘Metadata’ option.</p>
 </li>
 <li>
 <p class="first">Select the dropdown option to the bottom left and choose ‘Cache-Control’.</p>
-<blockquote>
+<dl>
+<dd>
 <div>
 <div class="figure"><img src="https://help.dreamhost.com/hc/article_attachments/217539528/03_DreamSpeed_CDN_Cache_Settings.fw.png" alt="../../_images/03_DreamSpeed_CDN_Cache_Settings.fw.png" /></div>
 </div>
-</blockquote>
+</dd>
+</dl>
 </li>
 <li>
 <p class="first">Modify Cache-Control or add a new custom header.</p>
@@ -80,41 +86,36 @@
 <h3>Setting up HTTP headers with the Python boto library</h3>
 <p>The Python library called boto allows you to interact with DreamObjects over its S3-compatible API. Follow the instructions in the <a class="reference external" href="https://help.dreamhost.com/hc/en-us/articles/217473228">Boto</a> article to connect with DreamObjects.</p>
 <p>The script below sets the Cache-Control header to a max-age of 2592000 seconds (30 days) for all JPG and PNG files in the bucket you specify:</p>
-<div class="highlight-python">
-<div class="highlight">
-<pre><span class="kn">from</span> <span class="nn">boto.s3.connection</span> <span class="kn">import</span> <span class="n">S3Connection</span>
+<div class="preboxcontainer">
+<pre class="prebox">from boto.s3.connection import S3Connection
 
-<span class="c1"># Replace with your DreamObjects access key and secret key</span>
-<span class="n">connection</span> <span class="o">=</span> <span class="n">S3Connection</span><span class="p">(</span><span class="s1">'Your_Access_Key'</span><span class="p">,</span> <span class="s1">'Your_Secret_Key'</span><span class="p">,</span>
-<span class="n">host</span><span class="o">=</span><span class="s1">'objects-us-west-1.dream.io'</span><span class="p">)</span>
+# Replace with your DreamObjects access key and secret key
+connection = S3Connection('Your_Access_Key', 'Your_Secret_Key',
+host='objects-us-west-1.dream.io')
 
-<span class="c1"># Change Your_Bucket_Name to the name of the bucket with CDN enabled</span>
-<span class="n">bucket</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s1">'Your_Bucket_Name'</span><span class="p">)</span>
+# Change Your_Bucket_Name to the name of the bucket with CDN enabled
+bucket = connection.get_bucket('Your_Bucket_Name')
 
-<span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">bucket</span><span class="o">.</span><span class="n">list</span><span class="p">():</span>
-  <span class="k">print</span><span class="p">(</span><span class="s1">'</span><span class="si">%s</span><span class="s1">'</span> <span class="o">%</span> <span class="n">key</span><span class="p">)</span>
+for key in bucket.list():
+  print('%s' % key)
 
-<span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">'.jpg'</span><span class="p">):</span>
-    <span class="n">contentType</span> <span class="o">=</span> <span class="s1">'image/jpeg'</span>
-<span class="k">elif</span> <span class="n">key</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">'.png'</span><span class="p">):</span>
-    <span class="n">contentType</span> <span class="o">=</span> <span class="s1">'image/png'</span>
-<span class="k">else</span><span class="p">:</span>
-    <span class="k">continue</span>
+if key.name.endswith('.jpg'):
+    contentType = 'image/jpeg'
+elif key.name.endswith('.png'):
+    contentType = 'image/png'
+else:
+    continue
 
-<span class="n">key</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
-    <span class="s1">'Content-Type'</span><span class="p">:</span> <span class="n">contentType</span><span class="p">,</span>
-    <span class="s1">'Cache-Control'</span><span class="p">:</span> <span class="s1">'max-age= 2592000'</span>
-<span class="p">})</span>
-<span class="n">key</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span>
-    <span class="n">key</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-    <span class="n">key</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-    <span class="n">key</span><span class="o">.</span><span class="n">metadata</span><span class="p">,</span>
-    <span class="n">preserve_acl</span><span class="o">=</span><span class="bp">True</span>
-<span class="p">)</span>
-</pre>
-</div>
-</div>
-</div>
+key.metadata.update({
+    'Content-Type': contentType,
+    'Cache-Control': 'max-age= 2592000'
+})
+key.copy(
+    key.bucket.name,
+    key.name,
+    key.metadata,
+    preserve_acl=True
+)</pre>
 </div>
 <div id="purge-cache">
 <h2>Purge cache</h2>
@@ -125,16 +126,11 @@
 </li>
 <li>
 <p class="first">Click the ‘Change Settings’ link for the bucket you want to purge from DreamSpeed CDN.</p>
-<blockquote>
-<div>
+<dl>
+<dd>
 <p><em>The Bucket Settings window opens:</em></p>
-<blockquote>
-<div>
-<div class="figure"><img src="https://help.dreamhost.com/hc/article_attachments/217740467/04_DreamSpeed_CDN_Cache_Settings.fw.png" alt="../../_images/04_DreamSpeed_CDN_Cache_Settings.fw.png" /></div>
-</div>
-</blockquote>
-</div>
-</blockquote>
+<img src="https://help.dreamhost.com/hc/article_attachments/217740467/04_DreamSpeed_CDN_Cache_Settings.fw.png" alt="../../_images/04_DreamSpeed_CDN_Cache_Settings.fw.png" /></dd>
+</dl>
 </li>
 <li>
 <p class="first">Click the <strong>Purge Now</strong> button and confirm the action in the dialog that appears. The cache clears within 2 seconds and is refreshed the next time someone requests it.</p>
@@ -145,3 +141,5 @@
 <div class="dream-sign-up">
 <h2>Start Storing Your Data Today!</h2>
 <a href="https://www.dreamhost.com/cloud/storage/">Sign Up for DreamObjects</a></div>
+</div>
+</div>
