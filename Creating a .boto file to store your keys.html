@@ -14,17 +14,30 @@
 <li>Log into your website via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH</a>.</li>
 <li>Navigate to your user's home directory.
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd $HOME</span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~</span></pre>
 </div>
 </li>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Create a file</a> titled .boto (note the leading dot). This file will stores your Keys. </li>
-<li>Take the Access and Secret key pair you copied above and enter them into the .boto file as shown below:</li>
-</ol>
-</div>
+<li>Use 'touch' to create a blank file titled .boto (note the leading dot). This file will stores your Keys.
 <div class="preboxcontainer">
-<pre class="prebox">echo [Credentials] &gt;&gt; ~/.boto
-echo aws_access_key_id = 98F3n8qUtWEJ6ZdBYyQy &gt;&gt; ~/.boto
-echo aws_secret_access_key = p5kptXKQrsQtTNJTYtG7emGYooXkN6Kaza1OV-_s &gt;&gt; ~/.boto</pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">touch .boto</span></pre>
+</div>
+</li>
+<li>Take the Access and Secret key pair you copied above and enter them into the commands below. These commands add the keys to your .boto file.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">echo [Credentials] &gt;&gt; ~/.boto</span>
+<span class="server">[server]$ </span><span class="command">echo aws_access_key_id = 98F3n8qUtWEJ6ZdBYyQy &gt;&gt; ~/.boto</span>
+<span class="server">[server]$ </span><span class="command">echo aws_secret_access_key = p5kptXKQrsQtTNJTYtG7emGYooXkN6Kaza1OV-_s &gt;&gt; ~/.boto</span></pre>
+</div>
+</li>
+</ol>
+<h3>Confirm the .boto file contains your keys</h3>
+<p>Use 'cat' to read the .boto file. It should output your keys as shown below:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cat .boto</span>
+[Credentials]
+aws_access_key_id = UsxRF3XdCFuqpwP8Or0j
+aws_secret_access_key = 6QEEmV2wm9Q1iAbJY86umBRdQUDmV-JRt6r2cBJj
+</pre>
 </div>
 <h3>Using the .boto file in your scripts</h3>
 <p>Now that the .boto file is created, you can create a connection to DreamObjects using the following:</p>
@@ -34,3 +47,4 @@ echo aws_secret_access_key = p5kptXKQrsQtTNJTYtG7emGYooXkN6Kaza1OV-_s &gt;&gt; ~
     )</pre>
 </div>
 <p>You only need this single line because the Access and Secret keys are already in the .boto file.</p>
+</div>

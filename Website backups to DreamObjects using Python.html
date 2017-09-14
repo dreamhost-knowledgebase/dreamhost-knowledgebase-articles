@@ -31,7 +31,7 @@
 <li>Log into your website via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH</a>.</li>
 <li>Navigate to your user's home directory.
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd $HOME</span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~</span></pre>
 </div>
 </li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Create a .boto file</a> (note the leading dot) that stores your Keys. View the following article for instructions:
@@ -99,7 +99,7 @@ target_dir = 'example.com'</pre>
 
 backup_filename = "{0}.backup.{1}.tar.gz".format(
     target_dir,
-    str(day_number),
+    str(<span class="command">day_number</span>), #this line should be edited to look like str(4),
     )
 backup_filepath = os.path.join(
     home_dir,
@@ -111,7 +111,6 @@ backup_filepath = os.path.join(
 <ul class="simple">
 <li>First, use the datetime library to figure out what day of the week today is as a number. Sunday is 0, Monday is 1, Thursday is 4, etc. Then, put that number into the “day_number” variable.</li>
 <li>Next, define the file name for the backup file to be something like “example.com.backup.4.tar.gz”. That’s what that backup_filename line works out to (on Thursdays).</li>
-<li>Finally, define the full path to the backup file.</li>
 </ul>
 <h3>Create the backup file</h3>
 <p>The next few lines create the backup file:</p>
