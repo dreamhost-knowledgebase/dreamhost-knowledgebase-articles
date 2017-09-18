@@ -23,6 +23,7 @@
 <p>This library can be obtained in from Amazon as a <a class="reference external" href="http://pear.amazonwebservices.com/get/aws.zip">zip file</a> or from <a class="reference external" href="https://github.com/aws/aws-sdk-php">github</a>. The examples in this guide have been tested against version 2.4.5 obtained from a zip file. The AWS SDK for PHP 2 requires PHP 5.3.3+. The complete API reference is available on the <a class="reference external" href="http://docs.aws.amazon.com/aws-sdk-php-2/latest/class-Aws.S3.S3Client.html">Amazon</a> site.</p>
 </div>
 </div>
+This article lists several PHP code examples to interact with DreamObjects.
 <div id="creating-a-connection"><span id="s3-php2-creating-a-connection"></span>
 <h2>Creating a Connection</h2>
 <p>Create an S3 client object to interact with the DHO server.</p>
@@ -55,7 +56,7 @@ foreach ($blist['Buckets'] as $b) {
     echo "{$b['Name']}\t{$b['CreationDate']}\n";
 }</pre>
 </div>
-<p>The output will look something like this:</p>
+<p>The output looks something like this:</p>
 <div class="preboxcontainer">
 <pre class="prebox">Buckets belonging to happydhouser:
 mahbuckat1   2011-04-21T18:05:39.000Z
@@ -97,7 +98,7 @@ myphoto2.jpg 262518  2011-08-08T21:38:01.000Z
 <div class="alert alert-important">
 <div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
-<p>The Bucket must be empty! Otherwise it won’t work!</p>
+<p>The Bucket must be empty, otherwise it won’t work.</p>
 </div>
 </div>
 <div class="preboxcontainer">
@@ -150,7 +151,7 @@ $client-&gt;putObjectAcl(array(
 </div>
 <div id="delete-an-object"><span id="s3-php2-delete-an-object"></span>
 <h2>Delete an Object</h2>
-<p>This deletes the object <code class="docutils literal"><span class="pre">goodbye.txt</span></code></p>
+<p>This deletes the object <code class="docutils literal"><span class="pre">goodbye.txt.</span></code></p>
 <div class="preboxcontainer">
 <pre class="prebox">&lt;?php
 $client-&gt;deleteObject(array(
@@ -160,7 +161,7 @@ $client-&gt;deleteObject(array(
 </div>
 <div id="download-an-object-to-a-file"><span id="s3-php2-download-an-object"></span>
 <h2>Download an Object (to a file)</h2>
-<p>This downloads the object <code class="docutils literal"><span class="pre">poetry.pdf</span></code> from ‘my-bucket-name’ and saves it in <code class="docutils literal"><span class="pre">/home/larry/documents</span></code></p>
+<p>This downloads the object <code class="docutils literal"><span class="pre">poetry.pdf</span></code> from ‘my-bucket-name’ and saves it in <code class="docutils literal"><span class="pre">/home/larry/documents.</span></code></p>
 <div class="preboxcontainer">
 <pre class="prebox">&lt;?php
 $client-&gt;getObject(array(
@@ -171,7 +172,7 @@ $client-&gt;getObject(array(
 </div>
 <div id="generate-object-download-urls-signed-and-unsigned"><span id="s3-php2-generate-object-download-urls"></span>
 <h2>Generate Object Download URLs (signed and unsigned)</h2>
-<p>This generates an unsigned download URL for <code class="docutils literal"><span class="pre">hello.txt</span></code>. This works because we made <code class="docutils literal"><span class="pre">hello.txt</span></code> public by setting the ACL above. This then generates a signed download URL for <code class="docutils literal"><span class="pre">secret_plans.txt</span></code> that will work for 1 hour. Signed download URLs will work for the time period even if the object is private (when the time period is up, the URL will stop working).</p>
+<p>This generates an unsigned download URL for <code class="docutils literal"><span class="pre">hello.txt</span></code>. This works because <code class="docutils literal"><span class="pre">hello.txt</span></code> was made public by setting the ACL above. This then generates a signed download URL for <code class="docutils literal"><span class="pre">secret_plans.txt</span></code> that will work for 1 hour. Signed download URLs will work for the time period even if the object is private (when the time period is up, the URL stops working).</p>
 <div class="preboxcontainer">
 <pre class="prebox">&lt;?php
 $plain_url = $client-&gt;getObjectUrl('my-bucket-name', 'hello.txt');

@@ -39,9 +39,10 @@
 </div>
 <div id="ruby-aws-sdk-examples-aws-sdk-v1-gem"><span id="s3-aws-aws-sdk-v1"></span>
 <h1>Ruby <a class="reference external" href="https://github.com/aws/aws-sdk-ruby/tree/aws-sdk-v1">AWS::SDK</a> Examples (aws-sdk-v1 gem)</h1>
+This article lists several Ruby code examples to interact with DreamObjects.
 <div id="creating-a-connection"><span id="s3-aws-creating-a-connection"></span>
 <h2>Creating a Connection</h2>
-<p>This creates a connection so that you can interact with DreamObjects</p>
+<p>Create a connection so you can interact with DreamObjects.</p>
 <div class="preboxcontainer">
 <pre class="prebox">AWS.config(
     :s3_endpoint        =&gt; 'objects-us-west-1.dream.io',
@@ -49,13 +50,13 @@
     :secret_access_key  =&gt; 'my-secret-key'
 )</pre>
 </div>
-<p>Instantiate a client object</p>
+<p>Instantiate a client object.</p>
 <div class="preboxcontainer">
 <pre class="prebox">s3 = AWS::S3.new</pre>
 </div>
 <div id="listing-owned-buckets"><span id="s3-aws-listing-owned-buckets"></span>
 <h2>Listing Owned Buckets</h2>
-<p>This gets a list of Buckets that you own and prints the name.</p>
+<p>Get a list of Buckets you own and print the name.</p>
 <div class="preboxcontainer">
 <pre class="prebox">s3.buckets.each do |bucket|
         puts bucket.name
@@ -69,13 +70,13 @@ mahbuckat3</pre>
 </div>
 <div id="creating-a-bucket"><span id="s3-aws-creating-a-bucket"></span>
 <h2>Creating a Bucket</h2>
-<p>This creates a new bucket called <code class="docutils literal"><span class="pre">my-new-bucket</span></code></p>
+<p>Create a new bucket called <code class="docutils literal"><span class="pre">my-new-bucket.</span></code></p>
 <div class="preboxcontainer">
 <pre class="prebox">s3.buckets.create('my-new-bucket')</pre>
 </div>
 <div id="listing-a-bucket-s-content"><span id="s3-aws-listing-a-buckets-content"></span>
 <h2>Listing a Bucket’s Content</h2>
-<p>This gets a list of hashes with the contents of each object This also prints out each object’s name, the file size, and last modified date.</p>
+<p>Get a list of hashes with the contents of each object This also prints out each object’s name, the file size, and last modified date.</p>
 <div class="preboxcontainer">
 <pre class="prebox">new_bucket = s3.buckets['my-new-bucket']
 new_bucket.objects.each do |obj|
@@ -93,7 +94,7 @@ myphoto2.jpg 262518  2011-08-08 21:38:01 -0400
 <div class="alert alert-important">
 <div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
-<p>The Bucket must be empty! Otherwise it won’t work!</p>
+<p>The Bucket must be empty, otherwise it won’t work.</p>
 </div>
 </div>
 <div class="preboxcontainer">
@@ -108,7 +109,7 @@ bucket.delete!</pre>
 </div>
 <div id="creating-an-object"><span id="s3-aws-creating-an-object"></span>
 <h2>Creating an Object</h2>
-<p>This creates a file <code class="docutils literal"><span class="pre">hello.txt</span></code> with the string <code class="docutils literal"><span class="pre">"Hello</span> <span class="pre">World!"</span></code></p>
+<p>Create a file <code class="docutils literal"><span class="pre">hello.txt</span></code> with the string <code class="docutils literal"><span class="pre">"Hello</span> <span class="pre">World!"</span></code></p>
 <div class="preboxcontainer">
 <pre class="prebox">bucket = s3.buckets['my-new-bucket']
 obj = bucket.objects.create(
@@ -116,7 +117,7 @@ obj = bucket.objects.create(
     'Hello World!',
 )</pre>
 </div>
-<p>This uploads a file <code class="docutils literal"><span class="pre">test.txt</span></code>, sets the content-type, and makes it publicly readable.</p>
+<p>Upload a file <code class="docutils literal"><span class="pre">test.txt</span></code>, set the content-type, and make it publicly readable.</p>
 <div class="preboxcontainer">
 <pre class="prebox">obj = s3.buckets['my-new-bucket'].objects['test.txt']
 obj.write(File.open('path/to/test.txt', 'rb')
@@ -126,7 +127,7 @@ obj.write(File.open('path/to/test.txt', 'rb')
 </div>
 <div id="change-an-object-s-acl"><span id="s3-aws-change-an-objects-acl"></span>
 <h2>Change an Object’s ACL</h2>
-<p>This makes the object <code class="docutils literal"><span class="pre">hello.txt</span></code> to be publicly readable, and <code class="docutils literal"><span class="pre">secret_plans.txt</span></code> to be private.</p>
+<p>Make the object <code class="docutils literal"><span class="pre">hello.txt</span></code> publicly readable and <code class="docutils literal"><span class="pre">secret_plans.txt</span></code> to be private.</p>
 <div class="preboxcontainer">
 <pre class="prebox">bucket = s3.buckets['my-new-bucket']
 
@@ -135,7 +136,7 @@ bucket.objects['secret_plans.txt'].acl = :private</pre>
 </div>
 <div id="download-an-object-to-a-file"><span id="s3-aws-download-an-object"></span>
 <h2>Download an Object (to a file)</h2>
-<p>This downloads the object <code class="docutils literal"><span class="pre">poetry.pdf</span></code> and saves it in <code class="docutils literal"><span class="pre">/home/larry/documents/</span></code></p>
+<p>Download the object <code class="docutils literal"><span class="pre">poetry.pdf</span></code> and save it in <code class="docutils literal"><span class="pre">/home/larry/documents/.</span></code></p>
 <div class="preboxcontainer">
 <pre class="prebox">bucket = s3.buckets['my-new-bucket']
 
@@ -147,14 +148,14 @@ end</pre>
 </div>
 <div id="delete-an-object"><span id="s3-aws-delete-an-object"></span>
 <h2>Delete an Object</h2>
-<p>This deletes the object <code class="docutils literal"><span class="pre">goodbye.txt</span></code></p>
+<p>Delete the object <code class="docutils literal"><span class="pre">goodbye.txt.</span></code></p>
 <div class="preboxcontainer">
 <pre class="prebox">bucket = s3.buckets['my-new-bucket']
 bucket.objects.delete('goodbye.txt')</pre>
 </div>
 <div id="generate-object-download-urls-signed-and-unsigned"><span id="s3-aws-generate-object-download-urls"></span>
 <h2>Generate Object Download URLs (signed and unsigned)</h2>
-<p>This generates an unsigned download URL for <code class="docutils literal"><span class="pre">hello.txt</span></code>. This works because we made <code class="docutils literal"><span class="pre">hello.txt</span></code> public by setting the ACL above. This then generates a signed download URL for <code class="docutils literal"><span class="pre">secret_plans.txt</span></code> that will work for 1 hour. Signed download URLs will work for the time period even if the object is private (when the time period is up, the URL will stop working).</p>
+<p>This generates an unsigned download URL for <code class="docutils literal"><span class="pre">hello.txt</span></code>. This works because <code class="docutils literal"><span class="pre">hello.txt</span></code> was made public by setting the ACL above. This then generates a signed download URL for <code class="docutils literal"><span class="pre">secret_plans.txt</span></code> that will work for 1 hour. Signed download URLs will work for the time period even if the object is private (when the time period is up, the URL will stop working).</p>
 <div class="preboxcontainer">
 <pre class="prebox">puts s3.buckets['my-new-bucket'].objects['hello.txt'].public_url
 
@@ -173,7 +174,7 @@ http://objects-us-west-1.dream.io/my-bucket-name/secret_plans.txt?Signature=XXXX
 <h1>Ruby <a class="reference external" href="http://amazon.rubyforge.org/">AWS::S3</a> Examples (aws-s3 gem)</h1>
 <div id="s3-ruby-creating-a-connection"><span id="id1"></span>
 <h2>Creating a Connection</h2>
-<p>This creates a connection so that you can interact with the server.</p>
+<p>Create a connection so you can interact with the server.</p>
 <div class="preboxcontainer">
 <pre class="prebox">AWS::S3::Base.establish_connection!(
         :server            =&gt; 'objects-us-west-1.dream.io',
@@ -184,7 +185,7 @@ http://objects-us-west-1.dream.io/my-bucket-name/secret_plans.txt?Signature=XXXX
 </div>
 <div id="s3-ruby-listing-owned-buckets"><span id="id2"></span>
 <h2>Listing Owned Buckets</h2>
-<p>This gets a list of <a class="reference external" href="http://amazon.rubyforge.org/doc/">AWS::S3::Bucket</a> objects that you own. This also prints out the bucket name and creation date of each bucket.</p>
+<p>Get a list of <a class="reference external" href="http://amazon.rubyforge.org/doc/">AWS::S3::Bucket</a> objects you own. This also prints out the bucket name and creation date of each bucket.</p>
 <div class="preboxcontainer">
 <pre class="prebox">AWS::S3::Service.buckets.each do |bucket|
         puts "#{bucket.name}\t#{bucket.creation_date}"
@@ -199,13 +200,13 @@ mahbuckat3   2011-04-21T18:07:18.000Z
 </div>
 <div id="s3-ruby-creating-a-bucket"><span id="id3"></span>
 <h2>Creating a Bucket</h2>
-<p>This creates a new bucket called <code class="docutils literal"><span class="pre">my-new-bucket</span></code></p>
+<p>Create a new bucket called <code class="docutils literal"><span class="pre">my-new-bucket.</span></code></p>
 <div class="preboxcontainer">
 <pre class="prebox">AWS::S3::Bucket.create('my-new-bucket')</pre>
 </div>
 <div id="s3-ruby-listing-a-buckets-content"><span id="id4"></span>
 <h2>Listing a Bucket’s Content</h2>
-<p>This gets a list of hashes with the contents of each object This also prints out each object’s name, the file size, and last modified date.</p>
+<p>Get a list of hashes with the contents of each object This also prints out each object’s name, the file size, and last modified date.</p>
 <div class="preboxcontainer">
 <pre class="prebox">new_bucket = AWS::S3::Bucket.find('my-new-bucket')
 new_bucket.each do |object|
@@ -222,7 +223,7 @@ myphoto2.jpg 262518  2011-08-08T21:38:01.000Z</pre>
 <div class="alert alert-important">
 <div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
-<p>The Bucket must be empty! Otherwise it won’t work!</p>
+<p>The Bucket must be empty, otherwise it won’t work.</p>
 </div>
 </div>
 <div class="preboxcontainer">
@@ -235,7 +236,7 @@ myphoto2.jpg 262518  2011-08-08T21:38:01.000Z</pre>
 </div>
 <div id="s3-ruby-creating-an-object"><span id="id7"></span>
 <h2>Creating an Object</h2>
-<p>This creates a file <code class="docutils literal"><span class="pre">hello.txt</span></code> with the string <code class="docutils literal"><span class="pre">"Hello</span> <span class="pre">World!"</span></code></p>
+<p>Create a file <code class="docutils literal"><span class="pre">hello.txt</span></code> with the string <code class="docutils literal"><span class="pre">"Hello</span> <span class="pre">World!"</span></code></p>
 <div class="preboxcontainer">
 <pre class="prebox">AWS::S3::S3Object.store(
         'hello.txt',
@@ -246,7 +247,7 @@ myphoto2.jpg 262518  2011-08-08T21:38:01.000Z</pre>
 </div>
 <div id="s3-ruby-change-an-objects-acl"><span id="id8"></span>
 <h2>Change an Object’s ACL</h2>
-<p>This makes the object <code class="docutils literal"><span class="pre">hello.txt</span></code> to be publicly readable, and <code class="docutils literal"><span class="pre">secret_plans.txt</span></code> to be private.</p>
+<p>Make the object <code class="docutils literal"><span class="pre">hello.txt</span></code> publicly readable and <code class="docutils literal"><span class="pre">secret_plans.txt</span></code> to be private.</p>
 <div class="preboxcontainer">
 <pre class="prebox">policy = AWS::S3::S3Object.acl('hello.txt', 'my-new-bucket')
 policy.grants = [ AWS::S3::ACL::Grant.grant(:public_read) ]
@@ -258,7 +259,7 @@ AWS::S3::S3Object.acl('secret_plans.txt', 'my-new-bucket', policy)</pre>
 </div>
 <div id="s3-ruby-download-an-object"><span id="id9"></span>
 <h2>Download an Object (to a file)</h2>
-<p>This downloads the object <code class="docutils literal"><span class="pre">poetry.pdf</span></code> and saves it in <code class="docutils literal"><span class="pre">/home/larry/documents/</span></code></p>
+<p>Download the object <code class="docutils literal"><span class="pre">poetry.pdf</span></code> and saves it in <code class="docutils literal"><span class="pre">/home/larry/documents/.</span></code></p>
 <div class="preboxcontainer">
 <pre class="prebox">open('/home/larry/documents/poetry.pdf', 'w') do |file|
         AWS::S3::S3Object.stream('poetry.pdf', 'my-new-bucket') do |chunk|
@@ -268,13 +269,13 @@ end</pre>
 </div>
 <div id="s3-ruby-delete-an-object"><span id="id10"></span>
 <h2>Delete an Object</h2>
-<p>This deletes the object <code class="docutils literal"><span class="pre">goodbye.txt</span></code></p>
+<p>Delete the object <code class="docutils literal"><span class="pre">goodbye.txt.</span></code></p>
 <div class="preboxcontainer">
 <pre class="prebox">AWS::S3::S3Object.delete('goodbye.txt', 'my-new-bucket')</pre>
 </div>
 <div id="s3-ruby-generate-object-download-urls"><span id="id11"></span>
 <h2>Generate Object Download URLs (signed and unsigned)</h2>
-<p>This generates an unsigned download URL for <code class="docutils literal"><span class="pre">hello.txt</span></code>. This works because we made <code class="docutils literal"><span class="pre">hello.txt</span></code> public by setting the ACL above. This then generates a signed download URL for <code class="docutils literal"><span class="pre">secret_plans.txt</span></code> that will work for 1 hour. Signed download URLs will work for the time period even if the object is private (when the time period is up, the URL will stop working).</p>
+<p>This generates an unsigned download URL for <code class="docutils literal"><span class="pre">hello.txt</span></code>. This works because <code class="docutils literal"><span class="pre">hello.txt</span></code> was  made public by setting the ACL above. This then generates a signed download URL for <code class="docutils literal"><span class="pre">secret_plans.txt</span></code> that will work for 1 hour. Signed download URLs will work for the time period even if the object is private (when the time period is up, the URL will stop working).</p>
 <div class="preboxcontainer">
 <pre class="prebox">puts AWS::S3::S3Object.url_for(
         'hello.txt',

@@ -17,9 +17,10 @@
 <li><a class="reference internal" href="#s3-cpp-generate-object-download-url">Generate Object Download URL (signed)</a></li>
 </ul>
 </div>
+This article lists several C++ code examples to interact with DreamObjects.
 <div id="setup"><span id="s3-cpp-setup"></span>
 <h2>Setup</h2>
-<p>The following contains includes and globals that will be used in later examples:</p>
+<p>The following contains 'includes' and 'globals' that will be used in later examples:</p>
 <div class="preboxcontainer">
 <pre class="prebox">#include "libs3.h"
 #include 
@@ -66,7 +67,7 @@ S3ResponseHandler responseHandler =
 </div>
 <div id="Creating_and_closing_a_connection"><span id="s3-cpp-creating-a-connection"></span>
 <h2>Creating (and Closing) a Connection</h2>
-<p>This creates a connection so that you can interact with the server.</p>
+<p>Create a connection so you can interact with the server.</p>
 <div class="preboxcontainer">
 <pre class="prebox">S3_initialize("s3", S3_INIT_ALL, host);
 // Do stuff...
@@ -75,7 +76,7 @@ S3_deinitialize();</pre>
 </div>
 <div id="listing-owned-buckets"><span id="s3-cpp-listing-owned-buckets"></span>
 <h2>Listing Owned Buckets</h2>
-<p>This gets a list of Buckets that you own. This also prints out the bucket name, owner ID, and display name for each bucket.</p>
+<p>Get a list of Buckets you own. This also prints out the bucket name, owner ID, and display name for each bucket.</p>
 <div class="preboxcontainer">
 <pre class="prebox">static S3Status listServiceCallback(
                 const char *ownerId,
@@ -111,13 +112,13 @@ S3_list_service(S3ProtocolHTTP, access_key, secret_key, host, 0, &amp;listServic
 </div>
 <span id="s3-cpp-creating-a-bucket"></span>
 <h2>Creating a Bucket</h2>
-<p>This creates a new bucket.</p>
+<p>Create a new bucket.</p>
 <div class="preboxcontainer">
 <pre class="prebox">S3_create_bucket(S3ProtocolHTTP, access_key, secret_key, host, sample_bucket, S3CannedAclPrivate, NULL, NULL, &amp;responseHandler, NULL);</pre>
 </div>
 <div id="listing-a-bucket-s-content"><span id="s3-cpp-listing-a-buckets-content"></span>
 <h2>Listing a Bucket’s Content</h2>
-<p>This gets a list of objects in the bucket. This also prints out each object’s name, the file size, and last modified date.</p>
+<p>Get a list of objects in the bucket. This also prints out each object’s name, the file size, and last modified date.</p>
 <div class="preboxcontainer">
 <pre class="prebox">static S3Status listBucketCallback(
                 int isTruncated,
@@ -156,7 +157,7 @@ S3ListBucketHandler listBucketHandler =
 };
 S3_list_bucket(&amp;bucketContext, NULL, NULL, NULL, 0, NULL, &amp;listBucketHandler, NULL);</pre>
 </div>
-<p>The output will look something like this:</p>
+<p>The output looks something like this:</p>
 <div class="preboxcontainer">
 <pre class="prebox">myphoto1.jpg 251262  2011-08-08T21:35:48.000Z
 myphoto2.jpg 262518  2011-08-08T21:38:01.000Z</pre>
@@ -166,7 +167,7 @@ myphoto2.jpg 262518  2011-08-08T21:38:01.000Z</pre>
 <div class="alert alert-important">
 <div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
-<p>The Bucket must be empty! Otherwise it won’t work!</p>
+<p>The Bucket must be empty, otherwise it won’t work.</p>
 </div>
 </div>
 <div class="preboxcontainer">
@@ -174,7 +175,7 @@ myphoto2.jpg 262518  2011-08-08T21:38:01.000Z</pre>
 </div>
 <div id="creating-an-object-from-a-file"><span id="s3-cpp-creating-an-object"></span>
 <h2>Creating an Object (from a file)</h2>
-<p>This creates a file <code class="docutils literal"><span class="pre">hello.txt</span></code>.</p>
+<p>Create a file <code class="docutils literal"><span class="pre">hello.txt</span></code>.</p>
 <div class="preboxcontainer">
 <pre class="prebox">#include &lt;sys/stat.h&gt;
 typedef struct put_object_callback_data
@@ -225,7 +226,7 @@ S3_put_object(&amp;bucketContext, sample_key, contentLength, NULL, NULL, &amp;pu
 </div>
 <div id="download-an-object-to-a-file"><span id="s3-cpp-download-an-object"></span>
 <h2>Download an Object (to a file)</h2>
-<p>This downloads a file and prints the contents.</p>
+<p>Download a file and print the contents.</p>
 <div class="preboxcontainer">
 <pre class="prebox">static S3Status getObjectDataCallback(int bufferSize, const char *buffer, void *callbackData)
 {
@@ -244,7 +245,7 @@ S3_get_object(&amp;bucketContext, sample_key, NULL, 0, 0, NULL, &amp;getObjectHa
 </div>
 <div id="delete-an-object"><span id="s3-cpp-delete-an-object"></span>
 <h2>Delete an Object</h2>
-<p>This deletes an object.</p>
+<p>Delete an object.</p>
 <div class="preboxcontainer">
 <pre class="prebox">S3ResponseHandler deleteResponseHandler =
 {
@@ -255,7 +256,7 @@ S3_delete_object(&amp;bucketContext, sample_key, 0, &amp;deleteResponseHandler, 
 </div>
 <div id="change-an-object-s-acl"><span id="s3-cpp-change-an-objects-acl"></span>
 <h2>Change an Object’s ACL</h2>
-<p>This changes an object’s ACL to grant full control to another user.</p>
+<p>Change an object’s ACL to grant full control to another user.</p>
 <div class="preboxcontainer">
 <pre class="prebox">#include 
 char ownerId[] = "owner";
@@ -291,7 +292,7 @@ S3_set_acl(&amp;bucketContext, sample_key, ownerId, ownerDisplayName, 3, grants,
 </div>
 <div id="generate-object-download-url-signed"><span id="s3-cpp-generate-object-download-url"></span>
 <h2>Generate Object Download URL (signed)</h2>
-<p>This generates a signed download URL that will be valid for 5 minutes.</p>
+<p>Generate a signed download URL that will be valid for 5 minutes.</p>
 <div class="preboxcontainer">
 <pre class="prebox">#include 
 char buffer[S3_MAX_AUTHENTICATED_QUERY_STRING_SIZE];

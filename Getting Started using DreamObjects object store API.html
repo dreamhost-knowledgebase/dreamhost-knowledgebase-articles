@@ -12,13 +12,13 @@
 </div>
 <div id="introduction"><span id="guide-introduction"></span>
 <h2>Introduction</h2>
-<p>This guide will help you get started using DreamObjects via the S3 API. We will walk through a runnable demo script that exercises many of the functions of DreamObjects. The script is implemented in the <a class="reference external" href="http://python.org">Python programming language</a> using the popular <a class="reference external" href="http://pypi.python.org/pypi/boto">boto S3 library</a>. Before we get started, you’ll need to create a user with an S3 key in your DreamObjects account in the DreamHost Panel.</p>
-<p>You can download <a class="reference external" href="https://raw.githubusercontent.com/dreamhost/dreamcloud-docs/master/source/dreamobjects/api-docs/demo/demo.py">the example script</a>, and then run it using the following command:</p>
+<p>This guide will help you get started using DreamObjects via the S3 API by walking you through a demo script that exercises many of the functions of DreamObjects. The script is implemented in the <a class="reference external" href="http://python.org">Python programming language</a> using the popular <a class="reference external" href="http://pypi.python.org/pypi/boto">boto S3 library</a>. Before you get started, <a href="https://help.dreamhost.com/hc/en-us/articles/215986327-DreamObjects-Users">create a user</a> with an <a href="https://help.dreamhost.com/hc/en-us/articles/215986357-DreamObjects-Keys">S3 key</a> in your DreamObjects account in the DreamHost Panel.</p>
+<p>You can download <a class="reference external" href="https://raw.githubusercontent.com/dreamhost/dreamcloud-docs/master/source/dreamobjects/api-docs/demo/demo.py">the example script</a>, and run it using the following command:</p>
 <div class="preboxcontainer">
 <pre class="prebox">./demo.py --access-key<span class="o">=</span>&lt;access-key&gt; --secret-key<span class="o">=</span>&lt;secret-key&gt;
 </pre>
 </div>
-<p>The script will walk you through an interactive demonstration that illustrates creating buckets, storing objects, linking to objects, setting permissions, and removing objects and buckets. The script will also print out the HTTP traffic that gets sent to DreamObjects.</p>
+<p>The script walks you through an interactive demonstration that illustrates creating buckets, storing objects, linking to objects, setting permissions, and removing objects and buckets. The script also prints out the HTTP traffic that gets sent to DreamObjects.</p>
 </div>
 <div id="sample-output"><span id="guide-sample-output"></span>
 <h2>Sample Output</h2>
@@ -239,7 +239,7 @@ Re-opening object URL (again)...
 </div>
 <div id="annotated-script"><span id="guide-annotated-script"></span>
 <h2>Annotated Script</h2>
-<p>Let’s walk through the interesting portions of the script, to better understand how it uses boto to talk to DreamObjects via the S3 API.</p>
+<p>Let’s walk through the script to better understand how it uses boto to talk to DreamObjects via the S3 API.</p>
 <div id="connecting-to-dreamobjects">
 <h3>Connecting to DreamObjects</h3>
 <div class="preboxcontainer">
@@ -288,7 +288,7 @@ Re-opening object URL (again)...
         )</pre>
 </div>
 <p>Linking to objects in DreamObjects is as simple as generating a link using a simple pattern. Boto provides a shortcut via the <code class="docutils literal"><span class="pre">generate_url</span></code> method on key objects. DreamObjects supports two formats for public links to objects:</p>
-<p>If the object that you are attempting to link to isn’t accessible because of permissions on the object, you can generate a “signed” URL for the object that can be active for a limited period of time.</p>
+<p>If the object you are attempting to link to isn’t accessible because of permissions on the object, you can generate a “signed” URL for the object. This signed URL can be active for a limited period of time.</p>
 <div class="preboxcontainer">
 <pre class="prebox">def generate_signed_url(self):
     self.signed_url = self.key.generate_url(
@@ -305,7 +305,7 @@ Re-opening object URL (again)...
 <pre class="prebox">def set_permissions(self):
     self.key.set_canned_acl('public-read')</pre>
 </div>
-<p>DreamObjects provides a series of “canned ACLs” compliant with the S3 API that can be easily set on objects using the <code class="docutils literal"><span class="pre">set_canned_acl</span></code> method. In this case, we are setting our object to have the <code class="docutils literal"><span class="pre">public-read</span></code> ACL so that it is accessible via public links.</p>
+<p>DreamObjects provides a series of “canned ACLs” compliant with the S3 API that can be easily set on objects using the <code class="docutils literal"><span class="pre">set_canned_acl</span></code> method. This example sets the object to have the <code class="docutils literal"><span class="pre">public-read</span></code> ACL so it is accessible via public links.</p>
 </div>
 <div id="deleting-objects-and-buckets">
 <h3>Deleting Objects and Buckets</h3>
@@ -328,13 +328,12 @@ def delete_bucket(self):
 </div>
 <div id="digging-deeper"><span id="guide-digging-deeper"></span>
 <h2>Digging Deeper</h2>
-<p>Now that you’ve walked through this simple guide, you should be ready to dive deeper into DreamObjects! Take a look at the api documentation</p>
+<p>Now that you’ve walked through this guide, you are ready to dive deeper into DreamObjects using the provided <a href="https://help.dreamhost.com/hc/en-us/sections/203167028-API-Documentation">API Documetation</a>.</p>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="footer"> </div>
 <!--DreamObjects Button-->
 <div class="dream-sign-up">
 <h2>Start Storing Your Data Today!</h2>

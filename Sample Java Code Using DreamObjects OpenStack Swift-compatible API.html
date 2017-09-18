@@ -15,6 +15,7 @@
 <li><a class="reference internal" href="#swift-java-delete-an-object">Delete an Object</a></li>
 </ul>
 </div>
+This article lists several Java code examples to interact with DreamObjects.
 <div id="setup"><span id="swift-java-setup"></span>
 <h2>Setup</h2>
 <p>The following examples use <a class="reference external" href="http://jclouds.apache.org">Apache jclouds</a>. Installing jclouds is easy with <a class="reference external" href="http://maven.apache.org">Apache Maven</a>, just specify an additional dependency in your pom.xml file.</p>
@@ -60,7 +61,7 @@ import java.io.File;</pre>
 </div>
 <span id="swift-java-create-a-connection"></span>
 <h2>Create a Connection</h2>
-<p>This creates a connection so that you can interact with the server.</p>
+<p>Create a connection so you can interact with the server.</p>
 <div class="preboxcontainer">
 <pre class="prebox">String provider = "swift";
 String identity = "USER:SUB-USER"; // Your DreamObjects user and sub-user
@@ -79,13 +80,13 @@ context.close();d</pre>
 </div>
 <span id="swift-java-list-owned-containers"></span>
 <h2>List Owned Containers</h2>
-<p>This gets a list of Containers that you own. This also prints out the container name.</p>
+<p>Get a list of Containers you own. This also prints out the container name.</p>
 <div class="preboxcontainer">
 <pre class="prebox">for (StorageMetadata resourceMd : blobStore.list()) {
     System.out.println(resourceMd.getName());
 }</pre>
 </div>
-<p>The output will look something like this:</p>
+<p>The output looks something like this:</p>
 <div class="preboxcontainer">
 <pre class="prebox">container1
 container2
@@ -93,27 +94,27 @@ container3</pre>
 </div>
 <span id="swift-java-create-a-container"></span>
 <h2>Create a Container</h2>
-<p>This creates a new container called <code class="docutils literal"><span class="pre">my-new-container</span></code></p>
+<p>Create a new container called <code class="docutils literal"><span class="pre">my-new-container.</span></code></p>
 <div class="preboxcontainer">
 <pre class="prebox">blobStore.createContainerInLocation(null, "my-new-container");</pre>
 </div>
 <span id="swift-java-list-a-containers-content"></span>
 <h2>List a Container’s Content</h2>
-<p>This gets a list of objects in the container <code class="docutils literal"><span class="pre">my-new-container</span></code>.</p>
+<p>Gets a list of objects in the container <code class="docutils literal"><span class="pre">my-new-container</span></code>.</p>
 <div class="preboxcontainer">
 <pre class="prebox">PageSet&lt;? extends StorageMetadata&gt; objects = blobStore.list("my-new-container");
 for (StorageMetadata resourceMd : objects) {
     System.out.println(resourceMd.getName());
 }</pre>
 </div>
-<p>The output will look something like this:</p>
+<p>The output looks something like this:</p>
 <div class="preboxcontainer">
 <pre class="prebox">myphoto1.jpg
 myphoto2.jpg</pre>
 </div>
 <span id="swift-java-delete-a-container"></span>
 <h2>Delete a Container</h2>
-<p>This deletes the container called <code class="docutils literal"><span class="pre">my-old-container</span></code></p>
+<p>Delete the container called <code class="docutils literal"><span class="pre">my-old-container.</span></code></p>
 <div class="alert alert-important">
 <div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
@@ -125,7 +126,7 @@ myphoto2.jpg</pre>
 </div>
 <span id="swift-java-create-an-object"></span>
 <h2>Create an Object</h2>
-<p>This creates an object <code class="docutils literal"><span class="pre">foo.txt</span></code> with the string <code class="docutils literal"><span class="pre">Hello</span> <span class="pre">World!</span></code> into the container <code class="docutils literal"><span class="pre">my-new-container</span></code></p>
+<p>Create an object <code class="docutils literal"><span class="pre">foo.txt</span></code> with the string <code class="docutils literal"><span class="pre">Hello</span> <span class="pre">World!</span></code> into the container <code class="docutils literal"><span class="pre">my-new-container.</span></code></p>
 <div class="preboxcontainer">
 <pre class="prebox">ByteSource payload = ByteSource.wrap("Hello World!".getBytes(StandardCharsets.UTF_8));
 Blob blob = blobStore.blobBuilder("foo.txt")
@@ -135,7 +136,7 @@ Blob blob = blobStore.blobBuilder("foo.txt")
     .build();
 blobStore.putBlob("my-new-container", blob);</pre>
 </div>
-<p>This uploads a file called <code class="docutils literal"><span class="pre">bar.txt</span></code> into the container <code class="docutils literal"><span class="pre">my-new-container</span></code></p>
+<p>Upload a file called <code class="docutils literal"><span class="pre">bar.txt</span></code> into the container <code class="docutils literal"><span class="pre">my-new-container.</span></code></p>
 <div class="preboxcontainer">
 <pre class="prebox">ByteSource payload = Files.asByteSource(new File("bar.txt"));
 Blob blob = blobStore.blobBuilder("bar.txt")
@@ -148,14 +149,14 @@ blobStore.putBlob("my-new-container", blob);</pre>
 </div>
 <span id="swift-java-retrieve-object-metadata"></span>
 <h2>Retrieve Object Metadata</h2>
-<p>Retrieves metadata and gets content type for object named <code class="docutils literal"><span class="pre">foo.txt</span></code> in the container <code class="docutils literal"><span class="pre">my-new-container</span></code></p>
+<p>Retrieve metadata and get the content type for an object named <code class="docutils literal"><span class="pre">foo.txt</span></code> in the container <code class="docutils literal"><span class="pre">my-new-container.</span></code></p>
 <div class="preboxcontainer">
 <pre class="prebox">BlobMetadata metadata = blobStore.blobMetadata("my-new-container", "foo.txt");
 String contentType = metadata.getContentMetadata().getContentType();</pre>
 </div>
 <span id="swift-java-delete-an-object"></span>
 <h2>Delete an Object</h2>
-<p>This deletes the object <code class="docutils literal"><span class="pre">goodbye.txt</span></code> from the container called <code class="docutils literal"><span class="pre">my-new-container</span></code></p>
+<p>Delete the object <code class="docutils literal"><span class="pre">goodbye.txt</span></code> from the container called <code class="docutils literal"><span class="pre">my-new-container.</span></code></p>
 <div class="preboxcontainer">
 <pre class="prebox">blobStore.removeBlob("my-new-container", "goodbye.txt");</pre>
 </div>

@@ -17,7 +17,7 @@
 <div id="creating-a-connection"><span id="swift-python-creating-a-connection"></span>
 <p>This article lists several Python code examples to interact with DreamObjects.</p>
 <h2>Creating a Connection</h2>
-<p>This creates a connection so that you can interact with the server.</p>
+<p>Create a connection so you can interact with the server.</p>
 <div class="preboxcontainer">
 <pre class="prebox">import cloudfiles
 username = 'account_name:username'
@@ -32,7 +32,7 @@ conn = cloudfiles.get_connection(
 </div>
 <div id="listing-owned-containers"><span id="swift-python-listing-owned-containers"></span>
 <h2>Listing Owned Containers</h2>
-<p>This gets a list of containers that you own while printing out the container name.</p>
+<p>Get a list of containers you own while printing out the container name.</p>
 <div class="preboxcontainer">
 <pre class="prebox">for container in conn.get_all_containers():
     print container.name</pre>
@@ -45,14 +45,14 @@ mahbuckat3</pre>
 </div>
 </div>
 <h2>Creating a Container</h2>
-<p>This creates a new container called <code class="docutils literal"><span class="pre">my-new-container</span></code></p>
+<p>Create a new container called <code class="docutils literal"><span class="pre">my-new-container.</span></code></p>
 <div class="preboxcontainer">
 <pre class="prebox">container = conn.create_container('my-new-container')
 </pre>
 </div>
 <div id="listing-a-container-s-content"><span id="swift-python-listing-a-containers-content"></span>
 <h2>Listing a Container’s Content</h2>
-<p>This gets a list of objects in the container while printing out each object’s name, the file size, and last modified date.</p>
+<p>Get a list of objects in the container while printing out each object’s name, the file size, and last modified date.</p>
 <div class="preboxcontainer">
 <pre class="prebox">for obj in container.get_objects():
     print "{0}\t{1}\t{2}".format(
@@ -61,7 +61,7 @@ mahbuckat3</pre>
         obj.last_modified,
         )</pre>
 </div>
-<p>The output will look something like this:</p>
+<p>The output looks something like this:</p>
 <div class="preboxcontainer">
 <pre class="prebox">myphoto1.jpg 251262  2011-08-08T21:35:48.000Z
 myphoto2.jpg 262518  2011-08-08T21:38:01.000Z</pre>
@@ -78,7 +78,7 @@ myphoto2.jpg 262518  2011-08-08T21:38:01.000Z</pre>
 </pre>
 </div>
 <h2>Creating an Object</h2>
-<p>This creates a file <code class="docutils literal"><span class="pre">hello.txt</span></code> from the file named <code class="docutils literal"><span class="pre">my_hello.txt.</span></code></p>
+<p>Create a file <code class="docutils literal"><span class="pre">hello.txt</span></code> from the file named <code class="docutils literal"><span class="pre">my_hello.txt.</span></code></p>
 <div class="preboxcontainer">
 <pre class="prebox">obj = container.create_object('hello.txt')
 obj.content_type = 'text/plain'
@@ -86,14 +86,14 @@ obj.load_from_filename('./my_hello.txt')</pre>
 </div>
 <div id="download-an-object-to-a-file"><span id="swift-python-download-an-object"></span>
 <h2>Download an Object (to a file)</h2>
-<p>This downloads the object <code class="docutils literal"><span class="pre">hello.txt</span></code> and saves it in <code class="docutils literal"><span class="pre">./my_hello.txt.</span></code></p>
+<p>Download the object <code class="docutils literal"><span class="pre">hello.txt</span></code> and saves it in <code class="docutils literal"><span class="pre">./my_hello.txt.</span></code></p>
 <div class="preboxcontainer">
 <pre class="prebox">obj = container.get_object('hello.txt')
 obj.save_to_filename('./my_hello.txt')</pre>
 </div>
 <div id="delete-an-object"><span id="swift-python-delete-an-object"></span>
 <h2>Delete an Object</h2>
-<p>This deletes the object <code class="docutils literal"><span class="pre">goodbye.txt.</span></code></p>
+<p>Delete the object <code class="docutils literal"><span class="pre">goodbye.txt.</span></code></p>
 <div class="preboxcontainer">
 <pre class="prebox">container.delete_object('goodbye.txt')</pre>
 </div>

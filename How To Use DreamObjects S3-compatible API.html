@@ -14,7 +14,7 @@
 </div>
 <div id="dreamobjects-rados-s3-api"><span id="rados-s3-api"></span>
 <h2>DreamObjects RADOS S3 API</h2>
-<p>DreamObjects supports the Amazon S3 API, so it’s easy to use your existing apps, but unlike Amazon, DreamObjects uses RGW, the RADOS Gateway that is built on the CEPH file store.</p>
+<p>DreamObjects supports the Amazon S3 API, so it’s easy to use your existing apps. However, unlike Amazon, DreamObjects uses RGW, the RADOS Gateway that is built on the CEPH file store.</p>
 <div id="features-supported">
 <h3>Features Supported</h3>
 <p>The following table describes the support status for current Amazon S3 functional features:</p>
@@ -374,10 +374,10 @@ Host: mybucket.objects-us-west-1.dream.io
 </div>
 <div id="how-to-authenticate-to-dreamobjects-with-s3-api"><span id="authentication-s3"></span>
 <h2>How To Authenticate to DreamObjects with S3 API</h2>
-<p>Requests to DreamObjects can be either authenticated or unauthenticated. DreamObjects assumes unauthenticated requests are sent by an anonymous user. DreamObjects supports canned ACLs.</p>
+<p>Requests to DreamObjects can be either authenticated or unauthenticated. DreamObjects assumes unauthenticated requests are sent by an anonymous user. DreamObjects also supports canned ACLs.</p>
 <div id="authentication">
 <h3>Authentication</h3>
-<p>Authenticating a request requires including an access key and a Hash-based Message Authentication Code (HMAC) in the request before it is sent to the RGW server. RGW uses an S3-compatible authentication approach:</p>
+<p>Authenticating a request requires including an <a href="https://help.dreamhost.com/hc/en-us/articles/215986357-DreamObjects-Keys">Access Key</a> and a Hash-based Message Authentication Code (HMAC) in the request before it is sent to the RGW server. RGW uses an S3-compatible authentication approach:</p>
 <div class="preboxcontainer">
 <pre class="prebox">HTTP/1.1
 PUT /buckets/bucket/object.mpeg
@@ -523,7 +523,7 @@ Authorization: AWS {access-key}:{hash-of-header-and-secret}</pre>
 <h2>Understanding DreamObjects S3-compatible Bucket Operations</h2>
 <div id="put-bucket">
 <h3>PUT Bucket</h3>
-<p>Creates a new bucket. To create a bucket, you must have a user ID and a valid AWS Access Key ID to authenticate requests. You may not create buckets as an anonymous user.</p>
+<p>Creates a new <a href="https://help.dreamhost.com/hc/en-us/articles/215321178-DreamObjects-Buckets">bucket</a>. To create a bucket, you must have a <a href="https://help.dreamhost.com/hc/en-us/articles/215986327-DreamObjects-Users">user ID</a> and a valid AWS Access Key ID to authenticate requests. You may not create buckets as an anonymous user.</p>
 <div class="alert alert-important">
 <div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
@@ -571,7 +571,9 @@ Authorization: AWS {access-key}:{hash-of-header-and-secret}</pre>
 </div>
 <div id="http-response">
 <h4>HTTP Response</h4>
-<p>If the bucket name is unique, within constraints and unused, the operation succeeds. If a bucket with the same name already exists and the user is the bucket owner, the operation succeeds. If the bucket name is already in use, the operation fails.</p>
+<p>If the bucket name is unique, within constraints and unused, the operation succeeds.</p>
+<p>If a bucket with the same name already exists and the user is the bucket owner, the operation succeeds.</p>
+<p>If the bucket name is already in use, the operation fails.</p>
 <table class="docutils" border="1"><colgroup> <col width="16%" /> <col width="24%" /> <col width="60%" /> </colgroup>
 <thead valign="bottom">
 <tr class="row-odd">

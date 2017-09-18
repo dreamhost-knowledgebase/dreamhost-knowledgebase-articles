@@ -1,25 +1,25 @@
-<div class="document">
-<div class="documentwrapper">
-<div class="body">
-<div id="backing-up-data-to-dreamobjects-using-duplicity">
-<p>This article sets up backups for a Linux machine.</p>
-<p>First, create a DreamObjects plan. For new customers, visit the <a href="https://signup.dreamhost.com/objects/email/">sign up page</a>. For existing customers, visit the <a href="https://panel.dreamhost.com/index.cgi?tree=cloud.objects&amp;">(Panel &gt; 'Cloud Services' &gt; 'DreamObjects')</a> page.</p>
-<p>Create a DreamObjects username, Keys, and a Bucket.</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>This article configures backups for a Linux machine.</p>
+</div>
+</div>
+<p>First, create a DreamObjects plan. For new customers, visit the <a href="https://signup.dreamhost.com/objects/email/">sign up page</a>. For existing customers, visit the <a href="https://panel.dreamhost.com/index.cgi?tree=cloud.objects&amp;">(Panel &gt; 'Cloud Services' &gt; 'DreamObjects')</a> page in your panel.</p>
+<p>Create a DreamObjects <a href="https://help.dreamhost.com/hc/en-us/sections/203167008-Basics">User, Keys, and a Bucket</a>.</p>
 <h2>Download software to Ubuntu</h2>
 <p>On your Linux machine, download the following software:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[local]$ </span><span class="command">sudo apt-get install duplicity python-boto</span></pre>
 </div>
 <h2>Create a .boto file to store your user keys</h2>
-<p>View the following article for instructions on how to create this .boto file:</p>
+<p>View the following article for instructions on how to create this .boto file on your computer:</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/115000376631-Creating-a-boto-file-to-store-your-keys">Creating a .boto file to store your keys</a></li>
 </ul>
 <h2>Backing up data from your Linux computer to DreamObjects</h2>
-<p>You are now ready to backup any directory on your Linux computer to a bucket on DreamObjects. This examples backs up the /Pictures directory to a bucket named 'blogdemo':</p>
+<p>You are now ready to backup any directory on your Linux computer to a bucket on DreamObjects. This example backs up a local /Pictures directory to a bucket named 'blogdemo':</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[local]$ </span><span class="command">duplicity –allow-source-mismatch ~/Pictures \
-s3://objects-us-west-1.dream.io/blogdemo</span>
+<pre class="prebox"><span class="server">[local]$ </span><span class="command">duplicity –allow-source-mismatch ~/Pictures s3://objects-us-west-1.dream.io/blogdemo</span>
 </pre>
 </div>
 <p>It prompts for an encryption password which you should make a note of. Your files are then synced. Output appears as follows:</p>
@@ -47,18 +47,13 @@ Errors 0
 </pre>
 </div>
 <p>That’s it. Run this command whenever you want to update your backups.</p>
-</div>
-</div>
-</div>
 <h2 class="subheader">Restoring content</h2>
 <p>To restore content, you just need to reverse the source and destination values. This example restores the Pictures directory (that was backed up above) from the 'blogdemo' bucket into a new local directory named 'Pictures_restored':</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[local]$ </span><span class="command">duplicity s3://objects-us-west-1.dream.io/blogdemo/ \
-~/Pictures_restored</span>
+<pre class="prebox"><span class="server">[local]$ </span><span class="command">duplicity s3://objects-us-west-1.dream.io/blogdemo/ ~/Pictures_restored</span>
 </pre>
 </div>
 <!--DreamObjects Button-->
 <div class="dream-sign-up">
 <h2>Start Storing Your Data Today!</h2>
 <a href="https://www.dreamhost.com/cloud/storage/">Sign Up for DreamObjects</a></div>
-</div>

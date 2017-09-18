@@ -1,13 +1,13 @@
 <p>For larger file uploads, most S3 clients make use of the multi-part-upload (MPU) feature of the S3 protocol. This allows the client to break large files into smaller chunks, upload these smaller chunks, and re-try any chunks that failed without having to start over.</p>
-<p>Most S3 clients are good about cleaning up <em><strong>MPU data</strong></em> that it no longer needs, but if a connection drops or the client crashes, it could leave this data behind. The data is generally not used again, but silently uses additional disk space on your account until it is removed. It is worthwhile to check for and remove this <strong><em>MPU data</em></strong> if disk storage costs appear larger than expected.</p>
+<p>Most S3 clients are good about cleaning up <em><strong>MPU data</strong></em> that it no longer needs, but if a connection drops or the client crashes, it could leave this data behind. The data is generally not used again, however it may silently use additional disk space on your account until it is removed. It is worthwhile to check for and remove this <strong><em>MPU data</em></strong> if disk storage costs appear larger than expected.</p>
 <p>Most S3 clients don’t have a <strong><em>MPU data</em></strong> purge feature, so in the following example, Python and the boto library is used to check for and clean up this data.</p>
 <div id="using-the-clean-up-script">
 <h2>Using the clean-up script</h2>
-<p>This script is an all-in-one solution that prompts you for the Access and Secret key, then iterates over all buckets checking for <strong><em>MPU data</em></strong>. If any is found, it displays the file name, the date it was uploaded, and its size, and then prompts you if it should be deleted.</p>
+<p>This script is an all-in-one solution that prompts you for the <a href="https://help.dreamhost.com/hc/en-us/articles/215986357-DreamObjects-Keys">Access and Secret key</a>, then iterates over all buckets checking for <strong><em>MPU data</em></strong>. If any is found, it displays the file name, the date it was uploaded, its size, and then prompts you if it should be deleted.</p>
 <div class="alert alert-important">
 <div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
-<p>Once the MPU data is deleted, it cannot be recovered. Please be sure you don’t need the data before removing it!</p>
+<p>Once the MPU data is deleted, it cannot be recovered. Please be sure you don’t need the data before removing it.</p>
 </div>
 </div>
 <div id="clean-up-script-code">
@@ -48,8 +48,11 @@ for b in c.get_all_buckets():
 <div class="alert alert-note">
 <div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
-<p>If path-style format is required (for example if your bucket was accidentally created with uppercase characters), you need to add `calling_format=boto.s3.connection.OrdinaryCallingFormat()` to the boto.connect_s3 call.</p>
-<p>For example: `c = boto.connect_s3(accesskey, secretkey, host='objects-us-west-1.dream.io', calling_format=boto.s3.connection.OrdinaryCallingFormat())`</p>
+<p>If path-style format is required (for example if your bucket was accidentally created with uppercase characters), you need to add `<strong>calling_format=boto.s3.connection.OrdinaryCallingFormat()</strong>` to the boto.connect_s3 call.</p>
+<p>For example:</p>
+<div class="preboxcontainer">
+<pre class="prebox">c = boto.connect_s3(accesskey, secretkey, host='objects-us-west-1.dream.io', calling_format=boto.s3.connection.OrdinaryCallingFormat())</pre>
+</div>
 </div>
 </div>
 <h3>Clean-up script example output</h3>

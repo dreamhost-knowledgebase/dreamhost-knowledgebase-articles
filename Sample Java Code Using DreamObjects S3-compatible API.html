@@ -18,6 +18,7 @@
 <li><a class="reference internal" href="#s3-java-generate-object-download-urls">Generate Object Download URLs (signed and unsigned)</a></li>
 </ul>
 </div>
+This article lists several Java code examples to interact with DreamObjects.
 <div id="setup"><span id="s3-java-setup"></span>
 <h2>Setup</h2>
 <p>The following examples may require some or all of the following java classes to be imported:</p>
@@ -40,7 +41,7 @@ import com.amazonaws.services.s3.model.S3ObjectSummary;</pre>
 </div>
 <div id="creating-a-connection"><span id="s3-java-creating-a-connection"></span>
 <h2>Creating a Connection</h2>
-<p>This creates a connection so that you can interact with the server.</p>
+<p>Create a connection so you can interact with the server.</p>
 <div class="preboxcontainer">
 <pre class="prebox">String accessKey = "insert your access key here!";
 String secretKey = "insert your secret key here!";
@@ -51,7 +52,7 @@ conn.setEndpoint("objects-us-west-1.dream.io");</pre>
 </div>
 <div id="listing-owned-buckets"><span id="s3-java-listing-owned-buckets"></span>
 <h2>Listing Owned Buckets</h2>
-<p>This gets a list of Buckets that you own. This also prints out the bucket name and creation date of each bucket.</p>
+<p>Get a list of Buckets you own. This also prints out the bucket name and creation date of each bucket.</p>
 <div class="preboxcontainer">
 <pre class="prebox">List buckets = conn.listBuckets();
 for (Bucket bucket : buckets) {
@@ -59,7 +60,7 @@ for (Bucket bucket : buckets) {
                 StringUtils.fromDate(bucket.getCreationDate()));
 }</pre>
 </div>
-<p>The output will look something like this:</p>
+<p>The output looks something like this:</p>
 <div class="preboxcontainer">
 <pre class="prebox">mahbuckat1   2011-04-21T18:05:39.000Z
 mahbuckat2   2011-04-21T18:05:48.000Z
@@ -67,13 +68,13 @@ mahbuckat3   2011-04-21T18:07:18.000Z</pre>
 </div>
 <div id="creating-a-bucket"><span id="s3-java-creating-a-bucket"></span>
 <h2>Creating a Bucket</h2>
-<p>This creates a new bucket called <code class="docutils literal"><span class="pre">my-new-bucket</span></code></p>
+<p>Create a new bucket called <code class="docutils literal"><span class="pre">my-new-bucket.</span></code></p>
 <div class="preboxcontainer">
 <pre class="prebox">Bucket bucket = conn.createBucket("my-new-bucket");</pre>
 </div>
 <div id="listing-a-bucket-s-content"><span id="s3-java-listing-a-buckets-content"></span>
 <h2>Listing a Bucket’s Content</h2>
-<p>This gets a list of objects in the bucket. This also prints out each object’s name, the file size, and last modified date.</p>
+<p>Get a list of objects in the bucket. This also prints out each object’s name, the file size, and last modified date.</p>
 <div class="preboxcontainer">
 <pre class="prebox">ObjectListing objects = conn.listObjects(bucket.getName());
 do {
@@ -85,7 +86,7 @@ do {
         objects = conn.listNextBatchOfObjects(objects);
 } while (objects.isTruncated());</pre>
 </div>
-<p>The output will look something like this:</p>
+<p>The output looks something like this:</p>
 <div class="preboxcontainer">
 <pre class="prebox">myphoto1.jpg 251262  2011-08-08T21:35:48.000Z
 myphoto2.jpg 262518  2011-08-08T21:38:01.000Z</pre>
@@ -95,7 +96,7 @@ myphoto2.jpg 262518  2011-08-08T21:38:01.000Z</pre>
 <div class="alert alert-important">
 <div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
-<p>The Bucket must be empty! Otherwise it won’t work!</p>
+<p>The Bucket must be empty, otherwise it won’t work.</p>
 </div>
 </div>
 <div class="preboxcontainer">
@@ -111,21 +112,21 @@ myphoto2.jpg 262518  2011-08-08T21:38:01.000Z</pre>
 </div>
 <div id="creating-an-object"><span id="s3-java-creating-an-object"></span>
 <h2>Creating an Object</h2>
-<p>This creates a file <code class="docutils literal"><span class="pre">hello.txt</span></code> with the string <code class="docutils literal"><span class="pre">"Hello</span> <span class="pre">World!"</span></code></p>
+<p>Create a file <code class="docutils literal"><span class="pre">hello.txt</span></code> with the string <code class="docutils literal"><span class="pre">"Hello</span> <span class="pre">World!"</span></code></p>
 <div class="preboxcontainer">
 <pre class="prebox">ByteArrayInputStream input = new ByteArrayInputStream("Hello World!".getBytes());
 conn.putObject(bucket.getName(), "hello.txt", input, new ObjectMetadata());</pre>
 </div>
 <div id="change-an-object-s-acl"><span id="s3-java-change-an-objects-acl"></span>
 <h2>Change an Object’s ACL</h2>
-<p>This makes the object <code class="docutils literal"><span class="pre">hello.txt</span></code> to be publicly readable, and <code class="docutils literal"><span class="pre">secret_plans.txt</span></code> to be private.</p>
+<p>Make the object <code class="docutils literal"><span class="pre">hello.txt</span></code> publicly readable and <code class="docutils literal"><span class="pre">secret_plans.txt</span></code> to be private.</p>
 <div class="preboxcontainer">
 <pre class="prebox">conn.setObjectAcl(bucket.getName(), "hello.txt", CannedAccessControlList.PublicRead);
 conn.setObjectAcl(bucket.getName(), "secret_plans.txt", CannedAccessControlList.Private);</pre>
 </div>
 <div id="download-an-object-to-a-file"><span id="s3-java-download-an-object"></span>
 <h2>Download an Object (to a file)</h2>
-<p>This downloads the object <code class="docutils literal"><span class="pre">perl_poetry.pdf</span></code> and saves it in <code class="docutils literal"><span class="pre">/home/larry/documents</span></code></p>
+<p>Download the object <code class="docutils literal"><span class="pre">perl_poetry.pdf</span></code> and save it in <code class="docutils literal"><span class="pre">/home/larry/documents.</span></code></p>
 <div class="preboxcontainer">
 <pre class="prebox">conn.getObject(
         new GetObjectRequest(bucket.getName(), "perl_poetry.pdf"),
@@ -134,17 +135,17 @@ conn.setObjectAcl(bucket.getName(), "secret_plans.txt", CannedAccessControlList.
 </div>
 <div id="delete-an-object"><span id="s3-java-delete-an-object"></span>
 <h2>Delete an Object</h2>
-<p>This deletes the object <code class="docutils literal"><span class="pre">goodbye.txt</span></code></p>
+<p>Delete the object <code class="docutils literal"><span class="pre">goodbye.txt</span></code></p>
 <div class="preboxcontainer">
 <pre class="prebox">conn.deleteObject(bucket.getName(), "goodbye.txt");</pre>
 </div>
 <div id="generate-object-download-urls-signed-and-unsigned"><span id="s3-java-generate-object-download-urls"></span>
 <h2>Generate Object Download URLs (signed and unsigned)</h2>
-<p>This generates an unsigned download URL for <code class="docutils literal"><span class="pre">hello.txt</span></code>. This works because we made <code class="docutils literal"><span class="pre">hello.txt</span></code> public by setting the ACL above. This then generates a signed download URL for <code class="docutils literal"><span class="pre">secret_plans.txt</span></code> that will work for 1 hour. Signed download URLs will work for the time period even if the object is private (when the time period is up, the URL will stop working).</p>
+<p>Generate an unsigned download URL for <code class="docutils literal"><span class="pre">hello.txt</span></code>. This works because <code class="docutils literal"><span class="pre">hello.txt</span></code> was made public by setting the ACL above. This then generates a signed download URL for <code class="docutils literal"><span class="pre">secret_plans.txt</span></code> that will work for 1 hour. Signed download URLs will work for the time period even if the object is private (when the time period is up, the URL will stop working).</p>
 <div class="alert alert-important">
 <div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
-<p>The java library does not have a method for generating unsigned URLs, so the example below just generates a signed URL.</p>
+<p>The Java library does not have a method for generating unsigned URLs, so the example below just generates a signed URL.</p>
 </div>
 </div>
 <div class="preboxcontainer">
