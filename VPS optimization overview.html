@@ -16,13 +16,11 @@
 <h2><span id="Caching_your_site">Caching your site</span></h2>
 <p>As you've probably seen by now, PHP processes can take up a significant amount of memory. If your site is getting hammered with traffic, the fewer hits that have to spawn a PHP CGI process, the better. This can be accomplished by enabling caching on your site. Essentially, caching renders a PHP script and then "caches" that HTML output as a file. The next time that page is accessed, the server outputs the static HTML page, rather than process the PHP script again. The task of serving a static file requires far less memory and generally serves more efficiently, than the processing and execution of a PHP script. So if you're having memory trouble on your PS, it's essential that you confirm that you're running software that has caching functionality and that you enable the use of this feature.</p>
 <p>Also, if you expect a large volume of website visitors, you can enable <a href="/hc/en-us/articles/215873088-Cloudflare-overview">Cloudflare</a>. This is a service that DreamHost partners with to add additional caching options for your websites.</p>
-<h2><span id="Enabling_FastCGI_and_XCache">Enabling FastCGI and XCache</span></h2>
-<p>Another improvement you can make in order to reduce memory usage is to turn on FastCGI and <a href="/hc/en-us/articles/215945977-How-do-I-use-XCache-on-a-private-server-">XCache</a> for your domains that run PHP-based sites. Without FastCGI enabled, an entire PHP binary process has to be executed individually for each PHP page that's viewed in order to parse and process it.</p>
-<p>Enabling FastCGI for all your PHP domains switches your sites over to using mod_fcgid (see <a href="/hc/en-us/articles/217298967-FastCGI-overview">Fcgid</a> overview). What this means is that when a PHP script is hit by a browser, the PHP interpreter process begins, processes the script, and then stays in memory, waiting for another request. When a new request hits, it is sent to this running interpreter for processing, rather than spawn a new one. If you have a lot of sites or a lot of traffic, this can greatly reduce your overall memory usage.</p>
-<p>Enabling this also allows you to enable XCache which essentially caches compiled PHP code in memory to output as PHP scripts are requested. For more information on configuring this after it's enabled, view the XCache article page. If you'd like additional information about XCache, the <a href="http://xcache.lighttpd.net/wiki/Introduction">introduction page</a> of the official XCache article is a good place to start.</p>
+<h2><span id="Enabling_FastCGI_and_XCache">Enabling OPcache</span></h2>
+<p>Another improvement you can make in order to reduce memory usage is to turn on OPcache for your domains that run PHP-based sites. OPcache is a caching engine built into PHP. When enabled, it dramatically increases the performance of websites that utilize PHP.</p>
 <p>View the following article for details on how to enable this feature:</p>
 <ul>
-<li><a href="/hc/en-us/articles/215945977-How-do-I-use-XCache-on-a-private-server-">How to enable XCache on a private server</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216660668-OPcache-overview">OPcache overview</a></li>
 </ul>
 <h2><span id="WordPress-specific_optimizations">WordPress-specific optimizations</span></h2>
 <p>If you're running multiple instances of the WordPress software on your private server, you should definitely review the <a href="/hc/en-us/sections/203242637">'WordPress Optimization' category</a> for detailed articles.</p>
@@ -34,7 +32,7 @@
 <li>Remove/delete unused plugins as opposed to just deactivating them.</li>
 <li>Confirm your active theme isn't generating any errors in your error.log file (located in the same directory as the access.log).</li>
 <li>View <a href="http://www.die.net/musings/page_load_time/">Optimizing Page Load Time</a> and make sure you have a popular WordPress caching plugin installed and configured. For example, W3TC or WP Super Cache.</li>
-<li>Please keep in mind that running a third-party WordPress caching plugin simultaneously with your panel’s XCache option can actually increase overall memory usage. It's best to pick either one or the other for your caching needs.</li>
+<li>If you have an older VPS and have enabled <a href="https://help.dreamhost.com/hc/en-us/articles/215945977-How-do-I-use-XCache-on-a-private-server-">XCache</a> in the past, please keep in mind that running a third-party WordPress caching plugin simultaneously with your panel’s XCache option can actually increase overall memory usage. It's best to pick either one or the other for your caching needs.</li>
 <li>Another useful tool to detect memory intensive third-party plugins is <a href="https://wordpress.org/plugins/p3-profiler/">P3 (Plugin Performance Profiler)</a> plugin for WordPress. Make sure to disable this plugin if you're not currently using it as it can increase your overall memory usage.</li>
 <li>Finally, compressing your image files improves loading time and reduces overall memory usage.</li>
 </ul>
@@ -47,7 +45,6 @@
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215572647-Simulating-high-traffic">Simulating high traffic</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/214880098-Using-the-ps-command-to-troubleshoot-your-website">Using the 'ps' command to troubleshoot your website</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215945987-Web-server-performance-comparison">Web server performance comparison</a></li>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/215945977-How-do-I-use-XCache-on-a-private-server-">How do I use XCache on a private server?</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215573127-How-do-I-reboot-my-VPS-">How do I reboot my VPS?</a></li>
 </ul>
 <h3>External links</h3>
