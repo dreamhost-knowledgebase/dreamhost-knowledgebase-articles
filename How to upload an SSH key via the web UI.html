@@ -1,135 +1,194 @@
-<body role="document">
 <div class="document">
 <div class="documentwrapper">
 <div class="body" role="main">
 <div id="how-to-upload-an-ssh-key-via-the-web-ui">
-
-<p>DreamCompute utilizes ssh keys for accessing your instances, instead
-of using passwords alone.  This is done for increased security and
-simplifies managing users for OpenStack (the public key is injected
-into the instance at boot). This prevents needing to modify files or
-passwords on the operating system on startup.</p>
-<p>SSH keypairs are managed on the Access &amp; Security -&gt; Keypairs
-section of the dashboard.</p>
+<p>DreamCompute utilizes SSH keys for accessing your instances, instead of using passwords alone. This is done for increased security and simplifies managing users for OpenStack since the public key is injected into the instance at boot. This setup prevents the need to modify files or passwords on the operating system on startup.</p>
+<p>This article shows different ways to create a Key pair. You only need to choose one option below.</p>
+<ul>
+<li><a href="#dashboard">Create a new Key pair in the DreamCompute dashboard</a></li>
+<li><a href="#Windows">Create a new Key pair in Windows</a></li>
+<li><a href="#Mac-or-Linux">Create a new Key pair in Mac or Linux</a></li>
+</ul>
 <div id="ssh-key-components">
-<h2>SSH Key Components</h2>
-<p>There are two parts to an SSH key: a private key and a public key.
-The private key is known only to you and should be safeguarded.  On
-UNIX-based systems such as Mac and Linux, the private key is generally
-stored in:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>/home/myuser/.ssh/id_rsa
-</pre></div>
+<h2>SSH key Components</h2>
+<p>There are two parts to an SSH key:</p>
+<ul>
+<li>a private key</li>
+<li>a public key</li>
+</ul>
+<p>The private key is known only to you and should be safeguarded. On UNIX-based systems such as Mac and Linux, the private key is generally stored in:</p>
+<div class="preboxcontainer">
+<pre class="prebox">/home/myuser/.ssh/id_rsa
+</pre>
 </div>
-<p>The public key can be shared with any server that you would like ssh
-access to.  Similarly, the public key will be stored in:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>/home/myuser/.ssh/id_rsa.pub
-</pre></div>
+<p>The public key can be shared with any server would like to allow ssh access to. On the server, the public key is stored in:</p>
+<div class="preboxcontainer">
+<pre class="prebox">/home/myuser/.ssh/id_rsa.pub
+</pre>
 </div>
-<p>SSH keys generated on Windows systems using the
-<a class="reference external" href="http://www.chiark.greenend.org.uk/~sgtatham/putty/">PuTTY</a> key
-generator (puttygen.exe) are not stored in a uniform location, but
-instead where the user chooses to save them.</p>
-</div>
-<div id="create-a-new-ssh-key">
-<h2>Create a new SSH key</h2>
-<div id="via-the-dreamcompute-dashboard">
-<h3>via the DreamCompute dashboard</h3>
-<p>The easiest way to generate a key is to have DreamCompute generate one
-for you.  You can do this by going to the DreamCompute dashboard, Access &amp;
-Security -&gt; Keypairs.  On the top right, click the “Create Keypair” button,
-give the key a name, and click “Create Keypair”.  Your browser will start
-downloading the private key named the same as they name given with a
-.pem file extension.  Save this file for later user as your id_rsa
-private key file.</p>
-</div>
-<div id="via-puttygen-exe">
-<h3>via puttygen.exe</h3>
-<p>This program can be downloaded from the
-<a class="reference external" href="http://www.chiark.greenend.org.uk/~sgtatham/putty/">PuTTY</a> website.
-After running the program, click on the “generate” button, and follow
-the instructions to generate random data.  When complete, you can
-click the “save private key” button to save the .ppk (PuTTY Private
-Key File) file for use with PuTTY later.  The text at the top labeled
-“Public key for pasting into OpenSSH authorized_keys file” can be
-copy/pasted into a text file for importing into the DreamCompute
-dashboard and other future uses.  The “save public key” button saves a
-modified version of the public key that won’t directly import into the
-DreamCompute dashboard.  Save these files in a safe location.  The
-final step is to continue to the Import an Existing section to import
-the key into DreamCompute.</p>
-<p>Here is an example of the puttygen.exe program:</p>
-<div class="figure">
-<img alt="Putty" src="https://dreamhosthelp.zendesk.com/hc/article_attachments/214608947/Puttygen.png"/>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>SSH keys generated on Windows systems using the <a class="reference external" href="http://www.chiark.greenend.org.uk/~sgtatham/putty/">PuTTY</a> key generator (puttygen.exe) are not stored in a uniform location, but instead wherever the user chooses to save them.</p>
 </div>
 </div>
-<div id="via-ssh-keygen">
-<h3>via ssh-keygen</h3>
-<p>This program can be found on Mac, Linux and other unix-based operating
-systems.</p>
-<p>When run:</p>
-<p>STEP 1: Enter a file name to save private key to (<strong>hit enter for the
-recommended default that you see in parenthesis</strong>).</p>
-<p>STEP 2: Enter a password (recommended). You can press enter twice to
-not have a password.</p>
-<p>The output looks like this:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@localhost]$</span> ssh-keygen -t rsa
-<span class="go">Generating public/private rsa key pair.</span>
-<span class="go">Enter file in which to save the key (/home/myuser/.ssh/id_rsa):</span>
-<span class="go">Enter passphrase (empty for no passphrase):</span>
-<span class="go">Enter same passphrase again:</span>
-<span class="go">Your identification has been saved in /home/myuser/.ssh/id_rsa.</span>
-<span class="go">Your public key has been saved in /home/myuser/.ssh/id_rsa.pub.</span>
-<span class="go">The key fingerprint is:</span>
-<span class="go">66:d9:a4:f0:8d:0b:72:93:b8:67:2e:af:f6:91:ce:e3 myuser@mycomputer</span>
-<span class="go">The key's randomart image is:</span>
-<span class="go">+--[ RSA 2048]----+</span>
-<span class="go">|                 |</span>
-<span class="go">|                 |</span>
-<span class="go">|      .   .      |</span>
-<span class="go">|     . + B       |</span>
-<span class="go">|    o = S o      |</span>
-<span class="go">|     + * .       |</span>
-<span class="go">|    . = .        |</span>
-<span class="go">|    o*..         |</span>
-<span class="go">|   ..*E.         |</span>
-<span class="go">+-----------------+</span>
-</pre></div>
+<div id="dashboard">
+<h2>Creating a new Key pair in the DreamCompute dashboard</h2>
+<p>The easiest way to generate a key is to have DreamCompute generate one for you.</p>
+<ol>
+<li>Navigate to the <a href="https://panel.dreamhost.com/index.cgi?tree=cloud.compute&amp;">(Panel &gt; 'Cloud Services' &gt; 'DreamCompute')</a> page.</li>
+<li>Click the <strong>'View Dashboard' </strong>button.</li>
+<li>On the left, click 'Compute'.
+<dl>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/DHC_upload_ssh_key_web_ui_01.png" alt="DHC_upload_ssh_key_web_ui" /></dd>
+</dl>
+</li>
+<li>From the dropdown click 'Access &amp; Security'.</li>
+<li>Click the 'Key Pairs' tab.</li>
+<li>On the top right click the '<strong>Create Key Pair</strong>' button.
+<dl>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/DHC_upload_ssh_key_web_ui_02.png" alt="DHC_upload_ssh_key_web_ui" /></dd>
+</dl>
+</li>
+<li>Give the key a name, and click '<strong>Create Key Pair</strong>'.
+<dl>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/DHC_upload_ssh_key_web_ui_03.png" alt="DHC_upload_ssh_key_web_ui" width="557" height="515" /></dd>
+</dl>
+</li>
+<li>Your browser will start downloading the private key named the same as they name given with a .pem file extension.</li>
+</ol>
 </div>
-<p>The final step is to continue to the Import an Existing SSH Key
-section to import the key into DreamCompute.</p>
+<div id="Windows">
+<h2>Creating a new Key pair in Windows using puttygen.exe</h2>
+<p>This program can be downloaded from the <a class="reference external" href="http://www.chiark.greenend.org.uk/~sgtatham/putty/">PuTTY</a> website. View the '<a href="https://help.dreamhost.com/hc/en-us/articles/215464538-How-do-I-configure-PuTTY-">How do I configure PuTTY</a>' article for instructions on how to download and where to save the files on your computer.</p>
+<ol>
+<li>Navigate to the directory you saved the puttygen file and open it. The 'PuTTY Key Generator' window displays.
+<dl>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/DHC_upload_ssh_key_web_ui_04.png" alt="DHC_upload_ssh_key_web_ui" /></dd>
+</dl>
+</li>
+<li>On the bottom right, click the <strong>'Generate'</strong> button.
+<dl>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/DHC_upload_ssh_key_web_ui_05.png" alt="DHC_upload_ssh_key_web_ui" /></dd>
+</dl>
+</li>
+<li>Follow the instructions and move your mouse in the blank area to generate random data.
+<dl>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/DHC_upload_ssh_key_web_ui_06.png" alt="DHC_upload_ssh_key_web_ui" /></dd>
+</dl>
+</li>
+<li>Copy and paste the text at the top labeled 'Public key for pasting into OpenSSH authorized_keys file' into a blank notepad file. This will be imported into the DreamCompute dashboard.</li>
+<li>Click the '<strong>Save public key</strong>' button to save a modified version of the public key. Please note that this public key file will not be imported into the DreamCompute dashboard.</li>
+<li>Click the '<strong>Save private key</strong>' button to save the .ppk (PuTTY Private Key File) file for use with PuTTY later.</li>
+<li>Finally, <a href="#import-existing-ssh-key">import the public key into your DreamCompute dashboard</a>. </li>
+</ol>
+</div>
+<h2>Creating a new Key pair in Mac OS X or Linux using ssh-keygen</h2>
+<p>This program can be found on Mac, Linux and other UNIX-based operating systems.</p>
+<p>On your home computer:</p>
+<ol>
+<li>Generate an RSA private key using <a class="new" title="Template:W (page does not exist)" href="https://en.wikipedia.org/wiki/Ssh-keygen">ssh-keygen</a> (unless you have already created one).
+<ul>
+<li>If you’re using Linux or Mac OS X, open your terminal and run the following command under your username:</li>
+</ul>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">ssh-keygen -t rsa</span></pre>
+</div>
+<dl>
+<dd><em>This creates a public/private keypair of the type (-t) rsa.</em></dd>
+</dl>
+<div class="preboxcontainer">
+<pre class="prebox">Generating a public/private rsa key pair.
+Enter the file in which you wish to save they key (i.e., /home/username/.ssh/id_rsa).
+</pre>
+</div>
+<dl>
+<dd><em>Once the keypair is created, you are prompted to enter the following items.</em></dd>
+</dl>
+</li>
+<li>Click <strong>Enter</strong> on your keyboard to continue.
+<div class="preboxcontainer">
+<pre class="prebox">Enter a passphrase (leave empty for no passphrase).</pre>
+</div>
+</li>
+<li>Click <strong>Enter</strong> on your keyboard to continue.
+<div class="preboxcontainer">
+<pre class="prebox">Enter same passphrase again:</pre>
+</div>
+</li>
+<li>Click <strong>Enter</strong> on your keyboard to continue.</li>
+<li>When finished, click <strong>Enter</strong> on your keyboard.
+<dl>
+<dd><em>The following message appears:</em></dd>
+</dl>
+<div class="preboxcontainer">
+<pre class="prebox">Your identification has been saved in /home/username/.ssh/id_rsa
+Your public key has been saved in /home/username/.ssh/id_sra.pub
+
+The key fingerprint is:
+ar:bc:d3:9e:g3:1f:63:6f:6b:32:2e:97:ee:42:e1:be username@server.dreamhost.com
+
+The key’s randomart image is:
+
++--[ RSA 2048]----+
+| ..+**B.o++o     |
+|  . o+==o. o     |
+|    . .oo.=      |
+|      . +E+ .    |
+|        S .      |
+|                 |
+|                 |
+|                 |
+|                 |
++-----------------+
+</pre>
+</div>
+</li>
+<li>Finally, <a href="#import-existing-ssh-key">import the public key into your DreamCompute dashboard</a>.</li>
+</ol>
 </div>
 </div>
 <div id="checking-for-an-existing-key">
 <h2>Checking For An Existing Key</h2>
-<p>For a Windows system, there isn’t an easy way to find where keys were
-generated or stored.  A private key generated from puttygen.exe is
-saved with the .ppk file extension, but the other files it generates
-has no default extension.  You could search your system for .ppk files
-and perhaps find your public key in the same location.</p>
-<p>On Mac and Linux systems, you can check in the above
-described location:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@localhost]$</span> ls ~/.ssh/id_rsa*
-<span class="go">/home/myuser/.ssh/id_rsa  /home/myuser/.ssh/id_rsa.pub</span>
-</pre></div>
+<p>For a Windows system, there isn’t an easy way to find where keys were generated or stored. A private key generated from puttygen.exe is saved with the .ppk file extension, but the other files it generates has no default extension. You could search your system for .ppk files and perhaps find your public key in the same location.</p>
+<p>On Mac and Linux systems, you can check in the above described location:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost] </span><span class="command">ls ~/.ssh/id_rsa*</span>
+/home/myuser/.ssh/id_rsa  /home/myuser/.ssh/id_rsa.pub</pre>
+</div>
+<div id="import-existing-ssh-key">
+<h2>Import an existing SSH key into the DreamCompute dashboard</h2>
+<ol>
+<li>Find the public key file and open it to copy its contents.</li>
+<li>Navigate to the <a href="https://panel.dreamhost.com/index.cgi?tree=cloud.compute&amp;">(Panel &gt; 'Cloud Services' &gt; 'DreamCompute')</a> page.</li>
+<li>Click the <strong>'View Dashboard' </strong>button.</li>
+<li>On the left, click 'Compute'.</li>
+<li>From the dropdown click 'Access &amp; Security'.</li>
+<li>Click the 'Key Pairs' tab.
+<dl>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/DHC_upload_ssh_key_web_ui_07.png" alt="DHC_upload_ssh_key_web_ui" /></dd>
+</dl>
+</li>
+<li>To the right, click the '<strong>Import Key Pair</strong>' button.
+<dl>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/DHC_upload_ssh_key_web_ui_08.png" alt="DHC_upload_ssh_key_web_ui" /></dd>
+</dl>
+</li>
+<li>Give it a name and paste in the contents of your public key.</li>
+<li>Click the '<strong>Import Key Pair</strong>' button to save it.
+<dl>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/DHC_upload_ssh_key_web_ui_09.png" alt="DHC_upload_ssh_key_web_ui" /></dd>
+</dl>
+</li>
+<li>You can now see it in the dashboard.</li>
+</ol>
 </div>
 </div>
-<div id="import-an-existing-ssh-key-into-the-dashboard">
-<h2>Import an Existing SSH key into the Dashboard</h2>
-<p>Find the public key file, and open it to copy its contents.  Next, go
-to the DreamCompute dashboard, go to Access &amp; Security -&gt; Keypairs, and
-click on “Import Keypair”.  Give it a name and paste in the contents
-of your public key, then click “Import Keypair” to save it.</p>
 </div>
 </div>
-</div>
-</div>
-<div class="clearer"></div>
-</div>
-<div class="footer">
-</div>
+<div class="footer"> </div>
 <!--DreamCompute Button-->
 <div class="dream-sign-up">
 <h2>Deploy Your Apps On Cloud Servers Today</h2>
-<a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a>
+<a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a></div>
 </div>
-</body>
