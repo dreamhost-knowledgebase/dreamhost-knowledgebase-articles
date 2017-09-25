@@ -5,233 +5,121 @@
 <div id="launch-an-instance">
 <h2>Launch an instance</h2>
 <ol class="arabic">
-<li>
-<p class="first">Log in to the dashboard.</p>
+<ol class="arabic">
+<li>Navigate to the <a href="https://panel.dreamhost.com/index.cgi?tree=cloud.compute&amp;">(Panel &gt; 'Cloud Services' &gt; 'DreamCompute')</a> page and log into your DreamCompute dashboard.
+<dl>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/Launching_an_instance_01.png" alt="Launching_an_instance_01" /></dd>
+</dl>
 </li>
-<li>
-<p class="first">Select the appropriate project from the drop down menu at the top left.</p>
+<li>On the top left, click the 'Compute' tab.</li>
+<li>From the expanded list click '<span class="guilabel">Instances'</span>.
+<p><em>The dashboard shows any existing instances with their information.</em></p>
 </li>
-<li>
-<p class="first">On the <span class="guilabel">Project</span> tab, open the <span class="guilabel">Compute</span> tab and click <span class="guilabel">Instances</span> category.</p>
-<p>The dashboard shows the instances with its name, its private and floating IP addresses, size, status, task, power state, and so on.</p>
+<li>Click the <strong>'</strong><span class="guilabel"><strong>Launch Instance'</strong> button on the top right.</span>
+<dl>
+<dd><em>A 'Launch Instance' popup box displays</em></dd>
+</dl>
 </li>
-<li>
-<p class="first">Click <span class="guilabel">Launch Instance</span>.</p>
-</li>
-<li>
-<p class="first">In the <span class="guilabel">Launch Instance</span> dialog box, specify the following values:</p>
-<p><span class="guilabel">Details</span> tab</p>
-<dl class="docutils">
-<dt>Availability Zone</dt>
+<li>In the <span class="guilabel">Launch Instance</span> dialog box, specify the following values:
+<h3>Details tab — general information</h3>
+<dl>
+<dd><strong>Instance Name</strong></dd>
+</dl>
+<dl>
 <dd>
-<p class="first last">By default, this value is set to the availability zone given by the cloud provider (for example, <code class="docutils literal"><span class="pre">us-west</span></code> or <code class="docutils literal"><span class="pre">apac-south</span></code>). For some cases, it could be <code class="docutils literal"><span class="pre">nova</span></code>.</p>
+<p>Assign a name to the virtual machine.</p>
 </dd>
-<dt>Instance Name</dt>
+</dl>
+<dl>
 <dd>
-<p class="first">Assign a name to the virtual machine.</p>
-<div class="last admonition note">
-<p class="first admonition-title">Note</p>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
 <p>The name you assign here becomes the initial host name of the server. If the name is longer than 63 characters, the Compute service truncates it automatically to ensure dnsmasq works correctly.</p>
-<p>After the server is built, if you change the server name in the API or change the host name directly, the names are not updated in the dashboard.</p>
+<p>If you change the server name in the API or change the host name directly after the server is built, the names are not updated in the dashboard.</p>
 <p class="last">Server names are not guaranteed to be unique when created so you could have two instances with the same host name.</p>
 </div>
-</dd>
-<dt>Flavor</dt>
-<dd>
-<p class="first last">Specify the size of the instance to launch.</p>
-</dd>
-<dt>Instance Count</dt>
-<dd>
-<p class="first last">To launch multiple instances, enter a value greater than <code class="docutils literal"><span class="pre">1</span></code>. The default is <code class="docutils literal"><span class="pre">1</span></code>.</p>
-</dd>
-<dt>Instance Boot Source</dt>
-<dd>
-<p class="first">Your options are:</p>
-<dl class="last docutils">
-<dt>Boot from image</dt>
-<dd>
-<p class="first last">If you choose this option, a new field for <span class="guilabel">Image Name</span> displays. You can select the image from the list.</p>
-</dd>
-<dt>Boot from snapshot</dt>
-<dd>
-<p class="first last">If you choose this option, a new field for <span class="guilabel">Instance Snapshot</span> displays. You can select the snapshot from the list.</p>
-</dd>
-<dt>Boot from volume</dt>
-<dd>
-<p class="first last">If you choose this option, a new field for <span class="guilabel">Volume</span> displays. You can select the volume from the list.</p>
-</dd>
-<dt>Boot from image (creates a new volume)</dt>
-<dd>
-<p class="first last">With this option, you can boot from an image and create a volume by entering the <span class="guilabel">Device Size</span> and <span class="guilabel">Device Name</span> for your volume. Click the <span class="guilabel">Delete Volume on Instance Delete</span> option to delete the volume on deleting the instance.</p>
-</dd>
-<dt>Boot from volume snapshot (creates a new volume)</dt>
-<dd>
-<p class="first last">Using this option, you can boot from a volume snapshot and create a new volume by choosing <span class="guilabel">Volume Snapshot</span> from a list and adding a <span class="guilabel">Device Name</span> for your volume. Click the <span class="guilabel">Delete Volume on Instance Delete</span> option to delete the volume on deleting the instance.</p>
+</div>
 </dd>
 </dl>
-</dd>
-<dt>Image Name</dt>
+<dl>
+<dd><strong>Availability Zone</strong></dd>
+</dl>
+<dl>
 <dd>
-<p class="first last">This field changes based on your previous selection. If you have chosen to launch an instance using an image, the <span class="guilabel">Image Name</span> field displays. Select the image name from the dropdown list.</p>
+<p class="first last">By default, this value is set to the availability zone given by the cloud provider (for example, <code class="docutils literal"><span class="pre">us-west, iad-2,</span></code> or <code class="docutils literal"><span class="pre">apac-south</span></code>). For some cases, it could be <code class="docutils literal"><span class="pre">nova</span></code>.</p>
 </dd>
-<dt>Instance Snapshot</dt>
+</dl>
+<dl>
+<dd><strong>Count</strong></dd>
+</dl>
+<dl>
+<dd>To launch multiple instances, enter a value greater than 1. The default is 1.</dd>
+</dl>
+<h3>Source tab — template used to create your instance</h3>
+<dl>
+<dd><strong>Select Boot Source (dropdown)</strong></dd>
+</dl>
+<dl>
 <dd>
-<p class="first last">This field changes based on your previous selection. If you have chosen to launch an instance using a snapshot, the <span class="guilabel">Instance Snapshot</span> field displays. Select the snapshot name from the dropdown list.</p>
+<dl>
+<dd><strong>Image — </strong>(select to create a new Instance)</dd>
+</dl>
+<dl>
+<dd>This option allows you to:</dd>
+<dd>  1. Create a 'New Volume' with this new Instance.</dd>
+<dd>  2. Choose the 'Volume Size'.</dd>
+<dd>  3. Choose if you'd like to delete the volume if you delete the Instance.</dd>
+<dd></dd>
+<dd>At the bottom is a list of Images you can create your new Instance from. For example, Debian, Fedora, Ubuntu, CentOS, etc... Click the <strong>+</strong> symbol to the right to add it.</dd>
+</dl>
+<dl>
+<dd><strong>Instance snapshot</strong></dd>
+</dl>
+<dl>
+<dd>Choose this option if you have an existing 'Instance Snapshot' and would like to create a new Instance from it.</dd>
+</dl>
+<dl>
+<dd><strong>Volume</strong></dd>
+</dl>
+<dl>
+<dd>If you choose this option, a new field for <span class="guilabel">Volume</span> displays. You can select the volume from the list.</dd>
+</dl>
+<dl>
+<dd><strong>Volume Snapshot</strong> <strong>— </strong>(creates a new volume)</dd>
+</dl>
+<dl>
+<dd>Create a new volume by choosing Volume Snapshot from a list and adding a Device Name for your volume.</dd>
+</dl>
 </dd>
-<dt>Volume</dt>
-<dd>
-<p class="first last">This field changes based on your previous selection. If you have chosen to launch an instance using a volume, the <span class="guilabel">Volume</span> field displays. Select the volume name from the dropdown list. If you want to delete the volume on instance delete, check the <span class="guilabel">Delete Volume on Instance Delete</span> option.</p>
+</dl>
+<dl></dl>
+<h3>Flavor tab</h3>
+<dl>
+<dd>Specify the size of the instance to launch. Click the <strong>+</strong> symbol to the right to add it.</dd>
+</dl>
+<h3>Key Pair tab</h3>
+<dl>
+<dd>If you have <a href="https://help.dreamhost.com/hc/en-us/articles/214843617-How-to-upload-an-SSH-key-via-the-web-UI">already created and added your public SSH key</a>, it displays here. Each server you launch is accessible by SSH via key-based authentication. Once you upload your public key, you’ll have the convenience of password-less logins with the default user for your image.
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>If you don’t already have an SSH key, view the <a class="reference external" href="https://help.dreamhost.com/hc/en-us/articles/214843617-How-to-upload-an-SSH-key-via-the-web-UI">How to upload an SSH key via the web UI</a> article.</p>
+</div>
+</div>
 </dd>
 </dl>
 </li>
-<li>
-<p class="first">Give your server a name. This will also be the host name of your server.</p>
-</li>
-<li>
-<p class="first">Choose your preferred operating system.</p>
-</li>
-<li>
-<p class="first">Add your public SSH key (you only have to do this once).</p>
-<p>Each server you launch is accessible by SSH via key-based authentication. Once you upload your public key, you’ll have the convenience of password-less logins with the default user for your image, <a class="reference external" href="228377408-How-to-find-the-default-user-of-an-image">Read the article about how to find the default user of your image</a></p>
-<blockquote>
-<div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">If you don’t already have an SSH key, you can find out <a class="reference external" href="214843617">how to create one</a>.</p>
-</div>
-</div>
-</blockquote>
-</li>
-<li>
-<p class="first">Click the <em>Launch Image</em> button.</p>
-</li>
+<li>Click the <strong>Launch Instance</strong> button on the bottom right.</li>
+</ol>
 </ol>
 </div>
-<div id="connect-to-your-server">
-<h2>Connect To Your Server</h2>
-<p>Once your new server is created, you can use SSH to log in to it.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p><a class="reference external" href="228377408-How-to-find-the-default-user-of-an-image">Read the article about how to find the default user of your image</a></p>
-<p><span class="guilabel">Network Ports</span> tab</p>
-<dl class="docutils">
-<dt>Ports</dt>
-<dd>Activate the ports that you want to assign to the instance.</dd>
-</dl>
-<p><span class="guilabel">Post-Creation</span> tab</p>
-<dl class="docutils">
-<dt>Customization Script Source</dt>
-<dd>Specify a customization script that runs after your instance launches.</dd>
-</dl>
-<p><span class="guilabel">Advanced Options</span> tab</p>
-<dl class="last docutils">
-<dt>Disk Partition</dt>
-<dd>
-<p class="first">Select the type of disk partition from the dropdown list:</p>
-<dl class="last docutils">
-<dt>Automatic</dt>
-<dd>Entire disk is single partition and automatically resizes.</dd>
-<dt>Manual</dt>
-<dd>Faster build times but requires manual partitioning.</dd>
-</dl>
-</dd>
-</dl>
-</div>
-<ol class="arabic">
-<li>
-<p class="first">Click <span class="guilabel">Launch</span>.</p>
-<p>The instance starts on a compute node in the cloud.</p>
-</li>
-</ol>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">If you did not provide a key pair, security groups, or rules, users can access the instance only from inside the cloud through VNC. Even pinging the instance is not possible without an ICMP rule configured.</p>
-</div>
-<p>You can also launch an instance from the <span class="guilabel">Images</span> or <span class="guilabel">Volumes</span> category when you launch an instance from an image or a volume respectively.</p>
-<p>When you launch an instance from an image, OpenStack creates a local copy of the image on the compute node where the instance starts.</p>
-<p>When you launch an instance from a volume, note the following steps:</p>
-<ul>
-<li>
-<p class="first">To select the volume from which to launch, launch an instance from an arbitrary image on the volume. The arbitrary image that you select does not boot. Instead, it is replaced by the image on the volume that you choose in the next steps.</p>
-<p>To boot a Xen image from a volume, the image you launch in must be the same type, fully virtualized or paravirtualized, as the one on the volume.</p>
-</li>
-<li>
-<p class="first">Select the volume or volume snapshot from which to boot. Enter a device name. Enter <code class="docutils literal"><span class="pre">vda</span></code> for DreamCompute images.</p>
-</li>
-</ul>
-</div>
-<div id="connect-to-your-instance-by-using-ssh">
-<h2>Connect to your instance by using SSH</h2>
-<p>To use SSH to connect to your instance, use the downloaded keypair file.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last"><a class="reference external" href="228377408-How-to-find-the-default-user-of-an-image">Read the article about how to find the default user of your image</a></p>
-</div>
-<ol class="arabic">
-<li>
-<p class="first">Copy the IP address for your instance.</p>
-</li>
-<li>
-<p class="first">Use the <strong class="command">ssh</strong> command to make a secure connection to the instance. For example:</p>
-<div class="highlight-console">
-<div class="highlight">
-<pre><span class="gp">$</span> ssh -i /path/to/key USER@IP
-</pre>
-</div>
-</div>
-</li>
-<li>
-<p class="first">You’ll see a response similar to this:</p>
-</li>
-</ol>
-<blockquote>
-<div>
-<div class="highlight-console">
-<div class="highlight">
-<pre><span class="go">The authenticity of host '123.123.123.123 (123.123.123.123)' can't be established.</span>
-<span class="go">ECDSA key fingerprint is SHA256:B55lL/sLEfJc09dEVFbQhDXkCqQ4taUoBZgzteirnmA.</span>
-<span class="go">ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDMp8+8id6TRCgznUBMUjwbCUWNz834Cgi5xb1d5xIi</span>
-<span class="go">Are you sure you want to continue connecting (yes/no)?</span>
-</pre>
-</div>
-</div>
-</div>
-</blockquote>
-<ol class="arabic simple">
-<li>Type <code class="docutils literal"><span class="pre">yes</span></code> and you’ll see a response like this:</li>
-</ol>
-<blockquote>
-<div>
-<div class="highlight-console">
-<div class="highlight">
-<pre><span class="go">Warning: Permanently added '123.123.123.123' (ECDSA) to the list of known hosts.</span>
-</pre>
-</div>
-</div>
-</div>
-</blockquote>
-</div>
-<div id="additional-configuration">
-<h2>Additional Configuration</h2>
-<p>By default, your server is open to all traffic from your other DreamCompute servers and limited traffic from the public network to these ports:</p>
-<ul class="simple">
-<li>SSH</li>
-<li>HTTP</li>
-<li>HTTPS</li>
-<li>ICMP (ping)</li>
-</ul>
-<p>Additional ports can be configured from the <a class="reference external" href="https://iad2.dreamcompute.com/project/access_and_security/?tab=access_security_tabs__security_groups_tab">Security Groups</a> section of the dashboard.</p>
-</div>
-<div id="manage-your-server">
-<h2>Manage Your Server</h2>
-<p>The dashboard contains several commands in the <cite>Actions</cite> menu to manage your server. It’s important to note that only terminating a server will stop usage charges from accruing on a server.</p>
+<div id="connect-to-your-server"> </div>
 </div>
 </div>
 </div>
 </div>
-<div class="clearer"> </div>
-</div>
-<div class="footer">©2015-2016, OpenStack contributors.</div>
+<div class="footer"> </div>
 <!--DreamCompute Button-->
 <div class="dream-sign-up">
 <h2>Deploy Your Apps On Cloud Servers Today</h2>
