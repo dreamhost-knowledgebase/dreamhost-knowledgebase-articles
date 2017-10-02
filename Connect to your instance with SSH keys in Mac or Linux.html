@@ -1,0 +1,87 @@
+<p>To log in, you'll need your User and IP Address of the instance.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/228377408-How-to-find-the-default-user-of-an-image">How to find the default user of an image</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115001754711-Locating-IP-Address-of-your-instance">Locating IP Address of your instance</a></li>
+</ul>
+<h2>Using Mac &amp; Linux</h2>
+<p>First, create a key pair. You can create these within the DreamCompute dashboard, or on your local computer:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115001736611-Creating-a-new-Key-pair-in-the-DreamCompute-dashboard">Creating a new Key pair in the DreamCompute dashboard</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115001736671-Creating-a-new-Key-pair-in-Mac-OS-X-or-Linux">Creating a new Key pair in Mac OS X or Linux</a></li>
+</ul>
+<h2>If you created the Key pair in the DreamCompute dashboard</h2>
+<p>If you created the Key pair in the dashboard, a .pem file was automatically downloaded to your computer. Move that file into your ~/.ssh/ directory.</p>
+<p>For example, let's say you named the Key pair 'dashboardkey' when creating it in the panel. A file named dashboardkey.pem was downloaded.</p>
+<ol>
+<li>Move that from your /Downloads directory into your ~/.ssh directory:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">macbook$ </span><span class="command">mv ~/Downloads/dashboardkey.pem ~/.ssh</span></pre>
+</div>
+</li>
+<li>Change the permissions to 600
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">macbook$ </span><span class="command">chmod 600 ~/.ssh/dashboardkey.pem</span></pre>
+</div>
+</li>
+<li>You can now log in while specifying that file name:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">macbook$ </span><span class="command">ssh -i ~/.ssh/dashboardkey.pem USER@IP_ADDRESS</span></pre>
+</div>
+</li>
+</ol>
+<h2>If you created the Key pair on your local computer</h2>
+<p>If you created the Key pair on your local computer you now have a private and public key file in the ~/.ssh directory. For example:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">macbook$ </span><span class="command">ls -la ~/.ssh</span>
+id_rsa
+id_rsa.pub</pre>
+</div>
+<p>You can now log in by running the following (make sure to change it to your IP address as shown above):</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">macbook$ </span><span class="command">ssh USER@IP_ADDRESS</span></pre>
+</div>
+<h3>What if I didn't name the Key pair id_rsa?</h3>
+<p>When you created the Key pair, you could name it anything you like. For example, let's say you named it 'dhc_key' <a href="https://help.dreamhost.com/hc/en-us/articles/115001736671-Creating-a-new-Key-pair-in-Mac-OS-X-or-Linux">in step#1</a> by running the following:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">ssh-keygen -t rsa</span></pre>
+</div>
+<dl>
+<dd><em>This creates a public/private keypair of the type (-t) rsa.</em></dd>
+</dl>
+<div class="preboxcontainer">
+<pre class="prebox">Generating a public/private rsa key pair.
+Enter the file in which you wish to save they key 
+(i.e., /home/username/.ssh/id_rsa):<span class="command">/home/username/.ssh/dhc_key/</span>
+</pre>
+</div>
+<p>You now must specify the name of the key while logging in. For example:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">ssh -i ~/.ssh/dhc_key USER@IP_ADDRESS</span></pre>
+</div>
+<h2>Using a ~.ssh/config file to simplify logging in</h2>
+<p>You can also create a 'config' file to simplify the ssh login process. For example, you can simplify your login to something like <code><strong>ssh dhc</strong></code>.</p>
+<ol>
+<li>Create a config file in your ~/.ssh directory</li>
+<li>Edit the file to add the following:
+<ul>
+<li>Host: This is the shortcut name of your connection</li>
+<li>HostName: This is the IP Address of your DreamCompute instance</li>
+<li>User: This is the username of your DreamCompute instance</li>
+<li>IdentityFile: This is necessary if your private key is named something other than id_rsa</li>
+</ul>
+</li>
+<li>Here is a full example of what a ~/.ssh/config file would look like. This example assumes the private key was downloaded from the panel as a .pem file and the username is 'ubuntu'.
+<div class="preboxcontainer">
+<pre class="prebox">Host dhc
+
+HostName 208.113.167.187
+User ubuntu
+IdentityFile ~/.ssh/dashboardkey.pem</pre>
+</div>
+</li>
+<li>You can now log into your server instance with the following command
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">ssh dhc</span></pre>
+</div>
+</li>
+</ol>

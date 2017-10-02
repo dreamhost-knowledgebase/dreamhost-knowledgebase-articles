@@ -2,101 +2,73 @@
 <div id="bodyContent" class="mw-body-content">
 <div id="mw-content-text" class="mw-content-ltr" dir="ltr" lang="en">
 <p>PHPmailer is a fully-featured email creation and transport class for PHP. Visit <a href="https://github.com/PHPMailer/PHPMailer/blob/master/README.md">PHPMailer’s GitHub page</a> for further details on what it has to offer.</p>
-<h2><span id="How_to_download_PHPMailer">How to download PHPMailer</span></h2>
-<p>There are two options to download:</p>
+<h2><span id="How_to_download_PHPMailer">How to install PHPMailer</span></h2>
+<p>The recommend way to install PHPMailer is through composer. View the following article to set up composer on your DreamHost server:</p>
 <ul>
-<li>Download from the GitHub page, or</li>
-<li>Run commands via SSH.</li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214899037-Installing-Composer-overview">Installing Composer overview</a></li>
 </ul>
-<h2><span id="Downloading_PHPMailer_and_uploading_via_SFTP">Downloading PHPMailer and uploading via SFTP</span></h2>
-<ol>
-<li>Download the <a href="https://github.com/PHPMailer/PHPMailer">PHPMailer files</a> from Github. You can download a ZIP file from that page.</li>
-<li>Unzip the file on your computer.
-<dl>
-<dd><em>A folder named ‘PHPMailer-master’ is unzipped.</em></dd>
-</dl>
-</li>
-<li>In that folder, use an <a href="https://help.dreamhost.com/hc/en-us/articles/215613107-List-of-FTP-client-software">SFTP</a> client to copy the following files to your site’s directory:
-<ul>
-<li>class.phpmailer.php</li>
-<li>class.smtp.php</li>
-<li>class.pop3.php</li>
-<li>PHPMailerAutoload.php.</li>
-</ul>
-</li>
-</ol>
-<h2><span id="Downloading_PHPMailer_via_SSH">Downloading PHPMailer via SSH</span></h2>
-<ol>
-<li>Download the PHPMailer files from Github.</li>
-<li>Run the following command via <a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a> in your site’s directory:
+<p>Once composer is configured, you can install PHPMailer by running the following command:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">wget https://github.com/PHPMailer/PHPMailer/archive/master.zip</span>
-</pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">composer require phpmailer/phpmailer</span></pre>
 </div>
-</li>
-<li>Unzip the file, and then run the following to unzip:
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">unzip master.zip</span>
-</pre>
-</div>
-<em>A folder named ‘PHPMailer-master’ is unzipped.</em></li>
-</ol>
-<h2><span id="Basic_code_example">Basic code example</span></h2>
-<p>Insert the following code into a PHP file. Make sure to adjust the first line to the location of your Autoload.php file. Also, adjust the settings in bold to match your mail server and email address credentials.</p>
-<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
+<h2><span id="Basic_code_example">Basic code example for email hosted at DreamHost</span></h2>
+<p>Insert the following code into a PHP file.</p>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
-<p>In the past, it was possible to use mail.example.com to connect (where example.com is your actual domain name). Due to how modern mail clients handle security, this is now NOT recommended as it may throw connection errors. Please ensure you are only using your <a href="https://help.dreamhost.com/hc/en-us/articles/214918038#Server_names">mail cluster servername</a> when connecting.</p>
+<p>You only need to update the code in bold.</p>
+<p><strong>username</strong> — Make sure to change the 'username' field to your actual <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Enabling-Shell-access">shell username</a>.</p>
+<p><strong>Host </strong>— In the past, it was possible to use mail.example.com to connect (where example.com is your actual domain name). Due to how modern mail clients handle security, this is now NOT recommended as it may throw connection errors. Please ensure you are only using your <a href="https://help.dreamhost.com/hc/en-us/articles/214918038#Server_names">mail cluster servername</a> when connecting.</p>
+<p><strong>Username</strong> and <strong>setFrom</strong> must both be an email on the domain you're sending from.</p>
 </div>
 </div>
 <div class="preboxcontainer">
 <pre class="prebox">&lt;?php
-/**
-* This example shows making an SMTP connection with authentication.
-*/<br />
-//SMTP needs accurate times, and the PHP timezone MUST be set
-//This should be done in your php.ini, but this is how to do it if you don't have access to that
-date_default_timezone_set('Etc/UTC');<br />
-<strong>require '/location/of/PHPMailerAutoload.php';</strong>
-//Create a new PHPMailer instance
-$mail = new PHPMailer;<br />
-//Tell PHPMailer to use SMTP
-$mail-&gt;isSMTP();
-//Enable SMTP debugging
-// 0 = off (for production use)
-// 1 = client messages
-// 2 = client and server messages
-$mail-&gt;SMTPDebug = 2;
-//Ask for HTML-friendly debug output
-$mail-&gt;Debugoutput = 'html';<br />
-//Set the hostname of the mail server
-$mail-&gt;Host = "sub4.<strong>mail.dreamhost.com</strong>";
-//Set the SMTP port number - likely to be 25, 465 or 587
-$mail-&gt;Port = 587;
-//Whether to use SMTP authentication
-$mail-&gt;SMTPAuth = true;
-//Username to use for SMTP authentication
-$mail-&gt;Username = "<strong>yourname@example.com</strong>";
-//Password to use for SMTP authentication
-$mail-&gt;Password = "<strong>yourpassword</strong>";
-//Set who the message is to be sent from
-$mail-&gt;setFrom('<strong>from@example.com'</strong>, '<strong>First Last'</strong>);
-//Set an alternative reply-to address
-$mail-&gt;addReplyTo('<strong>replyto@example.com'</strong>, '<strong>First Last'</strong>);
-//Set who the message is to be sent to
-$mail-&gt;addAddress('<strong>whoto@example.com'</strong>, '<strong>John Doe'</strong>);<br />
-//Set the subject line
-$mail-&gt;Subject = '<strong>PHPMailer SMTP test'</strong>;
-//if you want to include text in the body. 
-$mail-&gt;Body    = "<strong>This is a test of email</strong>";<br />
-//send the message, check for errors
-if (!$mail-&gt;send()) {
-   echo "Mailer Error: " . $mail-&gt;ErrorInfo;
-} else {
-   echo "Message sent!";
-}
-?&gt;</pre>
+// Import PHPMailer classes into the global namespace
+// These must be at the top of your script, not inside a function
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+//Load composer's autoloader
+require '/home/<span class="command">username</span>/vendor/autoload.php';
+
+$mail = new PHPMailer(true);                              // Passing `true` enables exceptions
+try {
+    //Server settings
+    $mail-&gt;SMTPDebug = 2;                                 // Enable verbose debug output
+    $mail-&gt;isSMTP();                                      // Set mailer to use SMTP
+    $mail-&gt;Host = '<span class="command">sub4.mail.dreamhost.com</span>';                           // Specify main and backup SMTP servers
+    $mail-&gt;SMTPAuth = true;                               // Enable SMTP authentication
+    $mail-&gt;Username = '<span class="command">user@example.com'</span>;                 // SMTP username
+    $mail-&gt;Password = '<span class="command">secret</span>';                           // SMTP password
+    $mail-&gt;SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
+    $mail-&gt;Port = 587;                                    // TCP port to connect to
+
+    //Recipients
+    $mail-&gt;setFrom('<span class="command">user@example.com</span>', 'Mailer');
+    $mail-&gt;addAddress('<span class="command">joe@example.net</span>', '<span class="command">Joe User</span>');     // Add a recipient
+    //$mail-&gt;addAddress('ellen@example.com');               // Name is optional
+    //$mail-&gt;addReplyTo('info@example.com', 'Information');
+    //$mail-&gt;addCC('cc@example.com');
+    //$mail-&gt;addBCC('bcc@example.com');
+
+    //Attachments
+    //$mail-&gt;addAttachment('/var/tmp/file.tar.gz');         // Add attachments
+    //$mail-&gt;addAttachment('/tmp/image.jpg', 'new.jpg');    // Optional name
+
+    //Content
+    $mail-&gt;isHTML(true);                                  // Set email format to HTML
+    $mail-&gt;Subject = '<span class="command">Subject line goes here</span>';
+    $mail-&gt;Body    = '<span class="command">Body text goes here</span>';
+    //$mail-&gt;AltBody = 'This is the body in plain text for non-HTML mail clients';
+
+    $mail-&gt;send();
+    echo 'Message has been sent';
+} catch (Exception $e) {
+    echo 'Message could not be sent.';
+    echo 'Mailer Error: ' . $mail-&gt;ErrorInfo;
+}<br />?&gt;</pre>
 </div>
-<p>You can use a third-party's SMTP server (like Gmail) – just use their mail hostname, and the username and password you use to access that specific email address' inbox.</p>
 <h2><span id="Important_note_about_bulk_email">Important note about bulk email</span></h2>
 <p>Bulk email of any kind sent from a DreamHost account is subject to the DreamHost <a href="https://www.dreamhost.com/legal/anti-spam-policy/">spam policy</a> which is part of the <a href="https://www.dreamhost.com/legal/terms-of-service/">terms of service</a>. Please read those pages along with <a href="/hc/en-us/articles/215730437-SMTP-quota-limits">SMTP quota</a> to ensure you’re not in violation of any of these policies.</p>
 <h2><span id="Troubleshooting">Troubleshooting</span></h2>
@@ -112,6 +84,11 @@ if (!$mail-&gt;send()) {
 <p>This is due to the hostname being used. View the following article for a detailed solution:</p>
 <ul>
 <li><a href="/hc/en-us/articles/215507068-Troubleshooting-PHP-mail-">Certificate errors using PHP 5.6</a></li>
+</ul>
+<h2>Allowing GMAIL to send from your mail application</h2>
+<p>If you're using your GMAIL address to send via SMTP, you must first allow your application access to your GMAIL address. If you do not do this, your email will not authenticate and not send. View the following article for details:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115001719551-Troubleshooting-GMAIL-SMTP-authentication-errors">Troubleshooting GMAIL SMTP authentication errors</a></li>
 </ul>
 <h2><span id="See_also">See also</span></h2>
 <h3>Internal links</h3>
@@ -132,4 +109,5 @@ if (!$mail-&gt;send()) {
 </div>
 <div id="mw-navigation">
 <h2> </h2>
+</div>
 </div>
