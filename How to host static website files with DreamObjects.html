@@ -1,0 +1,73 @@
+<div class="document">
+<div class="documentwrapper">
+<div class="body">
+<div id="how-to-create-static-websites-with-dreamobjects">
+<p>You can configure a DreamObjects bucket to serve static web pages created with HTML, CSS, and JavaScript. This allows you to host an entire website that is simple to build and very inexpensive.</p>
+<p>Static web pages are usually HTML pages instead of being dynamically built by a web application such as WordPress or framework such as Django. There are a lot of tools that help generate and maintain static web pages: the site <a class="reference external" href="https://www.staticgen.com/">StaticGen</a> maintains a list of open source static site generators you can use to create the files to upload to your new DreamObjects website bucket.</p>
+<p>This tutorial covers how to <strong>serve</strong> a static website from a DreamObjects bucket, but doesn’t cover how to create the files for the static website itself.</p>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Make sure you have a working <a class="reference external" href="215916627">installation of S3cmd</a> (version 1.6 or greater) before proceeding.</p>
+</div>
+</div>
+<h2>Creating the bucket</h2>
+<p>The name of the bucket must be the same name of the DNS entry for the website. For example, if your website is www.example.com, name the bucket <cite>www.example.com</cite>:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">s3cmd mb s3://www.example.com</span>
+<span class="cmdoutput">Bucket 's3://www.example.com/' created</span>
+</pre>
+</div>
+<h2>Creating the website for the bucket</h2>
+<p>Once the bucket is created, use s3cmd to configure the bucket as a website. The option <strong><cite>ws-create</cite></strong> takes many arguments. In this example, the default index page is configured:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">s3cmd ws-create --ws-index index.html s3://www.example.com</span>
+<span class="cmdoutput">Bucket 's3://www.example.com/': website configuration created.</span>
+</pre>
+</div>
+<p>You can also configure a default error page, using the <strong><cite>–ws-error</cite></strong> argument for the <strong><cite>ws-create</cite></strong> command. Read the full <a class="reference external" href="http://manpages.org/s3cmd">S3cmd man page</a> for more details.</p>
+<p>Check the results of the command with <strong><cite>ws-info</cite></strong> — it should look like the following example:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">s3cmd ws-info s3://www.example.com</span>
+<span class="cmdoutput">Bucket s3://www.example.com/: Website configuration
+Website endpoint: http://www.example.com.objects-website-us-west-1.dream.io/
+Index document:   index.html
+Error document:   None
+</span></pre>
+</div>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>s3cmd configuration needs <cite>website_endpoint</cite> set to output this value correctly. If you use the default, things will still work, but the printed output here will be <cite>http://www.example.com.s3-website-us-east-1.amazonaws.com/</cite>.</p>
+</div>
+</div>
+<h2>Setting the policy for the bucket and upload the static files</h2>
+<p>At this point, the bucket is ready and all you need to do is upload the HTML files, JavaScript, CSS, images, and any videos you may have in your static website. From the root folder of your website, upload these files with the <strong><cite>sync</cite></strong> command, setting the files public <cite>-P</cite> and recursively <cite>-r</cite>.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">s3cmd -Pr sync . s3://www.example.com</span>
+</pre>
+</div>
+<p>This process takes awhile, depending on the size of your site and the upload bandwidth. Once it completes, visit the website endpoint with your browser (in the example, <a class="reference external" href="http://www.example.com.objects-website-us-west-1.dream.io/">http://www.example.com.objects-website-us-west-1.dream.io/</a>). You should see the content of your index.html file.</p>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Support for HTTPS will be added in the future.</p>
+</div>
+</div>
+<h2>Creating the DNS entry</h2>
+<p>As a last step, you can create a more attractive name for your site, such as www.example.com. Go to the <a class="reference external" href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;">(Panel &gt; 'Domains' &gt; 'Manage Domains')</a> and add a custom DNS record to the domain. Pick <cite>CNAME</cite> and insert <cite>www.example.com.objects-website-us-west-1.dream.io</cite>.</p>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>The endpoint for website is <cite>objects-website-us-west-1.dream.io</cite> while the API endpoint for DreamObjects is <cite>objects-us-west-1.dream.io</cite>.</p>
+</div>
+</div>
+<p>As soon as DNS information propagates, your site is reachable in your browser at <a class="reference external" href="http://www.example.com">http://www.example.com</a>.</p>
+<!--DreamObjects Button-->
+<div class="dream-sign-up">
+<h2>Start Storing Your Data Today!</h2>
+<a href="https://www.dreamhost.com/cloud/storage/">Sign Up for DreamObjects</a></div>
+</div>
+</div>
+</div>
+</div>
