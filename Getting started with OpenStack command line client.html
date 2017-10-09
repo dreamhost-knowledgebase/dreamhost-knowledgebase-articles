@@ -1,124 +1,155 @@
-<body role="document">
-<div class="document">
-<div class="documentwrapper">
-<div class="body" role="main">
-<div id="getting-started-with-openstack-command-line-client">
-
-<div id="installation">
+<p><a href="https://www.openstack.org/">OpenStack</a> is open-source software that allows you to create private and public clouds. A <a href="https://docs.openstack.org/python-openstackclient/latest/">command line tool</a> is available which makes it easy to work with. This article explains how to install this client on your cloud server.</p>
+<p><a href="https://docs.openstack.org/python-ironicclient/pike/cli/osc_plugin_cli.html">https://docs.openstack.org/python-ironicclient/pike/cli/osc_plugin_cli.html</a></p>
 <h2>Installation</h2>
-<p>The OpenStack command line client can be installed in several ways, the best
-way is to use <cite>pip</cite> in a virtualenv using the following:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@localhost]$</span> virtualenv venv -p /usr/bin/python
-<span class="gp">[user@localhost]$</span> <span class="nb">source</span> venv/bin/activate
-<span class="gp">[user@localhost]$</span> pip install python-openstackclient
-</pre></div>
+<p>The OpenStack command line client can be installed in several ways. This article shows how to install it using <cite>pip</cite> in a virtualenv as well as installing globally.</p>
+<h3>Install python-dev</h3>
+<p>Install python-dev so you can build Python extensions. This is necessary to install the openstackclient using pip.</p>
+<p><strong>If you're using Python 2:</strong></p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">sudo apt-get install python2.7-dev</span></pre>
 </div>
-<p>This installs the client in a virtual environment separated from the rest of
-your system. In order to be able to use the client you will have to activate
-the virtual environment using the source command above.</p>
+<p><strong>If you're using Python 3:</strong></p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server"><span class="gp">[user@localhost]$</span> </span><span class="command">sudo apt-get install python3-dev</span></pre>
+</div>
+<h3>Install pip</h3>
+<p>First, run the following to see if 'pip' is installed:</p>
+<p><strong>If you're running Python 2</strong></p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server"><span class="gp">[user@localhost]$</span> </span><span class="command">pip -V</span></pre>
+</div>
+<p><strong>If you're running Python 3</strong></p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server"><span class="gp">[user@localhost]$</span> </span><span class="command">pip3 -V</span></pre>
+</div>
+<p>If it's not, install with the following:</p>
+<p><strong>If you're running Python 2</strong></p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">sudo apt-get install python-pip</span></pre>
+</div>
+<p><strong>If you're running Python 3</strong></p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">sudo apt-get install python3-pip</span></pre>
+</div>
+<h3>Install virtualenv</h3>
+<p>One way to install the OpenStack CLI is in a <a href="https://help.dreamhost.com/hc/en-us/articles/215489338-Installing-and-using-Python-s-virtualenv">virtual environment</a>. Now that pip is installed, run the following to install virtualenv:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server"><span class="gp">[user@localhost]$</span> </span><span class="command">sudo apt-get install python-virtualenv</span></pre>
+</div>
+<h3>Install OpenStack CLI</h3>
+<p><strong>Installing within a virtualenv</strong></p>
+<p>This is a safe method as your installation is housed within a virtual environment and does not touch anything else in your system. To do this, create a <a href="https://help.dreamhost.com/hc/en-us/articles/215489338-Installing-and-using-Python-s-virtualenv">virtual environment</a>, activate it, and install the OpenStack CLI within it.</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>If you're using Python 2, run the command <span class="code">pip</span>. If you're using Python 3, run the command <span class="code">pip3</span>.</p>
+</div>
+</div>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">virtualenv ~/venv</span>
+<span class="server"><span class="gp">[user@localhost]$</span> </span><span class="command">source ~/venv/bin/activate</span>
+<span class="server">(venv)user@localhost$ </span><span class="command">pip install python-openstackclient</span></pre>
+</div>
+<p>This installs the client in a virtual environment separated from the rest of your system. In order to be able to use the client you will have to activate the virtual environment using the <span class="code">source</span> command above.</p>
+<p><strong>Installing globally</strong></p>
+<p>You can also install on your system globally using pip</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">sudo pip install python-openstackclient</span></pre>
 </div>
 <div id="configuration">
 <h2>Configuration</h2>
-<p>The easiest way to configure the client is to use the OpenRC file. Read about
-what that is and how to download it in <a class="reference external" href="228047207-How-to-download-your-DreamCompute-openrc-file">the tutorial on how to use the OpenRC
-file</a>.</p>
+<p>The easiest way to configure the client is to use the OpenRC file. View the following article for instructions on how to download this file:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/228047207-How-to-download-your-DreamCompute-openrc-file">How to download your DreamCompute openrc file</a></li>
+</ul>
 <p>In order to use the OpenRC file, run:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@localhost]$</span> <span class="nb">source</span> openrc.sh
-</pre></div>
+<div class="highlight-console">
+<div class="highlight">
+<pre><span class="gp">[user@localhost]$</span> <span class="nb">source</span> openrc.sh
+</pre>
+</div>
 </div>
 </div>
 <div id="basic-commands">
 <h2>Basic commands</h2>
-<p>The OpenStack command line client combines the functionality of all of the
-other OpenStack service specific command line clients, such as the nova client
-and the cinder client. Here are some basic commands that are useful:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@localhost]$</span> openstack server list
-<span class="go">+--------------------------------------+-------------+--------+--------------------------------------------------------------+--------------+</span>
-<span class="go">| ID                                   | Name        | Status | Networks                                                     | Image Name   |</span>
-<span class="go">+--------------------------------------+-------------+--------+--------------------------------------------------------------+--------------+</span>
-<span class="go">| 4c40d015-33b3-4bc3-ba50-d794356eef4f | mariadb     | ACTIVE | public=2607:f298:5:101d:f816:3eff:feeb:ca8c, 208.113.133.156 | Ubuntu-16.04 |</span>
-<span class="go">| bf500ff3-7b37-4d01-a77e-5efc086de5f0 | nextcloud-1 | ACTIVE | public=2607:f298:5:101d:f816:3eff:fef1:9c6a, 208.113.131.81  | Ubuntu-16.04 |</span>
-<span class="go">| af01d391-7604-482e-84b9-3ccee872d69f | nextcloud   | ACTIVE | public=2607:f298:5:101d:f816:3eff:fea9:a69f, 208.113.129.184 | Ubuntu-16.04 |</span>
-<span class="go">| 72c4271b-d447-444c-b5f6-0af401ca14d2 | wordpress   | ACTIVE | public=2607:f298:5:101d:f816:3eff:fe08:54c5, 208.113.133.184 | Ubuntu-16.04 |</span>
-<span class="go">+--------------------------------------+-------------+--------+--------------------------------------------------------------+--------------+</span>
-</pre></div>
+<p>The OpenStack command line client combines the functionality of all of the other OpenStack service specific command line clients, such as the nova client and the cinder client. Here are some basic commands that are useful:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server list</span>
++--------------------------------------+-------------+--------+--------------------------------------------------------------+--------------+
+| ID                                   | Name        | Status | Networks                                                     | Image Name   |
++--------------------------------------+-------------+--------+--------------------------------------------------------------+--------------+
+| 4c40d015-33b3-4bc3-ba50-d794356eef4f | mariadb     | ACTIVE | public=2607:f298:5:101d:f816:3eff:feeb:ca8c, 208.113.133.156 | Ubuntu-16.04 |
+| bf500ff3-7b37-4d01-a77e-5efc086de5f0 | nextcloud-1 | ACTIVE | public=2607:f298:5:101d:f816:3eff:fef1:9c6a, 208.113.131.81  | Ubuntu-16.04 |
+| af01d391-7604-482e-84b9-3ccee872d69f | nextcloud   | ACTIVE | public=2607:f298:5:101d:f816:3eff:fea9:a69f, 208.113.129.184 | Ubuntu-16.04 |
+| 72c4271b-d447-444c-b5f6-0af401ca14d2 | wordpress   | ACTIVE | public=2607:f298:5:101d:f816:3eff:fe08:54c5, 208.113.133.184 | Ubuntu-16.04 |
++--------------------------------------+-------------+--------+--------------------------------------------------------------+--------------+</pre>
 </div>
-<p>This lists the servers you have in your tennant with some basic information
-about them.</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@localhost]$</span> openstack image list
-<span class="go">+--------------------------------------+--------------+--------+</span>
-<span class="go">| ID                                   | Name         | Status |</span>
-<span class="go">+--------------------------------------+--------------+--------+</span>
-<span class="go">| afa49adf-2831-4a00-9c57-afe1624d5557 | CentOS-6     | active |</span>
-<span class="go">| 842c207f-6964-4ed7-a41a-06ec66a7c954 | Ubuntu-14.04 | active |</span>
-<span class="go">| 30a2a55a-2045-4ed8-a605-2d1c1143edd3 | Ubuntu-16.04 | active |</span>
-<span class="go">| 713f2fbc-05c5-491b-9e02-e000861e7b30 | Fedora-24    | active |</span>
-<span class="go">| 5cb9c233-5867-4e47-80a1-9d774f800444 | Debian-7     | active |</span>
-<span class="go">| f84868a5-5261-404a-9c54-ec317ea16b94 | CentOS-7     | active |</span>
-<span class="go">| b105ad3b-7df8-4318-9c3d-4e4fa4cc4563 | Debian-8     | active |</span>
-<span class="go">| b67b74bc-c3a8-4087-9c28-de02161fdedd | CoreOS       | active |</span>
-<span class="go">+--------------------------------------+--------------+--------+</span>
-</pre></div>
+<p>This lists the servers you have in your tennant with some basic information about them.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack image list</span>
++--------------------------------------+--------------+--------+
+| ID                                   | Name         | Status |
++--------------------------------------+--------------+--------+
+| afa49adf-2831-4a00-9c57-afe1624d5557 | CentOS-6     | active |
+| 842c207f-6964-4ed7-a41a-06ec66a7c954 | Ubuntu-14.04 | active |
+| 30a2a55a-2045-4ed8-a605-2d1c1143edd3 | Ubuntu-16.04 | active |
+| 713f2fbc-05c5-491b-9e02-e000861e7b30 | Fedora-24    | active |
+| 5cb9c233-5867-4e47-80a1-9d774f800444 | Debian-7     | active |
+| f84868a5-5261-404a-9c54-ec317ea16b94 | CentOS-7     | active |
+| b105ad3b-7df8-4318-9c3d-4e4fa4cc4563 | Debian-8     | active |
+| b67b74bc-c3a8-4087-9c28-de02161fdedd | CoreOS       | active |
++--------------------------------------+--------------+--------+</pre>
 </div>
 <p>This lists the images available to your tennant.</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@localhost]$</span> openstack volume list
-<span class="go">+--------------------------------------+-----------------------------+-----------+------+---------------------------------+</span>
-<span class="go">| ID                                   | Display Name                | Status    | Size | Attached to                     |</span>
-<span class="go">+--------------------------------------+-----------------------------+-----------+------+---------------------------------+</span>
-<span class="go">| 21cb1ef8-8541-4919-a8e0-2af66e547b03 | db_volume                   | available |   10 |                                 |</span>
-<span class="go">| 2b3ce54e-7445-4d9e-a153-d03b120f1d1a | Meretricious Nibblet Volume | available |   10 |                                 |</span>
-<span class="go">+--------------------------------------+-----------------------------+-----------+------+---------------------------------+</span>
-</pre></div>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack volume list</span>
++--------------------------------------+-----------------------------+-----------+------+---------------------------------+
+| ID                                   | Display Name                | Status    | Size | Attached to                     |
++--------------------------------------+-----------------------------+-----------+------+---------------------------------+
+| 21cb1ef8-8541-4919-a8e0-2af66e547b03 | db_volume                   | available |   10 |                                 |
+| 2b3ce54e-7445-4d9e-a153-d03b120f1d1a | Meretricious Nibblet Volume | available |   10 |                                 |
++--------------------------------------+-----------------------------+-----------+------+---------------------------------+</pre>
 </div>
 <p>This lists the volumes you have created.</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@localhost]$</span> openstack server create --key-name my_key --image <span class="se">\</span>
-<span class="go">Ubuntu-16.04 --flavor 100 awesome_server</span>
-<span class="go">+--------------------------------------+-----------------------------------------------------+</span>
-<span class="go">| Field                                | Value                                               |</span>
-<span class="go">+--------------------------------------+-----------------------------------------------------+</span>
-<span class="go">| OS-DCF:diskConfig                    | MANUAL                                              |</span>
-<span class="go">| OS-EXT-AZ:availability_zone          | iad-2                                               |</span>
-<span class="go">| OS-EXT-STS:power_state               | NOSTATE                                             |</span>
-<span class="go">| OS-EXT-STS:task_state                | scheduling                                          |</span>
-<span class="go">| OS-EXT-STS:vm_state                  | building                                            |</span>
-<span class="go">| OS-SRV-USG:launched_at               | None                                                |</span>
-<span class="go">| OS-SRV-USG:terminated_at             | None                                                |</span>
-<span class="go">| accessIPv4                           |                                                     |</span>
-<span class="go">| accessIPv6                           |                                                     |</span>
-<span class="go">| addresses                            |                                                     |</span>
-<span class="go">| adminPass                            | DCa8su7uHQUR                                        |</span>
-<span class="go">| config_drive                         |                                                     |</span>
-<span class="go">| created                              | 2016-12-02T19:46:41Z                                |</span>
-<span class="go">| flavor                               | gp1.subsonic (100)                                  |</span>
-<span class="go">| hostId                               |                                                     |</span>
-<span class="go">| id                                   | 24c4538d-6607-4546-95b4-49ee9aa4a26a                |</span>
-<span class="go">| image                                | Ubuntu-16.04 (30a2a55a-2045-4ed8-a605-2d1c1143edd3) |</span>
-<span class="go">| key_name                             | my_key                                              |</span>
-<span class="go">| name                                 | awesome_server                                      |</span>
-<span class="go">| os-extended-volumes:volumes_attached | []                                                  |</span>
-<span class="go">| progress                             | 0                                                   |</span>
-<span class="go">| project_id                           |                                                     |</span>
-<span class="go">| properties                           |                                                     |</span>
-<span class="go">| security_groups                      | [{u'name': u'default'}]                             |</span>
-<span class="go">| status                               | BUILD                                               |</span>
-<span class="go">| updated                              | 2016-12-02T19:46:42Z                                |</span>
-<span class="go">| user_id                              |                                                     |</span>
-<span class="go">+--------------------------------------+-----------------------------------------------------+</span>
-</pre></div>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server create --key-name my_key --image Ubuntu-16.04 --flavor 100 awesome_server</span>
++--------------------------------------+-----------------------------------------------------+
+| Field                                | Value                                               |
++--------------------------------------+-----------------------------------------------------+
+| OS-DCF:diskConfig                    | MANUAL                                              |
+| OS-EXT-AZ:availability_zone          | iad-2                                               |
+| OS-EXT-STS:power_state               | NOSTATE                                             |
+| OS-EXT-STS:task_state                | scheduling                                          |
+| OS-EXT-STS:vm_state                  | building                                            |
+| OS-SRV-USG:launched_at               | None                                                |
+| OS-SRV-USG:terminated_at             | None                                                |
+| accessIPv4                           |                                                     |
+| accessIPv6                           |                                                     |
+| addresses                            |                                                     |
+| adminPass                            | DCa8su7uHQUR                                        |
+| config_drive                         |                                                     |
+| created                              | 2016-12-02T19:46:41Z                                |
+| flavor                               | gp1.subsonic (100)                                  |
+| hostId                               |                                                     |
+| id                                   | 24c4538d-6607-4546-95b4-49ee9aa4a26a                |
+| image                                | Ubuntu-16.04 (30a2a55a-2045-4ed8-a605-2d1c1143edd3) |
+| key_name                             | my_key                                              |
+| name                                 | awesome_server                                      |
+| os-extended-volumes:volumes_attached | []                                                  |
+| progress                             | 0                                                   |
+| project_id                           |                                                     |
+| properties                           |                                                     |
+| security_groups                      | [{u'name': u'default'}]                             |
+| status                               | BUILD                                               |
+| updated                              | 2016-12-02T19:46:42Z                                |
+| user_id                              |                                                     |
++--------------------------------------+-----------------------------------------------------+</pre>
 </div>
-<p>This creates an Ubuntu 16.04 server with the gp1.subsonic flavor (ID 100), and
-uses the key called <code class="docutils literal"><span class="pre">my_key</span></code>.</p>
+<p>This creates an Ubuntu 16.04 server with the gp1.subsonic flavor (ID 100), and uses the key called <code class="docutils literal"><span class="pre">my_key</span></code>.</p>
 </div>
-</div>
-</div>
-</div>
-<div class="clearer"></div>
-</div>
-<div class="footer">
-</div>
+<div class="clearer"> </div>
+<div class="footer"> </div>
 <!--DreamCompute Button-->
 <div class="dream-sign-up">
 <h2>Deploy Your Apps On Cloud Servers Today</h2>
-<a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a>
-</div>
-</body>
+<a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a></div>
