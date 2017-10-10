@@ -1,267 +1,206 @@
-<body role="document">
 <div class="document">
 <div class="documentwrapper">
 <div class="body" role="main">
 <div id="how-to-launch-a-virtual-server-on-dreamcompute">
-
-<p>Virtual machines that run inside the cloud are called instances.</p>
-<p>Before you can launch an instance, gather the following parameters:</p>
+<p>Virtual machines that run inside the cloud are called instances. Before you can launch an instance, gather the following parameters:</p>
 <ul class="simple">
-<li>The <strong>instance source</strong> can be an image, snapshot, or block storage
-volume that contains an image or snapshot.</li>
-<li>A <strong>name</strong> for your instance.</li>
-<li>The <strong>flavor</strong> for your instance, which defines the compute, memory,
-and storage capacity of nova computing instances. A flavor is an
-available hardware configuration for a server. It defines the size of
-a virtual server that can be launched.</li>
-<li>Any <strong>user data</strong> files. A user data file is a special key in the
-metadata service that holds a file that cloud-aware applications in
-the guest instance can access. For example, one application that uses
-user data is the
-<a class="reference external" href="https://help.ubuntu.com/community/CloudInit">cloud-init</a> system,
-which is an open-source package from Ubuntu that is available on
-various Linux distributions and that handles early initialization of
-a cloud instance.</li>
-<li>Access and security credentials, which include one or both of the
-following credentials:</li>
-<li>A <strong>key pair</strong> for your instance, which are SSH credentials that
-are injected into images when they are launched. For the key pair
-to be successfully injected, the image must contain the
-<code class="docutils literal"><span class="pre">cloud-init</span></code> package. Create at least one key pair for each
-project. If you already have generated a key pair with an external
-tool, you can import it into OpenStack. You can use the key pair
-for multiple instances that belong to that project.</li>
-<li>A <strong>security group</strong> that defines which incoming network traffic
-is forwarded to instances. Security groups hold a set of firewall
-policies, known as <em>security group rules</em>.</li>
-<li>If needed, you can assign a <strong>floating (public) IP address</strong> to a
-running instance.</li>
-<li>You can also attach a block storage device, or <strong>volume</strong>, for
-persistent storage.</li>
+<li><strong>Instance source</strong> — Can be an image, snapshot, or block storage volume that contains an image or snapshot.</li>
+<li><strong>Instance name</strong> — The name for your instance.</li>
+<li><strong>Flavor</strong> — The flavor for your instance defines the compute, memory, and storage capacity of computing instances. A flavor is an available hardware configuration for a server. It defines the size of a virtual server that can be launched.</li>
+<li><strong>User data</strong> — Any user data files. A user data file is a special key in the metadata service that holds a file that cloud-aware applications in the guest instance can access. For example, one application that uses user data is the <a class="reference external" href="https://help.ubuntu.com/community/CloudInit">cloud-init</a> system, which is an open-source package from Ubuntu that is available on various Linux distributions and that handles early initialization of a cloud instance.</li>
+<li><strong>Access and security credentials</strong> — This includes one or both of the following credentials:
+<ul style="list-style-type: square;">
+<li><strong>key pair</strong> — These are SSH credentials that are injected into images when they are launched. For the key pair to be successfully injected, the image must contain the <code class="docutils literal"><span class="pre">cloud-init</span></code> package. Create at least one key pair for each project. If you already have generated a key pair with an external tool, you can import it into OpenStack. You can use the key pair for multiple instances that belong to that project.</li>
+<li><strong>Security group</strong> — Defines which incoming network traffic is forwarded to the instances. Security groups hold a set of firewall policies, known as <em>security group rules</em>.</li>
 </ul>
-<p>After you gather the parameters that you need to launch an instance,
-you can launch it from an <a class="reference internal" href="#image">image</a> or a volume. You can launch an
-instance directly from one of the available OpenStack images or from
-an image that you have copied to a persistent volume. The OpenStack
-Image service provides a pool of images that are accessible to members
-of different projects.</p>
+</li>
+<li><strong>IP addresses</strong> — If needed, you can assign a floating (public) IP address to a running instance.</li>
+<li><strong>Volume</strong> — You can also attach a block storage device, or volume, for persistent storage.</li>
+</ul>
+<p>After you gather the parameters you need to launch an instance, you can launch it from an <a class="reference internal" href="#image">image</a> or a volume.</p>
+<p>You can launch an instance directly from one of the available OpenStack images, or from an image that you have copied to a persistent volume. The OpenStack Image service provides a pool of images that are accessible to members of different projects.</p>
 <div id="gather-parameters-to-launch-an-instance">
 <h2>Gather parameters to launch an instance</h2>
-<p>Before you begin, source the OpenStack RC file.</p>
-<ol class="arabic">
-<li><p class="first">List the available flavors.</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova flavor-list
-</pre></div>
+<p>The following examples use the <a href="https://help.dreamhost.com/hc/en-us/articles/235817468-Getting-started-with-OpenStack-command-line-client">OpenStack command line client</a>:</p>
+<h3>List the available flavors</h3>
+<p>Note the ID of the flavor you want to use for your instance:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack flavor list</span>
++-----+----------------+-------+------+-----------+-------+-----------+
+| ID  | Name           |   RAM | Disk | Ephemeral | VCPUs | Is Public |
++-----+----------------+-------+------+-----------+-------+-----------+
+| 100 | gp1.subsonic   |  1024 |   80 |         0 |     1 | True      |
+| 200 | gp1.supersonic |  2048 |   80 |         0 |     1 | True      |
+| 300 | gp1.lightspeed |  4096 |   80 |         0 |     2 | True      |
+| 400 | gp1.warpspeed  |  8192 |   80 |         0 |     4 | True      |
+| 50  | gp1.semisonic  |   512 |   80 |         0 |     1 | True      |
+| 500 | gp1.hyperspeed | 16384 |   80 |         0 |     8 | True      |
++-----+----------------+-------+------+-----------+-------+-----------+
+</pre>
 </div>
-<p>Note the ID of the flavor that you want to use for your instance:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>+-----+----------------+-----------+------+-----------+------+-------+-------------+-----------+
-| ID  | Name           | Memory_MB | Disk | Ephemeral | Swap | VCPUs | RXTX_Factor | Is_Public |
-+-----+----------------+-----------+------+-----------+------+-------+-------------+-----------+
-| 100 | gp1.subsonic   | 1024      | 80   | 0         |      | 1     | 1.0         | True      |
-| 200 | gp1.supersonic | 2048      | 80   | 0         |      | 1     | 1.0         | True      |
-| 300 | gp1.lightspeed | 4096      | 80   | 0         |      | 2     | 1.0         | True      |
-| 400 | gp1.warpspeed  | 8192      | 80   | 0         |      | 4     | 1.0         | True      |
-| 50  | gp1.semisonic  | 512       | 80   | 0         |      | 1     | 1.0         | True      |
-| 500 | gp1.hyperspeed | 16384     | 80   | 0         |      | 8     | 1.0         | True      |
-+-----+----------------+-----------+------+-----------+------+-------+-------------+-----------+
-</pre></div>
-</div>
-</li>
-<li><p class="first">List the available images.</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova image-list
-</pre></div>
-</div>
+<h3>List the available images</h3>
 <p>Note the ID of the image from which you want to boot your instance:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>+--------------------------------------+--------------+--------+--------------------------------------+
-| ID                                   | Name         | Status | Server                               |
-+--------------------------------------+--------------+--------+--------------------------------------+
-| 10ff94ea-18dc-4790-8ac8-84e6ac9f3132 | CentOS-6     | ACTIVE |                                      |
-| c1e8c5b5-bea6-45e9-8202-b8e769b661a4 | CentOS-7     | ACTIVE |                                      |
-| dd759c80-74c8-4598-8d9b-3dac32a386f2 | Debian-7.0   | ACTIVE |                                      |
-| 00a5fa60-6fdb-4d30-ad88-64fbc32be85a | Debian-7.9   | ACTIVE |                                      |
-| dfc066b8-4f5a-4ea5-84be-35924594bc43 | Ubuntu-12.04 | ACTIVE |                                      |
-| 03f89ff2-d66e-49f5-ae61-656a006bbbe9 | Ubuntu-14.04 | ACTIVE |                                      |
-| 873e4bab-ed23-4096-83fb-ee8b0dd2f5a3 | Ubuntu-15.10 | ACTIVE |                                      |
-+--------------------------------------+--------------+--------+--------------------------------------+
-</pre></div>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack image list</span>
++--------------------------------------+--------------+-------------+
+| ID                                   | Name         | Status      |
++--------------------------------------+--------------+-------------+
+| afa49adf-2831-4a00-9c57-afe1624d5557 | CentOS-6     | active      |
+| d83cc53a-720a-4972-8d9a-f92299571920 | CentOS-7     | deactivated |
+| f84868a5-5261-404a-9c54-ec317ea16b94 | CentOS-7     | active      |
+| a93aa9fa-b6b5-4fe3-8e53-1373612628f5 | CoreOS       | active      |
+| b67b74bc-c3a8-4087-9c28-de02161fdedd | CoreOS       | deactivated |
+| 5cb9c233-5867-4e47-80a1-9d774f800444 | Debian-7     | active      |
+| 8eac618e-ee9b-459d-92d4-b6a49e94b207 | Debian-8     | active      |
+| b105ad3b-7df8-4318-9c3d-4e4fa4cc4563 | Debian-8     | deactivated |
+| 713f2fbc-05c5-491b-9e02-e000861e7b30 | Fedora-24    | active      |
+| b4516e23-2358-4400-9396-32e223eceb01 | Fedora-25    | active      |
+| 842c207f-6964-4ed7-a41a-06ec66a7c954 | Ubuntu-14.04 | active      |
+| 23f77038-51dc-40f3-8714-50612b0efb24 | Ubuntu-16.04 | active      |
++--------------------------------------+--------------+-------------+</pre>
 </div>
-<p>You can also filter the image list by using <strong class="command">grep</strong> to find a specific
-image, as follows:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova image-list <span class="p">|</span> grep <span class="s1">'Ubuntu-14.04'</span>
-
-<span class="go">   | 03f89ff2-d66e-49f5-ae61-656a006bbbe9 | Ubuntu-14.04 | ACTIVE |                                      |</span>
-</pre></div>
+<p>You can also filter the image list by using <span class="code">grep</span> to find a specific image, as follows:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack image list | grep -i Ubuntu-14</span>
+| 842c207f-6964-4ed7-a41a-06ec66a7c954 | Ubuntu-14.04 | active      |</pre>
+</div>
+<h3>List the available security groups.</h3>
+<p>Note the ID of the security group that you want to use for your instance:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack security group list</span>
++--------------------------------------+---------+------------------------+----------------------------------+
+| ID                                   | Name    | Description            | Project                          |
++--------------------------------------+---------+------------------------+----------------------------------+
+| 29abef85-b89f-43a0-babf-6a5bb5cc7bed | default | Default security group | e52ede2a420548cf250bac6497300079 |
++--------------------------------------+---------+------------------------+----------------------------------+</pre>
+</div>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>If you are an admin user, specify the <span class="code">-–all-projects</span> parameter to list groups for all tenants.</p>
+<div class="preboxcontainer">
+<pre class="prebox">    <span class="server">[user@localhost]$ </span><span class="command">openstack security group list --all-projects</span></pre>
+</div>
+</div>
+</div>
+<p>If you have not created any security groups, you can assign the instance to only the default security group. You can view rules for a specified security group:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack security group show default</span></pre>
+</div>
+<h3>List available key pairs</h3>
+<p>List the available key pairs, and note the key pair name that you use for SSH access.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack keypair list</span></pre>
+</div>
+<h2>Launch an instance from an image</h2>
+<p>After you've gathered the required parameters, you can now <a href="https://docs.openstack.org/python-openstackclient/pike/cli/command-objects/server.html#server-create">create an instance</a>. At this point, you should have the following credentials:</p>
+<ul>
+<li><strong>flavor</strong> — 300</li>
+<li><strong>image</strong> — afa49adf-2831-4a00-9c57-afe1624d5557</li>
+<li><strong>keypair</strong> — myKey</li>
+<li><strong>security group</strong> — 29acef25-b59f-43a0-babf-6a5bb5cc7bed</li>
+<li><strong>servername</strong> — You can name it anything you like
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>If you boot an instance with an INSTANCE_NAME greater than 63 characters, Compute truncates it automatically when turning it into a host name to ensure the correct work of dnsmasq.</p>
+</div>
 </div>
 </li>
-<li><p class="first">List the available security groups.</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova secgroup-list --all-tenants
-</pre></div>
+</ul>
+<h3>Run the following to create your server.</h3>
+<p>This example splits up the command into separate lines.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server create --flavor 300 \
+                        --image afa49adf-2831-4a00-9c57-afe1624d5557 \
+                        --key-name windows \
+                        --security-group 29abef85-b89f-43a0-babf-6a5bb5cc7bed \
+                        myNewServer</span></pre>
 </div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">If you are an admin user, specify the <cite>–all-tenants</cite> parameter to
-list groups for all tenants.</p>
-</div>
-<p>Note the ID of the security group that you want to use for your
-instance:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>+--------------------------------------+---------+------------------------+
-| Id                                   | Name    | Description            |
-+--------------------------------------+---------+------------------------+
-| a79caa69-e011-498b-9149-ee6f130b1977 | default | Default security group |
-+--------------------------------------+---------+------------------------+
-</pre></div>
-</div>
-<p>If you have not created any security groups, you can assign the instance
-to only the default security group.</p>
-<p>You can view rules for a specified security group:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova secgroup-list-rules default
-</pre></div>
-</div>
-</li>
-<li><p class="first">List the available key pairs, and note the key pair name that you use for
-SSH access.</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova keypair-list
-</pre></div>
-</div>
-</li>
-</ol>
-</div>
-<div id="launch-an-instance-from-an-image">
-<span id="image"></span><h2>Launch an instance from an image</h2>
-<ol class="arabic">
-<li><p class="first">After you gather required parameters, run the following command to
-launch an instance. Specify the server name, flavor ID, and image ID.</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova boot --flavor FLAVOR_ID --image IMAGE_ID --key-name KEY_NAME <span class="se">\</span>
-<span class="go">  --user-data USER_DATA_FILE --security-groups SEC_GROUP_NAME --meta KEY=VALUE \</span>
-<span class="go">  INSTANCE_NAME</span>
-</pre></div>
-</div>
-<p>Optionally, you can provide a key name for access control and a security
-group for security. You can also include metadata key and value pairs.
-For example, you can add a description for your server by providing the
-<code class="docutils literal"><span class="pre">--meta</span> <span class="pre">description="My</span> <span class="pre">Server"</span></code> parameter.</p>
-<p>You can pass user data in a local file at instance launch by using the
-<code class="docutils literal"><span class="pre">--user-data</span> <span class="pre">USER-DATA-FILE</span></code> parameter.</p>
-<div class="admonition important">
-<p class="first admonition-title">Important</p>
-<p class="last">If you boot an instance with an INSTANCE_NAME greater than 63 characters,
-Compute truncates it automatically when turning it into a host name to
-ensure the correct work of dnsmasq. The corresponding warning is written
-into the <code class="docutils literal"><span class="pre">nova-network.log</span></code> file.</p>
-</div>
-<p>The following command launches the <code class="docutils literal"><span class="pre">MyUbuntuServer</span></code> instance with the
-<code class="docutils literal"><span class="pre">gp1.subsonic</span></code> flavor (ID of <code class="docutils literal"><span class="pre">100</span></code>), <code class="docutils literal"><span class="pre">Ubuntu-14.04</span></code> image (ID
-of <code class="docutils literal"><span class="pre">03f89ff2-d66e-49f5-ae61-656a006bbbe9</span></code>), <code class="docutils literal"><span class="pre">default</span></code> security
-group, <code class="docutils literal"><span class="pre">KeyPair01</span></code> key, and a user data file called
-<code class="docutils literal"><span class="pre">cloudinit.file</span></code>:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova boot --flavor <span class="m">1</span> --image 397e713c-b95b-4186-ad46-6126863ea0a9 <span class="se">\</span>
-<span class="go">  --security-groups default --key-name KeyPair01 --user-data cloudinit.file \</span>
-<span class="go">  MyUbuntuServer</span>
-</pre></div>
-</div>
-<p>Depending on the parameters that you provide, the command returns a list
-of server properties.</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">+-------------------------------------+-------------------------------------+</span>
-<span class="go">| Property                            | Value                               |</span>
-<span class="go">+-------------------------------------+-------------------------------------+</span>
-<span class="go">| OS-EXT-STS:task_state               | scheduling                          |</span>
-<span class="go">| image                               | Ubuntu-14.04                        |</span>
-<span class="go">| OS-EXT-STS:vm_state                 | building                            |</span>
-<span class="go">| OS-EXT-SRV-ATTR:instance_name       | instance-00000002                   |</span>
-<span class="go">| flavor                              | gp1.subsonic                        |</span>
-<span class="go">| id                                  | b3cdc6c0-85a7-4904-ae85-71918f734048|</span>
-<span class="go">| security_groups                     | [{u'name': u'default'}]             |</span>
-<span class="go">| user_id                             | 376744b5910b4b4da7d8e6cb483b06a8    |</span>
-<span class="go">| OS-DCF:diskConfig                   | MANUAL                              |</span>
-<span class="go">| accessIPv4                          |                                     |</span>
-<span class="go">| accessIPv6                          |                                     |</span>
-<span class="go">| progress                            | 0                                   |</span>
-<span class="go">| OS-EXT-STS:power_state              | 0                                   |</span>
-<span class="go">| OS-EXT-AZ:availability_zone         | nova                                |</span>
-<span class="go">| config_drive                        |                                     |</span>
-<span class="go">| status                              | BUILD                               |</span>
-<span class="go">| updated                             | 2013-07-16T16:25:34Z                |</span>
-<span class="go">| hostId                              |                                     |</span>
-<span class="go">| OS-EXT-SRV-ATTR:host                | None                                |</span>
-<span class="go">| key_name                            | KeyPair01                           |</span>
-<span class="go">| OS-EXT-SRV-ATTR:hypervisor_hostname | None                                |</span>
-<span class="go">| name                                | MyUbuntuServer                      |</span>
-<span class="go">| adminPass                           | tVs5pL8HcPGw                        |</span>
-<span class="go">| tenant_id                           | 66265572db174a7aa66eba661f58eb9e    |</span>
-<span class="go">| created                             | 2013-07-16T16:25:34Z                |</span>
-<span class="go">| metadata                            | {u'KEY': u'VALUE'}                  |</span>
-<span class="go">+-------------------------------------+-------------------------------------+</span>
-</pre></div>
-</div>
-<p>A status of <code class="docutils literal"><span class="pre">BUILD</span></code> indicates that the instance has started, but is
-not yet online.</p>
-<p>A status of <code class="docutils literal"><span class="pre">ACTIVE</span></code> indicates that the instance is active.</p>
-</li>
-<li><p class="first">Copy the server ID value from the <code class="docutils literal"><span class="pre">id</span></code> field in the output. Use the
-ID to get server details or to delete your server.</p>
-</li>
-<li><p class="first">Copy the administrative password value from the <code class="docutils literal"><span class="pre">adminPass</span></code> field. Use the
-password to log in to your server.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">You can also place arbitrary local files into the instance file
-system at creation time by using the <code class="docutils literal"><span class="pre">--file</span> <span class="pre">&lt;dst-path=src-path&gt;</span></code>
-option. You can store up to five files. For example, if you have a
-special authorized keys file named <code class="docutils literal"><span class="pre">special_authorized_keysfile</span></code> that
-you want to put on the instance rather than using the regular SSH key
-injection, you can use the <cite>–file</cite> option as shown in the following
-example.</p>
-</div>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova boot --image Ubuntu-14.04 --flavor <span class="m">100</span> vm-name <span class="se">\</span>
-<span class="go">  --file /root/.ssh/authorized_keys=special_authorized_keysfile</span>
-</pre></div>
-</div>
-</li>
-</ol>
-<ol class="arabic" start="4">
-<li><p class="first">Check if the instance is online.</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova list
-</pre></div>
-</div>
-<p>The list shows the ID, name, status, and private (and if assigned,
-public) IP addresses for all instances in the project to which you
-belong:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">+-------------+----------------------+--------+------------+-------------+------------------+</span>
-<span class="go">| ID          | Name                 | Status | Task State | Power State | Networks         |</span>
-<span class="go">+-------------+----------------------+--------+------------+-------------+------------------+</span>
-<span class="go">| 84c6e57d... | MyUbuntuServer       | ACTIVE | None       | Running     | private=10.0.0.3 |</span>
-<span class="go">| 8a99547e... | myInstanceFromVolume | ACTIVE | None       | Running     | private=10.0.0.4 |</span>
-<span class="go">+-------------+----------------------+--------+------------+-------------+------------------+</span>
-</pre></div>
-</div>
-<p>If the status for the instance is ACTIVE, the instance is online.</p>
-</li>
-<li><p class="first">To view the available options for the <strong class="command">nova list</strong> command, run the
-following command:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova <span class="nb">help</span> list
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">If you did not provide a key pair, security groups, or rules, you
-can access the instance only from inside the cloud through VNC. Even
-pinging the instance is not possible.</p>
-</div>
-</li>
-</ol>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>The backslash character \ is used when entering a long command. When you enter the \, the terminal command continues to the next line until you finish entering it.</p>
+<p>You could also remove the \ character and put every parameter into a single line. For example:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server create --flavor 300 --image afa49adf-2831-4a00-9c57-afe1624d5557 --key-name windows --security-group 29abef85-b89f-43a0-babf-6a5bb5cc7bed myNewServer</span></pre>
 </div>
 </div>
 </div>
+<p>If the server was correctly created, you'll see an output like this:</p>
+<div class="preboxcontainer">
+<pre class="prebox">+-----------------------------+-------------------------------------------------+
+| Field                       | Value                                           |
++-----------------------------+-------------------------------------------------+
+| OS-DCF:diskConfig           | MANUAL                                          |
+| OS-EXT-AZ:availability_zone | iad-2                                           |
+| OS-EXT-STS:power_state      | NOSTATE                                         |
+| OS-EXT-STS:task_state       | scheduling                                      |
+| OS-EXT-STS:vm_state         | building                                        |
+| OS-SRV-USG:launched_at      | None                                            |
+| OS-SRV-USG:terminated_at    | None                                            |
+| accessIPv4                  |                                                 |
+| accessIPv6                  |                                                 |
+| addresses                   |                                                 |
+| adminPass                   | RPwLFr5ze5fB                                    |
+| config_drive                |                                                 |
+| created                     | 2017-10-10T01:25:10Z                            |
+| flavor                      | gp1.lightspeed (300)                            |
+| hostId                      |                                                 |
+| id                          | 76b3adb3-1f5a-4276-8b82-abdf21352946            |
+| image                       | CentOS-6 (afa49adf-2831-4a00-9c57-afe1624d5557) |
+| key_name                    | myKey                                           |
+| name                        | myNewServer                                     |
+| progress                    | 0                                               |
+| project_id                  | e52ece2a560548cf950ba86297300079                |
+| properties                  |                                                 |
+| security_groups             | name='29abcf85-b79f-43b0-babf-6a5bb5cc7bed'     |
+| status                      | BUILD                                           |
+| updated                     | 2017-10-10T01:25:10Z                            |
+| user_id                     | 29825415c4be4d49c27e787a63eb8320                |
+| volumes_attached            |                                                 |
++-----------------------------+-------------------------------------------------+</pre>
 </div>
-<div class="clearer"></div>
+<p>A status of <strong>BUILD </strong>indicates that the instance has started, but is not yet online. A status of <strong>ACTIVE </strong>indicates that the instance is active. Copy the administrative password value from the <code class="docutils literal"><span class="pre">adminPass</span></code> field. Use the password to log in to your server.</p>
+<p>You'll also be able to see the new server instance in your <a href="https://panel.dreamhost.com/index.cgi?tree=cloud.compute&amp;">DreamCompute panel</a>.</p>
+<p>For more options, view the following article:</p>
+<ul>
+<li><a href="https://docs.openstack.org/python-openstackclient/pike/cli/command-objects/server.html#server-create">https://docs.openstack.org/python-openstackclient/pike/cli/command-objects/server.html#server-create</a></li>
+</ul>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>You can also place arbitrary local files into the instance file system at creation time by using the <strong>--file &lt;dest-filename=source-filename&gt;</strong> parameter. You can store up to five files.</p>
+<p>For example, if you have a special authorized keys file named <strong>special_authorized_keysfile</strong> that you want to put on the instance rather than using the regular SSH key injection, you can add the <strong>–file</strong> option as shown in the following example.</p>
+<div class="preboxcontainer">
+<pre class="prebox">--file /root/.ssh/authorized_keys=special_authorized_keysfile</pre>
 </div>
-<div class="footer">
-      ©2015-2016, OpenStack contributors.
-      
-    </div>
+</div>
+</div>
+<h2>Check if the instance is online</h2>
+<p>Use the <span class="code">list</span> command to view a list of all servers:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server list</span>
++--------------------------------------+--------------+--------+----------------------------------------------------+
+| ID                                   | Name         | Status | Networks               | Image    | Flavor         |
++--------------------------------------+--------------+--------+------------------------+----------+----------------+
+| 76b3adb3-1f5a-4276-8b82-abdf21352946 | myNewServer  | ACTIVE | public=xxx.xxx.xxx.xxx | CentOS-6 | gp1.lightspeed |
+| 246e50b8-29fa-4310-b972-a71cd0df43bf | Ubuntu14     | ACTIVE | public=xxx.xxx.xxx.xxx |          | gp1.subsonic   |
++--------------------------------------+--------------+--------+------------------------+----------+----------------+</pre>
+</div>
+<p>The list shows the ID, Name, Status, IP addresses, Image, and Flavor for all instances in the project. </p>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>If you did not provide a key pair, security groups, or rules, you can access the instance only from inside the cloud through VNC. Even pinging the instance is not possible.</p>
+</div>
+</div>
 <!--DreamCompute Button-->
 <div class="dream-sign-up">
 <h2>Deploy Your Apps On Cloud Servers Today</h2>
-<a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a>
+<a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a></div>
 </div>
-</body>
+</div>
+</div>
+</div>
+</div>
