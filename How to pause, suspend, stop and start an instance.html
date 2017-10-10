@@ -1,0 +1,74 @@
+<p>Using the <a href="https://help.dreamhost.com/hc/en-us/articles/235817468-Getting-started-with-OpenStack-command-line-client">OpenStack command line client</a>, you can pause, stop, and start an instance.</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>In the following examples, SERVER is the name of your instance.</p>
+</div>
+</div>
+<h2>Pause and unpause an instance</h2>
+<p>To <a href="https://docs.openstack.org/python-openstackclient/pike/cli/command-objects/server.html#server-pause">pause an instance</a>, run the following command:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server pause SERVER</span></pre>
+</div>
+<p>This command stores the state of the VM in RAM. A paused instance continues to run in a frozen state.</p>
+<p>To <a href="https://docs.openstack.org/python-openstackclient/pike/cli/command-objects/server.html#server-unpause">unpause an instance</a>, run the following command:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server unpause SERVER</span></pre>
+</div>
+<div id="suspend-and-resume-an-instance">
+<h2>Suspend and resume an instance</h2>
+<p>To <a href="https://docs.openstack.org/python-openstackclient/pike/cli/command-objects/server.html#server-suspend">suspend an instance</a>, run the following command:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server suspend SERVER</span></pre>
+</div>
+<p>To <a href="https://docs.openstack.org/python-openstackclient/pike/cli/command-objects/server.html#server-resume">resume a suspended instance</a>, run the following command:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server resume SERVER</span></pre>
+</div>
+<h2>Stop and start an instance</h2>
+<p>To <a href="https://docs.openstack.org/python-openstackclient/pike/cli/command-objects/server.html#server-stop">stop an instance</a>, run the following command:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server stop SERVER</span></pre>
+</div>
+<p>To <a href="https://docs.openstack.org/python-openstackclient/pike/cli/command-objects/server.html#server-start">start a stopped instance</a>, run the following command:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server start SERVER</span></pre>
+</div>
+<h2>Checking your server's status</h2>
+<p>After you run any of the commands above, you can check your server's status to confirm it's state. Use the <span class="code">show</span> command to view it's current status. In the following example, the server has been suspended:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server show SERVER</span>
++-----------------------------+------------------------------------------------------------+
+| Field                       | Value                                                      |
++-----------------------------+------------------------------------------------------------+
+| OS-DCF:diskConfig           | AUTO                                                       |
+| OS-EXT-AZ:availability_zone | iad-2                                                      |
+| OS-EXT-STS:power_state      | Shutdown                                                   |
+| OS-EXT-STS:task_state       | None                                                       |
+| OS-EXT-STS:vm_state         | suspended                                                  |
+| OS-SRV-USG:launched_at      | 2017-10-04T23:11:23.000000                                 |
+| OS-SRV-USG:terminated_at    | None                                                       |
+| accessIPv4                  |                                                            |
+| accessIPv6                  |                                                            |
+| config_drive                | True                                                       |
+| created                     | 2017-10-04T23:10:55Z                                       |
+| flavor                      | gp1.subsonic (100)                                         |
+| hostId                      | 570ede2f2db7b70562c4dezfc408c77c99883c0f48f0b9cbf50414a3   |
+| id                          | cda78s8c-702d-4117-87bc-b34de0b28554                       |
+| image                       |                                                            |
+| key_name                    | myKey                                                      |
+| name                        | myServer                                                   |
+| project_id                  | e52ede2a460548cf950ba86497300079                           |
+| properties                  |                                                            |
+| security_groups             | name='default'                                             |
+| <span class="green"><span class="wysiwyg-font-size-large">status</span>                     | <span class="wysiwyg-font-size-large">SUSPENDED</span></span>                                                 |
+| updated                     | 2017-10-09T23:08:19Z                                       |
+| user_id                     | 2981541bcc4be4d49a23787a63eb8320                           |
+| volumes_attached            | id='4acc41d7-6zb9-4fdf-8ac0-d45c4452ed0d'                  |
++-----------------------------+------------------------------------------------------------+</pre>
+</div>
+<!--DreamCompute Button-->
+<div class="dream-sign-up">
+<h2>Deploy Your Apps On Cloud Servers Today</h2>
+<a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a></div>
+</div>

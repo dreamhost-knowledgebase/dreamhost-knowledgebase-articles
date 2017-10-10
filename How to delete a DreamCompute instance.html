@@ -1,57 +1,25 @@
-<body role="document">
-<div class="document">
-<div class="documentwrapper">
-<div class="body" role="main">
-<div id="how-to-delete-a-dreamcompute-instance">
-
-<p>When you no longer need an instance, you can delete it.</p>
-<ol class="arabic">
-<li><p class="first">List all instances:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova list
-<span class="go">+-------------+----------------------+--------+------------+-------------+------------------+</span>
-<span class="go">| ID          | Name                 | Status | Task State | Power State | Networks         |</span>
-<span class="go">+-------------+----------------------+--------+------------+-------------+------------------+</span>
-<span class="go">| 84c6e57d... | myCirrosServer       | ACTIVE | None       | Running     | private=10.0.0.3 |</span>
-<span class="go">| 8a99547e... | myInstanceFromVolume | ACTIVE | None       | Running     | private=10.0.0.4 |</span>
-<span class="go">| d7efd3e4... | newServer            | ERROR  | None       | NOSTATE     |                  |</span>
-<span class="go">+-------------+----------------------+--------+------------+-------------+------------------+</span>
-</pre></div>
+<p>When you no longer need an instance, you can delete it using the <a href="https://help.dreamhost.com/hc/en-us/articles/235817468-Getting-started-with-OpenStack-command-line-client">OpenStack command line client</a>.</p>
+<h3>View all instances</h3>
+<p>List all instances using the <span class="code">list</span> command.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server list</span>
++-------------+----------------------+--------+------------+-------------+------------------+
+| ID          | Name                 | Status | Task State | Power State | Networks         |
++-------------+----------------------+--------+------------+-------------+------------------+
+| 8a99547e... | myInstanceFromVolume | ACTIVE | None       | Running     | private=10.0.0.4 |
+| d7efd3e4... | newServer            | ERROR  | None       | NOSTATE     |                  |
++-------------+----------------------+--------+------------+-------------+------------------+
+</pre>
 </div>
-</li>
-<li><p class="first">Run the <strong class="command">nova delete</strong> command to delete the instance. The following
-example shows deletion of the <code class="docutils literal"><span class="pre">newServer</span></code> instance, which is in
-<code class="docutils literal"><span class="pre">ERROR</span></code> state:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova delete newServer
-</pre></div>
+<h3>Delete the instance</h3>
+<p>Run the <a href="https://docs.openstack.org/python-openstackclient/pike/cli/command-objects/server.html#server-delete"><span class="code">delete</span> command</a> to delete the instance. The following example deletes the newServer instance which is in ERROR state:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server delete newServer</span></pre>
 </div>
 <p>The command does not notify that your server was deleted.</p>
-</li>
-<li><p class="first">To verify that the server was deleted, run the <strong class="command">nova list</strong>
-command:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova list
-<span class="go">+-------------+----------------------+--------+------------+-------------+------------------+</span>
-<span class="go">| ID          | Name                 | Status | Task State | Power State | Networks         |</span>
-<span class="go">+-------------+----------------------+--------+------------+-------------+------------------+</span>
-<span class="go">| 84c6e57d... | myCirrosServer       | ACTIVE | None       | Running     | private=10.0.0.3 |</span>
-<span class="go">| 8a99547e... | myInstanceFromVolume | ACTIVE | None       | Running     | private=10.0.0.4 |</span>
-<span class="go">+-------------+----------------------+--------+------------+-------------+------------------+</span>
-</pre></div>
-</div>
-<p>The deleted instance does not appear in the list.</p>
-</li>
-</ol>
-</div>
-</div>
-</div>
-<div class="clearer"></div>
-</div>
-<div class="footer">
-      ©2015-2016, OpenStack contributors.
-      
-    </div>
+<h3>Verify it was deleted</h3>
+<p>To verify that the server was deleted, run the <span class="code">list</span> command as shown above. The instance should no longer show in the list</p>
 <!--DreamCompute Button-->
 <div class="dream-sign-up">
 <h2>Deploy Your Apps On Cloud Servers Today</h2>
-<a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a>
-</div>
-</body>
+<a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a></div>
