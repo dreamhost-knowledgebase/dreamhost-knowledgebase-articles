@@ -14,6 +14,9 @@
 <p>If you've enabled <a href="https://help.dreamhost.com/hc/en-us/articles/215873088-Cloudflare-overview">Cloudflare</a> in the DreamHost panel, your site must use the 'www' subdomain. Make sure your .htaccess file does not have any redirects to the non-www version of your URL. If it does and you're using Cloudflare, you may experience a 'Too many redirects' error in your browser.</p>
 </div>
 </div>
+<h2>What to change in the examples below?</h2>
+<p>The examples below can be entered into your .htaccess file exactly as shown.</p>
+<p>Only if the example contains a URL in bold should you change that to your actual URL. For example, if you see the domain 'example.com', change this to your own domain name.</p>
 <h2><span id="Forcing_the_domain_to_serve_securely_using_HTTPS">Forcing the domain to serve securely using HTTPS</span></h2>
 <p>The following forces any http request to be rewritten using https. For example, the following code forces a request to <a href="http://example.com">http://example.com</a> to load <a href="https://example.com">https://example.com</a>. It also forces directly linked resources (images, css, etc.) to use https:</p>
 <div class="preboxcontainer">
@@ -34,7 +37,7 @@ RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 <div class="preboxcontainer">
 <pre class="prebox">SSLOptions +StrictRequire
 SSLRequireSSL
-SSLRequire %{HTTP_HOST} eq "example.com"
+SSLRequire %{HTTP_HOST} eq "<span class="command">example.com</span>"
 </pre>
 </div>
 <div class="alert alert-note">
