@@ -1,0 +1,35 @@
+<p>When using the <a href="https://help.dreamhost.com/hc/en-us/articles/216511617-How-to-launch-an-instance-using-the-OpenStack-CLI">OpenStack command line to create an instance</a>, you can provide a user data file during boot to configure your instance. This allows you to set system variables or install packages during boot time.</p>
+<p>This is possible due to <a class="reference external" href="https://help.ubuntu.com/community/CloudInit">cloud-init</a> which is installed on several Linux systems by default. This description is from the cloud-init website:</p>
+<dl>
+<dd>"cloud-init is the Ubuntu package that handles early initialization of a cloud instance. It is installed in the Ubuntu Cloud Images and also in the official Ubuntu images available on EC2."</dd>
+</dl>
+<h2>What is a user data file?</h2>
+<p>A user data file is a text file that you can include when running the OpenStack <span class="code">server create</span> command. This file is used to customize your instance during boot. View the following page for a list of 'User Data Input Formats'.</p>
+<ul>
+<li><a href="https://help.ubuntu.com/community/CloudInit">https://help.ubuntu.com/community/CloudInit </a></li>
+</ul>
+<p>You can place data in a local file and pass it through using the <span class="code">--user-data &lt;user-data-file&gt;</span> parameter at instance creation. This shows how to pass a file named my-script.sh to an Ubuntu-16.04 image.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server create --flavor 300 \
+                        --image 23f77038-51dc-40f3-8714-50612b0efb24 \
+                        --key-name myKey \
+                        --security-group 29afef85-b89f-43a0-babf-6a5bb5cc7bed \
+                        --user-data my-script.sh \
+                        myNewServer</span></pre>
+</div>
+<h2>Example shell script</h2>
+<p>This simple example shows how to install pip3 during instance creation.</p>
+<div class="preboxcontainer">
+<pre class="prebox">#!/bin/sh
+
+# Example script to run at boot
+# This installs pip3
+apt update
+apt -y install python3-pip
+pip3 install --upgrade pip</pre>
+</div>
+<p>Now when you log into the server, pip3 is already installed.</p>
+<!--DreamCompute Button-->
+<div class="dream-sign-up">
+<h2>Deploy Your Apps On Cloud Servers Today</h2>
+<a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a></div>
