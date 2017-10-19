@@ -1,10 +1,14 @@
-<div class="document">
-<div class="documentwrapper">
-<div class="body">
-<div id="how-to-change-the-resource-limits-of-a-dreamcompute-instance">
-<p>To change the resource limits (vCPU/RAM) of a specific instance, change its flavor.</p>
-<ol class="arabic">
-<li>Show information about an instance, including its size, which is shown as the value of the flavor property:
+<p>To change the resource limits (vCPU/RAM) of a specific instance, you need to change its 'Flavor'.</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>To run the commands below, make sure you have installed the <a href="https://help.dreamhost.com/hc/en-us/articles/235817468-Getting-started-with-OpenStack-command-line-client">OpenStack command line client</a>.</p>
+<p>In the following examples, myInstance is the name of your instance. You can view the name of your instance in the <a href="https://iad2.dreamcompute.com/project/instances/">DreamCompute dashboard</a>.</p>
+</div>
+</div>
+<h2>Changing the resource limit</h2>
+<ol>
+<li>First, using the <span class="code">openstack server show SERVER</span> command to show information about an instance. This includes its size, which is shown as the value of the flavor property:
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server show myInstance</span>
 +-----------------------------+--------------------------------------------------------------+
@@ -21,7 +25,7 @@
 | accessIPv6                  |                                                              |
 | config_drive                | True                                                         |
 | created                     | 2017-10-06T01:23:12Z                                         |
-| flavor                      | gp1.subsonic (100)                                           |
+| flavor                      | <span class="green">gp1.subsonic (100)</span>                                           |
 | hostId                      | 9d915ea664129303798621bb83cb3b2ac04c445cae6fc9e58e90b5d6     |
 | id                          | 246e50c8-22fa-4310-b972-a71cd0df43bf                         |
 | image                       |                                                              |
@@ -58,16 +62,18 @@
 </div>
 </li>
 <li>
-<p class="first">To resize the instance, use the <strong class="command">openstack server resize</strong> command specifying the instance ID/name and the new flavor. Include the <cite>–-wait</cite> parameter to display the resize progress. For example:</p>
+<p class="first">To resize the instance, use the <span class="code">openstack <a href="https://docs.openstack.org/python-openstackclient/pike/cli/command-objects/server.html#server-resize">server resize</a></span> command specifying the instance ID/name and the new flavor. Include the <cite>–-wait</cite> parameter to display the resize progress. For example:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server resize --flavor 100 --wait  myCirrosInstance</span>
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server resize --flavor 200 --wait myInstance</span>
 Complete
 </pre>
 </div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p>By default, the <strong class="command">openstack server resize</strong> command gives the guest operating system 60 seconds to perform a controlled shutdown before the instance is powered off and the instance is resized.</p>
-<p class="last">The timeout value can be overridden on a per image basis by means of <code class="docutils literal"><span class="pre">os_shutdown_timeout</span></code> that is an image metadata setting allowing different types of operating systems to specify how much time they need to shut down cleanly.</p>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>By default, the <span class="code">openstack server resize</span> command gives the guest operating system 60 seconds to perform a controlled shutdown before the instance is powered off and the instance is resized.</p>
+<p>The timeout value can be overridden on a per image basis by means of <span class="code">os_shutdown_timeout</span> that is an image metadata setting allowing different types of operating systems to specify how much time they need to shut down cleanly.</p>
+</div>
 </div>
 </li>
 <li>
@@ -77,7 +83,7 @@ Complete
 +----------------------+------------------+---------------+-----------------------------------------+
 | ID                   | Name             | Status        | Networks                                |
 +----------------------+------------------+---------------+-----------------------------------------+
-| 84c6e57d-a6b1-44b... | myCirrosInstance | VERIFY_RESIZE | private=172.16.101.6, public=10.4.113.6 |
+| 84c6e57d-a6b1-44b... | myInstance       | VERIFY_RESIZE | private=172.16.101.6, public=10.4.113.6 |
 +----------------------+------------------+---------------+-----------------------------------------+
 </pre>
 </div>
@@ -86,24 +92,19 @@ Complete
 <li>
 <p class="first">Confirm the resize, for example:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server resize --confirm 84c6e57d-a6b1-44b6-81eb-fcb36afd31b5</span></pre>
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server resize --confirm myInstance</span></pre>
 </div>
-<p>The instance status becomes ACTIVE.</p>
+<p>Run <span class="code">openstack server list</span> again and you'll see the status is now ACTIVE.</p>
 </li>
 <li>
 <p class="first">If the resize fails or does not work as expected, revert the resize. For example:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server resize --revert 84c6e57d-a6b1-44b6-81eb-fcb36afd31b5</span></pre>
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server resize --revert myInstance</span></pre>
 </div>
 <p>The instance status becomes ACTIVE.</p>
 </li>
 </ol>
-</div>
-</div>
-<div class="footer">©2015-2016, OpenStack contributors.</div>
 <!--DreamCompute Button-->
 <div class="dream-sign-up">
 <h2>Deploy Your Apps On Cloud Servers Today</h2>
 <a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a></div>
-</div>
-</div>

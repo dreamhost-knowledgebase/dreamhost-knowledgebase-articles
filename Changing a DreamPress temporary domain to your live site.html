@@ -9,15 +9,24 @@
 <p>Confirm the following for the domain you are migrating TO. If any of the following items are not configured, your site will not connect after it's migrated from the temporary domain.</p>
 <h3>Remove hosting</h3>
 <p>The domain you migrate TO cannot be hosted. If it is, you must remove hosting for the domain before proceeding. You can do this by setting the domain as <a style="background-color: #ffffff;" href="https://help.dreamhost.com/hc/en-us/articles/215414867-How-do-I-add-custom-DNS-records-">DNS Only</a>. This is so the domain can safely be migrated without breaking a live site.</p>
-<h3>Remove any mysql hostnames</h3>
+<h3>Remove any 'previously existing' mysql hostnames</h3>
 <div class="alert alert-warning">
 <div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-warning-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
 <p>This step is extremely important.</p>
 </div>
 </div>
-<p>If a mysql hostname already exists in your panel for the new domain, you must delete it first. For example, navigate to the <a href="https://panel.dreamhost.com/index.cgi?tree=goodies.mysql&amp;">(Panel &gt; 'Goodies' &gt; 'MySQL Databases')</a> page. If you are moving DreamPress to a new domain called <strong>example.com</strong>, search for <strong>mysql</strong>.example.com. If you see it listed, delete it.</p>
+<p>If a mysql hostname already exists in your panel for the new domain, you must delete it first. For example, navigate to the <a href="https://panel.dreamhost.com/index.cgi?tree=goodies.mysql&amp;">(Panel &gt; 'Goodies' &gt; 'MySQL Databases')</a> page. If you have databases, you'll see hostnames listed under the name of the MySQL server. This MySQL server will either have a Shared server name, or a VPS name. This example shows a Shared MySQL server named 'carme' on which the hostname already exists:</p>
+<dl>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/mysql_hostnames_01.png" alt="mysql_hostnames.png" /></dd>
+</dl>
+<p>If you are moving DreamPress to a new domain called <strong>example.com</strong>, search for <strong>mysql</strong>.example.com. If you see it listed, delete it.</p>
 <p>If it exists and you do not remove it, your panel will not be able to update your database with the correct hostname. Since it will not connect to the correct hostname, you'll see a 'Error establishing a database connection' error when you migrate.</p>
+<p>If you've created DreamPress correctly, the hostname will show under your DreamPress server. The DreamPress servername starts with 'dp' and a long series of letters and numbers. Here's an example:</p>
+<dl>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/mysql_hostnames_02.png" alt="mysql_hostnames.png" /></dd>
+</dl>
+<p>If this already exists for your site, leave it as it is.</p>
 <h3>Remove custom DNS</h3>
 <p>Make sure there are no <a href="https://help.dreamhost.com/hc/en-us/articles/215414867-How-do-I-add-custom-DNS-records-">Custom DNS</a> records on the domain you are migrating TO. If there are, delete the custom records.</p>
 <h2>Step#1 — Changing your domain</h2>
