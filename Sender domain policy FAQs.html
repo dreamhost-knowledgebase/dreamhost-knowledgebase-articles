@@ -4,17 +4,52 @@
 <li>You must use a FROM address that’s on the same website you’re sending email from</li>
 <li>The email must be hosted at DreamHost.</li>
 </ul>
-<p>For example, if your website is example.com and you have a PHP mail form sending email, the FROM address in that email must be something like contact@example.com.</p>
-<p>Emails that are sent using a FROM address from somewhere else (such as Yahoo or Google) will be blocked and never sent. If this happens, you can see the mail failure in your <a href="https://help.dreamhost.com/hc/en-us/articles/115000675027-FTP-overview-and-credentials">FTP</a> account, and emails will be in your user’s directory in the Maildir/new folder. Open the file in that directory to view why it failed to send. When emails are blocked by this policy, you’ll see the following error message:</p>
-<div class="preboxcontainer">
-<pre class="prebox">5.7.1 Sender domain not allowed
-</pre>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>This policy only applies to email being sent directly from the web server, most often through a PHP contact form. If you use SMTP authentication, this policy DOES NOT apply to you. You can use SMTP authentication in a few ways:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216140597-How-do-I-send-PHP-mail-via-SMTP-">Coding it directly into your form</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215526937-How-do-I-configure-a-WordPress-SMTP-plugin-">Using a plugin that uses SMTP authentication</a></li>
+</ul>
 </div>
+</div>
+<h2>An example of what is not allowed</h2>
+<p>If your website is example.com and you have a PHP mail form sending email, the FROM address in that email must be something like contact@example.com. Emails that are sent from the web server using a FROM address from somewhere else (such as Yahoo or Google) will be blocked and never sent.</p>
 <div class="alert alert-note">
 <div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
 <p>Emails sent through DreamHost's shared web servers must use a FROM address that is fully hosted at DreamHost. Forward only aliases will not work.</p>
 </div>
+</div>
+<h2>What happens if your email is blocked?</h2>
+<p>If this happens, you can see the mail failure in your <a href="https://help.dreamhost.com/hc/en-us/articles/115000675027-FTP-overview-and-credentials">FTP</a> account.</p>
+<ol>
+<li>Log into your server via FTP.</li>
+<li>Make sure you're in your user's directory.</li>
+<li>In the right pane, look for the /Maildir folder. Click into it.
+<dl>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/Sender_domain_policy_01.png" alt="" /></dd>
+</dl>
+</li>
+<li>In this directory are three folders.
+<ul>
+<li>cur</li>
+<li>new</li>
+<li>tmp</li>
+</ul>
+</li>
+<li>Click into the /new folder.
+<dl>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/Sender_domain_policy_02.png" alt="" /></dd>
+</dl>
+</li>
+<li>In this folder you'll see files with long names. Right click and open in a text editor to view a file's contents.</li>
+</ol>
+<p>Open the file in that directory to view why it failed to send. When emails are blocked by this policy, you’ll see the following error message:</p>
+<div class="preboxcontainer">
+<pre class="prebox">5.7.1 Sender domain not allowed
+</pre>
 </div>
 <h2><span id="When_was_this_policy_put_into_place.3F">When was this policy put into place?</span></h2>
 <p>The policy which restricts the 'from' address on emails was created in April of 2012. It was then slowly rolled out over the following months.</p>

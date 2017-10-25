@@ -1,0 +1,31 @@
+<p>This article explains how to create a backup of your SVN repository. The following is assumed for all command examples:</p>
+<ul>
+<li>Your repository is named SVN_Test</li>
+<li>The repository is located in your /home/username/svn/ directory</li>
+</ul>
+<h2>Creating a dump file of your repository</h2>
+<ol>
+<li>Log into your server via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH</a>.</li>
+<li>Navigate to the directory you wish to create the backup in. This article creates it in your user's home directory.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~</span></pre>
+</div>
+</li>
+<li>Run the following to create a dump file of your SVN repository. This command then compresses it and allows you to give the backup file a new name.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">svnadmin dump ~/svn/SVN_Test | gzip -9 &gt; SVN_Test_backup.dump.gz</span></pre>
+</div>
+</li>
+<li>You can now see the backed up .gz file in your user's home directory.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">ls -la ~ | grep .gz</span>
+SVN_Test_backup.dump.gz</pre>
+</div>
+</li>
+</ol>
+<p>You can now <a href="https://help.dreamhost.com/hc/en-us/articles/215465978-How-do-I-load-a-dump-file-into-my-Subversion-repository-">load the backed up repository</a> onto a new server.</p>
+<h2>See also</h2>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215466058-Subversion-overview">Subversion overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
+</ul>
