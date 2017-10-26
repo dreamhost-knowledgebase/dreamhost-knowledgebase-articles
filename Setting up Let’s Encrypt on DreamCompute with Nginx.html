@@ -1,117 +1,87 @@
-<body role="document">
 <div class="document">
 <div class="documentwrapper">
-<div class="body" role="main">
+<div class="body">
 <div id="setting-up-let-s-encrypt-on-dreamcompute-with-nginx">
-
 <div id="what-is-let-s-encrypt">
 <h2>What is Let’s Encrypt?</h2>
-<p><a class="reference external" href="https://letsencrypt.org">Let’s Encrypt</a> is a new certificate
-authority that provides absolutely free secure certificates to help
-get to 100% HTTPS on the Internet. DreamHost has integrated Let’s
-Encrypt support into our panel for hosted services, but if you want
-to set up automatically-renewing certificates for domains you host
-on a DreamCompute instance, you’ll need to do a little bit of manual
-installation. But the good news is, it doesn’t take long, and once
-you finish the setup, you should never have to worry about renewing
-a certificate ever again!</p>
+<p><a class="reference external" href="https://letsencrypt.org">Let’s Encrypt</a> is a new certificate authority that provides absolutely free secure certificates to help get to 100% HTTPS on the Internet. DreamHost has integrated Let’s Encrypt support into our panel for hosted services, but if you want to set up automatically-renewing certificates for domains you host on a DreamCompute instance, you’ll need to do a little bit of manual installation. But the good news is, it doesn’t take long, and once you finish the setup, you should never have to worry about renewing a certificate ever again!</p>
 </div>
 <div id="get-the-code">
 <h2>Get the code</h2>
-<p>You’ll need to SSH to your DreamCompute instance. It shouldn’t matter
-too much which distribution of Linux you’re running, but make sure
-you have the <code class="docutils literal"><span class="pre">git</span></code> package installed so that you can clone the
-letsencrypt repository, like so:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> sudo -s
+<p>You’ll need to SSH to your DreamCompute instance. It shouldn’t matter too much which distribution of Linux you’re running, but make sure you have the <code class="docutils literal"><span class="pre">git</span></code> package installed so that you can clone the letsencrypt repository, like so:</p>
+<div class="highlight-console">
+<div class="highlight">
+<pre><span class="gp">[user@server]$</span> sudo -s
 <span class="gp">[root@server]#</span> <span class="nb">cd</span> /opt
 <span class="gp">[root@server]#</span> git clone git://github.com/letsencrypt/letsencrypt
-</pre></div>
+</pre>
+</div>
 </div>
 </div>
 <div id="get-your-first-certificate">
 <h2>Get your first certificate</h2>
-<p>Before you do this, you’ll need to make sure that your domain is
-actually pointing at your DreamCompute instance’s IP address, and
-that your webserver is configured to respond to requests for your
-domain name. Let’s Encrypt performs checks to make sure that you
-control domain names that you request certificates for.</p>
-<p>But, let’s say that you have <code class="docutils literal"><span class="pre">example.com</span></code> configured with a DNS
-<code class="docutils literal"><span class="pre">A</span></code> record pointing at the IP address for your instance, and you
-have <code class="docutils literal"><span class="pre">nginx</span></code> already configured properly to respond
-to requests for <code class="docutils literal"><span class="pre">example.com</span></code>. (Configuring your webserver is kind
-of out of the scope of this guide, but there are <a class="reference external" href="https://www.nginx.com/resources/wiki/start/">plenty of tutorials</a> out there.)</p>
-<p>These sample snippets assume that the webserver is configured to
-serve files for <code class="docutils literal"><span class="pre">example.com</span></code> from the location <code class="docutils literal"><span class="pre">/srv/example.com</span></code>
-on your instance. Make sure to update that location to match your
-domain’s document root!</p>
-<p>If you’re using <code class="docutils literal"><span class="pre">nginx</span></code>, or <code class="docutils literal"><span class="pre">lighttpd</span></code>, or any other webserver
-that supports HTTPS, it’s a good idea to use the <code class="docutils literal"><span class="pre">certonly</span></code> plugin:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> <span class="nb">cd</span> /opt/letsencrypt
+<p>Before you do this, you’ll need to make sure that your domain is actually pointing at your DreamCompute instance’s IP address, and that your webserver is configured to respond to requests for your domain name. Let’s Encrypt performs checks to make sure that you control domain names that you request certificates for.</p>
+<p>But, let’s say that you have <code class="docutils literal"><span class="pre">example.com</span></code> configured with a DNS <code class="docutils literal"><span class="pre">A</span></code> record pointing at the IP address for your instance, and you have <code class="docutils literal"><span class="pre">nginx</span></code> already configured properly to respond to requests for <code class="docutils literal"><span class="pre">example.com</span></code>. (Configuring your webserver is kind of out of the scope of this guide, but there are <a class="reference external" href="https://www.nginx.com/resources/wiki/start/">plenty of tutorials</a> out there.)</p>
+<p>These sample snippets assume that the webserver is configured to serve files for <code class="docutils literal"><span class="pre">example.com</span></code> from the location <code class="docutils literal"><span class="pre">/srv/example.com</span></code> on your instance. Make sure to update that location to match your domain’s document root!</p>
+<p>If you’re using <code class="docutils literal"><span class="pre">nginx</span></code>, or any other webserver that supports HTTPS, it’s a good idea to use the <code class="docutils literal"><span class="pre">certonly</span></code> plugin:</p>
+<div class="highlight-console">
+<div class="highlight">
+<pre><span class="gp">[root@server]#</span> <span class="nb">cd</span> /opt/letsencrypt
 <span class="gp">[root@server]#</span> ./letsencrypt-auto certonly --webroot --webroot-path /srv/example.com -d example.com
-</pre></div>
+</pre>
 </div>
-<p>Either way, this will prompt you for some information including
-your email address. Fill it in with valid information and you
-should get a shiny new certificate! <code class="docutils literal"><span class="pre">Nginx</span></code> and other users will
-need to update configurations
-by hand to point at the new SSL certificate and key files. A sample
-nginx snippet is included below (insert something like this into the
-<code class="docutils literal"><span class="pre">server</span> <span class="pre">{</span></code> stanza for your domain):</p>
-<div class="code nginx highlight-python"><div class="highlight"><pre><span></span>listen 443 ssl;
+</div>
+<p>Either way, this will prompt you for some information including your email address. Fill it in with valid information and you should get a shiny new certificate! <code class="docutils literal"><span class="pre">Nginx</span></code> and other users will need to update configurations by hand to point at the new SSL certificate and key files. A sample nginx snippet is included below (insert something like this into the <code class="docutils literal"><span class="pre">server</span> <span class="pre">{</span></code> stanza for your domain):</p>
+<div class="code nginx highlight-python">
+<div class="highlight">
+<pre>listen 443 ssl;
 ssl_certificate /etc/letsencrypt/live/example.com/fullchain.pem;
 ssl_certificate_key /etc/letsencrypt/live/example.com/privkey.pem;
-</pre></div>
+</pre>
+</div>
 </div>
 </div>
 <div id="adding-a-subdomain-to-an-existing-certificate">
 <h2>Adding a subdomain to an existing certificate</h2>
-<p>If you just realized that you also need a certificate for a subdomain,
-don’t worry! You can add a new subdomain to your existing cert at any
-time, by simply calling <code class="docutils literal"><span class="pre">letsencrypt-auto</span></code> again like so...</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> <span class="nb">cd</span> /opt/letsencrypt
+<p>If you just realized that you also need a certificate for a subdomain, don’t worry! You can add a new subdomain to your existing cert at any time, by simply calling <code class="docutils literal"><span class="pre">letsencrypt-auto</span></code> again like so...</p>
+<div class="highlight-console">
+<div class="highlight">
+<pre><span class="gp">[root@server]#</span> <span class="nb">cd</span> /opt/letsencrypt
 <span class="gp">[root@server]#</span> ./letsencrypt-auto certonly --webroot --webroot-path /srv/example.com -d example.com --webroot-path /srv/sub.example.com -d sub.example.com
-</pre></div>
+</pre>
 </div>
-<p>This is, of course, assuming that you have a different document root
-for the files for your subdomain. You can omit the additional
-<code class="docutils literal"><span class="pre">--webroot-path</span></code> argument if the document root is the same for
-the top-level domain and the subdomain. Always remember to specify the
-<code class="docutils literal"><span class="pre">--webroot-path</span></code> <em>before</em> each <code class="docutils literal"><span class="pre">-d</span></code> argument, because the <code class="docutils literal"><span class="pre">-d</span></code>
-argument uses the most-recently-specified <code class="docutils literal"><span class="pre">webroot-path</span></code> variable
-supplied.</p>
+</div>
+<p>This is, of course, assuming that you have a different document root for the files for your subdomain. You can omit the additional <code class="docutils literal"><span class="pre">--webroot-path</span></code> argument if the document root is the same for the top-level domain and the subdomain. Always remember to specify the <code class="docutils literal"><span class="pre">--webroot-path</span></code> <em>before</em> each <code class="docutils literal"><span class="pre">-d</span></code> argument, because the <code class="docutils literal"><span class="pre">-d</span></code> argument uses the most-recently-specified <code class="docutils literal"><span class="pre">webroot-path</span></code> variable supplied.</p>
 </div>
 <div id="automatic-renewal">
 <h2>Automatic renewal</h2>
-<p>Now, the best part about using Let’s Encrypt (well, aside from the free
-certificates): You can have your system automatically renew all of the
-certificates for you. I wrote a small shell script I called
-<code class="docutils literal"><span class="pre">/usr/local/bin/update_certs</span></code> which looks like this:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<p>Now, the best part about using Let’s Encrypt (well, aside from the free certificates): You can have your system automatically renew all of the certificates for you. I wrote a small shell script I called <code class="docutils literal"><span class="pre">/usr/local/bin/update_certs</span></code> which looks like this:</p>
+<div class="highlight-bash">
+<div class="highlight">
+<pre><span class="ch">#!/bin/bash</span>
 
 /opt/letsencrypt/letsencrypt-auto renew
 
 systemctl reload nginx.service
-</pre></div>
+</pre>
+</div>
 </div>
 <p>Using <code class="docutils literal"><span class="pre">cron</span></code>, I have this scheduled like so:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>30 0 * * 0 /usr/local/bin/update_certs
-</pre></div>
-</div>
-<p>And now, my system attempts to renew all of my certificates once a week.
-If there are no certificates in danger of expiring soon, nothing bad
-happens, but if they would otherwise expire, then they get renewed and
-I don’t have to think about it.</p>
+<div class="code highlight-python">
+<div class="highlight">
+<pre>30 0 * * 0 /usr/local/bin/update_certs
+</pre>
 </div>
 </div>
+<p>And now, my system attempts to renew all of my certificates once a week. If there are no certificates in danger of expiring soon, nothing bad happens, but if they would otherwise expire, then they get renewed and I don’t have to think about it.</p>
 </div>
 </div>
-<div class="clearer"></div>
 </div>
-<div class="footer">
 </div>
+<div class="clearer"> </div>
+</div>
+<div class="footer"> </div>
 <!--DreamCompute Button-->
 <div class="dream-sign-up">
 <h2>Deploy Your Apps On Cloud Servers Today</h2>
-<a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a>
-</div>
-</body>
+<a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a></div>
