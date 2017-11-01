@@ -1,0 +1,66 @@
+<p>DNS is the technology that allows your domain to point to a specific IP address and allows the server listening on it to host your domain. There are several different types of records, but the most commonly used ones are:</p>
+<ul class="simple">
+<li>A - Used to link a domain or subdomain to an IPv4 address.</li>
+<li>AAAA - Used to link a domain or subdomain to an IPv6 address.</li>
+<li>CNAME - Used to link a domain or subdomain to another domain or subdomain.</li>
+</ul>
+<p>For most purposes, you’ll only need to use A and AAAA records.</p>
+<div id="find-your-public-ip-address">
+<h2>Locating your public IP address</h2>
+<p>Each DreamCompute instance in the US-East 2 cluster is assigned a public IPv4 and IPv6 address.</p>
+<p>You can view these addresses in two ways:</p>
+<ul>
+<li>On the <a class="reference external" href="https://iad2.dreamcompute.com/project/instances/">Instances</a> page of the DreamCompute dashboard</li>
+<li>Using the <a href="https://help.dreamhost.com/hc/en-us/articles/235817468-Getting-started-with-OpenStack-command-line-client">OpenStack command line client</a></li>
+</ul>
+<h3>DreamCompute dashboard option</h3>
+<div class="figure"><img src="https://help.dreamhost.com/hc/article_attachments/115004109828/DreamCompute-find-network-info.png" alt="../../_images/DreamCompute-find-network-info.png" /></div>
+<h3>OpenStack command line options</h3>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server list</span>
++--------------------------------------+---------+--------+------------+-------------+-------------------------------------------------------------+
+| ID                                   | Name    | Status | Task State | Power State | Networks                                                    |
++--------------------------------------+---------+--------+------------+-------------+-------------------------------------------------------------+
+| 10a3b11b-dc2f-42a2-b5d8-84508a5156a5 | website | ACTIVE | -          | Running     | public=208.113.128.37, 2607:f298:5:101d:f816:3eff:fe79:8c72 |
++--------------------------------------+---------+--------+------------+-------------+-------------------------------------------------------------+
+</pre>
+</div>
+<p>If you have multiple instances, you will have multiple public IPv4 and IPv6 addresses. You will need to track which addresses host which websites or other services.</p>
+</div>
+<div id="dreamhost-control-panel">
+<h2>Adding IP addresses to your domain in the DreamHost panel</h2>
+<ol>
+<li>Navigate to the <a href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;">(Panel &gt; 'Domains' &gt; 'Manage Domains')</a> page.</li>
+<li>You now must set your domain to 'DNS Only'. The steps are different depending on if your site is already hosted:
+<ul>
+<li>If your domain is on this page and already hosted, set it to '<a href="https://help.dreamhost.com/hc/en-us/articles/115000760591-Setting-your-domain-to-DNS-Only-">DNS Only</a>'.</li>
+<li>If your domain is not listed on this page, click the '<strong>Add Hosting to a Domain / Sub-Domain</strong>' button near the top left of the page. Scroll down to the 'DNS Only' hosting section towards the bottom, and enter your domain. Then click the '<strong>Host DNS only!</strong>' button.</li>
+</ul>
+</li>
+<li>Back on the 'Manage Domains' page, click the 'DNS' link directly under your domain name.
+<dl>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/Cloud_dns_setup_for_a_domain_dns_link.png" alt="" /></dd>
+</dl>
+</li>
+<li>In the "Add a custom DNS record to YOURDOMAIN:" section, enter the A record for the domain or subdomain you wish to host (this is also the entry used to automatically generate a PTR record for the IP address). This example shows how to add a subdomain called "cloud.example.com":
+<dl>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/Cloud_dns_setup_for_a_domain.png" alt="" /></dd>
+</dl>
+<ul>
+<li><strong>Name </strong>— The name of the subdomain you want to use with this cloud IP address.</li>
+<li><strong>Type </strong>— Select "A" since you're going to add an IPv4 A record.</li>
+<li><strong>Value </strong>— This is the public IPv4 address for your DreamCompute instance.</li>
+</ul>
+</li>
+<li>Once you've entered all of that information, click "<strong>Add Record Now!</strong>".</li>
+<li>Repeat the last step as many times as needed to add additional A records for domains you wish to host on your instance.</li>
+</ol>
+<div id="wait-for-dns-propagation">
+<h2>Waiting for DNS propagation</h2>
+<p>After the DNS entries are saved, the DNS must <a href="https://help.dreamhost.com/hc/en-us/articles/215840248-DNS-propagation-overview">propagate</a> which can take several hours. The default TTL (time-to-live) for DreamHost name servers is 4 hours, so any change to your DNS records should be updated nearly everywhere around the world in that time. If you will be making frequent changes to your DNS, you can <a class="reference external" href="https://help.dreamhost.com/hc/en-us/articles/218084068-Contacting-support-overview">contact DreamHost support</a> to have your TTL changed to 5 minutes instead.</p>
+</div>
+<!--DreamCompute Button-->
+<div class="dream-sign-up">
+<h2>Deploy Your Apps On Cloud Servers Today</h2>
+<a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a></div>
+</div>
