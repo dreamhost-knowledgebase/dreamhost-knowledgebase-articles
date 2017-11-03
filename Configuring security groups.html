@@ -1,0 +1,67 @@
+<p>Security groups are sets of IP filter rules that define networking access. Before you launch an instance, you should add security group rules to enable users to interact with the instance. To do this, you can either <a class="reference internal" href="#security-groups-add-rule">add rules to the default security group</a> or <a class="reference internal" href="#security-groups-add-group">add a new security group</a> with rules.</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>You can assign as many security groups as you like to an instance at any time.</p>
+</div>
+</div>
+<div id="add-a-rule-to-the-default-security-group"><span id="security-groups-add-rule"></span>
+<h2>Add a rule to the default security group</h2>
+<p>If you add rules to the "default" security group, they will be applied to all instances within a given project (unless you explicilty remove the "default" group from an instance). In this example, a rule to open up TCP port 8080 to all incoming traffic will be created. This procedure can be adjusted as necessary to add additional security group rules to a project.</p>
+<ol class="arabic">
+<li>Log in to the DreamCompute Dashboard.</li>
+<li>Select the appropriate project from the drop down menu at the top left.</li>
+<li>On the <span class="guilabel">Project</span> tab, open the <span class="guilabel">Compute</span> tab and click the <span class="guilabel">Access &amp; Security</span> category. The <span class="guilabel">Security Groups</span> tab shows the security groups that are available for this project.
+<dl>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/how-to-add-a-rule-to-a-security-group_1.png" alt="how-to-add-a-rule-to-a-security-group_1" width="672" height="303" /></dd>
+</dl>
+</li>
+<li>Click <span class="guilabel">Manage Rules</span> next to the default security group.
+<dl>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/how-to-add-a-rule-to-a-security-group_2.png" alt="how-to-add-a-rule-to-a-security-group_2" width="816" height="282" /></dd>
+</dl>
+</li>
+<li>Click <span class="guilabel">Add Rule</span>.</li>
+<li>In the <span class="guilabel">Add Rule</span> pop-up, select/enter the following values:
+<ul class="simple">
+<li><strong>Rule</strong>: <code class="docutils literal"><span class="pre">Custom TCP Rule</span></code></li>
+<li><strong>Direction</strong>: <code class="docutils literal"><span class="pre">Ingress</span></code></li>
+<li><strong>Open Port</strong>: <code class="docutils literal"><span class="pre">Port</span></code></li>
+<li><strong>Port</strong>: <code class="docutils literal"><span class="pre">8080</span></code></li>
+<li><strong>Remote</strong>: <code class="docutils literal"><span class="pre">CIDR</span></code></li>
+<li><strong>CIDR</strong>: <code class="docutils literal"><span class="pre">0.0.0.0/0</span></code></li>
+</ul>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>To limit port requests to a particular range of IP addresses, specify the IP address block in the <span class="guilabel">CIDR</span> box.</p>
+</div>
+</div>
+<dl>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/how-to-add-a-rule-to-a-security-group_3.png" alt="how-to-add-a-rule-to-a-security-group_3" width="565" height="449" /></dd>
+</dl>
+</li>
+<li>Click <span class="guilabel">Add</span>.
+<p>Instances will now have port 8080 open for requests from any IP address.</p>
+</li>
+</ol>
+</div>
+<div id="security-groups-add-group"><span id="security-groups-add-rule"></span>
+<h2>Add a new security group</h2>
+<ol class="arabic">
+<li>Log in to the DreamCompute Dashboard.</li>
+<li>Select the appropriate project from the drop down menu at the top left.</li>
+<li>On the <span class="guilabel">Project</span> tab, open the <span class="guilabel">Compute</span> tab and click the <span class="guilabel">Access &amp; Security</span> category. The <span class="guilabel">Security Groups</span> tab shows the security groups that are available for this project.
+<dl>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/how-to-add-a-rule-to-a-security-group_4.png" alt="how-to-add-a-rule-to-a-security-group_4" width="630" height="271" /></dd>
+</dl>
+</li>
+<li>Click <span class="guilabel">Create Security Group</span>.
+<dl>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/how-to-add-a-rule-to-a-security-group_5.png" alt="how-to-add-a-rule-to-a-security-group_5" width="600" height="285" /></dd>
+</dl>
+</li>
+<li>Type in a Name for the new security group, add a description (optional), and click <span class="guilabel">Create Security Group</span>.</li>
+<li>Click <span class="guilabel">Manage Rules</span> next to the new security group and add rules to it using the same procedure as above.</li>
+</ol>
+</div>

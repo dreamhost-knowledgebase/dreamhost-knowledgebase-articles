@@ -1,198 +1,175 @@
-<body role="document">
 <div class="document">
 <div class="documentwrapper">
-<div class="body" role="main">
+<div class="body">
 <div id="how-to-create-and-manage-private-networks-with-the-dreamcompute-dashboard">
-
-<p>Private networking is a useful feature that customers may wish to utilize
-for advanced cloud setups.  For a description of private networking and how to
-enable it, please review the <a class="reference external" href="229789688-What-is-private-networking-">What is private networking</a> article.  In this
-article, the decisions needed for adding a private network, and how to add the
-private network while using the <a class="reference external" href="https://iad2.dreamcompute.com">DreamCompute dashboard</a>
-are covered.</p>
+<p>Private networking is a useful feature that customers may wish to utilize for advanced cloud setups. For a description of private networking and how to enable it, please review the <a href="https://help.dreamhost.com/hc/en-us/articles/229789688-Private-networking-overview">Private networking overview</a> article. In this article, the decisions needed for adding a private network, and how to add the private network while using the <a class="reference external" href="https://iad2.dreamcompute.com">DreamCompute dashboard</a> are covered.</p>
 <div id="private-network-options">
 <h2>Private network options</h2>
-<p>Once Support has confirmed the network quota has been adjusted, the private
-network can be added.  Please review the below options to determine settings
-for the private network.</p>
+<p>Once Support has confirmed the network quota has been adjusted, the private network can be added. Please review the below options to determine settings for the private network.</p>
 <div id="network-block">
 <h3>Network block</h3>
-<p>There are various private network blocks that are available for use with
-private networks, and are specified in <a class="reference external" href="https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing">CIDR</a>
-format.  Common examples of this are 10.0.0.0/24 or 192.168.0.0/24, however
-there are <a class="reference external" href="https://en.wikipedia.org/wiki/Private_network#Private_IPv4_address_spaces">other networks</a>
-to choose from as well.  In the example below, we use 10.0.0.0/24.</p>
+<p>There are various private network blocks that are available for use with private networks, and are specified in <a class="reference external" href="https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing">CIDR</a> format. Common examples of this are 10.0.0.0/24 or 192.168.0.0/24, however there are <a class="reference external" href="https://en.wikipedia.org/wiki/Private_network#Private_IPv4_address_spaces">other networks</a> to choose from as well. In the example below, we use 10.0.0.0/24.</p>
 </div>
 <div id="dhcp">
 <h3>DHCP</h3>
-<p>When a subnet is defined, DHCP can be set enabled or disabled, and can be
-changed later if desired.  When DHCP is enabled, newly created instances
-run cloud-init at start and detect it, and therefore determine it isn’t
-necessary to hard-code network settings into the operating system.  If it is
-disabled, then these settings are hard-coded.  Having DHCP enabled can help
-with creating snapshots and new instances from those snapshots, as the
-snapshots won’t have hard-coded network configs in them.  However, older
-versions of cloud-init fail to boot entirely when DHCP is enabled.</p>
-<p>As of October 2016, only Centos 6, and all Ubuntu versions have a version of
-cloud-init that supports DHCP.  If you plan to use a different operating
-system, please consider disabling DHCP.</p>
+<p>When a subnet is defined, DHCP can be set enabled or disabled, and can be changed later if desired. When DHCP is enabled, newly created instances run cloud-init at start and detect it, and therefore determine it isn’t necessary to hard-code network settings into the operating system. If it is disabled, then these settings are hard-coded. Having DHCP enabled can help with creating snapshots and new instances from those snapshots, as the snapshots won’t have hard-coded network configs in them. However, older versions of cloud-init fail to boot entirely when DHCP is enabled.</p>
+<p>As of October 2016, only Centos 6, and all Ubuntu versions have a version of cloud-init that supports DHCP. If you plan to use a different operating system, please consider disabling DHCP.</p>
 </div>
 </div>
+<h2>Checking if Private Networking has been enabled</h2>
+<p>After you have requested that Private Networking be <a href="https://help.dreamhost.com/hc/en-us/articles/229789688-Private-networking-overview">enabled on your account</a>, you can check your DreamCompute dashboard to confirm.</p>
+<dl>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/Private_Networking_not_enabled.png" alt="" /></dd>
+</dl>
+<p>In the left pane, click the 'Network' &gt; 'Networks' option. To the right you'll see a <strong>Create Network</strong> button. If it says 'Quota exceeded', this has not been enabled yet. Once it's enabled, you'll be able to press this button to add a private network.</p>
 <div id="adding-the-private-network">
 <h2>Adding the private network</h2>
 <ol class="arabic">
-<li><p class="first">Begin creating a network:</p>
+<li>
+<p class="first">Begin creating a network:</p>
 <blockquote>
-<div><div class="figure" id="id3">
-<img alt="../../_images/network-01.png" src="https://dreamhosthelp.zendesk.com/hc/article_attachments/115000638447/network-01.png"/>
-<p class="caption"><span class="caption-text">Launch the DreamCompute dashboard, and navigate to the Network
--&gt; Networks menu.  Click on the “+ Create Network” button on the
-top right.</span></p>
+<div>
+<div id="id3" class="figure"><img src="https://help.dreamhost.com/hc/article_attachments/115000638447/network-01.png" alt="../../_images/network-01.png" />
+<p class="caption"><span class="caption-text">Launch the DreamCompute dashboard, and navigate to the Network -&gt; Networks menu. Click on the “+ Create Network” button on the top right.</span></p>
 </div>
-</div></blockquote>
-</li>
-<li><p class="first">Enter network information:</p>
-<blockquote>
-<div><div class="figure" id="id4">
-<img alt="../../_images/network-02.png" src="https://dreamhosthelp.zendesk.com/hc/article_attachments/115000638467/network-02.png"/>
-<p class="caption"><span class="caption-text">A new window appears.  Enter a name for the network such as
-“private-network”.  Then, click the “Next” button.</span></p>
 </div>
-</div></blockquote>
+</blockquote>
 </li>
-<li><p class="first">Enter subnet information:</p>
+<li>
+<p class="first">Enter network information:</p>
 <blockquote>
-<div><div class="figure" id="id5">
-<img alt="../../_images/network-03.png" src="https://dreamhosthelp.zendesk.com/hc/article_attachments/115000675808/network-03.png"/>
-<p class="caption"><span class="caption-text">On the Subnet tab, enter the above determined CIDR for the
-private network into the “Network Address” field.  An optional
-Subnet name can be specified if desired.  Then, click the “Next”
-button.</span></p>
+<div>
+<div id="id4" class="figure"><img src="https://help.dreamhost.com/hc/article_attachments/115000638467/network-02.png" alt="../../_images/network-02.png" />
+<p class="caption"><span class="caption-text">A new window appears. Enter a name for the network such as “private-network”. Then, click the “Next” button.</span></p>
 </div>
-</div></blockquote>
-</li>
-<li><p class="first">Enter subnet details:</p>
-<blockquote>
-<div><div class="figure" id="id6">
-<img alt="../../_images/network-04.png" src="https://dreamhosthelp.zendesk.com/hc/article_attachments/115000638487/network-04.png"/>
-<p class="caption"><span class="caption-text">On the Subnet Details tab, check or uncheck the “Enable DHCP”
-checkbox depending on the decision made in the <a class="reference external" href="#dhcp">DHCP</a>
-section above.  In the “DNS Name Servers” field, enter the
-values 8.8.8.8 and 8.8.4.4 on their own lines.  Finally, click the
-“Create” button.</span></p>
 </div>
-</div></blockquote>
+</blockquote>
 </li>
-<li><p class="first">Begin creating a router:</p>
+<li>
+<p class="first">Enter subnet information:</p>
 <blockquote>
-<div><div class="figure" id="id7">
-<img alt="../../_images/network-05.png" src="https://dreamhosthelp.zendesk.com/hc/article_attachments/115000638507/network-05.png"/>
-<p class="caption"><span class="caption-text">Navigate to the Network -&gt; Routers menu.  Click on the “+ Create
-Router” button on the top right.</span></p>
+<div>
+<div id="id5" class="figure"><img src="https://help.dreamhost.com/hc/article_attachments/115000675808/network-03.png" alt="../../_images/network-03.png" />
+<p class="caption"><span class="caption-text">On the Subnet tab, enter the above determined CIDR for the private network into the “Network Address” field. An optional Subnet name can be specified if desired. Then, click the “Next” button.</span></p>
 </div>
-</div></blockquote>
-</li>
-<li><p class="first">Enter router information:</p>
-<blockquote>
-<div><div class="figure" id="id8">
-<img alt="../../_images/network-06.png" src="https://dreamhosthelp.zendesk.com/hc/article_attachments/115000638527/network-06.png"/>
-<p class="caption"><span class="caption-text">A new window appears.  Enter a name for the router such as
-“private-router”, and select “public” from the “External Network”
-drop-down.  Finally, click the “Create Router” button.</span></p>
 </div>
-</div></blockquote>
+</blockquote>
 </li>
-<li><p class="first">Begin adding a router interface:</p>
+<li>
+<p class="first">Enter subnet details:</p>
 <blockquote>
-<div><div class="figure" id="id9">
-<img alt="../../_images/network-07.png" src="https://dreamhosthelp.zendesk.com/hc/article_attachments/115000675828/network-07.png"/>
-<p class="caption"><span class="caption-text">Once the router is displayed, click on the routers name to navigate
-to the router details page.  Click on the “Interfaces” tab that is
-displayed on the top left.</span></p>
+<div>
+<div id="id6" class="figure"><img src="https://help.dreamhost.com/hc/article_attachments/115000638487/network-04.png" alt="../../_images/network-04.png" />
+<p class="caption"><span class="caption-text">On the Subnet Details tab, check or uncheck the “Enable DHCP” checkbox depending on the decision made in the <a class="reference external" href="#dhcp">DHCP</a> section above. In the “DNS Name Servers” field, enter the values 8.8.8.8 and 8.8.4.4 on their own lines. Finally, click the “Create” button.</span></p>
 </div>
-</div></blockquote>
+</div>
+</blockquote>
 </li>
-<li><p class="first">Add an interface:</p>
+<li>
+<p class="first">Begin creating a router:</p>
 <blockquote>
-<div><div class="figure" id="id10">
-<img alt="../../_images/network-08.png" src="https://dreamhosthelp.zendesk.com/hc/article_attachments/115000638547/network-08.png"/>
+<div>
+<div id="id7" class="figure"><img src="https://help.dreamhost.com/hc/article_attachments/115000638507/network-05.png" alt="../../_images/network-05.png" />
+<p class="caption"><span class="caption-text">Navigate to the Network -&gt; Routers menu. Click on the “+ Create Router” button on the top right.</span></p>
+</div>
+</div>
+</blockquote>
+</li>
+<li>
+<p class="first">Enter router information:</p>
+<blockquote>
+<div>
+<div id="id8" class="figure"><img src="https://help.dreamhost.com/hc/article_attachments/115000638527/network-06.png" alt="../../_images/network-06.png" />
+<p class="caption"><span class="caption-text">A new window appears. Enter a name for the router such as “private-router”, and select “public” from the “External Network” drop-down. Finally, click the “Create Router” button.</span></p>
+</div>
+</div>
+</blockquote>
+</li>
+<li>
+<p class="first">Begin adding a router interface:</p>
+<blockquote>
+<div>
+<div id="id9" class="figure"><img src="https://help.dreamhost.com/hc/article_attachments/115000675828/network-07.png" alt="../../_images/network-07.png" />
+<p class="caption"><span class="caption-text">Once the router is displayed, click on the routers name to navigate to the router details page. Click on the “Interfaces” tab that is displayed on the top left.</span></p>
+</div>
+</div>
+</blockquote>
+</li>
+<li>
+<p class="first">Add an interface:</p>
+<blockquote>
+<div>
+<div id="id10" class="figure"><img src="https://help.dreamhost.com/hc/article_attachments/115000638547/network-08.png" alt="../../_images/network-08.png" />
 <p class="caption"><span class="caption-text">Click on the “+ Add Interface” button on the top right.</span></p>
 </div>
-</div></blockquote>
-</li>
-<li><p class="first">Enter interface information:</p>
-<blockquote>
-<div><div class="figure" id="id11">
-<img alt="../../_images/network-09.png" src="https://dreamhosthelp.zendesk.com/hc/article_attachments/115000638567/network-09.png"/>
-<p class="caption"><span class="caption-text">In the “Subnet” drop-down, select the private network created in
-steps #1-4 above.  Finally, click the “Add Interface” button.</span></p>
 </div>
-</div></blockquote>
+</blockquote>
+</li>
+<li>
+<p class="first">Enter interface information:</p>
+<blockquote>
+<div>
+<div id="id11" class="figure"><img src="https://help.dreamhost.com/hc/article_attachments/115000638567/network-09.png" alt="../../_images/network-09.png" />
+<p class="caption"><span class="caption-text">In the “Subnet” drop-down, select the private network created in steps #1-4 above. Finally, click the “Add Interface” button.</span></p>
+</div>
+</div>
+</blockquote>
 </li>
 </ol>
 </div>
 <div id="using-the-private-network">
 <h2>Using the private network</h2>
-<p>This completes the process of adding a private network to the account. To
-select the private network and add a floating IP address, follow the additional
-steps below.</p>
+<p>This completes the process of adding a private network to the account. To select the private network and add a floating IP address, follow the additional steps below.</p>
 <ol class="arabic">
-<li><p class="first">Begin adding an instance:</p>
+<li>
+<p class="first">Begin adding an instance:</p>
 <blockquote>
-<div><div class="figure" id="id12">
-<img alt="../../_images/network-10.png" src="https://dreamhosthelp.zendesk.com/hc/article_attachments/115000675848/network-10.png"/>
-<p class="caption"><span class="caption-text">Navigate to the Compute -&gt; Instances menu.  Click on the “Launch
-Instance” button on the top right.  Complete the “Details”, “Access
-&amp; Security” and “Post-Creation” tabs as normal.  In the “Networking”
-tab, click the “+” button to add the private network to this instance.
-Finally, click the “Launch” button to launch the instance.</span></p>
+<div>
+<div id="id12" class="figure"><img src="https://help.dreamhost.com/hc/article_attachments/115000675848/network-10.png" alt="../../_images/network-10.png" />
+<p class="caption"><span class="caption-text">Navigate to the Compute -&gt; Instances menu. Click on the “Launch Instance” button on the top right. Complete the “Details”, “Access &amp; Security” and “Post-Creation” tabs as normal. In the “Networking” tab, click the “+” button to add the private network to this instance. Finally, click the “Launch” button to launch the instance.</span></p>
 </div>
-</div></blockquote>
+</div>
+</blockquote>
 </li>
-<li><p class="first">Begin floating IP association:</p>
+<li>
+<p class="first">Begin floating IP association:</p>
 <blockquote>
-<div><div class="figure" id="id13">
-<img alt="../../_images/network-11.png" src="https://dreamhosthelp.zendesk.com/hc/article_attachments/115000675868/network-11.png"/>
-<p class="caption"><span class="caption-text">In the right drop-down menu beside the instance, click the down arrow
-to expand it and select “Associate Floating IP”.</span></p>
+<div>
+<div id="id13" class="figure"><img src="https://help.dreamhost.com/hc/article_attachments/115000675868/network-11.png" alt="../../_images/network-11.png" />
+<p class="caption"><span class="caption-text">In the right drop-down menu beside the instance, click the down arrow to expand it and select “Associate Floating IP”.</span></p>
 </div>
-</div></blockquote>
+</div>
+</blockquote>
 </li>
-<li><p class="first">Provision a floating IP address if needed:</p>
+<li>
+<p class="first">Provision a floating IP address if needed:</p>
 <blockquote>
-<div><div class="figure" id="id14">
-<img alt="../../_images/network-12.png" src="https://dreamhosthelp.zendesk.com/hc/article_attachments/115000675888/network-12.png"/>
-<p class="caption"><span class="caption-text">If a floating IP has not yet been provisioned, click the “+” button
-to do so.  The provision window has only one “Pool” available named
-“Public” to select, and an “Allocate IP” button to complete the
-process.  Select an available floating IP from the “IP Address”
-drop-down, and the private IP address of the above instance in the
-“Port to be associated” drop-down.  Finally, click the “Associate”
-button.</span></p>
+<div>
+<div id="id14" class="figure"><img src="https://help.dreamhost.com/hc/article_attachments/115000675888/network-12.png" alt="../../_images/network-12.png" />
+<p class="caption"><span class="caption-text">If a floating IP has not yet been provisioned, click the “+” button to do so. The provision window has only one “Pool” available named “Public” to select, and an “Allocate IP” button to complete the process. Select an available floating IP from the “IP Address” drop-down, and the private IP address of the above instance in the “Port to be associated” drop-down. Finally, click the “Associate” button.</span></p>
 </div>
-</div></blockquote>
+</div>
+</blockquote>
 </li>
-<li><p class="first">Verify floating IP assignment:</p>
+<li>
+<p class="first">Verify floating IP assignment:</p>
 <blockquote>
-<div><div class="figure" id="id15">
-<img alt="../../_images/network-13.png" src="https://dreamhosthelp.zendesk.com/hc/article_attachments/115000638587/network-13.png"/>
-<p class="caption"><span class="caption-text">The floating IP address assigned appears on the Compute -&gt;
-Instances page in the “IP Address” column.</span></p>
+<div>
+<div id="id15" class="figure"><img src="https://help.dreamhost.com/hc/article_attachments/115000638587/network-13.png" alt="../../_images/network-13.png" />
+<p class="caption"><span class="caption-text">The floating IP address assigned appears on the Compute -&gt; Instances page in the “IP Address” column.</span></p>
 </div>
-</div></blockquote>
+</div>
+</blockquote>
 </li>
 </ol>
 </div>
 </div>
 </div>
 </div>
-<div class="clearer"></div>
+<div class="clearer"> </div>
 </div>
-<div class="footer">
-</div>
+<div class="footer"> </div>
 <!--DreamCompute Button-->
 <div class="dream-sign-up">
 <h2>Deploy Your Apps On Cloud Servers Today</h2>
-<a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a>
-</div>
-</body>
+<a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a></div>
