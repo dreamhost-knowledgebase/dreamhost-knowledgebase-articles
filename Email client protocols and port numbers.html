@@ -7,43 +7,15 @@
 </ul>
 </div>
 </div>
-<p>The port numbers you set determine the protocol your email client uses. There are four basic options. IMAP secure is the recommended configuration:</p>
+<p>The port numbers you set determine the protocol (IMAP or POP) your email client uses. There are four basic options. IMAP secure is the recommended configuration:</p>
 <ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215612887#Example_setup_using_a_secure_IMAP_connection">IMAP (secure) — RECOMMENDED</a></li>
 <li>IMAP (insecure)</li>
-<li>IMAP (secure)</li>
-<li>POP3 (insecure)</li>
 <li>POP3 (secure)</li>
+<li>POP3 (insecure)</li>
 </ul>
-<p>Below are the settings you can use for each protocol along with the security settings.</p>
-<h2><span id="Incoming">Incoming</span></h2>
-<ul>
-<li><strong>IMAP | Port 143</strong> (Insecure Transport — No SSL function enabled)</li>
-<li><strong>IMAP | Port 993</strong> (Secure Transport   — SSL function enabled)</li>
-</ul>
-<ul>
-<li><strong>POP3 | Port 110</strong> (Insecure Transport — No SSL function enabled)</li>
-<li><strong>POP3 | Port 995</strong> (Secure Transport   — SSL function enabled)</li>
-</ul>
-<h2><span id="Outgoing">Outgoing</span></h2>
-<ul>
-<li><strong>SMTP | Port 587</strong> (Insecure Transport — No SSL function enabled)</li>
-<li><strong>SMTP | Port 465</strong> (Secure Transport   — SSL function enabled)</li>
-<li><strong>SMTP | Port 25</strong> (<em><strong>username/password authentication MUST also be enabled!</strong></em>)</li>
-</ul>
-<div class="alert alert-note">
-<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
-<div class="alert-content">
-<p>Port 587 is a highly recommended alternative port because port 25 is often blocked by ISPs.</p>
-</div>
-</div>
-<h2><span id="SMTP">SMTP</span></h2>
-<p><em><em>See also: <a href="https://en.wikipedia.org/wiki/Simple_Mail_Transfer_Protocol">SMTP on Wikipedia</a>, <a href="/hc/en-us/articles/215730467-SMTP-quota-overview">SMTP quota</a></em></em></p>
-<ul>
-<li><strong>Simple Mail Transfer Protocol</strong> (<strong>SMTP</strong>) is the <em>de facto</em> standard for <strong>outgoing</strong> email transmissions across the Internet.</li>
-<li>SMTP is a relatively simple, text-based protocol, where one or more recipients of a message are specified (and in most cases verified to exist) and then the message text is transferred.</li>
-<li>It is a client-server protocol, where the client transmits an email message to the server.</li>
-</ul>
-<h2><span id="POP3_vs_IMAP">POP3 vs IMAP</span></h2>
+<p>Follow the steps below to choose which protocol and port numbers you'd like to use to connect to your mail server.</p>
+<h2><span id="POP3_vs_IMAP">Step#1 — Decide between POP3 or IMAP</span></h2>
 <p>POP3 and IMAP are two different ways of checking mail. A mail client program connects to the mail server using either POP3 or IMAP. All DreamHost mail accounts support both POP3 and IMAP connections automatically.</p>
 <h3><span id="What_is_POP3.3F">What is POP3?</span></h3>
 <p>POP3 downloads all mail from the server from the Inbox and stores it on your computer. This way, emails are available when you're not connected to the Internet.</p>
@@ -66,6 +38,55 @@
 </div>
 <p>Use IMAP if you want to check email from multiple computers or devices. Use POP3 if you want your email always accessible, even when there's no Internet connection. But, be aware that email will only be available on the device to which you downloaded them.</p>
 <p>If you have been using IMAP and have some mail stored in folders other than the Inbox, move the emails to the Inbox before using POP3.</p>
+<h2><span id="POP3_vs_IMAP">Step#2 — Choose a secure or insecure incoming port</span></h2>
+<p>Based on your decision to use POP or IMAP, choose the corresponding port number below. Once again, secure IMAP is recommended.</p>
+<h3><span id="Incoming">Incoming secure — (Recommended settings)</span></h3>
+<ul>
+<li><strong>IMAP | Port 993</strong> (Secure Transport   — SSL function enabled)</li>
+<li><strong>POP3 | Port 995</strong> (Secure Transport   — SSL function enabled)</li>
+</ul>
+<h3>Incoming insecure <span id="Incoming">— (Not recommended)</span></h3>
+<ul>
+<li><strong>IMAP | Port 143</strong> (Insecure Transport — No SSL function enabled)</li>
+<li><strong>POP3 | Port 110</strong> (Insecure Transport — No SSL function enabled)</li>
+</ul>
+<h2><span id="POP3_vs_IMAP">Step#3 — Choose an outgoing SMTP port</span></h2>
+<p><em>See also: <a href="https://en.wikipedia.org/wiki/Simple_Mail_Transfer_Protocol">SMTP on Wikipedia</a>, <a href="/hc/en-us/articles/215730467-SMTP-quota-overview">SMTP quota</a></em></p>
+<p><strong>Simple Mail Transfer Protocol</strong> (<strong>SMTP</strong>) is the <em>de facto</em> standard for <strong>outgoing</strong> email transmissions across the Internet.</p>
+<p>SMTP is a relatively simple, text-based protocol, where one or more recipients of a message are specified (and in most cases verified to exist) and then the message text is transferred.</p>
+<p>It is a client-server protocol, where the client transmits an email message to the server.</p>
+<h3><span id="Outgoing">Outgoing port options</span></h3>
+<ul>
+<li><strong>SMTP | Port 587</strong> (Insecure Transport, but can be upgraded to a secure connection using <a href="https://help.dreamhost.com/hc/en-us/articles/215612887#STARTTLS">STARTTLS</a>)</li>
+<li><strong>SMTP | Port 465</strong> (Secure Transport — SSL function enabled)</li>
+<li><strong>SMTP | Port 25</strong> (Outdated and not recommended. username/password authentication MUST be enabled if using this port.)</li>
+</ul>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Port 587 is a highly recommended alternative port because port 25 is often blocked by ISPs. Make sure to enable <a href="https://help.dreamhost.com/hc/en-us/articles/215612887#STARTTLS">STARTTLS</a> when using port 587.</p>
+</div>
+</div>
+<h2>Connection security overview</h2>
+<p>When you choose a secure port number, your connection is secured as an SSL/TLS connection. Below are some of the benefits of using a secure port number.</p>
+<h3>Encrypted communications</h3>
+<p>Your login information and email messages are sent in encrypted form, so people can't eavesdrop on them.</p>
+<h3>Server authentication</h3>
+<p>With certificates properly set up, you can check that the IMAP/POP server that you're connecting to is the correct machine (and not an impostor that just wants to steal your password.) The server provides a certificate (public key) which corresponds to a private key on the IMAP/POP server. Once the client knows that the server's public key is authentic, it can validate communications from that server.</p>
+<p>Secure settings are particularly useful if using public Wi-Fi, which may not be encrypted. Secure settings ensure that people can’t read your email by listening to the network, nor can they (more intrusively) set up a fake email server to capture your emails.</p>
+<h3>Webmail</h3>
+<p>You should also use Webmail over a secure (HTTPS) connection. For example:</p>
+<ul>
+<li><strong>https://</strong>webmail.example.com</li>
+</ul>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Some clients will set the port automatically when you select TLS/SSL, or select TLS/SSL automatically when you select the appropriate port. Other clients will require that you make both selections in order to fully configure SSL for the appropriate service.</p>
+</div>
+</div>
+<h3><span id="STARTTLS">What is the STARTTLS connection type?</span></h3>
+<p>Another method uses STARTTLS. The STARTTLS method connects to the regular SMTP/IMAP/POP3 port and then upgrades the connection to TLS by sending a STARTTLS request. Some email clients refer to this as "TLS" and the method of directly using encryption to a different port as "SSL". This distinction is technically incorrect!</p>
 <h2><span id="Example_setup_using_a_secure_IMAP_connection">Example setup using a secure IMAP connection</span></h2>
 <h3><span id="Secure_IMAP_incoming_configuration">Secure IMAP incoming configuration</span></h3>
 <dl>
@@ -90,10 +111,6 @@
 <li>The user is set to use Port 465 with SSL for secure connections and the ‘Authentication’ is set here as ‘Normal password’.</li>
 </ul>
 </dd>
-</dl>
-<dl>
-<dd></dd>
-<dd></dd>
 </dl>
 <div class="alert alert-note">
 <div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>

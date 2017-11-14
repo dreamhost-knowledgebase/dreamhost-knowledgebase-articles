@@ -1,0 +1,104 @@
+<p>It is possible to use the <a href="https://help.dreamhost.com/hc/en-us/articles/235817468-Getting-started-with-OpenStack-command-line-client">OpenStack command-line interface</a> on a Windows computer by installing the following:</p>
+<ul>
+<li>Python</li>
+<li>pip</li>
+<li>The OpenStack client</li>
+</ul>
+<p>Once you've installed those three things and have set some environment variables for your Windows user, you can use Windows Command Prompt or Windows PowerShell to manage your DreamCompute project.</p>
+<p>Windows PowerShell is a command line and scripting environment. It excels at task automation and configuration management.</p>
+<p>For help installing/locating Windows PowerShell, see Microsoft's documentation <a href="https://docs.microsoft.com/en-us/powershell/scripting/setup/installing-windows-powershell?view=powershell-5.1">here</a>.</p>
+<h2 class="subheader"><span id="Username_and_password">Step#1 — </span>Install Python and pip</h2>
+<ol>
+<li>Download the latest Python 2 release from Python's website: <a href="http://python.org/downloads/windows/">http://python.org/downloads/windows/</a></li>
+<li>After clicking the most recent Python 2 release, choose to download the Windows X86-64 MSI Installer.</li>
+<li>Install Python by double-clicking the MSI package that you just downloaded and completing the installation wizard.</li>
+</ol>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60"></div>
+<div class="alert-content">
+<p>Make sure that the 'pip' and 'Add python.exe to Path' features will be installed on your local hard drive.</p>
+</div>
+</div>
+<h2 class="subheader"><span id="Username_and_password">Step#2 — </span>Install the OpenStack client</h2>
+<p>You must first open the command prompt in your version of Windows.</p>
+<h3><span id="Windows_7">Windows 7</span></h3>
+<ol>
+<li>Click the <strong>Start</strong> button, and then type 'cmd' in the search bar (where it says 'search for programs and files').</li>
+</ol>
+<h3><span id="Windows_8">Windows 8 &amp; 10</span></h3>
+<ol>
+<li>Click the Windows logo while holding the R key at the same time.
+<dl>
+<dd><em>The run box appears.</em></dd>
+</dl>
+</li>
+<li>In the run box, type <code>cmd</code> and then hit the 'Enter' key.</li>
+</ol>
+<p>In the command prompt, enter the following:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">C:\Users\username&gt; </span><span class="command">pip install python-openstackclient</span>
+</pre>
+</div>
+<h2 class="subheader"><span id="Username_and_password">Step#3 — </span>Set environment variables</h2>
+<p>You now need to set environment variables for your Windows user so your OpenStack client commands are authenticated against your project. The easiest way to do this is to download your openrc file, modify/re-save it as a Windows batch file, and execute it once.</p>
+<h3>Downloading your openrc file</h3>
+<p>View the following article for instructions:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/228047207-How-to-download-your-DreamCompute-openrc-file">How to download your DreamCompute openrc file</a></li>
+</ul>
+<h3>Modify the file</h3>
+<p>Once you've downloaded your openrc file, you'll need to modify/re-save it as a batch file. Open the file in a text editor like Notepad and remove everything except the following lines:</p>
+<div class="preboxcontainer">
+<pre class="prebox">export OS_AUTH_URL=https://iad2.dream.io:5000/v2.0
+export OS_TENANT_ID=tenantid
+export OS_TENANT_NAME="tenantname"
+export OS_USERNAME="username"
+</pre>
+</div>
+<p>Make the following adjustments to the file:</p>
+<ul>
+<li>Replace all instances of 'export' with 'setx'</li>
+<li>Place double quote marks (") around all of your variable values (i.e. 'https://iad2.dream.io:5000/v2.0', 'tenantid', etc.).</li>
+</ul>
+<p>The file should now look like this:</p>
+<div class="preboxcontainer">
+<pre class="prebox">setx OS_AUTH_URL "https://iad2.dream.io:5000/v2.0"
+setx OS_TENANT_ID "tenantid"
+setx OS_TENANT_NAME "tenantname"
+setx OS_USERNAME "username"
+</pre>
+</div>
+<p>Save the file with the extension 'bat' (example: dhc-123456-openrc.bat).</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60"></div>
+<div class="alert-content">
+<p>Make sure that the file isn't saved with an additional .txt extension or Windows will not be able to execute the script.</p>
+</div>
+</div>
+<h3>Execute the file</h3>
+<p>You must now execute the script as an administrator. Locate the saved file in Windows Explorer, right-click, and select the 'Run as administrator' option.</p>
+<p>After running the script, all necessary environmental variables should be set. You can now use the OpenStack command line client to manage your DreamCompute project. For a review of some of the basic commands, view the following article:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/235817468-Getting-started-with-OpenStack-command-line-client#basic-commands">Getting started with OpenStack command line client</a></li>
+</ul>
+<h2>Troubleshooting</h2>
+<p>If you're having issues connecting, double-check your environment variables. You can do this either from the System Properties Control panel area, Windows PowerShell, or the Windows Command Prompt. In Windows PowerShell, run this command:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">C:\Users\username&gt; </span><span class="command">Get-ChildItem Env:OS_*</span>
+Name                           Value
+----                           -----
+OS_USERNAME                    username
+OS_TENANT_NAME                 tenantname
+OS_AUTH_URL                    https://iad2.dream.io:5000/v2.0
+OS_TENANT_ID                   tenantid
+</pre>
+</div>
+<p>In Windows Command Prompt, run this command:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">C:\Users\username&gt; </span><span class="command">set|findstr OS_</span>
+OS_AUTH_URL=https://iad2.dream.io:5000/v2.0
+OS_TENANT_ID=tenantid
+OS_TENANT_NAME=tenantname
+OS_USERNAME=username
+</pre>
+</div>
