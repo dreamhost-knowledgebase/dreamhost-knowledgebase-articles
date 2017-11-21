@@ -1,0 +1,128 @@
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>It's not recommended to store credentials in an executable file. A better option is to load credentials from 'environment variables' or from a 'credentials ini file'. View the following site for further details:</p>
+<ul>
+<li><a href="https://docs.aws.amazon.com/aws-sdk-php/v3/guide/guide/configuration.html#credentials">aws credentials</a></li>
+</ul>
+</div>
+</div>
+<h2>Creating a connection</h2>
+<div class="preboxcontainer">
+<pre class="prebox">define('AWS_KEY', 'your_access_key');
+define('AWS_SECRET_KEY', 'your_secret_key');
+define('HOST', 'https://objects-us-west-1.dream.io');
+define('REGION', 'us-west-1');
+
+// require the AWS SDK for PHP library
+require 'aws-autoloader.php';
+
+use Aws\S3\S3Client;
+
+// Establish connection with DreamObjects with an S3 client.
+$client = new Aws\S3\S3Client([
+    'version'     =&gt; '2006-03-01',
+    'region'      =&gt; REGION,
+    'endpoint'    =&gt; HOST,
+        'credentials' =&gt; [
+        'key'      =&gt; AWS_KEY,
+        'secret'   =&gt; AWS_SECRET_KEY,
+    ]
+]);</pre>
+</div>
+<h2>Listing owned Buckets</h2>
+<div class="preboxcontainer">
+<pre class="prebox">$buckets = $client-&gt;listBuckets();
+try {
+    foreach ($buckets['Buckets'] as $bucket){
+        echo "{$bucket['Name']}\t{$bucket['CreationDate']}\n";
+    }
+} catch (S3Exception $e) {
+    echo $e-&gt;getMessage();
+    echo "\n";
+}</pre>
+</div>
+<h2>Creating a Bucket</h2>
+<div class="preboxcontainer">
+<pre class="prebox">$BUCKET_NAME='my-new-bucket';
+try {
+    $result = $client-&gt;createBucket([
+        'Bucket' =&gt; $BUCKET_NAME,
+    ]);
+} catch (S3Exception $e) {
+    // output error message if fails
+    echo $e-&gt;getMessage();
+    echo "\n";
+}</pre>
+</div>
+<h2>Listing a Bucket’s contents</h2>
+<div class="preboxcontainer">
+<pre class="prebox">$objects = $client-&gt;listObjectsV2([
+        'Bucket' =&gt; 'my-new-bucket',
+]);
+foreach ($objects['Contents'] as $object){
+    echo "{$object['Key']}\t{$object['LastModified']}\n";
+}</pre>
+</div>
+<h2>Delete the entire contents of a Bucket</h2>
+<div class="preboxcontainer">
+<pre class="prebox">$batch = Aws\S3\BatchDelete::fromListObjects($client, ['Bucket' =&gt; 'my-new-bucket']); $batch-&gt;delete();</pre>
+</div>
+<h2>Deleting a Bucket</h2>
+<div class="preboxcontainer">
+<pre class="prebox">$client-&gt;deleteBucket(array('Bucket' =&gt; 'my-new-bucket'));
+Creating an object
+$bucket = 'my-bucket-name';
+$file_Path = './hello.txt';
+$key = basename($file_Path);
+try{
+    $result = $client-&gt;putObject([
+        'Bucket'     =&gt; $bucket,
+        'Key'        =&gt; $key,
+        'SourceFile' =&gt; $file_Path,
+        'ACL'        =&gt; 'private',
+    ]);
+} catch (S3Exception $e) {
+    echo $e-&gt;getMessage() . "\n";
+}</pre>
+</div>
+<h2>Changing an object’s ACL</h2>
+<div class="preboxcontainer">
+<pre class="prebox">$client-&gt;putObjectAcl(array(
+    'Bucket' =&gt; 'my-bucket-name',
+    'Key'    =&gt; 'hello.txt',
+    'ACL'    =&gt; 'public-read'
+));
+$client-&gt;putObjectAcl(array(
+    'Bucket' =&gt; 'my-bucket-name',
+    'Key'    =&gt; 'secret_plans.txt',
+    'ACL'    =&gt; 'private'
+));</pre>
+</div>
+<h2>Deleting an object</h2>
+<div class="preboxcontainer">
+<pre class="prebox">$client-&gt;deleteObject(array(
+    'Bucket' =&gt; 'my-bucket-name',
+    'Key'    =&gt; 'goodbye.txt',
+));</pre>
+</div>
+<h2>Downloading an object to a file</h2>
+<div class="preboxcontainer">
+<pre class="prebox">$client-&gt;getObject(array(
+    'Bucket' =&gt; 'my-bucket-name',
+    'Key'    =&gt; 'poetry.pdf',
+    'SaveAs' =&gt; '/home/larry/documents/poetry.pdf'
+));</pre>
+</div>
+<h2>Generate object download URLs (unsigned &amp; pre-signed)</h2>
+<div class="preboxcontainer">
+<pre class="prebox">$plain_url = $client-&gt;getObjectUrl('my-bucket-name', 'hello.txt');
+echo $plain_url . "\n";
+
+$cmd = $client-&gt;getCommand('GetObject', [
+        'Bucket' =&gt; 'my-bucket-name',
+        'Key'    =&gt; 'secret_plans.txt'
+]);
+$signed_url = $client-&gt;createPresignedRequest($cmd, '+1 hour');
+echo $signed_url-&gt;getUri() . "\n";</pre>
+</div>
