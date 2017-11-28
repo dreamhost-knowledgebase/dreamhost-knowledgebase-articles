@@ -1,246 +1,146 @@
-<body role="document">
-<div class="document">
-<div class="documentwrapper">
-<div class="body" role="main">
-<div id="dreamcompute-command-line-interface-cheat-sheet">
-
-<p>Here is a list of common commands for reference.</p>
-<div id="identity-keystone">
-<h2>Identity (keystone)</h2>
-<p>List all users</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> keystone user-list
-</pre></div>
-</div>
-<p>List Identity service catalog</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> keystone catalog
-</pre></div>
+<p>This article lists several common commands for your reference.</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>If you have multiple images or volumes with the same name, you will need to use IDs instead of names in the commands below.</p>
 </div>
 </div>
-<div id="images-glance">
-<h2>Images (glance)</h2>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Some of the examples below contain a forward slash character at the end of each line. This forward slash continues the command on the next line. If you like, you can remove this character and put the entire command on a single line.</p>
+</div>
+</div>
+<h2>Images</h2>
 <p>List images you can access</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> glance image-list
-</pre></div>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack image list</span>
+</pre>
 </div>
 <p>Delete specified image</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> glance image-delete IMAGE
-</pre></div>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack image delete IMAGE</span>
+</pre>
 </div>
 <p>Describe a specific image</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> glance image-show IMAGE
-</pre></div>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack image show IMAGE</span>
+</pre>
 </div>
-<p>Update image</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> glance image-update IMAGE
-</pre></div>
-</div>
-<p>Register raw image</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> glance image-create --name <span class="s2">"cirros-raw"</span> --disk-format raw <span class="se">\</span>
-<span class="go">  --container-format bare \</span>
-<span class="go">  --file ~/images/cirros-0.3.1~pre4-x86_64-disk.img</span>
-</pre></div>
-</div>
-</div>
-<div id="compute-nova">
-<h2>Compute (nova)</h2>
+<h2>Compute</h2>
 <p>List instances, check status of instance</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova list
-</pre></div>
-</div>
-<p>List images</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova image-list
-</pre></div>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server list</span>
+</pre>
 </div>
 <p>List flavors</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova flavor-list
-</pre></div>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack flavor list</span>
+</pre>
 </div>
-<p>Boot an instance using flavor and image names (if names are unique)</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova boot --image IMAGE --flavor FLAVOR INSTANCE_NAME
-<span class="gp">$</span> nova boot --image Ubuntu-14.04 --flavor gp1.subsonic <span class="se">\</span>
-<span class="go">  MyFirstInstance</span>
-</pre></div>
-</div>
-<p>Login to instance</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span> ip netns
-<span class="gp">#</span> ip netns <span class="nb">exec</span> NETNS_NAME ssh USER@SERVER
-<span class="gp">#</span> ip netns <span class="nb">exec</span> qdhcp-6021a3b4-8587-4f9c-8064-0103885dfba2 <span class="se">\</span>
-<span class="go">  ssh cirros@10.0.0.2</span>
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">In CirrOS the password for user <code class="docutils literal"><span class="pre">cirros</span></code> is “cubswin:)” without
-the quotes.</p>
+<p>Boot an ephemeral instance</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server create --image IMAGE \
+--flavor FLAVOR --key-name KEY INSTANCE_NAME</span>
+</pre>
 </div>
 <p>Show details of instance</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova show NAME
-<span class="gp">$</span> nova show MyFirstInstance
-</pre></div>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server show INSTANCE</span>
+</pre>
 </div>
 <p>View console log of instance</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova console-log MyFirstInstance
-</pre></div>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack console log show INSTANCE</span>
+</pre>
+</div>
+<p>Generate console URL for instance</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack console url show INSTANCE</span>
+</pre>
 </div>
 <p>Set metadata on an instance</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova meta volumeTwoImage <span class="nb">set</span> <span class="nv">newmeta</span><span class="o">=</span><span class="s1">'my meta data'</span>
-</pre></div>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server set --property newmeta='my meta data' INSTANCE</span>
+</pre>
 </div>
-<p>Create an instance snapshot</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova image-create volumeTwoImage snapshotOfVolumeImage
-<span class="gp">$</span> nova image-show snapshotOfVolumeImage
-</pre></div>
+<p>Create and verify details of an instance snapshot</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server image create --name IMAGE --wait INSTANCE</span>
+<span class="server">[user@localhost]$ </span><span class="command">openstack image show IMAGE</span>
+</pre>
 </div>
 <div id="pause-suspend-stop-resize-rebuild-reboot-an-instance">
 <h3>Pause, suspend, stop, resize, rebuild, reboot an instance</h3>
 <p>Pause</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova pause NAME
-<span class="gp">$</span> nova pause volumeTwoImage
-</pre></div>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server pause INSTANCE</span>
+</pre>
 </div>
 <p>Unpause</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova unpause NAME
-</pre></div>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server unpause INSTANCE</span>
+</pre>
 </div>
 <p>Suspend</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova <span class="nb">suspend</span> NAME
-</pre></div>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server suspend INSTANCE</span>
+</pre>
 </div>
 <p>Unsuspend</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova resume NAME
-</pre></div>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server resume INSTANCE</span>
+</pre>
 </div>
 <p>Stop</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova stop NAME
-</pre></div>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server stop INSTANCE</span>
+</pre>
 </div>
 <p>Start</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova start NAME
-</pre></div>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server start INSTANCE</span>
+</pre>
 </div>
 <p>Resize</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova resize NAME FLAVOR
-<span class="gp">$</span> nova resize my-pem-server m1.small
-<span class="gp">$</span> nova resize-confirm my-pem-server1
-</pre></div>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack resize --flavor FLAVOR INSTANCE</span>
+<span class="server">[user@localhost]$ </span><span class="command">openstack resize --confirm --wait INSTANCE</span>
+<span class="server">[user@localhost]$ </span><span class="command">openstack resize --revert --wait INSTANCE</span>
+</pre>
 </div>
 <p>Rebuild</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova rebuild NAME IMAGE
-<span class="gp">$</span> nova rebuild newtinny Ubuntu-14.04
-</pre></div>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server rebuild --wait INSTANCE</span>
+</pre>
 </div>
 <p>Reboot</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova reboot NAME
-<span class="gp">$</span> nova reboot newtinny
-</pre></div>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server reboot --wait --soft INSTANCE</span>
+<span class="server">[user@localhost]$ </span><span class="command">openstack server reboot --hard --wait INSTANCE</span>
+</pre>
 </div>
-<p>Inject user data and files into an instance</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova boot --user-data FILE INSTANCE
-<span class="gp">$</span> nova boot --user-data userdata.txt --image Ubuntu-14.04 <span class="se">\</span>
-<span class="go">  --flavor gp1.subsonic MyUserdataInstance2</span>
-</pre></div>
+<h2>Block Storage</h2>
+<p>Used to manage volumes that attach to instances and volume snapshots.</p>
+<p>Create a new and empty 6 GB volume.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack volume create --size 6 VOLUME</span>
+</pre>
 </div>
-<p>To validate that the file was injected, use ssh to connect to the instance,
-and look in <code class="docutils literal"><span class="pre">/var/lib/cloud</span></code> for the file.</p>
-<p>Inject a keypair into an instance and access the instance with that
-keypair</p>
-<p>Create keypair</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova keypair-add <span class="nb">test</span> &gt; test.pem
-<span class="gp">$</span> chmod <span class="m">600</span> test.pem
-</pre></div>
+<p>Boot an instance to attach the new volume to.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server create --image IMAGE \
+--flavor FLAVOR --key-name KEY INSTANCE</span>
+</pre>
 </div>
-<p>Start an instance (boot)</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova boot --image Ubuntu-14.04 --flavor gp1.subsonic <span class="se">\</span>
-<span class="go">  --key_name test MyFirstServer</span>
-</pre></div>
+<p>List volumes and view status of volume.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack volume list</span>
+</pre>
 </div>
-<p>Use ssh to connect to the instance</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span> ip netns <span class="nb">exec</span> qdhcp-98f09f1e-64c4-4301-a897-5067ee6d544f <span class="se">\</span>
-<span class="go">  ssh -i test.pem cirros@10.0.0.4</span>
-</pre></div>
-</div>
-<p>Manage security groups</p>
-<p>Add rules to default security group allowing ping and SSH between
-instances in the default security group</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova secgroup-add-group-rule default default icmp -1 -1
-<span class="gp">$</span> nova secgroup-add-group-rule default default tcp <span class="m">22</span> 22
-</pre></div>
+<p>Attach volume to an instance after instance is active and volume is available.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server add volume INSTANCE VOLUME</span>
+</pre>
 </div>
 </div>
-</div>
-<div id="networking-neutron">
-<h2>Networking (neutron)</h2>
-<p>Create network</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> neutron net-create NAME
-</pre></div>
-</div>
-<p>Create a subnet</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> neutron subnet-create NETWORK_NAME CIDR
-<span class="gp">$</span> neutron subnet-create my-network 10.0.0.0/29
-</pre></div>
-</div>
-</div>
-<div id="block-storage-cinder">
-<h2>Block Storage (cinder)</h2>
-<p>Used to manage volumes and volume snapshots that attach to instances.</p>
-<p>Create a new volume</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> cinder create SIZE_IN_GB --display-name NAME
-<span class="gp">$</span> cinder create <span class="m">1</span> --display-name MyFirstVolume
-</pre></div>
-</div>
-<p>Boot an instance and attach to volume</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova boot --image Ubuntu-14.04 --flavor gp1.subsonic MyVolumeInstance
-</pre></div>
-</div>
-<p>List volumes, notice status of volume</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> cinder list
-</pre></div>
-</div>
-<p>Attach volume to instance after instance is active, and volume is
-available</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova volume-attach INSTANCE_ID VOLUME_ID auto
-<span class="gp">$</span> nova volume-attach MyVolumeInstance /dev/vdb auto
-</pre></div>
-</div>
-<p>Manage volumes after login into the instance</p>
-<p>List storage devices</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span> fdisk -l
-</pre></div>
-</div>
-<p>Make filesystem on volume</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span> mkfs.ext3 /dev/vdb
-</pre></div>
-</div>
-<p>Create a mountpoint</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span> mkdir /myspace
-</pre></div>
-</div>
-<p>Mount the volume at the mountpoint</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span> mount /dev/vdb /myspace
-</pre></div>
-</div>
-<p>Create a file on the volume</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span> touch /myspace/helloworld.txt
-<span class="gp">#</span> ls /myspace
-</pre></div>
-</div>
-<p>Unmount the volume</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span> umount /myspace
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="clearer"></div>
-</div>
-<div class="footer">
-      ©2015-2016, OpenStack contributors.
-      
-    </div>
-<!--DreamCompute Button-->
-<div class="dream-sign-up">
-<h2>Deploy Your Apps On Cloud Servers Today</h2>
-<a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a>
-</div>
-</body>

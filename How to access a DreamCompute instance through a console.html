@@ -1,44 +1,34 @@
-<body role="document">
-<div class="document">
-<div class="documentwrapper">
-<div class="body" role="main">
-<div id="how-to-access-a-dreamcompute-instance-through-a-console">
-
-<p>VNC or SPICE is used to view the console output of an instance, regardless of
-whether or not the console log has output. This allows relaying keyboard and
-mouse activity to and from an instance.</p>
-<p>DreamCompute supports novnc for remote access of an instance through a console:</p>
-<dl class="docutils">
-<dt>novnc</dt>
-<dd>An in-browser VNC client implemented using HTML5 Canvas and
-WebSockets</dd>
+<p>VNC or SPICE is used to view the console output of an instance, regardless of whether or not the console log has output. This allows relaying keyboard and mouse activity to and from an instance.</p>
+<p>DreamCompute supports noVNC for remote access of an instance through a console. noVNC is an in-browser VNC client implemented using HTML5 Canvas and WebSockets.</p>
+<p>You can access an instance through a remote console by generating a unique URL with the OpenStack command-line client or by accessing the instance properties in the DreamCompute dashboard.</p>
+<h2>Using the OpenStack CLI</h2>
+<p>To access an instance through a remote console, run the following command:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack console url show INSTANCE_NAME</span>
++-------+--------------------------------------------------------------------------------+
+| Field | Value                                                                          |
++-------+--------------------------------------------------------------------------------+
+| type  | novnc                                                                          |
+| url   | https://iad2.dreamcompute.com:6080/vnc_auto.html?token=c83ae3a3-15c4-4890-8d45 |
++-------+--------------------------------------------------------------------------------+
+</pre>
+</div>
+<p>The command returns a URL from which you can access your instance.</p>
+<h2>Using the DreamCompute Dashboard</h2>
+<ol>
+<li>Navigate to the <a href="https://panel.dreamhost.com/index.cgi?tree=cloud.compute&amp;">(Panel &gt; 'Cloud Services' &gt; 'DreamCompute')</a> page.</li>
+<li>Click the <strong>'View Dashboard' </strong>button.</li>
+<li>On the left, click 'Compute'.</li>
+<li>From the dropdown click 'Instances'.</li>
+<li>Click on the instance you want to access the console of.<br />
+<dl>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/how-to-access-a-dreamcompute-instance-through-a-console_02.png" alt="how-to-access-a-dreamcompute-instance-through-a-console_02" /></dd>
 </dl>
-<p>Example:</p>
-<p>To access an instance through a remote console, run the following
-command:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> nova get-vnc-console INSTANCE_NAME novnc
-</pre></div>
-</div>
-<p>The command returns a URL from which you can access your instance:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">+--------+-------------------------------------------------------------------------------------------------+</span>
-<span class="go">| Type   | Url                                                                                             |</span>
-<span class="go">+--------+-------------------------------------------------------------------------------------------------+</span>
-<span class="go">| novnc  | https://vncproxy.dreamcompute.com:6080/vnc_auto.html?token=c83ae3a3-15c4-4890-8d45-aefb494a8d6c |</span>
-<span class="go">+--------+-------------------------------------------------------------------------------------------------+</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="clearer"></div>
-</div>
-<div class="footer">
-      ©2015-2016, OpenStack contributors.
-      
-    </div>
-<!--DreamCompute Button-->
-<div class="dream-sign-up">
-<h2>Deploy Your Apps On Cloud Servers Today</h2>
-<a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a>
-</div>
-</body>
+</li>
+<li>Click the 'Console' tab.<br />
+<dl>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/how-to-access-a-dreamcompute-instance-through-a-console_03.png" alt="how-to-access-a-dreamcompute-instance-through-a-console_03" /></dd>
+</dl>
+</li>
+<li>If your console is not using a GUI, you should be able to interact with the instance from here with your mouse and keyboard. If the console does not appear to be responding or you are using a GUI, you'll need to click on the 'Click here to show only console' link.</li>
+</ol>

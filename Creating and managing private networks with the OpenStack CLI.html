@@ -1,0 +1,88 @@
+<p>Private networking is a useful feature that you may wish to utilize for advanced cloud setups. For a description of private networking and how to have it enabled on your account, please review the article here:</p>
+<ul>
+<li><a class="reference external" href="https://help.dreamhost.com/hc/en-us/articles/229789688-Private-networking-overview">Private networking overview</a></li>
+</ul>
+<div id="private-network-options">
+<h2>Private network options</h2>
+<p>Once Support has confirmed that your account's network quota has been adjusted, private networks can be added. Please review the options below to determine settings for the private network.</p>
+<div id="network-block">
+<h3>Network block</h3>
+<p>There are various private network blocks that are available for use with private networks that are specified in <a class="reference external" href="https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing">CIDR</a> format. Common examples of this are 10.0.0.0/24 or 192.168.0.0/24, however there are <a class="reference external" href="https://en.wikipedia.org/wiki/Private_network#Private_IPv4_address_spaces">other networks</a> to choose from as well. In the example below, 10.0.0.0/24 is used.</p>
+</div>
+<div id="dhcp">
+<h3>DHCP</h3>
+<p>When a subnet is created, <a href="https://en.wikipedia.org/wiki/Dynamic_Host_Configuration_Protocol">DHCP</a> can be enabled or disabled (this can be changed later if desired). When DHCP is enabled, newly created instances run cloud-init at start and determine it isn't necessary to hard-code network settings into the operating system. If it is disabled, then these settings are hard-coded. Having DHCP enabled can help with creating snapshots and new instances from those snapshots, as the snapshots won't have hard-coded network configs in them. However, older versions of cloud-init fail to boot entirely when DHCP is enabled.</p>
+<p>As of November 2017, all public images catered by DreamHost have a version of cloud-init that supports DHCP.</p>
+</div>
+</div>
+<div id="adding-the-private-network">
+<h2>Adding the private network</h2>
+<ol class="arabic">
+<li>Run the following command to create a private network. This command creates a new empty network named 'NETWORK' which can accept a subnet in the future.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack network create NETWORK</span>
+</pre>
+</div>
+</li>
+<li>Run the following command to create a new subnet on top of the network that was created above. Depending on decisions made about <a class="reference external" href="#dhcp">DHCP</a> and the <a class="reference external" href="#network-block">network block</a>, a different --subnet-range and/or the --no-dhcp/--dhcp flag can be specified. In this example, the subnet is named 'SUBNET', Google's DNS servers have been specified, and DHCP is disabled.
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>The forward slash character at the end of each line continues the command on the next line. If you like, you can remove this character and put the entire command on a single line.</p>
+</div>
+</div>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack subnet create SUBNET --subnet-range 10.0.0.0/24 \
+--network NETWORK --dns-nameserver 8.8.8.8 \
+--dns-nameserver 8.8.4.4 --no-dhcp</span>
+</pre>
+</div>
+</li>
+<li>Run the following to create a new router named 'ROUTER' with a default configuration.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack router create ROUTER</span>
+</pre>
+</div>
+</li>
+<li>Run the following to create a router interface that associates the subnet you created with your router.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack router add subnet ROUTER SUBNET</span>
+</pre>
+</div>
+</li>
+<li>
+<p class="first">Finally, set the router gateway to the public network. This allows it to access the Internet.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack router set --external-gateway public ROUTER</span>
+</pre>
+</div>
+</li>
+</ol>
+<p>At this point, a new private network has been added to your account.</p>
+<h2>Create an instance on your new private network</h2>
+<ol class="arabic">
+<li>Run the following series of commands to view the flavor, security group, image, keypair, and network ID for your project. Select the necessary options for creating the instance. Please note that for the network, the long ID is needed in place of the given name.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack flavor list</span>
+<span class="server">[user@localhost]$ </span><span class="command">openstack security group list</span>
+<span class="server">[user@localhost]$ </span><span class="command">openstack image list</span>
+<span class="server">[user@localhost]$ </span><span class="command">openstack keypair list</span>
+<span class="server">[user@localhost]$ </span><span class="command">openstack network list</span>
+</pre>
+</div>
+</li>
+<li>Finally, create an instance. This command creates a semisonic size instance, using the default security group and the Ubuntu 16.04 operating system image. The remaining values are unique to your project and need to be specified. The LONG-NETWORK-UUID-HERE is the ID given from 'openstack network list', the KEYNAME from 'openstack keypair list', and the instance name can be whatever you want.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server create --flavor gp1.semisonic \
+--security-group default --image Ubuntu-16.04 \
+--nic net-id=LONG-NETWORK-UUID-HERE --key-name KEYNAME INSTANCENAME</span>
+</pre>
+</div>
+</li>
+</ol>
+<p>At this point, a new instance has been created on your private network.</p>
+<p>If you'd like to access this network publically, you can add a floating IP address to it. For more information about managing floating IP addresses using the OpenStack CLI, see this article:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215912768-Managing-floating-IP-addresses-using-the-OpenStack-CLI">Managing floating IP addresses using the OpenStack CLI</a></li>
+</ul>
+</div>
