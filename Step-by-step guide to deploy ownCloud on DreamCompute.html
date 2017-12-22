@@ -1,49 +1,40 @@
-<div class="document">
-<div class="documentwrapper">
-<div class="body">
-<div id="step-by-step-guide-to-deploy-owncloud-on-dreamcompute">
-<div id="preparation">
-<h2>Preparation</h2>
-<p>This tutorial details the installation of ownCloud on a DreamCompute instance. We’ll install and configure all necessary components without making use of automatic configuration management systems.</p>
-<p>This article can also be used for Nextcloud in the later installation section by substituting the Nextcloud package URL, unzip it instead of using tar/bzip2, and generally replacing configuration settings that specify “owncloud” with “nextcloud”.</p>
-<p>First, deploy a Ubuntu 16.04 LTS virtual machine. It is recommended to boot a volume backed instance as they are permanent as opposed to ephemeral disks and can be larger than 80GB in size if larger amounts of data will be stored. This can be done in the <a class="reference external" href="https://help.dreamhost.com/hc/en-us/articles/215912848-How-to-launch-an-instance-using-the-DreamCompute-dashboard">DreamCompute dashboard</a>.</p>
+<p>This article explains how to install ownCloud on a DreamCompute Ubuntu instance.</p>
+<h2>Launch an instance</h2>
+<p>First, launch an Ubuntu 16.04 LTS instance. View the following category of articles for different ways to do this:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/sections/115000240012-Launching">Launching an instance</a></li>
+</ul>
+<h3>Use a volume based instance</h3>
+<p>It is recommended to boot a <a href="https://help.dreamhost.com/hc/en-us/articles/217701757-What-s-the-difference-between-ephemeral-and-volume-boot-disks-">volume backed instance</a> as they are permanent as opposed to <a href="https://help.dreamhost.com/hc/en-us/articles/217701757-What-s-the-difference-between-ephemeral-and-volume-boot-disks-">ephemeral disks</a> and can be larger than 80GB in size if larger amounts of data will be stored. This can be done in the <a class="reference external" href="https://help.dreamhost.com/hc/en-us/articles/215912848-How-to-launch-an-instance-using-the-DreamCompute-dashboard">DreamCompute dashboard</a>.</p>
+<h3>Using multiple instances</h3>
 <p>Optionally, multiple instances can be used such as one hosting ownCloud HTTP and a second hosting the database. It is strongly recommended to use <a class="reference external" href="https://help.dreamhost.com/hc/en-us/articles/229789688-Private-networking-overview">private networking</a> for such a setup. The other differences include the MySQL instance having a security group rule to open port 3306, MySQL listening on the correct IP address, and MySQL user allowing other than localhost.</p>
-<p>To start installing software, login to your DreamCompute instance:</p>
-<div class="highlight-console">
-<div class="highlight">
-<pre><span class="gp">[user@localhost]$</span> ssh ubuntu@<span class="nv">$IP</span>
-</pre>
-</div>
-</div>
-<p>changing the IP to your server’s public IP address. If a specify SSH key is required to login, please specify the -i flag.</p>
-</div>
+<h2>Log into your server</h2>
+<p>To start installing software, log in to your DreamCompute instance:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216201547-Connect-to-your-instance-with-ssh-keys-overview">Connecting to your instance with SSH Keys</a></li>
+</ul>
 <div id="installing-mariadb">
 <h2>Installing MariaDB</h2>
-<p>To install MariaDB, run:</p>
-<div class="highlight-console">
-<div class="highlight">
-<pre><span class="gp">[user@server]$</span> sudo apt-get update
-<span class="gp">[user@server]$</span> sudo apt-get install mariadb-server
+<p>Run the following commands to install MariaDB:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo apt-get update
+<span class="server">[user@server]$ </span><span class="command">sudo apt-get install -y mariadb-server
+</span></span></pre>
+</div>
+</div>
+<p>During installation the root database user will be set up without a password, however an authentication plugin will prevent login from anyone but the operating system root user. A password can be set if desired, otherwise MySQL root access is gained like so:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo mysql -u root</span>
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 55
+Server version: 10.0.31-MariaDB-0ubuntu0.16.04.2 Ubuntu 16.04
+
+Copyright (c) 2000, 2017, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]&gt;
 </pre>
-</div>
-</div>
-<p>Enter “y” to confirm the additional packages needed for installation.</p>
-<p>During installation the root database user will be setup without a password, however due to an authentication plugin will prevent login from anyone but the operating system root user. A password can be set if desired, otherwise MySQL root access is gained like so:</p>
-<div class="highlight-console">
-<div class="highlight">
-<pre><span class="gp">[user@server]$</span> sudo mysql -u root
-<span class="go">Welcome to the MariaDB monitor.  Commands end with ; or \g.</span>
-<span class="go">Your MariaDB connection id is 55</span>
-<span class="go">Server version: 10.0.29-MariaDB-0ubuntu0.16.04.1 Ubuntu 16.04</span>
-
-<span class="go">Copyright (c) 2000, 2016, Oracle, MariaDB Corporation Ab and others.</span>
-
-<span class="go">Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.</span>
-
-<span class="go">MariaDB [(none)]&gt;</span>
-</pre>
-</div>
-</div>
 </div>
 <div id="configuring-mariadb">
 <h2>Configuring MariaDB</h2>
@@ -51,91 +42,102 @@
 <div id="add-a-mysql-user-for-owncloud">
 <h3>Add a MySQL user for ownCloud</h3>
 <p>It is best practice to make a new MySQL user for use with ownCloud for security purposes. To do this, connect to MySQL:</p>
-<div class="highlight-console">
-<div class="highlight">
-<pre><span class="gp">[user@server]$</span> sudo mysql -u root
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo mysql -u root
+</span></pre>
+</div>
+</div>
+<p>Next, run the following commands in order.</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>This example uses 'owncloud' as the MySQL user name and database name for simplicity. <strong>PASSWORD</strong> is the desired password for the database.</p>
+</div>
+</div>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">CREATE DATABASE owncloud;</span>
+<span class="server">[user@server]$ </span><span class="command">CREATE USER 'owncloud'@'localhost' IDENTIFIED BY 'PASSWORD';</span>
+<span class="server">[user@server]$ </span><span class="command">GRANT ALL ON owncloud.* TO owncloud@'localhost';</span>
+<span class="server">[user@server]$ </span><span class="command">flush privileges;</span>
+<span class="server">[user@server]$ </span><span class="command">exit</span>
 </pre>
-</div>
-</div>
-<p>and run the following:</p>
-<div class="highlight-sql">
-<div class="highlight">
-<pre><span class="k">CREATE</span> <span class="k">DATABASE</span> <span class="n">owncloud</span><span class="p">;</span>
-<span class="k">CREATE</span> <span class="k">USER</span> <span class="s1">'owncloud'</span><span class="o">@</span><span class="s1">'localhost'</span> <span class="n">IDENTIFIED</span> <span class="k">BY</span> <span class="s1">'PASSWORD'</span><span class="p">;</span>
-<span class="k">GRANT</span> <span class="k">ALL</span> <span class="k">on</span> <span class="n">owncloud</span><span class="p">.</span><span class="o">*</span> <span class="k">to</span> <span class="s1">'owncloud'</span><span class="o">@</span><span class="s1">'localhost'</span><span class="p">;</span>
-<span class="n">flush</span> <span class="k">privileges</span><span class="p">;</span>
-<span class="n">exit</span>
-</pre>
-</div>
-</div>
-<p>where <strong>PASSWORD</strong> is the desired password for the ownCloud software. This example uses ‘owncloud’ as the MySQL user name and database name for simplicity.</p>
 </div>
 </div>
 <div id="installing-the-owncloud-application">
 <h2>Installing the ownCloud application</h2>
 <div id="installing-dependencies">
 <h3>Installing Dependencies</h3>
-<p>Now that we have a database that ownCloud can use, we need to deploy the frontend application. To do this run:</p>
-<div class="highlight-console">
-<div class="highlight">
-<pre><span class="gp">[user@server]$</span> sudo apt-get install apache2 libapache2-mod-php php-gd <span class="se">\</span>
-               php-json php-mysql php-curl php-intl php-mcrypt <span class="se">\</span>
-               php-imagick php-zip php-dom php-mbstring
-</pre>
+<p>Now that a database has been created that ownCloud can use you can deploy the frontend application. Run the following:</p>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>The backslash character \ is used when entering a long command. When you enter the \, the terminal command continues to the next line until you finish entering it.</p>
+<p>You could also remove the \ character and put every parameter into a single line.</p>
 </div>
 </div>
-<p>Enter “y” to confirm the additional packages needed for installation.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo apt-get install -y apache2 libapache2-mod-php php-gd \
+php-json php-mysql php-curl php-intl php-mcrypt \
+php-imagick php-zip php-dom php-mbstring
+</span></pre>
 </div>
-<div id="downloading-owncloud">
+</div>
 <h3>Downloading ownCloud</h3>
-<p>Now we need to download the actual ownCloud application. Do this by going to <a class="reference external" href="https://owncloud.org/install/#instructions-server">https://owncloud.org/install/#instructions-server</a> in a browser and right click the <em>.tar.bz2</em> link and click <em>copy link location</em> then run:</p>
-<div class="highlight-console">
-<div class="highlight">
-<pre><span class="gp">[user@server]$</span> wget <span class="nv">$URL</span>
+<div id="downloading-owncloud">
+<p>You must now download the actual ownCloud application.</p>
+<ol>
+<li>Navigate to <a class="reference external" href="https://owncloud.org/install/#instructions-server">https://owncloud.org/install/#instructions-server</a> in a browser.</li>
+<li>Under the '<em>ownCloud Server'</em> section, right click the 'Download Tar' button.</li>
+<li>In the pop-out menu, click <em>Copy link address.</em></li>
+<li>Next, run <strong>wget</strong> followed by pasting the URL you just copied. This example uses a version 10.0.3. Make sure you're using the version you just copied.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">wget https://download.owncloud.org/community/owncloud-10.0.3.tar.bz2</span>
 </pre>
 </div>
-</div>
-<p>where <strong>$URL</strong> is the URL you just copied. This will download a compressed copy of the ownCloud application. Decompress the file by running:</p>
-<div class="highlight-console">
-<div class="highlight">
-<pre><span class="gp">[user@server]$</span> tar xvf owncloud-9.1.4.tar.bz2
+This will download a compressed copy of the ownCloud application.</li>
+<li>Decompress the file by running:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">tar xvf owncloud-10.0.3.tar.bz2</span>
 </pre>
 </div>
-</div>
-<p>The version numbers for your download might be different than the above, so adjust as necessary. This will create a directory called “owncloud” in the current directory.</p>
-</div>
+</li>
+</ol>
+<p>This will create a directory called 'owncloud' in the current directory.</p>
 <div id="setting-up-the-owncloud-directory">
 <h3>Setting up the owncloud directory</h3>
-<p>Next, copy the owncloud directory to the correct location. In this guide, it will be running it at /var/www/owncloud. To copy it run:</p>
-<div class="highlight-console">
-<div class="highlight">
-<pre><span class="gp">[user@server]$</span> sudo mv /home/ubuntu/owncloud /var/www/
+<p>You must now copy the owncloud directory to the correct location on your server. This example assumes it was downloaded to /home/ubuntu/owncloud and that you're moving it to /var/www/.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo mv /home/ubuntu/owncloud /var/www/</span>
 </pre>
 </div>
 </div>
-<p>Now we want to change the permissions of the owncloud directory so that the web user, www-data in our case, can access it. Do this by running</p>
-<div class="highlight-console">
-<div class="highlight">
-<pre><span class="gp">[user@server]$</span> sudo chown -R www-data:www-data /var/www/owncloud
-</pre>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>If you see the error <strong>sudo: unable to resolve host</strong>, ignore it. You can check the /var/www/ directory to confirm the 'owncloud' folder has been correctly copied.</p>
 </div>
+</div>
+<p>Change the permissions of the owncloud directory so that the web user (www-data in this case) can access it.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo chown -R www-data:www-data /var/www/owncloud</span>
+</pre>
 </div>
 <p>If the ownCloud package is no longer needed, clean it up by running:</p>
-<div class="highlight-console">
-<div class="highlight">
-<pre><span class="gp">[user@server]$</span> rm owncloud-9.1.4.tar.bz2
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">rm owncloud-10.0.3.tar.bz2</span>
 </pre>
 </div>
-</div>
 <p>As before, the file name may vary with different versions so adjust the command as needed.</p>
-</div>
 <div id="configuring-apache">
 <h3>Configuring Apache</h3>
-<p>Now that ownCloud is in the right place, configure Apache to use it. To do this, create the file /etc/apache2/sites-available/owncloud.conf with the following command:</p>
-<div class="highlight-console">
-<div class="highlight">
-<pre>[user@server]$ sudo bash -c 'cat &gt; /etc/apache2/sites-available/owncloud.conf &lt;&lt; "EOF"
-Alias /owncloud "/var/www/owncloud/"
+<p>Now that ownCloud is in the correct location you can configure Apache to use it.</p>
+<p>Navigate to the following directory:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">cd /etc/apache2/sites-available/</span></pre>
+</div>
+<p><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Create a file</a> named <strong>owncloud.conf</strong> in this directory with the following contents:</p>
+<div class="preboxcontainer">
+<pre class="prebox">Alias /owncloud "/var/www/owncloud/"
 
 &lt;Directory /var/www/owncloud/&gt;
   Options +FollowSymlinks
@@ -148,48 +150,31 @@ Alias /owncloud "/var/www/owncloud/"
  SetEnv HOME /var/www/owncloud
  SetEnv HTTP_HOME /var/www/owncloud
 
-&lt;/Directory&gt;
-EOF'
+&lt;/Directory&gt;</pre>
+</div>
+</div>
+<p>Enable this new configuration by running:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo a2ensite owncloud</span>
 </pre>
-</div>
-</div>
-<p>To enable this new config, enable this new configuration by running:</p>
-<div class="highlight-console">
-<div class="highlight">
-<pre><span class="gp">[user@server]$</span> sudo a2ensite owncloud
-</pre>
-</div>
 </div>
 <p>Next, enable an apache module needed for ownCloud by running:</p>
-<div class="highlight-console">
-<div class="highlight">
-<pre><span class="gp">[user@server]$</span> sudo a2enmod rewrite
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo a2enmod rewrite</span>
 </pre>
-</div>
 </div>
 <p>You should also use SSL with ownCloud to protect login information and data. Apache installed on Ubuntu comes with a self-signed cert. To enable SSL using that cert run:</p>
-<div class="highlight-console">
-<div class="highlight">
-<pre><span class="gp">[user@server]$</span> sudo a2enmod ssl
-<span class="gp">[user@server]$</span> sudo a2ensite default-ssl
-<span class="gp">[user@server]$</span> sudo service apache2 restart
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo a2enmod ssl</span>
+<span class="server">[user@server]$ </span><span class="command">sudo a2ensite default-ssl</span>
+<span class="server">[user@server]$ </span><span class="command">sudo service apache2 restart</span>
 </pre>
 </div>
-</div>
-</div>
-</div>
 <div id="finishing-the-installation">
-<h2>Finishing the Installation</h2>
-<p>Now everything is configured on the server. Open a browser and visit <a class="reference external" href="https://IP/owncloud">https://IP/owncloud</a> where <strong>IP</strong> is the IP address of your instance. The website will ask for a username and password, a data storage location which can be kept as the default, and then the database information. The username and database name are ‘owncloud’ unless modified from the above, the host can remain ‘localhost’ and the password used can be entered.</p>
-<p>Click to continue, and if all is setup correctly the ownCloud files page will load. Congratulations on your new ownCloud install!</p>
+<h2>Finishing the installation</h2>
+<p>At this point, everything is configured on the server. Open a browser and visit <a class="reference external" href="https://IP/owncloud">https://IP/owncloud</a> where <strong>IP</strong> is the <a href="https://help.dreamhost.com/hc/en-us/articles/218672058-Configuring-DNS-for-your-domains">IP address of your instance</a>. The website will ask for a username and password, a data storage location (which can be kept as the default), and then the database information.</p>
+<p>If you used the defaults above, the username and database name are 'owncloud', the host can remain set to 'localhost', and the password is the one you created above.</p>
+<p>Click to continue, and if all is setup correctly the ownCloud Files page will load.</p>
 </div>
 </div>
 </div>
-</div>
-<div class="clearer"> </div>
-</div>
-<div class="footer"> </div>
-<!--DreamCompute Button-->
-<div class="dream-sign-up">
-<h2>Deploy Your Apps On Cloud Servers Today</h2>
-<a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a></div>

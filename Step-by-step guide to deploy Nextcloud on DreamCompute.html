@@ -1,223 +1,200 @@
-<div class="document">
-<div class="documentwrapper">
-<div class="body">
-<div id="step-by-step-guide-to-deploy-nextcloud-on-dreamcompute">
-<div id="preparation">
-<h2>Preparation</h2>
-<p>In this tutorial we are going to install Nextcloud on two DreamCompute instances, one for the application itself and one for the database it uses. We’ll install and configure all necessary components without making use of automatic configuration management systems. Future tutorials will cover automation.</p>
-<p>First you need to deploy 2 Ubuntu 14.04LTS virtual machines. It’s better to boot volume backed instances as they are permanent as opposed to ephemeral disks. You can do this in the <a class="reference external" href="https://help.dreamhost.com/hc/en-us/articles/215912848-How-to-launch-an-instance-using-the-DreamCompute-dashboard">DreamCompute dashboard</a>. Once you have those instances up and running, you need to add a security group to the instance that runs the database so that it allows TCP on port 3306, the MySQL/MariaDB port. That can be done with the <a class="reference external" href="https://help.dreamhost.com/hc/en-us/articles/215912838-Configuring-security-groups">web interface</a> or the <a class="reference external" href="216511637">nova command line client</a> as well.</p>
-</div>
+<p>This article explains how to install Nextcloud on two DreamCompute instances. One instance is for  the application itself and the other instance for the database it uses.</p>
+<h2>Launch an instance</h2>
+<p>First, launch two Ubuntu 16.04 LTS instances. View the following category of articles for different ways to do this:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/sections/115000240012-Launching">Launching an instance</a></li>
+</ul>
+<h3>Use a volume based instance</h3>
+<p>It is recommended to boot a <a href="https://help.dreamhost.com/hc/en-us/articles/217701757-What-s-the-difference-between-ephemeral-and-volume-boot-disks-">volume backed instance</a> as they are permanent as opposed to <a href="https://help.dreamhost.com/hc/en-us/articles/217701757-What-s-the-difference-between-ephemeral-and-volume-boot-disks-">ephemeral disks</a> and can be larger than 80GB in size if larger amounts of data will be stored. This can be done in the <a class="reference external" href="https://help.dreamhost.com/hc/en-us/articles/215912848-How-to-launch-an-instance-using-the-DreamCompute-dashboard">DreamCompute dashboard</a> or with the <a href="https://help.dreamhost.com/hc/en-us/articles/216511617-How-to-launch-an-instance-using-the-OpenStack-CLI">OpenStack command line client</a>.</p>
+<h2>Add a security group</h2>
+<p>Once you have those instances up and running, you need to add a security group to the instance that runs the database so it allows TCP on port 3306, the MySQL/MariaDB port. View the following two articles for further instructions:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215912838-Configuring-security-groups">Configuring security groups</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216511637-Configuring-access-and-security-for-DreamCompute-instances-using-the-OpenStack-command-line-client">Configuring access and security using the OpenStack command line client</a></li>
+</ul>
 <div id="installing-mariadb">
 <h2>Installing MariaDB</h2>
-<p>In order to install MariaDB on your database server, first login to the server with:</p>
-<div class="highlight-console">
-<div class="highlight">
-<pre><span class="gp">[user@localhost]$</span> ssh user@<span class="nv">$IP</span>
+<p>In order to install MariaDB on your database server, first log into the server with with your <a href="https://help.dreamhost.com/hc/en-us/articles/228377408-How-to-find-the-default-user-of-an-image">username</a> and the database server's <a href="https://help.dreamhost.com/hc/en-us/articles/115001754711-Locating-IP-Address-of-your-instance">public IP address</a>:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">ssh ubuntu@xxx.xxx.xxx.xxx</span>
 </pre>
 </div>
-</div>
-<p>changing the IP to your server’s public IP address. Then run</p>
-<div class="highlight-console">
-<div class="highlight">
-<pre><span class="gp">[user@dbserver]$</span> sudo su -
-<span class="gp">[root@dbserver]#</span>
+<p>Next, switch to your root user:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@dbserver]$ </span><span class="command">sudo su - </span>
+<span class="server">[root@dbserver]# </span>
 </pre>
 </div>
-</div>
-<p>this creates a root shell, which you will need because you have to have administrator rights to install things system-wide. Now that you have a root shell you can install mariadb by running:</p>
-<div class="highlight-console">
-<div class="highlight">
-<pre><span class="gp">[root@dbserver]#</span> apt update mariadb-server
-<span class="gp">[root@dbserver]#</span> apt install mariadb-server
+<p>You must switch to the root user because you must have administrator rights to install things system-wide.</p>
+<p>As your root user, install mariadb by running:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[root@dbserver]# </span><span class="command">apt update</span>
+<span class="server">[root@dbserver]# </span><span class="command">apt install mariadb-server</span>
 </pre>
 </div>
-</div>
-<p>It will ask for a root password for the Database, enter whatever you want and remember it, you will need it later.</p>
+<p>During installation the root database user will be set up without a password, but an authentication plugin will prevent login from anyone but the operating system root user. A password can be set if desired.</p>
 </div>
 <div id="configuring-mariadb">
 <h2>Configuring MariaDB</h2>
 <div id="changing-the-bind-address">
 <h3>Changing the bind address</h3>
-<p>Open the /etc/mysql/my.conf file in an editor and edit the line that says</p>
-<div class="code highlight-python">
-<div class="highlight">
-<pre>bind-address            = 127.0.0.1
+<p><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Edit the 50-server.cnf file</a> located at /etc/mysql/mariadb.conf.d/50-server.cnf. It will show the following:</p>
+<div class="preboxcontainer">
+<pre class="prebox">bind-address            = 127.0.0.1
 </pre>
 </div>
-</div>
-<p>and change it to</p>
-<div class="code highlight-python">
-<div class="highlight">
-<pre>bind-address            = $IP
+<p>Edit this to be:</p>
+<div class="preboxcontainer">
+<pre class="prebox">bind-address            = $IP
 </pre>
 </div>
+<p>where <strong>$IP</strong> is the <a href="https://help.dreamhost.com/hc/en-us/articles/115001754711-Locating-IP-Address-of-your-instance">IP address</a> of the DB server.</p>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>If you have private networking enabled, this will be the private IP address and not the floating IP if your DB server has one.</p>
 </div>
-<p>where <strong>$IP</strong> is the IP address of the DB server.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">If you have private networking enabled, this will be the private IP address and not the floating IP if your DB server has one.</p>
 </div>
-<p>This makes the database listen to connections from it’s IP address instead of only listening on 127.0.0.1, which is localhost.</p>
+<p>This makes the database listen to connections from its IP address instead of only listening on 127.0.0.1 (the localhost).</p>
 </div>
 <div id="allowing-root-login-from-a-foreign-ip-address">
 <h3>Allowing root login from a foreign IP address</h3>
-<p>Now our database will listen to connections from other servers, but we have to allow root to login from another IP address. We do this by logging into the DB as root with</p>
-<div class="highlight-console">
-<div class="highlight">
-<pre><span class="gp">[root@dbserver]#</span> mysql -u root
+<p>The database will now listen to connections from other servers, but you must allow users to log in from another IP address. Do this by logging into the DB as root.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[root@dbserver]# </span><span class="command">mysql -u root</span>
 </pre>
 </div>
 </div>
-<p>Then run:</p>
-<div class="highlight-sql">
-<div class="highlight">
-<pre><span class="n">use</span> <span class="n">mysql</span><span class="p">;</span>
-<span class="k">create</span> <span class="k">database</span> <span class="n">nextcloud</span><span class="p">;</span>
-<span class="k">GRANT</span> <span class="k">ALL</span> <span class="k">ON</span> <span class="n">nextcloud</span><span class="p">.</span><span class="o">*</span> <span class="k">TO</span> <span class="n">nextcloud</span><span class="o">@</span><span class="s1">'$IP'</span> <span class="n">IDENTIFIED</span> <span class="k">BY</span> <span class="s1">'$PASSWORD'</span><span class="p">;</span>
-<span class="n">flush</span> <span class="k">privileges</span><span class="p">;</span>
+<p>Then run the following commands to create a database named 'nextcloud'. Make sure to change $IP to the IP address of your application instance, and <strong>$PASSWORD</strong> to the password you want to set for the user of the database.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="command">use mysql;
+create database nextcloud;
+GRANT ALL ON nextcloud.* TO nextcloud@'$IP' IDENTIFIED BY '$PASSWORD';
+flush privileges;</span></pre>
+</div>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>If you want to allow root login from any IP address, you can change $IP to '%'. However this is not recommended, especially if your database server has a public IP address (because then anyone can try to access it).</p>
+</div>
+</div>
+<p>Next, restart the mariadb service so the new configs are loaded by running:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[root@dbserver]# </span><span class="command">service mysql restart</span>
 </pre>
-</div>
-</div>
-<p>where <strong>$IP</strong> is the IP address of your application instance, and <strong>$PASSWORD</strong> is the password you want to set for the root user of the database. This creates a <strong>nextcloud</strong> user and a <strong>nextcloud</strong> database for nextcloud to store its data in.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">If you want to allow root login from any IP address, change $IP to ‘%’, but this is not recommended, especially if your database server has a public IP address, because then anyone can try access it.</p>
-</div>
-<p>now restart the mariadb service so the new configs are loaded by running:</p>
-<div class="highlight-console">
-<div class="highlight">
-<pre><span class="gp">[root@dbserver]#</span> service mysql restart
-</pre>
-</div>
-</div>
 </div>
 </div>
 <div id="installing-the-nextcloud-application">
 <h2>Installing the Nextcloud application</h2>
 <div id="installing-dependencies">
-<h3>Installing Dependencies</h3>
-<p>Now that we have a database that Nextcloud can use, we need to deploy the frontend application. First login to the server that you will be installing Nextcloud on. Create a root shell again by running</p>
-<div class="highlight-console">
-<div class="highlight">
-<pre><span class="gp">[user@webserver]$</span> sudo su -
-<span class="gp">[root@webserver]#</span>
+<h3>Installing dependencies</h3>
+<p>You must now deploy the frontend application. First log into the server that you will be installing Nextcloud on. Once logged in, switch to the root shell again by running:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@webserver]$ </span><span class="command">sudo su - </span>
+<span class="server">[root@webserver]# </span>
 </pre>
 </div>
-</div>
-<p>Then run</p>
-<div class="highlight-console">
-<div class="highlight">
-<pre><span class="gp">[root@webserver]#</span> apt install apache2 php unzip
-</pre>
-</div>
-</div>
-<div class="highlight-console">
-<div class="highlight">
-<pre><span class="gp">[root@webserver]#</span> apt install libxml2-dev php-zip php-dom <span class="se">\</span>
-<span class="go">    php-xmlwriterphp-xmlreader php-gd php-curl php-mbstring \</span>
-<span class="go">    libapache2-mod-php libapache2-mod-php7.0 libapr1 libaprutil1 \</span>
-<span class="go">    libaprutil1-dbd-sqlite3 libaprutil1-ldap libevent-core-2.0-5 \</span>
-<span class="go">    liblua5.1-0 php-common php-mysql php7.0-cli php7.0-common php7.0-json \</span>
-<span class="go">    php7.0-mysql php7.0-opcache php7.0-readline \</span>
-</pre>
+<p>Then run the following commands to install Nextcloud and its dependencies.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[root@webserver]# </span><span class="command">apt update</span>
+<span class="server">[root@webserver]# </span><span class="command">apt-get install apache2 libapache2-mod-php7.0 unzip</span>
+<span class="server">[root@webserver]# </span><span class="command">apt-get install php7.0-gd php7.0-json php7.0-mysql php7.0-curl \
+php7.0-mbstring php7.0-intl php7.0-mcrypt php-imagick php7.0-xml php7.0-zip</span></pre>
 </div>
 </div>
-<p>to install the packages that Nextcloud requires to run.</p>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>The backslash character \ is used when entering a long command. When you enter the \, the terminal command continues to the next line until you finish entering it.</p>
+<p>You could also remove the \ character and put every parameter into a single line.</p>
+</div>
 </div>
 <div id="downloading-nextcloud">
 <h3>Downloading Nextcloud</h3>
-<p>Now we need to download the actual Nextcloud application. Do this by going to <a class="reference external" href="https://nextcloud.com/install/#instructions-server">https://nextcloud.com/install/#instructions-server</a> in a browser and right click the <em>Download Nextcloud</em> link and click <em>copy link location</em> then in your root shell run</p>
-<div class="highlight-console">
-<div class="highlight">
-<pre><span class="gp">[root@webserver]#</span> wget <span class="nv">$URL</span>
+<p>You must now download the actual Nextcloud application.</p>
+<ol>
+<li>Navigate to <a class="reference external" href="https://nextcloud.com/install/#instructions-server">https://nextcloud.com/install/#instructions-server</a> in a browser.</li>
+<li>Right click the <em>Download Nextcloud</em> button, and click <em>copy link address</em>.</li>
+<li>In your root shell run the following (change the version to the link you just copied).
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[root@webserver]# </span><span class="command">wget https://download.nextcloud.com/server/releases/nextcloud-12.0.4.zip</span>
 </pre>
 </div>
-</div>
-<p>where <strong>$URL</strong> is the URL you just copied. This will download a compressed copy of the Nextcloud application. Decompress the file by running</p>
-<div class="highlight-console">
-<div class="highlight">
-<pre><span class="gp">[root@webserver]#</span> unzip nextcloud-10.0.1.zip
+</li>
+This will download a compressed copy of the Nextcloud application.
+<li>Decompress the file by running the following (change the version number to the version you're using).
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[root@webserver]# </span><span class="command">unzip nextcloud-12.0.3.zip</span>
 </pre>
 </div>
+</li>
+</ol>
 </div>
-<p>nextcloud-9.0.0.tar.bz2 is the name of the file you just downloaded and nextcloud-9.0.0.tar is the directory created by running the bzip2 command. The version numbers for your download might be different from mine. This should create a directory called “nextcloud” in your current directory.</p>
-</div>
+This creates a directory called 'nextcloud' in your current directory.
 <div id="setting-up-the-nextcloud-directory">
 <h3>Setting up the nextcloud directory</h3>
-<p>First we need to copy Nextcloud to the right directory. We will be running it out of /var/www/nextcloud. To copy it run</p>
-<div class="highlight-console">
-<div class="highlight">
-<pre><span class="gp">[root@webserver]#</span> cp -R nextcloud /var/www/
+<p>You must now copy Nextcloud to the directory /var/www/nextcloud. Run the following:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[root@webserver]# </span><span class="command">cp -R nextcloud /var/www/</span>
 </pre>
 </div>
 </div>
-<p>Now we want to change the permissions of the nextcloud directory so that the web user, www-data in our case, can access it. Do this by running</p>
-<div class="highlight-console">
+<p>Change the permissions of the nextcloud directory so the web user, www-data in this case, can access it. Run the following:</p>
+<div class="preboxcontainer">
 <div class="highlight">
-<pre><span class="gp">[root@webserver]#</span> chown -R www-data:www-data /var/www/nextcloud
+<pre><span class="server">[root@webserver]#</span> chown -R www-data:www-data /var/www/nextcloud
 </pre>
-</div>
 </div>
 </div>
 <div id="configuring-apache">
 <h3>Configuring Apache</h3>
-<p>Now that we have Nextcloud in the right place, we need to configure Apache to use it. To do this we must create a file in /etc/apache2/sites-available called “nextcloud.conf” and make it’s contents</p>
-<div class="highlight-apacheconf">
-<div class="highlight">
-<pre><span class="nb">Alias</span> <span class="sx">/nextcloud</span> <span class="s2">"/var/www/nextcloud/"</span>
+<p>You must now configure Apache to use Nextcloud. Create a file in the directory /etc/apache2/sites-available called 'nextcloud.conf'. <a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Add the following contents to this file</a>:</p>
+<div class="preboxcontainer">
+<pre class="prebox">Alias /nextcloud "/var/www/nextcloud/"
 
-<span class="nt">&lt;Directory</span> <span class="s">/var/www/nextcloud/</span><span class="nt">&gt;</span>
-  <span class="nb">Options</span> +FollowSymlinks
-  <span class="nb">AllowOverride</span> <span class="k">All</span>
+&lt;Directory /var/www/nextcloud/&gt;
+  Options +FollowSymlinks
+  AllowOverride All
 
- <span class="nt">&lt;IfModule</span> <span class="s">mod_dav.c</span><span class="nt">&gt;</span>
-  <span class="nb">Dav</span> <span class="k">off</span>
- <span class="nt">&lt;/IfModule&gt;</span>
+ &lt;IfModule mod_dav.c&gt;
+  Dav off
+ &lt;/IfModule&gt;
 
- <span class="nb">SetEnv</span> HOME <span class="sx">/var/www/nextcloud</span>
- <span class="nb">SetEnv</span> HTTP_HOME <span class="sx">/var/www/nextcloud</span>
+ SetEnv HOME /var/www/nextcloud
+ SetEnv HTTP_HOME /var/www/nextcloud
 
-<span class="nt">&lt;/Directory&gt;</span>
+&lt;/Directory&gt;
 </pre>
 </div>
 </div>
-<p>Then symlink /etc/apache2/sites-enabled/nextcloud.conf to /etc/apache2/sites-available/nextcloud.conf by running</p>
-<div class="highlight-console">
-<div class="highlight">
-<pre><span class="gp">[root@webserver]#</span> ln -s /etc/apache2/sites-available/nextcloud.conf <span class="se">\</span>
-<span class="go">    /etc/apache2/sites-enabled/nextcloud.conf</span>
+<p>Next, symlink /etc/apache2/sites-enabled/nextcloud.conf to /etc/apache2/sites-available/nextcloud.conf by running the following:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[root@webserver]# </span><span class="command">ln -s /etc/apache2/sites-available/nextcloud.conf \
+/etc/apache2/sites-enabled/nextcloud.conf</span>
 </pre>
 </div>
+<p>Nextcloud also needs certain apache modules to run properly. Enable them by running:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[root@webserver]# </span><span class="command">a2enmod rewrite
+</span></pre>
 </div>
-<p>Nextcloud also needs certain apache modules to run properly, enable them by running</p>
-<div class="highlight-console">
-<div class="highlight">
-<pre><span class="gp">[root@webserver]#</span> a2enmod rewrite
+<p>You should also use SSL with Nextcloud to protect login information and data. Apache installed on Ubuntu comes with a self-signed cert. To enable SSL using that certificate, run:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[root@webserver]# </span><span class="command">a2enmod ssl</span>
+<span class="server">[root@webserver]# </span><span class="command">a2ensite default-ssl</span>
+<span class="server">[root@webserver]# </span><span class="command">service apache2 restart</span>
 </pre>
-</div>
-</div>
-<p>You should also use SSL with Nextcloud to protect login information and data, Apache installed on Ubuntu comes with a self-signed cert. To enable SSL using that cert run</p>
-<div class="highlight-console">
-<div class="highlight">
-<pre><span class="gp">[root@webserver]#</span> a2enmod ssl
-<span class="gp">[root@webserver]#</span> a2ensite default-ssl
-<span class="gp">[root@webserver]#</span> service apache2 restart
-</pre>
-</div>
-</div>
-</div>
 </div>
 <div id="finishing-the-installation">
 <h2>Finishing the Installation</h2>
-<p>Now everything is configured on the server, open a browser and visit <a class="reference external" href="https://IP/nextcloud">https://IP/nextcloud</a> where <strong>IP</strong> is the IP address of your application instance. Create an admin account using the web interface. Then fill in the details for the database. The database user is “root”, the password is the root password for the database, the host is the IP address of your database server, and the database name can be set to anything, I recommend “nextcloud”. Then continue and <strong>BAM</strong> you have a working Nextcloud.</p>
+<p>Now that everything is configured on the server, open a browser and visit <a class="reference external" href="https://IP/nextcloud">https://IP/nextcloud</a> where <strong>IP</strong> is the IP address of your application instance.</p>
+<p>Create an admin account using the web interface and fill in the details for the database.</p>
+<ul>
+<li>The database user is 'nextcloud'</li>
+<li>the password is the password you set up for that user</li>
+<li>the host is the IP address of your database server</li>
+<li>and the database name can be set to anything.</li>
+</ul>
+<p>Click <strong>Finish Installation</strong> and you have a working installation of Nextcloud.</p>
 </div>
 </div>
-</div>
-</div>
-<div class="clearer"> </div>
-</div>
-<div class="footer"> </div>
-<!--DreamCompute Button-->
-<div class="dream-sign-up">
-<h2>Deploy Your Apps On Cloud Servers Today</h2>
-<a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a></div>
