@@ -18,7 +18,8 @@
 </ul>
 </div>
 This article lists several Python code examples to interact with DreamObjects.
-<div id="creating-a-connection"><span id="s3-python-creating-a-connection"></span>
+<div id="creating-a-connection">
+<span id="s3-python-creating-a-connection"></span>
 <h2>Creating a Connection</h2>
 <p>Create a connection so you can interact with the server.</p>
 <div class="preboxcontainer">
@@ -34,7 +35,8 @@ conn = boto.connect_s3(
     calling_format = boto.s3.connection.OrdinaryCallingFormat(),
     )</pre>
 </div>
-<div id="listing-owned-buckets"><span id="s3-python-listing-owned-buckets"></span>
+<div id="listing-owned-buckets">
+<span id="s3-python-listing-owned-buckets"></span>
 <h2>Listing Owned Buckets</h2>
 <p>Get a list of Buckets you own. This also prints out the bucket name and creation date of each bucket.</p>
 <div class="preboxcontainer">
@@ -51,13 +53,15 @@ mahbuckat2   2011-04-21T18:05:48.000Z
 mahbuckat3   2011-04-21T18:07:18.000Z
 </pre>
 </div>
-<div id="creating-a-bucket"><span id="s3-python-creating-a-bucket"></span>
+<div id="creating-a-bucket">
+<span id="s3-python-creating-a-bucket"></span>
 <h2>Creating a Bucket</h2>
 <p>Create a new bucket called <code class="docutils literal"><span class="pre">my-new-bucket.</span></code></p>
 <div class="preboxcontainer">
 <pre class="prebox">bucket = conn.create_bucket('my-new-bucket')</pre>
 </div>
-<div id="listing-a-bucket-s-content"><span id="s3-python-listing-a-buckets-content"></span>
+<div id="listing-a-bucket-s-content">
+<span id="s3-python-listing-a-buckets-content"></span>
 <h2>Listing a Bucket’s Content</h2>
 <p>Get a list of objects in the bucket. This also prints out each object’s name, the file size, and last modified date.</p>
 <div class="preboxcontainer">
@@ -74,10 +78,11 @@ mahbuckat3   2011-04-21T18:07:18.000Z
 myphoto2.jpg 262518  2011-08-08T21:38:01.000Z
 </pre>
 </div>
-<div id="deleting-a-bucket"><span id="s3-python-deleting-a-bucket"></span>
+<div id="deleting-a-bucket">
+<span id="s3-python-deleting-a-bucket"></span>
 <h2>Deleting a Bucket</h2>
 <div class="alert alert-important">
-<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60"></div>
 <div class="alert-content">
 <p>The Bucket must be empty, otherwise it won’t work.</p>
 </div>
@@ -85,22 +90,25 @@ myphoto2.jpg 262518  2011-08-08T21:38:01.000Z
 <div class="preboxcontainer">
 <pre class="prebox">conn.delete_bucket(bucket.name)</pre>
 </div>
-<div id="forced-delete-for-non-empty-buckets"><span id="s3-python-forced-delete-for-non-empty-buckets"></span>
+<div id="forced-delete-for-non-empty-buckets">
+<span id="s3-python-forced-delete-for-non-empty-buckets"></span>
 <h2>Forced Delete for Non-empty Buckets</h2>
 <div class="alert alert-important">
-<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60"></div>
 <div class="alert-content">
 <p>not available in python</p>
 </div>
 </div>
-<div id="creating-an-object"><span id="s3-python-creating-an-object"></span>
+<div id="creating-an-object">
+<span id="s3-python-creating-an-object"></span>
 <h2>Creating an Object</h2>
 <p>Create a file <code class="docutils literal"><span class="pre">hello.txt</span></code> with the string <code class="docutils literal"><span class="pre">"Hello</span> <span class="pre">World!"</span></code></p>
 <div class="preboxcontainer">
 <pre class="prebox">key = bucket.new_key('hello.txt')
 key.set_contents_from_string('Hello World!')</pre>
 </div>
-<div id="change-an-object-s-acl"><span id="s3-python-change-an-objects-acl"></span>
+<div id="change-an-object-s-acl">
+<span id="s3-python-change-an-objects-acl"></span>
 <h2>Change an Object’s ACL</h2>
 <p>Make the object <code class="docutils literal"><span class="pre">hello.txt</span></code> publicly readable and <code class="docutils literal"><span class="pre">secret_plans.txt</span></code> to be private.</p>
 <div class="preboxcontainer">
@@ -109,20 +117,23 @@ hello_key.set_canned_acl('public-read')
 plans_key = bucket.get_key('secret_plans.txt')
 plans_key.set_canned_acl('private')</pre>
 </div>
-<div id="download-an-object-to-a-file"><span id="s3-python-download-an-object"></span>
+<div id="download-an-object-to-a-file">
+<span id="s3-python-download-an-object"></span>
 <h2>Download an Object (to a file)</h2>
 <p>Download the object <code class="docutils literal"><span class="pre">perl_poetry.pdf</span></code> and save it in <code class="docutils literal"><span class="pre">/home/larry/documents/.</span></code></p>
 <div class="preboxcontainer">
 <pre class="prebox">key = bucket.get_key('perl_poetry.pdf')
 key.get_contents_to_filename('/home/larry/documents/perl_poetry.pdf')</pre>
 </div>
-<div id="delete-an-object"><span id="s3-python-delete-an-object"></span>
+<div id="delete-an-object">
+<span id="s3-python-delete-an-object"></span>
 <h2>Delete an Object</h2>
 <p>Delete the object <code class="docutils literal"><span class="pre">goodbye.txt.</span></code></p>
 <div class="preboxcontainer">
 <pre class="prebox">bucket.delete_key('goodbye.txt')</pre>
 </div>
-<div id="generate-object-download-urls-signed-and-unsigned"><span id="s3-python-generate-object-download-urls"></span>
+<div id="generate-object-download-urls-signed-and-unsigned">
+<span id="s3-python-generate-object-download-urls"></span>
 <h2>Generate Object Download URLs (signed and unsigned)</h2>
 <p>This generates an unsigned download URL for <code class="docutils literal"><span class="pre">hello.txt</span></code>. This works because <code class="docutils literal"><span class="pre">hello.txt</span></code> was made public by setting the ACL above. This then generates a signed download URL for <code class="docutils literal"><span class="pre">secret_plans.txt</span></code> that will work for 1 hour. Signed download URLs will work for the time period even if the object is private (when the time period is up, the URL will stop working).</p>
 <div class="preboxcontainer">
@@ -144,7 +155,8 @@ http://objects-us-west-1.dream.io/my-bucket-name/secret_plans.txt?Signature=XXXX
 <!--DreamObjects Button-->
 <div class="dream-sign-up">
 <h2>Start Storing Your Data Today!</h2>
-<a href="https://www.dreamhost.com/cloud/storage/">Sign Up for DreamObjects</a></div>
+<a href="https://www.dreamhost.com/cloud/storage/">Sign Up for DreamObjects</a>
+</div>
 </div>
 </div>
 </div>

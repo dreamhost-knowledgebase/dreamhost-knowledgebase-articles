@@ -1,4 +1,4 @@
-<body role="document">
+<body>
 <div class="document">
 <div class="documentwrapper">
 <div class="body" role="main">
@@ -21,14 +21,16 @@ systems.  There is a package available called “proftpd” that contains the
 server and associated programs.</p>
 <div id="package-installation">
 <h3>Package installation</h3>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> sudo apt-get update
+<div class="highlight-console">
+<div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> sudo apt-get update
 <span class="gp">[user@server]$</span> sudo apt-get install proftpd
 </pre></div>
 </div>
 <p>During installation, some additional needed packages are included which require
 a confirmation.  Also, near the end of the installation a prompt is displayed
 about how to run ProFTPD.</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>ProFTPD can be run either as a service from inetd, or as a standalone server.
+<div class="code highlight-python">
+<div class="highlight"><pre><span></span>ProFTPD can be run either as a service from inetd, or as a standalone server.
 Each choice has its own benefits. With only a few FTP connections per day, it is
 probably better to run ProFTPD from inetd in order to save resources.
 
@@ -57,7 +59,7 @@ ports.</p>
 <p>Here is an example of what a security group looks like that is set up as a new
 security group just for FTP, and it is called “FTP”.</p>
 <div class="figure">
-<img alt="../../_images/dreamcompute-proftpd-security-group.png" src="https://dreamhosthelp.zendesk.com/hc/article_attachments/217233607/dreamcompute-proftpd-security-group.png"/>
+<img alt="../../_images/dreamcompute-proftpd-security-group.png" src="https://dreamhosthelp.zendesk.com/hc/article_attachments/217233607/dreamcompute-proftpd-security-group.png">
 </div>
 <p>These rules can be added to the “default” security group instead if desired.</p>
 </div>
@@ -66,16 +68,19 @@ security group just for FTP, and it is called “FTP”.</p>
 <p>Most FTP clients make use of passive FTP, which is a connection method that is
 more reliable when firewalls are involved.  Edit the /etc/proftpd/proftpd.conf
 file and find this line:</p>
-<div class="highlight-apache"><div class="highlight"><pre><span></span><span class="c"># PassivePorts                  49152 65534</span>
+<div class="highlight-apache">
+<div class="highlight"><pre><span></span><span class="c"># PassivePorts                  49152 65534</span>
 </pre></div>
 </div>
 <p>Uncomment it by removing the “#” symbol, and update the “49152 65534” range
 to “60000 65535” or your desired range.  Afterwards it should look like:</p>
-<div class="highlight-apache"><div class="highlight"><pre><span></span><span class="nb">PassivePorts</span>            <span class="m">60000</span> <span class="m">65535</span>
+<div class="highlight-apache">
+<div class="highlight"><pre><span></span><span class="nb">PassivePorts</span>            <span class="m">60000</span> <span class="m">65535</span>
 </pre></div>
 </div>
 <p>Save the file, and restart ProFTPD to apply this change.</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> sudo service proftpd restart
+<div class="highlight-console">
+<div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> sudo service proftpd restart
 </pre></div>
 </div>
 </div>
@@ -89,7 +94,8 @@ improve the experience.</p>
 <h3>Security improvements</h3>
 <p>Edit the /etc/proftpd/proftpd.conf file and modify these existing commented-out
 lines or add them new:</p>
-<div class="highlight-apache"><div class="highlight"><pre><span></span><span class="nb">DefaultRoot</span> ~
+<div class="highlight-apache">
+<div class="highlight"><pre><span></span><span class="nb">DefaultRoot</span> ~
 <span class="nb">ServerIdent</span> <span class="k">on</span> <span class="s2">"FTP Server ready."</span>
 </pre></div>
 </div>
@@ -103,7 +109,8 @@ server type or versions to any users to avoid targeted attacks.</p>
 server believes it is working on the private network IP address only.  This
 causes issues with passive FTP connections.  To fix this, edit
 /etc/proftpd/proftpd.conf and find this setting:</p>
-<div class="highlight-apache"><div class="highlight"><pre><span></span><span class="c"># MasqueradeAddress             1.2.3.4</span>
+<div class="highlight-apache">
+<div class="highlight"><pre><span></span><span class="c"># MasqueradeAddress             1.2.3.4</span>
 </pre></div>
 </div>
 <p>Uncomment it by removing the “#” symbol, and update the 1.2.3.4 example address
@@ -111,7 +118,8 @@ with your floating IP address.</p>
 <p>This setting is not necessary for instances only making use of the public
 network.</p>
 <p>Save the file, and restart ProFTPD to apply this change.</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> sudo service proftpd restart
+<div class="highlight-console">
+<div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> sudo service proftpd restart
 </pre></div>
 </div>
 </div>
@@ -128,7 +136,8 @@ in most setups.</p>
 <p>To test that it is working, use the basic ftp client to log in with the
 “anonymous” username and an email address as the password.  Here is output
 from a working system:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> ftp localhost
+<div class="highlight-console">
+<div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> ftp localhost
 <span class="go">Connected to localhost.</span>
 <span class="go">220 FTP Server ready.</span>
 <span class="go">Name (localhost:debian): anonymous</span>
@@ -155,7 +164,8 @@ must be used instead of SFTP then using TLS is highly recommended.</p>
 <p>The first step is to enable the TLS configuration file.  Edit the
 /etc/proftpd/proftpd.conf file, and uncomment the line related to tls.conf.  It
 looks like so:</p>
-<div class="highlight-apache"><div class="highlight"><pre><span></span><span class="c">#Include /etc/proftpd/tls.conf</span>
+<div class="highlight-apache">
+<div class="highlight"><pre><span></span><span class="c">#Include /etc/proftpd/tls.conf</span>
 </pre></div>
 </div>
 <p>Once the “#” is removed, save the file.</p>
@@ -165,34 +175,39 @@ certificate is available to use.  If the instance has an HTTP server and is
 use that certificate, find where it is stored (generally
 /etc/letsencrypt/live/YOURDOMAIN/) and edit the /etc/proftpd/tls.conf
 file by uncommenting and modifying the options to look like so:</p>
-<div class="highlight-apache"><div class="highlight"><pre><span></span><span class="nb">TLSRSACertificateFile</span>         <span class="sx">/etc/letsencrypt/live/YOURDOMAIN/cert.pem</span>
+<div class="highlight-apache">
+<div class="highlight"><pre><span></span><span class="nb">TLSRSACertificateFile</span>         <span class="sx">/etc/letsencrypt/live/YOURDOMAIN/cert.pem</span>
 <span class="nb">TLSRSACertificateKeyFile</span>      <span class="sx">/etc/letsencrypt/live/YOURDOMAIN/privkey.pem</span>
 <span class="nb">TLSCertificateChainFile</span>       <span class="sx">/etc/letsencrypt/live/YOURDOMAIN/chain.pem</span>
 </pre></div>
 </div>
 <p>If there is not a certificate available, a self-signed one can be created by
 running the following command (as recommended in the proftpd.conf file):</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> sudo openssl req -x509 -newkey rsa:1024 -keyout /etc/ssl/private/proftpd.key -out /etc/ssl/certs/proftpd.crt -nodes -days 365
+<div class="highlight-console">
+<div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> sudo openssl req -x509 -newkey rsa:1024 -keyout /etc/ssl/private/proftpd.key -out /etc/ssl/certs/proftpd.crt -nodes -days 365
 <span class="gp">[user@server]$</span> sudo chmod <span class="m">0600</span> /etc/ssl/private/proftpd.key
 <span class="gp">[user@server]$</span> sudo chmod <span class="m">0640</span> /etc/ssl/certs/proftpd.crt
 </pre></div>
 </div>
 <p>Similar to the Let’s Encrypt certificate setup, edit the /etc/proftpd/tls.conf
 file by uncommenting and modifying the options to look like so:</p>
-<div class="highlight-apache"><div class="highlight"><pre><span></span><span class="nb">TLSRSACertificateFile</span>                   <span class="sx">/etc/ssl/certs/proftpd.crt</span>
+<div class="highlight-apache">
+<div class="highlight"><pre><span></span><span class="nb">TLSRSACertificateFile</span>                   <span class="sx">/etc/ssl/certs/proftpd.crt</span>
 <span class="nb">TLSRSACertificateKeyFile</span>                <span class="sx">/etc/ssl/private/proftpd.key</span>
 </pre></div>
 </div>
 <p>In addition to the above, uncomment any other lines needed for the setup
 desired.  The minimal settings needed are generally:</p>
-<div class="highlight-apache"><div class="highlight"><pre><span></span><span class="nb">TLSEngine</span>                     <span class="k">on</span>
+<div class="highlight-apache">
+<div class="highlight"><pre><span></span><span class="nb">TLSEngine</span>                     <span class="k">on</span>
 <span class="nb">TLSLog</span>                        <span class="sx">/var/log/proftpd/tls.log</span>
 <span class="nb">TLSProtocol</span>                   SSLv23
 <span class="nb">TLSOptions</span>                    NoSessionReuseRequired AllowClientRenegotiations
 </pre></div>
 </div>
 <p>Save the file, and restart ProFTPD to apply this change.</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> sudo service proftpd restart
+<div class="highlight-console">
+<div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> sudo service proftpd restart
 </pre></div>
 </div>
 </div>
@@ -205,7 +220,8 @@ some issues that can pop up.  In most cases, checking the output of
 /var/log/syslog can clarify issues.</p>
 <div id="error-no-valid-servers-configured">
 <h3>error: no valid servers configured</h3>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">HOST proftpd[5799]: warning: unable to determine IP address of 'HOST'</span>
+<div class="highlight-console">
+<div class="highlight"><pre><span></span><span class="go">HOST proftpd[5799]: warning: unable to determine IP address of 'HOST'</span>
 <span class="go">HOST proftpd[5799]: error: no valid servers configured</span>
 <span class="go">HOST proftpd[5799]: Fatal: error processing configuration file '/etc/proftpd/proftpd.conf'</span>
 </pre></div>

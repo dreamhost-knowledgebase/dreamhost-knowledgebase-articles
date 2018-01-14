@@ -18,7 +18,8 @@
 </ul>
 </div>
 This article lists several Perl code examples to interact with DreamObjects.
-<div id="creating-a-connection"><span id="s3-perl-creating-a-connection"></span>
+<div id="creating-a-connection">
+<span id="s3-perl-creating-a-connection"></span>
 <h2>Creating a Connection</h2>
 <p>Create a connection so you can interact with the server.</p>
 <div class="preboxcontainer">
@@ -34,7 +35,8 @@ my $conn = Amazon::S3-&gt;new({
         retry                 =&gt; 1,
 });</pre>
 </div>
-<div id="listing-owned-buckets"><span id="s3-perl-listing-owned-buckets"></span>
+<div id="listing-owned-buckets">
+<span id="s3-perl-listing-owned-buckets"></span>
 <h2>Listing Owned Buckets</h2>
 <p>Get a list of Amazon::S3::Bucket objects you own and print out the bucket name and creation date of each bucket.</p>
 <div class="preboxcontainer">
@@ -49,13 +51,15 @@ foreach my $bucket (@buckets) {
 mahbuckat2   2011-04-21T18:05:48.000Z
 mahbuckat3   2011-04-21T18:07:18.000Z</pre>
 </div>
-<div id="creating-a-bucket"><span id="s3-perl-creating-a-bucket"></span>
+<div id="creating-a-bucket">
+<span id="s3-perl-creating-a-bucket"></span>
 <h2>Creating a Bucket</h2>
 <p>Create a new bucket called <code class="docutils literal"><span class="pre">my-new-bucket.</span></code></p>
 <div class="preboxcontainer">
 <pre class="prebox">my $bucket = $conn-&gt;add_bucket({ bucket =&gt; 'my-new-bucket' });</pre>
 </div>
-<div id="listing-a-bucket-s-content"><span id="s3-perl-listing-a-buckets-content"></span>
+<div id="listing-a-bucket-s-content">
+<span id="s3-perl-listing-a-buckets-content"></span>
 <h2>Listing a Bucket’s Content</h2>
 <p>Get a list of hashes with info about each object in the bucket and print out each object’s name, the file size, and last modified date.</p>
 <div class="preboxcontainer">
@@ -69,10 +73,11 @@ foreach my $key (@keys) {
 <pre class="prebox">myphoto1.jpg 251262  2011-08-08T21:35:48.000Z
 myphoto2.jpg 262518  2011-08-08T21:38:01.000Z</pre>
 </div>
-<div id="deleting-a-bucket"><span id="s3-perl-deleting-a-bucket"></span>
+<div id="deleting-a-bucket">
+<span id="s3-perl-deleting-a-bucket"></span>
 <h2>Deleting a Bucket</h2>
 <div class="alert alert-important">
-<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60"></div>
 <div class="alert-content">
 <p>The Bucket must be empty, otherwise it won’t work.</p>
 </div>
@@ -80,15 +85,17 @@ myphoto2.jpg 262518  2011-08-08T21:38:01.000Z</pre>
 <div class="preboxcontainer">
 <pre class="prebox">$conn-&gt;delete_bucket($bucket);</pre>
 </div>
-<div id="forced-delete-for-non-empty-buckets"><span id="s3-perl-forced-delete-for-non-empty-buckets"></span>
+<div id="forced-delete-for-non-empty-buckets">
+<span id="s3-perl-forced-delete-for-non-empty-buckets"></span>
 <h2>Forced Delete for Non-empty Buckets</h2>
 <div class="alert alert-important">
-<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60"></div>
 <div class="alert-content">
 <p>not available in the <a href="http://search.cpan.org/~tima/Amazon-S3-0.441/lib/Amazon/S3.pm">Amazon::S3</a> perl module</p>
 </div>
 </div>
-<div id="creating-an-object"><span id="s3-perl-creating-an-object"></span>
+<div id="creating-an-object">
+<span id="s3-perl-creating-an-object"></span>
 <h2>Creating an Object</h2>
 <p>Create a file <code class="docutils literal"><span class="pre">hello.txt</span></code> with the string <code class="docutils literal"><span class="pre">"Hello</span> <span class="pre">World!"</span></code></p>
 <div class="preboxcontainer">
@@ -97,7 +104,8 @@ myphoto2.jpg 262518  2011-08-08T21:38:01.000Z</pre>
         { content_type =&gt; 'text/plain' },
 );</pre>
 </div>
-<div id="change-an-object-s-acl"><span id="s3-perl-change-an-objects-acl"></span>
+<div id="change-an-object-s-acl">
+<span id="s3-perl-change-an-objects-acl"></span>
 <h2>Change an Object’s ACL</h2>
 <p>Make the object <code class="docutils literal"><span class="pre">hello.txt</span></code> publicly readable and <code class="docutils literal"><span class="pre">secret_plans.txt</span></code> to be private.</p>
 <div class="preboxcontainer">
@@ -110,24 +118,27 @@ $bucket-&gt;set_acl({
         acl_short =&gt; 'private',
 });</pre>
 </div>
-<div id="download-an-object-to-a-file"><span id="s3-perl-download-an-object"></span>
+<div id="download-an-object-to-a-file">
+<span id="s3-perl-download-an-object"></span>
 <h2>Download an Object (to a file)</h2>
 <p>Download the object <code class="docutils literal"><span class="pre">perl_poetry.pdf</span></code> and save it in <code class="docutils literal"><span class="pre">/home/larry/documents/.</span></code></p>
 <div class="preboxcontainer">
 <pre class="prebox">$bucket-&gt;get_key_filename('perl_poetry.pdf', undef,
         '/home/larry/documents/perl_poetry.pdf');</pre>
 </div>
-<div id="delete-an-object"><span id="s3-perl-delete-an-object"></span>
+<div id="delete-an-object">
+<span id="s3-perl-delete-an-object"></span>
 <h2>Delete an Object</h2>
 <p>Delete the object <code class="docutils literal"><span class="pre">goodbye.txt.</span></code></p>
 <div class="preboxcontainer">
 <pre class="prebox">$bucket-&gt;delete_key('goodbye.txt');</pre>
 </div>
-<div id="generate-object-download-urls-signed-and-unsigned"><span id="s3-perl-generate-object-download-urls"></span>
+<div id="generate-object-download-urls-signed-and-unsigned">
+<span id="s3-perl-generate-object-download-urls"></span>
 <h2>Generate Object Download URLs (signed and unsigned)</h2>
 <p>This generates an unsigned download URL for <code class="docutils literal"><span class="pre">hello.txt</span></code>. This works because <code class="docutils literal"><span class="pre">hello.txt</span></code> was made public by setting the ACL above. Then this generates a signed download URL for <code class="docutils literal"><span class="pre">secret_plans.txt</span></code> that will work for 1 hour. Signed download URLs will work for the time period even if the object is private (when the time period is up, the URL will stop working).</p>
 <div class="alert alert-important">
-<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60"></div>
 <div class="alert-content">
 <p>The <a class="reference external" href="http://search.cpan.org/~tima/Amazon-S3-0.441/lib/Amazon/S3.pm">Amazon::S3</a> module does not have a way to generate download URLs, so these examples use another module instead. Unfortunately, most modules for generating these URLs assume that you are using Amazon. For this reason, a more obscure module, <a class="reference external" href="http://search.cpan.org/~mike/Muck-0.02/">Muck::FS::S3</a> is used. This should be the same as Amazon’s sample S3 perl module, but this sample module is not in CPAN. So, you can either use CPAN to install <a class="reference external" href="http://search.cpan.org/~mike/Muck-0.02/">Muck::FS::S3</a>, or install Amazon’s sample S3 module manually. If you go the manual route, you can remove <code class="docutils literal"><span class="pre">Muck::FS::</span></code> from the example below.</p>
 </div>
@@ -160,7 +171,8 @@ http://objects-us-west-1.dream.io:80/my-bucket-name/secret_plans.txt?Signature=X
 <!--DreamObjects Button-->
 <div class="dream-sign-up">
 <h2>Start Storing Your Data Today!</h2>
-<a href="https://www.dreamhost.com/cloud/storage/">Sign Up for DreamObjects</a></div>
+<a href="https://www.dreamhost.com/cloud/storage/">Sign Up for DreamObjects</a>
+</div>
 </div>
 </div>
 </div>

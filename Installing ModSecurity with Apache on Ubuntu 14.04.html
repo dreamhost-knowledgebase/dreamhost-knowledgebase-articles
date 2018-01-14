@@ -1,4 +1,4 @@
-<body role="document">
+<body>
 <div class="document">
 <div class="documentwrapper">
 <div class="body" role="main">
@@ -14,24 +14,28 @@ tutorial assumes that Apache is already installed and running.</p>
 <div id="installing-modsecurity">
 <h2>Installing ModSecurity</h2>
 <p>Ensure that the system package sources are up to date:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> apt-get update
+<div class="highlight-console">
+<div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> apt-get update
 </pre></div>
 </div>
 <p>Next, install ModSecurity:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> apt-get install libapache2-mod-security2
+<div class="highlight-console">
+<div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> apt-get install libapache2-mod-security2
 </pre></div>
 </div>
 <p>This automatically installs and activates ModSecurity. In order to begin using
 ModSecurity, a usable configuration file must be put into place. The ModSecurity
 package provided for Ubuntu contains a default recommended config file that can
 be used as a starting point:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> mv /etc/modsecurity/modsecurity.conf-recommended <span class="se">\</span>
+<div class="highlight-console">
+<div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> mv /etc/modsecurity/modsecurity.conf-recommended <span class="se">\</span>
 <span class="go">    /etc/modsecurity/modsecurity.conf</span>
 </pre></div>
 </div>
 <p>Once this is in place, reload Apache for the default ModSecurity config file to
 take effect:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> service apache2 reload
+<div class="highlight-console">
+<div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> service apache2 reload
 </pre></div>
 </div>
 </div>
@@ -46,13 +50,15 @@ protection.</p>
 <p>The Ubuntu package for ModSecurity recommends a separate package containing the
 CRS rulesets, which can be used as an extra source of rules for WAF.
 Navigate to the directory containing these rules:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> <span class="nb">cd</span> /usr/shared/modsecurity-crs
+<div class="highlight-console">
+<div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> <span class="nb">cd</span> /usr/shared/modsecurity-crs
 </pre></div>
 </div>
 <p>Configure ModSecurity to read rule files from the <cite>activated_rules</cite> directory.
 Add the following directives to the
 <cite>/etc/apache2/mods-enabled/security2.conf</cite> file:</p>
-<div class="highlight-apacheconf"><div class="highlight"><pre><span></span><span class="nb">IncludeOptional</span> <span class="s2">"/usr/share/modsecurity-crs/*.conf"</span>
+<div class="highlight-apacheconf">
+<div class="highlight"><pre><span></span><span class="nb">IncludeOptional</span> <span class="s2">"/usr/share/modsecurity-crs/*.conf"</span>
 <span class="nb">IncludeOptional</span> <span class="s2">"/usr/share/modsecurity-crs/activated_rules/*.conf"</span>
 </pre></div>
 </div>
@@ -62,7 +68,8 @@ in the <cite>activated_rules</cite> directory.</p>
 <p>Once this is done, link the desired rulesets into the newly included locations.
 For example, to add rules designed to protect against SQL injection
 attacks, link in the <cite>sql_injection_attacks</cite> file:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> <span class="nb">cd</span> /usr/share/modsecurity-crs/
+<div class="highlight-console">
+<div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> <span class="nb">cd</span> /usr/share/modsecurity-crs/
 <span class="gp">[root@server]#</span> ln -s ./base_rules/modsecurity_crs_41_sql_injection_attacks.conf <span class="se">\</span>
 <span class="go">    ./activated_rules/</span>
 </pre></div>
@@ -76,7 +83,8 @@ ruleset offering, these rulesets are not always current with the latest
 threats).</p>
 <p>Any time the ModSecurity configuration is adjusted, Apache must be reloaded
 in order for the rules to take effect:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> service apache2 reload
+<div class="highlight-console">
+<div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> service apache2 reload
 </pre></div>
 </div>
 </div>
@@ -86,15 +94,18 @@ in order for the rules to take effect:</p>
 examines HTTP(S) traffic, but not actually block malicious requests. This
 must be adjusted in order for ModSecurity to deny attack traffic. In the
 file <cite>/etc/modsecurity/modsecurity.conf</cite>, find the directive <cite>SecRuleEngine</cite>:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>SecRuleEngine DetectionOnly
+<div class="code highlight-python">
+<div class="highlight"><pre><span></span>SecRuleEngine DetectionOnly
 </pre></div>
 </div>
 <p>And set its value to <cite>On</cite>:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>SecRuleEngine On
+<div class="code highlight-python">
+<div class="highlight"><pre><span></span>SecRuleEngine On
 </pre></div>
 </div>
 <p>And of course, reload Apache to effect the changes:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> service apache2 restart
+<div class="highlight-console">
+<div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> service apache2 restart
 </pre></div>
 </div>
 </div>

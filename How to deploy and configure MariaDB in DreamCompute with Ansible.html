@@ -1,4 +1,4 @@
-<body role="document">
+<body>
 <div class="document">
 <div class="documentwrapper">
 <div class="body" role="main">
@@ -20,7 +20,8 @@ have not used Ansible before.</p>
 <h2>Prepare the playbook to launch a new DreamCompute cloud server</h2>
 <p>First thing to do is to get the playbook ready to create a new server
 on DreamHost Cloud and setup the private SSH key to use to manage it.</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>- hosts: localhost
+<div class="code highlight-python">
+<div class="highlight"><pre><span></span>- hosts: localhost
   connection: local
   vars:
     private_key: /the/path/to/your/private/ssh/key
@@ -28,7 +29,8 @@ on DreamHost Cloud and setup the private SSH key to use to manage it.</p>
 </div>
 <p>Next step is to define what the new Ubuntu server will have to look
 like:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>- name: create a Ubuntu server
+<div class="code highlight-python">
+<div class="highlight"><pre><span></span>- name: create a Ubuntu server
   os_server:
         cloud: iad2
         name: mariadb01
@@ -55,7 +57,8 @@ for the new machine to be created before registers the name
 <p>Once the server has been created, Ansible needs to store some basic
 facts about it. The next tasks are all about getting to know the new
 server:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>- name: get facts about the server (including its public v4 IP
+<div class="code highlight-python">
+<div class="highlight"><pre><span></span>- name: get facts about the server (including its public v4 IP
   address)
   os_server_facts:
     cloud: iad2
@@ -80,7 +83,8 @@ specified at the beginning.</p>
 <h2>Make the new Ubuntu 16.04 compatible with Ansible</h2>
 <p>All the information necessary to deploy MariaDB on the new server are
 now in place: next steps are going to be executed on the new host.</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>- hosts: sql
+<div class="code highlight-python">
+<div class="highlight"><pre><span></span>- hosts: sql
   gather_facts: no
   tasks:
 
@@ -107,7 +111,8 @@ on all hosts. In this case there is only one server in the group
 <h2>Install MariaDB and create a new database</h2>
 <p>The new server is ready to install MariaDB server and create a
 database in it.</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>- hosts: sql
+<div class="code highlight-python">
+<div class="highlight"><pre><span></span>- hosts: sql
   vars:
    ansible_python_interpreter: /usr/bin/python2.7
 
@@ -131,13 +136,15 @@ database called <cite>backend_db</cite>.</p>
 <div id="running-the-ansible-playbook">
 <h2>Running the Ansible Playbook</h2>
 <p>The Ansible playbook can be run with the following command:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@localhost]$</span> ansible-playbook mariadb-server.yaml
+<div class="highlight-console">
+<div class="highlight"><pre><span></span><span class="gp">[user@localhost]$</span> ansible-playbook mariadb-server.yaml
 </pre></div>
 </div>
 <p>You’ll soon see on <a class="reference external" href="https://iad2.dreamcompute.com/project/instances/">DreamCompute web UI</a> the new instance
 and the new volume. Login into the new machine and check that the
 database is really there:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@localhost]$</span> sudo mysql backend_db
+<div class="highlight-console">
+<div class="highlight"><pre><span></span><span class="gp">[user@localhost]$</span> sudo mysql backend_db
 <span class="go">Welcome to the MariaDB monitor.  Commands end with ; or \g.</span>
 <span class="go">Your MariaDB connection id is 46</span>
 <span class="go">Server version: 10.0.25-MariaDB-0ubuntu0.16.04.1 Ubuntu 16.04</span>
@@ -156,7 +163,8 @@ the SQL demon.</p>
 </div>
 <div id="full-playbook">
 <h2>Full Playbook</h2>
-<div class="highlight-python"><div class="highlight"><pre><span></span>- hosts: localhost
+<div class="highlight-python">
+<div class="highlight"><pre><span></span>- hosts: localhost
   connection: local
   vars:
     private_key: /path/to/your/private/key
