@@ -1,15 +1,16 @@
-<p>When you use the <a href="/hc/en-us/articles/215507058-PHP-mail-overview">PHP mail function</a>, you are sending email directly from your web server. This can cause issues if the FROM address isn’t set properly or if your email isn’t hosted with DreamHost. Sending mail via SMTP is recommended as email is sent from the mail server rather than the web server. View the <a href="/hc/en-us/articles/215507068-Troubleshooting-PHP-mail-">PHP mail troubleshooting</a> article for details.</p>
+<p>When you use the <a href="https://help.dreamhost.com/hc/en-us/articles/215507058-PHP-mail-overview">PHP mail function</a>, you are sending email directly from your web server. This can cause issues if the FROM address isn’t set properly or if your email isn’t hosted with DreamHost. Sending mail via SMTP is recommended as email is sent from the mail server rather than the web server. View the <a href="https://help.dreamhost.com/hc/en-us/articles/215507068-Troubleshooting-PHP-mail-">PHP mail troubleshooting</a> article for details.</p>
 <p>There are a few options to send PHP mail via SMTP. For example:</p>
 <ul>
-<li>Using <a href="https://help.dreamhost.com/hc/en-us/articles/215842658-PHPmailer-overview">PHPmailer</a></li>
+<li>Using <a href="https://help.dreamhost.com/hc/en-us/articles/215842658-PHPmailer-overview">PHPmailer</a>
+</li>
 <li>Using the PEAR Mail package.</li>
 </ul>
 <p>This article explains how to use the PEAR option.</p>
 <h2>Configuring PEAR to send mail</h2>
 <p>The following steps walk you through how to enable this:</p>
 <ol>
-<li>Visit the <a href="/hc/en-us/articles/214392988-How-do-I-install-PEAR-">PEAR</a> article to install PEAR on your web server.</li>
-<li>Install the necessary PEAR Mail packages. Visit <a href="/hc/en-us/articles/214395118-Troubleshooting-PEAR-errors">PEAR Troubleshooting</a> for instructions. For example, you'll need the Mail and Net_SMTP packages.
+<li>Visit the <a href="https://help.dreamhost.com/hc/en-us/articles/214392988-How-do-I-install-PEAR-">PEAR</a> article to install PEAR on your web server.</li>
+<li>Install the necessary PEAR Mail packages. Visit <a href="https://help.dreamhost.com/hc/en-us/articles/214395118-Troubleshooting-PEAR-errors">PEAR Troubleshooting</a> for instructions. For example, you'll need the Mail and Net_SMTP packages.
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">pear install Mail</span>
 <span class="server">[server]$ </span><span class="command">pear install Net_SMTP</span>
@@ -41,7 +42,7 @@ $email_address = "<span class="command"><strong>reply-to@example.com</strong></s
 $headers = array ('From' =&gt; $email_from, 'To' =&gt; $to, 'Subject' =&gt; $email_subject, 'Reply-To' =&gt; $email_address);
 $smtp = Mail::factory('smtp', array ('host' =&gt; $host, 'port' =&gt; $port, 'auth' =&gt; true, 'username' =&gt; $username, 'password' =&gt; $password));
 $mail = $smtp-&gt;send($to, $headers, $email_body);
-<br />
+<br>
 if (PEAR::isError($mail)) {
 echo("&lt;p&gt;" . $mail-&gt;getMessage() . "&lt;/p&gt;");
 } else {
@@ -51,7 +52,7 @@ echo("&lt;p&gt;Message successfully sent!&lt;/p&gt;");
 </pre>
 </div>
 <div class="alert alert-note">
-<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" alt="" width="60" height="60"></div>
 <div class="alert-content">
 <p>If you’re using Google to host your email, you must change the $host line to the following:</p>
 <div class="preboxcontainer">

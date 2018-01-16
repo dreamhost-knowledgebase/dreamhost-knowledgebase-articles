@@ -18,7 +18,8 @@
 </ul>
 </div>
 This article lists several C# code examples to interact with DreamObjects.
-<div id="creating-a-connection"><span id="s3-c-creating-a-connection"></span>
+<div id="creating-a-connection">
+<span id="s3-c-creating-a-connection"></span>
 <h2>Creating a Connection</h2>
 <p>Create a connection so you can interact with the server.</p>
 <div class="preboxcontainer">
@@ -39,7 +40,8 @@ AmazonS3 client = Amazon.AWSClientFactory.CreateAmazonS3Client(
         config
         );</pre>
 </div>
-<div id="listing-owned-buckets"><span id="s3-c-listing-owned-buckets"></span>
+<div id="listing-owned-buckets">
+<span id="s3-c-listing-owned-buckets"></span>
 <h2>Listing Owned Buckets</h2>
 <p>Get a list of Buckets you own. This also prints out the bucket name and creation date of each bucket.</p>
 <div class="preboxcontainer">
@@ -55,7 +57,8 @@ foreach (S3Bucket b in response.Buckets)
 mahbuckat2   2011-04-21T18:05:48.000Z
 mahbuckat3   2011-04-21T18:07:18.000Z</pre>
 </div>
-<div id="creating-a-bucket"><span id="s3-c-creating-a-buckets"></span>
+<div id="creating-a-bucket">
+<span id="s3-c-creating-a-buckets"></span>
 <h2>Creating a Bucket</h2>
 <p>Create a new bucket called <code class="docutils literal"><span class="pre">my-new-bucket.</span></code></p>
 <div class="preboxcontainer">
@@ -63,7 +66,8 @@ mahbuckat3   2011-04-21T18:07:18.000Z</pre>
 request.BucketName = "my-new-bucket";
 client.PutBucket(request);</pre>
 </div>
-<div id="listing-a-bucket-s-content"><span id="s3-c-listing-a-buckets-content"></span>
+<div id="listing-a-bucket-s-content">
+<span id="s3-c-listing-a-buckets-content"></span>
 <h2>Listing a Bucket’s Content</h2>
 <p>Get a list of objects in the bucket. This also prints out each object’s name, the file size, and last modified date.</p>
 <div class="preboxcontainer">
@@ -80,10 +84,11 @@ foreach (S3Object o in response.S3Objects)
 <pre class="prebox">myphoto1.jpg 251262  2011-08-08T21:35:48.000Z
 myphoto2.jpg 262518  2011-08-08T21:38:01.000Z</pre>
 </div>
-<div id="deleting-a-bucket"><span id="s3-c-deleting-a-bucket"></span>
+<div id="deleting-a-bucket">
+<span id="s3-c-deleting-a-bucket"></span>
 <h2>Deleting a Bucket</h2>
 <div class="alert alert-important">
-<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60"></div>
 <div class="alert-content">
 <p>The Bucket must be empty, otherwise it won’t work.</p>
 </div>
@@ -93,15 +98,17 @@ myphoto2.jpg 262518  2011-08-08T21:38:01.000Z</pre>
 request.BucketName = "my-new-bucket";
 client.DeleteBucket(request);</pre>
 </div>
-<div id="forced-delete-for-non-empty-buckets"><span id="s3-c-forced-delete-for-non-empty-buckets"></span>
+<div id="forced-delete-for-non-empty-buckets">
+<span id="s3-c-forced-delete-for-non-empty-buckets"></span>
 <h2>Forced Delete for Non-empty Buckets</h2>
 <div class="alert alert-important">
-<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60"></div>
 <div class="alert-content">
 <p>not available</p>
 </div>
 </div>
-<div id="creating-an-object"><span id="s3-c-creating-an-objects"></span>
+<div id="creating-an-object">
+<span id="s3-c-creating-an-objects"></span>
 <h2>Creating an Object</h2>
 <p>Create a file <code class="docutils literal"><span class="pre">hello.txt</span></code> with the string <code class="docutils literal"><span class="pre">"Hello</span> <span class="pre">World!"</span></code></p>
 <div class="preboxcontainer">
@@ -112,7 +119,8 @@ request.ContentType = "text/plain";
 request.ContentBody = "Hello World!";
 client.PutObject(request);</pre>
 </div>
-<div id="change-an-object-s-acl"><span id="s3-c-change-an-objects-acl"></span>
+<div id="change-an-object-s-acl">
+<span id="s3-c-change-an-objects-acl"></span>
 <h2>Change an Object’s ACL</h2>
 <p>Make the object <code class="docutils literal"><span class="pre">hello.txt</span></code> publicly readable and <code class="docutils literal"><span class="pre">secret_plans.txt</span></code> to be private.</p>
 <div class="preboxcontainer">
@@ -128,7 +136,8 @@ request2.Key        = "secret_plans.txt";
 request2.CannedACL  = S3CannedACL.Private;
 client.SetACL(request2);</pre>
 </div>
-<div id="download-an-object-to-a-file"><span id="s3-c-download-an-object"></span>
+<div id="download-an-object-to-a-file">
+<span id="s3-c-download-an-object"></span>
 <h2>Download an Object (to a file)</h2>
 <p>Download the object <code class="docutils literal"><span class="pre">perl_poetry.pdf</span></code> and save it in <code class="docutils literal"><span class="pre">C:\Users\larry\Documents.</span></code></p>
 <div class="preboxcontainer">
@@ -138,7 +147,8 @@ request.Key        = "perl_poetry.pdf"
 GetObjectResponse response = client.GetObject(request);
 response.WriteResponseStreamToFile("C:\\Users\\larry\\Documents\\perl_poetry.pdf");</pre>
 </div>
-<div id="delete-an-object"><span id="s3-c-delete-an-object"></span>
+<div id="delete-an-object">
+<span id="s3-c-delete-an-object"></span>
 <h2>Delete an Object</h2>
 <p>Delete the object <code class="docutils literal"><span class="pre">goodbye.txt.</span></code></p>
 <div class="preboxcontainer">
@@ -147,11 +157,12 @@ request.BucketName = "my-new-bucket";
 request.Key        = "goodbye.txt";
 client.DeleteObject(request);</pre>
 </div>
-<div id="generate-object-download-urls-signed-and-unsigned"><span id="s3-c-generate-object-download-urls"></span>
+<div id="generate-object-download-urls-signed-and-unsigned">
+<span id="s3-c-generate-object-download-urls"></span>
 <h2>Generate Object Download URLs (signed and unsigned)</h2>
 <p>This generates an unsigned download URL for <code class="docutils literal"><span class="pre">hello.txt</span></code>. This works because <code class="docutils literal"><span class="pre">hello.txt</span></code> was made public by setting the ACL above. This then generates a signed download URL for <code class="docutils literal"><span class="pre">secret_plans.txt</span></code> that will work for 1 hour. Signed download URLs will work for the time period even if the object is private (when the time period is up, the URL will stop working).</p>
 <div class="alert alert-important">
-<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60"></div>
 <div class="alert-content">
 <p>The C# S3 Library does not have a method for generating unsigned URLs, so the following example only shows generating signed URLs.</p>
 </div>
@@ -174,7 +185,8 @@ Console.WriteLine(url);</pre>
 <!--DreamObjects Button-->
 <div class="dream-sign-up">
 <h2>Start Storing Your Data Today!</h2>
-<a href="https://www.dreamhost.com/cloud/storage/">Sign Up for DreamObjects</a></div>
+<a href="https://www.dreamhost.com/cloud/storage/">Sign Up for DreamObjects</a>
+</div>
 </div>
 </div>
 </div>

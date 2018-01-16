@@ -1,4 +1,4 @@
-<body role="document">
+<body>
 <div class="document">
 <div class="documentwrapper">
 <div class="body" role="main">
@@ -14,7 +14,8 @@ endpoints, see <a class="reference external" href="216511257-Overview-of-authent
 <div id="get-openstack-credentials-api-v2">
 <span id="get-openstack-credentials"></span><h2>Get OpenStack credentials (API v2)</h2>
 <p>This example uses the <code class="docutils literal"><span class="pre">get_nova_credentials_v2</span></code> method:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_nova_credentials_v2</span><span class="p">():</span>
+<div class="highlight-python">
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_nova_credentials_v2</span><span class="p">():</span>
     <span class="n">d</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">d</span><span class="p">[</span><span class="s1">'version'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'2'</span>
     <span class="n">d</span><span class="p">[</span><span class="s1">'username'</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">'OS_USERNAME'</span><span class="p">]</span>
@@ -28,7 +29,8 @@ endpoints, see <a class="reference external" href="216511257-Overview-of-authent
 import.</p>
 <p>Use the <code class="docutils literal"><span class="pre">get_nova_credentials_v2()</span></code> method to populate and get a
 dictionary:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">credentials</span> <span class="o">=</span> <span class="n">get_nova_credentials_v2</span><span class="p">()</span>
+<div class="highlight-python">
+<div class="highlight"><pre><span></span><span class="n">credentials</span> <span class="o">=</span> <span class="n">get_nova_credentials_v2</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -36,29 +38,37 @@ dictionary:</p>
 <h2>List servers (API v2)</h2>
 <p>The following program lists servers by using the Compute API v2.</p>
 <ol class="arabic">
-<li><p class="first">Import the following modules:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">credentials</span> <span class="kn">import</span> <span class="n">get_nova_credentials_v2</span>
+<li>
+<p class="first">Import the following modules:</p>
+<div class="highlight-python">
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">credentials</span> <span class="kn">import</span> <span class="n">get_nova_credentials_v2</span>
 <span class="kn">from</span> <span class="nn">novaclient.client</span> <span class="kn">import</span> <span class="n">Client</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first">Get Nova credentials. See <a class="reference internal" href="#get-openstack-credentials"><span>Get OpenStack credentials (API v2)</span></a>.</p>
+<li>
+<p class="first">Get Nova credentials. See <a class="reference internal" href="#get-openstack-credentials"><span>Get OpenStack credentials (API v2)</span></a>.</p>
 </li>
-<li><p class="first">Instantiate the <code class="docutils literal"><span class="pre">nova_client</span></code> client object by using the
+<li>
+<p class="first">Instantiate the <code class="docutils literal"><span class="pre">nova_client</span></code> client object by using the
 <code class="docutils literal"><span class="pre">credentials</span></code> dictionary object:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">nova_client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="o">**</span><span class="n">credentials</span><span class="p">)</span>
+<div class="highlight-python">
+<div class="highlight"><pre><span></span><span class="n">nova_client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="o">**</span><span class="n">credentials</span><span class="p">)</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first">List servers by calling <code class="docutils literal"><span class="pre">servers.list</span></code> on <code class="docutils literal"><span class="pre">nova_client</span></code> object:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">nova_client</span><span class="o">.</span><span class="n">servers</span><span class="o">.</span><span class="n">list</span><span class="p">())</span>
+<li>
+<p class="first">List servers by calling <code class="docutils literal"><span class="pre">servers.list</span></code> on <code class="docutils literal"><span class="pre">nova_client</span></code> object:</p>
+<div class="highlight-python">
+<div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">nova_client</span><span class="o">.</span><span class="n">servers</span><span class="o">.</span><span class="n">list</span><span class="p">())</span>
 </pre></div>
 </div>
 </li>
 </ol>
 <div id="list-server-code-listing-example">
 <h3>List server code listing example</h3>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
+<div class="highlight-python">
+<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="kn">from</span> <span class="nn">credentials</span> <span class="kn">import</span> <span class="n">get_nova_credentials_v2</span>
 <span class="kn">from</span> <span class="nn">novaclient.client</span> <span class="kn">import</span> <span class="n">Client</span>
 
@@ -74,40 +84,51 @@ dictionary:</p>
 <h2>Create server (API v2)</h2>
 <p>The following program creates a server (VM) by using the Compute API v2.</p>
 <ol class="arabic">
-<li><p class="first">Import the following modules:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
+<li>
+<p class="first">Import the following modules:</p>
+<div class="highlight-python">
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">from</span> <span class="nn">credentials</span> <span class="kn">import</span> <span class="n">get_nova_credentials_v2</span>
 <span class="kn">from</span> <span class="nn">novaclient.client</span> <span class="kn">import</span> <span class="n">Client</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first">Get OpenStack credentials. See <a class="reference internal" href="#get-openstack-credentials"><span>Get OpenStack credentials (API v2)</span></a>.</p>
+<li>
+<p class="first">Get OpenStack credentials. See <a class="reference internal" href="#get-openstack-credentials"><span>Get OpenStack credentials (API v2)</span></a>.</p>
 </li>
-<li><p class="first">Instantiate the <code class="docutils literal"><span class="pre">nova_client</span></code> client object by using the
+<li>
+<p class="first">Instantiate the <code class="docutils literal"><span class="pre">nova_client</span></code> client object by using the
 <code class="docutils literal"><span class="pre">credentials</span></code> dictionary object:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">nova_client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="o">**</span><span class="n">credentials</span><span class="p">)</span>
+<div class="highlight-python">
+<div class="highlight"><pre><span></span><span class="n">nova_client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="o">**</span><span class="n">credentials</span><span class="p">)</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first">Get the flavor and image to use to create a server. This code uses
+<li>
+<p class="first">Get the flavor and image to use to create a server. This code uses
 the <code class="docutils literal"><span class="pre">cirros</span></code> image, the <code class="docutils literal"><span class="pre">m1.tiny</span></code> flavor, and the <code class="docutils literal"><span class="pre">private</span></code>
 network:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">image</span> <span class="o">=</span> <span class="n">nova_client</span><span class="o">.</span><span class="n">images</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"cirros"</span><span class="p">)</span>
+<div class="highlight-python">
+<div class="highlight"><pre><span></span><span class="n">image</span> <span class="o">=</span> <span class="n">nova_client</span><span class="o">.</span><span class="n">images</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"cirros"</span><span class="p">)</span>
 <span class="n">flavor</span> <span class="o">=</span> <span class="n">nova_client</span><span class="o">.</span><span class="n">flavors</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"m1.tiny"</span><span class="p">)</span>
 <span class="n">net</span> <span class="o">=</span> <span class="n">nova_client</span><span class="o">.</span><span class="n">networks</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">"private"</span><span class="p">)</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first">To create the server, use the network, image, and flavor:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">nics</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">'net-id'</span><span class="p">:</span> <span class="n">net</span><span class="o">.</span><span class="n">id</span><span class="p">}]</span>
+<li>
+<p class="first">To create the server, use the network, image, and flavor:</p>
+<div class="highlight-python">
+<div class="highlight"><pre><span></span><span class="n">nics</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">'net-id'</span><span class="p">:</span> <span class="n">net</span><span class="o">.</span><span class="n">id</span><span class="p">}]</span>
 <span class="n">instance</span> <span class="o">=</span> <span class="n">nova_client</span><span class="o">.</span><span class="n">servers</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"vm2"</span><span class="p">,</span> <span class="n">image</span><span class="o">=</span><span class="n">image</span><span class="p">,</span>
 <span class="n">flavor</span><span class="o">=</span><span class="n">flavor</span><span class="p">,</span> <span class="n">key_name</span><span class="o">=</span><span class="s2">"keypair-1"</span><span class="p">,</span> <span class="n">nics</span><span class="o">=</span><span class="n">nics</span><span class="p">)</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first">Run the “Sleep for five seconds” command, and determine whether
+<li>
+<p class="first">Run the “Sleep for five seconds” command, and determine whether
 the server/vm was created by calling <code class="docutils literal"><span class="pre">nova_client.servers.list()</span></code>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s2">"Sleeping for 5s after create command"</span><span class="p">)</span>
+<div class="highlight-python">
+<div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s2">"Sleeping for 5s after create command"</span><span class="p">)</span>
 <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="s2">"List of VMs"</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="n">nova_client</span><span class="o">.</span><span class="n">servers</span><span class="o">.</span><span class="n">list</span><span class="p">())</span>
@@ -117,7 +138,8 @@ the server/vm was created by calling <code class="docutils literal"><span class=
 </ol>
 <div id="create-server-code-listing-example">
 <h3>Create server code listing example</h3>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
+<div class="highlight-python">
+<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">from</span> <span class="nn">credentials</span> <span class="kn">import</span> <span class="n">get_nova_credentials_v2</span>
 <span class="kn">from</span> <span class="nn">novaclient.client</span> <span class="kn">import</span> <span class="n">Client</span>
@@ -146,29 +168,36 @@ the server/vm was created by calling <code class="docutils literal"><span class=
 <h2>Delete server (API v2)</h2>
 <p>The following program deletes a server (VM) by using the Compute API v2.</p>
 <ol class="arabic">
-<li><p class="first">Import the following modules:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
+<li>
+<p class="first">Import the following modules:</p>
+<div class="highlight-python">
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">from</span> <span class="nn">credentials</span> <span class="kn">import</span> <span class="n">get_nova_credentials_v2</span>
 <span class="kn">from</span> <span class="nn">novaclient.client</span> <span class="kn">import</span> <span class="n">Client</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first">Get Nova credentials. See <a class="reference internal" href="#get-openstack-credentials"><span>Get OpenStack credentials (API v2)</span></a>.</p>
+<li>
+<p class="first">Get Nova credentials. See <a class="reference internal" href="#get-openstack-credentials"><span>Get OpenStack credentials (API v2)</span></a>.</p>
 </li>
-<li><p class="first">Instantiate the <code class="docutils literal"><span class="pre">nova_client</span></code> client object by using the
+<li>
+<p class="first">Instantiate the <code class="docutils literal"><span class="pre">nova_client</span></code> client object by using the
 <code class="docutils literal"><span class="pre">credentials</span></code> dictionary object:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">nova_client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="o">**</span><span class="n">credentials</span><span class="p">)</span>
+<div class="highlight-python">
+<div class="highlight"><pre><span></span><span class="n">nova_client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="o">**</span><span class="n">credentials</span><span class="p">)</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first">Determine whether the <code class="docutils literal"><span class="pre">vm1</span></code> server exists:</p>
+<li>
+<p class="first">Determine whether the <code class="docutils literal"><span class="pre">vm1</span></code> server exists:</p>
 <ol class="loweralpha simple">
 <li>List servers: <code class="docutils literal"><span class="pre">servers_list</span></code>.</li>
 <li>Iterate over <code class="docutils literal"><span class="pre">servers_list</span></code> and compare name with <code class="docutils literal"><span class="pre">vm1</span></code>.</li>
 <li>If true, set the variable name <code class="docutils literal"><span class="pre">server_exists</span></code> to <code class="docutils literal"><span class="pre">True</span></code>
 and break from the for loop:</li>
 </ol>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">servers_list</span> <span class="o">=</span> <span class="n">nova_client</span><span class="o">.</span><span class="n">servers</span><span class="o">.</span><span class="n">list</span><span class="p">()</span>
+<div class="highlight-python">
+<div class="highlight"><pre><span></span><span class="n">servers_list</span> <span class="o">=</span> <span class="n">nova_client</span><span class="o">.</span><span class="n">servers</span><span class="o">.</span><span class="n">list</span><span class="p">()</span>
 <span class="n">server_del</span> <span class="o">=</span> <span class="s2">"vm1"</span>
 <span class="n">server_exists</span> <span class="o">=</span> <span class="bp">False</span>
 
@@ -180,16 +209,19 @@ and break from the for loop:</li>
 </pre></div>
 </div>
 </li>
-<li><p class="first">If the server exists, run the <code class="docutils literal"><span class="pre">delete</span></code> method of the
+<li>
+<p class="first">If the server exists, run the <code class="docutils literal"><span class="pre">delete</span></code> method of the
 <code class="docutils literal"><span class="pre">nova_client.servers</span></code> object:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">nova_client</span><span class="o">.</span><span class="n">servers</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<div class="highlight-python">
+<div class="highlight"><pre><span></span><span class="n">nova_client</span><span class="o">.</span><span class="n">servers</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
 </pre></div>
 </div>
 </li>
 </ol>
 <div id="delete-server-code-example">
 <h3>Delete server code example</h3>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
+<div class="highlight-python">
+<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="kn">from</span> <span class="nn">credentials</span> <span class="kn">import</span> <span class="n">get_nova_credentials_v2</span>
 <span class="kn">from</span> <span class="nn">novaclient.client</span> <span class="kn">import</span> <span class="n">Client</span>
 
@@ -220,15 +252,18 @@ and break from the for loop:</li>
 <p>The following program updates the name of a server (VM) by using the
 Compute API v2.</p>
 <ol class="arabic">
-<li><p class="first">Import the following modules:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">credentials</span> <span class="kn">import</span> <span class="n">get_nova_credentials_v2</span>
+<li>
+<p class="first">Import the following modules:</p>
+<div class="highlight-python">
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">credentials</span> <span class="kn">import</span> <span class="n">get_nova_credentials_v2</span>
 <span class="kn">from</span> <span class="nn">novaclient.client</span> <span class="kn">import</span> <span class="n">Client</span>
 <span class="kn">from</span> <span class="nn">utils</span> <span class="kn">import</span> <span class="n">print_server</span>
 </pre></div>
 </div>
 <p><code class="docutils literal"><span class="pre">print_server</span></code> is a method defined in <code class="docutils literal"><span class="pre">utils.py</span></code> and prints the
 server details as shown in the code listing below:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">print_server</span><span class="p">(</span><span class="n">server</span><span class="p">):</span>
+<div class="highlight-python">
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">print_server</span><span class="p">(</span><span class="n">server</span><span class="p">):</span>
     <span class="k">print</span><span class="p">(</span><span class="s2">"-"</span><span class="o">*</span><span class="mi">35</span><span class="p">)</span>
     <span class="k">print</span><span class="p">(</span><span class="s2">"server id: </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="n">server</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
     <span class="k">print</span><span class="p">(</span><span class="s2">"server name: </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="n">server</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
@@ -240,44 +275,56 @@ server details as shown in the code listing below:</p>
 </pre></div>
 </div>
 </li>
-<li><p class="first">Get OpenStack Credentials. See <a class="reference internal" href="#get-openstack-credentials"><span>Get OpenStack credentials
+<li>
+<p class="first">Get OpenStack Credentials. See <a class="reference internal" href="#get-openstack-credentials"><span>Get OpenStack credentials
 (API v2)</span></a>.</p>
 </li>
-<li><p class="first">Instantiate the <code class="docutils literal"><span class="pre">nova_client</span></code> client object by using the
+<li>
+<p class="first">Instantiate the <code class="docutils literal"><span class="pre">nova_client</span></code> client object by using the
 <code class="docutils literal"><span class="pre">credentials</span></code> dictionary object:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">nova_client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="o">**</span><span class="n">credentials</span><span class="p">)</span>
+<div class="highlight-python">
+<div class="highlight"><pre><span></span><span class="n">nova_client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="o">**</span><span class="n">credentials</span><span class="p">)</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first">Get the server instance using <code class="docutils literal"><span class="pre">server_id</span></code> and print the details by
+<li>
+<p class="first">Get the server instance using <code class="docutils literal"><span class="pre">server_id</span></code> and print the details by
 calling <code class="docutils literal"><span class="pre">print_server</span></code> method:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">server_id</span> <span class="o">=</span> <span class="s1">'99889c8d-113f-4a7e-970c-77f1916bfe14'</span>
+<div class="highlight-python">
+<div class="highlight"><pre><span></span><span class="n">server_id</span> <span class="o">=</span> <span class="s1">'99889c8d-113f-4a7e-970c-77f1916bfe14'</span>
 <span class="n">server</span> <span class="o">=</span> <span class="n">nova_client</span><span class="o">.</span><span class="n">servers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">server_id</span><span class="p">)</span>
 <span class="n">n</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="n">name</span>
 <span class="n">print_server</span><span class="p">(</span><span class="n">server</span><span class="p">)</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first">Call <code class="docutils literal"><span class="pre">server.update</span></code> on the server object with the new value for
+<li>
+<p class="first">Call <code class="docutils literal"><span class="pre">server.update</span></code> on the server object with the new value for
 <code class="docutils literal"><span class="pre">name</span></code> variable:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">server</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="n">n</span> <span class="o">+</span> <span class="s1">'1'</span><span class="p">)</span>
+<div class="highlight-python">
+<div class="highlight"><pre><span></span><span class="n">server</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="n">n</span> <span class="o">+</span> <span class="s1">'1'</span><span class="p">)</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first">Get the updated instance of the server:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">server_updated</span> <span class="o">=</span> <span class="n">nova_client</span><span class="o">.</span><span class="n">servers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">server_id</span><span class="p">)</span>
+<li>
+<p class="first">Get the updated instance of the server:</p>
+<div class="highlight-python">
+<div class="highlight"><pre><span></span><span class="n">server_updated</span> <span class="o">=</span> <span class="n">nova_client</span><span class="o">.</span><span class="n">servers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">server_id</span><span class="p">)</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first">Call <code class="docutils literal"><span class="pre">print_server</span></code> again to check the update server details:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">print_server</span><span class="p">(</span><span class="n">server_updated</span><span class="p">)</span>
+<li>
+<p class="first">Call <code class="docutils literal"><span class="pre">print_server</span></code> again to check the update server details:</p>
+<div class="highlight-python">
+<div class="highlight"><pre><span></span><span class="n">print_server</span><span class="p">(</span><span class="n">server_updated</span><span class="p">)</span>
 </pre></div>
 </div>
 </li>
 </ol>
 <div id="update-server-code-listing-example">
 <h3>Update server code listing example</h3>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
+<div class="highlight-python">
+<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
 
 <span class="kn">from</span> <span class="nn">credentials</span> <span class="kn">import</span> <span class="n">get_nova_credentials_v2</span>
 <span class="kn">from</span> <span class="nn">novaclient.client</span> <span class="kn">import</span> <span class="n">Client</span>
@@ -305,15 +352,18 @@ calling <code class="docutils literal"><span class="pre">print_server</span></co
 <p>The following program lists flavors and their details by using the
 Compute API v2.</p>
 <ol class="arabic">
-<li><p class="first">Import the following modules:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">credentials</span> <span class="kn">import</span> <span class="n">get_nova_credentials_v2</span>
+<li>
+<p class="first">Import the following modules:</p>
+<div class="highlight-python">
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">credentials</span> <span class="kn">import</span> <span class="n">get_nova_credentials_v2</span>
 <span class="kn">from</span> <span class="nn">novaclient.client</span> <span class="kn">import</span> <span class="n">Client</span>
 <span class="kn">from</span> <span class="nn">utils</span> <span class="kn">import</span> <span class="n">print_flavors</span>
 </pre></div>
 </div>
 <p>The <code class="docutils literal"><span class="pre">print_flavors</span></code> method is defined in <code class="docutils literal"><span class="pre">utils.py</span></code> and prints the
 flavor details:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">print_flavors</span><span class="p">(</span><span class="n">flavor_list</span><span class="p">):</span>
+<div class="highlight-python">
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">print_flavors</span><span class="p">(</span><span class="n">flavor_list</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">flavor</span> <span class="ow">in</span> <span class="n">flavor_list</span><span class="p">:</span>
        <span class="k">print</span><span class="p">(</span><span class="s2">"-"</span><span class="o">*</span><span class="mi">35</span><span class="p">)</span>
        <span class="k">print</span><span class="p">(</span><span class="s2">"flavor id : </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="n">flavor</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
@@ -322,29 +372,37 @@ flavor details:</p>
 </pre></div>
 </div>
 </li>
-<li><p class="first">Get OpenStack credentials. <a class="reference internal" href="#get-openstack-credentials"><span>Get OpenStack credentials
+<li>
+<p class="first">Get OpenStack credentials. <a class="reference internal" href="#get-openstack-credentials"><span>Get OpenStack credentials
 (API v2)</span></a>.</p>
 </li>
-<li><p class="first">Instantiate the <code class="docutils literal"><span class="pre">nova_client</span></code> client object by using the
+<li>
+<p class="first">Instantiate the <code class="docutils literal"><span class="pre">nova_client</span></code> client object by using the
 <code class="docutils literal"><span class="pre">credentials</span></code> dictionary object:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">nova_client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="o">**</span><span class="n">credentials</span><span class="p">)</span>
+<div class="highlight-python">
+<div class="highlight"><pre><span></span><span class="n">nova_client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="o">**</span><span class="n">credentials</span><span class="p">)</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first">List flavors by calling <code class="docutils literal"><span class="pre">list()</span></code> on <code class="docutils literal"><span class="pre">nova_client.flavors</span></code> object:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">flavors_list</span> <span class="o">=</span>  <span class="n">nova_client</span><span class="o">.</span><span class="n">flavors</span><span class="o">.</span><span class="n">list</span><span class="p">()</span>
+<li>
+<p class="first">List flavors by calling <code class="docutils literal"><span class="pre">list()</span></code> on <code class="docutils literal"><span class="pre">nova_client.flavors</span></code> object:</p>
+<div class="highlight-python">
+<div class="highlight"><pre><span></span><span class="n">flavors_list</span> <span class="o">=</span>  <span class="n">nova_client</span><span class="o">.</span><span class="n">flavors</span><span class="o">.</span><span class="n">list</span><span class="p">()</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first">Print the flavor details, id and name by calling <code class="docutils literal"><span class="pre">print_flavors</span></code>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">print_flavors</span><span class="p">(</span><span class="n">flavors_list</span><span class="p">)</span>
+<li>
+<p class="first">Print the flavor details, id and name by calling <code class="docutils literal"><span class="pre">print_flavors</span></code>:</p>
+<div class="highlight-python">
+<div class="highlight"><pre><span></span><span class="n">print_flavors</span><span class="p">(</span><span class="n">flavors_list</span><span class="p">)</span>
 </pre></div>
 </div>
 </li>
 </ol>
 <div id="list-flavors-code-listing-example">
 <h3>List flavors code listing example</h3>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
+<div class="highlight-python">
+<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
 
 <span class="kn">from</span> <span class="nn">credentials</span> <span class="kn">import</span> <span class="n">get_nova_credentials_v2</span>
 <span class="kn">from</span> <span class="nn">novaclient.client</span> <span class="kn">import</span> <span class="n">Client</span>
@@ -364,15 +422,18 @@ flavor details:</p>
 <p>The following program lists the floating IPs and their details by using
 the Compute API v2.</p>
 <ol class="arabic">
-<li><p class="first">Import the following modules:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">credentials</span> <span class="kn">import</span> <span class="n">get_nova_credentials_v2</span>
+<li>
+<p class="first">Import the following modules:</p>
+<div class="highlight-python">
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">credentials</span> <span class="kn">import</span> <span class="n">get_nova_credentials_v2</span>
 <span class="kn">from</span> <span class="nn">novaclient.client</span> <span class="kn">import</span> <span class="n">Client</span>
 <span class="kn">from</span> <span class="nn">utils</span> <span class="kn">import</span> <span class="n">print_values_ip</span>
 </pre></div>
 </div>
 <p>The <code class="docutils literal"><span class="pre">print_values_ip</span></code> method is defined in <code class="docutils literal"><span class="pre">utils.py</span></code> and prints the
 floating_ip object details:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">print_values_ip</span><span class="p">(</span><span class="n">ip_list</span><span class="p">):</span>
+<div class="highlight-python">
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">print_values_ip</span><span class="p">(</span><span class="n">ip_list</span><span class="p">):</span>
     <span class="n">ip_dict_lisl</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">ip</span> <span class="ow">in</span> <span class="n">ip_list</span><span class="p">:</span>
         <span class="k">print</span><span class="p">(</span><span class="s2">"-"</span><span class="o">*</span><span class="mi">35</span><span class="p">)</span>
@@ -384,30 +445,38 @@ floating_ip object details:</p>
 </pre></div>
 </div>
 </li>
-<li><p class="first">Get OpenStack credentials. See <a class="reference internal" href="#get-openstack-credentials"><span>Get OpenStack credentials
+<li>
+<p class="first">Get OpenStack credentials. See <a class="reference internal" href="#get-openstack-credentials"><span>Get OpenStack credentials
 (API v2)</span></a>.</p>
 </li>
-<li><p class="first">Instantiate the <code class="docutils literal"><span class="pre">nova_client</span></code> client object by using the
+<li>
+<p class="first">Instantiate the <code class="docutils literal"><span class="pre">nova_client</span></code> client object by using the
 <code class="docutils literal"><span class="pre">credentials</span></code> dictionary object:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">nova_client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="o">**</span><span class="n">credentials</span><span class="p">)</span>
+<div class="highlight-python">
+<div class="highlight"><pre><span></span><span class="n">nova_client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="o">**</span><span class="n">credentials</span><span class="p">)</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first">List floating IPs by calling <code class="docutils literal"><span class="pre">list()</span></code> on <code class="docutils literal"><span class="pre">nova_client.floating_ips</span></code>
+<li>
+<p class="first">List floating IPs by calling <code class="docutils literal"><span class="pre">list()</span></code> on <code class="docutils literal"><span class="pre">nova_client.floating_ips</span></code>
 object:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">ip_list</span> <span class="o">=</span> <span class="n">nova_client</span><span class="o">.</span><span class="n">floating_ips</span><span class="o">.</span><span class="n">list</span><span class="p">()</span>
+<div class="highlight-python">
+<div class="highlight"><pre><span></span><span class="n">ip_list</span> <span class="o">=</span> <span class="n">nova_client</span><span class="o">.</span><span class="n">floating_ips</span><span class="o">.</span><span class="n">list</span><span class="p">()</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first">Print the floating IP object details by calling <code class="docutils literal"><span class="pre">print_values_ip</span></code>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">print_values_ip</span><span class="p">(</span><span class="n">ip_list</span><span class="p">)</span>
+<li>
+<p class="first">Print the floating IP object details by calling <code class="docutils literal"><span class="pre">print_values_ip</span></code>:</p>
+<div class="highlight-python">
+<div class="highlight"><pre><span></span><span class="n">print_values_ip</span><span class="p">(</span><span class="n">ip_list</span><span class="p">)</span>
 </pre></div>
 </div>
 </li>
 </ol>
 <div id="list-floating-ips-code-listing-example">
 <h3>List floating IPs code listing example</h3>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
+<div class="highlight-python">
+<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
 
 <span class="kn">from</span> <span class="nn">credentials</span> <span class="kn">import</span> <span class="n">get_nova_credentials_v2</span>
 <span class="kn">from</span> <span class="nn">novaclient.client</span> <span class="kn">import</span> <span class="n">Client</span>
@@ -425,15 +494,18 @@ object:</p>
 <h2>List hosts (API v2)</h2>
 <p>The following program lists the hosts by using the Compute API v2.</p>
 <ol class="arabic">
-<li><p class="first">Import the following modules:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">credentials</span> <span class="kn">import</span> <span class="n">get_nova_credentials_v2</span>
+<li>
+<p class="first">Import the following modules:</p>
+<div class="highlight-python">
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">credentials</span> <span class="kn">import</span> <span class="n">get_nova_credentials_v2</span>
 <span class="kn">from</span> <span class="nn">novaclient.client</span> <span class="kn">import</span> <span class="n">Client</span>
 <span class="kn">from</span> <span class="nn">utils</span> <span class="kn">import</span> <span class="n">print_hosts</span>
 </pre></div>
 </div>
 <p>The <code class="docutils literal"><span class="pre">print_hosts</span></code> method is defined in <code class="docutils literal"><span class="pre">utils.py</span></code> and prints the
 host object details:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">print_hosts</span><span class="p">(</span><span class="n">host_list</span><span class="p">):</span>
+<div class="highlight-python">
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">print_hosts</span><span class="p">(</span><span class="n">host_list</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">host</span> <span class="ow">in</span> <span class="n">host_list</span><span class="p">:</span>
        <span class="k">print</span><span class="p">(</span><span class="s2">"-"</span><span class="o">*</span><span class="mi">35</span><span class="p">)</span>
        <span class="k">print</span><span class="p">(</span><span class="s2">"host_name : </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="n">host</span><span class="o">.</span><span class="n">host_name</span><span class="p">)</span>
@@ -443,28 +515,36 @@ host object details:</p>
 </pre></div>
 </div>
 </li>
-<li><p class="first">Get OpenStack credentials. See <a class="reference internal" href="#get-openstack-credentials"><span>Get OpenStack credentials (API v2)</span></a>.</p>
+<li>
+<p class="first">Get OpenStack credentials. See <a class="reference internal" href="#get-openstack-credentials"><span>Get OpenStack credentials (API v2)</span></a>.</p>
 </li>
-<li><p class="first">Instantiate the <code class="docutils literal"><span class="pre">nova_client</span></code> client object by using the
+<li>
+<p class="first">Instantiate the <code class="docutils literal"><span class="pre">nova_client</span></code> client object by using the
 <code class="docutils literal"><span class="pre">credentials</span></code> dictionary object:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">nova_client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="o">**</span><span class="n">credentials</span><span class="p">)</span>
+<div class="highlight-python">
+<div class="highlight"><pre><span></span><span class="n">nova_client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="o">**</span><span class="n">credentials</span><span class="p">)</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first">List hosts by calling <code class="docutils literal"><span class="pre">list()</span></code> on <code class="docutils literal"><span class="pre">nova_client.hosts</span></code> object:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">host_list</span> <span class="o">=</span> <span class="n">nova_client</span><span class="o">.</span><span class="n">hosts</span><span class="o">.</span><span class="n">list</span><span class="p">()</span>
+<li>
+<p class="first">List hosts by calling <code class="docutils literal"><span class="pre">list()</span></code> on <code class="docutils literal"><span class="pre">nova_client.hosts</span></code> object:</p>
+<div class="highlight-python">
+<div class="highlight"><pre><span></span><span class="n">host_list</span> <span class="o">=</span> <span class="n">nova_client</span><span class="o">.</span><span class="n">hosts</span><span class="o">.</span><span class="n">list</span><span class="p">()</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first">Print the host object details by calling <code class="docutils literal"><span class="pre">print_hosts(host_list)</span></code>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">print_hosts</span><span class="p">(</span><span class="n">host_list</span><span class="p">)</span>
+<li>
+<p class="first">Print the host object details by calling <code class="docutils literal"><span class="pre">print_hosts(host_list)</span></code>:</p>
+<div class="highlight-python">
+<div class="highlight"><pre><span></span><span class="n">print_hosts</span><span class="p">(</span><span class="n">host_list</span><span class="p">)</span>
 </pre></div>
 </div>
 </li>
 </ol>
 <div id="list-hosts-code-listing-example">
 <h3>List hosts code listing example</h3>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
+<div class="highlight-python">
+<div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
 
 <span class="kn">from</span> <span class="nn">credentials</span> <span class="kn">import</span> <span class="n">get_nova_credentials_v2</span>
 <span class="kn">from</span> <span class="nn">novaclient.client</span> <span class="kn">import</span> <span class="n">Client</span>

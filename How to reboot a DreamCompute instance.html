@@ -1,15 +1,44 @@
-<p>You can soft or hard reboot a running instance using the <a href="https://help.dreamhost.com/hc/en-us/articles/235817468-Getting-started-with-the-OpenStack-command-line-client">OpenStack command line client</a>. A soft reboot attempts a graceful shut down and restart of the instance. A hard reboot power cycles the instance.</p>
+<p>You can soft or hard reboot a running instance using the <a href="https://help.dreamhost.com/hc/en-us/articles/235817468-Getting-started-with-the-OpenStack-command-line-client">OpenStack command line client</a> or within the DreamCompute dashboard. A soft reboot attempts a graceful shut down and restart of the instance. A hard reboot power cycles the instance (turns it off and on).</p>
+<p>Choose the '<a href="#dashboard_examples">Dashboard examples</a>' or '<a href="#command_line_examples">Command line examples</a>' below depending on which one you're more comfortable with.</p>
+<h2><span id="dashboard_examples">Dashboard examples</span></h2>
 <div class="alert alert-note">
 <div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60"></div>
 <div class="alert-content">
-<p>In the following examples, myInstance is the name of your instance.</p>
-<p>You can view the name of your instance in the <a href="https://iad2.dreamcompute.com/project/instances/">DreamCompute dashboard</a>.</p>
+<p>All of these actions can be performed from the 'Compute' &gt; 'Instances' page of the DreamCompute dashboard.</p>
+<ol>
+<li>Navigate to the <a href="https://panel.dreamhost.com/index.cgi?tree=cloud.compute&amp;">(Panel &gt; 'Cloud Services' &gt; 'DreamCompute')</a> page and log into your DreamCompute dashboard.
+<dl>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/how-to-pause-suspend-stop-and-start-an-instance_01.png" alt=""></dd>
+</dl>
+</li>
+<li>On the top left, click the 'Compute' tab.</li>
+<li>From the expanded list click '<span class="guilabel">Instances'</span>.</li>
+</ol>
 </div>
 </div>
+<h3>Soft reboot an instance</h3>
+<dl>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/how-to-reboot-a-dreamcompute-instance_01.png" alt=""></dd>
+</dl>
+<p>To soft reboot your instance, click the dropdown menu under the 'Action' column next to your instance. From the menu, select 'Soft Reboot Instance'.</p>
+<h3>Hard reboot an instance</h3>
+<dl>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/how-to-reboot-a-dreamcompute-instance_02.png" alt=""></dd>
+</dl>
+<p>To hard reboot your instance, click the dropdown menu under the 'Action' column next to your instance. From the menu, select 'Hard Reboot Instance'.</p>
+<h2><span id="command_line_examples">Command line examples</span></h2>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60"></div>
+<div class="alert-content">
+<p>In the following examples, 'myInstance' is the name of your instance. You can view the name of your instance in the <a href="https://iad2.dreamcompute.com/project/instances/">DreamCompute dashboard</a>. You must install the <a href="https://help.dreamhost.com/hc/en-us/articles/235817468-Getting-started-with-OpenStack-command-line-client">OpenStack command line client</a> to run the commands below.</p>
+</div>
+</div>
+<h3>Soft reboot an instance</h3>
 <p>By default, when you reboot an instance, it is a soft reboot.</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server reboot myInstance</span></pre>
 </div>
+<h3>Hard reboot an instance</h3>
 <p>To perform a hard reboot, pass the <cite>–hard</cite> parameter:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server reboot --hard myInstance</span></pre>
