@@ -4,20 +4,28 @@
 <div id="how-to-launch-a-virtual-server-on-dreamcompute">
 <p>Virtual machines that run inside the cloud are called instances. Before you can launch an instance, gather the following parameters:</p>
 <ul class="simple">
-<li><strong>Instance source</strong> — Can be an image, snapshot, or block storage volume that contains an image or snapshot.</li>
-<li><strong>Instance name</strong> — The name for your instance.</li>
-<li><strong>Flavor</strong> — The flavor for your instance defines the compute, memory, and storage capacity of computing instances. A flavor is an available hardware configuration for a server. It defines the size of a virtual server that can be launched.</li>
-<li><strong>User data</strong> — Any user data files. A user data file is a special key in the metadata service that holds a file that cloud-aware applications in the guest instance can access. For example, one application that uses user data is the <a class="reference external" href="https://help.ubuntu.com/community/CloudInit">cloud-init</a> system, which is an open-source package from Ubuntu that is available on various Linux distributions and that handles early initialization of a cloud instance.</li>
-<li><strong>Access and security credentials</strong> — This includes one or both of the following credentials:
+<li>
+<strong>Instance source</strong> — Can be an image, snapshot, or block storage volume that contains an image or snapshot.</li>
+<li>
+<strong>Instance name</strong> — The name for your instance.</li>
+<li>
+<strong>Flavor</strong> — The flavor for your instance defines the vCPU and RAM memory limits for an instance.</li>
+<li>
+<strong>User data</strong> (not required) — Any user data files. A user data file is a special key in the metadata service that holds a file that cloud-aware applications in the guest instance can access. For example, one application that uses user data is the <a class="reference external" href="https://help.ubuntu.com/community/CloudInit">cloud-init</a> system, which is an open-source package from Ubuntu that is available on various Linux distributions and that handles early initialization of a cloud instance.</li>
+<li>
+<strong>Access and security credentials</strong> — This includes one or both of the following credentials:
 <ul style="list-style-type: square;">
-<li><strong>key pair</strong> — These are SSH credentials that are injected into images when they are launched. For the key pair to be successfully injected, the image must contain the <code class="docutils literal"><span class="pre">cloud-init</span></code> package. Create at least one key pair for each project. If you already have generated a key pair with an external tool, you can import it into OpenStack. You can use the key pair for multiple instances that belong to that project.</li>
-<li><strong>Security group</strong> — Defines which incoming network traffic is forwarded to the instances. Security groups hold a set of firewall policies, known as <em>security group rules</em>.</li>
+<li>
+<strong>key pair</strong> — These are SSH credentials that are injected into images when they are launched. For the key pair to be successfully injected, the image must contain the <code class="docutils literal"><span class="pre">cloud-init</span></code> package. Create at least one key pair for each project. If you already have generated a key pair with an external tool, you can import it into DreamCompute. You can use the key pair for multiple instances that belong to that project.</li>
+<li>
+<strong>Security group</strong> — Defines which incoming and outgoing network traffic is forwarded to and from the instances. Security groups hold a set of firewall policies, known as <em>security group rules</em>.</li>
 </ul>
 </li>
-<li><strong>IP addresses</strong> — If needed, you can assign a floating (public) IP address to a running instance.</li>
-<li><strong>Volume</strong> — You can also attach a block storage device, or volume, for persistent storage.</li>
+<li>
+<strong>IP addresses</strong> — If needed, you can assign a floating (public) IP address to a running instance.</li>
+<li>
+<strong>Volume</strong> — You can also attach a block storage device, or volume, for persistent storage.</li>
 </ul>
-<p>After you gather the parameters you need to launch an instance, you can launch it from an <a class="reference internal" href="#image">image</a> or a volume.</p>
 <p>You can launch an instance directly from one of the available OpenStack images, or from an image that you have copied to a persistent volume. The OpenStack Image service provides a pool of images that are accessible to members of different projects.</p>
 <div id="gather-parameters-to-launch-an-instance">
 <h2>Gather parameters to launch an instance</h2>
@@ -69,14 +77,14 @@
 <p>Note the ID of the security group that you want to use for your instance:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack security group list</span>
-+--------------------------------------+---------+------------------------+----------------------------------+
-| ID                                   | Name    | Description            | Project                          |
-+--------------------------------------+---------+------------------------+----------------------------------+
-| 29abef85-b89f-43a0-babf-6a5bb5cc7bed | default | Default security group | e52ede2a420548cf250bac6497300079 |
-+--------------------------------------+---------+------------------------+----------------------------------+</pre>
++-----------------------+---------+------------------------+-------------------------+
+| ID                    | Name    | Description            | Project                 |
++-----------------------+---------+------------------------+-------------------------+
+| 29abef85-b89f-43a0... | default | Default security group | e52ede2a420548cf25...   |
++-----------------------+---------+------------------------+-------------------------+</pre>
 </div>
 <div class="alert alert-note">
-<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60"></div>
 <div class="alert-content">
 <p>If you are an admin user, specify the <span class="code">-–all-projects</span> parameter to list groups for all tenants.</p>
 <div class="preboxcontainer">
@@ -84,7 +92,7 @@
 </div>
 </div>
 </div>
-<p>If you have not created any security groups, you can assign the instance to only the default security group. You can view rules for a specified security group:</p>
+<p>If you have not created any security groups, you can assign the instance to only the default security group. You can view rules for a specified security group by running the following:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack security group show default</span></pre>
 </div>
@@ -96,15 +104,20 @@
 <h2>Launch an instance from an image</h2>
 <p>After you've gathered the required parameters, you can now <a href="https://docs.openstack.org/python-openstackclient/pike/cli/command-objects/server.html#server-create">create an instance</a>. At this point, you should have the following credentials:</p>
 <ul>
-<li><strong>flavor</strong> — 300</li>
-<li><strong>image</strong> — afa49adf-2831-4a00-9c57-afe1624d5557</li>
-<li><strong>keypair</strong> — myKey</li>
-<li><strong>security group</strong> — 29acef25-b59f-43a0-babf-6a5bb5cc7bed</li>
-<li><strong>servername</strong> — You can name it anything you like
+<li>
+<strong>flavor</strong> — 300</li>
+<li>
+<strong>image</strong> — afa49adf-2831-4a00-9c57-afe1624d5557</li>
+<li>
+<strong>keypair</strong> — myKey</li>
+<li>
+<strong>security group</strong> — 29acef25-b59f-43a0-babf-6a5bb5cc7bed</li>
+<li>
+<strong>servername</strong> — You can name it anything you like, but in this example myNewServer will be used.
 <div class="alert alert-important">
-<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60"></div>
 <div class="alert-content">
-<p>If you boot an instance with an INSTANCE_NAME greater than 63 characters, Compute truncates it automatically when turning it into a host name to ensure the correct work of dnsmasq.</p>
+<p>If you boot an instance with an INSTANCE_NAME greater than 63 characters, Compute truncates it automatically when turning it into a host name to ensure the correct functionality of dnsmasq.</p>
 </div>
 </div>
 </li>
@@ -114,17 +127,17 @@
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server create --flavor 300 \
                         --image afa49adf-2831-4a00-9c57-afe1624d5557 \
-                        --key-name windows \
+                        --key-name myKey \
                         --security-group 29abef85-b89f-43a0-babf-6a5bb5cc7bed \
                         myNewServer</span></pre>
 </div>
 <div class="alert alert-important">
-<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60"></div>
 <div class="alert-content">
 <p>The backslash character \ is used when entering a long command. When you enter the \, the terminal command continues to the next line until you finish entering it.</p>
 <p>You could also remove the \ character and put every parameter into a single line. For example:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server create --flavor 300 --image afa49adf-2831-4a00-9c57-afe1624d5557 --key-name windows --security-group 29abef85-b89f-43a0-babf-6a5bb5cc7bed myNewServer</span></pre>
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server create --flavor 300 --image afa49adf-2831-4a00-9c57-afe1624d5557 --key-name myKey --security-group 29abef85-b89f-43a0-babf-6a5bb5cc7bed myNewServer</span></pre>
 </div>
 </div>
 </div>
@@ -162,14 +175,18 @@
 | volumes_attached            |                                                 |
 +-----------------------------+-------------------------------------------------+</pre>
 </div>
-<p>A status of <strong>BUILD </strong>indicates that the instance has started, but is not yet online. A status of <strong>ACTIVE </strong>indicates that the instance is active. Copy the administrative password value from the <code class="docutils literal"><span class="pre">adminPass</span></code> field. Use the password to log in to your server.</p>
+<p>A status of <strong>BUILD </strong>indicates that the instance has started, but is not yet online. A status of <strong>ACTIVE </strong>indicates that the instance is active. Copy the administrative password value from the <code class="docutils literal"><span class="pre">adminPass</span></code> field. You can use this password later to log in to your server.</p>
 <p>You'll also be able to see the new server instance in your <a href="https://panel.dreamhost.com/index.cgi?tree=cloud.compute&amp;">DreamCompute panel</a>.</p>
-<p>For more options, view the following article:</p>
+<p>For more options, use the following command or view OpenStack's documentation below.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack help server create</span>
+</pre>
+</div>
 <ul>
 <li><a href="https://docs.openstack.org/python-openstackclient/pike/cli/command-objects/server.html#server-create">https://docs.openstack.org/python-openstackclient/pike/cli/command-objects/server.html#server-create</a></li>
 </ul>
 <div class="alert alert-important">
-<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60"></div>
 <div class="alert-content">
 <p>You can also place arbitrary local files into the instance file system at creation time by using the <strong>--file &lt;dest-filename=source-filename&gt;</strong> parameter. You can store up to five files.</p>
 <p>For example, if you have a special authorized keys file named <strong>special_authorized_keysfile</strong> that you want to put on the instance rather than using the regular SSH key injection, you can add the <strong>–file</strong> option as shown in the following example.</p>
@@ -191,15 +208,16 @@
 </div>
 <p>The list shows the ID, Name, Status, IP addresses, Image, and Flavor for all instances in the project. </p>
 <div class="alert alert-important">
-<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60"></div>
 <div class="alert-content">
-<p>If you did not provide a key pair, security groups, or rules, you can access the instance only from inside the cloud through VNC. Even pinging the instance is not possible.</p>
+<p>If you do not provide a key pair, you will be unable to access the instance.</p>
 </div>
 </div>
 <!--DreamCompute Button-->
 <div class="dream-sign-up">
 <h2>Deploy Your Apps On Cloud Servers Today</h2>
-<a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a></div>
+<a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a>
+</div>
 </div>
 </div>
 </div>

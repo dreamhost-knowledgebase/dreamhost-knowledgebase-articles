@@ -1,4 +1,4 @@
-<body role="document">
+<body>
 <div class="document">
 <div class="documentwrapper">
 <div class="body" role="main">
@@ -10,14 +10,16 @@
 <span id="id1"></span><h2>List images</h2>
 <p>To list the available images, call the
 <code class="docutils literal"><span class="pre">glanceclient.v2.images.Controller.list</span></code> method:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">glanceclient.v2.client</span> <span class="kn">as</span> <span class="nn">glclient</span>
+<div class="highlight-python">
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">glanceclient.v2.client</span> <span class="kn">as</span> <span class="nn">glclient</span>
 <span class="n">glance</span> <span class="o">=</span> <span class="n">glclient</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
 <span class="n">images</span> <span class="o">=</span> <span class="n">glance</span><span class="o">.</span><span class="n">images</span><span class="o">.</span><span class="n">list</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>The images method returns a Python generator, as shown in the following
 interaction with the Python interpreter:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">images</span> <span class="o">=</span> <span class="n">glance</span><span class="o">.</span><span class="n">images</span><span class="o">.</span><span class="n">list</span><span class="p">()</span>
+<div class="highlight-python">
+<div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">images</span> <span class="o">=</span> <span class="n">glance</span><span class="o">.</span><span class="n">images</span><span class="o">.</span><span class="n">list</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">images</span>
 <span class="go">&lt;generator object list at 0x105e9c2d0&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">images</span><span class="p">)</span>
@@ -78,7 +80,8 @@ interaction with the Python interpreter:</p>
 <span id="get-image-id"></span><h2>Get image by ID</h2>
 <p>To retrieve an image object from its ID, call the
 <code class="docutils literal"><span class="pre">glanceclient.v2.images.Controller.get</span></code> method:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">glanceclient.v2.client</span> <span class="kn">as</span> <span class="nn">glclient</span>
+<div class="highlight-python">
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">glanceclient.v2.client</span> <span class="kn">as</span> <span class="nn">glclient</span>
 <span class="n">image_id</span> <span class="o">=</span> <span class="s1">'c002c82e-2cfa-4952-8461-2095b69c18a6'</span>
 <span class="n">glance</span> <span class="o">=</span> <span class="n">glclient</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
 <span class="n">image</span> <span class="o">=</span> <span class="n">glance</span><span class="o">.</span><span class="n">images</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">image_id</span><span class="p">)</span>
@@ -91,7 +94,8 @@ interaction with the Python interpreter:</p>
 image object by name. However, the Compute Python bindings enable you to
 get an image object by name. To get an image object by name, call the
 <code class="docutils literal"><span class="pre">novaclient.v1_1.images.ImageManager.find</span></code> method:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">novaclient.v1_1.client</span> <span class="kn">as</span> <span class="nn">nvclient</span>
+<div class="highlight-python">
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">novaclient.v1_1.client</span> <span class="kn">as</span> <span class="nn">nvclient</span>
 <span class="n">name</span> <span class="o">=</span> <span class="s2">"cirros"</span>
 <span class="n">nova</span> <span class="o">=</span> <span class="n">nvclient</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
 <span class="n">image</span> <span class="o">=</span> <span class="n">nova</span><span class="o">.</span><span class="n">images</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
@@ -102,7 +106,8 @@ get an image object by name. To get an image object by name, call the
 <span id="upload-image"></span><h2>Upload an image</h2>
 <p>To upload an image, call the <code class="docutils literal"><span class="pre">glanceclient.v2.images.ImageManager.create</span></code>
 method:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">glanceclient.v2.client</span> <span class="kn">as</span> <span class="nn">glclient</span>
+<div class="highlight-python">
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">glanceclient.v2.client</span> <span class="kn">as</span> <span class="nn">glclient</span>
 <span class="n">imagefile</span> <span class="o">=</span> <span class="s2">"/tmp/myimage.img"</span>
 <span class="n">glance</span> <span class="o">=</span> <span class="n">glclient</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">imagefile</span><span class="p">)</span> <span class="k">as</span> <span class="n">fimage</span><span class="p">:</span>

@@ -1,14 +1,12 @@
 <div class="alert alert-note">
 <div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60"></div>
 <div class="alert-content">
-<p>As of Oct 2017, the following images are available:</p>
+<p>As of January 2018, the following images are available:</p>
 <ul>
-<li>CentOS-6</li>
 <li>CentOS-7</li>
-<li>CoreOS</li>
-<li>Debian-7</li>
+<li>CoreOS-Stable</li>
 <li>Debian-8</li>
-<li>Fedora-24</li>
+<li>Debian-9</li>
 <li>Fedora-25</li>
 <li>Ubuntu-14.04</li>
 <li>Ubuntu-16.04</li>
@@ -22,16 +20,20 @@
 </dl>
 </li>
 <li>On the top left, click the 'Compute' tab.</li>
-<li>From the expanded list click '<span class="guilabel">Instances'</span>.
+<li>From the expanded list, click '<span class="guilabel">Instances'</span>.
 <p><em>The dashboard shows any existing instances with their information.</em></p>
 </li>
 <li>Click the <strong>'</strong><span class="guilabel"><strong>Launch Instance'</strong> button on the top right.</span>
 <dl>
-<dd><em>A 'Launch Instance' pop-up box displays</em></dd>
+<dd><em>A 'Launch Instance' pop-up box displays.</em></dd>
 </dl>
 </li>
-<li>In the <span class="guilabel">Launch Instance</span> box, specify the following values:
-<h3>Details tab — general information</h3>
+<li>In the 'Launch Instance' box, click through several tabs to specify which kind of instance you wish to create.</li>
+</ol>
+<h2>Details tab — general information</h2>
+<dl>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/how-to-launch-an-instance-using-the-dreamcompute-dashboard_02.png" alt=""></dd>
+</dl>
 <dl>
 <dd><strong>Instance Name</strong></dd>
 </dl>
@@ -45,9 +47,9 @@
 <div class="alert alert-important">
 <div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60"></div>
 <div class="alert-content">
-<p>The name you assign here becomes the initial host name of the server. If the name is longer than 63 characters, the Compute service truncates it automatically to ensure dnsmasq works correctly.</p>
-<p>If you change the server name in the API or change the host name directly after the server is built, the names are not updated in the dashboard.</p>
-<p class="last">Server names are not guaranteed to be unique when created so you could have two instances with the same host name.</p>
+<p>The name you assign becomes the initial host name of the server. If the name is longer than 63 characters, the Compute service truncates it automatically to ensure dnsmasq works correctly.</p>
+<p>If you change the host name directly after the server is built, the name is not updated in the dashboard.</p>
+<p class="last">Server names are not guaranteed to be unique when created so it's possible that two instances with the same host name can exist.</p>
 </div>
 </div>
 </dd>
@@ -57,18 +59,31 @@
 </dl>
 <dl>
 <dd>
-<p class="first last">By default, this value is set to the availability zone given by the cloud provider (for example, <code class="docutils literal"><span class="pre">us-west, iad-2,</span></code> or <code class="docutils literal"><span class="pre">apac-south</span></code>).</p>
+<p class="first last">Currently the only zone in which DreamCompute instances can be launched is iad-2 which is located in DreamHost's Ashburn, Virginia, USA data center.</p>
 </dd>
 </dl>
 <dl>
 <dd><strong>Count</strong></dd>
 </dl>
 <dl>
-<dd>To launch multiple instances, enter a value greater than 1. The default is 1.</dd>
+<dd>To launch multiple instances, enter a value greater than the default value of 1.</dd>
 </dl>
-<h3>Source tab — template used to create your instance</h3>
+<h2>Source tab — using the template to create your instance</h2>
+<dl>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/how-to-launch-an-instance-using-the-dreamcompute-dashboard_03.png" alt=""></dd>
+</dl>
 <dl>
 <dd><strong>Select Boot Source (dropdown)</strong></dd>
+</dl>
+<dl>
+<dd>There are four options for boot source:
+<ul>
+<li>Image</li>
+<li>Instance Snapshot</li>
+<li>Volume</li>
+<li>Volume Snapshot</li>
+</ul>
+</dd>
 </dl>
 <dl>
 <dd>
@@ -77,66 +92,167 @@
 <strong>Image — </strong>(select to create a new Instance)</dd>
 </dl>
 <dl>
-<dd>This option allows you to:</dd>
-<dd>  1. Create a 'New Volume' with this new Instance.</dd>
-<dd>  2. Choose the 'Volume Size'.</dd>
-<dd>  3. Choose if you'd like to delete the volume if you delete the Instance.</dd>
-<dd></dd>
-<dd>At the bottom is a list of Images you can create your new Instance from. For example, Debian, Fedora, Ubuntu, CentOS, etc... Click the <strong>+</strong> symbol to the right to add it.</dd>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/Image_dropdown.png" alt=""></dd>
 </dl>
+<dl>
+<dd>This option allows you to:</dd>
+<dd>  1. Create a 'New Volume' with this new Instance. This option determines whether your instance uses an 80 GB ephemeral boot disk or a volume boot disk of whatever size you choose. If you select the 'YES' option, two additional fields become available.
+<dl>
+<dd>
+<strong>Volume Size (GB)</strong>
+<ul>
+<li>This determines the size of your volume boot disk.</li>
+</ul>
+</dd>
+</dl>
+<dl>
+<dd>
+<strong>Delete Volume on Instance Delete</strong>
+<ul>
+<li>This determines whether or not the volume boot disk is deleted when you delete the instance. The recommended default of "No" allows you to delete the instance and use the existing volume as the boot source of a new instance.</li>
+</ul>
+</dd>
+</dl>
+</dd>
+<dd>  2. Choose the 'Volume Size'.</dd>
+<dd>  3. Choose if you'd like to delete the volume when you delete the Instance.</dd>
+<dd>Create a new Volume Snapshot from a list and specify if the new volume should be deleted when the instance is deleted.</dd>
+</dl>
+</dd>
+</dl>
+<dl>
+<dd>
+<dl>
+<dd>A list of Images appears at the bottom that you can create your new Instance from. For example, Debian, Fedora, Ubuntu, CentOS, and so on. Click the <img src="https://objects-us-west-1.dream.io/kbimages/images/up_arrow.png" alt=""> symbol to the right to add it.</dd>
+</dl>
+</dd>
+</dl>
+<dl>
+<dd>
 <dl>
 <dd><strong>Instance snapshot</strong></dd>
 </dl>
 <dl>
-<dd>Choose this option if you have an existing 'Instance Snapshot' and would like to create a new Instance from it.</dd>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/Instance_snapshot.png" alt=""></dd>
+</dl>
+<dl>
+<dd>Select this option if you have an existing 'Instance Snapshot' and would like to create a new Instance from it. If you choose to 'Create New Volume', make sure to also:
+<ol>
+<li>Enter a 'Volume Size' that matches the size of your 'Instance Snapshot'.</li>
+<li>Choose if you'd like the volume deleted when you delete the instance.</li>
+</ol>
+</dd>
 </dl>
 <dl>
 <dd><strong>Volume</strong></dd>
 </dl>
 <dl>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/Volume_dropdown.png" alt=""></dd>
+</dl>
+<dl>
 <dd>If you choose this option, a new field for <span class="guilabel">Volume</span> displays. You can select the volume from the list.</dd>
 </dl>
 <dl>
-<dd>
-<strong>Volume Snapshot</strong> <strong>— </strong>(creates a new volume)</dd>
+<dd><strong>Volume Snapshot</strong></dd>
 </dl>
 <dl>
-<dd>Create a new volume by choosing Volume Snapshot from a list and adding a Device Name for your volume.</dd>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/Volume_snapshot.png" alt=""></dd>
 </dl>
 </dd>
 </dl>
-<dl></dl>
-<h3>Flavor tab</h3>
+<h2>Flavor tab — assigning vCPU and RAM resources to your instance</h2>
 <dl>
-<dd>Specify the size of the instance to launch. Click the <strong>+</strong> symbol to the right to add it.</dd>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/how-to-launch-an-instance-using-the-dreamcompute-dashboard_05.png" alt=""></dd>
 </dl>
-<h3>Key Pair tab</h3>
+<dl>
+<dd>Specify the size of the instance to launch. Click the <img src="https://objects-us-west-1.dream.io/kbimages/images/up_arrow.png" alt=""> symbol to the right to add it.</dd>
+</dl>
+<dl>
+<dd>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60"></div>
+<div class="alert-content">
+<p>The <strong>'Total Disk'</strong> value of 80 GB is only applicable if you do not create a new volume.</p>
+<p>You can change the flavor of an instance after launching it to increase or decrease the resources available to the instance. For more information, see the following article:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215912748-How-to-change-the-resource-limits-of-a-DreamCompute-instance">How to change the resource limits of a DreamCompute instance</a></li>
+</ul>
+</div>
+</div>
+</dd>
+</dl>
+<h2>Networks tab — how your instance connects to the Internet</h2>
+<dl>
+<dd>If you have enabled <a href="https://help.dreamhost.com/hc/en-us/articles/229789688-Private-networking-overview">'Private Networking'</a>, you must specify which network you want the instance to be associated with. If you have not enabled private networking, your instance uses the public network by default and this tab can be ignored.</dd>
+</dl>
+<h2>Security Groups tab — which ports are open</h2>
+<dl>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/how-to-launch-an-instance-using-the-dreamcompute-dashboard_06.png" alt="how-to-launch-an-instance-using-the-dreamcompute-dashboard_06" width="614" height="510"></dd>
+</dl>
+<dl>
+<dd>The default security group is automatically assigned to the instance, but if you want to remove the default security group and add other groups, you can do so by using the up and down arrow symbols.</dd>
+</dl>
+<dl>
+<dd>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60"></div>
+<div class="alert-content">
+<p>You can change which security groups are associated with an instance after launching it to alter the network accessibility of the instance. View the following article for further details:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215912838-Configuring-security-groups">Configuring security groups</a></li>
+</ul>
+</div>
+</div>
+</dd>
+</dl>
+<h2>Key Pair tab — SSH authentication for your instance's default user</h2>
+<dl>
+<dd>
+<p>Each instance can only be assigned a single Key Pair. When you originally launch an instance you can select the Key Pair you wish to use with the new instance.</p>
+</dd>
+</dl>
 <dl>
 <dd>
 <div class="alert alert-important">
 <div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60"></div>
 <div class="alert-content">
-<p>Each instance can only be assigned a single Key Pair. When you <a href="https://help.dreamhost.com/hc/en-us/articles/215912848-How-to-launch-a-server-in-the-DreamCompute-dashboard">originally launch an instance</a> you can select the Key Pair you would like to use with the new instance.</p>
-<p>It's not possible within the DreamCompute panel to change the Key Pair assigned to an instance after the instance has been created. Make sure to assign the correct Key Pair <a href="https://help.dreamhost.com/hc/en-us/articles/215912848-How-to-launch-a-server-in-the-DreamCompute-dashboard">when originally creating the instance</a>.</p>
+<p>It is <em>not</em> possible within the DreamCompute panel to change the Key Pair assigned to an instance after the instance is created. Make sure to assign the correct Key Pair when originally creating the instance.</p>
 </div>
 </div>
 </dd>
 </dl>
 <dl>
-<dd>If you have <a href="https://help.dreamhost.com/hc/en-us/articles/115001736691-How-to-create-a-Key-pair">already created and added your public SSH key</a>, it displays here. Each server you launch is accessible by SSH via key-based authentication. Once you upload your public key, you’ll have the convenience of password-less logins with the default user for your image.
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/how-to-launch-an-instance-using-the-dreamcompute-dashboard_07.png" alt="how-to-launch-an-instance-using-the-dreamcompute-dashboard_07"></dd>
+</dl>
+<dl>
+<dd>If you have already created and added your public SSH key, it displays here. If not, you can choose to <strong>'Create Key Pair'</strong> or <strong>'Import Key Pair'</strong>. Each server you launch is accessible by SSH via key-based authentication. Once you upload your public key, you can use password-less logins with the default user for your image.
 <div class="alert alert-important">
 <div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60"></div>
 <div class="alert-content">
-<p>If you don’t already have an SSH key, view the <a class="reference external" href="https://help.dreamhost.com/hc/en-us/articles/115001736691-How-to-create-a-Key-pair">How to create a Key Pair</a> article.</p>
+<p>If you don't already have an SSH key, view the following article for help creating/importing one:</p>
+<ul>
+<li><a class="reference external" href="https://help.dreamhost.com/hc/en-us/articles/115001736691-How-to-create-a-Key-pair">How to create a Key Pair</a></li>
+</ul>
 </div>
 </div>
 </dd>
 </dl>
-</li>
-<li>Click the <strong>Launch Instance</strong> button on the bottom right. </li>
-</ol>
+<h2>Launching the new instance</h2>
+<dl>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/how-to-launch-an-instance-using-the-dreamcompute-dashboard_08.png" alt="how-to-launch-an-instance-using-the-dreamcompute-dashboard_08"></dd>
+</dl>
+<dl>
+<dd>When finished entering all of your settings, click the <strong>Launch Instance</strong> button on the bottom right.
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60"></div>
+<div class="alert-content">
+<p>If any of the tabs mentioned above still contain a * symbol next to them, the "Launch Instance" button is not clickable.</p>
+</div>
+</div>
+</dd>
+</dl>
 <h2>Connecting to your instance</h2>
-<p>Now that the instance has been created, you can connect to it using your SSH Key pair. View the following article for instructions on how to connect:</p>
+<p>When the instance is created, you can connect to it using your SSH Key pair. View the following article for instructions on how to connect:</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216201547-Connect-to-your-instance-with-ssh-keys-overview">Connect to your instance with ssh keys overview</a></li>
 </ul>
