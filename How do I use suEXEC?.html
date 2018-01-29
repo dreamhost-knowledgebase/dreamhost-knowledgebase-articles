@@ -1,4 +1,4 @@
-<p>suEXEC (which stands for "switch user execution") provides <a href="https://help.dreamhost.com/hc/en-us/articles/217214317-Apache-HTTP-Server">Apache</a> users the ability to run <a href="https://help.dreamhost.com/hc/en-us/articles/217297307-CGI-overview">CGI</a> and SSI programs under user IDs different from the user ID of the calling web server. Normally, when a CGI or SSI program executes, it runs as the same user who is running the web server.</p>
+<p>suEXEC (which stands for "switch user execution") provides <a href="/hc/en-us/articles/217214317-Apache-HTTP-Server">Apache</a> users the ability to run <a href="/hc/en-us/articles/217297307-CGI-overview">CGI</a> and SSI programs under user IDs different from the user ID of the calling web server. Normally, when a CGI or SSI program executes, it runs as the same user who is running the web server.</p>
 <p>As a security precaution, suEXEC REQUIRES that all CGI scripts and the directories in which they reside not be writable by anyone but the owner user. suEXEC performs checks on the executed CGI to ensure security for the server. It has strict permission checking that results in a "500 Internal Server Error" if the permissions of the script are not set correctly. It also cleans the environment by only passing through those environment variables that are considered safe.</p>
 <p>When used properly, this feature can considerably reduce the security risks involved with allowing users to develop and run private CGI or SSI programs.</p>
 <h2><span id="Script_permissions">Script permissions</span></h2>
@@ -20,7 +20,7 @@ my $q = CGI-&gt;new;
 print $q-&gt;header();
 print $ENV{FOOBAR};</pre>
 </div>
-<p>In your first domain's directory, add an <a href="https://help.dreamhost.com/hc/en-us/articles/216456227--htaccess-overview">.htaccess</a> with the directive:</p>
+<p>In your first domain's directory, add an <a href="/hc/en-us/articles/216456227--htaccess-overview">.htaccess</a> with the directive:</p>
 <div class="preboxcontainer">
 <pre class="prebox">SetEnv FOOBAR foo</pre>
 </div>
@@ -74,8 +74,7 @@ RewriteRule ^application/.*\.cgi /wrapper.cgi
 </pre>
 </div>
 <ul>
-<li>
-<em>application</em> is the directory where your (third-party or in-house developed) app lives.</li>
+<li><em>application</em> is the directory where your (third-party or in-house developed) app lives.</li>
 <li>If you're only setting an environment variable for one (or a few) CGI scripts, you can specify the script in the RewriteRule (e.g., RewriteRule ^script.cgi /wrapper.cgi). Just add additional RewriteRules for additional scripts.</li>
 <li>As you can imagine, simply continuing to add RewriteRules past a few scripts becomes unwieldy. Instead, it's best to match all files ending with a specific file extension. By matching only files ending with .cgi, .pl, .py, .rb, and so on, static files such as HTML documents and images are unaffected.</li>
 <li>If your wrapper script is in the same directory as the scripts you wish to wrap and you're matching by pattern (this doesn't matter if you are matching a specific file name), your wrapper must have a different file extension than your scripts. For example, if your wrapper ends in .cgi, you might want to use .pl (RewriteRule .*\.pl wrapper.cgi) or .py (RewriteRule .*\.py wrapper.cgi) for your scripts.</li>

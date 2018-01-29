@@ -1,4 +1,4 @@
-<body>
+<body role="document">
 <div class="document">
 <div class="documentwrapper">
 <div class="body" role="main">
@@ -14,16 +14,14 @@ libmodsecurity for a DreamCompute instance running Ubuntu 14.04.</p>
 <h2>Building libmodsecurity</h2>
 <p>First, install the necessary packages and libraries used to build source
 projects, as well as libraries used specifically by libmodsecurity:</p>
-<div class="highlight-console">
-<div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> apt-get install automake gcc make pkg-config libtool g++ libfl-dev bison <span class="se">\</span>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> apt-get install automake gcc make pkg-config libtool g++ libfl-dev bison <span class="se">\</span>
 <span class="go">    build-essential libbison-dev libyajl-dev liblmdb-dev libpcre3-dev \</span>
 <span class="go">    libcurl4-openssl-dev libgeoip-dev libxml2-dev</span>
 </pre></div>
 </div>
 <p>Next, download and unpack the most recent source of libmodsecurity. This is
 available from the ModSecurity GitHub project, on the <cite>libmodsecurity</cite> branch:</p>
-<div class="highlight-console">
-<div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> git clone https://github.com/SpiderLabs/ModSecurity
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> git clone https://github.com/SpiderLabs/ModSecurity
 <span class="go">Cloning into 'ModSecurity'...</span>
 <span class="go">remote: Counting objects: 20508, done.</span>
 <span class="go">remote: Compressing objects: 100% (72/72), done.</span>
@@ -33,21 +31,18 @@ available from the ModSecurity GitHub project, on the <cite>libmodsecurity</cite
 <span class="go">Checking connectivity... done.</span>
 </pre></div>
 </div>
-<div class="highlight-console">
-<div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> <span class="nb">cd</span> ModSecurity/
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> <span class="nb">cd</span> ModSecurity/
 <span class="gp">[root@server]#</span> git checkout -b origin/v3/master
 <span class="go">Switched to a new branch 'origin/v3/master'</span>
 </pre></div>
 </div>
 <p>Initialize and update the git submodules that libmodsecurity requires:</p>
-<div class="highlight-console">
-<div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> git submodule init
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> git submodule init
 <span class="gp">[root@server]#</span> git submodule update
 </pre></div>
 </div>
 <p>Finally, configure, build, and install the libmodsecurity library:</p>
-<div class="highlight-console">
-<div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> ./build.sh <span class="o">&amp;&amp;</span> ./configure <span class="o">&amp;&amp;</span> make <span class="o">&amp;&amp;</span> make install
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> ./build.sh <span class="o">&amp;&amp;</span> ./configure <span class="o">&amp;&amp;</span> make <span class="o">&amp;&amp;</span> make install
 </pre></div>
 </div>
 </div>
@@ -57,19 +52,16 @@ available from the ModSecurity GitHub project, on the <cite>libmodsecurity</cite
 third-party programs, Nginx can be compiled with the ModSecurity-nginx connector
 to load libmodsecurity and process requests.</p>
 <p>First, grab the source for the Nginx module wraps around libmodsecurity:</p>
-<div class="highlight-console">
-<div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> git clone https://github.com/SpiderLabs/ModSecurity-nginx.git
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> git clone https://github.com/SpiderLabs/ModSecurity-nginx.git
 </pre></div>
 </div>
 <p>Next, grab the Nginx source and verify it:</p>
-<div class="highlight-console">
-<div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> wget http://nginx.org/download/nginx-1.10.1.tar.gz
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> wget http://nginx.org/download/nginx-1.10.1.tar.gz
 </pre></div>
 </div>
 <p>It’s also important to grab the developer’s signing key and verify the contents
 of the download:</p>
-<div class="highlight-console">
-<div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> gpg --keyserver pgp.mit.edu --recv a1c052f8
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> gpg --keyserver pgp.mit.edu --recv a1c052f8
 <span class="go">gpg: requesting key A1C052F8 from hkp server pgp.mit.edu</span>
 <span class="go">gpg: key A1C052F8: public key "Maxim Dounin &lt;mdounin@mdounin.ru&gt;" imported</span>
 <span class="go">gpg: 3 marginal(s) needed, 1 complete(s) needed, PGP trust model</span>
@@ -81,13 +73,11 @@ of the download:</p>
 </pre></div>
 </div>
 <p>Next, grab the signature for this tarball:</p>
-<div class="highlight-console">
-<div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> wget http://nginx.org/download/nginx-1.10.1.tar.gz.asc
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> wget http://nginx.org/download/nginx-1.10.1.tar.gz.asc
 </pre></div>
 </div>
 <p>And finally, verify the signature:</p>
-<div class="highlight-console">
-<div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> gpg --verify nginx-1.10.1.tar.gz.asc nginx-1.10.1.tar.gz
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> gpg --verify nginx-1.10.1.tar.gz.asc nginx-1.10.1.tar.gz
 <span class="go">gpg: Signature made Tue 31 May 2016 06:58:32 AM PDT using RSA key ID A1C052F8</span>
 <span class="go">gpg: Good signature from "Maxim Dounin &lt;mdounin@mdounin.ru&gt;"</span>
 <span class="go">Primary key fingerprint: B0F4 2533 73F8 F6F5 10D4  2178 520A 9993 A1C0 52F8</span>
@@ -95,15 +85,13 @@ of the download:</p>
 </div>
 <p>From here, configure Nginx with the <cite>–add-module=</cite> option, pointing to the
 ModSecurity-nginx module that was previously downloaded:</p>
-<div class="highlight-console">
-<div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> tar -zxf nginx-1.10.1.tar.gz
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> tar -zxf nginx-1.10.1.tar.gz
 <span class="gp">[root@server]#</span> <span class="nb">cd</span> nginx-1.10.1/
 <span class="gp">[root@server]#</span> ./configure --add-module<span class="o">=</span>/root/ModSecurity-nginx
 </pre></div>
 </div>
 <p>From here, simply build and install Nginx:</p>
-<div class="highlight-console">
-<div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> make <span class="o">&amp;&amp;</span> make install
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> make <span class="o">&amp;&amp;</span> make install
 </pre></div>
 </div>
 </div>
@@ -111,8 +99,7 @@ ModSecurity-nginx module that was previously downloaded:</p>
 <h2>Configuring libmodsecurity in Nginx</h2>
 <p>Adding libmodsecurity rules and configuration directives inside Nginx configs
 is straightforward. Add the following to the Nginx configuration:</p>
-<div class="code highlight-python">
-<div class="highlight"><pre><span></span>modsecurity on;
+<div class="code highlight-python"><div class="highlight"><pre><span></span>modsecurity on;
 modsecurity_rules '
     SecRuleEngine On
     SecDebugLog /tmp/modsec_debug.log
@@ -124,8 +111,7 @@ modsecurity_rules '
 <p>These directives can be added inside the <cite>http</cite> block, or one or more <cite>server</cite>
 or <cite>location</cite> blocks. Once this is added, reload Nginx. This rule can now be
 tested by sending a regular request to Nginx and examining the output:</p>
-<div class="highlight-console">
-<div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> curl -D - -s -o /dev/null localhost/
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> curl -D - -s -o /dev/null localhost/
 <span class="go">HTTP/1.1 200 OK</span>
 <span class="go">Server: nginx/1.10.1</span>
 <span class="go">Date: Wed, 13 Jul 2016 18:06:15 GMT</span>
@@ -140,8 +126,7 @@ tested by sending a regular request to Nginx and examining the output:</p>
 <p>The single rule added via the <cite>modsecurity_rules</cite> directive will deny requests
 that have the word <cite>test</cite> inside a GET or POST argument. This can be seen by
 changing the curl test:</p>
-<div class="highlight-console">
-<div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> curl -D - -s -o /dev/null localhost/?a<span class="o">=</span><span class="nb">test</span>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> curl -D - -s -o /dev/null localhost/?a<span class="o">=</span><span class="nb">test</span>
 <span class="go">HTTP/1.1 403 Forbidden</span>
 <span class="go">Server: nginx/1.10.1</span>
 <span class="go">Date: Wed, 13 Jul 2016 18:06:19 GMT</span>

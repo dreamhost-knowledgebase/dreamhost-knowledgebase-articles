@@ -1,0 +1,265 @@
+<h2>Preparation</h2>
+<p>This tutorial explains how to install WordPress on a DreamCompute instance, including both the application itself and the database it uses. All necessary components will be installed and configured without making use of automatic configuration management systems.</p>
+<p>This example will use an Ubuntu virtual machine, but you can use whichever flavor of Linux you prefer. As long as you can install Apache, PHP, and database software, WordPress will be able to run.</p>
+<p>Whichever machine type you pick, remember it's better to use instances with a volume boot disk as they are permanent (as opposed to instances with ephemeral boot disks).</p>
+<div id="installing-lamp">
+<h2>Installing LAMP</h2>
+<p>While you certainly can install everything on it's own, the LAMP stack for Ubuntu is perfect for WordPress. A separate DreamHost article on how to configure LAMP is available below, but an overview is also provided here.</p>
+<ul>
+<li><a class="reference external" href="215879467-How-to-Configure-LAMP-on-DreamCompute-running-Debian-or-Ubuntu">How to Configure LAMP on DreamCompute running Debian or Ubuntu</a></li>
+</ul>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo apt-get update</span>
+<span class="server">[user@server]$ </span><span class="command">sudo apt-get install lamp-server^</span>
+</pre>
+</div>
+<p>The second command is interactive, so you will be asked 'Do you want to continue?' in some places. You will also be asked to set a password for the root user of your SQL software. Make up a secure password and save it as you will need this later to set up SQL for WordPress.</p>
+<p>After it runs, you'll want to add mod_rewrite so that WordPress permalinks (or "pretty" URLs) work.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo a2enmod rewrite</span>
+</pre>
+</div>
+<p>Finally restart Apache.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo service apache2 restart</span>
+</pre>
+</div>
+<p>At this point, you should be able to access your instance in a web browser using its IP address. If not, double-check the security group(s) assigned to your instance to make sure that incoming connections to port 80 are allowed for your IP address. If you need help working with security groups, see DreamHost's article here:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215912838-Configuring-security-groups">Configuring security groups</a></li>
+</ul>
+</div>
+<div id="create-a-user">
+<h2>Create a User</h2>
+<p>While it is not required to make a separate user on the instance for WordPress, it's strongly recommended for security. Having a user who only has access to the one website will limit the havoc that could be caused should that user become compromised. This also limits the danger that could be caused by rogue plugins or themes. The instance itself will be safe, containing the damage just to that user account.</p>
+<p>Start by creating the user.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo adduser examplecom</span>
+</pre>
+</div>
+<p>You will be prompted for a password along with additional, optional details about the user. Once that's done, make a folder for the website.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo mkdir /var/www/example.com</span>
+</pre>
+</div>
+<p>Then give the user you just created access to that directory. This is strictly for the installation of the WordPress site, later you will change ownership of that directory to www-data so Apache can access it.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo chown -R examplecom /var/www/example.com/</span>
+</pre>
+</div>
+</div>
+<div id="add-ssh-access">
+<h2>Add SSH Access</h2>
+<p>WordPress users often need SSH access in order to do extra configuration with WordPress. By default, this is disabled, so you will need to edit your config using a text editor, such as vi, emacs, or nano (this one is easiest for beginners). For more information about working with nano or vi, see DreamHost's article here:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Creating and editing a file via SSH</a></li>
+</ul>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo vi /etc/ssh/sshd_config</span>
+</pre>
+</div>
+<p>Look for the setting of PasswordAuthentication, change it to "yes", and save your file. Remember to restart SSHD once you've done this.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo service sshd restart</span>
+</pre>
+</div>
+<p>Will this make your instance less secure? Not significantly. Since this new user only has access to its own files, the damage it could cause if it were compromised is minimal.</p>
+</div>
+<div id="add-your-domain">
+<h2>Add Your Domain</h2>
+<p>There are a few steps to set up your domain. First you'll need to setup DNS for all of your domains that will be pointing to this instance; for help with that, see DreamHost's article here:</p>
+<ul>
+<li><a class="reference external" href="https://help.dreamhost.com/hc/en-us/articles/218672058-Configuring-DNS-for-your-domains">Configuring DNS for your domains</a></li>
+</ul>
+<p>Next you'll want to configure VirtualHosts so your instance knows how to handle the domain.</p>
+<p>To do this, you need to make a .conf file.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo touch /etc/apache2/sites-available/example.com.conf</span>
+</pre>
+</div>
+<p>It is recommended that you name the file after your domain, so that you can always know what .conf file is for what domain.</p>
+<p>Edit that file and put this inside it:</p>
+<div class="preboxcontainer">
+<pre class="prebox">&lt;VirtualHost *:80&gt;
+    ServerName example.com
+    ServerAlias www.example.com
+    ServerAdmin admin@example.com
+    DocumentRoot /var/www/example.com
+    &lt;Directory /var/www/example.com&gt;
+            AllowOverride all
+            Require all granted
+    &lt;/Directory&gt;
+
+    ErrorLog ${APACHE_LOG_DIR}/example.com-error.log
+    CustomLog ${APACHE_LOG_DIR}/example.com-access.log combined
+&lt;/VirtualHost&gt;
+</pre>
+</div>
+<p>Once the VirtualHost is added, the site will need to be enabled with a command called a2ensite.</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>If you want to disable a site, you would use the command <code>a2dissite</code>.</p>
+</div>
+</div>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo a2ensite</span>
+</pre>
+</div>
+<p>This will prompt you to pick what site you want to enable. Type it in, hit enter, and you'll be told what's next.</p>
+<div class="preboxcontainer">
+<pre class="prebox">Your choices are: 000-default default-ssl example.com
+Which site(s) do you want to enable (wildcards ok)?
+example.com
+Enabling site example.com.
+To activate the new configuration, you need to run:
+  service apache2 reload
+</pre>
+</div>
+<p>Remember this command. It's a fast way to enable sites without having to rename or mess with files. Finally reload your Apache service so it reads the changes.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo service apache2 reload</span>
+</pre>
+</div>
+</div>
+<div id="create-the-database-and-users">
+<h2>Create the Database and Users</h2>
+<p>WordPress absolutely requires a database. You'll want to create one</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">mysql -u root -p</span>
+Enter password:
+</pre>
+</div>
+<p>Enter the password that you created for the root user earlier.</p>
+<p>Your command prompt will be <cite>mysql&gt;</cite> so let's make the database.</p>
+<div class="preboxcontainer">
+<pre class="prebox">mysql&gt; CREATE DATABASE examplecom_wordpress;
+mysql&gt; GRANT ALL ON examplecom_wordpress.* TO examplecom@localhost IDENTIFIED by 'PASSWORD';
+</pre>
+</div>
+<p>Remember to change PASSWORD to an actually secure password.</p>
+<p>You can check that the database was successfully created by running the following command.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">mysql -u examplecom -p examplecom_wordpress</span>
+</pre>
+</div>
+</div>
+<div id="install-wp-cli">
+<h2>Install WP-CLI</h2>
+<p>While this is optional, it is strongly recommended. DreamHost includes WP-CLI on all its managed servers due to its usefulness. For more information about WP-CLI, see the project homepage below.</p>
+<ul>
+<li><a class="reference external" href="http://wp-cli.org/">WP-CLI.org</a></li>
+</ul>
+<p>To install, log in as your default user and run the following.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">cd ~</span>
+<span class="server">[user@server]$ </span><span class="command">curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar</span>
+</pre>
+</div>
+<p>Run the following command to verify that WP-CLI works.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">php wp-cli.phar --info</span>
+PHP binary:     /usr/bin/php7.0
+PHP version:    7.0.22-0ubuntu0.16.04.1
+php.ini used:   /etc/php/7.0/cli/php.ini
+WP-CLI root dir:        phar://wp-cli.phar
+WP-CLI vendor dir:      phar://wp-cli.phar/vendor
+WP_CLI phar path:       /home/ubuntu
+WP-CLI packages dir:
+WP-CLI global config:
+WP-CLI project config:
+WP-CLI version: 1.4.1
+</pre>
+</div>
+<p>And if it does move it so everyone can use it!</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">chmod +x wp-cli.phar</span>
+<span class="server">[user@server]$ </span><span class="command">sudo mv wp-cli.phar /usr/local/bin/wp</span>
+</pre>
+</div>
+<p>That will make it accessible for all users.</p>
+</div>
+<div id="install-wordpress">
+<h2>Install WordPress</h2>
+<p>Assuming you installed WP-CLI, switch to the user and site directory you created and use WP-CLI to download the latest version of WordPress.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo su examplecom</span>
+<span class="server">[user@server]$ </span><span class="command">cd /var/www/example.com/</span>
+<span class="server">[user@server]$ </span><span class="command">wp core download</span>
+</pre>
+</div>
+<p>If you visit your domain in a browser now, you'll get a WordPress setup/configuration page.</p>
+<p>Of course since you have WP-CLI you can also do this.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">wp core config --dbname=examplecom_wordpress --dbuser=examplecom --dbpass=PASSWORD</span>
+Success: Generated 'wp-config.php' file.
+<span class="server">[user@server]$ </span><span class="command">wp core install --url=http://example.com --title=DreamComputePress --admin_user=YOURUSERNAME --admin_password=PASSWORD --admin_email=admin@example.com --skip-email</span>
+sh: 1: /usr/sbin/sendmail: not found
+Success: WordPress installed successfully.
+</pre>
+</div>
+<p>If you use secure passwords like cWG8j8FPPj{T9UDL_PW8 then you MUST put quotes around them.</p>
+<p>In this example, the option to skip-emails has been chosen since all the necessary information is specifyed directly in the WP-CLI command.</p>
+<p>Next, to secure your installation of WordPress, modify the permissions of 'wp-config.php' so that only users on your instance can access it.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command ">chmod -v 640 wp-config.php</span>
+mode of 'wp-config.php' changed from 0644 (rw-r--r--) to 0640 (rw-r-----)
+</pre>
+</div>
+<p>Finally you must change ownership of the WordPress site to www-data and the group to www-data as well so that the Apache webserver can access the files. Important note: you need to run this command as your instance's default user. If you're not sure what user you are, use the command <code>whoami</code> to check.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo chown -R www-data:www-data /var/www/example.com</span>
+</pre>
+</div>
+</div>
+<div id="make-php-better">
+<h2>Make PHP Better</h2>
+<p>If you plan to use a lot of media, install the following system packages to improve how PHP processes images.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo apt install php-imagick php7.0-gd</span>
+</pre>
+</div>
+<p>Make sure to restart Apache so that PHP starts using those packages.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo service apache2 restart</span>
+</pre>
+</div>
+</div>
+<div id="troubleshooting">
+<h2>Troubleshooting</h2>
+<p>If WordPress can't save files, you probably forgot to change ownership of the WordPress site to www-data.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo chown -R www-data:www-data /var/www/example.com/</span>
+</pre>
+</div>
+<p>If that still doesn't work, try this:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo chgrp -R www-data /var/www/example.com/</span>
+<span class="server">[user@server]$ </span><span class="command">sudo chmod -R g+w /var/www/example.com/</span>
+</pre>
+</div>
+<p>If permalinks aren't working, make sure you installed rewrite.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo a2enmod rewrite &amp;&amp; sudo service apache2 restart</span>
+</pre>
+</div>
+<p>And make absolutely sure you have AllowOverride set to All in your Virtual Host.</p>
+<div class="highlight-apacheconf">
+<pre class="prebox">&lt;Directory /var/www/example.com&gt;
+    AllowOverride all
+    Require all granted
+&lt;/Directory&gt;
+</pre>
+</div>
+</div>
+<p>Permalinks will not work without it.</p>
+<h2>Further WordPress configurations</h2>
+<p>If you're interested in using HTTPS with this WordPress installation, check out the following articles from DreamHost's knowledge base for assistance setting up Let's Encrypt on your instance and configuring WordPress to use HTTPS.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/222168828-Setting-up-Let-s-Encrypt-on-DreamCompute-with-Apache">Setting up Let's Encrypt on DreamCompute with Apache</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/218428687-How-do-I-use-an-SSL-certificate-with-WordPress-">How do I use an SSL certificate with WordPress?</a></li>
+</ul>
+<p>For further WordPress customizations, please review the WordPress category in DreamHost's knowledge base below.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/categories/202198418-WordPress">WordPress topics</a></li>
+</ul>

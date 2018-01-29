@@ -1,4 +1,4 @@
-<body>
+<body role="document">
 <div class="document">
 <div class="documentwrapper">
 <div class="body" role="main">
@@ -24,46 +24,40 @@ allow access to  HTTP (port 80) and SSH (port 22) in the Access &amp;
 Security group. Associate a public IPv4 “floating” IP address to this
 machine.</p>
 <div class="figure">
-<img alt="../../_images/HAProxy_instances_dash.fw.png" src="https://help.dreamhost.com/hc/article_attachments/216060327/HAProxy_instances_dash.fw.png">
+<img alt="../../_images/HAProxy_instances_dash.fw.png" src="https://help.dreamhost.com/hc/article_attachments/216060327/HAProxy_instances_dash.fw.png"/>
 </div>
 <ol class="arabic simple">
 <li>Click the <strong>More</strong> dropdown tab on in the Actions column of your
 instance list.</li>
 </ol>
 <div class="figure">
-<img alt="../../_images/HAProxy_floating_ip.fw.png" src="https://help.dreamhost.com/hc/article_attachments/215880328/HAProxy_floating_ip.fw.png">
+<img alt="../../_images/HAProxy_floating_ip.fw.png" src="https://help.dreamhost.com/hc/article_attachments/215880328/HAProxy_floating_ip.fw.png"/>
 </div>
 <ol class="arabic" start="2">
-<li>
-<p class="first">Click <strong>Associate Floating IP</strong>.</p>
+<li><p class="first">Click <strong>Associate Floating IP</strong>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <blockquote>
-<div>
-<p>This is only necessary if you have private networking enabled</p>
-</div>
-</blockquote>
+<div><p>This is only necessary if you have private networking enabled</p>
+</div></blockquote>
 <p class="last"><em>The following dialog box appears:</em></p>
 </div>
 </li>
 </ol>
 <div class="figure">
-<img alt="../../_images/HAProxy_manage_floating_ip.fw.png" src="https://help.dreamhost.com/hc/article_attachments/215880348/HAProxy_manage_floating_ip.fw.png">
+<img alt="../../_images/HAProxy_manage_floating_ip.fw.png" src="https://help.dreamhost.com/hc/article_attachments/215880348/HAProxy_manage_floating_ip.fw.png"/>
 </div>
 <ol class="arabic" start="3">
-<li>
-<p class="first">Allocate a floating IP with the port associated with the private IP
+<li><p class="first">Allocate a floating IP with the port associated with the private IP
 address of your load balancer virtual machine, and then click the
 <strong>Associate</strong> button.</p>
 <blockquote>
-<div>
-<ul class="simple">
+<div><ul class="simple">
 <li>Once you’ve associated the IP address, give DreamCompute a few
 seconds to complete the association, and then you should be able
 to SSH into your instance via its IPv4 address.</li>
 </ul>
-</div>
-</blockquote>
+</div></blockquote>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">This is only necessary if you have private networking enabled</p>
@@ -71,7 +65,7 @@ to SSH into your instance via its IPv4 address.</li>
 </li>
 </ol>
 <div class="figure">
-<img alt="../../_images/HAProxy_SSH1.fw.png" src="https://help.dreamhost.com/hc/article_attachments/215880368/HAProxy_SSH1.fw.png">
+<img alt="../../_images/HAProxy_SSH1.fw.png" src="https://help.dreamhost.com/hc/article_attachments/215880368/HAProxy_SSH1.fw.png"/>
 </div>
 <p>4. SSH into your instance via its IPv4 address (the default user is
 ubuntu, you can’t login as root).</p>
@@ -85,16 +79,14 @@ ubuntu, you can’t login as root).</p>
 operating system is up to date with the latest security fixes and
 packages available from Ubuntu. While logged in as ubuntu, simply
 run:</p>
-<div class="highlight-console">
-<div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> sudo apt-get upgrade
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> sudo apt-get upgrade
 </pre></div>
 </div>
 <p>Follow the prompts, and allow apt to update your system.</p>
 </div>
 <div id="installing-haproxy">
 <h3>Installing HAProxy</h3>
-<div class="highlight-console">
-<div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> sudo apt-get install haproxy
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> sudo apt-get install haproxy
 </pre></div>
 </div>
 </div>
@@ -107,8 +99,7 @@ first application will be on a single virtual machine and the second
 application will be horizontally scaled across two virtual machines.</p>
 <p>When we are complete with our configuration, our deployment will look
 something like this:</p>
-<div class="code highlight-python">
-<div class="highlight"><pre><span></span>app1.domain.io
+<div class="code highlight-python"><div class="highlight"><pre><span></span>app1.domain.io
     |          +-------------+   10.10.10.2   +---------------+
     +---------&gt;|             |---------------&gt;|      app1     |
                |   HAProxy   |                +---------------+
@@ -123,8 +114,7 @@ app2.domain.io                   +-----------&gt;|    app2-a     |
 </pre></div>
 </div>
 <p>To support this deployment, edit your /etc/haproxy/haproxy.cfg:</p>
-<div class="code highlight-python">
-<div class="highlight"><pre><span></span>global
+<div class="code highlight-python"><div class="highlight"><pre><span></span>global
 log /dev/log    local0
 log /dev/log    local1 notice
 chroot /var/lib/haproxy
@@ -181,8 +171,7 @@ server node2 10.10.10.4:80 cookie A check
 </div>
 <p>Next, you’ll need to activate HAProxy by setting ENABLED to 1 in
 /etc/default/haproxy. Finally, you can run HAProxy:</p>
-<div class="highlight-console">
-<div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> sudo service haproxy restart
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> sudo service haproxy restart
 </pre></div>
 </div>
 <p>Assuming that you have configured your DNS to point app1.domain.io and

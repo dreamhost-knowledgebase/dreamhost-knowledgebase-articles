@@ -1,0 +1,23 @@
+<p>If you've <a href="https://help.dreamhost.com/hc/en-us/articles/360000274451-Creating-a-new-user-on-an-instance">created a new user</a> to manage your website, it may be a good idea to enable SSH access for that user. This is often necessary for sites such as WordPress that require the user to make additional configurations.</p>
+<p>To enable, you will need to edit your sshd_config file. For information on how to edit a file via SSH, view the following article:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Creating and editing a file via SSH</a></li>
+</ul>
+<h2>Enabling SSH</h2>
+<ol>
+<li>Log into your instance using the <a href="https://help.dreamhost.com/hc/en-us/articles/216201547-Connect-to-your-instance-with-SSH-keys-overview">Key Pair assigned to it</a> and the <a href="https://help.dreamhost.com/hc/en-us/articles/228377408-How-to-find-the-default-user-of-an-image">default user assigned to it</a>.</li>
+<li>Once logged in, run the following to edit your sshd_config file:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo vim /etc/ssh/sshd_config</span>
+</pre>
+</div>
+</li>
+<li>In the file, look for the setting named 'PasswordAuthentication'. To the right of it, change 'no' to 'yes'.</li>
+<li>Save the file, then restart SSHD with the following command:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo service sshd restart</span>
+</pre>
+</div>
+</li>
+</ol>
+<p>Will this make your instance less secure? Not significantly. Since this new user only has access to its own files, the damage it could cause if it were compromised is minimal.</p>
