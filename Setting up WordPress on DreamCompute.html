@@ -31,13 +31,12 @@
 </div>
 <div id="create-a-user">
 <h2>Create a User</h2>
-<p>While it is not required to make a separate user on the instance for WordPress, it's strongly recommended for security. Having a user who only has access to the one website will limit the havoc that could be caused should that user become compromised. This also limits the danger that could be caused by rogue plugins or themes. The instance itself will be safe, containing the damage just to that user account.</p>
-<p>Start by creating the user.</p>
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo adduser examplecom</span>
-</pre>
-</div>
-<p>You will be prompted for a password along with additional, optional details about the user. Once that's done, make a folder for the website.</p>
+<p>While it is not required to make a separate user on the instance for WordPress, it's strongly recommended for security. View the following article for further information:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360000274451-Creating-a-new-user-on-an-instance">Creating a new user on an instance</a></li>
+</ul>
+<h2>Create a folder for your website</h2>
+<p>After creating the user, make a folder for the website.</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo mkdir /var/www/example.com</span>
 </pre>
@@ -50,21 +49,10 @@
 </div>
 <div id="add-ssh-access">
 <h2>Add SSH Access</h2>
-<p>WordPress users often need SSH access in order to do extra configuration with WordPress. By default, this is disabled, so you will need to edit your config using a text editor, such as vi, emacs, or nano (this one is easiest for beginners). For more information about working with nano or vi, see DreamHost's article here:</p>
+<p>WordPress users often need SSH access in order to do extra configuration with WordPress. By default, this is disabled, so you will need to edit your config using a text editor, such as vi, emacs, or nano (this one is easiest for beginners). View the following article for further information:</p>
 <ul>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Creating and editing a file via SSH</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360000281572-Adding-SSH-access-to-your-users">Adding SSH access to your users</a></li>
 </ul>
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo vi /etc/ssh/sshd_config</span>
-</pre>
-</div>
-<p>Look for the setting of PasswordAuthentication, change it to "yes", and save your file. Remember to restart SSHD once you've done this.</p>
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo service sshd restart</span>
-</pre>
-</div>
-<p>Will this make your instance less secure? Not significantly. Since this new user only has access to its own files, the damage it could cause if it were compromised is minimal.</p>
-</div>
 <div id="add-your-domain">
 <h2>Add Your Domain</h2>
 <p>There are a few steps to set up your domain. First you'll need to setup DNS for all of your domains that will be pointing to this instance; for help with that, see DreamHost's article here:</p>
@@ -263,3 +251,4 @@ mode of 'wp-config.php' changed from 0644 (rw-r--r--) to 0640 (rw-r-----)
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/categories/202198418-WordPress">WordPress topics</a></li>
 </ul>
+</div>

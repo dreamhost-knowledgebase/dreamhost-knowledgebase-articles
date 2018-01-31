@@ -1,0 +1,63 @@
+<p>If you're sending email from your web server, there's a chance it could get blocked or rejected for several reasons. If so, it will end up in the following directory:</p>
+<ul>
+<li>/home/username/Maildir/new</li>
+</ul>
+<p>View the following article for further details:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215036118-Sender-domain-policy-FAQs">Sender domain policy FAQs</a></li>
+</ul>
+<p>The problem is that you have to manually log into your server and check this directory to confirm if any email you were sending was rejected. The easier option is to create a cron job that triggers a shell script to email you anytime email is rejected.</p>
+<h2>Creating the shell script</h2>
+<ol>
+<li>Log into your server via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH</a>.</li>
+<li>Make sure you're in your user's home directory.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">pwd</span>
+/home/username</pre>
+</div>
+</li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Create a new file via SSH</a>. Name it something like mailrejections.sh.</li>
+<li>Add the following code to this file.
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>You only need to change the fields in bold</p>
+</div>
+</div>
+<div class="preboxcontainer">
+<pre class="prebox">#!/bin/bash
+
+#Check ~/Maildir/new for any files created within the last 15 min
+files=$(find ~/Maildir/new -type f -mmin -15)
+
+for emailFileName in $files
+  do
+    #open each email individually and assign to new variable
+    emailContent=$(cat $emailFileName)
+    echo $emailContent | mail -s <span class="command">"These emails were rejected" admin@example.com</span>
+
+done</pre>
+</div>
+</li>
+<li>You can change the message to anything you like. Make sure to change the email to the address you'd like to receive these notifications from.</li>
+</ol>
+<h2>Creating the cron job</h2>
+<p>Now that the script is created, you must create a new cron job to run every 15 minutes. This cron job will run the file you just created.</p>
+<ol>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215088668-How-do-I-create-a-cron-job-">Create a new cron job in your panel</a>.
+<dl>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/mailrejection_cronjob.png" alt="" /></dd>
+</dl>
+</li>
+<li>Make sure to adjust the username to the correct Shell user you created the script under.</li>
+<li>Also make sure to enter 'Every 15 minutes' for the time frame.
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>You can change the time frame to anything you like, just make sure to update the same time frame in your script to match.</p>
+</div>
+</div>
+</li>
+<li>Click the <strong>Add</strong> button to save.</li>
+</ol>
+<p>That's it. The cron job will run your script every 15 minutes. If there are new rejection emails, you'll receive a copy to the email you specified in the script.</p>
