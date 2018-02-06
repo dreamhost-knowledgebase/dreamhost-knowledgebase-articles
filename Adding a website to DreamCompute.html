@@ -1,0 +1,130 @@
+<p>There are several steps you must take to add your website to DreamCompute. Make sure you follow the steps below in order.</p>
+<p>All steps assume you're running commands under the <a href="https://help.dreamhost.com/hc/en-us/articles/228377408-How-to-find-the-default-user-of-an-image">default user of your instance</a>.</p>
+<h2>Step #1 — Create an instance</h2>
+<p>You must first launch a new instance. You can do this in the DreamCompute dashboard, or by using the OpenStack CLI. View the following articles for instructions:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215912848-How-to-launch-an-instance-using-the-DreamCompute-dashboard">How to launch an instance using the DreamCompute dashboard</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216511617-How-to-launch-an-instance-using-the-OpenStack-CLI">How to launch an instance using the OpenStack CLI</a></li>
+</ul>
+<h2>Step #2 — Point your DNS to the new instance</h2>
+<p>You must now log into your DreamHost panel. There you can adjust the DNS on your domain to point to your DreamCompute instance.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/218672058-Configuring-DNS-for-your-domains">Configuring DNS for your domains</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115001754711-Locating-the-IP-Address-of-your-instance">Locating the IP address of your instance</a></li>
+</ul>
+<h2>Step #3 — Install Apache or LAMP on the instance</h2>
+<p>Log into your instance using the <a href="https://help.dreamhost.com/hc/en-us/articles/216201547-Connect-to-your-instance-with-SSH-keys-overview">Key Pair</a> and the <a href="https://help.dreamhost.com/hc/en-us/articles/228377408-How-to-find-the-default-user-of-an-image">default user assigned to it</a>. Install Apache based on what image you choose to create the instance from. Below shows how to do this on Debian, Ubuntu, Fedora, and CentOS.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215879457-How-to-Configure-Apache-on-DreamCompute-Running-Debian-or-Ubuntu">How to Configure Apache on DreamCompute Running Debian or Ubuntu</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/217880028-How-to-Configure-Apache-on-DreamCompute-Running-Fedora-or-CentOS">How to Configure Apache on DreamCompute Running Fedora or CentOS</a></li>
+</ul>
+<p>Otherwise, if you know you'll need a database and PHP, it may be a better idea to install LAMP instead:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215879467-How-to-Configure-LAMP-on-DreamCompute-running-Debian-or-Ubuntu">How to Configure LAMP on DreamCompute running Debian or Ubuntu</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/218378927-How-to-Configure-LAMP-on-DreamCompute-running-Fedora-or-CentOS">How to Configure LAMP on DreamCompute running Fedora or CentOS</a></li>
+</ul>
+<h2>Step #4 — Create a new user</h2>
+<p>Create a new user for the website. Make sure to assign the user 'sudo' privileges, then log in as the new user.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360000274451-Creating-a-new-user-on-an-instance">Creating a new user on an instance</a></li>
+</ul>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>The remaining commands in this article assume you're logged in as the new user you just created.</p>
+</div>
+</div>
+<div id="add-ssh-access">
+<h2>Step #5 — Add SSH access</h2>
+<p>Depending on the permissions your user may need, you may want to enable SSH for the user. This allows the user to log into the server via SSH, as opposed to security keys.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360000281572-Adding-SSH-access-to-your-users">Adding SSH access to your users</a></li>
+</ul>
+</div>
+<div id="add-your-domain">
+<h2>Step #6 — Add your domain</h2>
+<p>Make a folder for the website under your new username.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo mkdir /home/username/example.com</span>
+</pre>
+</div>
+<p>Configure VirtualHosts so your instance knows how to handle the domain. To do this, you need to make a .conf file.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo touch /etc/apache2/sites-available/example.com.conf</span>
+</pre>
+</div>
+<p>It is recommended that you name the file after your domain, so that you can always know what .conf file is for what domain.</p>
+<p>Edit that file:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo vim /etc/apache2/sites-available/example.com.conf</span>
+</pre>
+</div>
+<p>Then put the following inside it, making sure to change the DocumentRoot to the location of the website under your username.</p>
+<div class="preboxcontainer">
+<pre class="prebox">&lt;VirtualHost *:80&gt;
+    ServerName example.com
+    ServerAlias www.example.com
+    ServerAdmin admin@example.com
+    <span class="command">DocumentRoot /home/username/example.com
+    &lt;Directory /home/username/example.com&gt;</span>
+            AllowOverride all
+            Require all granted
+    &lt;/Directory&gt;
+
+    ErrorLog ${APACHE_LOG_DIR}/example.com-error.log
+    CustomLog ${APACHE_LOG_DIR}/example.com-access.log combined
+&lt;/VirtualHost&gt;
+</pre>
+</div>
+<p>Once the VirtualHost is added, the site will need to be enabled with a command called a2ensite.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo a2ensite example.com</span>
+Enabling site example.com.
+To activate the new configuration, you need to run:
+  service apache2 reload
+</pre>
+</div>
+<p>Finally reload your Apache service so it reads the changes.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo service apache2 reload</span></pre>
+</div>
+</div>
+<h2>Step #7 — Enable userdir</h2>
+<p>Run the following under your default user:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo a2enmod userdir</span>
+<span class="server">[user@server]$ </span><span class="command">sudo service apache2 restart</span></pre>
+</div>
+<p>This enables the userdir module. You can now view it in the following directory:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">ls -la /etc/apache2/mods-enabled</span></pre>
+</div>
+<p>Edit the following file:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo vim /etc/apache2/mods-enabled/userdir.conf</span></pre>
+</div>
+<p>In that file you'll see this line:</p>
+<div class="preboxcontainer">
+<pre class="prebox">&lt;Directory /home/*/public_html&gt;</pre>
+</div>
+<p>Remove the 'public_html' part so it just looks like this:</p>
+<div class="preboxcontainer">
+<pre class="prebox">&lt;Directory /home/*/&gt;</pre>
+</div>
+<p>Save the file and restart Apache.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo service apache2 reload</span></pre>
+</div>
+<p>If you view your site now, you'll see it resolving on the DreamCompute instance.</p>
+<h2>Step #8 — Adding a Let's Encrypt certificate</h2>
+<p>If you now add a <a href="https://help.dreamhost.com/hc/en-us/articles/222168828-Setting-up-Let-s-Encrypt-on-DreamCompute-with-Apache">'Let Encrypt' certificate</a> it will be installed on your domain without further configuration. The configuration file will also show under:</p>
+<div class="preboxcontainer">
+<pre class="prebox">/etc/apache2/sites-available/</pre>
+</div>
+<p>If you visit your site now, you should see it resolving from your user's /home directory.<span style="font-family: monospace, monospace; font-size: 1em;"> </span></p>
+<h2>Editing site files with an FTP client</h2>
+<p>When site permissions are set to user:user, your FTP client can update files normally. However, depending on your website's functionality, it may need to communicate directly with the Apache server.</p>
+<p>For example, if you have a CMS site such as WordPress, you should keep file permissions set as user:www-data to allow WordPress to communicate with the server. View the following article for further details on how to configure a WordPress website:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/220973627-Setting-up-WordPress-on-DreamCompute">Setting up WordPress on DreamCompute</a></li>
+</ul>

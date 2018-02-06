@@ -1,0 +1,68 @@
+<p>The following describes how to create a script and cron job that sends you rejected emails from the server.</p>
+<h2>Background</h2>
+<p>When an email is sent from your web server and it then gets blocked or rejected, it is stored in the following directory:</p>
+<div class="preboxcontainer">
+<pre class="prebox">/home/username/Maildir/new</pre>
+</div>
+<p>To view the blocked or rejected emails, you must manually log into your server and check this directory. A simpler option is to instead create a cron job that triggers a shell script. The script then tells the server to email you any blocked or rejected emails when it occurs.</p>
+<p>For more information about blocked or rejected emails, see the following article:</p>
+<ul>
+<li><a href="/hc/en-us/articles/215036118-Sender-domain-policy-FAQs">Sender domain policy FAQs</a></li>
+</ul>
+<h2>Creating the shell script</h2>
+<ol>
+<li>Log into your server via <a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a>.</li>
+<li>Make sure you're in your user's home directory:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">pwd</span>
+/home/username</pre>
+</div>
+</li>
+<li>Create <a href="/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">a new file via SSH</a>, and then name it something like <span class="code">mailrejections.sh</span>.</li>
+<li>Add the following code to this file:
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<ul>
+<li>You only need to change the fields in bold.</li>
+<li>You can change the message to anything you like.</li>
+</ul>
+</div>
+</div>
+<div class="preboxcontainer">
+<pre class="prebox">#!/bin/bash
+
+#Check ~/Maildir/new for any files created within the last 15 min
+files=$(find ~/Maildir/new -type f -mmin -15)
+
+for emailFileName in $files
+  do
+    #open each email individually and assign to new variable
+    emailContent=$(cat $emailFileName)
+    echo $emailContent | mail -s <span class="command">"These emails were rejected" admin@example.com</span>
+
+done</pre>
+</div>
+</li>
+<li>Make sure to change the email to the address you'd like to receive these notifications from.</li>
+</ol>
+<h2>Creating the cron job</h2>
+<p>After you create the script, you must create a new cron job to run every 15 minutes. The cron job then runs the file you just created.</p>
+<ol>
+<li>Create a new cron job <a href="/hc/en-us/articles/215088668-How-do-I-create-a-cron-job-">in your panel</a>:
+<dl>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/mailrejection_cronjob.png" alt="" /></dd>
+</dl>
+</li>
+<li>Make sure to adjust the username to the correct Shell user for which you created the script.</li>
+<li>Select 'Every 15 minutes' for the time frame.
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>You can change the time frame to anything you like, but just make sure to update the same time frame in your script to match.</p>
+</div>
+</div>
+</li>
+<li>Click the <strong>Add</strong> button to save.</li>
+</ol>
+<p>The cron job runs your script every 15 minutes. If an email is rejected, a copy of it is then sent to the address you specified in the script.</p>
