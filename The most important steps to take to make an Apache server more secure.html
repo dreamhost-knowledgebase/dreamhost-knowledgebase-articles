@@ -1,289 +1,209 @@
-<body role="document">
 <div class="document">
 <div class="documentwrapper">
 <div class="body" role="main">
 <div id="the-most-important-steps-to-take-to-make-an-apache-server-more-secure">
-
-<p>Apache is the most popular open source web server available for modern Linux
-servers. It offers flexible configuration allowing for a wide variety of uses,
-from serving basic HTML sites, to complex PHP/Passenger applications, to
-proxying requests as a reverse proxy gateway. Given its popularity and easy of
-use, it’s essential to install and maintain a secure environment for Apache
-installations.</p>
+<p>Apache is the most popular open source web server available for modern Linux servers. It offers flexible configuration allowing for a wide variety of uses, from serving basic HTML sites, to complex PHP/Passenger applications, to proxying requests as a reverse proxy gateway. Given its popularity and easy of use, it’s essential to install and maintain a secure environment for Apache installations.</p>
 <div id="keep-apache-updated">
-<h2>Keep Apache Updated</h2>
-<p>Apache has a good security track record, and security bugs are seldom found
-within the web server itself. Still, it’s important to keep Apache updated in
-order to take advantage of the latest security, stability and features
-available. Generally, this is simply a matter of keeping the Apache package
-provided by the distro’s OS updated (e.g. via <cite>apt</cite>, <cite>yum</cite>, etc). It’s also
-recommended that Apache server operators following the
-<a class="reference external" href="http://httpd.apache.org/lists.html">Apache Server Announcements</a> mailing list
-to stay abreast of the latest news from the Apache development team.</p>
+<h2>Keep Apache updated</h2>
+<p>Apache has a good security track record, and security bugs are seldom found within the web server itself. Still, it’s important to keep Apache updated in order to take advantage of the latest security, stability and features available. Generally, this is simply a matter of keeping the Apache package provided by the distribution's OS updated (e.g. via <cite>apt</cite>, <cite>yum</cite>, etc). It’s also recommended that Apache server operators following the <a class="reference external" href="http://httpd.apache.org/lists.html">Apache Server Announcements</a> mailing list to stay up to date with the latest news from the Apache development team. You can subscribe to the list here:</p>
+<ul>
+<li><a href="http://httpd.apache.org/lists.html">Apache HTTP Server Mailing Lists</a></li>
+</ul>
 </div>
 <div id="securing-configurations">
-<h2>Securing Configurations</h2>
-<p>Computers are only as smart as the people using them. Apache is built to be
-stable and secure, but it will only be a secure as the user who configures it.
-Once Apache is built and installed, it’s important to configure the server to be
-as minimal as possible.</p>
+<h2>Securing configurations</h2>
+<p>Apache is built to be stable and secure, but it will only be as secure as the user who configures it. Once Apache is built and installed, it’s important to configure the server to be as minimal as possible.</p>
 <div id="run-as-an-unprivileged-user">
-<h3>Run as an Unprivileged User</h3>
-<p>In security, the principle of least privilege states that an entity should be
-given no more permission than necessary to accomplish its goals within a given
-system. In the context of our web server, this means locking down Apache to run
-only with the permissions necessary to run. A first step in this process is to
-configure Apache to run as an unprivileged system user (e.g., not root). This is
-done via the <cite>User</cite> and <cite>Group</cite>  directives in the Apache configuration file:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span># configure a non-privileged user. this user must exist on your system
-User apache;
-Group apache;
-</pre></div>
+<h3>Run as an unprivileged user</h3>
+<p>In security, the principle of least privilege states that an entity should be given no more permission than necessary to accomplish its goals within a given system. In the context of your web server, this means locking down Apache to run only with the permissions necessary to run. A first step in this process is to configure Apache to run as an unprivileged system user (e.g., not root). This is done by setting the APACHE_RUN_USER and APACHE_RUN_GROUP variables in the <strong>/etc/apache2/envvars</strong> file:</p>
+<p>Edit the file and change the following lines:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo vim /etc/apache2/envvars</span>
+# Since there is no sane way to get the parsed apache2 config in scripts, some
+# settings are defined via environment variables and then used in apache2ctl,
+# /etc/init.d/apache2, /etc/logrotate.d/apache2, etc.
+<span class="command">export APACHE_RUN_USER=apache</span>
+<span class="command">export APACHE_RUN_GROUP=apache</span>
+</pre>
 </div>
-<p>Apache servers distributed as a common OS package may also use a user and group
-name such as <cite>www-data</cite> or <cite>nobody</cite>. Regardless of the choice of user’s name,
-make sure that the user/group selection has as few rights as necessary to run
-properly.</p>
+<p>Apache servers distributed as a common OS package may also use a user and group name such as <cite>www-data</cite> or <cite>nobody</cite>. Regardless of the choice of user’s name, make sure that the user/group selection has as few rights as necessary to run properly.</p>
 </div>
 <div id="disable-server-tokens">
-<h3>Disable Server Tokens</h3>
-<p>The HTTP spec recommends (but not requires) that web servers identify themselves
-via the <cite>Server</cite> header. Historically, web servers have included their version
-information as part of this header. Disclosing the version of Apache running can
-be undesirable, particularly in environments sensitive to information
-disclosure. Configure Apache not to display its version in <cite>Server</cite> header:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>ServerTokens ProductOnly;
-</pre></div>
+<h3>Disable ServerTokens</h3>
+<p>The HTTP spec recommends (but not requires) that web servers identify themselves via the <cite>Server</cite> header. Historically, web servers have included their version information as part of this header. Disclosing the version of Apache running can be undesirable, particularly in environments sensitive to information disclosure. Configure Apache not to display its version in <cite>Server</cite> header by editing the following file:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo vim /etc/apache2/conf-available/security.conf</span></pre>
 </div>
+<p>In that file you'll see several '<a href="https://httpd.apache.org/docs/2.4/mod/core.html#servertokens">ServerTokens</a>'. Make sure they are all commented out and only 'ProductOnly' appears.</p>
+<div class="preboxcontainer">
+<pre class="prebox"># ServerTokens 
+#ServerTokens Minimal
+#ServerTokens OS
+#ServerTokens Full
+ServerTokens ProductOnly;</pre>
+</div>
+<p>Restart Apache to update the changes.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo service apache2 reload</span></pre>
 </div>
 <div id="disable-htaccess-files">
-<h3>Disable .htaccess Files</h3>
-<p><cite>.htaccess</cite> files are a powerful feature that allow Apache to have its
-configuration extended outside its main config file. While this may be
-convenient, it does present a security risk, as Apache will read any
-.htaccess file in its path- even ones placed by an attacker that could
-compromise the server. It may be desirable to lock down configuration by
-disabling .htaccess files entirely, via the <cite>AllowOverride</cite> directive:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>AllowOverride None
-</pre></div>
+<h3>Disable .htaccess files</h3>
+<p><cite>.htaccess</cite> files are a powerful feature that allow Apache to have its configuration extended outside its main config file. While this may be convenient, it does present a security risk, as Apache will read any .htaccess file in its path — even ones placed by an attacker that could compromise the server. It may be desirable to lock down the Apache configuration by disabling .htaccess files entirely. This can be done by editing the <a href="https://httpd.apache.org/docs/2.4/mod/core.html"><cite>AllowOverride</cite> directive</a> in the <strong>/etc/apache2/apache2.conf file:</strong></p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo vim /etc/apache2/apache2.conf</span>
+AllowOverride None</pre>
 </div>
-<p>Additionally, fine-grained control of which Apache directives can be used in
-.htaccess files can also be controlled by <cite>AllowOverride</cite>:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>AllowOverride AuthConfig Indexes
-</pre></div>
+<p>Additionally, fine-grained control of which Apache directives can be used within .htaccess files can also be controlled by <cite>AllowOverride</cite>:</p>
+<div class="preboxcontainer">
+<pre class="prebox">AllowOverride AuthConfig Indexes</pre>
 </div>
-<p>In the example above, all directives that are neither in the group AuthConfig
-nor Indexes cause an internal server error.</p>
+<p>In the example above, all directives that are neither in the group AuthConfig nor Indexes cause an internal server error. View the following site for further details:</p>
+<ul>
+<li><a href="https://httpd.apache.org/docs/2.4/mod/core.html">https://httpd.apache.org/docs/2.4/mod/core.htm</a>l</li>
+</ul>
 </div>
 <div id="restrict-access-by-ip">
-<h3>Restrict Access by IP</h3>
-<p>Sensitive areas of websites, such as admin control panels, should have strict
-access controls placed on them. Access makes it easy to whitelist IP access to
-certain locations of your website and deny traffic to all other IP addresses:</p>
-<div class="highlight-apacheconf"><div class="highlight"><pre><span></span><span class="nt">&lt;Directory</span> <span class="s">"/wp-admin"</span><span class="nt">&gt;</span>
+<h3>Restrict access by IP</h3>
+<p>Sensitive areas of websites, such as admin control panels, should have strict access controls placed on them. Apache makes it easy to whitelist IP access to certain locations of your website and deny traffic to all other IP addresses. You can add the following to your <strong>/etc/apache2/apache2.conf</strong> file.</p>
+<div class="preboxcontainer">
+<pre class="prebox">&lt;Directory /PATH/TO/WEBDIR/wp-admin&gt;
 
-    <span class="c"># allow access from one IP and an additional IP range,</span>
-    <span class="c"># and block everything else</span>
-    <span class="nb">Order</span> Allow,Deny
-    <span class="nb">Allow</span> from <span class="m">1.2.3.4</span>
-    <span class="nb">Allow</span> from <span class="m">192.168.0.0/24</span>
-<span class="nt">&lt;/Directory&gt;</span>
-</pre></div>
+    # allow access from one IP and an additional IP range,
+    # and block everything else
+    Require ip 1.2.3.4
+    Require ip 192.168.0.0/24
+&lt;/Directory&gt;</pre>
 </div>
-<p>In this example, the use of the <cite>Order</cite> directive instructs Apache to allow
-requests coming from IP addresses listed in the <cite>Allow</cite> blocks, and to deny all
-other traffic.</p>
+<p>In this example, the use of the <em>Require </em>directive instructs Apache to allow access to the specified path if the requests come from any of the IP addresses listed, and to deny all other traffic.</p>
 </div>
 <div id="restrict-access-by-password">
 <h3>Restrict Access by Password</h3>
-<p>Access to certain locations can also be set via password-based credentials,
-using the <cite>htpasswd</cite> utility. First, create a file called  <cite>.htpasswd</cite> to store
-the desired user/password combinations:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> htpasswd -c /path/to/.htpasswd user1
-</pre></div>
-</div>
-<p>The <cite>htpasswd</cite> command creates the file <cite>/path/to/.htpasswd</cite> if it doesn’t
-exist, and prompt for a password. To add another user, simply run the command,
-leaving out the <cite>-c</cite> argument:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> htpasswd /path/to/.htpasswd user2
-</pre></div>
-</div>
-<p>Once you’ve created the user, configure Apache to read the password file and
-control access to the desired directory:</p>
-<div class="highlight-apacheconf"><div class="highlight"><pre><span></span><span class="nt">&lt;Directory</span> <span class="s">"/wp-admin"</span><span class="nt">&gt;</span>
-    <span class="nb">AuthType</span> Basic
-    <span class="nb">AuthName</span> <span class="s2">"Restricted Content"</span>
-    <span class="nb">AuthUserFile</span> <span class="sx">/path/to/.htpasswd</span>
-    <span class="nb">Require</span> valid-user
-<span class="nt">&lt;/Directory&gt;</span>
-</pre></div>
-</div>
+<p>Access to certain locations can also be set via password-based credentials, using the <cite>htpasswd</cite> utility. View the following article for further details:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216363187-How-do-I-password-protect-my-site-">How do I password protect my site?</a></li>
+</ul>
 </div>
 </div>
 <div id="preventing-dos-attacks">
-<h2>Preventing DoS Attacks</h2>
-<p>The default model in which Apache processes requests, called prefork mode, is
-subject to an attack known as a Slowloris attack. A Slowloris attack is a form
-of DoS (Denial of Service) attack in which the Apache server is forced to wait
-on requests from malicious clients taking a long time to send traffic, thus
-forcing legitimate requests to time out or be ignored entirely. Thankfully,
-modern Apache servers are capable of mitigating this threat with a few
-additional configuration directives.</p>
+<h2>Preventing DoS attacks</h2>
+<p>The default model in which Apache processes requests (called prefork mode), is subject to an attack known as a <a href="https://en.wikipedia.org/wiki/Slowloris_(computer_security)">Slowloris attack</a>. A Slowloris attack is a form of DoS (Denial of Service) attack in which the Apache server is forced to wait on requests from malicious clients taking a long time to send traffic, thus forcing legitimate requests to time out or be ignored entirely. Thankfully, modern Apache servers are capable of mitigating this threat with a few additional configuration directives.</p>
 <div id="enable-mod-reqtimeout">
 <h3>Enable mod_reqtimeout</h3>
-<p><cite>mod_reqtimeout</cite> is an Apache module designed to shut down connections from
-clients taking too long to send their request, such as is seen in a Slowloris
-attack. This module provides a directive that allows Apache to close the
-connection if it senses that the client is not sending data quickly enough. For
-example:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>RequestReadTimeout header=10-20,MinRate=500 body=20,MinRate=500
-</pre></div>
+<p><cite>mod_reqtimeout</cite> is an Apache module designed to shut down connections from clients taking too long to send their request, such as is seen in a Slowloris attack. This module provides a directive that allows Apache to close the connection if it senses that the client is not sending data quickly enough. For example, add this to your <strong>/etc/apache2/apache2.conf </strong>file:</p>
+<div class="preboxcontainer">
+<pre class="prebox">RequestReadTimeout header=10-20,MinRate=500 body=20,MinRate=500</pre>
 </div>
-<p>In this example, Apache will close the connection if the client takes more than
-10 seconds to send its HTTP headers, or if the client takes more than 20 seconds
-to send headers at a rate of 500 bytes per second. Apache will also close the
-connection if the client takes more than 20 seconds to send its request body,
-but will allow the request to continue as long as the client sends more than
-500 bytes per second. This configuration allows clients will poor TCP connection
-quality (such as remote clients with high latency, or those on low-grade
-cellular or satellite networks) to send requests, while still protecting against
-known fingerprints of the Slowloris attack. <cite>RequestReadTimeout</cite> configurations
-can be complex; more information about this directive can be found at the module
-<a class="reference external" href="https://httpd.apache.org/docs/2.4/mod/mod_reqtimeout.html">documentation page</a>.</p>
+<p>In this example, Apache will close the connection if the client takes more than 10 seconds to send its HTTP headers, or if the client takes more than 20 seconds to send headers at a rate of 500 bytes per second.</p>
+<p>Apache will also close the connection if the client takes more than 20 seconds to send its request body, but will allow the request to continue as long as the client sends more than 500 bytes per second.</p>
+<p>This configuration allows clients with poor TCP connection quality (such as remote clients with high latency, or those on low-grade cellular or satellite networks) to send requests, while still protecting against known fingerprints of the Slowloris attack. <cite>RequestReadTimeout</cite> configurations can be complex, so it's recommended you review more information about this directive at the module <a class="reference external" href="https://httpd.apache.org/docs/2.4/mod/mod_reqtimeout.html">documentation page</a>.</p>
 </div>
 </div>
 <div id="securing-ssl-tls">
 <h2>Securing SSL/TLS</h2>
-<p>Apache excels at serving SSL/TLS traffic. Configuring a web server to provide
-secure SSL/TLS configurations for clients is essential to maintaining a secure
-connection.</p>
-<p>As a note, it’s strongly recommended that encrypted traffic use only newer TLS
-protocols, instead of legacy SSL. Both versions of SSL widely available today
-(SSLv2 and SSLv3) have severe security flaws, and should never be used in
-productions environments. Historically, the configurations associated with
-SSL/TLS configuration in Apache are prefixed with <cite>SSL</cite>; to promote the use of
-modern security protocols, in this tutorial the term ‘TLS’ is used when
-referencing encrypted (HTTPS) traffic, and ‘ssl’ when applicable to specific
-Apache configuration directives.</p>
+<p>Apache excels at serving SSL/TLS traffic. Configuring a web server to provide secure SSL/TLS configurations for clients is essential to maintaining a secure connection.</p>
+<p>As a note, it’s strongly recommended that encrypted traffic use only newer TLS protocols, instead of legacy SSL. Both versions of SSL widely available today (SSLv2 and SSLv3) have severe security flaws, and should never be used in production environments. Historically, the configurations associated with SSL/TLS configuration in Apache are prefixed with <cite>SSL</cite>; to promote the use of modern security protocols, in this tutorial the term ‘TLS’ is used when referencing encrypted (HTTPS) traffic, and ‘ssl’ when applicable to specific Apache configuration directives.</p>
 <div id="turn-tls-on">
 <h3>Turn TLS On</h3>
-<p>In order to serve encrypted traffic, SSL/TLS needs to be enabled in Apache.
-Enable secure communications with the <cite>SSLEngine</cite> directive:</p>
-<div class="highlight-apacheconf"><div class="highlight"><pre><span></span><span class="nt">&lt;VirtualHost</span> <span class="s">192.168.1.1:443</span><span class="nt">&gt;</span>
-    <span class="nb">SSLEngine</span> <span class="k">on</span>
-    <span class="nb">SSLCertificateFile</span> <span class="sx">/path/to/cert</span>
-    <span class="nb">SSLCertificateKeyFile</span> <span class="sx">/path/to/key</span>
-<span class="nt">&lt;/VirtualHost&gt;</span>
-</pre></div>
-</div>
+<p>In order to serve encrypted traffic, SSL/TLS needs to be enabled in Apache. Enable secure communications with the <cite>SSLEngine</cite> directive:</p>
+<div class="preboxcontainer">
+<pre class="prebox">&lt;VirtualHost 192.168.1.1:443&gt;
+    SSLEngine on
+    SSLCertificateFile /path/to/cert
+    SSLCertificateKeyFile /path/to/key
+&lt;/VirtualHost&gt;</pre>
 </div>
 <div id="enable-strong-tls-ciphers">
-<h3>Enable Strong TLS Ciphers</h3>
-<p>By default, Apache allows for a wide variety of cryptographic ciphers to be used
-in TLS connections. Some of these ciphers are legacy offerings that are weak or
-prone to attack, and shouldn’t be used. Dreamhost recommends using the Modern or
-Intermediate cipher suites outlined by Mozilla (the modern list of ciphers is
-stronger, but will cause connectivity problems for older platforms like Internet
-Explorer or Windows XP). Additionally, it’s recommended that the server prefer
-which cipher to be used:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>SSLCipherSuite 'ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS';
+<h3>Enable strong TLS ciphers</h3>
+<p>By default, Apache allows for a wide variety of cryptographic ciphers to be used in TLS connections. Some of these ciphers are legacy offerings that are weak or prone to attack and shouldn’t be used. DreamHost recommends using the Modern or Intermediate cipher suites outlined by Mozilla here:</p>
+<ul>
+<li><a href="https://wiki.mozilla.org/Security/Server_Side_TLS" target="_blank" rel="noopener">MozillaWiki - Security/Server Side TLS</a></li>
+</ul>
+<p>The modern list of ciphers is stronger, but will cause connectivity problems for older platforms like Internet Explorer or Windows XP. Additionally, it’s recommended that the server prefer which cipher can be used:</p>
+<div class="preboxcontainer">
+<pre class="prebox">SSLCipherSuite 'ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS';
 SSLHonorCipherOrder on
-SSLProtocol all -SSLv2 -SSLv3
-</pre></div>
-</div>
+SSLProtocol all -SSLv2 -SSLv3</pre>
 </div>
 <div id="enable-tls-session-caching">
-<h3>Enable TLS Session Caching</h3>
-<p>Opening a new TLS connection to a server is very expensive as a result of the
-cryptographic protocols involved. To maintain a high-performance environment,
-cache existing TLS connections so that each new request from a client/browser
-does not need to perform the full TLS handshake:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>SSLSessionCache shm:/path/to/session_cache(512000)
-SSLSessionCacheTimeout 300
-</pre></div>
-</div>
+<h3>Enable TLS session caching</h3>
+<p>Opening a new TLS connection to a server is very expensive as a result of the cryptographic protocols involved. To maintain a high-performance environment, cache existing TLS connections so that each new request from a client/browser does not need to perform the full TLS handshake. The recommended session cache is <span class="code">shmcb</span>. To use it, ensure that mod_socache_shmcb is loaded.</p>
+<div class="preboxcontainer">
+<pre class="prebox">SSLSessionCache "shmcb:/path/to/session_cache(512000)"
+SSLSessionCacheTimeout 300</pre>
 </div>
 <div id="use-custom-diffie-hellman-parameters">
-<h3>Use Custom Diffie-Hellman Parameters</h3>
-<p>The Logjam attack, published in 2015, showed that it was possible for attackers
-(such as nation-state actors) to break the Diffie-Hellman key exchange, used to
-implement forward secrecy (essentially, another layer on top of existing
-encrypted messages). Mitigating this attack is possible in Apache by computing a
-unique set of Diffie-Hellman parameters and configuring Apache to use this value:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span> build a 2048-bit DH prime
-<span class="gp">[user@server]$</span> openssl dhparam <span class="m">2048</span> &gt; /path/to/dhparam
-</pre></div>
+<h3>Use custom Diffie-Hellman parameters</h3>
+<p>The Logjam attack, published in 2015, showed that it was possible for attackers (such as nation-state actors) to break the Diffie-Hellman key exchange, used to implement forward secrecy (essentially, another layer on top of existing encrypted messages). Mitigating this attack is possible in Apache by computing a unique set of Diffie-Hellman parameters and configuring Apache to use this value:</p>
+<div class="highlight-console">
+<div class="highlight">
+<pre><span class="gp">[root@server]#</span> openssl dhparam <span class="m">2048</span> &gt; /path/to/dhparam
+</pre>
 </div>
-<p>From here, add the params to the end of the file noted in the
-<cite>SSLCertificateFile</cite> directive:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> cat /path/to/custom/dhparam &gt;&gt; /path/to/sslcertfile
-</pre></div>
 </div>
-<p>For more information on the Logjam attack, see <a class="reference external" href="https://weakdh.org/">https://weakdh.org/</a></p>
+<p>From here, add the params to the end of the file noted in the <cite>SSLCertificateFile</cite> directive you configured above:</p>
+<div class="highlight-console">
+<div class="highlight">
+<pre><span class="gp">[root@server]#</span> cat /path/to/custom/dhparam &gt;&gt; /path/to/sslcertfile
+</pre>
+</div>
+</div>
+<p>For more information on the Logjam attack, see the"Weak Diffie-Hellman and the Logjam Attack" site here:</p>
+<ul>
+<li><a class="reference external" href="https://weakdh.org/">https://weakdh.org/</a></li>
+</ul>
 </div>
 <div id="force-all-connections-over-tls">
-<h3>Force All Connections over TLS</h3>
-<p>Encrypted communications are only useful when actually in use. Apache can tell
-browsers to only use TLS connections for your site. This is accomplished with
-the <cite>Strict-Transport-Security</cite> header:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>Header always set Strict-Transport-Security max-age=15768000;
-</pre></div>
+<h3>Force all connections over TLS</h3>
+<p>Encrypted communications are only useful when actually in use and Apache can tell browsers to only use TLS connections for your site. This is accomplished with the <cite>Strict-Transport-Security</cite> header:</p>
+<div class="preboxcontainer">
+<pre class="prebox">&lt;IfModule mod_headers.c&gt;
+Header always set Strict-Transport-Security "max-age=15768000; includeSubDomains; preload"
+&lt;/IfModule&gt;</pre>
 </div>
-<p>For all plaintext connections, configure Apache to send a 301 redirect for
-requests to the TLS version of the site:</p>
-<div class="highlight-apacheconf"><div class="highlight"><pre><span></span>&lt;VirtualHost 192.168.1.1:80&gt;
+<p>For all plaintext connections, configure Apache to send a 301 redirect for requests to the TLS version of the site:</p>
+<div class="preboxcontainer">
+<pre class="prebox">&lt;VirtualHost 192.168.1.1:80&gt;
     [...]
     ServerName example.com
     Redirect permanent / https://example.com/
-&lt;/VirtualHost&gt;
-</pre></div>
-</div>
-</div>
+&lt;/VirtualHost&gt;</pre>
 </div>
 <div id="additional-security-measures">
-<h2>Additional Security Measures</h2>
-<p>Beyond the basics of installing a secure Apache binary, locking down access to
-sensitive areas of your site, and properly serving TLS connections, there are
-some additional steps that the extra security-conscious user can take:</p>
+<p>You should also make sure that the Headers module is loaded.</p>
+<h2>Additional security measures</h2>
+<p>Beyond the basics of installing a secure Apache binary, locking down access to sensitive areas of your site and properly serving TLS connections, there are some additional steps that the extra security-conscious user can take:</p>
 <div id="install-a-waf">
 <h3>Install a WAF</h3>
-<p>A WAF (web application firewall) is a piece of software designed to inspect
-HTTP/HTTPS traffic, deny malicious requests, and generally act as an additional
-layer of security in an HTTP web stack. A properly configured WAF can protect
-your site from SQLi, XSS, CSRF, and DDoS attacks, as well as provide brute force
-attack mitigation and zero-day threat patching. The most popular and stable
-WAF for Apache is <a class="reference external" href="https://www.modsecurity.org/">ModSecurity</a>; see the
-project’s <a class="reference external" href="https://github.com/SpiderLabs/ModSecurity">GitHub page</a>
-for more detail on installation and configuration.</p>
+<p>A WAF (web application firewall) is a piece of software designed to inspect HTTP/HTTPS traffic, deny malicious requests, and generally act as an additional layer of security in an HTTP web stack. A properly configured WAF can protect your site from SQLi, XSS, CSRF, and DDoS attacks, as well as provide brute force attack mitigation and zero-day threat patching. The most popular and stable WAF for Apache is <a class="reference external" href="https://www.modsecurity.org/">ModSecurity</a>. View the project’s <a class="reference external" href="https://github.com/SpiderLabs/ModSecurity">GitHub page</a> for more information on installation and configuration.</p>
 </div>
 <div id="automated-log-analysis-monitoring">
 <h3>Automated Log Analysis + Monitoring</h3>
-<p>Programs like Fail2Ban can be used to monitor Apache access and error logs,
-searching for attack patterns and taking actions against the attacking client
-(such as dropping IP addresses, reporting malicious behavior to the IP’s owner,
-etc). Fail2Ban is extensible, allowing for the creation of unique search
-patterns and response behaviors.</p>
+<p>Programs like Fail2Ban can be used to monitor Apache access and error logs, searching for attack patterns and taking actions against the attacking client (such as dropping IP addresses, reporting malicious behavior to the IP’s owner, etc). Fail2Ban is extensible, allowing for the creation of unique search patterns and response behaviors. For more information and details on installation and configuration, see the project's GitHub page:</p>
+<ul>
+<li><a class="reference external" href="https://github.com/fail2ban/fail2ban" target="_blank" rel="noopener">fail2ban GitHub project page</a></li>
+</ul>
 </div>
 <div id="limit-input-traffic-via-iptables">
-<h3>Limit Input Traffic via IPTables</h3>
-<p>Beyond securing Apache itself, it’s important to secure the host environment
-used to host the web server. Locking down access to things like SSH can greatly
-increase the security of the host by preventing intrusion attempts. A common
-approach is to whitelist known IPs that will access the host via SSH, and deny
-all other port 22 traffic, or to use a jump box that strictly filters shell
-access.</p>
+<h3>Limit input traffic via IPTables</h3>
+<p>Beyond securing Apache itself, it’s important to secure the host environment used to host the web server. Locking down access to things like SSH can greatly increase the security of the host by preventing intrusion attempts. A common approach is to whitelist known IPs that will access the host via SSH and deny all other port 22 traffic, or to use a jump box that strictly filters shell access. You can also do this by configuring a custom security group for your instance. View the following article for more information:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215912838-Configuring-security-groups">Configuring security groups</a></li>
+</ul>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="clearer"></div>
+<div class="clearer"> </div>
 </div>
-<div class="footer">
-</div>
+<div class="footer"> </div>
 <!--DreamCompute Button-->
 <div class="dream-sign-up">
 <h2>Deploy Your Apps On Cloud Servers Today</h2>
-<a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a>
+<a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a></div>
 </div>
-</body>
+</div>
+</div>
+</div>
+</div>
+</div>

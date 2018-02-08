@@ -1,124 +1,83 @@
-<body role="document">
 <div class="document">
 <div class="documentwrapper">
 <div class="body" role="main">
 <div id="installing-modsecurity-with-apache-on-ubuntu-14-04">
-
-<p>ModSecurity is an open source web application firewall (WAF) designed as a
-module for Apache web servers. ModSecurity provides a flexible rule engine,
-allowing users to write (or use third-party) rules for protecting websites
-from attacks such as XSS, SQLi, CSRF, DDoS, and brute force login (as well
-as a number of other exploits). This tutorial walks through the basics
-of installing and configuring ModSecurity for an Apache web server. This
-tutorial assumes that Apache is already installed and running.</p>
+<p>ModSecurity is an open source web application firewall (WAF) designed as a module for Apache web servers. ModSecurity provides a flexible rule engine, allowing users to write (or use third-party) rules for protecting websites from attacks such as XSS, SQLi, CSRF, DDoS, and brute force login (as well as a number of other exploits). This tutorial walks through the basics of installing and configuring ModSecurity for an Apache web server. This tutorial assumes that <a href="https://help.dreamhost.com/hc/en-us/articles/215879457-How-to-Configure-Apache-on-DreamCompute-Running-Debian-or-Ubuntu">Apache is already installed</a> and running.</p>
 <div id="installing-modsecurity">
 <h2>Installing ModSecurity</h2>
+<p>Log in and switch to your root user.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo su -</span></pre>
+</div>
 <p>Ensure that the system package sources are up to date:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> apt-get update
-</pre></div>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[root@server]# </span><span class="command">apt-get update</span></pre>
 </div>
 <p>Next, install ModSecurity:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> apt-get install libapache2-mod-security2
-</pre></div>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[root@server]# </span><span class="command">apt-get install libapache2-mod-security2</span></pre>
 </div>
-<p>This automatically installs and activates ModSecurity. In order to begin using
-ModSecurity, a usable configuration file must be put into place. The ModSecurity
-package provided for Ubuntu contains a default recommended config file that can
-be used as a starting point:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> mv /etc/modsecurity/modsecurity.conf-recommended <span class="se">\</span>
-<span class="go">    /etc/modsecurity/modsecurity.conf</span>
-</pre></div>
+<p>This automatically installs and activates ModSecurity. In order to begin using ModSecurity, a usable configuration file must be put into place. The ModSecurity package provided for Ubuntu contains a default recommended config file that can be used as a starting point:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[root@server]# </span><span class="command">mv /etc/modsecurity/modsecurity.conf-recommended \
+/etc/modsecurity/modsecurity.conf</span></pre>
 </div>
-<p>Once this is in place, reload Apache for the default ModSecurity config file to
-take effect:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> service apache2 reload
-</pre></div>
-</div>
+<p>Once this is in place, reload Apache for the default ModSecurity config file to take effect:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[root@server]# </span><span class="command">service apache2 reload</span></pre>
 </div>
 <div id="configuring-modsecurity">
 <h2>Configuring ModSecurity</h2>
-<p>The recommended default config file provided for ModSecurity has very few
-actual protective rules configured, but is a good starting point. In this
-tutorial the OWASP Core Rule Set (CRS) is used to provide additional
-protection.</p>
+<p>The recommended default config file provided for ModSecurity has very few actual protective rules configured, but is a good starting point. In this tutorial the OWASP Core Rule Set (CRS) is used to provide additional protection.</p>
 <div id="enabling-crs-rulesets">
 <h3>Enabling CRS Rulesets</h3>
-<p>The Ubuntu package for ModSecurity recommends a separate package containing the
-CRS rulesets, which can be used as an extra source of rules for WAF.
-Navigate to the directory containing these rules:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> <span class="nb">cd</span> /usr/shared/modsecurity-crs
-</pre></div>
+<p>The Ubuntu package for ModSecurity recommends a separate package containing the CRS rulesets, which can be used as an extra source of rules for WAF. Configure ModSecurity to read rule files from the <cite>activated_rules</cite> directory by adding the following directives to the <strong><cite>/etc/apache2/mods-enabled/security2.conf</cite></strong> file:</p>
+<div class="preboxcontainer">
+<pre class="prebox">IncludeOptional "/usr/share/modsecurity-crs/*.conf"
+IncludeOptional "/usr/share/modsecurity-crs/activated_rules/*.conf"</pre>
 </div>
-<p>Configure ModSecurity to read rule files from the <cite>activated_rules</cite> directory.
-Add the following directives to the
-<cite>/etc/apache2/mods-enabled/security2.conf</cite> file:</p>
-<div class="highlight-apacheconf"><div class="highlight"><pre><span></span><span class="nb">IncludeOptional</span> <span class="s2">"/usr/share/modsecurity-crs/*.conf"</span>
-<span class="nb">IncludeOptional</span> <span class="s2">"/usr/share/modsecurity-crs/activated_rules/*.conf"</span>
-</pre></div>
+<p>This instructs ModSecurity to attempt to use any files ending in <cite>conf</cite> as configuration files. More information is available in the README file in the <cite>activated_rules</cite> directory.</p>
+<p>Once this is done, link the desired rulesets into the newly included locations. For example, to add rules designed to protect against SQL injection attacks, link in the <cite>sql_injection_attacks</cite> file:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[root@server]# </span><span class="command">cd /usr/share/modsecurity-crs/</span>
+<span class="server">[root@server]# </span><span class="command">ln -s ./base_rules/modsecurity_crs_41_sql_injection_attacks.conf \
+./activated_rules/</span></pre>
 </div>
-<p>This instructs ModSecurity to attempt to use any files ending in <cite>conf</cite>
-as configuration files. More information is available in the README file
-in the <cite>activated_rules</cite> directory.</p>
-<p>Once this is done, link the desired rulesets into the newly included locations.
-For example, to add rules designed to protect against SQL injection
-attacks, link in the <cite>sql_injection_attacks</cite> file:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> <span class="nb">cd</span> /usr/share/modsecurity-crs/
-<span class="gp">[root@server]#</span> ln -s ./base_rules/modsecurity_crs_41_sql_injection_attacks.conf <span class="se">\</span>
-<span class="go">    ./activated_rules/</span>
-</pre></div>
-</div>
-<p>Of course, it’s possible to link only certain rulesets, or entire groups,
-depending on your needs. The CRS is also distributed with custom and
-experimental rulesets to detect and mitigate a wide variety of emerging threats.
-Rulesets for specific CMS/application installations, such as WordPress and
-Joomla, are also available in the <cite>slr_rules</cite> directory (though as a free WAF
-ruleset offering, these rulesets are not always current with the latest
-threats).</p>
-<p>Any time the ModSecurity configuration is adjusted, Apache must be reloaded
-in order for the rules to take effect:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> service apache2 reload
-</pre></div>
-</div>
+<p>Of course, it’s possible to link only certain rulesets, or entire groups, depending on your needs. The CRS is also distributed with custom and experimental rulesets to detect and mitigate a wide variety of emerging threats. Rulesets for specific CMS/application installations, such as WordPress and Joomla, are also available in the <cite>slr_rules</cite> directory (though as a free WAF ruleset offering, these rulesets are not always current with the latest threats).</p>
+<p>Any time the ModSecurity configuration is adjusted, Apache must be reloaded in order for the rules to take effect:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[root@server]# </span><span class="command">service apache2 reload</span></pre>
 </div>
 <div id="activating-modsecurity">
 <h3>Activating ModSecurity</h3>
-<p>ModSecurity initially runs in <cite>DetectionOnly</cite> mode, in which the WAF
-examines HTTP(S) traffic, but not actually block malicious requests. This
-must be adjusted in order for ModSecurity to deny attack traffic. In the
-file <cite>/etc/modsecurity/modsecurity.conf</cite>, find the directive <cite>SecRuleEngine</cite>:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>SecRuleEngine DetectionOnly
-</pre></div>
+<p>ModSecurity initially runs in <cite>DetectionOnly</cite> mode, in which the WAF examines HTTP(S) traffic, but does not actually block malicious requests. This must be adjusted in order for ModSecurity to deny attack traffic. In the file <strong><cite>/etc/modsecurity/modsecurity.conf</cite></strong>, find the directive <cite>SecRuleEngine</cite>:</p>
+<div class="preboxcontainer">
+<pre class="prebox">SecRuleEngine DetectionOnly</pre>
 </div>
 <p>And set its value to <cite>On</cite>:</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>SecRuleEngine On
-</pre></div>
+<div class="preboxcontainer">
+<pre class="prebox">SecRuleEngine On</pre>
 </div>
 <p>And of course, reload Apache to effect the changes:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> service apache2 restart
-</pre></div>
-</div>
-</div>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[root@server]# </span><span class="command">service apache2 restart</span></pre>
 </div>
 <div id="further-configuration">
 <h2>Further Configuration</h2>
-<p>WAF environments can be complex and time-consuming to tune and adjust based on
-your server’s needs; this is largely why the CRS was created. If you need to
-write or change custom rules, it’s recommended to read though the <a class="reference external" href="https://github.com/SpiderLabs/ModSecurity/wiki/Reference-Manual">ModSecurity
-reference manual</a>.
-Additionally, the <cite>modsecurity-users</cite> mailing list and <cite>#modsecurity</cite> room on
-Freenode IRC are excellent resources for experienced ModSecurity users and
-developers.</p>
+<p>WAF environments can be complex and time-consuming to tune and adjust based on your server’s needs which is largely why the CRS was created. If you need to write or change custom rules, it’s recommended to read though the <a class="reference external" href="https://github.com/SpiderLabs/ModSecurity/wiki/Reference-Manual">ModSecurity reference manual</a>.</p>
+<p>Additionally, the <cite>modsecurity-users</cite> mailing list and <cite>#modsecurity</cite> room on Freenode IRC are excellent resources for experienced ModSecurity users and developers.</p>
 </div>
 </div>
 </div>
 </div>
-<div class="clearer"></div>
+<div class="clearer"> </div>
 </div>
-<div class="footer">
-</div>
+<div class="footer"> </div>
 <!--DreamCompute Button-->
 <div class="dream-sign-up">
 <h2>Deploy Your Apps On Cloud Servers Today</h2>
-<a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a>
+<a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a></div>
 </div>
-</body>
+</div>
+</div>
+</div>

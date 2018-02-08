@@ -1,0 +1,42 @@
+<div class="document">
+<div class="documentwrapper">
+<div class="body">
+<div id="how-to-recover-access-to-an-ephemeral-instance-when-ssh-keys-are-lost">
+<div id="introduction">
+<h2>Introduction</h2>
+<p>DreamCompute instances are created with a specified SSH key which is used for gaining initial access. This guide covers some basic steps to attempt to retrieve the data, and gain access again if desired.</p>
+</div>
+<div id="things-to-keep-in-mind">
+<h2>Things to keep in mind</h2>
+<ul>
+<li>
+<p class="first"><strong>IP addresses will change</strong></p>
+<p>To get back into an instance requires re-creating it. The new instance receives new IPv4 and IPv6 addresses.</p>
+</li>
+<li>
+<p class="first"><strong>Know your instance type</strong></p>
+<p>One can generally find out if an instance uses an ephemeral or volume boot disk by looking at the 'Instances' page of the dashboard and seeing if the name of a custom image or an operating system is listed in the 'Image Name' column. If one is listed, the instance is ephemeral. If one isn't, it uses a volume boot disk.</p>
+</li>
+</ul>
+</div>
+<div id="regain-access-to-ephemeral-instance">
+<h2>Regain access to ephemeral instance</h2>
+<ol class="arabic simple">
+<li>Navigate to the <a href="https://iad2.dreamcompute.com/project/instances/">Instances page</a> of the DreamCompute dashboard.</li>
+<li>To the right of the instance, click the <strong>Create Snapshot</strong> button and give the snapshot a name. This creates an operating system image of your running instance. Please wait for this process to complete before moving on to the next step (generally it doesn't take more than a few minutes).</li>
+<li>Make note of the flavor of the instance, the name of the instance, and any other features that should be retained in the new instance.</li>
+<li>Click the <strong>Launch Instance</strong> button to <a href="https://help.dreamhost.com/hc/en-us/articles/215912848-How-to-launch-an-instance-using-the-DreamCompute-dashboard">create a new instance</a>. On the "Source" tab, set "Select Boot Source" to "Instance Snapshot" and click the up arrow symbol next to the name of the snapshot created in the previous step. Please note that you cannot create a new volume from instance snapshots in DreamCompute, so make sure to set "Create New Volume" to "No".</li>
+<li>On the 'Key Pair' tab, select the <a href="https://help.dreamhost.com/hc/en-us/articles/115001736691-How-to-create-a-Key-pair-overview">Key Pair to be used for the default user</a>. If there are no valid keys available, you can use the <strong>Create Key Pair</strong> or <strong>Import Key Pair</strong> buttons to associate a new key pair with your project (and this instance). When you're done customizing the instance, click the <strong>Launch</strong> button on the bottom right.</li>
+<li>Once the new instance has booted, attempt to log into it with the <a class="reference external" href="https://help.dreamhost.com/hc/en-us/articles/228377408-How-to-find-the-default-user-of-an-image">default username</a> and the new <a href="https://help.dreamhost.com/hc/en-us/articles/115001754711-Locating-the-IP-Address-of-your-instance">IP address</a>.</li>
+<li>If everything looks correct and access has been restored, the original instance can now be deleted.</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="footer"> </div>
+<!--DreamCompute Button-->
+<div class="dream-sign-up">
+<h2>Deploy Your Apps On Cloud Servers Today</h2>
+<a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a></div>
