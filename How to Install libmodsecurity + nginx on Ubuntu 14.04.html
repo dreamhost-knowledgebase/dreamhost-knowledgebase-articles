@@ -1,0 +1,141 @@
+<p>ModSecurity, originally written as a web application firewall (WAF) for Apache servers, is the de facto standard for open-source WAF solutions. Recent work on the project has shifted focus toward providing a generic shared library that any web server can use to protect HTTP(S) requests. For more information about ModSecurity, visit the site here:</p>
+<ul>
+<li><a href="https://www.modsecurity.org/" target="_blank" rel="noopener">https://www.modsecurity.org/</a></li>
+</ul>
+<p>These instructions touch on building and configuring libmodsecurity for a DreamCompute instance running Ubuntu 16.04.</p>
+<div id="building-libmodsecurity">
+<h2>Building libmodsecurity</h2>
+<p>First, install the necessary packages and libraries used to build source projects, as well as libraries used specifically by libmodsecurity:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[root@server]# </span><span class="command">apt-get update &amp;&amp; apt-get install -y automake bison build-essential \
+               g++ gcc libbison-dev libcurl4-openssl-dev libfl-dev libgeoip-dev \
+               liblmdb-dev libpcre3-dev libtool libxml2-dev libyajl-dev make \
+               pkg-config zlib1g-dev</span></pre>
+</div>
+<p>Next, download and unpack the most recent source of libmodsecurity. This is available from the ModSecurity GitHub project, on the <cite>libmodsecurity</cite> branch:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[root@server]# </span><span class="command">git clone --depth 1 -b v3/master --single-branch https://github.com/SpiderLabs/ModSecurity</span>
+Cloning into 'ModSecurity'...
+remote: Counting objects: 750, done.
+remote: Compressing objects: 100% (721/721), done.
+remote: Total 750 (delta 441), reused 107 (delta 23), pack-reused 0
+Receiving objects: 100% (750/750), 651.13 KiB | 0 bytes/s, done.
+Resolving deltas: 100% (441/441), done.
+Checking connectivity... done.
+</pre>
+</div>
+<p>Initialize and update the git submodules that libmodsecurity requires:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[root@server]# </span><span class="command">cd ModSecurity/</span>
+<span class="server">[root@server]# </span><span class="command">git submodule init</span>
+<span class="server">[root@server]# </span><span class="command">git submodule update</span></pre>
+</div>
+<p>Finally, configure, build, and install the libmodsecurity library:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[root@server]# </span><span class="command">./build.sh &amp;&amp; ./configure &amp;&amp; make &amp;&amp; make install</span>
+</pre>
+</div>
+</div>
+<div id="building-nginx-with-libmodsecurity">
+<h2>Building nginx with libmodsecurity</h2>
+<p>Now that libmodsecurity has been installed and is available to be used by third-party programs, nginx can be compiled with the ModSecurity-nginx connector to load libmodsecurity and process requests.</p>
+<p>First, grab the source for the nginx module wraps around libmodsecurity:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[root@server]# </span><span class="command">cd /root &amp;&amp; git clone --depth 1 https://github.com/SpiderLabs/ModSecurity-nginx.git</span>
+Cloning into 'ModSecurity-nginx'...
+remote: Counting objects: 30, done.
+remote: Compressing objects: 100% (30/30), done.
+remote: Total 30 (delta 6), reused 8 (delta 0), pack-reused 0
+Unpacking objects: 100% (30/30), done.
+Checking connectivity... done.
+</pre>
+</div>
+<p>Next, grab the nginx source and verify it. Start by downloading the source and its signature from nginx.org:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[root@server]# </span><span class="command">wget -q https://nginx.org/download/nginx-1.12.2.tar.gz{.asc,}</span></pre>
+</div>
+</div>
+<p>To verify the contents of the download, grab the developer's signing key from nginx.org:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[root@server]# </span><span class="command">curl -sS https://nginx.org/keys/mdounin.key | gpg --import</span>
+gpg: directory `/home/ubuntu/.gnupg' created
+gpg: new configuration file `/home/ubuntu/.gnupg/gpg.conf' created
+gpg: WARNING: options in `/home/ubuntu/.gnupg/gpg.conf' are not yet active during this run
+gpg: keyring `/home/ubuntu/.gnupg/secring.gpg' created
+gpg: keyring `/home/ubuntu/.gnupg/pubring.gpg' created
+gpg: /home/ubuntu/.gnupg/trustdb.gpg: trustdb created
+gpg: key A1C052F8: public key "Maxim Dounin &lt;mdounin@mdounin.ru&gt;" imported
+gpg: Total number processed: 1
+gpg:               imported: 1  (RSA: 1)
+gpg: no ultimately trusted keys found</pre>
+</div>
+<p>Now verify the signature:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[root@server]# </span><span class="command">gpg --trusted-key 0x520A9993A1C052F8 --verify nginx-1.12.2.tar.gz{.asc,}</span>
+gpg: Signature made Tue 17 Oct 2017 01:18:21 PM UTC using RSA key ID A1C052F8
+gpg: key A1C052F8 marked as ultimately trusted
+gpg: checking the trustdb
+gpg: 3 marginal(s) needed, 1 complete(s) needed, PGP trust model
+gpg: depth: 0  valid:   1  signed:   0  trust: 0-, 0q, 0n, 0m, 0f, 1u
+gpg: Good signature from "Maxim Dounin &lt;mdounin@mdounin.ru&gt;"
+</pre>
+</div>
+<p>From here, configure nginx with the <cite>--add-module=</cite> option, pointing to the ModSecurity-nginx module that was previously downloaded:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[root@server]# </span><span class="command">tar -zxf nginx-1.12.2.tar.gz
+<span class="server">[root@server]# </span><span class="command">cd</span> nginx-1.12.2/
+<span class="server">[root@server]# </span><span class="command">./configure --add-module=/root/ModSecurity-nginx</span>
+</span></pre>
+</div>
+<p>Finally, build and install nginx:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[root@server]# </span><span class="command">make &amp;&amp; make install</span>
+</pre>
+</div>
+<div id="configuring-libmodsecurity-in-nginx">
+<h2>Configuring libmodsecurity in nginx</h2>
+<p>Adding libmodsecurity rules and configuration directives inside nginx configs is straightforward. Add the following to the nginx configuration:</p>
+<div class="preboxcontainer">
+<pre class="prebox">modsecurity on;
+modsecurity_rules '
+    SecRuleEngine On
+    SecDebugLog /tmp/modsec_debug.log
+    SecDebugLogLevel 9
+    SecRule ARGS "@streq test" "id:1,phase:1,deny,msg:\'test rule\'"
+';
+</pre>
+</div>
+<p>These directives can be added inside the <cite>http</cite> block, or one or more <cite>server</cite> or <cite>location</cite> blocks. Once this is added, reload nginx. This rule can now be tested by sending a regular request to nginx and examining the output:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[root@server]# </span><span class="command">curl -D - -s -o /dev/null localhost/</span>
+HTTP/1.1 200 OK
+Server: nginx/1.10.1
+Date: Wed, 13 Jul 2016 18:06:15 GMT
+Content-Type: text/html
+Content-Length: 612
+Last-Modified: Wed, 13 Jul 2016 18:01:34 GMT
+Connection: keep-alive
+ETag: "578681fe-264"
+Accept-Ranges: bytes
+</pre>
+</div>
+<p>The single rule added via the <cite>modsecurity_rules</cite> directive will deny requests that have the word <cite>test</cite> inside a GET or POST argument. This can be seen by changing the curl test:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[root@server]# </span><span class="command">curl -D - -s -o /dev/null localhost/?a=test</span>
+HTTP/1.1 403 Forbidden
+Server: nginx/1.10.1
+Date: Wed, 13 Jul 2016 18:06:19 GMT
+Content-Type: text/html
+Content-Length: 169
+Connection: keep-alive
+</pre>
+</div>
+<p>A 403 response means that nginx has blocked the request based on processing the request with libmodsecurity. From here, libmodsecurity can be customized using the available directives for ModSecurity (see the ModSecurity reference manual below for more information).</p>
+<ul>
+<li><a href="https://github.com/SpiderLabs/ModSecurity/wiki/Reference-Manual" target="_blank" rel="noopener">https://github.com/SpiderLabs/ModSecurity/wiki/Reference-Manual</a></li>
+</ul>
+</div>
+<div id="final-notes">
+<h2>Final Notes</h2>
+<p>It should be noted that libmodsecurity is still in active development, so certain functionality is subject to change. As with any actively developed open source project, be sure to check the source code for the most recent releases.</p>
+</div>

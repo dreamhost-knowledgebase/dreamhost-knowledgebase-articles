@@ -1,0 +1,133 @@
+<p><a href="https://help.dreamhost.com/hc/en-us/articles/215912838-Configuring-security-groups">Security Groups</a> can be created and managed within the DreamCompute dashboard. However, advanced users can take advantage of the OpenStack CLI to manage Security Groups. </p>
+<p>This article assumes you've already set up the OpenStack CLI.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/235817468-Getting-started-with-the-OpenStack-command-line-client">Getting started with the OpenStack CLI</a></li>
+</ul>
+<h2>Creating and deleting Security Groups</h2>
+<p>After logging into your instance, run the following command to list Security Groups currently configured.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack security group list</span>
+</pre>
+</div>
+<h3>Creating a Security Group</h3>
+<p>Run the following command to create a Security Group with a specified name and description.</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>The backslash character \ is used when entering a long command. When you enter the \, the terminal command continues to the next line until you finish entering it.</p>
+<p>You could also remove the \ character and put every parameter into a single line.</p>
+</div>
+</div>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack security group create \
+--description GROUP_DESCRIPTION SECURITY_GROUP_NAME</span></pre>
+</div>
+<p>If you run the <span class="code">openstack security group list</span> command above, you'll see it now exists. You can also view it in your DreamCompute dashboard on the '<a href="https://iad2.dreamcompute.com/project/security_groups/">Network &gt; Security Groups</a>' page.</p>
+<h3>Deleting a Security Group</h3>
+<p>Run the following to delete a Security Group.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack security group delete SECURITY_GROUP_NAME</span>
+</pre>
+</div>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>You cannot delete the 'default' Security Group from your project. It's also not possible to delete a Security Group that is assigned to an instance.</p>
+</div>
+</div>
+<div id="create-and-manage-security-group-rules">
+<h2>Create and manage Security Group rules</h2>
+<p>You can modify Security Group rules with the <span class="code">openstack security group rule</span> command.</p>
+<h3>List the rules for a Security Group</h3>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack security group rule list SECURITY_GROUP_NAME</span>
+</pre>
+</div>
+<h3 id="h_681825905161518121085424">Allow requests to port 8080</h3>
+<p>To allow requests to port 8080 on all instances using this group, choose one of the following options:</p>
+<h3>Create new rules for a group</h3>
+<p>Allow access from all IP addresses (specified as IP subnet <code class="docutils literal"><span class="pre">0.0.0.0/0</span></code> in CIDR notation).</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack security group rule create \
+--proto tcp --dst-port 8080 SECURITY_GROUP_NAME</span>
++-------------------+------------------------+
+| Field             | Value                  |
++-------------------+------------------------+
+| created_at        | 2018-02-08T20:33:38Z   |
+| description       |                        |
+| direction         | ingress                |
+| ether_type        | IPv4                   |
+| id                | fdd92e21-c474-4349-8...|
+| name              | None                   |
+| port_range_max    | 8080                   |
+| port_range_min    | 8080                   |
+| project_id        | e52cde3c560547cf950b...|
+| protocol          | tcp                    |
+| remote_group_id   | None                   |
+| remote_ip_prefix  | 0.0.0.0/0              |
+| revision_number   | 1                      |
+| security_group_id | 36f1dcb4-e2fb-3a03-9...|
+| updated_at        | 2018-02-08T20:33:38Z   |
++-------------------+------------------------+
+</pre>
+</div>
+<p>If you check the rules again, you'll see the new one has been added:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack security group rule list SECURITY_GROUP_NAME</span>
++---------------+-------------+-----------+------------+-----------------------+
+| ID            | IP Protocol | IP Range  | Port Range | Remote Security Group |
++---------------+-------------+-----------+------------+-----------------------+
+| 7b106e0e-0... | None        | None      |            | None                  |
+| 87b0de27-1... | None        | None      |            | None                  |
+| fdd92e91-c... | tcp         | 0.0.0.0/0 | 8080:8080  | None                  |
++---------------+-------------+-----------+------------+-----------------------+</pre>
+</div>
+<h3>Add rules from an existing group</h3>
+<p>Allow access only from IP addresses from other Security Groups (source groups) to access the specified port.</p>
+<p>Run the following to view the ID and Name of existing Security Groups:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack security group list</span>
++----------------+-------------+------------------------------+-------------+
+| ID             | Name        | Description                  | Project     |
++----------------+-------------+------------------------------+-------------+
+| 26f1dfb4-e2... | NEW_group   | OSCLI_Desc                   | e52ede2a... |
+| 29abef85-b8... | default     | Default security group       | e52ede2a... |
+| 7b450512-d3... | Cloud       | Security Group for NextCloud | e52ede2a... |
++----------------+-------------+------------------------------+-------------+</pre>
+</div>
+<p>Once you've located the ID and Name of the group you'd like to import, run the following:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack security group rule create \
+--proto tcp --dst-port 8080 --remote-group SOURCE_GROUP_ID GROUP_NAME_TO_ADD_RULE_TO</span></pre>
+</div>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>The SOURCE_GROUP_ID is the ID of the group you wish to add.</p>
+<p>The GROUP_NAME_TO_ADD_RULE_TO is the group you're adding the rule to.</p>
+</div>
+</div>
+<p>View the 'Network &gt; Security Groups' page in your panel. To the right of the new Security Group, click the <strong>Manage</strong> button.</p>
+<dl>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/Remote_Security_Group.png" alt="" /></dd>
+</dl>
+<p>You'll see a new rule added and the name of the other Security Group is now under the 'Remote Security Group' column. In the example above, the other Security Group is named 'Cloud'.</p>
+<p>This allows source traffic from any other instance in that Security Group access to any other instance.</p>
+<h3>Allow access through a UDP port</h3>
+<p>Adding rules for UDP are the same as TCP. You can use the same commands above, just make sure to swap out <span class="code">--proto tcp</span> with <span class="code">--proto udp</span> and change the port number to 53.</p>
+</div>
+<div id="delete-a-security-group-rule">
+<h2>Delete a Security Group rule</h2>
+<p>First, run the following command to view all Security Group rules.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack security group rule list</span></pre>
+</div>
+<p>This lists all rules with their corresponding ID. The ID is a long string of numbers and letters. For example:</p>
+<ul>
+<li>55f3cf46d-2c57-4b05-8dab-e12ab585af33</li>
+</ul>
+<p>To delete a rule, run the following command with the correct rule ID.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack security group rule delete SECURITY_GROUP_RULE_ID</span></pre>
+</div>
+</div>

@@ -1,4 +1,42 @@
-<p>To change the resource limits (vCPU/RAM) of a specific instance, you need to change its 'Flavor'.</p>
+<p>To change the resource limits (vCPU/RAM) of a specific instance, you need to change its 'Flavor'. This can be done within the DreamCompute dashboard, or using the OpenStack CLI. Use whichever option you're more comfortable with.</p>
+<ul>
+<li><a href="#Dashboard">Changing limits in the dashboard</a></li>
+<li><a href="#OpenStackCLI">Changing limits using the OpenStack CLI</a></li>
+</ul>
+<h2><span id="Dashboard">Changing resource limits in the dashboard</span></h2>
+<ol>
+<ol>
+<li>Navigate to the <a href="https://panel.dreamhost.com/index.cgi?tree=cloud.compute&amp;">(Panel &gt; 'Cloud Services' &gt; 'DreamCompute')</a> page.</li>
+<li>Click the <strong>'View Dashboard' </strong>button.</li>
+<li>In the left menu click 'Compute'.</li>
+<li>From the dropdown click 'Instances'.</li>
+<li>To the right of your instance, under the "Actions" column, is a <strong>Create Snapshot</strong> button. Click the little arrow next to it to view the dropdown menu.
+<dl>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/Resize_Instance_dropdown.png" alt="" /></dd>
+</dl>
+</li>
+<li>From the menu, select "Resize Instance".
+<dl>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/Resize_Instance_popup.png" alt="" /></dd>
+</dl>
+</li>
+<li>In the pop-up, select the New Flavor you want from the dropdown, then click the <strong>Resize</strong> button.</li>
+<li>After a few moments, the instance will report that it is in a Resize/Migrate status and ask you to "Confirm or Revert Resize/Migrate".
+<dl>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/Resize_Instance_confirm.png" alt="" /></dd>
+</dl>
+</li>
+<li>You can do this by clicking the <strong>Confirm Resize/Migrate</strong> button under the 'Actions' column.</li>
+</ol>
+</ol>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>You can also cancel the resize by clicking the drop-down arrow and selecting the "Revert Resize/Migrate" action.</p>
+</div>
+</div>
+<p>After confirming or reverting the resize/migrate, the instance status will switch back to Active.</p>
+<h2><span id="OpenStackCLI">Changing the resource limit using the OpenStackCLI</span></h2>
 <div class="alert alert-note">
 <div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
@@ -6,7 +44,6 @@
 <p>In the following examples, myInstance is the name of your instance. You can view the name of your instance in the <a href="https://iad2.dreamcompute.com/project/instances/">DreamCompute dashboard</a>.</p>
 </div>
 </div>
-<h2>Changing the resource limit</h2>
 <ol>
 <li>First, using the <span class="code">openstack server show SERVER</span> command to show information about an instance. This includes its size, which is shown as the value of the flavor property:
 <div class="preboxcontainer">
@@ -79,12 +116,8 @@ Complete
 <li>
 <p class="first">Show the status for the instance.</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server list</span>
-+----------------------+------------------+---------------+-----------------------------------------+
-| ID                   | Name             | Status        | Networks                                |
-+----------------------+------------------+---------------+-----------------------------------------+
-| 84c6e57d-a6b1-44b... | myInstance       | VERIFY_RESIZE | private=172.16.101.6, public=10.4.113.6 |
-+----------------------+------------------+---------------+-----------------------------------------+
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server show INSTANCE_NAME -c status</span>
++--------+----------------+<br />| Field  | Value          |<br />+--------+----------------+<br />| status | VERIFY_RESIZE  |<br />+--------+----------------+
 </pre>
 </div>
 <p>When the resize completes, the status becomes VERIFY_RESIZE.</p>
@@ -94,7 +127,7 @@ Complete
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server resize --confirm myInstance</span></pre>
 </div>
-<p>Run <span class="code">openstack server list</span> again and you'll see the status is now ACTIVE.</p>
+<p>Run <span class="code">openstack server show INSTANCE_NAME -c status</span> again and you'll see the status is now ACTIVE.</p>
 </li>
 <li>
 <p class="first">If the resize fails or does not work as expected, revert the resize. For example:</p>
