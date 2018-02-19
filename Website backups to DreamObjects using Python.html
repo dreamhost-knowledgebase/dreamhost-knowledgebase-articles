@@ -20,11 +20,11 @@
 <p>A finished version of the script for you to download is at the end of this tutorial, but it will help if you follow along first.</p>
 </div>
 <div id="set-up-dreamobjects-and-create-a-bucket">
-<h2>Step#1: Enable DreamObjects and create a Bucket</h2>
+<h2>Step 1 — Enable DreamObjects and create a Bucket</h2>
 <p>Follow <a class="reference external" href="https://help.dreamhost.com/hc/en-us/articles/215986327-DreamObjects-Users">DreamObjects Users</a> and <a class="reference external" href="https://help.dreamhost.com/hc/en-us/articles/215321178-DreamObjects-Buckets">DreamObjects Bucket tutorials</a> to create a user and bucket in your DreamObjects account.</p>
 </div>
 <div id="piecing-together-the-backup-script">
-<h2>Step#2: Create a .boto config file</h2>
+<h2>Step 2 — Create a .boto config file</h2>
 <p>This script uses the popular programming language <a href="https://help.dreamhost.com/hc/en-us/articles/216137717-Python-overview">Python</a>, and a library of code called <a href="https://help.dreamhost.com/hc/en-us/articles/217473218-How-to-use-boto-rsync-with-DreamObjects">boto</a>. boto provides the tools to communicate with DreamObjects, but first needs to be set up.</p>
 <div id="brief-setup">
 <ol>
@@ -41,7 +41,7 @@
 </li>
 <li>Once the .boto file has been created, proceed to the next section.</li>
 </ol>
-<h2>Step#3: Create the script file</h2>
+<h2>Step 3 — Create the script file</h2>
 <ol>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Create a Python file</a> with the extension ”.py”. You can name it anything you like. The very first line of your script must be this:
 <div class="preboxcontainer">
@@ -64,7 +64,7 @@
 <h3>Import modules</h3>
 <p>Your script needs several modules to run the code. Add these three lines at the top of your script (below #!/usr/bin/python):</p>
 <div class="preboxcontainer">
-<pre class="prebox">import tarfile
+<pre class="prebox">import boto<br />import tarfile
 import datetime
 import os</pre>
 </div>
@@ -97,7 +97,7 @@ target_dir = '<span class="command">example.com</span>'</pre>
 <div class="preboxcontainer">
 <pre class="prebox">day_number = datetime.datetime.today().weekday()
 
-backup_filename = "{0}.backup.{1}.tar.gz".format(
+backup_filename = "<span class="command">{0}.backup.{1}.tar.gz</span>".format(
     target_dir,
     str(<span class="command">day_number</span>), #this line should be edited to look like str(4),
     )
@@ -109,8 +109,8 @@ backup_filepath = os.path.join(
 </div>
 <p>This example keeps 7 day backups, each day overwriting the backup from one week previous. This bit of code defines a name and location for the backup that will be created.</p>
 <ul class="simple">
-<li>First, use the datetime library to figure out what day of the week is today, but as a number. For example, Sunday is 0, Monday is 1, Thursday is 4, etc. Then, put that number into the “day_number” variable.</li>
-<li>Next, define the file name for the backup file to be something like “example.com.backup.4.tar.gz”. That’s what that backup_filename line works out to (on Thursdays).</li>
+<li>First, define the file name for the backup file to be something like “example.com.backup.4.tar.gz”. That’s what that backup_filename line works out to (on Thursdays).</li>
+<li>Next, use the datetime library to figure out what day of the week is today, but as a number. For example, Sunday is 0, Monday is 1, Thursday is 4, etc. Then, put that number into the “day_number” variable.</li>
 </ul>
 <h3>Create the backup file</h3>
 <p>The next few lines create the backup file:</p>
@@ -132,6 +132,12 @@ tar.close()</pre>
 <p>That’s only a single line because we already defined the access key and secret key in the .boto file earlier.</p>
 <h3>Upload the tarfile</h3>
 <p>Next, upload the tarfile to DreamObjects:</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Enter the following code as shown. Do not change the variables to your actual bucket or filename.</p>
+</div>
+</div>
 <div class="preboxcontainer">
 <pre class="prebox">bucket = connection.get_bucket(backup_bucket)
 key = bucket.new_key(backup_filename)
@@ -147,7 +153,7 @@ key.set_contents_from_file(open(backup_filepath, 'rb'))</pre>
 <div class="preboxcontainer">
 <pre class="prebox">os.remove(backup_filepath)</pre>
 </div>
-<h2>Step#4: The Cron Job</h2>
+<h2>Step 4 — The Cron Job</h2>
 <p>Now that the script is complete, you can create a cron job to run daily. This runs the script every day to back up your website to DreamObjects.</p>
 <ol>
 <li>First, make sure the <a href="https://help.dreamhost.com/hc/en-us/articles/214694298-What-are-the-different-types-of-DreamHost-users-">website user</a> of your domain is a <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Enabling-Shell-access">shell user</a>.</li>
@@ -162,7 +168,7 @@ key.set_contents_from_file(open(backup_filepath, 'rb'))</pre>
 <div class="preboxcontainer">
 <pre class="prebox">#!/usr/bin/python
 
-import tarfile
+import boto<br />import tarfile
 import datetime
 import os
 

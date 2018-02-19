@@ -1,47 +1,26 @@
-<body role="document">
-<div class="document">
-<div class="documentwrapper">
-<div class="body" role="main">
-<div id="how-to-migrate-volumes-between-dreamcompute-clusters">
-
-<div id="introduction">
-<h2>Introduction</h2>
-<p>DreamCompute offers multiple clusters (also often called availability zones)
-which are independent OpenStack installations with their own servers, storage
-and control panel.  Some clusters have different features, such as SSD storage
-that is useful for a given data storage plan.  Migrating data between clusters
-is not automated at this time, and this guide will show you how to accomplish
-this yourself.</p>
-<p>This guide assumes that you are comfortable working with SSH, and some
-command line utilities such as <a class="reference external" href="http://man7.org/linux/man-pages/man1/dd.1.html">dd</a>.</p>
-</div>
-<div id="things-to-keep-in-mind">
-<h2>Things To Keep in Mind</h2>
-<p>Here are a few things to keep in mind and plan while doing a migration.</p>
+<p>DreamCompute offers multiple clusters (also often called availability zones) which are independent OpenStack installations with their own servers, storage and control panel. Some clusters have different features, such as SSD storage that is useful for a given data storage plan. Migrating data between clusters is not automated at this time, but this guide will show you how to accomplish this yourself.</p>
+<p>This guide assumes that you are comfortable working with SSH as well as some command line utilities like <span class="code">dd</span> and the OpenStack CLI. For more information about those utilities, see the articles below.</p>
 <ul>
-<li><p class="first"><strong>Volumes Only</strong></p>
-<p>Please see the article on migrating instances if you wish to move instances.
-This guide focuses solely on migrating volumes, which is useful if you have
-multiple volumes attached to an instance, and after migrating the instance
-you want to then migrate the remaining volumes.</p>
-<p>Also, this method does not work with ephemeral storage and is intended only
-for volume to volume copying.</p>
-</li>
-<li><p class="first"><strong>Plan A Maintenance Window</strong></p>
-<p>It is safest to move the data when the volume has no running services or open
-files, to avoid corruption or other odd behavior.  The copying of the data is
-generally pretty quick for smaller volumes, but for larger volumes could take
-some time.  The copy needs to complete before service can be restored.</p>
-</li>
+<li><a class="reference internal" href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
+<li><a class="reference external" href="http://man7.org/linux/man-pages/man1/dd.1.html">http://man7.org/linux/man-pages/man1/dd.1.html</a></li>
+<li><a class="reference internal" href="https://help.dreamhost.com/hc/en-us/articles/235817468-Getting-started-with-the-OpenStack-command-line-client">Getting started with the OpenStack command line client</a></li>
 </ul>
-</div>
+<div id="things-to-keep-in-mind">
+<h2>Things to keep in mind</h2>
+<p>Here are a few things to keep in mind and plan while doing a migration.</p>
+<h3>Volumes only</h3>
+<p>This guide focuses solely on migrating volumes, which is useful if you have multiple volumes attached to a single instance and wish to maintain that storage schema in the new cluster. Please note that this method does not work with ephemeral storage and is intended only for volume to volume copying. If you wish to move instances, please see the article below.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/218501427-How-to-migrate-instances-between-DreamCompute-clusters">How to migrate instances between DreamCompute clusters</a></li>
+</ul>
+<h3>Plan a maintenance window</h3>
+<p>To avoid corruption or other odd behavior, it is safest to move the data when the volume has no running services or open files. The copying of the data is generally fairly quick for smaller volumes, but for larger volumes could take some time. Remember, the copy must complete before service can be restored.</p>
 <div id="migrate-a-volume-using-ssh-and-dd">
 <h2>Migrate a Volume using SSH and dd</h2>
-<p>For this type of move, we will assume you have stopped all services using the
-data on the volume, safely unmounted it on the instance using it, and detached
-it from the instance in the Volumes menu in the dashboard.</p>
-<p>As an overview, we are going to setup the following to accomplish this task.</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>  SOURCE CLUSTER       DESTINATION CLUSTER
+<p>For this type of move, the assumptuion is that you have stopped all services using the data on the volume, safely unmounted any partitions on the instance using it, and detached it from the instance in the Volumes menu in the dashboard.</p>
+<p>As an overview, the following will be set up to accomplish this task.</p>
+<div class="code">
+<pre>  SOURCE CLUSTER       DESTINATION CLUSTER
 
  +---------------+     +---------------+
  | Temp Instance |----&gt;| Temp Instance |
@@ -50,63 +29,40 @@ it from the instance in the Volumes menu in the dashboard.</p>
 +----------------+      +--------------+
 | Volume To Copy |      |  New Volume  |
 +----------------+      +--------------+
-</pre></div>
+</pre>
 </div>
-<p>Here we go!</p>
-<p>1.  Create two new instances, using the smallest available flavor, to be used
-as copy machines, one each in the source and destination clusters.  For this
-guide, I will be using Ubuntu 14.04, however the commands should be similar on
-any Ubuntu system.  I would recommend making the instance ephemeral, since we
-won’t be planning to keep it.</p>
-<p>2.  For simplicity, we will use passwords for the two temp instances to connect
-instead of SSH keys, however you can do it either way you prefer.  To setup
-the instances for password authentication, turn it on with the below
-commands.</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">&lt;login to each instance&gt;</span>
-<span class="gp">[user@server]$</span> sudo su -
-<span class="gp">[root@server]#</span> sed -i -e <span class="s1">'s/PasswordAuthentication no/PasswordAuthentication yes/'</span> /etc/ssh/sshd_config
-<span class="gp">[root@server]#</span> sed -i -e <span class="s1">'s/PermitRootLogin without-password/PermitRootLogin yes/'</span> /etc/ssh/sshd_config
-<span class="gp">[root@server]#</span> service ssh restart
-<span class="gp">[root@server]#</span> passwd root
-<span class="go">&lt;set a password&gt;</span>
-</pre></div>
+<h2>Migration procedure</h2>
+<ol>
+<li>Create two new "copy machine" instances (one each in the source and destination clusters), using the smallest available flavor. This guide uses Ubuntu 14.04, but the commands should be similar on any Ubuntu system. It is also recommended that you make the instances ephemeral, since they will not be needed after the migration is complete.</li>
+<li>For simplicity, the two temporary instances will be connected using passwords instead of SSH keys, but you can do this any way you prefer. To set up the instances for password authentication, turn it on with the following commands.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo -i</span>
+<span class="server">[root@server]# </span><span class="command">sed -i -e 's/PasswordAuthentication no/PasswordAuthentication yes/' \
+               /etc/ssh/sshd_config</span>
+<span class="server">[root@server]# </span><span class="command">sed -i -e 's/PermitRootLogin without-password/PermitRootLogin yes/' \
+               /etc/ssh/sshd_config</span>
+<span class="server">[root@server]# </span><span class="command">service ssh restart</span>
+<span class="server">[root@server]# </span><span class="command">passwd root</span></pre>
 </div>
-<p>3.  Create a matching volume in the destination cluster, that is the same size
-or larger than the source volume.</p>
-<p>4.  Attach the source volume to the instance in the source cluster, to the
-temporary instance.  Attach the destination volume to the instance in the
-destination cluster.  There is no need to mount them.</p>
-<p>5.  Determine the drive letter of the volumes on both instances.  Generally
-/dev/vda will be the boot drive of your instance, so it will be /dev/vdb or
-/dev/vdc.  You can check for it with a couple commands:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@server]#</span> fdisk -l /dev/vdb <span class="p">|</span> grep Disk
-<span class="gp">[root@server]#</span> fdisk -l /dev/vdc <span class="p">|</span> grep Disk
-</pre></div>
+</li>
+<li>Create a volume in the destination cluster that is the same size (or larger than) the source volume.</li>
+<li>Attach the source volume to the temporary instance in the source cluster. Attach the destination volume to the temporary instance in the destination cluster. There is no need to mount either of them.</li>
+<li>Determine the drive letter of the volumes on both instances. Generally /dev/vda will be the boot drive of your instance, so it will be /dev/vdb or /dev/vdc. One way to check for it is with the fdisk command:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[root@server]# </span><span class="command">fdisk -l /dev/vdb | grep Disk</span>
+<span class="server">[root@server]# </span><span class="command">fdisk -l /dev/vdc | grep Disk</span>
+</pre>
 </div>
-<p>The one that matches the size of the volume is the one to use.  They may have
-different drive letters on each instance, so take note of that.</p>
-<p>6.  Now we can copy the data using dd and ssh.  For this we will login to the
-instance on the destination cluster, and use the IPv6 address for simplicity.
-Replace IPV6-OF-SOURCE-INSTANCE with the IPv6 address of the source instance
-and the first /dev/vdX with the drive letter of the source volume, and the
-second /dev/vdX with the drive letter of the destination volume.</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[root@destserver]#</span> ssh root@IPV6-OF-SOURCE-INSTANCE <span class="s2">"dd if=/dev/vdX | gzip -1 -"</span> <span class="p">|</span> gunzip - <span class="p">|</span> dd <span class="nv">of</span><span class="o">=</span>/dev/vdX
-</pre></div>
+</li>
+<li>The one that matches the size of the volume is the one to use. They may have different drive letters on each instance, so take note of that.</li>
+<li>Now the data can be copied using <span class="code">dd</span> and SSH. To keep things simple, log into the instance on the destination cluster using its IPv6 address. Next, in the following command, replace IPV6-OF-SOURCE-INSTANCE with the IPv6 address of the source instance, the first /dev/vdX with the drive letter of the source volume, and the second /dev/vdX with the drive letter of the destination volume.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[root@destserver]# </span><span class="command">ssh root@IPV6-OF-SOURCE-INSTANCE \
+                   "dd if=/dev/vdX | gzip -1 -" | gunzip - | dd of=/dev/vdX</span>
+</pre>
 </div>
-<p>7.  Detach the destination volume from the instance, and check that it has the
-data you want by trying to boot it or attach it to another instance.  If all
-looks correct, you can destroy both temporary instances and you are done.</p>
+</li>
+<li>Once the command has completed, detach the destination volume from the instance and check that it has the data you want by trying to boot it, or by attaching it to another instance. If everything looks correct, you are done and can destroy both temporary instances.</li>
+</ol>
 </div>
 </div>
-</div>
-</div>
-<div class="clearer"></div>
-</div>
-<div class="footer">
-</div>
-<!--DreamCompute Button-->
-<div class="dream-sign-up">
-<h2>Deploy Your Apps On Cloud Servers Today</h2>
-<a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a>
-</div>
-</body>
