@@ -1,159 +1,173 @@
-<body role="document">
 <div class="document">
 <div class="documentwrapper">
-<div class="body" role="main">
+<div class="body">
 <div id="how-to-configure-mysql-on-dreamcompute-running-debian-or-ubuntu">
-
-<p>MySQL is the worlds second most popular database engine (after SQLite) and a
-very common choice for a open-source relational database management system
-(RDBMS).  MySQL is an important part of LAMP (Linux, Apache, MySQL, PHP)
-stacks as well as other AMP stacks, and is supported by many web software
-packages.  MySQL is the only relational database software offered by DreamHost
-for its shared, VPS and dedicated hosting products, except for SQLite.  You
-can use it for your DreamCompute instance as well, and the following
-information helps you install and configure it.  These instructions assume you
-run a Debian- or Ubuntu-based system as they have their own specific
-configuration and file hierarchy.</p>
+<p>MySQL is one of the most popular database engines used for websites. MySQL is an important part of LAMP (Linux, Apache, MySQL, PHP) stacks as well as other AMP stacks, and is supported by many web software packages.</p>
+<p>MySQL is the only relational database software offered by DreamHost for its Shared, VPS, and Dedicated hosting products. This article helps you install and configure it on a DreamCompute running Debian or Ubuntu.</p>
 <div id="installing-mysql">
 <h2>Installing MySQL</h2>
-<p>Debian and Ubuntu sometimes offer multiple versions of MySQL in case your
-needs require a later version, however it is usually best to go with their
-defaults if no specific version is required.</p>
-<p>Debian 7.0 wheezy:</p>
-<ul class="simple">
-<li>mysql-server / mysql-server-5.5 - default and only version available</li>
-</ul>
-<p>Ubuntu 14.04 LTS:</p>
-<ul class="simple">
-<li>mysql-server / mysql-server-5.5 - default version of MySQL 5.5</li>
-<li>mysql-server-5.6 - alternative version of MySQL 5.6</li>
-</ul>
-<p>To install MySQL on your system, run the following commands with the desired
-mysql version, such as:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> sudo apt-get update
-<span class="gp">[user@server]$</span> sudo apt-get install mysql-server
-</pre></div>
+<p>Debian and Ubuntu sometimes offer multiple versions of MySQL in case your needs require an older version, however it is usually best to go with the default version if there are no specific requirements needed.</p>
+<p>To install the default version of MySQL on your system, run the following commands:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">user@server:$ </span><span class="command">sudo apt-get update</span>
+<span class="server">user@server:$ </span><span class="command">sudo apt-get install -y mysql-server</span></pre>
 </div>
-<p>The install process asks you to confirm if you wish to install any additional
-packages needed for this installation of MySQL.  Confirm by entering “<strong>y</strong>”
-and hitting enter.</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> sudo apt-get install mysql-server
-<span class="go">Reading package lists... Done</span>
-<span class="go">Building dependency tree</span>
-<span class="go">Reading state information... Done</span>
-<span class="go">The following extra packages will be installed:</span>
-<span class="go">libaio1 libdbd-mysql-perl libdbi-perl libhtml-template-perl</span>
-<span class="go">libmysqlclient18 mysql-client-5.5 mysql-common mysql-server-5.5</span>
-<span class="go">mysql-server-core-5.5</span>
-<span class="go">Suggested packages:</span>
-<span class="go">libipc-sharedcache-perl libterm-readkey-perl tinyca</span>
-<span class="go">The following NEW packages will be installed:</span>
-<span class="go">libaio1 libdbd-mysql-perl libdbi-perl libhtml-template-perl</span>
-<span class="go">libmysqlclient18 mysql-client-5.5 mysql-common mysql-server</span>
-<span class="go">mysql-server-5.5</span>
-<span class="go">mysql-server-core-5.5</span>
-<span class="go">0 upgraded, 10 newly installed, 0 to remove and 1 not upgraded.</span>
-<span class="go">Need to get 9,696 kB of archives.</span>
-<span class="go">After this operation, 97.0 MB of additional disk space will be used.</span>
-<span class="go">Do you want to continue [Y/n]?</span>
-</pre></div>
+<p>Before the installation completes, a dialog will pop up asking you to specify a MySQL server root password.</p>
+<dl>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/Create_MySQL_Password.png" /></dd>
+</dl>
 </div>
-<p>Before the installation completes, a dialog will pop up asking you to specify
-a MySQL server root password.  The root user is the default admin user and
-should have a strong password.</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>Configuring mysql-server-5.5
-While not mandatory, it is highly recommended that you set a
-password for the MySQL administrative "root" user.
-If this field is left blank, the password will not be changed.
-New password for the MySQL "root" user:
-</pre></div>
-</div>
-<p>If you enter a password, another dialog box will come up for you to re-enter
-the password to confirm.</p>
-<p>When it completes, the MySQL server is installed and runs with its default
-configuration.</p>
+<h2>Viewing installed packages</h2>
+<p>You can check which packages were just install by running the following command:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">user@server:$ </span><span class="command">dpkg -l | grep mysql</span>
+
+ii  mysql-client-5.7        5.7.21-0ubuntu0.16.04.1   amd64   MySQL database client binaries
+ii  mysql-client-core-5.7   5.7.21-0ubuntu0.16.04.1   amd64   MySQL database core client binaries
+ii  mysql-common            5.7.21-0ubuntu0.16.04.1   all     MySQL database common files, e.g. /etc/mysql/my.cnf
+ii  mysql-server            5.7.21-0ubuntu0.16.04.1   all     MySQL database server (metapackage depending on the latest version)
+ii  mysql-server-5.7        5.7.21-0ubuntu0.16.04.1   amd64   MySQL database server binaries and system database setup
+ii  mysql-server-core-5.7   5.7.21-0ubuntu0.16.04.1   amd64   MySQL database server binaries</pre>
 </div>
 <div id="configuring-and-using-mysql">
-<h2>Configuring and Using MySQL</h2>
-<p>The configuration files are stored in the /etc/mysql directory.  If any
-changes are made, you must restart MySQL for it to read the them.  This can be
-done by running:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> sudo service mysql restart
-</pre></div>
+<h2>Configuring and using MySQL</h2>
+<p>The configuration files are stored in the /etc/mysql directory.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">user@server:$ </span><span class="command">ls -1 /etc/mysql</span>
+/conf.d
+debian.cnf
+debian-start
+my.cnf
+my.cnf.fallback
+mysql.cnf
+/mysql.conf.d</pre>
 </div>
+<h3>The /etc/mysql/mysql.conf.d/mysqld.cnf config file</h3>
+<p>There are a few settings you may wish to change to customize MySQL. The following changes can be made in the /etc/mysql/mysql.conf.d/mysqld.cnf file.</p>
 <div id="main-configuration-file-etc-mysql-my-cnf">
-<h3>Main configuration file /etc/mysql/my.cnf</h3>
-<p>This is the main configuration file for MySQL.  There are a few settings you
-may wish to change:</p>
-<ul>
-<li><dl class="first docutils">
-<dt><strong>bind</strong></dt>
-<dd><p class="first last">The ip address that MySQL is listening to.  It can only listen to one ip
-address at any time.  By default it will listen to 127.0.0.1 (aka
-localhost), meaning that the MySQL service will only be accessible from
-the instance it is installed on.  If you want to connect to it from other
-DreamCompute instances, you can change this to your instances IPv4 or IPv6
-IP address.  Here is what an IPv6 configured mysql bind variable looks
-like:</p>
-</dd>
-</dl>
-</li>
-</ul>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>bind-address            = 2607:f298:6050:8a28:f816:3eff:fe62:c9c3
-</pre></div>
+<h4><strong>Change the 'bind' address</strong></h4>
+<p><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Edit this file</a> and you'll see the bind address:</p>
+<div class="preboxcontainer">
+<pre class="prebox">bind-address   = 127.0.0.1</pre>
 </div>
-<ul>
-<li><dl class="first docutils">
-<dt><strong>max_allowed_packet</strong></dt>
-<dd><p class="first last">The largest size allowed for a single packet, which normally is only
-relevant for restoring backups.  If a backup was created on a server with
-a high setting for this value, it may have difficulty restoring on another
-machine with a lower setting for this value.  The default is 16M.</p>
-</dd>
-</dl>
-</li>
-</ul>
+<p>This is the IP address MySQL is listening to. It can only listen to one IP address at any time. By default it will listen to 127.0.0.1 (aka localhost), meaning that the MySQL service will only be accessible from the instance it is installed on.</p>
+<p>If you want to connect to MySQL from other DreamCompute instances, you can change this to your database <a href="https://help.dreamhost.com/hc/en-us/articles/115001754711-Locating-the-IP-Address-of-your-instance">instance's IPv4 or IPv6 IP address</a>. Here is what an IPv6 configured mysql bind-address would look like:</p>
+<div class="preboxcontainer">
+<pre class="prebox">bind-address   = 2607:f298:6050:8a28:f816:3eff:fe62:c9c3</pre>
 </div>
-<div id="resetting-the-root-password">
-<h3>Resetting the root password</h3>
-<p>If you forget the root password, it can be reset by running this command and
-entering in a new password twice.</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> dpkg-reconfigure mysql-server-5.5
-</pre></div>
+<h4><strong>max_allowed_packet</strong></h4>
+<p>This value is the largest size allowed for a single packet, which normally is only relevant for restoring backups. If a backup was created on a server with a high setting for this value, it may have difficulty restoring on another machine with a lower setting. The default is 16M.</p>
+<h2>Restarting the mysql service</h2>
+<p>If any changes are made to your mysql configuration, you must restart MySQL for it to read the them. This can be done by running the following:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">user@server:$ </span><span class="command">sudo service mysql restart</span></pre>
 </div>
-</div>
+<h2>Connecting to the mysql shell</h2>
 <div id="connecting-to-mysql-shell">
-<h3>Connecting to mysql shell</h3>
-<p>To connect to your new mysql install, to setup new databases or configure new
-users, you can run these commands.</p>
-<p>Via socket (should work even if “bind” is changed in my.cnf):</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> mysql -S /var/run/mysqld/mysqld.sock -u root -p
-</pre></div>
+<p>If you need to set up new databases or configure new users, you must log into your MySQL Shell. Run any of the following command to log in.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">user@server:$ </span><span class="command">mysql -u root -p</span></pre>
 </div>
-<p>Via IP address:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> mysql -h 10.10.10.X -u root -p
-</pre></div>
+<p>The prompt will change to the following:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">mysql&gt; </span></pre>
 </div>
-<p>Via localhost:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> mysql -h localhost -u root -p
-</pre></div>
+<p>You can now run mysql commands to configure a database.</p>
+<h2>Secure MySQL</h2>
+<p>After MySQL has been installed, it's a good idea to secure its settings. Run the following command to open an interactive settings dialog:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">user@server:$ </span><span class="command">mysql_secure_installation</span>
+
+Securing the MySQL server deployment.
+Enter password for user root:</pre>
 </div>
-<p>or just:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> mysql -u root -p
-</pre></div>
+<h3>Set a value for password validation</h3>
+<p>You can choose to enable the 'Password Plugin' which tests the strength of your MySQL passwords. If you want to enable this, type the letter 'y'. You can then decide how secure you'd like new passwords to be.</p>
+<div class="preboxcontainer">
+<pre class="prebox">VALIDATE PASSWORD PLUGIN can be used to test passwords
+and improve security. It checks the strength of password
+and allows the users to set only those passwords which are
+secure enough. Would you like to setup VALIDATE PASSWORD plugin?
+
+Press y|Y for Yes, any other key for No: <span class="command">y</span>
+
+There are three levels of password validation policy:
+
+LOW    Length &gt;= 8
+MEDIUM Length &gt;= 8, numeric, mixed case, and special characters
+STRONG Length &gt;= 8, numeric, mixed case, special characters and dictionary                  file
+
+Please enter 0 = LOW, 1 = MEDIUM and 2 = STRONG: <span class="command">2</span></pre>
 </div>
+<h3>Changing your root password</h3>
+<p>The dialog will ask you if you want to change your root password. This isn't necessary since you just created it while installing.</p>
+<div class="preboxcontainer">
+<pre class="prebox">Using existing password for root.
+
+Estimated strength of the password: 50
+Change the password for root ? ((Press y|Y for Yes, any other key for No) : <span class="command">n</span>
+
+ ... skipping.</pre>
 </div>
+<h3>Disable the anonymous user</h3>
+<p>It's a good idea to disable the anonymous user.</p>
+<div class="preboxcontainer">
+<pre class="prebox">By default, a MySQL installation has an anonymous user,
+allowing anyone to log into MySQL without having to have
+a user account created for them. This is intended only for
+testing, and to make the installation go a bit smoother.
+You should remove them before moving into a production
+environment.
+
+Remove anonymous users? (Press y|Y for Yes, any other key for No) : <span class="command">y</span>
+Success.</pre>
 </div>
+<h3>Disable root login</h3>
+<p>It is also recommended to disable root login.</p>
+<div class="preboxcontainer">
+<pre class="prebox">Normally, root should only be allowed to connect from
+'localhost'. This ensures that someone cannot guess at
+the root password from the network.
+
+Disallow root login remotely? (Press y|Y for Yes, any other key for No) : <span class="command">y</span>
+Success.</pre>
 </div>
+<h3>Remove 'test' database</h3>
+<p>You should remove the 'test' database since there's no need for it.</p>
+<div class="preboxcontainer">
+<pre class="prebox">By default, MySQL comes with a database named 'test' that
+anyone can access. This is also intended only for testing,
+and should be removed before moving into a production
+environment.
+
+
+Remove test database and access to it? (Press y|Y for Yes, any other key for No) : <span class="command">y</span>
+ - Dropping test database...
+Success.
+
+ - Removing privileges on test database...
+Success.</pre>
 </div>
+<h3>Reload</h3>
+<p>Reload so your new settings take affect.</p>
+<div class="preboxcontainer">
+<pre class="prebox">Reloading the privilege tables will ensure that all changes
+made so far will take effect immediately.
+
+Reload privilege tables now? (Press y|Y for Yes, any other key for No) : <span class="command">y</span>
+Success.
+
+All done!</pre>
 </div>
-<div class="clearer"></div>
-</div>
-<div class="footer">
-</div>
+<div class="footer"> </div>
 <!--DreamCompute Button-->
 <div class="dream-sign-up">
 <h2>Deploy Your Apps On Cloud Servers Today</h2>
-<a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a>
+<a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a></div>
 </div>
-</body>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
