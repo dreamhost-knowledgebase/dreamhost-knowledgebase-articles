@@ -1,6 +1,6 @@
 <div class="document">
 <div class="documentwrapper">
-<div class="body" role="main">
+<div class="body">
 <div id="setting-up-let-s-encrypt-on-dreamcompute-with-apache">
 <div id="what-is-let-s-encrypt">
 <h2>What is Let’s Encrypt?</h2>
@@ -28,9 +28,22 @@
 </ul>
 <p>If you’re using Apache on a Debian or Ubuntu instance, you can use the Apache plugin for certbot-auto like so:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[root@server]# </span><span class="command">/opt/certbot/certbot-auto --apache -d example.com</span></pre>
+<pre class="prebox"><span class="server">[root@server]# </span><span class="command">/opt/letsencrypt/certbot-auto --apache -d example.com</span></pre>
 </div>
-<p>This will prompt you for some information including your email address. Fill it in with valid information and you should get a shiny new certificate. You shouldn’t even need to restart your  webserver or modify a configuration file as the Apache plugin for certbot-auto was designed to handle this for you.</p>
+<p>This will prompt you for some information including your email address. The last question you're asked is if you want to redirect all traffic to the https version of your site's URL. It's highly recommended that you choose to do this. Type the number '2' to choose this option. For example:</p>
+<div class="preboxcontainer">
+<pre class="prebox">Please choose whether or not to redirect HTTP traffic to HTTPS, removing HTTP access.
+-------------------------------------------------------------------------------
+1: No redirect - Make no further changes to the webserver configuration.
+2: Redirect - Make all requests redirect to secure HTTPS access. Choose this for
+new sites, or if you're confident your site works on HTTPS. You can undo this
+change by editing your web server's configuration.
+-------------------------------------------------------------------------------
+Select the appropriate number [1-2] then [enter] (press 'c' to cancel): <span class="command">2</span>
+Enabled Apache rewrite module
+Redirecting vhost in /etc/apache2/sites-enabled/example.com.conf to ssl vhost in /etc/apache2/sites-available/example.com-le-ssl.conf</pre>
+</div>
+<p>This will finalize your new certificate. You shouldn’t even need to restart your webserver or modify a configuration file as the Apache plugin for certbot-auto was designed to handle this for you.</p>
 </div>
 <div id="adding-a-subdomain-to-an-existing-certificate">
 <h2>Adding a subdomain to an existing certificate</h2>

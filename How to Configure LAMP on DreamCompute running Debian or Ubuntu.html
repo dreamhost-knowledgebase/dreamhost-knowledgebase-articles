@@ -1,86 +1,55 @@
-<body role="document">
 <div class="document">
 <div class="documentwrapper">
-<div class="body" role="main">
+<div class="body">
 <div id="how-to-configure-lamp-on-dreamcompute-running-debian-or-ubuntu">
-
-<p>LAMP (Linux, Apache, MySQL, PHP) stacks are a popular way to create web
-service solutions that offer consistent tools and capabilities between
-multiple systems.  DreamHost shared, VPS and dedicated hosting services are
-based on these same services, and you can use it for your DreamCompute
-instance as well.  These instructions assume you run a Debian- or Ubuntu-based
-system as they have their own specific configuration and file hierarchy.</p>
+<p>LAMP stands for 'Linux', 'Apache', 'MySQL', and 'PHP'. All of these components together make up the LAMP 'web stack' which is one of the most popular solutions to host websites.</p>
+<p>This article explains how to install the LAMP stack on your DreamCompute instance.</p>
 <div id="setup-methods">
-<h2>Setup Methods</h2>
-<p>There are several ways to setup a LAMP stack on your DreamCompute instance,
-from the very manual to the very automated.  We will detail some methods
-below.</p>
+<h2>Setup methods</h2>
+<p>There are two ways set up a LAMP stack on your DreamCompute instance:</p>
+<ul>
+<li>Automated</li>
+<li>Manually</li>
+</ul>
+<p>If you just need to quickly configure LAMP to get something up and running, the automated solution should be fine.</p>
+<p>However, if you're creating a long term solution to host web content, it's recommended you install each component separately as you'll have the most control over their installation.</p>
 <div id="automated-ubuntu-only">
-<h3>Automated (Ubuntu only)</h3>
-<p>The fastest method is to simply tell Ubuntu to install the “task” named
-lamp-server.  This is accomplished with apt-get and making sure to use a caret
-(^) at the end of the name of the task.</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> sudo apt-get install lamp-server^
-</pre></div>
+<h2>Automated (Ubuntu only)</h2>
+<p>You can use '<a href="https://wiki.debian.org/tasksel">tasksel</a>' to simply tell Ubuntu to install the “task” named lamp-server. This is accomplished with apt-get and making sure to use a caret (^) at the end of the name of the task.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo apt-get update</span>
+<span class="server">[user@server]$ </span><span class="command">sudo apt-get install lamp-server^</span>
+</pre>
 </div>
-<p>The install process asks you to confirm if you wish to install all packages
-needed for this task.  Confirm by entering “<strong>y</strong>” and hitting enter.</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span>The following NEW packages will be installed:
-    apache2 apache2-bin apache2-data apache2-mpm-prefork libaio1
-    libapache2-mod-php5 libapr1 libaprutil1 libaprutil1-dbd-sqlite3
-    libaprutil1-ldap libdbd-mysql-perl libdbi-perl libhtml-template-perl
-    libmysqlclient18 libterm-readkey-perl mysql-client-5.5 mysql-client-core-5.5
-    mysql-common mysql-server mysql-server-5.5 mysql-server-core-5.5 php5-cli
-    php5-common php5-json php5-mysql php5-readline ssl-cert
-0 upgraded, 27 newly installed, 0 to remove and 0 not upgraded.
-Need to get 15.2 MB of archives.
-After this operation, 123 MB of additional disk space will be used.
-Do you want to continue? [Y/n]
-</pre></div>
-</div>
-<p>During this process, the mysql-server installation will ask you to enter and
-confirm a root password for MySQL.  It is recommended to provide one.  When
-this is complete, please refer to the <strong>Configuration</strong> section of this page
-for details on each of these installed packages.</p>
-<p>Troubleshooting: If you get a huge amount of 404 File not found errors during
-this process, run the following:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> sudo apt-get update
-</pre></div>
-</div>
-<p>Then rerun these instructions from the top</p>
-</div>
+<p>The second command is interactive, so you will be asked 'Do you want to continue?' in some places. Always type 'y' to continue.</p>
+<dl>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/Create_MySQL_Password.png" alt="" /></dd>
+</dl>
+<p>You will also be asked to set a password for the root user of your MySQL installation. Create a secure password and save it as you will need this later when you configure a database.</p>
 <div id="manual-installation">
-<h3>Manual Installation</h3>
-<p>To manually install all the needed packages, you can run the following
-command:</p>
-<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">[user@server]$</span> sudo apt-get install apache2 mysql-server php5-cli <span class="se">\</span>
-<span class="go">    libapache2-mod-php5 php5-mysqlnd</span>
-</pre></div>
+<h2>Manual installation</h2>
+<p>You can also install Apache, MySQL, and PHP individually. The benefit of doing it this way is that you'll have a better understanding of what you're installing and how to configure your environment to suit your needs. View the following articles for instructions on how to manually install Apache, MySQL, and PHP.</p>
+<p>Make sure to always run an update before installing new software:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo apt-get update</span></pre>
 </div>
-<p>During this process, the mysql-server installation will ask you to enter and
-confirm a root password for MySQL.  It is recommended to provide one.  When
-this is complete, please refer to the <strong>Configuration</strong> section of this page
-for details on each of these installed packages.</p>
-</div>
-</div>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215879457-How-to-Configure-Apache-on-DreamCompute-Running-Debian-or-Ubuntu">How to Configure Apache on DreamCompute Running Debian or Ubuntu</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215879487-How-to-Configure-MYSQL-on-DreamCompute-running-Debian-or-Ubuntu">How to Configure MYSQL on DreamCompute running Debian or Ubuntu</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215231198-How-to-Configure-PHP-on-DreamCompute-running-Debian-or-Ubuntu">How to Configure PHP on DreamCompute running Debian or Ubuntu</a></li>
+</ul>
 <div id="configuration">
-<h2>Configuration</h2>
-<p>The below links contain details on the configuration of each part of the newly
-installed LAMP stack.</p>
-<p><a class="reference external" href="215879457-How-to-Configure-Apache-on-DreamCompute-Running-Debian-or-Ubuntu">Apache Directories and Main Configuration Files</a></p>
-<p><a class="reference external" href="215879487-How-to-Configure-MYSQL-on-DreamCompute-running-Debian-or-Ubuntu">MySQL Configuration</a></p>
-<p><a class="reference external" href="215231198-How-to-Configure-PHP-on-DreamCompute-running-Debian-or-Ubuntu">PHP Configuration Files</a></p>
+<p> </p>
 </div>
 </div>
 </div>
 </div>
-<div class="clearer"></div>
 </div>
-<div class="footer">
-</div>
+<div class="footer"> </div>
 <!--DreamCompute Button-->
 <div class="dream-sign-up">
 <h2>Deploy Your Apps On Cloud Servers Today</h2>
-<a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a>
+<a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a></div>
 </div>
-</body>
+</div>
+</div>
