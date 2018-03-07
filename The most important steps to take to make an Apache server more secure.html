@@ -104,61 +104,19 @@ AllowOverride None</pre>
 </div>
 <div id="securing-ssl-tls">
 <h2>Securing SSL/TLS</h2>
-<p>Apache excels at serving SSL/TLS traffic. Configuring a web server to provide secure SSL/TLS configurations for clients is essential to maintaining a secure connection.</p>
-<p>As a note, it’s strongly recommended that encrypted traffic use only newer TLS protocols, instead of legacy SSL. Both versions of SSL widely available today (SSLv2 and SSLv3) have severe security flaws, and should never be used in production environments. Historically, the configurations associated with SSL/TLS configuration in Apache are prefixed with <cite>SSL</cite>; to promote the use of modern security protocols, in this tutorial the term ‘TLS’ is used when referencing encrypted (HTTPS) traffic, and ‘ssl’ when applicable to specific Apache configuration directives.</p>
-<div id="turn-tls-on">
-<h3>Turn TLS On</h3>
-<p>In order to serve encrypted traffic, SSL/TLS needs to be enabled in Apache. Enable secure communications with the <cite>SSLEngine</cite> directive:</p>
-<div class="preboxcontainer">
-<pre class="prebox">&lt;VirtualHost 192.168.1.1:443&gt;
-    SSLEngine on
-    SSLCertificateFile /path/to/cert
-    SSLCertificateKeyFile /path/to/key
-&lt;/VirtualHost&gt;</pre>
-</div>
-<div id="enable-strong-tls-ciphers">
-<h3>Enable strong TLS ciphers</h3>
-<p>By default, Apache allows for a wide variety of cryptographic ciphers to be used in TLS connections. Some of these ciphers are legacy offerings that are weak or prone to attack and shouldn’t be used. DreamHost recommends using the Modern or Intermediate cipher suites outlined by Mozilla here:</p>
+<p>Make sure all sites on your server have an SSL certificate installed. You can install a free 'Let's Encrypt' certificate using the following instructions:</p>
 <ul>
-<li><a href="https://wiki.mozilla.org/Security/Server_Side_TLS" target="_blank" rel="noopener">MozillaWiki - Security/Server Side TLS</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/222168828-Setting-up-Let-s-Encrypt-on-DreamCompute-with-Apache">Setting up Let’s Encrypt on DreamCompute with Apache</a></li>
 </ul>
-<p>The modern list of ciphers is stronger, but will cause connectivity problems for older platforms like Internet Explorer or Windows XP. Additionally, it’s recommended that the server prefer which cipher can be used:</p>
-<div class="preboxcontainer">
-<pre class="prebox">SSLCipherSuite 'ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS';
-SSLHonorCipherOrder on
-SSLProtocol all -SSLv2 -SSLv3</pre>
-</div>
-<div id="enable-tls-session-caching">
-<h3>Enable TLS session caching</h3>
-<p>Opening a new TLS connection to a server is very expensive as a result of the cryptographic protocols involved. To maintain a high-performance environment, cache existing TLS connections so that each new request from a client/browser does not need to perform the full TLS handshake. The recommended session cache is <span class="code">shmcb</span>. To use it, ensure that mod_socache_shmcb is loaded.</p>
-<div class="preboxcontainer">
-<pre class="prebox">SSLSessionCache "shmcb:/path/to/session_cache(512000)"
-SSLSessionCacheTimeout 300</pre>
-</div>
-<div id="use-custom-diffie-hellman-parameters">
-<h3>Use custom Diffie-Hellman parameters</h3>
-<p>The Logjam attack, published in 2015, showed that it was possible for attackers (such as nation-state actors) to break the Diffie-Hellman key exchange, used to implement forward secrecy (essentially, another layer on top of existing encrypted messages). Mitigating this attack is possible in Apache by computing a unique set of Diffie-Hellman parameters and configuring Apache to use this value:</p>
-<div class="highlight-console">
-<div class="highlight">
-<pre><span class="gp">[root@server]#</span> openssl dhparam <span class="m">2048</span> &gt; /path/to/dhparam
-</pre>
-</div>
-</div>
-<p>From here, add the params to the end of the file noted in the <cite>SSLCertificateFile</cite> directive you configured above:</p>
-<div class="highlight-console">
-<div class="highlight">
-<pre><span class="gp">[root@server]#</span> cat /path/to/custom/dhparam &gt;&gt; /path/to/sslcertfile
-</pre>
-</div>
-</div>
-<p>For more information on the Logjam attack, see the"Weak Diffie-Hellman and the Logjam Attack" site here:</p>
-<ul>
-<li><a class="reference external" href="https://weakdh.org/">https://weakdh.org/</a></li>
-</ul>
-</div>
 <div id="force-all-connections-over-tls">
 <h3>Force all connections over TLS</h3>
-<p>Encrypted communications are only useful when actually in use and Apache can tell browsers to only use TLS connections for your site. This is accomplished with the <cite>Strict-Transport-Security</cite> header:</p>
+<p>If you've installed a 'Let's Encrypt' certificate as shown above, you already had the option to force all traffic over SSL. If you're not using a 'Let's Encrypt' certificate, you can also do this by adding the following to your site's configuration file located at /etc/apache2/sites-available/example.com.conf.</p>
+<p>First, make sure the Headers module is active.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo a2enmod headers</span>
+<span class="server">[user@server]$ </span><span class="command">sudo service apache2 restart</span></pre>
+</div>
+<p>You can then add the following to your site's .conf file.</p>
 <div class="preboxcontainer">
 <pre class="prebox">&lt;IfModule mod_headers.c&gt;
 Header always set Strict-Transport-Security "max-age=15768000; includeSubDomains; preload"
@@ -173,7 +131,6 @@ Header always set Strict-Transport-Security "max-age=15768000; includeSubDomains
 &lt;/VirtualHost&gt;</pre>
 </div>
 <div id="additional-security-measures">
-<p>You should also make sure that the Headers module is loaded.</p>
 <h2>Additional security measures</h2>
 <p>Beyond the basics of installing a secure Apache binary, locking down access to sensitive areas of your site and properly serving TLS connections, there are some additional steps that the extra security-conscious user can take:</p>
 <div id="install-a-waf">
@@ -205,9 +162,6 @@ Header always set Strict-Transport-Security "max-age=15768000; includeSubDomains
 <div class="dream-sign-up">
 <h2>Deploy Your Apps On Cloud Servers Today</h2>
 <a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a></div>
-</div>
-</div>
-</div>
 </div>
 </div>
 </div>
