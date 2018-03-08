@@ -35,12 +35,9 @@
 #Check ~/Maildir/new for any files created within the last 15 min
 files=$(find ~/Maildir/new -type f -mmin -15)
 
-for emailFileName in $files
-  do
-    #open each email individually and assign to new variable
-    emailContent=$(cat $emailFileName)
-    echo $emailContent | mail -s <span class="command">"These emails were rejected" admin@example.com</span>
-
+for emailFileName in $files; do
+  #open each email individually and assign to new variable
+  emailContent=$(cat $emailFileName)<br />  printf '%s\n' "${emailContent[*]}" | mail -s "<span class="command">These emails were rejected" admin@example.com</span>
 done</pre>
 </div>
 </li>
