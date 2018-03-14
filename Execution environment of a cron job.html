@@ -1,8 +1,8 @@
-<p>One important consideration is that the cron daemon was designed in such a way that it does NOT execute commands within your normal shell environment. This means you cannot use bare commands in cron the way you would from the SSH shell command line. Example:</p>
+<p>The cron daemon was designed in such a way that it does NOT execute commands within your normal shell environment. This means you cannot use bare commands in cron the way you would from the SSH shell command line. This is because the PATH environment variable is <em>/usr/bin:/bin</em>, and the SHELL environment variable is set to <em>/bin/sh</em>. This is an example using the 'wp' command.</p>
 <div class="preboxcontainer">
 <pre class="prebox">* * * * * wp plugin update --all --path=example.com</pre>
 </div>
-<p>This is because the PATH environment variable is <em>/usr/bin:/bin</em>, and the SHELL environment variable is set to <em>/bin/sh</em>. The cron daemon doesn't know where the <em> 'wp' </em> command is located. You must specify the full path to all commands not in the default PATH, and always specify the full path for files. For example:</p>
+<p>The cron daemon doesn't know where the <em> 'wp' </em> command is located. You must specify the full path to all commands not in the default PATH, and always specify the full path for files. For example:</p>
 <div class="preboxcontainer">
 <pre class="prebox">* * * * * /usr/bin/wp plugin update --all --path=example.com</pre>
 </div>
@@ -16,7 +16,7 @@
 </div>
 <p>The following prints to your terminal:</p>
 <div class="preboxcontainer">
-<pre class="prebox">/user/bin/wp</pre>
+<pre class="prebox">/usr/bin/wp</pre>
 </div>
 <h2><span id="Using_sudo_and_cron_with_an_admin_user">Using sudo and cron with an admin user on a Dedicated server</span></h2>
 <p>If you’re on a Dedicated Server and have an <a href="https://help.dreamhost.com/hc/en-us/articles/215945467-How-do-I-add-users-to-a-Dedicated-server-">admin user</a>, do not use 'sudo' in your crontab. Instead of your script working, you’ll get an error like this.</p>
