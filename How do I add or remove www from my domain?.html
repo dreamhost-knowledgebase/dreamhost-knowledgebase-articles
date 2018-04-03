@@ -26,31 +26,25 @@
 <li><strong>Remove WWW</strong>: Forces all requests to remove www (i.e., all requests to www.example.com go to example.com).</li>
 </ul>
 </li>
+<li>Scroll down and click the blue <strong>Save changes</strong> button to save.</li>
 </ol>
-<h2><span id="When_removing_.22www.22_breaks_WordPress">When removing "www" breaks WordPress</span></h2>
-<p>WordPress is unique in that it requires the URL to either force www or remove www from the domain name. If your database is forcing www but your panel is forcing it’s removal (or vice versa), you’ll see a redirect loop error such as this:</p>
-<dl>
-<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/01_Removing_www_from_your_domain.fw.png" alt="01 Removing www from your domain.fw.png" width="600" height="319" /></dd>
-</dl>
-<p>The solution is to make sure the option in your DreamHost panel matches what you selected within the WordPress configuration. View the <a href="/hc/en-us/articles/214580498-How-do-I-change-the-WordPress-Site-URL-">Change WordPress Site URL</a> article for instructions on how to update this URL in WordPress.</p>
-<h2><span id="Removing_.22www.22_through_an_.htaccess_file">Removing "www" through an .htaccess file</span></h2>
+<p>Within about 10 minutes, your site will redirect to the ‘www’ version of the URL.</p>
+<h2>Adding or removing "www" using an .htaccess file</h2>
+<p>If you do not want to use the panel option, you can still add or remove 'www' using an .htaccess file.</p>
+<p>This involves creating and editing this file on your web server. View the following articles for further instructions:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216456227--htaccess-overview">.htaccess overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115000098272-Creating-and-editing-a-file-via-FTP">Creating and editing a file via FTP</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Creating and editing a file via SSH</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
+</ul>
+<h3><span id="Removing_.22www.22_through_an_.htaccess_file">Removing "www" through an .htaccess file</span></h3>
 <p>To automatically remove the <em>www</em> from the beginning of your domain, add the following mod_rewrite rule to your .htaccess file. If you don't have that file, create it in a text editor and then upload it to your root directory:</p>
 <div class="preboxcontainer">
 <pre class="prebox">RewriteEngine on
 RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
 RewriteRule ^(.*)$ http://%1/$1 [R=301,L]</pre>
 </div>
-<ol>
-<li>Navigate to the (<a href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;">Panel &gt; ‘Domains’ &gt; ‘Manage Domains’</a>) page.</li>
-<li>Click the <strong>Edit</strong> button to the right of your domain under the ‘Web Hosting’ column.
-<dl>
-<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/01_Add_a_domain.png" alt="01 Add a domain.png" width="1047" height="217" /></dd>
-</dl>
-</li>
-<li>Select the radio button for ‘Add WWW’.</li>
-<li>Scroll down and click the blue <strong>Save changes</strong> button to save.</li>
-</ol>
-<p>Within about 10 minutes, your site will redirect to the ‘www’ version of the URL.</p>
 <h3><span id="Forcing_the_.E2.80.98www.E2.80.99_subdomain_in_an_.htaccess_file">Forcing the ‘www’ subdomain in an .htaccess file</span></h3>
 <p>To force the use of "www" when viewers are reading your site, you can use the following remove link mod_rewrite rule in your <a href="/hc/en-us/articles/216456227--htaccess-overview">.htaccess</a> file:</p>
 <div class="preboxcontainer">
@@ -59,6 +53,12 @@ RewriteCond %{HTTP_HOST}  !^www\.example\.com$ [NC]
 RewriteRule ^(.*) http://www.example.com/$1 [L,R]</pre>
 </div>
 <p>If someone types in example.com, the URL now change to www.example.com.</p>
+<h2><span id="When_removing_.22www.22_breaks_WordPress">When removing "www" breaks WordPress</span></h2>
+<p>WordPress is unique in that it requires the URL to either force www or remove www from the domain name. If your database is forcing www but your panel is forcing it’s removal (or vice versa), you’ll see a redirect loop error such as this:</p>
+<dl>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/01_Removing_www_from_your_domain.fw.png" alt="01 Removing www from your domain.fw.png" width="600" height="319" /></dd>
+</dl>
+<p>The solution is to make sure the option in your DreamHost panel matches what you selected within the WordPress configuration. View the <a href="/hc/en-us/articles/214580498-How-do-I-change-the-WordPress-Site-URL-">Change WordPress Site URL</a> article for instructions on how to update this URL in WordPress.</p>
 <h2><span id="Additional_information">Additional information</span></h2>
 <ul>
 <li>While most domains configure their main web server to answer to both forms, most do not bother with this type of redirection from one to the other. Ultimately, as long as the content served is the same, it doesn't usually matter what name is used to get to a given site.</li>
