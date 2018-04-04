@@ -35,7 +35,7 @@
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">cd $HOME/example.com</span>
 <span class="server">[server]$ </span><span class="command">source $HOME/example.com/my_project/bin/activate</span>
-<span class="server">[server]$ </span><span class="command">python my_project/bin/django-admin.py startproject &lt;projectname&gt;</span></pre>
+<span class="server">[server]$ </span><span class="command">python3 my_project/bin/django-admin.py startproject &lt;projectname&gt;</span></pre>
 </div>
 <ul>
 <li>Replace 'example.com' with your domain name.</li>
@@ -50,19 +50,18 @@
 <li>In order for Passenger to pick up your project, create a passenger_wsgi.py file within your site's top level directory (/home/username/example.com). Add the following:
 <div class="preboxcontainer">
 <pre class="prebox">import sys, os
-INTERP = "<span class="command">/home/&lt;username&gt;/local/bin/python</span>"
-#INTERP is present twice so that the new python interpreter knows the actual executable path 
+INTERP = "<span class="command">/home/username/example.com/my_project/bin/python3</span>"
+#INTERP is present twice so that the new python interpreter <br />#knows the actual executable path 
 if sys.executable != INTERP: os.execl(INTERP, INTERP, *sys.argv)
 
 cwd = os.getcwd()
 sys.path.append(cwd)
-sys.path.append(cwd + '/<span class="command">projectname</span>')  #You must add your project here
+sys.path.append(cwd + '/<span class="command">djangoprojectname</span>')  #You must add your project here
 
-sys.path.insert(0,cwd+'<span class="command">/projectname/bin</span>')
-sys.path.insert(0,cwd+'<span class="command">/projectname/lib/python3.6/site-packages/django</span>')
-sys.path.insert(0,cwd+'<span class="command">/projectname/lib/python3.6/site-packages</span>')
+sys.path.insert(0,cwd+'<span class="command">/my_project/bin</span>')
+sys.path.insert(0,cwd+'<span class="command">/my_project/lib/python3.6/site-packages</span>')
 
-os.environ['DJANGO_SETTINGS_MODULE'] = "<span class="command">projectname</span>.settings"
+os.environ['DJANGO_SETTINGS_MODULE'] = "<span class="command">djangoprojectname</span>.settings"
 from django.core.wsgi import get_wsgi_application
 application = get_wsgi_application()
 </pre>
@@ -78,8 +77,9 @@ application = get_wsgi_application()
 <span class="cmdoutput">/home/username/example.com/my_project/bin/python3</span></pre>
 </div>
 </li>
-<li>The two instances of 'projectname' with your actual project name in lines 8, 10, 11, 12, and 14.</li>
-<li>Your Python3 version on lines 11 and 12.</li>
+<li>Your virtualenv project name on lines 11 and 12</li>
+<li>Your Django project name on lines 9 and 14</li>
+<li>Your Python3 version on line 12</li>
 </ul>
 </div>
 </div>
@@ -92,14 +92,14 @@ application = get_wsgi_application()
 <dl>
 <dd>
 <div class="preboxcontainer">
-<pre class="prebox">STATIC_ROOT = os.path.dirname(BASE_DIR) + '/static/'</pre>
+<pre class="prebox">STATIC_ROOT = os.path.dirname(BASE_DIR) + '/public/static/'</pre>
 </div>
 </dd>
 </dl>
 </li>
 <li>In your /home/username/example.com/ directory, make sure to create this /static directory.
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd $HOME/example.com/</span>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd $HOME/example.com/public</span>
 <span class="server">[server]$ </span><span class="command">mkdir static</span></pre>
 </div>
 <ul>
@@ -112,7 +112,7 @@ application = get_wsgi_application()
 <li>Run the collectstatic command to set up the static items for the admin interface:
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">cd $HOME/example.com/projectname/</span>
-<span class="server">[server]$ </span><span class="command">python manage.py collectstatic</span></pre>
+<span class="server">[server]$ </span><span class="command">python3 manage.py collectstatic</span></pre>
 </div>
 </li>
 <li>Set up your database as required within the settings.py file. The section of the settings.py file originally looks like this:
@@ -158,13 +158,13 @@ Update it to include your domain name.
 </li>
 <li>Once configured, run migrate in your project directory:
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">python manage.py migrate</span>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">python3 manage.py migrate</span>
 Operations to perform:<br /> Apply all migrations: admin, auth, contenttypes, sessions<br />Running migrations:<br /> Applying contenttypes.0001_initial... OK<br /> Applying auth.0001_initial... OK<br /> Applying admin.0001_initial... OK<br /> Applying admin.0002_logentry_remove_auto_add... OK<br /> Applying contenttypes.0002_remove_content_type_name... OK<br /> Applying auth.0002_alter_permission_name_max_length... OK<br /> Applying auth.0003_alter_user_email_max_length... OK<br /> Applying auth.0004_alter_user_username_opts... OK<br /> Applying auth.0005_alter_user_last_login_null... OK<br /> Applying auth.0006_require_contenttypes_0002... OK<br /> Applying auth.0007_alter_validators_add_error_messages... OK<br /> Applying auth.0008_alter_user_username_max_length... OK<br /> Applying sessions.0001_initial... OK</pre>
 </div>
 </li>
 <li>Create a superuser:
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">python manage.py createsuperuser</span>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">python3 manage.py createsuperuser</span>
 <span class="cmdoutput">Username (leave blank to use 'username'): my_django_user
 Email address: email@example.com
 Password:
