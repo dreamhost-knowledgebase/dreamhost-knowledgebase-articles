@@ -1,9 +1,9 @@
 <div class="alert alert-note">
 <div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
-<p>This article shows how to create a Django (version 2+) project. If you need to create a Django (version 1) project, view the following article instead:</p>
+<p>This article shows how to create a Django (version1+) project. If you need to create a Django (version 2) project, view the following article instead:</p>
 <ul>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/215319648-How-to-create-a-Django-project-using-virtualenv">How to create a Django 1 project using virtualenv</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360002341572-How-to-create-a-Django-2-project-using-virtualenv">How to create a Django 2 project using virtualenv</a></li>
 </ul>
 <p>View the following article to view which versions of Python are compatible with specific versions of Django:</p>
 <ul>
@@ -11,16 +11,17 @@
 </ul>
 </div>
 </div>
-<h2>What version of Python is compatible with Django 2?</h2>
-<p>You must be using Python 3.4 or higher to use Django 2. View the following chart for a full list of compatible versions:</p>
-<ul>
-<li><a href="https://docs.djangoproject.com/en/2.0/faq/install/#what-python-version-can-i-use-with-django">What Python version can I use with Django?</a></li>
-</ul>
 <h2>Initial setup</h2>
 <p>First, make sure you've installed a custom version of Python and created a virtual environment in your website's directory:</p>
+<h3>Python 2</h3>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115000218612-Installing-a-custom-version-of-Python-2">Installing a custom version of Python 2</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215489338-Installing-and-using-virtualenv-with-Python-2">Installing and using virtualenv with Python 2</a></li>
+</ul>
+<h3>Python 3</h3>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/115000702772-Installing-a-custom-version-of-Python-3">Installing a custom version of Python 3</a></li>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/115000695551-Installing-and-using-Python-s-virtualenv-using-Python-3">Installing and using Python's virtualenv using Python 3</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115000695551-Installing-and-using-virtualenv-with-Python-3">Installing and using virtualenv with Python 3</a></li>
 </ul>
 <p>Next, install Django into your virtualenv:</p>
 <ul>
@@ -48,7 +49,7 @@
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">cd $HOME/example.com</span>
 <span class="server">[server]$ </span><span class="command">source $HOME/example.com/my_project/bin/activate</span>
-<span class="server">(my_project) [server]$ </span><span class="command">python3 my_project/bin/django-admin.py startproject &lt;projectname&gt;</span></pre>
+<span class="server">(my_project) [server]$ </span><span class="command">python my_project/bin/django-admin.py startproject &lt;projectname&gt;</span></pre>
 </div>
 <ul>
 <li>Replace 'example.com' with your domain name.</li>
@@ -63,16 +64,16 @@
 <li>In order for Passenger to pick up your project, create a passenger_wsgi.py file within your site's top level directory (/home/username/example.com). Add the following:
 <div class="preboxcontainer">
 <pre class="prebox">import sys, os
-INTERP = "<span class="command">/home/username/example.com/my_project/bin/python3</span>"
-#INTERP is present twice so that the new python interpreter <br />#knows the actual executable path 
+INTERP = "<span class="command">/home/&lt;username&gt;/local/bin/python</span>"
+#INTERP is present twice so that the new python interpreter<br />#knows the actual executable path 
 if sys.executable != INTERP: os.execl(INTERP, INTERP, *sys.argv)
 
 cwd = os.getcwd()
 sys.path.append(cwd)
 sys.path.append(cwd + '/<span class="command">djangoprojectname</span>')  #You must add your project here
 
-sys.path.insert(0,cwd+'<span class="command">/my_project/bin</span>')
-sys.path.insert(0,cwd+'<span class="command">/my_project/lib/python3.6/site-packages</span>')
+sys.path.insert(0,cwd+'/<span class="command">my_project/</span>bin')
+sys.path.insert(0,cwd+'/<span class="command">my_project</span>/lib/python2.7/site-packages')
 
 os.environ['DJANGO_SETTINGS_MODULE'] = "<span class="command">djangoprojectname</span>.settings"
 from django.core.wsgi import get_wsgi_application
@@ -84,15 +85,14 @@ application = get_wsgi_application()
 <div class="alert-content">
 <p>Be sure to replace the following in the passenger_wsgi.py file:</p>
 <ul>
-<li>The path to your local python version in line #2. Run <strong>which python3</strong> to confirm:
+<li>The path to your local python version in line #2. Run <strong>which python</strong> to confirm:
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">(my_project) [server]$ </span><span class="command">which python3</span>
-<span class="cmdoutput">/home/username/example.com/my_project/bin/python3</span></pre>
+<pre class="prebox"><span class="server">(my_project) [server]$ </span><span class="command">which python</span>
+<span class="cmdoutput">/home/username/example.com/my_project/bin/python</span></pre>
 </div>
 </li>
 <li>Your virtualenv project name on lines 11 and 12</li>
-<li>Your Django project name on lines 9 and 14</li>
-<li>Your Python3 version on line 12</li>
+<li>The two instances of 'djangoprojectname' with your actual Django project name in lines 9 and 14.</li>
 </ul>
 </div>
 </div>
@@ -105,12 +105,12 @@ application = get_wsgi_application()
 <dl>
 <dd>
 <div class="preboxcontainer">
-<pre class="prebox">STATIC_ROOT = os.path.dirname(BASE_DIR) + '/public/static/'</pre>
+<pre class="prebox">STATIC_ROOT = os.path.dirname(BASE_DIR) + '/static/'</pre>
 </div>
 </dd>
 </dl>
 </li>
-<li>In your /home/username/example.com/ directory, make sure to create this /static directory.
+<li>In your /home/username/example.com/public directory, make sure to create this /static directory.
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">(my_project) [server]$ </span><span class="command">cd $HOME/example.com/public</span>
 <span class="server">(my_project) [server]$ </span><span class="command">mkdir static</span></pre>
@@ -125,7 +125,7 @@ application = get_wsgi_application()
 <li>Run the collectstatic command to set up the static items for the admin interface:
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">(my_project) [server]$ </span><span class="command">cd $HOME/example.com/projectname/</span>
-<span class="server">(my_project) [server]$ </span><span class="command">python3 manage.py collectstatic</span></pre>
+<span class="server">(my_project) [server]$ </span><span class="command">python manage.py collectstatic</span></pre>
 </div>
 </li>
 <li>Set up your database as required within the settings.py file. The section of the settings.py file originally looks like this:
@@ -171,13 +171,13 @@ Update it to include your domain name.
 </li>
 <li>Once configured, run migrate in your project directory:
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">(my_project) [server]$ </span><span class="command">python3 manage.py migrate</span>
+<pre class="prebox"><span class="server">(my_project) [server]$ </span><span class="command">python manage.py migrate</span>
 Operations to perform:<br /> Apply all migrations: admin, auth, contenttypes, sessions<br />Running migrations:<br /> Applying contenttypes.0001_initial... OK<br /> Applying auth.0001_initial... OK<br /> Applying admin.0001_initial... OK<br /> Applying admin.0002_logentry_remove_auto_add... OK<br /> Applying contenttypes.0002_remove_content_type_name... OK<br /> Applying auth.0002_alter_permission_name_max_length... OK<br /> Applying auth.0003_alter_user_email_max_length... OK<br /> Applying auth.0004_alter_user_username_opts... OK<br /> Applying auth.0005_alter_user_last_login_null... OK<br /> Applying auth.0006_require_contenttypes_0002... OK<br /> Applying auth.0007_alter_validators_add_error_messages... OK<br /> Applying auth.0008_alter_user_username_max_length... OK<br /> Applying sessions.0001_initial... OK</pre>
 </div>
 </li>
 <li>Create a superuser:
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">(my_project) [server]$ </span><span class="command">python3 manage.py createsuperuser</span>
+<pre class="prebox"><span class="server">(my_project) [server]$ </span><span class="command">python manage.py createsuperuser</span>
 <span class="cmdoutput">Username (leave blank to use 'username'): my_django_user
 Email address: email@example.com
 Password:
@@ -206,7 +206,7 @@ Superuser created successfully.</span></pre>
 <h2>Confirming the installation was successful</h2>
 <p>Visit your website.</p>
 <dl>
-<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/2018-04_django-create-project.png" alt="" /></dd>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/Django_success_message.png" alt="Django_success_message.png" /></dd>
 </dl>
 <p>You should now see the standard Django holding page and be able to access the admin console at example.com/admin/.</p>
 <h2>See also</h2>
@@ -215,5 +215,6 @@ Superuser created successfully.</span></pre>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215317948-How-to-install-Django-using-virtualenv">How to install Django using virtualenv</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215317698-Django-troubleshooting">Django troubleshooting</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216137717-Python-overview">Python overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215489338-Installing-virtualenv-and-custom-modules-in-Python">Installing and using virtualenv with Python 2</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/115000695551-Installing-and-using-virtualenv-with-Python-3">Installing and using virtualenv with Python 3</a></li>
 </ul>
