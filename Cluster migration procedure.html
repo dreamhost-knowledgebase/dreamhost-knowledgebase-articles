@@ -1,11 +1,20 @@
-<p>Beginning on April 10th 2018, DreamHost started migrating existing DreamObjects accounts to a new an improved cluster. This will help with long term stability of your data.</p>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>There's been a small change of plans with the new DreamObjects cluster (us-east-1) launch. Please read the following status post for further details:</p>
+<ul>
+<li><a href="https://www.dreamhoststatus.com/pages/maintenance/575f0f606826303142000510/5acd30977d782c04c4fe7fba">DreamObjects us-east-1 launch delayed</a></li>
+</ul>
+</div>
+</div>
+<p>Beginning on April 10, 2018, DreamHost began to migrate existing DreamObjects accounts to a new and improved cluster. This will help with long term stability of your data.</p>
 <h2>What will happen to my current data?</h2>
-<p>Your data will continue to exist and function normally until October 2018. This is when the old cluster will be shut down.</p>
+<p>Your data will continue to exist and function normally until October 2018, when the old cluster will be shut down.</p>
 <p>Due to several technical incompatibilities, it's not possible to automatically migrate your data to the new cluster. The only option is to manually migrate your data. However, please note that you have until October to migrate your data to the new cluster.</p>
 <h2>Migration tool</h2>
-<p>You might be familiar with the earlier version of this tool from the article <a href="https://help.dreamhost.com/hc/en-us/articles/115001860231-Migrating-3rd-party-S3-buckets-to-DreamObjects"><strong>Migrating 3rd party S3 buckets to DreamObjects</strong></a>.</p>
-<p>The migration interface has been improved to allow you to select a DreamObjects user as the source for a copy, as well as the destination for a copy. You do not have to specify the Access Key or Secret Key for the source user, as they will be copied internally in the migration tool after a source user is selected.</p>
-<h2>Tool Limitations:</h2>
+<p>You might be familiar with the earlier version of this tool from the article <a href="https://help.dreamhost.com/hc/en-us/articles/115001860231-Migrating-3rd-party-S3-buckets-to-DreamObjects">Migrating 3rd party S3 buckets to DreamObjects</a>.</p>
+<p>The migration interface has been improved to allow you to select a DreamObjects user as the source for a copy, as well as the destination for a copy. You do not need to specify the Access Key or Secret Key for the source user, as they are copied internally in the migration tool after a source user is selected.</p>
+<h2>Tool limitations</h2>
 <ul>
 <li>The destination bucket MUST NOT contain any files.</li>
 <li>Bucket &amp; Object ACLs:</li>
@@ -31,21 +40,21 @@
 <li>Server-Side Encryption (SSE)</li>
 <ul>
 <li>AWS SSE is not officially supported, but is SSE-C available</li>
-<li>If you use SSE-C, you will NOT be able to use the migration tool because it does not have access to your encryption key.</li>
+<li>If you use SSE-C, you will NOT be able to use the migration tool because it does not have access to your encryption key</li>
 </ul>
 </ul>
-<h2>Requirements:</h2>
+<h2>Requirements</h2>
 <ul>
 <li>Two DreamObjects Accounts</li>
 <ul>
-<li>e.g. one in each of us-west-1 (old) and us-east-1 (new) clusters.</li>
+<li>e.g., one in each of us-west-1 (old) and us-east-1 (new) clusters</li>
 </ul>
 <li>A source bucket with data</li>
 <li>A destination bucket name (or an empty bucket)</li>
 </ul>
-<h2>Migration instructions</h2>
+<h2>Migrating a cluster</h2>
 <ol>
-<li>Navigate to the <a href="https://panel.dreamhost.com/index.cgi?tree=cloud.objects&amp;">(Panel &gt; 'Could Services' &gt; 'DreamObjects')</a> page in your DreamHost panel.</li>
+<li>Navigate to the (<a href="https://panel.dreamhost.com/index.cgi?tree=cloud.objects&amp;">Panel &gt; 'Could Services' &gt; 'DreamObjects'</a>) page in your DreamHost panel.</li>
 <li>Click the 'Migrations' tab.
 <dl>
 <dd><img src="https://objects-us-west-1.dream.io/kbimages/images/2018-04_DHO_migration_instructions_01.png" alt="" /></dd>
@@ -56,15 +65,15 @@
 <dd><img src="http://objects-us-east-1.dream.io/dho-migration-guide/004-dho-migration-type-dropdown-account.png" alt="" /></dd>
 </dl>
 </li>
-<li>Click on the 'Type' dropdown.</li>
-<li>Select one of your DreamObjects accounts. When you do this, the Host, Access Key, and Secret Key fields will populate &amp; become uneditable
+<li>Click the 'Type' dropdown.</li>
+<li>Select one of your DreamObjects accounts. When you do this, the Host, Access Key, and Secret Key fields populate and become uneditable.
 <dl>
 <dd><img src="https://objects-us-west-1.dream.io/kbimages/images/2018-04_DHO_migration_instructions_02.png" alt="" /></dd>
 </dl>
 </li>
 <li>Click the <strong>Choose Destination &amp; Buckets</strong> button.
 <dl>
-<dd>A list of your Buckets will open. By default, all of the buckets are highlighted and selected. Click a bucket to un-select it (or click “Select None” to un-select all buckets).</dd>
+<dd><em>A list of your Buckets appears. By default, all of the buckets are highlighted and selected. Click a bucket to un-select it (or click “Select None” to un-select all buckets).</em></dd>
 </dl>
 <dl>
 <dd><img src="https://objects-us-west-1.dream.io/kbimages/images/2018-04_DHO_migration_instructions_03.png" alt="" /></dd>
@@ -75,22 +84,30 @@
 <dd><img src="https://objects-us-west-1.dream.io/kbimages/images/2018-04_DHO_migration_instructions_04.png" alt="" /></dd>
 </dl>
 </li>
-<li>If you have more than one DreamObjects user, choose which one you'd like to use for the migration. The dropdown will separate users by cluster.</li>
+<li>If you have more than one DreamObjects user, choose which one you'd like to use for the migration. The dropdown separates users by cluster.</li>
 <li>Click to select or deselect the buckets you wish to migrate, or use the <em>Select All</em> or <em>Select None </em>buttons.</li>
-<li>Click the Start Migration button.</li>
-<li>If any of the bucket names you have chosen conflict with a bucket name in the destination cluster, you will be taken to the Bucket Conflict page before the Migration can start.
+<li>Click the <strong>Start Migration</strong> button.
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
 <ul>
-<li>A bucket conflict means that the name of bucket from the source cluster already exists in the destination cluster, and that the bucket in the destination cluster is not empty (nothing will be overwritten).
+<li>If any of the bucket names you have chosen conflict with a bucket name in the destination cluster, the Bucket Conflict page appears before the Migration can start.</li>
+<li>A bucket conflict means that the name of bucket from the source cluster already exists in the destination cluster, and that the bucket in the destination cluster is not empty (nothing will be overwritten).</li>
+</ul>
+</div>
+</div>
 <dl>
 <dd><img src="http://objects-us-east-1.dream.io/dho-migration-guide/011-dho-migration-bucket-conflict.png" alt="" /></dd>
 </dl>
-</li>
-<li>Once you’ve provided a new name for the bucket in the destination cluster, click the “Resolve Conflicts” button to continue</li>
+<ul>
+<li>Once you’ve provided a new name for the bucket in the destination cluster, click the <strong>Resolve Conflicts</strong> button to continue.</li>
 </ul>
+<dl>
+<dd><em>You return to the Migration tab, and your new migration shows in progress:</em></dd>
+</dl>
 <dl>
 <dd><img src="https://objects-us-west-1.dream.io/kbimages/images/2018-04_DHO_migration_instructions_05.png" alt="" /></dd>
 </dl>
 </li>
-<li>You will be back on the Migration tab, and your new migration will be in progress.</li>
-<li>When a migration completes, you will automatically receive an email about it, and the migration will move to the completed area of the Migration tab</li>
 </ol>
+<p>When a migration completes, an email confirmation is sent to you and the migration moves to the completed area of the Migration tab.</p>
