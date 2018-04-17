@@ -1,0 +1,112 @@
+<p>Websites often allow you to download a single compressed file that contains many other files. This makes it easier and faster to download through your browser since the file is smaller than the folder containing all the files. These compressed files usually end with these extensions:</p>
+<ul>
+<li>.zip</li>
+<li>.gz</li>
+<li>.tar</li>
+<li>.tar.gz</li>
+<li>.tar.bz2</li>
+</ul>
+<p>You can decompress these on your computer using your computer's software. Otherwise, you could upload the compressed file to your web server and decompress it there. This requires you to log into the server via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH</a> and run a command.</p>
+<h2>Flags used to decompress files</h2>
+<p>The commands <span class="code">unzip</span> and <span class="code">tar</span> are shown below. Each has several flags you can (or must) use to decompress the file.</p>
+<h3>zip flags</h3>
+<p>View the <a href="https://linux.die.net/man/1/zip">zip Linux man page</a> for more information.</p>
+<h3>tar flags</h3>
+<ul>
+<li>f = Informs the tar command that the next parameter is the file name of the archive.</li>
+<li>j = Filters the archive through bzip2.</li>
+<li>v = Verbose (optional). Displays the files as they are decompressed.</li>
+<li>x = Extracts files from an archive.</li>
+<li>z = Filters the archive through gzip.</li>
+<li>C = Sends the output to a specific directory.</li>
+</ul>
+<h2>.zip (Zip archive)</h2>
+<p>ZIP files end with the extension .zip. Run the following to decompress:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">unzip filename.zip</span>
+Archive:  filename.zip
+  inflating: list
+  inflating: of
+  inflating: files
+  inflating: being
+  inflating: uncompressed
+  inflating: from
+  inflating: the
+  inflating: zip
+  inflating: archive
+</pre>
+</div>
+<p>All files are extracted in the directory where you ran the command. View the following site for more information:</p>
+<ul>
+<li><a href="https://linux.die.net/man/1/zip">https://linux.die.net/man/1/zip</a></li>
+</ul>
+<h2><span id="Decompress_a_ZIP_Archive">.gz (Gzip)</span></h2>
+<p>GZIP files end with the extension .gz. The <span class="code">gunzip</span> command unzips a file so you can open it normally. This command is particularly important for DreamHost users. In your website's home directory is a log folder which stores your error.log and access.log files. View the following articles for more information:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215458038-Viewing-your-access-log">Viewing your access.log</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216512197-Viewing-your-error-log-via-SFTP">Viewing your error log via SFTP</a></li>
+</ul>
+<p>Older logs end with .gz. You can use the following command to unzip a log file and view its contents:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">gunzip error.log.2018-04-11.gz</span></pre>
+</div>
+<p>There is no output when you decompress the file. Run <span class="code">ls -la</span> to view the directory you just ran the command in. You'll see the file no longer ends with .gz, and you can now open it in any normal text editor to view its contents. View the following site for more information:</p>
+<ul>
+<li><a href="https://linux.die.net/man/1/gzip">https://linux.die.net/man/1/gzip</a></li>
+</ul>
+<h2>.tar</h2>
+<p>TAR files end with the extension .tar. Run the following commands to decompress a file:</p>
+<p><strong>Extract in the current directory</strong></p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">tar xvf filename.tar</span></pre>
+</div>
+<p>The contents are extracted into the current directory.</p>
+<h4><strong>Extract in a different directory</strong></h4>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">tar xvf filename.tar -C /home/user/</span></pre>
+</div>
+<p>The contents are extracted into the /home/user directory. View the following site for more information:</p>
+<ul>
+<li><a href="https://linux.die.net/man/1/tar">https://linux.die.net/man/1/tar</a></li>
+</ul>
+<h2>.tar.gz</h2>
+<p>Gzipped TAR files end with the extension .tar.gz. Run the following commands to decompress a file:</p>
+<h4><strong>Extract in the current directory</strong></h4>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">tar xvzf filename.tar.gz</span>
+</pre>
+</div>
+<p>This creates a new folder in your directory that is named the same as file.</p>
+<h4><strong>Extract in a different directory</strong></h4>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">tar -zxvf backup2.tar.gz -C /home/user/</span>
+</pre>
+</div>
+<p>This extracts the files into a folder in your /home/user/ directory. View the following site for more information:</p>
+<ul>
+<li><a href="https://linux.die.net/man/1/tar">https://linux.die.net/man/1/tar</a></li>
+</ul>
+<h2>.tar.bz2</h2>
+<p>Bzipped2 files end with the extension .tar.bz2. Run the following commands to decompress a file:</p>
+<h4><strong>Extract in the current directory</strong></h4>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">tar xvjf filename.bz2</span></pre>
+</div>
+<p>This creates a new folder in your directory that is named the same as file.</p>
+<h4><strong>Extract in a different directory</strong></h4>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">tar xvjf filename.bz2 -C /home/user/</span></pre>
+</div>
+<p>This extracts the files into a folder in your /home/user/ directory. View the following site for more information:</p>
+<ul>
+<li><a href="https://linux.die.net/man/1/tar">https://linux.die.net/man/1/tar</a></li>
+</ul>
+<h2><span id="See_also">See also</span></h2>
+<h3>Internal links</h3>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215465297-UNIX-commands-Working-with-directories">UNIX commands</a><a href="https://help.dreamhost.com/hc/en-us/articles/214750918-UNIX-commands-Changing-ownership"> — </a><a href="https://help.dreamhost.com/hc/en-us/articles/215465297-UNIX-commands-Working-with-directories"> Working with directories</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214750848-UNIX-commands-Working-with-files">UNIX commands</a><a href="https://help.dreamhost.com/hc/en-us/articles/214750918-UNIX-commands-Changing-ownership"> — </a><a href="https://help.dreamhost.com/hc/en-us/articles/214750848-UNIX-commands-Working-with-files"> Working with files</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214750918-UNIX-commands-Changing-ownership">UNIX commands</a><a href="https://help.dreamhost.com/hc/en-us/articles/214750918-UNIX-commands-Changing-ownership"> — </a><a href="https://help.dreamhost.com/hc/en-us/articles/214750918-UNIX-commands-Changing-ownership"> Changing ownership</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214751018-UNIX-commands-Changing-permissions">UNIX commands</a><a href="https://help.dreamhost.com/hc/en-us/articles/214750918-UNIX-commands-Changing-ownership"> — </a><a href="https://help.dreamhost.com/hc/en-us/articles/214751018-UNIX-commands-Changing-permissions"> Changing permissions</a></li>
+</ul>
