@@ -7,7 +7,7 @@
 </div>
 </div>
 <h2><span id="Download_PHP">Download PHP</span></h2>
-<p>This article uses version 5.6.</p>
+<p>This article uses version 7.2.5.</p>
 <ol>
 <li>Log into your server via <a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a>.</li>
 <li>Make sure you're in your user's home directory by running the following command:
@@ -21,7 +21,7 @@
 <li>Click the .tar.bz2 link. This takes you to a page where you can select a mirror site. In this example, scroll down to the 'United States' and right click the link for php.net. From the popout menu, choose 'Copy link address'.</li>
 <li>Back in your SSH terminal, download the file using <a href="https://help.dreamhost.com/hc/en-us/articles/217213327-Wget">wget</a>. Type in '<strong>wget</strong>' and paste the link you just copied.
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">wget http://php.net/get/php-5.6.12.tar.bz2/from/this/mirror</span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wget http://php.net/get/php-7.2.5.tar.bz2/from/this/mirror</span></pre>
 </div>
 <dl>
 <dd><em>This saves to a new file named /mirror</em></dd>
@@ -29,7 +29,7 @@
 </li>
 <li>Make sure to check your downloaded file's <a href="https://en.wikipedia.org/wiki/Checksum">checksum</a>. Compare it to the version on the downloads page above.<br />
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">md5sum mirror</span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">sha256sum mirror</span></pre>
 </div>
 </li>
 <li>Decompress the file:
@@ -37,7 +37,7 @@
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">tar -vxjf mirror</span></pre>
 </div>
 <dl>
-<dd><em>This creates a new directory named php-5.6.12</em></dd>
+<dd><em>This creates a new directory named php-7.2.5</em></dd>
 </dl>
 </li>
 </ol>
@@ -53,7 +53,7 @@
 </li>
 <li>Navigate to your PHP download directory:
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~/php-5.6.12</span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~/php-7.2.5</span></pre>
 </div>
 </li>
 <li>Run the following to install:
@@ -81,12 +81,19 @@
 <li>Also check which version of PHP your shell is using:
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">php -v</span>
-<span class="cmdoutput">PHP 5.6.12 (cli) (built: Aug 25 2015 15:36:15)
-Copyright (c) 1997-2015 The PHP Group
-Zend Engine v2.6.0, Copyright (c) 1998-2015 Zend Technologies</span></pre>
+<span class="cmdoutput">PHP 7.2.5 (cli) (built: Apr 30 2018 11:20:21) ( NTS )
+Copyright (c) 1997-2018 The PHP Group
+Zend Engine v3.2.0, Copyright (c) 1998-2018 Zend Technologies</span></pre>
 </div>
 </li>
 </ol>
+<h2>Force your site to use the new version</h2>
+<p>The new version works for SHELL commands, but your website currently does not recognize it. To make your site use the new version, create an .htaccess file and put the following lines in it. Make sure to change 'username' to your acutal SHELL username.</p>
+<div class="preboxcontainer">
+<pre class="prebox">AddHandler fcgid-script .php 
+FCGIWrapper "/home/username/local/bin/php-cgi" .php</pre>
+</div>
+<p>Create a <a href="https://help.dreamhost.com/hc/en-us/articles/214895287-How-do-I-view-my-PHP-environment-settings-">phpinfo.php file</a>, then visit the file on your site. You'll see it's now using the custom version of PHP.</p>
 <h2><span id="See_also">See also</span></h2>
 <h3>Internal links</h3>
 <ul>
