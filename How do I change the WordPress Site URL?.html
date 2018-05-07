@@ -80,36 +80,33 @@
 <li>Alter the URL by typing in a new one.</li>
 <li>Click the <strong>Go</strong> button to save the settings. Do this for both the 'siteurl' and 'home' options.</li>
 </ol>
-<h2><span id="Correcting_all_URLs_in_the_database">Correcting all other URLs in the database</span></h2>
-<p>WordPress hardcodes the site's domain name into the database in such things as image and link urls. This is a problem because when you click on a link on your new site, it redirects back to the old site. To change these, you can use a search and replace the plugin. Below are a couple of plugins that work:</p>
+<h3>Changing the URL in your wp-config.php file</h3>
+<p>You can also change the URL in your wp-config.php file. This is a little easier than editing your database and will give you immediate access to your site.</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>The following assumes your Home and Site URL should be 'example.com'.</p>
+</div>
+</div>
+<ol>
+<li>Log into your site using <a href="https://help.dreamhost.com/hc/en-us/articles/115000675027-FTP-overview-and-credentials">FTP</a> or <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH</a>.</li>
+<li>In your WordPress directory, edit the file titled 'wp-config.php'.
 <ul>
-<li><a href="https://wordpress.org/plugins/velvet-blues-update-urls/">Velvet Blues Update URLs</a></li>
-<li><a href="https://wordpress.org/plugins/search-and-replace/">Search and Replace</a></li>
-<li><a href="https://wordpress.org/plugins/better-search-replace/">Better Search Replace</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115000098272-Creating-and-editing-a-file-via-FTP">Creating and editing files via FTP</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Creating and editing a file via SSH</a></li>
 </ul>
-<h3>Using the command line</h3>
-<p>If you are familiar with the command line, you can run the following command for the same effect (assuming you saved the old WordPress address).</p>
-<ol>
-<li>First, log into your server via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH</a>.</li>
-<li>Next, navigate to your WordPress installation. Assuming it's 'example.com', you'd probably run the following:
+</li>
+<li>In that file, add the following lines just above <strong>/* That's all, stop editing! Happy blogging. */</strong>.
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~/example.com</span></pre>
+<pre class="prebox">define('WP_HOME','http://example.com');
+define('WP_SITEURL','http://example.com');</pre>
 </div>
 </li>
-<li>In your site's directory, you can use <a href="https://help.dreamhost.com/hc/en-us/articles/214693248-WordPress-wp-cli-overview">wp-cli</a> to update the URLs using the following command.
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp search-replace http://example.com http://new.example.com --dry-run</span></pre>
-</div>
-</li>
+<li>If you visit your site now, you'll see you can log in. Follow the first example above to officially change the Home and Site URL in your dashboard.</li>
 </ol>
-<p>The --dry-run call at the end tests the address</p>
-<p>If the changes make sense to you, then run the above command again without the 'dry-run' call.</p>
-<p>At this point, your website should load normally on the new domain name.</p>
 <h2><span id="See_also">See also</span></h2>
-<ol>
 <ul>
 <li><a href="/hc/en-us/articles/215525287-WordPress-overview">WordPress overview</a></li>
 <li><a href="/hc/en-us/articles/214693248-WordPress-wp-cli-overview">WordPress wp-cli overview</a></li>
 <li><a href="/hc/en-us/articles/214693268-WordPress-wp-config-php-overview">WordPress wp-config.php overview</a></li>
 </ul>
-</ol>
