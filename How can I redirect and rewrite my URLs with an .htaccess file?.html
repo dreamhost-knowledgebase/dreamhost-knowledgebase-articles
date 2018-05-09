@@ -9,27 +9,51 @@
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Creating and editing a file via SSH</a></li>
 </ul>
 <h2>What to change in the examples below?</h2>
-<p>The examples below can be entered into your .htaccess file exactly as shown.</p>
-<p>Only if the example contains a URL in bold should you change that to your actual URL. For example, if you see the domain 'example.com', change this to your own domain name.</p>
+<p>The examples below can be entered into your .htaccess file exactly as shown. Just make sure to adjust the actual path to the file so the .htaccess file knows where it's located. Also, if you see the domain 'example.com', change this to your own domain name.</p>
 <h2><span id="Redirecting_a_URL">Redirecting a URL</span></h2>
 <p>Using Redirect in an .htaccess file enables you to redirect users from an old page to a new page without having to keep the old page. For example, if you use index.html as your index file and then later rename index.html to home.html, you could set up a redirect to send users from index.html to home.html. For example:</p>
+<p><strong>Redirect to a local site file</strong></p>
 <div class="preboxcontainer">
-<pre class="prebox">Redirect /path/to/old/file/old.html http://<span class="command">www.example.com/new/file/new.html</span></pre>
+<pre class="prebox">Redirect /path/to/old/file/old.html /path/to/new/file/new.html</pre>
 </div>
+<p><strong>Redirect to an external site file</strong></p>
+<div class="preboxcontainer">
+<pre class="prebox">Redirect /path/to/old/file/old.html http://<span class="command">www.example.com</span>/new/file/new.html</pre>
+</div>
+<h3>The first path</h3>
 <p>The first path to the old file must be a local UNIX path, NOT the full path. So, if the .htaccess file is in the directory /example.com, you would <strong>not</strong> include /home/exampleuser/example.com in the local UNIX path. The first / represents the example.com directory. If the old file was in that directory, you would follow the / with the old file name.</p>
+<h3>The second path</h3>
 <p>The second path to the new file can be a local UNIX path, but can also be a full URL to link to a page on a different server or the same server.</p>
 <h2>Examples of redirects</h2>
+<h3>Redirect from an index.html file to a different directory</h3>
 <div class="preboxcontainer">
-<pre class="prebox">Redirect /index.html /new/
-Redirect /index.html /default.html
-Redirect /private/ http://<span class="command">www.example.com/private/</span>
-Redirect /img/logo.gif http://<span class="command">www.example.com/images/logo.gif</span>
+<pre class="prebox">Redirect /index.html /new/</pre>
+</div>
+<h3>Redirect from index.html to default.html</h3>
+<div class="preboxcontainer">
+<pre class="prebox">Redirect /index.html /default.html</pre>
+</div>
+<h3>Redirect a local /private directory to another site's private directory</h3>
+<div class="preboxcontainer">
+<pre class="prebox">Redirect /private/ http://<span class="command">www.example.com/private/</span></pre>
+</div>
+<h3>Load a .gif file from a different site</h3>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Make sure the other site is something you own. You should never <a href="https://help.dreamhost.com/hc/en-us/articles/216363197-How-do-I-prevent-image-hotlinking-">hotlink files</a> from other websites.</p>
+</div>
+</div>
+<div class="preboxcontainer">
+<pre class="prebox">Redirect /img/logo.gif http://<span class="command">www.example.com/images/logo.gif</span>
 </pre>
 </div>
-<p>Another form of redirection uses the RedirectMatch command:</p>
+<h3>Using Regular Expressions</h3>
+<p>If you want to use a Regular Expression to redirect something, use the <a href="https://httpd.apache.org/docs/2.4/mod/mod_alias.html#redirectmatch">RedirectMatch</a> directive:</p>
 <div class="preboxcontainer">
 <pre class="prebox">RedirectMatch "^/oldfile\.html/?$" "http://<span class="command">example.com/newfile.php</span>"</pre>
 </div>
+<h3>Redirecting error messages</h3>
 <p>You can also redirect 404 errors. Instead of throwing a 404 page, this redirects to the homepage of the website.</p>
 <div class="preboxcontainer">
 <pre class="prebox">ErrorDocument 404 http://<span class="command">example.com</span>/</pre>

@@ -1,20 +1,35 @@
-<p><strong>SSH</strong>, or <strong>Secure Shell</strong>, allows you to securely access DreamHost services via a command line terminal also known as a <a href="/hc/en-us/articles/216557548-Available-shells-at-DreamHost">shell</a>. All SSH traffic travels over a secured connection rather than plain text. Because of this, the connection is encrypted and secure. DreamHost currently uses OpenSSH software on the server end.</p>
-<div class="alert alert-note">
-<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
-<div class="alert-content">
-<p>Before being able to log into your server via SSH, you must update your user to a SHELL user in the <a href="http://panel.dreamhost.com/">panel</a>. This process is detailed in the Enabling Shell Access article.</p>
+<p><strong>SSH</strong>, (or <strong>Secure Shell)</strong>, is most often used as a command line alternative to <a href="https://help.dreamhost.com/hc/en-us/articles/115000675027-FTP-overview-and-credentials">FTP</a>. With FTP, you use a client to log into your server. With SSH, you use a terminal (or <a href="/hc/en-us/articles/216557548-Available-shells-at-DreamHost">Shell</a>) and type in commands to access your server.</p>
+<p>All SSH traffic travels over a secured connection, rather than plain text. Because of this, the connection is encrypted and secure. DreamHost currently uses OpenSSH software on the server end.</p>
+<h2>Why should I use SSH?</h2>
+<p>SSH allows you to take advantage of many tools which are not available with an FTP client. For example:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/217213327-Wget">wget</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216688028-cURL-overview">curl</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215840708-Traceroute">traceroute</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216661778-Rsync">rsync</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115000683852-Using-the-top-command-to-troubleshoot-your-website">top</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216560958-Website-tools#Command_line_tools">other tools</a></li>
+</ul>
+<p>These tools can make it much easier to troubleshoot and manage your website. However, SSH can be difficult to use for new users, so some knowledge of the UNIX Shell is highly recommended.</p>
+<h2>Step 1 — Enabling Shell access</h2>
+<p>Before you are able to log into your server via SSH, you must change your website user to a SHELL user in the <a href="http://panel.dreamhost.com/">panel</a>. This process is detailed in the following 'Enabling Shell Access' article:</p>
 <ul>
 <li><a href="/hc/en-us/articles/216385837-Enabling-Shell-access">Enabling Shell Access</a></li>
 </ul>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>This Shell user is the username you use to log into your server as shown below.</p>
 </div>
 </div>
-<h2>Opening up a terminal application</h2>
-<p>There are several terminal clients (applications) you can use on any operating system. View the following article for the easiest options for Windows, Mac, and Linux.</p>
+<h2>Step 2 — Opening up a terminal application</h2>
+<p>A terminal is a program you use to type Shell commands. There are several terminal clients (applications) you can use on any operating system. View the following article for the easiest options for Windows, Mac, and Linux:</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215360828-SSH-client-software">SSH client software</a></li>
 </ul>
-<h2><span id="Logging_into_your_server">Logging into your server</span></h2>
-<p>When you're ready to log into your server via SSH, you'll need to know your hostname. This can be one of four names:</p>
+<p>Once you have chosen a terminal, you can proceed with locating your hostname and logging into your server.</p>
+<h2>Step 3 — Locating your hostname</h2>
+<p>When you're ready to log into your server via SSH, you'll need to know your hostname. This can differ depending on which type of server you're site is on. View the '<a href="https://help.dreamhost.com/hc/en-us/articles/115000675027-FTP-overview-and-credentials#Finding_your_FTP_server_hostname">Finding your server name</a>' article for details on how to obtain the correct name.</p>
 <table class="wikitable">
 <tbody>
 <tr style="font-style: bold;">
@@ -23,21 +38,7 @@
 </tr>
 <tr>
 <td>example.com</td>
-<td>You can use this if you're logging into a specific domain. Just change 'example.com' to your actual domain name</td>
-</tr>
-</tbody>
-</table>
-<div class="alert alert-note">
-<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
-<div class="alert-content">
-<p>The following three examples use your server name. View the '<a href="https://help.dreamhost.com/hc/en-us/articles/115000675027-FTP-overview-and-credentials">Finding your server name</a>' article for details on how to obtain the correct name.</p>
-</div>
-</div>
-<table class="wikitable">
-<tbody>
-<tr style="font-style: bold;">
-<th bgcolor="#F2F2F2">Server name</th>
-<th bgcolor="#F2F2F2">Description</th>
+<td>You can use this if you're logging into a specific website. Just change 'example.com' to your actual domain name.</td>
 </tr>
 <tr>
 <td>server.dreamhost.com</td>
@@ -48,12 +49,12 @@
 <td>'ps123456' is the name of your<a href="https://help.dreamhost.com/hc/en-us/articles/215280058-Virtual-Private-Server-overview-VPS-"> VPS server</a></td>
 </tr>
 <tr>
-<td>dp-ab12cd34ef.dreamhostps.com</td>
-<td>'dp-ab12cd34ef' is the name of your <a href="https://panel.dreamhost.com/index.cgi?tree=dreampress.dashboard&amp;">DreamPress instance</a></td>
-</tr>
-<tr>
 <td>ds123456.dreamservers.com</td>
 <td>'ds123456' is the name of your <a href="https://help.dreamhost.com/hc/en-us/articles/215279658-Dedicated-server-overview">Dedicated server</a></td>
+</tr>
+<tr>
+<td>dp-ab12cd34ef.dreamhostps.com</td>
+<td>'dp-ab12cd34ef' is the name of your <a href="https://panel.dreamhost.com/index.cgi?tree=dreampress.dashboard&amp;">DreamPress instance</a></td>
 </tr>
 </tbody>
 </table>
@@ -63,6 +64,7 @@
 <p>This article uses server.dreamhost.com as a general example. Make sure to use the correct server name for your particular site or server.</p>
 </div>
 </div>
+<h2><span id="logging_in">Step 4 — Using commands to log into your server</span></h2>
 <p>Run the following command in your terminal to log in:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">ssh username@server.dreamhost.com</span></pre>
@@ -71,16 +73,21 @@
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">ssh username@example.com</span></pre>
 </div>
-<p>Be sure to change "example.com" to your actual domain or server.dreamhost.com to the server to which you're attempting to connect.</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Be sure to change <strong>example.com</strong> to your actual domain, or <strong>server.dreamhost.com</strong> to the server you're connecting to.</p>
+</div>
+</div>
 <h2><span id="Passwordless_login">How to configure passwordless login</span></h2>
-<p>Once you set up a shell user, you must enter your password each time when logging into the server. If you’d like to avoid entering your password each time, you can set up Passwordless Login. This way, you'll be able to automatically login each time immediately without needing to enter your password.</p>
+<p>Once you set up a shell user, you must enter your password each time when logging into the server. If you’d like to avoid entering your password each time, you can set up Passwordless Login. This way, you'll be able to automatically log in each time without needing to enter your password.</p>
 <h3><span id="Passwordless_login">How to configure passwordless login in Mac OS X and Linux</span></h3>
 <p>View the following article for instructions on how to enable this in OS X and Linux:</p>
 <ul>
 <li><a href="/hc/en-us/articles/216499537-How-to-configure-passwordless-login-in-Mac-OS-X-and-Linux">How to configure passwordless login in Mac OS X and Linux</a></li>
 </ul>
 <h3>How to configure passwordless login in Windows</h3>
-<p>If you're using Windows you'll need to download a 3rd party program named PuTTY to emulate a shell environment. View the following articles for details:</p>
+<p>If you're using Windows, you'll need to download a third-party program named PuTTY to emulate a shell environment. View the following articles for further details:</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215464538-How-do-I-configure-PuTTY-">How do I configure PuTTY?</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215464758-How-do-I-set-up-passwordless-login-in-PuTTY-">How do I set up passwordless login in PuTTY?</a></li>
