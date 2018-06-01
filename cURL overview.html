@@ -1,79 +1,43 @@
-<p>The cURL library (or, 'libcurl' which is the package name on the server) is often used in PHP to access data from outside web pages. Common uses include reading rss feeds or accessing third-party API systems. libcurl currently supports the http, https, ftp, gopher, telnet, dict, file, and ldap protocols. libcurl also supports HTTPS certificates, HTTP POST, HTTP PUT, FTP uploading (this can also be done with PHP's ftp extension), HTTP form based upload, proxies, cookies, and user+password authentication.</p>
-<h2><span id="Fetching_a_file_without_using_cURL">Fetching a file without using cURL</span></h2>
-<p>Here's an example that doesn’t use cURL. In the following, the script reads and displays the post titles from the RSS feed xml file of dreamhoststatus.com:</p>
-<div class="preboxcontainer">
-<pre class="prebox">&lt;?php
-$xml = simplexml_load_file('http://www.dreamhoststatus.com/feed/');
-print "&lt;ul&gt;\n";
-foreach ($xml-&gt;channel-&gt;item as $item){
-  print "&lt;li&gt;$item-&gt;title&lt;/li&gt;\n";
-}
-print "&lt;/ul&gt;";
-?&gt;</pre>
-</div>
-<h2><span id="Fetching_a_file_using_cURL">Fetching a file using cURL</span></h2>
-<p>Here's another example, but this time cURL is used. Again, the script reads and displays the post titles from the RSS feed xml file of dreamhoststatus.com. A simplexml_load_string is also used to parse the results that are created when curl_exec() is ran:</p>
-<div class="preboxcontainer">
-<pre class="prebox">&lt;?php
-
-$ch = curl_init("http://www.dreamhoststatus.com/feed/");
-
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-curl_setopt($ch, CURLOPT_HEADER, 0);
-
-$xml = simplexml_load_string(curl_exec($ch));
-curl_close($ch);
-
-print "&lt;ul&gt;\n";
-foreach ($xml-&gt;channel-&gt;item as $item){
-  print "&lt;li&gt;$item-&gt;title&lt;/li&gt;\n";
-}
-print "&lt;/ul&gt;";
-
-?&gt;</pre>
-</div>
-<h2><span id="Saving_the_output_using_cURL">Saving the output using cURL</span></h2>
-<p>The following script accesses the same RSS feed using cURL but instead of displaying the feed, it saves it to a file named dreamhost_feed.html. This operation is especially useful if you’re building a cache file or don’t need real time updates:</p>
-<div class="preboxcontainer">
-<pre class="prebox">&lt;?php
-$ch = curl_init("http://www.dreamhoststatus.com/feed/");
-$fp = fopen("dreamhost_feed.html", "w");
-curl_setopt($ch, CURLOPT_FILE, $fp);
-curl_setopt($ch, CURLOPT_HEADER, 0);
-curl_exec($ch);
-curl_close($ch);
-fclose($fp);
-?&gt;</pre>
-</div>
-<h2><span id="Images">Images</span></h2>
-<p>This script retrieves a remote image and assigns the binary data to the variable $image, and then outputs the image to the browser:</p>
-<div class="preboxcontainer">
-<pre class="prebox">&lt;?php
-$image_url = "http://example.com/image.jpg";
-$ch = curl_init();
-$timeout = 0;
-curl_setopt ($ch, CURLOPT_URL, $image_url);
-curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
-
-// Getting binary data
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-curl_setopt($ch, CURLOPT_BINARYTRANSFER, 1);
-
-$image = curl_exec($ch);
-curl_close($ch);
-
-// output to browser
-header("Content-type: image/jpeg");
-print $image;
-?&gt;</pre>
-</div>
-<h2><span id="Advanced_uses_for_cURL">Advanced uses for cURL</span></h2>
-<p>As you can see from the previous examples, cURL allows for much more control than just calling the simplexml_load_file. cURL can be used for accessing other file types and can pass various headers. View the following link for an example of using cURL to access the Twitter API. This code was written by stackoverflow.com user Rivers:</p>
+<p><a href="https://curl.haxx.se/docs/">cURL</a> is free software that allows you to transfer between servers. The cURL project offers two sub-projects:</p>
 <ul>
-<li><a href="http://stackoverflow.com/a/12939923">http://stackoverflow.com/a/12939923</a>.</li>
+<li><a href="https://curl.haxx.se/">curl</a> — This is the command line tool you can run on your local computer, or your DreamHost server. It offers several command options for you to send and receive data. 'curl' uses 'libcurl'.</li>
+<li><a href="https://curl.haxx.se/libcurl/">libcurl</a> — This is a library that supports many different protocols. It's very common for the PHP programming language to use this library. View the following article for further details:</li>
+<ul>
+<li><a href="http://php.net/manual/en/intro.curl.php">PHP: cURL - Manual</a></li>
 </ul>
-<h3><span id="Command_line_examples">Command line examples</span></h3>
-<p>Instead of using cURL within a file, you can also run it directly via the command line on the server. This is often useful to test connections or file headers to verify if something is working as intended.</p>
+</ul>
+<p>This article only shows how to use the command-line tool.</p>
+<h2><span id="Advanced_uses_for_cURL">cURL examples</span></h2>
+<p>The following examples must be ran in an SSH terminal application. View the following article for further information on how to log into a terminal.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215360828-SSH-client-software">SSH client software</a></li>
+</ul>
+<h3>Viewing the curl version installed</h3>
+<p>The following shows how to view the version of curl you're using. This may change depending on if you're running commands on your DreamHost server, or your local computer.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">curl --version</span>
+curl 7.35.0 (x86_64-pc-linux-gnu) libcurl/7.35.0 OpenSSL/1.0.1f zlib/1.2.8 libidn/1.28 librtmp/2.3
+Protocols: dict file ftp ftps gopher http https imap imaps ldap ldaps pop3 pop3s rtmp rtsp smtp smtps telnet tftp
+Features: AsynchDNS GSS-Negotiate IDN IPv6 Largefile NTLM NTLM_WB SSL libz TLS-SRP</pre>
+</div>
+<h3>Return the code of a specific webpage</h3>
+<p>This will return the source-coding of a specific page.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">curl http://example.com</span></pre>
+</div>
+<h3>Save the code of a specific webpage in a new file</h3>
+<p>If you just run <span class="code">curl example.com</span>, the code displays in your terminal. To save it to a new file name instead, use the -o flag. This uses the lowercase 'o' character.</p>
+<p>The syntax would be <span class="code">curl -o &lt;<strong>new-file-with-saved-code</strong>&gt; &lt;<strong>website-url</strong>&gt;</span></p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">curl -o example.com-CODE http://example.com </span></pre>
+</div>
+<h3>Save the code of a specific webpage to a file of the same name</h3>
+<p>If you do not want to save to a new file name, you can save to a file that's the same as the page you're accessing. For example, if you're accessing 'example.com/index.html', this will create a new file titled 'index.html' with the saved code. Use the -O flag with a capital 'O' character.</p>
+<p>The syntax would be <span class="code">curl -O &lt;<strong>website-url</strong>&gt;</span></p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">curl -O https://example.com/index.html </span></pre>
+</div>
 <h3><span id="Testing_a_connection_to_a_remote_site">Testing a connection to a remote site</span></h3>
 <p>At some point, you may notice that your site is not communicating with another website. An example may be when you're attempting to download a WordPress plugin and seeing it fail.</p>
 <p>The following steps help you test your connection to WordPress:</p>
@@ -85,22 +49,61 @@ print $image;
 <span class="cmdoutput">* About to connect() to wordpress.org port 443 (#0)
 *   Trying 66.155.40.250... connected
 * Connected to wordpress.org (66.155.40.250) port 443 (#0)
-* successfully set certificate verify locations:
-</span>
-</pre>
+* successfully set certificate verify locations:</span></pre>
 </div>
 </li>
 </ol>
-<p>This shows a successful connection. If it failed, you'd see the failure in the response instead.</p>
+<p>This first responds with connection data, then the full code of the page you entered.</p>
+<p>The above shows a successful connection. If it failed, you'd see the failure in the response instead.</p>
 <h3><span id="Checking_headers">Checking headers</span></h3>
-<p>You can also use cURL to check headers from a website, but you must specify the header you wish to view. For example, run the following to check if gzip is enabled:</p>
+<p>You can also use cURL to check headers from a website using the '-I' flag:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">curl -I http://example.com/index.php</span>
+  HTTP/1.1 200 OK
+Date: Tue, 29 May 2018 20:55:09 GMT
+Server: Apache
+Last-Modified: Mon, 25 Jul 2016 22:45:30 GMT
+ETag: "2f3-5387d8a979b59"
+Accept-Ranges: bytes
+Content-Length: 755
+Vary: Accept-Encoding
+Content-Type: text/html</pre>
+</div>
+<p>This returns a default list of headers. If you want a specific header not shown, you must manually specify it using the '-H' flag. For example, run the following to check if gzip is enabled:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">curl -I -H 'Accept-Encoding: gzip,deflate' http://example.com/index.php</span>
-</pre>
+  HTTP/1.1 200 OK
+Date: Tue, 29 May 2018 20:57:31 GMT
+Server: Apache
+Last-Modified: Mon, 25 Jul 2016 22:45:30 GMT
+ETag: "2f3-5387d8a979b59"
+Accept-Ranges: bytes
+Vary: Accept-Encoding
+<span class="green">Content-Encoding: gzip</span>
+Content-Length: 428
+Content-Type: text/html</pre>
 </div>
 <p>If gzip is enabled, you'll see this line in the output:</p>
 <div class="preboxcontainer">
 <pre class="prebox">Content-Encoding: gzip</pre>
+</div>
+<h2>Troubleshooting</h2>
+<h3>Moved Permanently</h3>
+<p>It's possible that when you run 'curl' on a website URL, you'll see a 'Moved Permanently' response. For example:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">curl http://www.example.com</span>
+
+&lt;html&gt;
+&lt;title&gt;301 Moved Permanently&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;Moved Permanently&lt;/h1&gt;
+&lt;p&gt;The document has moved &lt;a href="http://example.com"&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;/body&gt;&lt;/html&gt;</pre>
+</div>
+<p>This usually just means the URL does (or doesn't) use the 'www' subdomain before it. Try again with (or without) www.</p>
+<p>Otherwise, you can use the '-L' flag to redirect you anyway.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">curl -L http://www.example.com</span></pre>
 </div>
 <h2><span id="See_also">See also</span></h2>
 <ul>
