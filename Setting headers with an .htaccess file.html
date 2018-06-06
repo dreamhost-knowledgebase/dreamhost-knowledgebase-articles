@@ -48,12 +48,31 @@ AddDefaultCharset ISO-8859-1
 <ul>
 <li><a href="https://content-security-policy.com/">https://content-security-policy.com/</a></li>
 </ul>
-<h3>Strict-Transport-Security</h3>
+<h3>Strict-Transport-Security (HSTS)</h3>
 <p>Tells browsers to ONLY interact with the site using HTTPS and never HTTP. View the following pages for further details.</p>
 <ul>
 <li><a href="https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security">https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security</a></li>
 <li><a href="https://www.owasp.org/index.php/HTTP_Strict_Transport_Security_Cheat_Sheet">https://www.owasp.org/index.php/HTTP_Strict_Transport_Security_Cheat_Sheet</a></li>
 </ul>
+<p>You can enable this in your .htaccess file with the following code:</p>
+<div class="preboxcontainer">
+<pre class="prebox">Header add Strict-Transport-Security "max-age=31415926;includeSubDomains;"</pre>
+</div>
+<p>You can then test if it's active by running the following curl command:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">curl -I https://example.com</span>
+HTTP/1.1 200 OK
+Date: Tue, 05 Jun 2018 20:05:52 GMT
+Server: Apache
+Last-Modified: Tue, 05 Jun 2018 16:26:52 GMT
+ETag: "2f9-56de78493cbc8"
+Accept-Ranges: bytes
+Content-Length: 761
+<span class="green">Strict-Transport-Security: max-age=31415926;includeSubDomains;</span>
+Content-Type: text/html
+</pre>
+</div>
+<p>You should see the 'Strict-Transport-Security' header in the response.</p>
 <h2>Enabling CORS</h2>
 <p><a href="https://en.wikipedia.org/wiki/Cross-origin_resource_sharing">Cross Origin Resource Sharing</a> (CORS) allows restricted resources on a website to be requested from another domain outside the domain from which it was originally served. View the following pages for further details.</p>
 <ul>
