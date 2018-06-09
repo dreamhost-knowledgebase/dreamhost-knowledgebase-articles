@@ -1,18 +1,11 @@
-<div class="alert alert-important">
-<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
-<div class="alert-content">
-<p>There's been a small change of plans with the new DreamObjects cluster (us-east-1) launch. Please read the following status post for further details:</p>
-<ul>
-<li><a href="https://www.dreamhoststatus.com/pages/maintenance/575f0f606826303142000510/5acd30977d782c04c4fe7fba">DreamObjects us-east-1 launch delayed</a></li>
-</ul>
-</div>
-</div>
 <p>Beginning June 21, 2018, DreamHost will begin to migrate existing DreamObjects accounts to a new and improved cluster. This will help with long term stability of your data.</p>
 <h2>What will happen to my current data?</h2>
-<p>Your data will continue to exist and function normally until October 2018, when the old cluster will be shut down.</p>
-<p>Due to several technical incompatibilities, it's not possible to automatically migrate your data to the new cluster. The only option is to manually migrate your data. However, please note that you have until October to migrate your data to the new cluster.</p>
+<p>Your data will continue to exist and function normally until October 1, 2018, after which the old cluster will be shut down.</p>
+<p>Due to several technical incompatibilities, it's not possible to automatically migrate your data to the new cluster. However, please note that you have until October to migrate your data to the new cluster.</p>
+<p>The 'Migration tool' described below contains step-by-step instructions on migrating your data using the DreamHost panel.</p>
 <h2>What will happen if I'm still using a Legacy CDN name?</h2>
-<p>DreamObjects CDN names are no longer supported at DreamHost. If you are currently using a 'Legacy' CDN name that is still functional, this will not continue to function when you migrate your data to the new cluster.</p>
+<p>DreamObjects CDN names are no longer supported at DreamHost. If you are currently using a 'Legacy' CDN name that is still functional, you must use the new cluster's hostname <strong>objects-us-east-1.dream.io</strong> after you migrate your data to the new cluster.</p>
+<p>You can also create a new <a href="/hc/en-us/articles/215253408-How-to-create-a-DNS-alias-for-DreamObjects-buckets">subdomain alias</a>.</p>
 <h2>Migration tool</h2>
 <p>You might be familiar with the earlier version of this tool from the article <a href="https://help.dreamhost.com/hc/en-us/articles/115001860231-Migrating-3rd-party-S3-buckets-to-DreamObjects">Migrating 3rd party S3 buckets to DreamObjects</a>.</p>
 <p>The migration interface has been improved to allow you to select a DreamObjects user as the source for a copy, as well as the destination for a copy. You do not need to specify the Access Key or Secret Key for the source user, as they are copied internally in the migration tool after a source user is selected.</p>
@@ -22,22 +15,18 @@
 <li>Bucket &amp; Object ACLs:</li>
 <ul>
 <li>Single-owner ACLs are preserved</li>
-<li>Group ACLs (COMING SOON)</li>
+<li>Support for Group ACLs <span style="font-weight: 400;">and Complex ACLs is in progress, but not available at this time.</span></li>
 <ul>
 <li>This includes public-read/<em>AllUsers</em>, as well as <em>AuthenticatedUsers</em></li>
-</ul>
-<li>Complex ACLs (COMING SOON)</li>
-<ul>
-<li>This is all ACLs that specify multiple different DreamObjects users</li>
 </ul>
 </ul>
 <li>CORS:</li>
 <ul>
-<li>COMING SOON</li>
+<li><span style="font-weight: 400;">The migration tool does not currently support the transfer of bucket-specific CORS policies. If you are using CORS on your bucket, please note any CORS setting you may have on buckets in objects-us-west-1 and then apply those setting to the migrated bucket on objects-us-east-1.</span></li>
 </ul>
 <li>Static Website:</li>
 <ul>
-<li>COMING SOON</li>
+<li><span style="font-weight: 400;">The migration tool does not </span><span style="font-weight: 400;">currently</span><span style="font-weight: 400;"> support the transfer of of any static sites you may have set up in objects-us-west-1 to </span><span style="font-weight: 400;">objects-us-east-1. Please reconfigure your buckets with static site(s) once the transfer is complete.</span></li>
 </ul>
 <li>Server-Side Encryption (SSE)</li>
 <ul>
@@ -47,10 +36,6 @@
 </ul>
 <h2>Requirements</h2>
 <ul>
-<li>Two DreamObjects Accounts</li>
-<ul>
-<li>e.g., one in each of us-west-1 (old) and us-east-1 (new) clusters</li>
-</ul>
 <li>A source bucket with data</li>
 <li>A destination bucket name (or an empty bucket)</li>
 </ul>
@@ -113,3 +98,7 @@
 </li>
 </ol>
 <p>When a migration completes, an email confirmation is sent to you and the migration moves to the completed area of the Migration tab.</p>
+<h2>Using the new hostname after the migration</h2>
+<p>Once you have migrated your data to a bucket on the new cluster, you can start using the new bucket immediately.</p>
+<p>If you use URLs or hostnames to provide public/website access to the objects in your buckets, you must change them from the old hostname (objects-us-west-1.dream.io) to the new hostname, <strong>objects-us-east-1.dream.io</strong>.</p>
+<p>If you use a <a href="/hc/en-us/articles/215253408-How-to-create-a-DNS-alias-for-DreamObjects-buckets">subdomain alias</a> on the old cluster, then add the alias to the new bucket to keep using it as the hostname.</p>
