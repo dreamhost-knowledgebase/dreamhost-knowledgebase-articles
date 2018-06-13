@@ -17,7 +17,7 @@
 <h2>What to change in the examples below?</h2>
 <p>The examples below can be entered into your .htaccess file exactly as shown.</p>
 <p>Only if the example contains a URL in bold should you change that to your actual URL. For example, if you see the domain 'example.com', change this to your own domain name.</p>
-<h2><span id="Forcing_the_domain_to_serve_securely_using_HTTPS">Forcing the domain to serve securely using HTTPS</span></h2>
+<h2><span id="Forcing_the_domain_to_serve_securely_using_HTTPS">Forcing the domain to serve securely using HTTPS (for any site)</span></h2>
 <p>The following forces any http request to be rewritten using https. For example, the following code forces a request to <a href="http://example.com">http://example.com</a> to load <a href="https://example.com">https://example.com</a>. It also forces directly linked resources (images, css, etc.) to use https:</p>
 <div class="preboxcontainer">
 <pre class="prebox">RewriteEngine On
@@ -26,26 +26,6 @@ RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 </pre>
 </div>
 <p>If this isn't working for you, first check your line endings. Copy/paste from your web browser into a text editor may not work right, so after pasting into your text editor you should delete each line break and add it back in (line break = return key).</p>
-<h2><span id="An_extra_secure_method_to_force_a_domain_to_only_use_SSL_.28HTTPS.29">Force a domain to only use SSL (HTTPS) when using an .htaccess file to create a login prompt</span></h2>
-<p>This method fixes a double login problem if you're using an <a href="https://help.dreamhost.com/hc/en-us/articles/216363187-How-do-I-password-protect-my-site-">.htaccess file to create a login prompt</a>. This prevents submission of an .htaccess password prompt on an unencrypted connection. If you wish to ensure that your server is only serving documents over an encrypted SSL channel, then you must use the SSLRequireSSL directive with the +StrictRequire Option enabled:</p>
-<div class="alert alert-note">
-<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
-<div class="alert-content">
-<p>The code below may cause a '<a href="https://help.dreamhost.com/hc/en-us/articles/216539558-Let-s-Encrypt-SSL-certificate-overview">Let's Encrypt</a>' certificate to not renew properly. If you have added a 'Let's Encrypt' certificate to your domain, make sure to disable the code below in your .htaccess file when your certificate is about to renew. Once renewed, you can re-enable the code below.</p>
-</div>
-</div>
-<div class="preboxcontainer">
-<pre class="prebox">SSLOptions +StrictRequire
-SSLRequireSSL
-SSLRequire %{HTTP_HOST} eq "<span class="command">example.com</span>"
-</pre>
-</div>
-<div class="alert alert-note">
-<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
-<div class="alert-content">
-<p>Make sure the URL you enter next to SSLRequire is your site's base URL. If you're securing a subdirectory such as 'example.com/blog', this URL would still be 'example.com'.</p>
-</div>
-</div>
 <h2><span id="Forcing_HTTPS_with_WordPress">Forcing HTTPS with WordPress</span></h2>
 <div class="alert alert-important">
 <div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
@@ -56,7 +36,8 @@ SSLRequire %{HTTP_HOST} eq "<span class="command">example.com</span>"
 </dl>
 </div>
 </div>
-<p>It's possible for a visitor to enter in a direct HTTP URL on your WordPress site. To force any HTTP request to redirect to HTTPS, add the following to your WordPress .htaccess file:</p>
+<p>It's possible for a visitor to enter in a direct HTTP URL on your WordPress site, even when an SSL certificate is active. To force any HTTP request to redirect to HTTPS, you can add code to your WordPress .htaccess file. There are two code options below for you to use. The first should work as shown, but if not, try option two instead.</p>
+<h3>Option #1</h3>
 <div class="preboxcontainer">
 <pre class="prebox">RewriteEngine On
 RewriteCond %{HTTPS} !=on
@@ -81,12 +62,57 @@ RewriteRule . /index.php [L]
 &lt;/IfModule&gt;
 # END WordPress</pre>
 </div>
+<h3>Option #2</h3>
+<p>In this example, make sure to change 'example.com' to your actual domain name.</p>
+<div class="preboxcontainer">
+<pre class="prebox">RewriteEngine On 
+RewriteCond %{SERVER_PORT} 80 
+RewriteRule ^(.*)$ https://<span class="command">www.example.com</span>/$1 [R=301,L]</pre>
+</div>
+<h3>Full example including the default WordPress code</h3>
+<p>Below is what your .htaccess file looks like with both the new HTTPS code and existing WordPress code.</p>
+<div class="preboxcontainer">
+<pre class="prebox">RewriteEngine On 
+RewriteCond %{SERVER_PORT} 80 
+RewriteRule ^(.*)$ https://<span class="command">www.example.com</span>/$1 [R=301,L]
+
+# BEGIN WordPress
+&lt;IfModule mod_rewrite.c&gt;
+RewriteEngine On
+RewriteBase /
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+&lt;/IfModule&gt;
+# END WordPress</pre>
+</div>
 <h2><span id="Forcing_HTTPS_with_DreamPress">Forcing HTTPS with DreamPress</span></h2>
 <p>It's possible for a visitor to enter in a direct HTTP URL on your DreamPress site. To force any HTTP request to redirect to HTTPS, add the following to your WordPress .htaccess file:</p>
 <div class="preboxcontainer">
 <pre class="prebox">RewriteEngine On
 RewriteCond %{HTTP:X-Forwarded-Proto} !https
 RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301] </pre>
+</div>
+<h2><span id="An_extra_secure_method_to_force_a_domain_to_only_use_SSL_.28HTTPS.29">Force a domain to only use SSL (HTTPS) when using an .htaccess file to create a login prompt</span></h2>
+<p>This method fixes a double login problem if you're using an <a href="https://help.dreamhost.com/hc/en-us/articles/216363187-How-do-I-password-protect-my-site-">.htaccess file to create a login prompt</a>. This prevents submission of an .htaccess password prompt on an unencrypted connection. If you wish to ensure that your server is only serving documents over an encrypted SSL channel, then you must use the SSLRequireSSL directive with the +StrictRequire Option enabled:</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>The code below may cause a '<a href="https://help.dreamhost.com/hc/en-us/articles/216539558-Let-s-Encrypt-SSL-certificate-overview">Let's Encrypt</a>' certificate to not renew properly. If you have added a 'Let's Encrypt' certificate to your domain, make sure to disable the code below in your .htaccess file when your certificate is about to renew. Once renewed, you can re-enable the code below.</p>
+</div>
+</div>
+<div class="preboxcontainer">
+<pre class="prebox">SSLOptions +StrictRequire
+SSLRequireSSL
+SSLRequire %{HTTP_HOST} eq "<span class="command">example.com</span>"
+</pre>
+</div>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Make sure the URL you enter next to SSLRequire is your site's base URL. If you're securing a subdirectory such as 'example.com/blog', this URL would still be 'example.com'.</p>
+</div>
 </div>
 <h2><span id="See_also">See also</span></h2>
 <ul>

@@ -3,6 +3,12 @@
 <p>Your data will continue to exist and function normally until October 1, 2018, after which the old cluster will be shut down.</p>
 <p>Due to several technical incompatibilities, it's not possible to automatically migrate your data to the new cluster. However, please note that you have until October to migrate your data to the new cluster.</p>
 <p>The 'Migration tool' described below contains step-by-step instructions on migrating your data using the DreamHost panel.</p>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>You will not be able to add any new data to the old buckets on the old cluster. If you regularly add data to your buckets, you must migrate the data as soon as possible to the new buckets so you can continue your data upload processes without interruption.</p>
+</div>
+</div>
 <h2>What will happen if I'm still using a Legacy CDN name?</h2>
 <p>DreamObjects CDN names are no longer supported at DreamHost. If you are currently using a 'Legacy' CDN name that is still functional, you must use the new cluster's hostname <strong>objects-us-east-1.dream.io</strong> after you migrate your data to the new cluster.</p>
 <p>You can also create a new <a href="/hc/en-us/articles/215253408-How-to-create-a-DNS-alias-for-DreamObjects-buckets">subdomain alias</a>.</p>
@@ -12,13 +18,14 @@
 <h2>Tool limitations</h2>
 <ul>
 <li>The destination bucket MUST NOT contain any files.</li>
-<li>Bucket &amp; Object ACLs:</li>
-<ul>
-<li>Single-owner ACLs are preserved</li>
-<li>Support for Group ACLs <span style="font-weight: 400;">and Complex ACLs is in progress, but not available at this time.</span></li>
+<li>Bucket &amp; Object ACLs:
 <ul>
 <li>This includes public-read/<em>AllUsers</em>, as well as <em>AuthenticatedUsers</em></li>
 </ul>
+</li>
+<ul>
+<li>Single-owner ACLs are preserved</li>
+<li>Support for Group ACLs <span style="font-weight: 400;">and Complex ACLs is in progress, but not available at this time.</span></li>
 </ul>
 <li>CORS:</li>
 <ul>
@@ -41,38 +48,34 @@
 </ul>
 <h2>Migrating a cluster</h2>
 <ol>
-<li>Navigate to the (<a href="https://panel.dreamhost.com/index.cgi?tree=cloud.objects&amp;">Panel &gt; 'Could Services' &gt; 'DreamObjects'</a>) page in your DreamHost panel.</li>
+<li>Navigate to the (<a href="https://panel.dreamhost.com/index.cgi?tree=cloud.objects&amp;">Panel &gt; 'Cloud Services' &gt; 'DreamObjects'</a>) page in your DreamHost panel.
+<dl>
+<dd><img class="img-border" src="https://objects-us-west-1.dream.io/kbimages/images/2018-06_panel_dho_migration_01.png" alt="DreamObjects Migration" /></dd>
+</dl>
+</li>
 <li>Click the 'Migrations' tab.
 <dl>
-<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/2018-04_DHO_migration_instructions_01.png" alt="" /></dd>
+<dd><img class="img-border" src="https://objects-us-west-1.dream.io/kbimages/images/2018-06_panel_dho_migration_02.png" alt="DreamObjects Migration" /></dd>
 </dl>
 </li>
 <li>Click the <strong>+ Create Migration</strong> button.
 <dl>
-<dd><img src="http://objects-us-east-1.dream.io/dho-migration-guide/004-dho-migration-type-dropdown-account.png" alt="" /></dd>
+<dd><img class="img-border" src="https://objects-us-west-1.dream.io/kbimages/images/2018-06_panel_dho_migration_03.png" alt="DreamObjects Migration" /></dd>
 </dl>
 </li>
-<li>Click the 'Type' dropdown.</li>
-<li>Select one of your DreamObjects accounts. When you do this, the Host, Access Key, and Secret Key fields populate and become uneditable.
+<li>Click the 'Type' dropdown and select the DreamObjects username you'd like to migrate.
 <dl>
-<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/2018-04_DHO_migration_instructions_02.png" alt="" /></dd>
+<dd><img class="img-border" src="https://objects-us-west-1.dream.io/kbimages/images/2018-06_panel_dho_migration_04.png" alt="DreamObjects Migration" /></dd>
 </dl>
 </li>
-<li>Click the <strong>Choose Destination &amp; Buckets</strong> button.
+<li>When you do this, the Host, Access Key, and Secret Key fields populate and become un-editable. Click the <strong>Choose Destination &amp; Buckets</strong> button.
 <dl>
-<dd><em>A list of your Buckets appears. By default, all of the buckets are highlighted and selected. Click a bucket to un-select it (or click “Select None” to un-select all buckets).</em></dd>
-</dl>
-<dl>
-<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/2018-04_DHO_migration_instructions_03.png" alt="" /></dd>
+<dd><img class="img-border" src="https://objects-us-west-1.dream.io/kbimages/images/2018-06_panel_dho_migration_05-1.png" alt="DreamObjects Migration" /></dd>
 </dl>
 </li>
-<li>Enter a name for your migration. The name is for your use only.
-<dl>
-<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/2018-04_DHO_migration_instructions_04.png" alt="" /></dd>
-</dl>
-</li>
-<li>If you have more than one DreamObjects user, choose which one you'd like to use for the migration. The dropdown separates users by cluster.</li>
-<li>Click to select or deselect the buckets you wish to migrate, or use the <em>Select All</em> or <em>Select None </em>buttons.</li>
+<li><strong>Name — </strong>Enter a name for your migration. The name is for your use only.</li>
+<li><strong>Destination User </strong>— Choose which user you'd like to use for the migration. The dropdown separates users by cluster. Make sure to select a user under the 'objects-us-east-1.dream.io cluster.</li>
+<li>Click to select or deselect the buckets you wish to migrate, or use the <strong>Select All</strong> or <strong>Select None</strong> buttons.</li>
 <li>Click the <strong>Start Migration</strong> button.
 <div class="alert alert-note">
 <div class="alert-icon"><img src="https://kbimages.objects-us-west-1.dream.io/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
@@ -84,20 +87,22 @@
 </div>
 </div>
 <dl>
-<dd><img src="http://objects-us-east-1.dream.io/dho-migration-guide/011-dho-migration-bucket-conflict.png" alt="" /></dd>
-</dl>
-<ul>
-<li>Once you’ve provided a new name for the bucket in the destination cluster, click the <strong>Resolve Conflicts</strong> button to continue.</li>
-</ul>
-<dl>
-<dd><em>You return to the Migration tab, and your new migration shows in progress:</em></dd>
-</dl>
-<dl>
-<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/2018-04_DHO_migration_instructions_05.png" alt="" /></dd>
+<dd><img class="img-border" src="https://objects-us-west-1.dream.io/kbimages/images/2018-06_panel_dho_migration_06.png" alt="DreamObjects Migration" /></dd>
 </dl>
 </li>
+<li>New bucket names are genereated for you. You can either accept them, or change the name to something new.</li>
+<li>Click the <strong>Resolve Conflicts</strong> button to continue.
+<dl>
+<dd><img class="img-border" src="https://objects-us-west-1.dream.io/kbimages/images/2018-06_panel_dho_migration_07.png" alt="DreamObjects Migration" /></dd>
+</dl>
+</li>
+<li>You are returned to the 'Migrations' tab where your new migration shows as 'In Progress', or 'Queued'.
+<dl>
+<dd><img class="img-border" src="https://objects-us-west-1.dream.io/kbimages/images/2018-06_panel_dho_migration_08.png" alt="DreamObjects Migration" /></dd>
+</dl>
+</li>
+<li>When a migration completes, the panel shows the status as 'Complete' and it is moved to the 'Completed Migrations' section. An email confirmation is also sent to the primary email address of your DreamHost account. </li>
 </ol>
-<p>When a migration completes, an email confirmation is sent to you and the migration moves to the completed area of the 'Migration' tab.</p>
 <h2>Using the new hostname after the migration</h2>
 <p>Once you have migrated your data to a bucket on the new cluster, you can start using the new bucket immediately.</p>
 <p>If you use URLs or hostnames to provide public/website access to the objects in your buckets, you must change them from the old hostname (objects-us-west-1.dream.io) to the new hostname, <strong>objects-us-east-1.dream.io</strong>.</p>
