@@ -16,21 +16,10 @@
 </pre>
 </div>
 </li>
-<li>Create a phprc file. View the <a href="https://help.dreamhost.com/hc/en-us/articles/214200668-How-do-I-create-a-phprc-file-via-SSH-">Adding a phprc</a> file article for details.</li>
-<li>In this phprc file, add the following lines:
-<div class="preboxcontainer">
-<pre class="prebox">extension = phar.so
-suhosin.executor.include.whitelist = phar</pre>
-</div>
-</li>
-<li>Kill off all running PHP processes.
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">killall -9 php56.cgi</span>
-</pre>
-</div>
-</li>
 <li>Navigate to your your user’s directory.
+<div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~</span></pre>
+</div>
 </li>
 <li>Then run the following command:
 <div class="preboxcontainer">
@@ -52,6 +41,13 @@ Use it: php composer.phar</span>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$</span><span class="command"> php composer.phar require drush/drush</span></pre>
 </div>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>If you're installing on a Shared server, you may hit your user's memory limits when installing. If so, you need to <a href="https://help.dreamhost.com/hc/en-us/articles/218084068-Contacting-support-overview">contact support</a> and ask that your user's memory limits be lifted so you can complete the installation.</p>
+<p>If you get a connection timed out error, you may be affected by <a href="https://github.com/composer/composer/issues/4142">this issue</a>. If you have a private server you can use the /etc/gai.conf workaround mentioned there.</p>
+</div>
+</div>
 <p>You must now edit your .bash_profile again. If you're installing Drush globally (under your username for all projects), add the following to your .bash_profile:</p>
 <div class="preboxcontainer">
 <pre class="prebox">alias drush='~/vendor/drush/drush/drush'</pre>
@@ -72,13 +68,6 @@ Use it: php composer.phar</span>
  &gt; <span class="command">yes</span></pre>
 </div>
 <p>This writes a few lines to your .bash_profile and creates a .drush folder with your configuration settings.</p>
-<div class="alert alert-note">
-<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
-<div class="alert-content">
-<p>If you're installing on a Shared server, you may hit your user's memory limits when installing. If so, you need to <a href="https://help.dreamhost.com/hc/en-us/articles/218084068-Contacting-support-overview">contact support</a> and ask that your user's memory limits be lifted so you can complete the installation.</p>
-<p>If you get a connection timed out error, you may be affected by <a href="https://github.com/composer/composer/issues/4142">this issue</a>. If you have a private server you can use the /etc/gai.conf workaround mentioned there.</p>
-</div>
-</div>
 </li>
 <li>Run the following command to confirm drush is functioning:
 <div class="preboxcontainer">
