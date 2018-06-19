@@ -46,7 +46,28 @@
 <li>A source bucket with data</li>
 <li>A destination bucket name (or an empty bucket)</li>
 </ul>
-<h2>Migrating a cluster</h2>
+<h2>Creating a new user on the new EAST cluster</h2>
+<ol>
+<li>To migrate data to the new East cluster, you must first create a user on that cluster. Navigate to the <a href="https://panel.dreamhost.com/index.cgi?tree=cloud.objects&amp;">(Panel &gt; 'Cloud Services' &gt; 'DreamObjects')</a> page.
+<dl>
+<dd><img class="img-border" src="https://objects-us-west-1.dream.io/kbimages/images/2018-06_panel_dho_migration_10.png" alt="dho migration" /></dd>
+</dl>
+</li>
+<li>At the top, click the <strong>Create New User</strong> button.
+<dl>
+<dd><img class="img-border" src="https://objects-us-west-1.dream.io/kbimages/images/2018-06_panel_dho_migration_11.png" alt="dho migration" /></dd>
+</dl>
+</li>
+<li>In the 'Cluster' dropdown menu, make sure to select 'objects-us-east-1.dream.io'.</li>
+<li>Add a new username. This can be the same name as your current user because it will be on a different cluster. However, it's up to you to name it anything you like.
+<dl>
+<dd><img class="img-border" src="https://objects-us-west-1.dream.io/kbimages/images/2018-06_panel_dho_migration_12.png" alt="dho migration" /></dd>
+</dl>
+</li>
+<li>Click <strong>Add User</strong>. The panel will take a few minutes to create the new user. When it's finished, the new user will show '0 Buckets'.</li>
+<li>You can proceed with migrating your data to this new user.</li>
+</ol>
+<h2>Migrating buckets to the new East cluster</h2>
 <ol>
 <li>Navigate to the (<a href="https://panel.dreamhost.com/index.cgi?tree=cloud.objects&amp;">Panel &gt; 'Cloud Services' &gt; 'DreamObjects'</a>) page in your DreamHost panel.
 <dl>
@@ -64,17 +85,30 @@
 </dl>
 </li>
 <li>Click the 'Type' dropdown and select the DreamObjects username you'd like to migrate.
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Make sure to choose a username on the WEST cluster since this is where you'll be migrating data from.</p>
+</div>
+</div>
 <dl>
 <dd><img class="img-border" src="https://objects-us-west-1.dream.io/kbimages/images/2018-06_panel_dho_migration_04.png" alt="DreamObjects Migration" /></dd>
 </dl>
 </li>
 <li>When you do this, the Host, Access Key, and Secret Key fields populate and become un-editable. Click the <strong>Choose Destination &amp; Buckets</strong> button.
 <dl>
-<dd><img class="img-border" src="https://objects-us-west-1.dream.io/kbimages/images/2018-06_panel_dho_migration_05-1.png" alt="DreamObjects Migration" /></dd>
+<dd><img class="img-border" src="https://objects-us-west-1.dream.io/kbimages/images/2018-06_panel_dho_migration_05.png" alt="DreamObjects Migration" /></dd>
 </dl>
 </li>
 <li><strong>Name — </strong>Enter a name for your migration. The name is for your use only.</li>
-<li><strong>Destination User </strong>— Choose which user you'd like to use for the migration. The dropdown separates users by cluster. Make sure to select a user under the 'objects-us-east-1.dream.io cluster.</li>
+<li><strong>Destination User </strong>— Choose which user you'd like to use for the migration. The dropdown separates users by cluster.
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Make sure to select a user under the 'objects-us-east-1.dream.io cluster.</p>
+</div>
+</div>
+</li>
 <li>Click to select or deselect the buckets you wish to migrate, or use the <strong>Select All</strong> or <strong>Select None</strong> buttons.</li>
 <li>Click the <strong>Start Migration</strong> button.
 <div class="alert alert-note">
