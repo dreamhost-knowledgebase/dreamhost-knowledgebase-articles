@@ -25,8 +25,8 @@
 <h2>Installing Apache</h2>
 <p>Run the following commands:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">user@server$ </span><span class="command">sudo apt-get update</span>
-<span class="server">user@server$ </span><span class="command">sudo apt-get install -y apache2</span></pre>
+<pre class="prebox"><span class="server">user@server:$ </span><span class="command">sudo apt-get update</span>
+<span class="server">user@server:$ </span><span class="command">sudo apt-get install -y apache2</span></pre>
 </div>
 <p>When it completes, the apache HTTP server is installed and runs with its default configuration. If you visit the <a href="https://help.dreamhost.com/hc/en-us/articles/115001754711-Locating-the-IP-Address-of-your-instance">public IP address of your instance</a> in your browser, you will see the Apache default page.</p>
 <img src="https://objects-us-west-1.dream.io/kbimages/images/Apache_default_page.png" />
@@ -68,14 +68,14 @@
 <h3>Check which MPM configuration is enabled</h3>
 <p>Run the following command:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">user@server$ </span><span class="command">apache2ctl -M | grep mpm</span>
+<pre class="prebox"><span class="server">user@server:$ </span><span class="command">apache2ctl -M | grep mpm</span>
  mpm_event_module (shared)</pre>
 </div>
 <p>This shows the event module is enabled. If you like, you could change that to mpm-prefork with the following commands.</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">user@server$ </span><span class="command">sudo a2dismod mpm_event</span>
-<span class="server">user@server$ </span><span class="command">sudo a2enmod mpm_prefork</span>
-<span class="server">user@server$ </span><span class="command">sudo service apache2 restart</span></pre>
+<pre class="prebox"><span class="server">user@server:$ </span><span class="command">sudo a2dismod mpm_event</span>
+<span class="server">user@server:$ </span><span class="command">sudo a2enmod mpm_prefork</span>
+<span class="server">user@server:$ </span><span class="command">sudo service apache2 restart</span></pre>
 </div>
 <div id="virtual-hosts">
 <h2>Virtual Hosts</h2>
@@ -115,15 +115,15 @@ ErrorLog /var/log/apache/www.example.com-error.log
 <p>When you have your sites virtual host file set up, you can enable/disable it by entering the following commands:</p>
 <strong>sudo a2ensite — </strong>Provides a list of sites files that you can enable.
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">user@server$ </span><span class="command">sudo a2ensite</span></pre>
+<pre class="prebox"><span class="server">user@server:$ </span><span class="command">sudo a2ensite</span></pre>
 </div>
 <strong>sudo a2dissite — </strong>Provides a list of sites files you can disable.
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">user@server$ </span><span class="command">a2dissite</span></pre>
+<pre class="prebox"><span class="server">user@server:$ </span><span class="command">a2dissite</span></pre>
 </div>
 <strong>sudo service apache2 reload — </strong>Reloads apache to make the change live after you enable or disable a site.
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">user@server$ </span><span class="command">sudo service apache2 reload</span></pre>
+<pre class="prebox"><span class="server">user@server:$ </span><span class="command">sudo service apache2 reload</span></pre>
 </div>
 <p>These commands create a symlink for your sites file from /etc/apache2/sites-enabled to its corresponding file in /etc/apache2/sites-available.</p>
 </div>
@@ -132,13 +132,13 @@ ErrorLog /var/log/apache/www.example.com-error.log
 <h2>Modules</h2>
 <p>Modules can be enabled or disabled by the following commands:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">user@server$ </span><span class="command">sudo a2enmod &lt;module-name&gt;</span>
-<span class="server">user@server$ </span><span class="command">sudo a2dismod &lt;module-name&gt;</span></pre>
+<pre class="prebox"><span class="server">user@server:$ </span><span class="command">sudo a2enmod &lt;module-name&gt;</span>
+<span class="server">user@server:$ </span><span class="command">sudo a2dismod &lt;module-name&gt;</span></pre>
 </div>
 <p>If you do not specify a module name, the command displays a list of modules available to enable or disable.</p>
 <p>After you enable or disable a site, reload Apache to make the change live by using the following command:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">user@server$ </span><span class="command">sudo service apache2 reload</span></pre>
+<pre class="prebox"><span class="server">user@server:$ </span><span class="command">sudo service apache2 reload</span></pre>
 </div>
 <div class="footer"> </div>
 <!--DreamCompute Button-->
