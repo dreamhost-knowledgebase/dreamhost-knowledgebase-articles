@@ -1,48 +1,46 @@
 <p>There are several steps you must take to add your website to DreamCompute. Make sure you follow the steps below in order.</p>
 <p>All steps assume you're running commands under the <a href="https://help.dreamhost.com/hc/en-us/articles/228377408-How-to-find-the-default-user-of-an-image">default user of your instance</a>.</p>
-<h2>Step #1 — Create an instance</h2>
+<h2>Step 1 — Create an instance</h2>
 <p>You must first launch a new instance. You can do this in the DreamCompute dashboard, or by using the OpenStack CLI. View the following articles for instructions:</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215912848-How-to-launch-an-instance-using-the-DreamCompute-dashboard">How to launch an instance using the DreamCompute dashboard</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216511617-How-to-launch-an-instance-using-the-OpenStack-CLI">How to launch an instance using the OpenStack CLI</a></li>
 </ul>
-<h2>Step #2 — Point your DNS to the new instance</h2>
+<h2>Step 2 — Point your DNS to the new instance</h2>
 <p>You must now log into your DreamHost panel. There you can adjust the DNS on your domain to point to your DreamCompute instance.</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/218672058-Configuring-DNS-for-your-domains">Configuring DNS for your domains</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/115001754711-Locating-the-IP-Address-of-your-instance">Locating the IP address of your instance</a></li>
 </ul>
-<h2>Step #3 — Install Apache or LAMP on the instance</h2>
-<p>Log into your instance using the <a href="https://help.dreamhost.com/hc/en-us/articles/216201547-Connect-to-your-instance-with-SSH-keys-overview">Key Pair</a> and the <a href="https://help.dreamhost.com/hc/en-us/articles/228377408-How-to-find-the-default-user-of-an-image">default user assigned to it</a>. Install Apache based on what image you choose to create the instance from. Below shows how to do this on Debian, Ubuntu, Fedora, and CentOS.</p>
+<h2>Step 3 — Install Apache or LAMP on the instance</h2>
+<p>Log into your instance using the <a href="https://help.dreamhost.com/hc/en-us/articles/216201547-Connect-to-your-instance-with-SSH-keys-overview">Key Pair</a> and the <a href="https://help.dreamhost.com/hc/en-us/articles/228377408-How-to-find-the-default-user-of-an-image">default user assigned to it</a>. Install Apache based on what image you choose to create the instance from. Below shows how to do this on Ubuntu.</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215879457-How-to-Configure-Apache-on-DreamCompute-Running-Debian-or-Ubuntu">How to Configure Apache on DreamCompute Running Debian or Ubuntu</a></li>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/217880028-How-to-Configure-Apache-on-DreamCompute-Running-Fedora-or-CentOS">How to Configure Apache on DreamCompute Running Fedora or CentOS</a></li>
 </ul>
 <p>Otherwise, if you know you'll need a database and PHP, it may be a better idea to install LAMP instead:</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215879467-How-to-Configure-LAMP-on-DreamCompute-running-Debian-or-Ubuntu">How to Configure LAMP on DreamCompute running Debian or Ubuntu</a></li>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/218378927-How-to-Configure-LAMP-on-DreamCompute-running-Fedora-or-CentOS">How to Configure LAMP on DreamCompute running Fedora or CentOS</a></li>
 </ul>
-<h2>Step #4 — Create a new user</h2>
+<h2>Step 4 — Create a new user</h2>
 <p>Create a new user for the website. Make sure to assign the user 'sudo' privileges, then log in as the new user.</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/360000274451-Creating-a-new-user-on-an-instance">Creating a new user on an instance</a></li>
 </ul>
 <div class="alert alert-note">
-<div class="alert-icon"><img height="60" src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
 <p>The remaining commands in this article assume you're logged in as the new user you just created.</p>
 </div>
 </div>
 <div id="add-ssh-access">
-<h2>Step #5 — Add SSH access</h2>
+<h2>Step 5 — Add SSH access</h2>
 <p>Depending on the permissions your user may need, you may want to enable SSH for the user. This allows the user to log into the server via SSH, as opposed to security keys.</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/360000281572-Adding-SSH-access-to-your-users">Adding SSH access to your users</a></li>
 </ul>
 </div>
 <div id="add-your-domain">
-<h2>Step #6 — Add your domain</h2>
+<h2>Step 6 — Add your domain</h2>
 <p>Make a folder for the website under your new username.</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo mkdir /home/username/example.com</span>
@@ -89,7 +87,7 @@ To activate the new configuration, you need to run:
 <pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo service apache2 reload</span></pre>
 </div>
 </div>
-<h2>Step #7 — Enable userdir</h2>
+<h2>Step 7 — Enable userdir</h2>
 <p>Run the following under your default user:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo a2enmod userdir</span>
@@ -118,7 +116,7 @@ To activate the new configuration, you need to run:
 <pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo service apache2 reload</span></pre>
 </div>
 <p>If you view your site now, you'll see it resolving on the DreamCompute instance.</p>
-<h2>Step #8 — Adding a Let's Encrypt certificate</h2>
+<h2>Step 8 — Adding a Let's Encrypt certificate</h2>
 <p>If you now add a <a href="https://help.dreamhost.com/hc/en-us/articles/222168828-Setting-up-Let-s-Encrypt-on-DreamCompute-with-Apache">'Let Encrypt' certificate</a> it will be installed on your domain without further configuration. The configuration file will also show under:</p>
 <div class="preboxcontainer">
 <pre class="prebox">/etc/apache2/sites-available/</pre>
