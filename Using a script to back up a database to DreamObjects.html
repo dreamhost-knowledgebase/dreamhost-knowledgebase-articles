@@ -1,0 +1,117 @@
+<p>Using a simple shell script, you can automate database backups to DreamObjects. This script does the following:</p>
+<ul>
+<li>dumps a database in the format "yourusername_mm-dd-yyyy.sql" to the directory "/home/username/backup/example.com”.</li>
+<li>assumes that all the included databases run on the same database server and use the same database user.</li>
+<li>uploads the database to your DreamObjects bucket</li>
+<li>deletes the database on the web server to conserve space</li>
+</ul>
+<h2>Step 1 — Setting up your DreamObjects bucket</h2>
+<ol>
+<li>View the following article to create a DreamObjects account, add a user, and create a bucket.
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214823108-What-is-DreamObjects-">What is DreamObjects?</a></li>
+</ul>
+<dl>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/01_DHO_Panel_Upload.fw.png" alt="01_DHO_Panel_Upload.fw.png"></dd>
+</dl>
+</li>
+<li>On the (<a class="reference external" href="https://panel.dreamhost.com/index.cgi?tree=cloud.objects">Panel &gt; Cloud Services &gt; ‘DreamObjects’</a>) page, locate the User that contains the bucket you wish to work with, then click the <strong>View Objects</strong> button.
+<dl>
+<dd>
+<p><em>The available buckets appear in the following window:</em></p>
+<div class="figure"><img src="https://objects-us-west-1.dream.io/kbimages/images/02_DHO_Panel_Upload.fw.png" alt="02_DHO_Panel_Upload.fw.png"></div>
+</dd>
+</dl>
+</li>
+<li>Select the bucket you wish to upload objects to.
+<dl>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/2018-06_panel_dho-add-folder.png"></dd>
+</dl>
+</li>
+<li>Click the 'Add Folder' link and add a new folder called 'backups'. This folder will contain your database backups.</li>
+</ol>
+<h2>Step 2 — Creating the backup script</h2>
+<ol>
+<li>Log into your server via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH</a>.</li>
+<li>Create a new directory named 'backup' in your user's home directory.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">mkdir ~/backup</span></pre>
+</div>
+</li>
+<li>In this directory, <a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">create a file</a> named backup.sh.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">touch ~/backup/backup.sh</span></pre>
+</div>
+</li>
+<li>In the script below, you must fill in the first six variables that are highlighted:
+<ul>
+<li><strong>domains</strong> — The script uses this field to create a directory under $HOME/backups/. This is the directory that will store your database. It makes sense to name it after the domain that uses the database. However, it will be deleted when running the final command in the script.</li>
+<li><strong>sqldbs</strong> — The name of your <a href="https://help.dreamhost.com/hc/en-us/articles/221610868-Finding-your-database-login-credentials">database</a>.</li>
+<li><strong>opath</strong> — The directory you want to back up to. You can change this if you like.</li>
+<li><strong>mysqlhost</strong> — Your MySQL database <a href="https://help.dreamhost.com/hc/en-us/articles/221610868-Finding-your-database-login-credentials">hostname</a>.</li>
+<li><strong>username</strong> — Your MySQL <a href="https://help.dreamhost.com/hc/en-us/articles/221610868-Finding-your-database-login-credentials">username</a>.</li>
+<li><strong>password</strong> — Your MySQL <a href="https://help.dreamhost.com/hc/en-us/articles/221610868-Finding-your-database-login-credentials">password</a>.</li>
+</ul>
+In the boto-rync line at the bottom, you must edit the following:
+<ul>
+<li>Your bucket's <a href="https://help.dreamhost.com/hc/en-us/articles/215986357-DreamObjects-Keys">Access and Secret Keys</a></li>
+<li>Specifiy the correct path to the backup script on your web server</li>
+<li>Specify the location you wish to backup to within your DreamObjects bucket</li>
+</ul>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60"></div>
+<div class="alert-content">
+<p>The script shows how to backup two databases at once that are under the same MySQL username. If you're only backing up a single database, just remove 'example2.com' and 'yourdb2'.</p>
+</div>
+</div>
+</li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Add the following code to this file</a>.
+<div class="preboxcontainer">
+<pre class="prebox">domains=( <span class="command">example.com example2.com</span> )
+sqldbs=( <span class="command">yourdb1 yourdb2</span> )
+opath=$HOME/<span class="command">backup</span>/
+mysqlhost=<span class="command">mysqlhostname</span>
+username=<span class="command">mysqlusername</span>
+password=<span class="command">mysqlpassword</span>
+suffix=$(date +%m-%d-%Y)
+for (( i = 0; i &lt; ${#domains[@]}; i++))
+do
+	cpath=$opath${domains[$i]}
+	if [ -d $cpath ]
+	then
+		filler="just some action to prevent syntax error"
+	else
+		echo Creating $cpath
+		mkdir -p $cpath
+	fi
+	mysqldump -c -h $mysqlhost --user $username --password=$password ${sqldbs[$i]} &gt; ${cpath}/${sqldbs[$i]}_$suffix.sql
+done
+<br>#use boto-rsync to upload to DreamObjects
+boto-rsync -a <span class="command">ACCESS_KEY</span> -s <span class="command">SECRET_KEY</span> --endpoint objects-us-east-1.dream.io /home/<span class="command">username/backup</span>/*/ s3://<span class="command">dreamobjects-bucket/backups<br><br></span>#delete backup from web server<br>find $HOME/backup/* -type d -exec rm -rf {} \; 2&gt; /dev/null</pre>
+</div>
+</li>
+<li>The above code will backup your database to your DreamObjects bucket inside a folder named /backups.</li>
+</ol>
+<h2>Running the file</h2>
+<p>You can now run the file manually with the following command:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">sh ~/backup/backup.sh</span></pre>
+</div>
+<p>You can also create a <a href="https://help.dreamhost.com/hc/en-us/articles/215088668-How-do-I-create-a-cron-job-">cron job</a> to run this automatically at specific times.</p>
+<h2><span id="See_also">See also</span></h2>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215099117-MySQL-overview">MySQL overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214395738-phpMyAdmin-How-to-backup-or-export-a-database-or-table">phpMyAdmin — How to backup / export a database or table</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215100557-How-do-I-restore-my-database-in-the-panel-">How do I restore my database in the panel?</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215039758-Backing-up-database-overview">Backing up database overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214395768-phpMyAdmin-How-to-import-or-restore-a-database-or-table">phpMyAdmin — How to import / restore a database or table</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214395638-phpMyAdmin-overview">phpMyAdmin overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214882998-How-do-I-connect-to-my-database-via-SSH-">How do I connect to my database via SSH?</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
+<li><a href="/hc/en-us/articles/221686207-SSH-Backing-up-your-database">SSH — Backing up your database</a></li>
+<li><a href="/hc/en-us/articles/217117947-How-do-I-use-a-mysqldump-script-to-back-up-my-database-">How do I use a mysqldump script to back up my database?</a></li>
+</ul>
+<h3>External links</h3>
+<ul>
+<li><a href="http://dev.mysql.com/doc/refman/5.0/en/mysqldump.html">MySQL 5.0 Reference Manual: mysqldump</a></li>
+</ul>
