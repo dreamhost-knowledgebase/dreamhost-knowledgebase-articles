@@ -5,6 +5,8 @@
 <p>The following instructions are for an Apache server. If you're running Nginx, jump to the section at the bottom titled '<a href="#nginx">Creating custom error pages with Nginx</a>'.</p>
 </div>
 </div>
+<h2>A note on 500 errors</h2>
+<p>Due to how Apache is configured, it's not possible to redirect to a custom 500 error page. When a 500 error is encountered, the browser default 500 page will display.</p>
 <h2><span id="Simple_configuration">Simple configuration</span></h2>
 <p>To create a custom error page for your domain, add the following line to an <a href="/hc/en-us/articles/216456227--htaccess-overview">.htaccess</a> file located in your domain’s web directory:</p>
 <div class="preboxcontainer">
@@ -23,7 +25,6 @@
 <li>401 – Unauthorized</li>
 <li>403 – Forbidden</li>
 <li>404 – Not Found</li>
-<li>500 – Internal Server Error</li>
 </ul>
 <p>For example, to catch those errors, you would add the following to your .htaccess file for the domain you'd like to configure:</p>
 <div class="preboxcontainer">
@@ -31,7 +32,6 @@
 ErrorDocument 401 /error.php
 ErrorDocument 403 /error.php
 ErrorDocument 404 /error.php
-ErrorDocument 500 /error.php
 </pre>
 </div>
 <p>This forces a browser to redirect to the /error.php file if it encounters any of the status codes above.</p>
@@ -74,13 +74,6 @@ switch(getenv("REDIRECT_STATUS"))
 	$error_code = "404 - Not Found";
 	$explanation = "The requested resource '" . $page_redirected_from . "' could not be found on this server. Please verify the address and try again.";
 	$redirect_to = $server_url . "wiki" . $end_of_path;
-	break;
-
-	# "500 - Internal Server Error"
-	case 500:
-	$error_code = "500 - Internal Server Error";
-	$explanation = "The server experienced an unexpected error. Please verify the address and try again.";
-	$redirect_to = "";
 	break;
 }
 ?&gt;
