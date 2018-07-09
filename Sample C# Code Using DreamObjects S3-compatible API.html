@@ -17,6 +17,15 @@
 <li><a class="reference internal" href="#s3-c-generate-object-download-urls">Generate Object Download URLs (signed and unsigned)</a></li>
 </ul>
 </div>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>This article uses the new DreamObjects cluster of 'objects-us-east-1.dream.io'. If you have an older DreamObjects account and have not migrated your data yet, your hostname may need to point to 'objects-us-west-1.dream.io instead. Please review the following migration article for further details.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360002135871#what-cluster-is-my-data-on">What cluster is my DreamObjects data currently on?</a></li>
+</ul>
+</div>
+</div>
 This article lists several C# code examples to interact with DreamObjects.
 <div id="creating-a-connection"><span id="s3-c-creating-a-connection"></span>
 <h2>Creating a Connection</h2>
@@ -31,7 +40,7 @@ string accessKey = "put your access key here!";
 string secretKey = "put your secret key here!";
 
 AmazonS3Config config = new AmazonS3Config();
-config.ServiceURL = "objects-us-west-1.dream.io";
+config.ServiceURL = "objects-us-east-1.dream.io";
 
 AmazonS3 client = Amazon.AWSClientFactory.CreateAmazonS3Client(
         accessKey,
@@ -167,7 +176,7 @@ Console.WriteLine(url);</pre>
 </div>
 <p>The output of this will look something like:</p>
 <div class="preboxcontainer">
-<pre class="prebox">http://objects-us-west-1.dream.io/my-bucket-name/secret_plans.txt?Signature=XXXXXXXXXXXXXXXXXXXXXXXXXXX&amp;Expires=1316027075&amp;AWSAccessKeyId=XXXXXXXXXXXXXXXXXXX</pre>
+<pre class="prebox">http://objects-us-east-1.dream.io/my-bucket-name/secret_plans.txt?Signature=XXXXXXXXXXXXXXXXXXXXXXXXXXX&amp;Expires=1316027075&amp;AWSAccessKeyId=XXXXXXXXXXXXXXXXXXX</pre>
 </div>
 </div>
 <div class="footer"> </div>

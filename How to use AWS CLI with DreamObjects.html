@@ -1,3 +1,12 @@
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>This article uses the new DreamObjects cluster of 'objects-us-east-1.dream.io'. If you have an older DreamObjects account and have not migrated your data yet, your hostname may need to point to 'objects-us-west-1.dream.io instead. Please review the following migration article for further details.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360002135871#what-cluster-is-my-data-on">What cluster is my DreamObjects data currently on?</a></li>
+</ul>
+</div>
+</div>
 <dl class="docutils">
 <dt><a class="reference external" href="https://aws.amazon.com/cli/">AWS CLI</a> is a command-line tool for uploading, retrieving, and managing data in Amazon S3 and other Cloud Storage Service Providers that use the S3 protocol such as <a href="https://help.dreamhost.com/hc/en-us/articles/214823108-What-is-DreamObjects-">DreamObjects</a>. It's best suited for power users who are competent with the command line and is ideal for scripts that are automated and triggered from cron.</dt>
 </dl>
@@ -29,44 +38,44 @@ Default output format [None]:</span>
 <h2>Example Commands</h2>
 <h3>Making a bucket</h3>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">aws --endpoint-url https://objects-us-west-1.dream.io s3 mb s3://newbucketname</span>
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">aws --endpoint-url https://objects-us-east-1.dream.io s3 mb s3://newbucketname</span>
 <span class="cmdoutput">make_bucket: s3://newbucketname/</span>
 </pre>
 </div>
 <h3>Listing all buckets</h3>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">aws --endpoint-url https://objects-us-west-1.dream.io s3 ls</span>
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">aws --endpoint-url https://objects-us-east-1.dream.io s3 ls</span>
 <span class="cmdoutput">2016-01-27 20:14:46 newbucketname</span>
 </pre>
 </div>
 <h3>Uploading a file into a bucket</h3>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">aws --endpoint-url https://objects-us-west-1.dream.io s3 cp testfile.txt s3://newbucketname/testfile.txt</span>
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">aws --endpoint-url https://objects-us-east-1.dream.io s3 cp testfile.txt s3://newbucketname/testfile.txt</span>
 <span class="cmdoutput">upload: ./testfile.txt to s3://newbucketname/testfile.txt</span>
 </pre>
 </div>
 <h3>Listing the contents of a bucket</h3>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">aws --endpoint-url https://objects-us-west-1.dream.io s3 ls s3://newbucketname</span>
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">aws --endpoint-url https://objects-us-east-1.dream.io s3 ls s3://newbucketname</span>
 <span class="cmdoutput">2016-01-27 19:30:21       8803 testfile.txt</span>
 </pre>
 </div>
 <h3>Downloading a file from a bucket</h3>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">aws --endpoint-url https://objects-us-west-1.dream.io s3 cp s3://newbucketname/testfile.txt testfile.txt</span>
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">aws --endpoint-url https://objects-us-east-1.dream.io s3 cp s3://newbucketname/testfile.txt testfile.txt</span>
 <span class="cmdoutput">download: s3://newbucketname/testfile.txt to ./testfile.txt</span>
 </pre>
 </div>
 <h3>Deleting a file in a bucket</h3>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">aws --endpoint-url https://objects-us-west-1.dream.io s3 rm s3://newbucketname/testfile.txt</span>
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">aws --endpoint-url https://objects-us-east-1.dream.io s3 rm s3://newbucketname/testfile.txt</span>
 <span class="cmdoutput">delete: s3://newbucketname/testfile.txt</span>
 </pre>
 </div>
 <h3>Deleting an empty bucket</h3>
 <div class="highlight-console">
 <div class="highlight">
-<pre><span class="gp">[user@localhost]$</span> aws --endpoint-url https://objects-us-west-1.dream.io s3 rb s3://newbucketname/
+<pre><span class="gp">[user@localhost]$</span> aws --endpoint-url https://objects-us-<span class="command">east</span>-1.dream.io s3 rb s3://newbucketname/
 <span class="go">remove_bucket: s3://newbucketname/</span>
 </pre>
 </div>
@@ -75,7 +84,7 @@ Default output format [None]:</span>
 <p>This will only upload new and changed files, not delete any files. You can specify other params such as <strong>–delete</strong> to remove files from the destination that aren’t on the source. An additional useful flag is <strong>–acl</strong> which accepts values such as “private” or “public-read”.</p>
 <div class="highlight-console">
 <div class="highlight">
-<pre><span class="gp">[user@localhost]$</span> aws --endpoint-url https://objects-us-west-1.dream.io s3 sync syncdir s3://newbucketname/
+<pre><span class="gp">[user@localhost]$</span> aws --endpoint-url https://objects-us-<span class="command">east</span>-1.dream.io s3 sync syncdir s3://newbucketname/
 <span class="go">upload: syncdir/file3 to s3://newbucketname/file3</span>
 <span class="go">upload: syncdir/file1 to s3://newbucketname/file1</span>
 <span class="go">upload: syncdir/file2 to s3://newbucketname/file2</span>

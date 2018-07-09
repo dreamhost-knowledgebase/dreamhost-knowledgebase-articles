@@ -19,6 +19,15 @@
 </div>
 This article lists several Perl code examples to interact with DreamObjects.
 <div id="creating-a-connection"><span id="s3-perl-creating-a-connection"></span>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>This article uses the new DreamObjects cluster of 'objects-us-east-1.dream.io'. If you have an older DreamObjects account and have not migrated your data yet, your hostname may need to point to 'objects-us-west-1.dream.io instead. Please review the following migration article for further details.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360002135871#what-cluster-is-my-data-on">What cluster is my DreamObjects data currently on?</a></li>
+</ul>
+</div>
+</div>
 <h2>Creating a Connection</h2>
 <p>Create a connection so you can interact with the server.</p>
 <div class="preboxcontainer">
@@ -29,7 +38,7 @@ my $secret_key = 'put your secret key here!';
 my $conn = Amazon::S3-&gt;new({
         aws_access_key_id     =&gt; $access_key,
         aws_secret_access_key =&gt; $secret_key,
-        host                  =&gt; 'objects-us-west-1.dream.io',
+        host                  =&gt; 'objects-us-east-1.dream.io',
         secure                =&gt; 1,
         retry                 =&gt; 1,
 });</pre>
@@ -138,7 +147,7 @@ my $generator = Muck::FS::S3::QueryStringAuthGenerator-&gt;new(
         $access_key,
         $secret_key,
         0, # 0 means use 'http'. set this to 1 for 'https'
-        'objects-us-west-1.dream.io',
+        'objects-us-east-1.dream.io',
 );
 
 my $hello_url = $generator-&gt;make_bare_url($bucket-&gt;bucket, 'hello.txt');
@@ -150,8 +159,8 @@ print $plans_url . "\n";</pre>
 </div>
 <p>The output will look something like this:</p>
 <div class="preboxcontainer">
-<pre class="prebox">http://objects-us-west-1.dream.io:80/my-bucket-name/hello.txt
-http://objects-us-west-1.dream.io:80/my-bucket-name/secret_plans.txt?Signature=XXXXXXXXXXXXXXXXXXXXXXXXXXX&amp;Expires=1316027075&amp;AWSAccessKeyId=XXXXXXXXXXXXXXXXXXX
+<pre class="prebox">http://objects-us-east-1.dream.io:80/my-bucket-name/hello.txt
+http://objects-us-east-1.dream.io:80/my-bucket-name/secret_plans.txt?Signature=XXXXXXXXXXXXXXXXXXXXXXXXXXX&amp;Expires=1316027075&amp;AWSAccessKeyId=XXXXXXXXXXXXXXXXXXX
 </pre>
 </div>
 <div class="clearer"> </div>

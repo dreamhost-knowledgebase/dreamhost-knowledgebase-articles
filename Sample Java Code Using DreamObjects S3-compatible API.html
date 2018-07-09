@@ -18,6 +18,15 @@
 <li><a class="reference internal" href="#s3-java-generate-object-download-urls">Generate Object Download URLs (signed and unsigned)</a></li>
 </ul>
 </div>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>This article uses the new DreamObjects cluster of 'objects-us-east-1.dream.io'. If you have an older DreamObjects account and have not migrated your data yet, your hostname may need to point to 'objects-us-west-1.dream.io instead. Please review the following migration article for further details.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360002135871#what-cluster-is-my-data-on">What cluster is my DreamObjects data currently on?</a></li>
+</ul>
+</div>
+</div>
 This article lists several Java code examples to interact with DreamObjects.
 <div id="setup"><span id="s3-java-setup"></span>
 <h2>Setup</h2>
@@ -48,7 +57,7 @@ String secretKey = "insert your secret key here!";
 
 AWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
 AmazonS3 conn = new AmazonS3Client(credentials);
-conn.setEndpoint("objects-us-west-1.dream.io");</pre>
+conn.setEndpoint("objects-us-east-1.dream.io");</pre>
 </div>
 <div id="listing-owned-buckets"><span id="s3-java-listing-owned-buckets"></span>
 <h2>Listing Owned Buckets</h2>
@@ -154,7 +163,7 @@ System.out.println(conn.generatePresignedUrl(request));</pre>
 </div>
 <p>The output will look something like this:</p>
 <div class="preboxcontainer">
-<pre class="prebox">https://my-bucket-name.objects-us-west-1.dream.io/secret_plans.txt?Signature=XXXXXXXXXXXXXXXXXXXXXXXXXXX&amp;Expires=1316027075&amp;AWSAccessKeyId=XXXXXXXXXXXXXXXXXXX</pre>
+<pre class="prebox">https://my-bucket-name.objects-us-east-1.dream.io/secret_plans.txt?Signature=XXXXXXXXXXXXXXXXXXXXXXXXXXX&amp;Expires=1316027075&amp;AWSAccessKeyId=XXXXXXXXXXXXXXXXXXX</pre>
 </div>
 </div>
 <div class="footer"> </div>

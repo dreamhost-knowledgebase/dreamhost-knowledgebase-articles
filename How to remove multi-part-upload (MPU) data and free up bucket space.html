@@ -3,6 +3,15 @@
 <p>Most S3 clients don’t have a <strong><em>MPU data</em></strong> purge feature, so in the following example, Python and the boto library is used to check for and clean up this data.</p>
 <div id="using-the-clean-up-script">
 <h2>Using the clean-up script</h2>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>This article uses the new DreamObjects cluster of 'objects-us-east-1.dream.io'. If you have an older DreamObjects account and have not migrated your data yet, your hostname may need to point to 'objects-us-west-1.dream.io instead. Please review the following migration article for further details.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360002135871#what-cluster-is-my-data-on">What cluster is my DreamObjects data currently on?</a></li>
+</ul>
+</div>
+</div>
 <p>This script is an all-in-one solution that prompts you for the <a href="https://help.dreamhost.com/hc/en-us/articles/215986357-DreamObjects-Keys">Access and Secret key</a>, then iterates over all buckets checking for <strong><em>MPU data</em></strong>. If any is found, it displays the file name, the date it was uploaded, its size, and then prompts you if it should be deleted.</p>
 <div class="alert alert-important">
 <div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
@@ -20,7 +29,7 @@ import boto
 # Connect to DreamObjects
 accesskey = str(raw_input('Access Key: '))
 secretkey = str(raw_input('Secret Key: '))
-c = boto.connect_s3(accesskey, secretkey, host='objects-us-west-1.dream.io')
+c = boto.connect_s3(accesskey, secretkey, host='objects-us-east-1.dream.io')
 
 # Iterate over all buckets
 for b in c.get_all_buckets():
@@ -51,7 +60,7 @@ for b in c.get_all_buckets():
 <p>If path-style format is required (for example if your bucket was accidentally created with uppercase characters), you need to add `<strong>calling_format=boto.s3.connection.OrdinaryCallingFormat()</strong>` to the boto.connect_s3 call.</p>
 <p>For example:</p>
 <div class="preboxcontainer">
-<pre class="prebox">c = boto.connect_s3(accesskey, secretkey, host='objects-us-west-1.dream.io', calling_format=boto.s3.connection.OrdinaryCallingFormat())</pre>
+<pre class="prebox">c = boto.connect_s3(accesskey, secretkey, host='objects-us-east-1.dream.io', calling_format=boto.s3.connection.OrdinaryCallingFormat())</pre>
 </div>
 </div>
 </div>

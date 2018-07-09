@@ -12,6 +12,15 @@
 <li><a class="reference internal" href="#object-operations-s3">Understand DreamObjects S3-compatible Object Operations</a></li>
 </ul>
 </div>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>This article uses the new DreamObjects cluster of 'objects-us-east-1.dream.io'. If you have an older DreamObjects account and have not migrated your data yet, your hostname may need to point to 'objects-us-west-1.dream.io instead. Please review the following migration article for further details.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360002135871#what-cluster-is-my-data-on">What cluster is my DreamObjects data currently on?</a></li>
+</ul>
+</div>
+</div>
 <div id="dreamobjects-rados-s3-api"><span id="rados-s3-api"></span>
 <h2>DreamObjects RADOS S3 API</h2>
 <p>DreamObjects supports the Amazon S3 API, so it’s easy to use your existing apps. However, unlike Amazon, DreamObjects uses RGW, the RADOS Gateway that is built on the CEPH file store.</p>
@@ -186,13 +195,13 @@
 <p>There are two different modes of accessing the buckets. The first (preferred) method identifies the bucket as the top-level directory in the URI:</p>
 <div class="preboxcontainer">
 <pre class="prebox">GET /mybucket HTTP/1.1
-Host: objects-us-west-1.dream.io
+Host: objects-us-east-1.dream.io
 </pre>
 </div>
 <p>The second method identifies the bucket via a virtual bucket host name. For example:</p>
 <div class="preboxcontainer">
 <pre class="prebox">GET / HTTP/1.1
-Host: mybucket.objects-us-west-1.dream.io
+Host: mybucket.objects-us-east-1.dream.io
 </pre>
 </div>
 <div class="alert alert-important">
@@ -381,7 +390,7 @@ Host: mybucket.objects-us-west-1.dream.io
 <div class="preboxcontainer">
 <pre class="prebox">HTTP/1.1
 PUT /buckets/bucket/object.mpeg
-Host: objects-us-west-1.dream.io
+Host: objects-us-east-1.dream.io
 Date: Mon, 2 Jan 2012 00:01:01 +0000
 Content-Encoding: mpeg
 Content-Length: 9999999
@@ -459,7 +468,7 @@ Authorization: AWS {access-key}:{hash-of-header-and-secret}</pre>
 <h4>Syntax</h4>
 <div class="preboxcontainer">
 <pre class="prebox">GET / HTTP/1.1
-Host: objects-us-west-1.dream.io
+Host: objects-us-east-1.dream.io
 
 Authorization: AWS {access-key}:{hash-of-header-and-secret}</pre>
 </div>
@@ -543,7 +552,7 @@ Authorization: AWS {access-key}:{hash-of-header-and-secret}</pre>
 <h4>Syntax</h4>
 <div class="preboxcontainer">
 <pre class="prebox">PUT /{bucket} HTTP/1.1
-Host: objects-us-west-1.dream.io
+Host: objects-us-east-1.dream.io
 x-amz-acl: public-read-write
 
 Authorization: AWS {access-key}:{hash-of-header-and-secret}</pre>
@@ -599,7 +608,7 @@ Authorization: AWS {access-key}:{hash-of-header-and-secret}</pre>
 <h4>Syntax</h4>
 <div class="preboxcontainer">
 <pre class="prebox">DELETE /{bucket} HTTP/1.1
-Host: objects-us-west-1.dream.io
+Host: objects-us-east-1.dream.io
 
 Authorization: AWS {access-key}:{hash-of-header-and-secret}</pre>
 </div>
@@ -630,7 +639,7 @@ Authorization: AWS {access-key}:{hash-of-header-and-secret}</pre>
 <h4>Syntax</h4>
 <div class="preboxcontainer">
 <pre class="prebox">GET /{bucket}?max-keys=25 HTTP/1.1
-Host: objects-us-west-1.dream.io
+Host: objects-us-east-1.dream.io
 </pre>
 </div>
 <div id="id5">
@@ -795,7 +804,7 @@ Host: objects-us-west-1.dream.io
 <p>Add the <code class="docutils literal"><span class="pre">acl</span></code> subresource to the bucket request as shown below.</p>
 <div class="preboxcontainer">
 <pre class="prebox">GET /{bucket}?acl HTTP/1.1
-Host: objects-us-west-1.dream.io
+Host: objects-us-east-1.dream.io
 
 Authorization: AWS {access-key}:{hash-of-header-and-secret}</pre>
 </div>
