@@ -20,18 +20,22 @@
 <div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
 <p>Please note that the records below are only examples. Your specific DNS records will be different.</p>
+<p>The examples below <strong>ONLY</strong> show email DNS records. Your website will have additions records you can read about in this article:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215413857-DreamHost-DNS-overview">DreamHost DNS overview</a></li>
+</ul>
 </div>
 </div>
 <dl>
-<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/2018-06_panel_domains_dns_records_01.png" alt="" /></dd>
+<dd><img class="img-border" src="https://objects-us-west-1.dream.io/kbimages/images/2018-06_panel_domains_email_dns_records.png" alt="" /></dd>
 </dl>
 There are two types of mail-related DNS records.
 <dl>
 <dt><strong>MX records</strong></dt>
-<dd>tells senders where emails for you should be delivered to. For example, if <a href="https://help.dreamhost.com/hc/en-us/articles/215686487-How-do-I-configure-my-Anti-spam-settings-">Spam filtering</a> was not enabled, they would look like this:</dd>
+<dd>tells senders where emails for you should be delivered to. For example, if <a href="https://help.dreamhost.com/hc/en-us/articles/215686487-How-do-I-configure-my-Anti-spam-settings-">Spam filtering</a> was <strong>NOT</strong> enabled, they would look like this:</dd>
 </dl>
 <dl>
-<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/2018-06_panel_mail_cluster_mx_records.png" /></dd>
+<dd><img class="img-border" src="https://objects-us-west-1.dream.io/kbimages/images/2018-06_panel_mail_cluster_mx_records.png" /></dd>
 </dl>
 <dl>
 <dt><strong>A records</strong></dt>
@@ -46,14 +50,22 @@ There are two types of mail-related DNS records.
 <th bgcolor="#F2F2F2">Example value</th>
 </tr>
 <tr>
+<td>_autodiscover._tcp (SRV)</td>
+<td>5 0 443 autoconfig.dreamhost.com — This is an SRV record that assists email applications automatically configure the correct settings.</td>
+</tr>
+<tr>
+<td>autoconfig (CNAME)</td>
+<td>autoconfig.dreamhost.com — This is a CNAME record that assists email applications automatically configure the correct settings.</td>
+</tr>
+<tr>
 <td>*mail. (A)</td>
-<td>69.163.253.135 — This is a standard subdomain that can be used to connect your client or program to the mail server.</td>
+<td>64.90.62.162 — This is a standard subdomain that can be used to connect your client or program to the mail server.</td>
 </tr>
 <tr>
 <td>*mail. (MX)</td>
 <td>
-<p>This domain has <a href="https://help.dreamhost.com/hc/en-us/articles/215686487-How-do-I-configure-my-Anti-spam-settings-">enabled Spam filtering</a>, so the MX records appear as <strong>vade-in1.mail.dreamhost.com </strong>and <strong> vade-in2.mail.dreamhost.com</strong>. </p>
-<p>If Spam filtering was not enabled, you'd see your <a href="https://help.dreamhost.com/hc/en-us/articles/214918038#Where_to_find_your_mail_cluster_name">mail cluster</a> value instead. It would appear as <strong>mx1.sub4.homie.mail.dreamhost.com</strong>. For example:<br /> <img src="https://objects-us-west-1.dream.io/kbimages/images/2018-06_panel_mail_cluster_mx_records.png" /> <br />If you have not enabled Spam filtering, change 'sub4' to your <a href="https://help.dreamhost.com/hc/en-us/articles/214918038#Where_to_find_your_mail_cluster_name">mail cluster</a> value. </p>
+<p>This domain has <a href="https://help.dreamhost.com/hc/en-us/articles/215686487-How-do-I-configure-my-Anti-spam-settings-">enabled Spam filtering</a>, so the MX records appear as:<br /><strong>vade-in1.mail.dreamhost.com </strong><br /><strong> vade-in2.mail.dreamhost.com</strong>. </p>
+<p>If Spam filtering was not enabled, you'd see your <a href="https://help.dreamhost.com/hc/en-us/articles/214918038#Where_to_find_your_mail_cluster_name">mail cluster</a> value instead. It would appear as:<br /> <strong>mx1.sub4.homie.mail.dreamhost.com</strong>. For example:<br /> <br /><img class="img-border" src="https://objects-us-west-1.dream.io/kbimages/images/2018-06_panel_mail_cluster_mx_records.png" /> <br /><br />If you have not enabled Spam filtering, change 'sub4' to your <a href="https://help.dreamhost.com/hc/en-us/articles/214918038#Where_to_find_your_mail_cluster_name">mail cluster</a> value. </p>
 </td>
 </tr>
 <tr>

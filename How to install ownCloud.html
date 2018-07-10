@@ -31,29 +31,18 @@
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">wget https://download.owncloud.org/community/owncloud-10.0.8.tar.bz2</span></pre>
 </div>
 </li>
-<li>Under the <strong>Download Tar</strong> button, right click 'asc' and choose 'Copy link Address'. Then run 'wget' to download this file.
+<li>Under the <strong>Download Tar</strong> button, right click 'sha256' and choose 'Copy link Address'. Then run 'wget' to download this file.
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">wget https://download.owncloud.org/community/owncloud-10.0.8.tar.bz2.asc</span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wget https://download.owncloud.org/community/owncloud-10.0.8.tar.bz2.sha256</span></pre>
 </div>
 </li>
-<li>Next, download the ownCloud gpg .asc file. This will be used to verify the authenticity of the .tar.bz2 file to ensure it's safe to use.
+<li>Next, verify the sha256 signature against the .tar.bz2 file to ensure it's matches.
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">wget https://download.owncloud.org/owncloud.asc</span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">sha256sum -c owncloud-10.0.8.tar.bz2.sha256 &lt; owncloud-10.0.8.tar.bz2</span>
+owncloud-10.0.8.tar.bz2: OK</pre>
 </div>
 </li>
-<li>Import the owncloud.asc file
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">gpg --import owncloud.asc</span></pre>
-</div>
-</li>
-<li>Use this owncloud.asc file to verify your .tar.bz2.asc file against your .tar.bz2 file.
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">gpg --verify owncloud-10.0.8.tar.bz2.asc owncloud-10.0.8.tar.bz2</span>
-gpg: Signature made Thu 19 Apr 2018 12:01:51 PM PDT using RSA key ID F6978A26
-gpg: Good signature from "ownCloud &lt;info@owncloud.com&gt;"</pre>
-</div>
-</li>
-<li>If it says 'Good signature', <a href="https://help.dreamhost.com/hc/en-us/articles/115002768331#tarbz2">decompress the file</a>:
+<li>If it says 'OK', <a href="https://help.dreamhost.com/hc/en-us/articles/115002768331#tarbz2">decompress the file</a>:
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">tar xvjf owncloud-10.0.8.tar.bz2</span></pre>
 </div>
