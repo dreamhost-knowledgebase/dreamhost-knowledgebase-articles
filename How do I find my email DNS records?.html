@@ -32,10 +32,66 @@
 There are two types of mail-related DNS records.
 <dl>
 <dt><strong>MX records</strong></dt>
-<dd>tells senders where emails for you should be delivered to. For example, if <a href="https://help.dreamhost.com/hc/en-us/articles/215686487-How-do-I-configure-my-Anti-spam-settings-">Spam filtering</a> was <strong>NOT</strong> enabled, they would look like this:</dd>
+<dd>tells senders where emails for you should be delivered to. For example, if <a href="https://help.dreamhost.com/hc/en-us/articles/215686487-How-do-I-configure-my-Anti-spam-settings-">Spam filtering</a> was <strong>NOT</strong> enabled, they would look like this (assuming your on the sub0 mail cluster):</dd>
 </dl>
 <dl>
 <dd><img class="img-border" src="https://objects-us-west-1.dream.io/kbimages/images/2018-06_panel_mail_cluster_mx_records.png" /></dd>
+</dl>
+<dl>
+<dd>Below is a table of all possible MX records depending on which Mail Cluster you're email is hosted on.</dd>
+</dl>
+<dl>
+<dd>
+<table class="wikitable">
+<tbody>
+<tr>
+<th>Email Cluster</th>
+<th>MX Record(s)</th>
+</tr>
+<tr>
+<td>homiemail-sub0</td>
+<td>mx1.dreamhost.com<br /> mx2.dreamhost.com</td>
+</tr>
+<tr>
+<td>homiemail-sub3</td>
+<td>mx1.sub3.homie.mail.dreamhost.com<br />mx2.sub3.homie.mail.dreamhost.com</td>
+</tr>
+<tr>
+<td>homiemail-sub4</td>
+<td>mx1.sub4.homie.mail.dreamhost.com<br />mx2.sub4.homie.mail.dreamhost.com</td>
+</tr>
+<tr>
+<td>homiemail-sub5</td>
+<td>mx1.sub5.homie.mail.dreamhost.com<br />mx2.sub5.homie.mail.dreamhost.com</td>
+</tr>
+<tr valign="top">
+<td>homiemail-master</td>
+<td>mx1.balanced.homie.mail.dreamhost.com
+<p>mx2.balanced.homie.mail.dreamhost.com</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+<dl>
+<dd>If <a href="https://help.dreamhost.com/hc/en-us/articles/215686487-How-do-I-configure-my-Anti-spam-settings-">Spam Filtering has been enabled</a> your MX records would be the following:</dd>
+</dl>
+<dl>
+<dd>
+<table class="wikitable">
+<tbody>
+<tr>
+<th>Email Cluster</th>
+<th>MX Record(s)</th>
+</tr>
+<tr>
+<td>Spam Filters</td>
+<td>vade-in1.mail.dreamhost.com<br />vade-in2.mail.dreamhost.com</td>
+</tr>
+</tbody>
+</table>
+</dd>
 </dl>
 <dl>
 <dt><strong>A records</strong></dt>
@@ -65,7 +121,7 @@ There are two types of mail-related DNS records.
 <td>*mail. (MX)</td>
 <td>
 <p>This domain has <a href="https://help.dreamhost.com/hc/en-us/articles/215686487-How-do-I-configure-my-Anti-spam-settings-">enabled Spam filtering</a>, so the MX records appear as:<br /><strong>vade-in1.mail.dreamhost.com </strong><br /><strong> vade-in2.mail.dreamhost.com</strong>. </p>
-<p>If Spam filtering was not enabled, you'd see your <a href="https://help.dreamhost.com/hc/en-us/articles/214918038#Where_to_find_your_mail_cluster_name">mail cluster</a> value instead. It would appear as:<br /> <strong>mx1.sub4.homie.mail.dreamhost.com</strong>. For example:<br /> <br /><img class="img-border" src="https://objects-us-west-1.dream.io/kbimages/images/2018-06_panel_mail_cluster_mx_records.png" /> <br /><br />If you have not enabled Spam filtering, change 'sub4' to your <a href="https://help.dreamhost.com/hc/en-us/articles/214918038#Where_to_find_your_mail_cluster_name">mail cluster</a> value. </p>
+<p>If Spam filtering was not enabled, you'd see your <a href="https://help.dreamhost.com/hc/en-us/articles/214918038#Where_to_find_your_mail_cluster_name">mail cluster</a> value instead. It would appear as:<br /> <strong>mx1.dreamhost.com</strong> if you're on the sub0 cluster. For example:<br /> <br /><img class="img-border" src="https://objects-us-west-1.dream.io/kbimages/images/2018-06_panel_mail_cluster_mx_records.png" /> <br /><br />If you have not enabled Spam filtering, and are not on the 'sub0' cluster, change the MX records to your <a href="https://help.dreamhost.com/hc/en-us/articles/214918038#Where_to_find_your_mail_cluster_name">mail cluster</a> value. </p>
 </td>
 </tr>
 <tr>
