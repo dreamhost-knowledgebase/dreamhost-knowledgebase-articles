@@ -1,13 +1,13 @@
 <p>WordPress hardcodes the site's domain name into the database in such things as image and link urls. This is a problem if you migrate the site to another domain, because when you click on a link on your new site, it redirects back to the old site.</p>
 <p>To update the URLs in your database, you can use a plugin or command line</p>
-<h2>Using a plugin</h2>
+<h2>Option 1 — Using a plugin</h2>
 <p>Below are a couple of plugins that work to change all URLs in your database.</p>
 <ul>
 <li><a href="https://wordpress.org/plugins/velvet-blues-update-urls/">Velvet Blues Update URLs</a></li>
 <li><a href="https://wordpress.org/plugins/search-and-replace/">Search and Replace</a></li>
 <li><a href="https://wordpress.org/plugins/better-search-replace/">Better Search Replace</a></li>
 </ul>
-<h2>Using the command line</h2>
+<h2>Option 2 — Using the command line</h2>
 <p>If you are familiar with the command line, you can run the following command for the same effect (assuming you saved the old WordPress address).</p>
 <ol>
 <li>First, log into your server via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH</a>.</li>
@@ -25,3 +25,49 @@
 <p>The --dry-run call at the end tests the address</p>
 <p>If the changes make sense to you, then run the above command again without the 'dry-run' call.</p>
 <p>At this point, all URLs within your WordPress site will use the new domain name.</p>
+<h2>Full example using the Better Search &amp; Replace plugin</h2>
+<p>These steps walk you through how to update your URLs using the 'Search &amp; Replace' plugin. This example changes the URLs in the database from 'example.com' to 'example.com/blog'.</p>
+<ol>
+<li>First, make a <a href="https://help.dreamhost.com/hc/en-us/articles/215039758-Database-backup-overview">backup of your database</a>. Just in case something goes wrong, you can easily replace your old database data.
+<dl>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/2018-05_wordpress_better_search_replace_01.png" alt="" /></dd>
+</dl>
+</li>
+<li>Download the <a href="https://wordpress.org/plugins/better-search-replace/">Better Search Replace plugin</a>. In your panel navigate to 'Plugins &gt; Add New'.
+<dl>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/2018-05_wordpress_better_search_replace_02.png" alt="" /></dd>
+</dl>
+</li>
+<li>Search for 'Better Search Replace'.</li>
+<li>Click <strong>Install Now</strong>.
+<dl>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/2018-05_wordpress_better_search_replace_03.png" alt="" /></dd>
+</dl>
+</li>
+<li>Click <strong>Activate</strong>. 
+<dl>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/2018-05_wordpress_better_search_replace_04.png" alt="" /></dd>
+</dl>
+</li>
+<li>In your Dashboard, navigate to the plugin under 'Tools &gt; Better Search Replace'.<br />
+<dl>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/2018-05_wordpress_better_search_replace_example.png" alt="" /></dd>
+</dl>
+</li>
+<li>Click the 'Search/Replace' tab.</li>
+<li>In the first field titled 'Search for:', enter your current http URL. For example:</li>
+<ul>
+<li>https://example.com</li>
+</ul>
+<li>In the second field titled 'Replace with:', enter your new URL. For example:</li>
+<ul>
+<li>https://example.com/blog</li>
+</ul>
+<li>Select all tables.</li>
+<li>Check the box titled 'Run as dry run?'. </li>
+<li>Click <strong>Run Search/Replace</strong>.</li>
+<li>This should respond with a message at the top notifying you of what would have been updated if you did not check the 'Dry Run' box.</li>
+<li>If everything looks good, run it again with the 'Run as dry run?' box UN-checked.</li>
+<li>A confirmation will display notifying you of how many changes were made.</li>
+</ol>
+<p>At this point, all URLs in your database point to your site's new URL.</p>

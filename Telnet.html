@@ -4,22 +4,28 @@
 <p>If you find your mail client is not connecting as it should, you can test the connection between your local computer and the mail cluster. </p>
 <ol>
 <li>
-<p>You can find your specific mail cluster in your panel on the <a href="https://panel.dreamhost.com/index.cgi?tree=support.dc&amp;">(Panel &gt; 'Support' &gt; 'Data Centers'</a>) page. View the following article for instructions on how to locate your mail servername.</p>
+<p>You can find your specific mail cluster in your panel on the <a href="https://panel.dreamhost.com/index.cgi?tree=support.dc&amp;">(Panel &gt; 'Support' &gt; 'Data Centers'</a>) page. View the following article for instructions on how to locate your correct mail servername. The example below uses the hostname for the 'sub0' cluster.</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/214918038#Where_to_find_your_mail_cluster_name">How to find your mail servername</a></li>
 </ul>
 </li>
 <li>Run the following command via <a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a> or in the Windows command prompt to test your connection:
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">telnet sub4.mail.dreamhost.com 143</span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">telnet imap.dreamhost.com 143</span></pre>
 </div>
 <p>If connecting properly, it responds with something like this:</p>
 <div class="preboxcontainer">
-<pre class="prebox">Trying 69.163.253.135...
-Connected to sub4.mail.dreamhost.com.
+<pre class="prebox">Trying 64.90.62.162...
+Connected to imap.dreamhost.com.
 Escape character is '^]'.
 * OK [CAPABILITY IMAP4rev1 LITERAL+ SASL-IR LOGIN-REFERRALS ID ENABLE STARTTLS AUTH=PLAIN AUTH=LOGIN] Dovecot ready.
 </pre>
+</div>
+</li>
+<li>To exit the telnet session, type <span class="code">CTRL + ]</span> on your keyboard. This changes the command prompt to show as 'telnet&gt;'.
+<p>Back in the terminal, type in the word 'close' to close the session.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">telnet&gt; </span><span class="command">close</span></pre>
 </div>
 </li>
 </ol>
