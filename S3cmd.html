@@ -6,37 +6,34 @@
 <ol class="arabic">
 <li>
 <p class="first">Log in to your server via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH</a>.</p>
+</li>
+<li>
+<p class="first">Create a bin directory in your home directory if you don’t have one already.</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">mkdir ~/bin</span></pre>
 </div>
 </li>
 <li>
-<p class="first">Create a bin directory in your home directory if you don’t have one already.</p>
+<p class="first">Download the <a class="reference external" href="https://github.com/s3tools/s3cmd/releases">latest release of s3cmd from GitHub</a>.</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">curl -O -L https://github.com/s3tools/s3cmd/archive/v2.0.0.tar.gz</span></pre>
 </div>
 </li>
 <li>
-<p class="first">Download the <a class="reference external" href="https://github.com/s3tools/s3cmd/releases">latest release of s3cmd from GitHub</a>.</p>
+<p class="first">Untar the file.</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">tar xzf v2.0.0.tar.gz</span></pre>
 </div>
 </li>
-<li>
-<p class="first">Untar the file.</p>
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd s3cmd-2.0.0</span></pre>
-</div>
-</li>
 <li>You should now have a directory called <cite>s3cmd-2.0.0</cite>. Change into that directory
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">cp -R s3cmd S3 ~/bin</span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd s3cmd-2.0.0</span></pre>
 </div>
 </li>
 <li>
 <p class="first">Copy the s3cmd executable and S3 folder into the bin directory created earlier</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">echo "export PATH=$HOME/bin:$PATH" &gt;&gt; ~/.bash_profile</span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cp -R s3cmd S3 ~/bin</span></pre>
 </div>
 </li>
 <li>
@@ -48,11 +45,14 @@
 </div>
 </div>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">. ~/.bash_profile</span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">echo "export PATH=$HOME/bin:$PATH" &gt;&gt; ~/.bash_profile</span></pre>
 </div>
 </li>
 <li>
 <p class="first">Execute your bash profile for it to take effect</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">. ~/.bash_profile</span></pre>
+</div>
 </li>
 </ol>
 </div>
@@ -181,7 +181,7 @@ gpg_passphrase = <span class="command">yourpassword</span></pre>
 upload: '/tmp/tmpfile-zFGwbLHMVEINdHh3615n' -&gt; 's3://bucket-name/testfile.txt'  [1 of 1]
  63 of 63   100% in    0s   129.96 B/s  done</pre>
 </div>
-<p>To confirm it is encrypted, navigate to the (Panel &gt; 'Cloud Services' &gt; 'DreamObjects') page. Click the 'View Objects' button under your username. A prompt opens for you to view objects in your bucket.</p>
+<p>To confirm it is encrypted, navigate to the (<a href="https://panel.dreamhost.com/index.cgi?tree=cloud.objects&amp;">Panel &gt; 'Cloud Services' &gt; 'DreamObjects'</a>) page. Click the 'View Objects' button under your username. A prompt opens for you to view objects in your bucket.</p>
 <p><img src="https://objects-us-west-1.dream.io/kbimages/images/2018-06_panel_dho-viewing-object.png" /></p>
 <p>Click the object, copy the URL, then paste it into a browser.</p>
 <p><img class="img-border" src="https://objects-us-west-1.dream.io/kbimages/images/2018-06_dho-viewing-encrypted-object.png" /></p>
