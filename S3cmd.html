@@ -8,40 +8,40 @@
 <p class="first">Log in to your server via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH</a>.</p>
 </li>
 <li>
-<p class="first">Create a bin directory in your home directory if you don’t have one already.</p>
+<p class="first">Create a bin directory in your home directory if you don’t have one already:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">mkdir ~/bin</span></pre>
 </div>
 </li>
 <li>
-<p class="first">Download the <a class="reference external" href="https://github.com/s3tools/s3cmd/releases">latest release of s3cmd from GitHub</a>.</p>
+<p class="first">Download the <a class="reference external" href="https://github.com/s3tools/s3cmd/releases">latest release of s3cmd from GitHub</a>:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">curl -O -L https://github.com/s3tools/s3cmd/archive/v2.0.0.tar.gz</span></pre>
 </div>
 </li>
 <li>
-<p class="first">Untar the file.</p>
+<p class="first">Untar the file:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">tar xzf v2.0.0.tar.gz</span></pre>
 </div>
 </li>
-<li>You should now have a directory called <cite>s3cmd-2.0.0</cite>. Change into that directory
+<li>You should now have a directory called <cite>s3cmd-2.0.0</cite>. Change into that directory:
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">cd s3cmd-2.0.0</span></pre>
 </div>
 </li>
 <li>
-<p class="first">Copy the s3cmd executable and S3 folder into the bin directory created earlier</p>
+<p class="first">Copy the s3cmd executable and S3 folder into the bin directory created earlier:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">cp -R s3cmd S3 ~/bin</span></pre>
 </div>
 </li>
 <li>
-<p class="first">Add the bin directory to your path so that you can execute the newly installed script.</p>
+<p class="first">Add the bin directory to your path so that you can execute the newly installed script:</p>
 <div class="alert alert-important">
 <div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
-<p>This assumes you’re using the default bash shell. If you’re using a different shell, you’ll have to set the path in the proper place.</p>
+<p>This assumes you’re using the default bash shell. If you’re using a different shell, you must set the path in the proper place.</p>
 </div>
 </div>
 <div class="preboxcontainer">
@@ -49,7 +49,7 @@
 </div>
 </li>
 <li>
-<p class="first">Execute your bash profile for it to take effect</p>
+<p class="first">Execute your bash profile for it to take effect:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">. ~/.bash_profile</span></pre>
 </div>
@@ -69,13 +69,13 @@
 </div>
 <p>Instead of following the instructions on the s3cmd site to configure it, just do the following:</p>
 <ol class="arabic simple">
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Create a file</a> in your home directory called .s3cfg (note the leading “dot”)
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Create a file</a> in your home directory called .s3cfg (note the leading “dot”):
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~</span>
 <span class="server">[server]$ </span><span class="command">touch .s3cfg</span></pre>
 </div>
 </li>
-<li>Copy the content of the code block below into it.
+<li>Copy the content of the code block below into it:
 <div class="preboxcontainer">
 <pre class="prebox">[default]
 access_key = Your_DreamObjects_Access_Key
@@ -132,19 +132,19 @@ File s3://s3cmd-justin/testfile.txt deleted</pre>
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd du -H s3://s3cmd-justin</span>
 40G      s3://s3cmd-justin</pre>
 </div>
-<p><strong>Recursively make every object in a bucket public</strong></p>
+<p><strong>Recursively making every object in a bucket public</strong></p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd setacl s3://3cmd-justin --acl-public --recursive</span></pre>
 </div>
-<p><strong>Recursively make every object in a bucket private</strong></p>
+<p><strong>Recursively making every object in a bucket private</strong></p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd setacl s3://3cmd-justin --acl-private --recursive</span></pre>
 </div>
-<p><strong>Disable Directory Listing in a bucket</strong></p>
+<p><strong>Disabling Directory Listing in a bucket</strong></p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd setacl s3://3cmd-justin --acl-private</span></pre>
 </div>
-<p><strong>Work with multiple accounts</strong></p>
+<p><strong>Working with multiple accounts</strong></p>
 <p>It’s possible to use different configuration files, one for each account on DreamObjects. By default s3cmd puts its configuration file in ~/.s3cfg, but you can override a configuration file with the <cite>-c</cite> option and specify a different configuration file.</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd -c .s3cfg-another-identity ls</span></pre>
@@ -156,14 +156,14 @@ alias s3my='s3cmd -c ~/.s3cfg-main-identity'
 alias s3alt='s3cmd -c ~/.s3cfg-another-identity'</pre>
 </div>
 </div>
-<h2><span id="encrypting-data">Encrypting data</span></h2>
-<p>s3cmd can encrypt your data while uploading to DreamObjects. To use this functionality, you must first configure your .s3cfg file.</p>
+<h2><span id="encrypting-data">How to encrypt your data</span></h2>
+<p>S3cmd can encrypt your data while uploading to DreamObjects. To use this functionality, you must first configure your .s3cfg file.</p>
 <h3>Configuring your .s3cfg file</h3>
-<p>If you followed the instructions above, you've already created your .s3cfg file. You must now add a few lines so you can use encryption. Open the file.</p>
+<p>If you followed the instructions above, you've already created your .s3cfg file. You must now add a few lines so you can use encryption. Open the file:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">nano ~/.s3cfg</span></pre>
 </div>
-<p>Add the following lines. Make sure to create your own password for 'gpg_passphrase'.</p>
+<p>Add the following lines. Make sure to create your own password for 'gpg_passphrase':</p>
 <div class="preboxcontainer">
 <pre class="prebox">check_ssl_certificate = True
 check_ssl_hostname = True
@@ -173,8 +173,8 @@ gpg_encrypt = %(gpg_command)s -c --verbose --no-use-agent --batch --yes --passph
 gpg_passphrase = <span class="command">yourpassword</span></pre>
 </div>
 <p>Your configuration is now set up to encrypt data.</p>
-<h3>Encrypting data while uploading.</h3>
-<p>To encrypt your data while uploading, use the <span class="code">-e</span> flag. In the example below, 'bucket-name' is the name of the bucket you're uploading content to. textfile.txt is the name of the single file you're uploading.</p>
+<h3>Encrypting data while uploading</h3>
+<p>To encrypt your data while uploading, use the <span class="code">-e</span> flag. In the following example, 'bucket-name' is the name of the bucket you're uploading content to. textfile.txt is the name of the single file you're uploading:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command"> s3cmd -e put testfile.txt s3://bucket-name</span>
 
@@ -183,17 +183,17 @@ upload: '/tmp/tmpfile-zFGwbLHMVEINdHh3615n' -&gt; 's3://bucket-name/testfile.txt
 </div>
 <p>To confirm it is encrypted, navigate to the (<a href="https://panel.dreamhost.com/index.cgi?tree=cloud.objects&amp;">Panel &gt; 'Cloud Services' &gt; 'DreamObjects'</a>) page. Click the 'View Objects' button under your username. A prompt opens for you to view objects in your bucket.</p>
 <p><img src="https://objects-us-west-1.dream.io/kbimages/images/2018-06_panel_dho-viewing-object.png" /></p>
-<p>Click the object, copy the URL, then paste it into a browser.</p>
+<p>Click the object, copy the URL, and then paste it into a browser.</p>
 <p><img class="img-border" src="https://objects-us-west-1.dream.io/kbimages/images/2018-06_dho-viewing-encrypted-object.png" /></p>
 <p>You'll see the data in the file is encrypted.</p>
 <h3>Decrypting a file</h3>
-<p>When you use s3cmd to download an encrypted file, it's automatically decrypted for you.</p>
+<p>When you use s3cmd to download an encrypted file, it's automatically decrypted for you:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd get s3://bucket-name/encrypted-file.txt</span>
 download: 's3://bucket-name/encrypted-file.txt' -&gt; './encrypted-file.txt'  [1 of 1]
  70 of 70   100% in    0s   323.19 B/s  done</pre>
 </div>
-<p>If you read the contents of the file, you'll see it's no longer encrypted.</p>
+<p>If you read the contents of the file, you'll see it's no longer encrypted:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">cat encrypted-file.txt</span>
 Testing a file</pre>
