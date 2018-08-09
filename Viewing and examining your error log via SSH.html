@@ -1,0 +1,105 @@
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>This article explains how to view your error log via SSH which requires some basic knowledge of a shell terminal. For an easier option using FTP, view the following article instead:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216512197-Viewing-your-access-and-error-logs-via-SFTP">Viewing your access and error logs via SFTP</a></li>
+</ul>
+</div>
+</div>
+<p>For troubleshooting purposes, you may sometimes need to check your site’s error logs and access logs to get more information as to why a problem may occur. This article explains how to view these logs through SFTP and Shell.</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<ul>
+<li>In order to view the logs, you must log in to your server and navigate to the <code>logs/example.com/http</code> directory.</li>
+<li>Logs are rotated every night so that access.log and error.log only contain today’s logs, while error.log.0 and access.log.0 contain logs from the day before.</li>
+<li>Log files are deleted shortly after this, so it’s recommended to check them as soon as possible.</li>
+</ul>
+</div>
+</div>
+<h2><span id="Viewing_logs_via_SSH">Viewing logs via SSH</span></h2>
+<ol>
+<li>View the SSH article for instructions on how to log in to your server.</li>
+<li>Type in the following to change your directory to your user’s /logs directory:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~/logs</span></pre>
+</div>
+</li>
+<li>Type in the following to view all of the domains under the user:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">ls -la</span></pre>
+</div>
+</li>
+<li>cd into the desired domain’s folder.</li>
+<li>cd into the domain’s /http folder.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd http</span></pre>
+</div>
+</li>
+<li>Type in the following to view a list of your log files:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">ls</span></pre>
+</div>
+</li>
+</ol>
+<h2><span id="Reading_the_most_recent_errors_using_the_.22tail.22_command">Reading the most recent errors using the "tail" command</span></h2>
+<p>The following shows various uses of the "tail" command that you can run within the appropriate directory to read specific parts of the log.</p>
+<p>Use the command "tail" to read the last lines from a file. For example:</p>
+<table class="wikitable">
+<tbody>
+<tr style="font-style: bold;">
+<th bgcolor="#F2F2F2">Command</th>
+<th bgcolor="#F2F2F2">Description</th>
+</tr>
+<tr>
+<td>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">tail -n 10 error.log</span></pre>
+</div>
+</td>
+<td>Shows the last 10 lines from an error log.</td>
+</tr>
+<tr>
+<td>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">tail -f error.log</span></pre>
+</div>
+</td>
+<td>Shows all newly added lines from a log file in real-time on the shell.</td>
+</tr>
+<tr>
+<td>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">tail -n 100 error.log | more</span></pre>
+</div>
+</td>
+<td>Shows the last 100 lines a single line at a time using the "more" command.
+<ul>
+<li>Useful for showing more lines than will fit in your shell window.</li>
+<li>Press the space bar to view the next line.</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td>ctrl + c</td>
+<td>Quits tail and returns to the command line.</td>
+</tr>
+</tbody>
+</table>
+<h2><span id="Searching_for_a_specific_term_using_the_.22grep.22_command">Searching for a specific term using the "grep" command</span></h2>
+<p>You can use the grep command to search for a specific term within files. This is particularly helpful since looking through an error log can be tedious if a certain errors need to be seen and others can be ignored.</p>
+<p>For example, if you only wanted to see errors related to the Testing2.jpg you can run this command:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cat error.log | grep “Testing2.jpg”</span></pre>
+</div>
+<p>The <code>cat error.log</code> command lists everything within the log. You may notice that several entries show “File does not exist” which are often irrelevant and can be ignored. You should always ensure that this is the case, however; If you’re sure they are not important, filter them out by running the following:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cat error.log | grep -v “exist”</span></pre>
+</div>
+<h2>See also</h2>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216512197-Viewing-your-access-and-error-logs-via-SFTP">Viewing your access and error logs via SFTP</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115000675027-FTP-overview-and-credentials">FTP overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115000683852-Using-the-top-command-to-troubleshoot-your-website">Using 'top' to view running processes</a></li>
+</ul>
