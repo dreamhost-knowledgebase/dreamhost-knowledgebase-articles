@@ -10,9 +10,24 @@
 </div>
 <h2>Add an SSL certificate to the domain</h2>
 <p>Make sure your site is properly set up for HTTPS. You need to have an <a href="https://help.dreamhost.com/hc/en-us/articles/216041537-Secure-Hosting-overview">SSL certificate</a> applied to your site and possibly a Unique IP address depending on your requirements for the site. See the <a href="/hc/en-us/articles/216109647-Unique-IP-overview">Unique IP</a> article for more information.</p>
-<h2>Update the Home and Site URL in WordPress</h2>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Make sure your SSL certificate is active before continuing.</p>
+</div>
+</div>
+<h2>Update database URLs</h2>
+<p>Your WordPress database has several hard-coded URLs that point to the 'http' version of your domain. To update everything very quickly to 'https', use a plugin. This will change all internal URLs to use the new secure URL. View the following article for instructions on how to do this with a plugin:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360003300591-Changing-your-WordPress-database-URLs-to-https-using-a-plugin">Changing your WordPress database URLs to https using a plugin</a></li>
+</ul>
+<p>At this point all URLs in your database now point to 'https'. You'll be logged out after running the plugin above. Log back into your site again at the 'https' URL instead. For example:</p>
+<ul>
+<li>https://example.com</li>
+</ul>
+<h2>Verify the Home and Site URL are updated</h2>
 <ol>
-<li>Log into WordPress using the new secure HTTPS URL.
+<li>After running the plugin above, log into WordPress using the new secure HTTPS URL.
 <ul>
 <li><strong>https://example.com/wp-login.php</strong></li>
 </ul>
@@ -25,15 +40,7 @@
 <dd><img src="https://objects-us-west-1.dream.io/kbimages/images/WordPress_https.png" alt="" /></dd>
 </dl>
 </li>
-<li>On the General page, <a href="/hc/en-us/articles/214580498-How-do-I-change-the-WordPress-Site-URL-">change the URLs</a> to add the '<strong>s</strong>' in 'HTTPS'.</li>
-<li>Scroll down and click the <strong>Save Changes</strong> button.
-<div class="alert alert-note">
-<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
-<div class="alert-content">
-<p>When you click <strong>Save Changes</strong>, WordPress will log you out.</p>
-</div>
-</div>
-</li>
+<li>On the General page you should see your Home and Site URL now points to 'https'.</li>
 </ol>
 <h2>Update your wp-config.php file</h2>
 <ol>
@@ -52,14 +59,6 @@ define('FORCE_SSL_ADMIN',true);
 <ul>
 <li><a href="/hc/en-us/articles/215747758#Forcing_HTTPS_with_WordPress">Update rules in your site's .htaccess file</a></li>
 <li><a href="https://wordpress.org/plugins/wordpress-https/">Use a WordPress HTTPS plugin</a></li>
-</ul>
-<h2>Update database URLs</h2>
-<h3>If this is a new WordPress site</h3>
-<p>If this is a brand new site, all new pages and posts you create will be saved with the HTTPS URL, so no further changes are required.</p>
-<h3>If this is an existing WordPress site with content</h3>
-<p>If this is an existing site with existing images, posts, and pages, you must also change all internal URLs to use the new secure URL. View the following article for instructions on how to do this with a plugin:</p>
-<ul>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/360003300591-Changing-your-WordPress-database-URLs-to-https-using-a-plugin">Changing your WordPress database URLs to https using a plugin</a></li>
 </ul>
 <h2>Configuring Cloudflare with your SSL certificate</h2>
 <p>This section is only necessary if you have also <a href="https://help.dreamhost.com/hc/en-us/articles/216477717-How-to-enable-Cloudflare-on-your-domain">added Cloudflare to your domain</a>. If so, view the following article for information on how to configure it properly.</p>
