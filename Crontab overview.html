@@ -1,31 +1,25 @@
 <p>The <strong><code>crontab</code></strong> command, found in Unix and Unix-like operating systems, is used to schedule commands to be executed periodically.</p>
 <p>Generally, <strong><code>crontab</code></strong> uses a daemon, <code>crond</code>, which runs constantly in the background and checks once a minute to see if any of the scheduled jobs need to be executed. These jobs are generally referred to as <strong>cron jobs</strong>. Cron jobs run as the user who creates them, as though that user typed the command into their shell.</p>
 <div class="alert alert-important">
-<div class="alert-icon"><img alt="" height="60" src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
 <p>Only shell users can create cron jobs. For help setting up a shell user, see the <a href="/hc/en-us/articles/216385837-Enabling-Shell-access">Enabling Shell Access</a> article. </p>
 </div>
 </div>
 <h2><span id="Crontab_file_contents_on_the_server">Crontab file contents on the server</span></h2>
 <p>Due to the complex nature of translating user supplied content from the panel to the server, what you enter in to the panel is not what you see in the crontab file. The following example is a more complex cron job using a <code>wget</code> command.</p>
-<p><img alt="950px-01 Crontab panel.png" height="325" src="https://objects-us-east-1.dream.io/kbimages/images/950px-01_Crontab_panel.png" width="682"/></p>
+<p><img class="img-border" src="https://objects-us-east-1.dream.io/kbimages/images/2018-09_panel_cronjob.png" alt="crontab.png" /></p>
 <p>The crontab file on the server then appears as follows:</p>
 <div class="preboxcontainer">
 <pre class="prebox">###--- BEGIN DREAMHOST BLOCK
 ###--- Changes made to this part of the file WILL be destroyed!
-# Cron Process <br/>MAILTO="user@example.com"
-*/10 * * * * /usr/local/bin/setlock -n /tmp/cronlock.3788261262.173085 sh -c $'wget -q 
--O dev/null http\072//example.com/cron.php'
+# testing a cron
+MAILTO="user@example.com"
+@hourly /usr/local/bin/setlock -n /tmp/cronlock.3788814087.215158 sh -c $'/usr/local/php71/bin/php /home/example_username/mail.php'
 ###--- You can make changes below the next line and they will be preserved!
 ###--- END DREAMHOST BLOCK</pre>
 </div>
-<p>There are a couple of things worth noting:</p>
-<ul>
-<li>“http://” has been translated as “http\072//”. The “:” (colon) character is one of several special characters that need to be altered in to some other Unix-readable format in order to be successfully added to the crontab file. This is using octal notation (“\072” is the octal representation for “:”).</li>
-</ul>
-<ul>
-<li>When the 'Use locking' option is selected, the command(s) you want executed are filtered through a unique invocation of the setlock command.</li>
-</ul>
+<p>When the 'Use locking' option is selected, the command(s) you want executed are filtered through a unique invocation of the setlock command.</p>
 <p>View the <a href="http://manpages.ubuntu.com/manpages/setlock.html">setlock</a> man page for further information. The use of setlock results in error messages if your cron job is invoked before the last iteration of the job releases your unique lockfile. This can happen if your script takes more time to run than the time between job executions.</p>
 <h2><span id="Troubleshooting">Troubleshooting</span></h2>
 <ul>
