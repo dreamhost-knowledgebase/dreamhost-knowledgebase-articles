@@ -1,0 +1,265 @@
+<p>This article guides you through the process of creating a Wildcard 'Let's Encrypt' certificate on your domain hosted on DreamCompute. With this configuration, a single SSL certificate is set up on your primary domain (example.com), but all subdomains under (such as blog.example.com) it will also be able to use the certificate.</p>
+<h2>Configuring your site and instance</h2>
+<p>This article assumes you've already done the following:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215912848-How-to-launch-an-instance-using-the-DreamCompute-dashboard">Launched an instance</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115003441752-Adding-a-website-to-DreamCompute">Added your primary website to DreamCompute</a> (i.e., example.com)
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>This article assumes you've created your site in the /var/www directory and not your /home/username directory.</p>
+</div>
+</div>
+</li>
+<li>Using the same steps, added any subdomains you want hosted to DreamCompute (i.e., blog.example.com)</li>
+</ul>
+<p>If you've followed those steps, your website and its subdomains will already be resolving from the DreamCompute instance. You can now create the Wildcard certificate to use for all of those domains.</p>
+<h2>Enable mod_rewrite and ssl</h2>
+<p>Before continuing, make sure that mod_rewrite and ssl are enabled on your server. You can confirm by running the following commands:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">ls -1 /etc/apache2/mods-enabled | grep rewrite</span>
+<span class="server">[server]$ </span><span class="command">ls -1 /etc/apache2/mods-enabled | grep ssl</span></pre>
+</div>
+<p>If nothing displays, enable it with the following commands:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">sudo a2enmod rewrite</span>
+<span class="server">[server]$ </span><span class="command">sudo a2enmod ssl</span>
+<span class="server">[server]$ </span><span class="command">sudo service apache2 reload</span></pre>
+</div>
+<p>Check again and you'll see rewrite and ssl are listed.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">ls -1 /etc/apache2/mods-enabled | grep rewrite</span>
+rewirte.load
+<span class="server">[server]$ </span><span class="command">ls -1 /etc/apache2/mods-enabled | grep ssl</span>
+ssl.conf<br />ssl.load</pre>
+</div>
+<h2>Creating the certificate</h2>
+<p>Run the following commands in order to create your Wildcard certificate.</p>
+<ol>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216201547-Connect-to-your-instance-with-SSH-keys-overview">Log into your instance</a>.</li>
+<li>Run the commands below to switch to your root user and install a Let's Encrypt certificate.
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Make sure to change 'example.com' to your actual domain name in the command below.</p>
+</div>
+</div>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">sudo -s</span>
+<span class="server">root@[server]# </span><span class="command">cd /opt</span>
+<span class="server">root@[server]# </span><span class="command">git clone git://github.com/certbot/certbot</span>
+<span class="server">root@[server]# </span><span class="command">/opt/certbot/certbot-auto --manual -d "example.com" -d "*.example.com" --server https://acme-v02.api.letsencrypt.org/directory certonly</span></pre>
+</div>
+</li>
+<li>When prompted, enter 'y' to continue the installation.</li>
+<li>You're asked to enter an email address. Enter any address, but one you have direct access to check.</li>
+<li>Enter 'A' to agree to the terms of service.</li>
+<li>Choose if you want to share your email with the Electronic Frontier Foundation.</li>
+<li>You'll finally be asked the following question:
+<div class="preboxcontainer">
+<pre class="prebox">-------------------------------------------------------------------------------
+NOTE: The IP of this machine will be publicly logged as having requested this
+certificate. If you're running certbot in manual mode on a machine that is not
+your server, please ensure you're okay with that.
+
+Are you OK with your IP being logged?
+-------------------------------------------------------------------------------
+(Y)es/(N)o: <span class="command">y</span></pre>
+</div>
+</li>
+<li>Enter 'y' to continue.</li>
+<li>The next prompt will inform you of a new TXT record you must add to your domain.
+<div class="preboxcontainer">
+<pre class="prebox">-------------------------------------------------------------------------------
+Please deploy a DNS TXT record under the name
+_acme-challenge.example.com with the following value:
+
+Tzx6GaeSJHe14C6t_M9wTBDe0s1stDMuq2Y15GLFZPE
+
+Before continuing, verify the record is deployed.
+-------------------------------------------------------------------------------</pre>
+</div>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>DO NOT click the 'Enter' key yet. You must first set up this record in your DreamHost panel.</p>
+<p>The simpliest way to do this is to click <span class="code">CTRL + C</span> on your keyboard to abort the current terminal process. Next, copy the long TXT record from your terminal and paste it into your DreamHost panel.</p>
+</div>
+</div>
+</li>
+<li>Log into your <a href="https://panel.dreamhost.com">DreamHost panel</a> and navigate to the <a href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;">(Panel &gt; 'Domains' &gt; 'Manage Domains')</a> page.</li>
+<li>Click the 'DNS' link under your domain.</li>
+<li>Using the information above, create a new TXT record as follows:
+<dl>
+<dd><img src="https://objects-us-west-1.dream.io/kbimages/images/2018-04_dho_add_wildcard_cert_01.png" alt="" /></dd>
+</dl>
+Enter the following:
+<ul>
+<li><strong>Name: </strong>— _acme-challenge</li>
+<li><strong>Type: </strong>— TXT</li>
+<li><strong>Value: </strong>— Tzx6GaeSJHe14C6t_M9wTBDe0s1stDMuq2Y15GLFZPE</li>
+</ul>
+Click the <strong>Add Record Now</strong> button to save.</li>
+<li>A green 'Success!' message displays, notifying you that the record has been created. The server now requires a few minutes to update this record. Wait at least 15 minutes before proceeding, or open another terminal and run the following command to confirm the record has updated.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">user@server$ </span><span class="command">dig _acme-challenge.example.com +short txt</span></pre>
+</div>
+</li>
+<li>Back in your terminal prompt, run the command again. This time, you'll are instructed to create a customized file for 'Let's Encrypt'. You'll see the following:
+<div class="preboxcontainer">
+<pre class="prebox">Create a file containing just this data:
+
+EZdd0CuoMENyxMP20TU9QSuX0VGeqSY7vYPPHMeM5_s.l3pHZcFiLUV6rJtRaFjP3BhEM7m1CPUimJifet--_SY
+
+And make it available on your web server at this URL:
+
+http://example.com/.well-known/acme-challenge/EZdd0CuoMENyxMP20TU9QSuX0VGeqSY7vYPPHMeM5_s
+
+Press Enter to Continue</pre>
+</div>
+</li>
+<li>Do not click the 'Enter' key yet. Open up a second terminal. In that new terminal, run the following command to create these directories:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">user@server$ </span><span class="command">sudo mkdir -p /var/www/example.com/.well-known/acme-challenge</span></pre>
+</div>
+</li>
+<li>Next, create the file using 'nano'.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">user@server$ </span><span class="command">sudo nano /var/www/example.com/.well-known/acme-challenge/EQdd0CuoMENyxMP20TU9QSuX0VGeqSY7vYPPHMeM5_s</span></pre>
+</div>
+</li>
+<li>Add the code mentioned above to it, then save the file.</li>
+<li>Back in your first terminal, click the 'Enter' key on your keyboard to continue. It will verify the file you just added, then again tell you to create the txt record. Since you've already created this txt record, click 'Enter' again.
+<div class="preboxcontainer">
+<pre class="prebox">-------------------------------------------------------------------------------
+Please deploy a DNS TXT record under the name
+_acme-challenge.example.com with the following value:
+
+Tzx6GaeSJHe14C6t_M9wTBDe0s1stDMuq2Y15GLFZPE
+
+Before continuing, verify the record is deployed.
+-------------------------------------------------------------------------------
+
+Click Enter to continue
+
+Waiting for verification...
+Cleaning up challenges
+
+IMPORTANT NOTES:
+ - Congratulations! Your certificate and chain have been saved at:
+   /etc/letsencrypt/live/example.com/fullchain.pem
+   Your key file has been saved at:
+   /etc/letsencrypt/live/example.com/privkey.pem
+   Your cert will expire on 2018-07-14. To obtain a new or tweaked
+   version of this certificate in the future, simply run certbot-auto
+   again. To non-interactively renew *all* of your certificates, run
+   "certbot-auto renew"</pre>
+</div>
+</li>
+</ol>
+<h2>Configure your domain to use this certificate</h2>
+<p>Navigate to your /site-available directory.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">root@[server]# </span><span class="command">cd /etc/apache2/sites-available</span></pre>
+</div>
+<p>In this directory is a file named 'example.com.conf' which you already created when setting up the domain. Edit this file and add the following highlighted code. Make sure to change 'example.com' to your actual domain name.</p>
+<div class="preboxcontainer">
+<pre class="prebox">&lt;VirtualHost *:80&gt;
+    ServerName example.com
+    ServerAlias www.example.com
+    ServerAdmin admin@example.com
+    DocumentRoot /home/ubuntu/example.com
+    &lt;Directory /home/ubuntu/example.com&gt;
+            AllowOverride all
+            Require all granted
+    &lt;/Directory&gt;
+
+    ErrorLog ${APACHE_LOG_DIR}/example.com-error.log
+    CustomLog ${APACHE_LOG_DIR}/example.com-access.log combined
+
+<span class="command">    RewriteEngine on
+    RewriteCond %{SERVER_NAME} =example.com [OR]
+    RewriteCond %{SERVER_NAME} =www.example.com
+    RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [END,NE,R=permanent]</span>
+<br />&lt;/VirtualHost&gt;</pre>
+</div>
+<p>These new lines will redirect the http version of your site to https.</p>
+<p>Next, create a new .conf file for your Let's Encrypt certificate. The name will be <strong>example.com-le-ssl.conf</strong>. Make sure to change 'example.com' to your actual domain name.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">root@[server]# </span><span class="command">sudo vim example.com-le-ssl.conf</span></pre>
+</div>
+<p>In this file add the following code.</p>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Make sure to change 'example.com' to your actual domain name.</p>
+</div>
+</div>
+<div class="preboxcontainer">
+<pre class="prebox">&lt;IfModule mod_ssl.c&gt;
+  &lt;VirtualHost *:443&gt;
+    ServerName <span class="command">example.com</span>
+    ServerAlias <span class="command">www.example.com</span>
+    ServerAdmin admin@<span class="command">example.com</span>
+    DocumentRoot /home/ubuntu/<span class="command">example.com</span>
+
+  &lt;Directory /home/ubuntu/<span class="command">example.com</span>&gt;
+    AllowOverride all
+    Require all granted
+  &lt;/Directory&gt;
+
+  ErrorLog ${APACHE_LOG_DIR}/<span class="command">example.com</span>-error.log
+  CustomLog ${APACHE_LOG_DIR}/<span class="command">example.com</span>-access.log combined
+
+  SSLCertificateFile /etc/letsencrypt/live/<span class="command">example.com</span>/fullchain.pem
+  SSLCertificateKeyFile /etc/letsencrypt/live/<span class="command">example.com</span>/privkey.pem
+  Include /opt/certbot/certbot-apache/certbot_apache/options-ssl-apache.conf
+  &lt;/VirtualHost&gt;
+&lt;/IfModule&gt;</pre>
+</div>
+<p>Make sure to enable this new file.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo a2ensite example.com-le-ssl</span>
+Enabling site example.com-le-ssl</pre>
+</div>
+<p>Finally reload your Apache service so it reads the changes.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo service apache2 reload</span></pre>
+</div>
+<h2>Configure your subdomains to use this certificate</h2>
+<p>Make an additional files for any subdomians you wish to use this same certificate for. For example, if you want the subdomain sub1.example.com to also be protected by this Wildcard certifciate, add files named <strong>sub1.example.com.conf</strong> and <strong>sub1.example.com-le-ssl.conf</strong> to the /etc/apache2/sites-available directory as shown above.</p>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>When editing the sub1.example.com-le-ssl.conf file, make sure to change 'sub1.example.com' to your actual <strong>sub</strong>.domain name, except for the last 2 lines:</p>
+<p>SSLCertificateFile /etc/letsencrypt/live/<span class="code">example.com</span>/fullchain.pem</p>
+<p>SSLCertificateKeyFile /etc/letsencrypt/live/<span class="code">example.com</span>/privkey.pem</p>
+<p>These must continue to point to the primary domain name.</p>
+</div>
+</div>
+<div class="preboxcontainer">
+<pre class="prebox">&lt;IfModule mod_ssl.c&gt;
+  &lt;VirtualHost _default_:443&gt; 
+    ServerAdmin webmaster@localhost
+    DocumentRoot /var/www/sub1.example.com
+    ErrorLog ${APACHE_LOG_DIR}/sub1.example.com-ssl-error.log
+    CustomLog ${APACHE_LOG_DIR}/sub1.example.com-ssl-access.log combined  
+    ServerAlias sub1.example.com<br />
+    SSLCertificateFile /etc/letsencrypt/live/<span class="command">example.com</span>/fullchain.pem
+    SSLCertificateKeyFile /etc/letsencrypt/live/<span class="command">example.com</span>/privkey.pem
+    Include /opt/certbot/certbot-apache/certbot_apache/options-ssl-apache.conf
+  &lt;/VirtualHost&gt;
+&lt;/IfModule&gt;
+</pre>
+</div>
+<p>Make sure you enable both of your subdomain's config files:</p>
+<p>Make sure to enable this new file and default-ssl</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo a2ensite sub1.example.com.conf</span>
+<span class="server">[user@server]$ </span><span class="command">sudo a2ensite sub1.example.com-le-ssl</span>
+Enabling site example.com-le-ssl</pre>
+</div>
+<p>Finally, reload Apache so it knows about the new configurations.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">sudo service apache2 reload</span></pre>
+</div>
