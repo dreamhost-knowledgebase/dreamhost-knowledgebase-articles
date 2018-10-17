@@ -1,10 +1,39 @@
 <h2>Before adding the certificate</h2>
-<p>Make sure your DNS points to DreamHost. This means that your Nameservers should be pointed to DreamHost, or your A records should be pointed to your domain's IP address (assuming your Nameservers are at a different company).</p>
+<p>Before you begin to add the certificate, make sure the DNS of your domain is already pointing to DreamHost. This means that either your Nameservers should be pointed to DreamHost, or your A records (www and non-www record) should be pointed to your domain's IP address (assuming your Nameservers are at a different company).</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216385467-Nameservers-overview">What are DreamHost's nameservers?</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215414867#A_record">How to add an A record</a></li>
 </ul>
-<p>This is because 'Let's Encrypt' adds a .well_known/ folder to your site to authenticate the certificate. If your site's DNS is not resolving to DreamHost, the certificate cannot create this folder and authenticate.</p>
+<p>This is because 'Let's Encrypt' adds a .well_known/ folder to your site to authenticate the certificate. If your site's DNS is not resolving to DreamHost, the certificate cannot create this folder and authenticate. View the following sections to check your DNS values:</p>
+<h3>Checking where your nameservers are pointed</h3>
+<p>View the following link to check where your nameservers are pointed:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216385467#checking-nameservers">Where are my nameservers pointed?</a></li>
+</ul>
+<p>If they are already pointed to DreamHost, you do not need to change anything.</p>
+<p>If they are NOT pointed to DreamHost, you'll need to either point them, or change your domain's two A records.</p>
+<h3>Updating your domain's A records</h3>
+<p>As explained above, if your nameservers are not pointed to DreamHost and you do not wish to change them, the other option is to update your domain's two A records.</p>
+<p>You'll need to update the www A record, and the non-www A record. For example:</p>
+<ul>
+<li>www.example.com</li>
+<li>example.com</li>
+</ul>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>If you're pointing a subdomain such as blog.example.com, you'll still need to create the www record. For example:</p>
+<ul>
+<li>www.blog.example.com</li>
+<li>blog.example.com</li>
+</ul>
+</div>
+</div>
+<p>These must be updated at the company where your nameservers are pointed. View the following article for instructions on how to find the correct IP address to point them to:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214694378-What-DNS-records-do-I-point-my-site-to-">What DNS records do I point my site to?</a></li>
+</ul>
+<h3>htaccess rules</h3>
 <p>Additionally, certain .htaccess rules such as IP blocking, rewrite rules, and password protection may cause the installation to fail. To play it safe, rename your .htaccess file (to something like .htaccess_OFF) in order to turn it off temporarily. Then, install the certificate. Once installed, you can rename the file back to .htaccess.</p>
 <p>If disabling your .htaccess breaks your site, then add the following rule which should allow the installation to process:</p>
 <div class="preboxcontainer">
