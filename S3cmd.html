@@ -2,7 +2,7 @@
 <p>The following instructions help you install and configure s3cmd to work with DreamObjects.</p>
 <div id="installing-s3cmd">
 <h2>Installing S3cmd</h2>
-<p>These instructions were performed with <strong>s3cmd v2.0.0</strong>. If you’d like to install a different version, you’ll need to modify the file names appropriately.</p>
+<p>These instructions were performed with <strong>s3cmd v2.0.2</strong>. If you’d like to install a different version, you’ll need to modify the file names appropriately.</p>
 <ol class="arabic">
 <li>
 <p class="first">Log in to your server via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH</a>.</p>
@@ -16,18 +16,18 @@
 <li>
 <p class="first">Download the <a class="reference external" href="https://github.com/s3tools/s3cmd/releases">latest release of s3cmd from GitHub</a>:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">curl -O -L https://github.com/s3tools/s3cmd/archive/v2.0.0.tar.gz</span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">curl -O -L https://github.com/s3tools/s3cmd/archive/v2.0.2.tar.gz</span></pre>
 </div>
 </li>
 <li>
 <p class="first">Untar the file:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">tar xzf v2.0.0.tar.gz</span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">tar xzf v2.0.2.tar.gz</span></pre>
 </div>
 </li>
-<li>You should now have a directory called <cite>s3cmd-2.0.0</cite>. Change into that directory:
+<li>You should now have a directory called <cite>s3cmd-2.0.2</cite>. Change into that directory:
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd s3cmd-2.0.0</span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd s3cmd-2.0.2</span></pre>
 </div>
 </li>
 <li>
@@ -95,56 +95,56 @@ use_https = True
 <pre class="prebox">website_endpoint = %(bucket)s.objects-website-us-east-1.dream.io
 verbosity = ERROR</pre>
 </div>
-<p><strong>Making a bucket</strong></p>
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd mb s3://s3cmd-justin</span>
-Bucket 's3://s3cmd-justin/' created</pre>
-</div>
-<p><strong>Listing all buckets</strong></p>
+<h3><strong>Listing all buckets</strong></h3>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd ls</span>
-2018-06-28 16:28  s3://s3cmd-justin</pre>
+2018-06-28 16:28  s3://my-bucket</pre>
 </div>
-<p><strong>Uploading a file into a bucket</strong></p>
+<h3><strong>Making a bucket</strong></h3>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd put testfile.txt s3://s3cmd-justin/</span>
-testfile.txt -&gt; s3://s3cmd-justin/testfile.txt  [1 of 1]
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd mb s3://my-bucket-name</span>
+Bucket 's3://my-new-bucket/' created</pre>
+</div>
+<h3><strong>Uploading a file into a bucket</strong></h3>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd put testfile.txt s3://my-bucket-name</span>
+testfile.txt -&gt; s3://my-bucket-name/testfile.txt  [1 of 1]
 127 of 127   100% in    0s  1522.87 B/s  done</pre>
 </div>
-<p><strong>Listing the contents of a bucket</strong></p>
+<h3><strong>Listing the contents of a bucket</strong></h3>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd ls s3://s3cmd-justin</span>
-2018-06-28 16:29       127   s3://s3cmd-justin/testfile.txt</pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd ls s3://my-bucket-name</span>
+2018-06-28 16:29       127   s3://my-bucket-name/testfile.txt</pre>
 </div>
-<p><strong>Downloading a file from a bucket</strong></p>
+<h3><strong>Downloading a file from a bucket</strong></h3>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd get s3://s3cmd-justin/testfile.txt</span>
-s3://s3cmd-justin/testfile.txt -&gt; ./testfile.txt  [1 of 1]
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd get s3://my-bucket-name/testfile.txt</span>
+s3://my-bucket-name/testfile.txt -&gt; ./testfile.txt  [1 of 1]
 127 of 127   100% in    0s     3.46 kB/s  done</pre>
 </div>
-<p><strong>Deleting a file in a bucket</strong></p>
+<h3><strong>Deleting a file in a bucket</strong></h3>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd del s3://s3cmd-justin/testfile.txt</span>
-File s3://s3cmd-justin/testfile.txt deleted</pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd del s3://my-bucket-name/testfile.txt</span>
+File s3://my-bucket-name/testfile.txt deleted</pre>
 </div>
-<p><strong>Listing the size of a bucket</strong></p>
+<h3><strong>Listing the size of a bucket</strong></h3>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd du -H s3://s3cmd-justin</span>
-40G      s3://s3cmd-justin</pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd du -H s3://my-bucket-name</span>
+40G      s3://my-bucket-name</pre>
 </div>
-<p><strong>Recursively making every object in a bucket public</strong></p>
+<h3><strong>Recursively making every object in a bucket public</strong></h3>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd setacl s3://3cmd-justin --acl-public --recursive</span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd setacl s3://my-bucket-name --acl-public --recursive</span></pre>
 </div>
-<p><strong>Recursively making every object in a bucket private</strong></p>
+<h3><strong>Recursively making every object in a bucket private</strong></h3>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd setacl s3://3cmd-justin --acl-private --recursive</span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd setacl s3://my-bucket-name --acl-private --recursive</span></pre>
 </div>
-<p><strong>Disabling Directory Listing in a bucket</strong></p>
+<h3><strong>Disabling Directory Listing in a bucket</strong></h3>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd setacl s3://3cmd-justin --acl-private</span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd setacl s3://my-bucket-name --acl-private</span></pre>
 </div>
-<p><strong>Working with multiple accounts</strong></p>
+<h3><strong>Working with multiple accounts</strong></h3>
 <p>It’s possible to use different configuration files, one for each account on DreamObjects. By default s3cmd puts its configuration file in ~/.s3cfg, but you can override a configuration file with the <cite>-c</cite> option and specify a different configuration file.</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd -c .s3cfg-another-identity ls</span></pre>
@@ -197,6 +197,23 @@ download: 's3://bucket-name/encrypted-file.txt' -&gt; './encrypted-file.txt'  [1
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">cat encrypted-file.txt</span>
 Testing a file</pre>
+</div>
+<h2>Signing an S3 URL to provide limited public access</h2>
+<p>You can manualy set an expiration date for a file to be accessed. To do this, you must first convert the date into a Unix Epoch timestamp.</p>
+<ol>
+<li>Decide on the date you wish to allow the URL to be signed/accessed until.</li>
+<li>Visit <a href="https://www.epochconverter.com/">Epoch Converter</a> to convert your date to an Epoch Timestamp. It will look like a string of numbers. For example: 1540232086</li>
+<li>Run the following command to sign the URL until this timestamp. (Make sure to change the bucket name and file name to your actual information.)
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd signurl s3://my_bucket/my_file.png 1540232086</span>
+http://my-bucket.objects-us-east-1.dream.io/my_file.png?AWSAccessKeyId=DHDPTCQ3WFGHPSS5FAXG&amp;Expires=1540232086&amp;Signature=9nf8f9kG%2FqDa76rmET4R%2FpbtaGM%3D</pre>
+</div>
+</li>
+<li>This outputs the signed URL. You can now share this URL so anyone can access that file until the date you have specified.</li>
+</ol>
+<p>You can also sign it for 1 week using this format:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd signurl s3://my_bucket/my_file.png $(echo "`date +%s` + 3600 * 24 * 7" | bc)</span></pre>
 </div>
 <div class="footer"> </div>
 <!--DreamObjects Button-->
