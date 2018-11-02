@@ -21,13 +21,13 @@
 <h2>Configuring PHP to send SMTP mail</h2>
 <p>The following example can be used to send SMTP mail using the PEAR Mail package.</p>
 <div class="alert alert-note">
-<div class="alert-icon"><img height="60" src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
 <p>You only need to update the fields which are in bold.</p>
 </div>
 </div>
 <h3>Finding your mail hostname</h3>
-<p>Make sure to use your <a href="https://help.dreamhost.com/hc/en-us/articles/214918038#Server_names">mail cluster name</a> for the mail hostname. For example, if you're mail is hosted on the 'sub4' cluster, you would use sub4.mail.dreamhost.com. The example below uses the 'sub0' cluster, so the hostname would be 'imap.dreamhost.com'.</p>
+<p>Make sure to use your <a href="https://help.dreamhost.com/hc/en-us/articles/214918038#Server_names">mail cluster name</a> for the mail hostname. This would either be imap.dreamhost.com or pop.dreamhost.com, depending on the connection type you prefer. The example below uses the hostname of 'imap.dreamhost.com'.</p>
 <p>View the following article for instructions on how to locate the correct hostname.</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/214918038#Server_names">Locate your mail servername</a></li>
@@ -53,7 +53,7 @@ $email_address = "<span class="command"><strong>reply-to@example.com</strong></s
 $headers = array ('From' =&gt; $email_from, 'To' =&gt; $to, 'Subject' =&gt; $email_subject, 'Reply-To' =&gt; $email_address);
 $smtp = Mail::factory('smtp', array ('host' =&gt; $host, 'port' =&gt; $port, 'auth' =&gt; true, 'username' =&gt; $username, 'password' =&gt; $password));
 $mail = $smtp-&gt;send($to, $headers, $email_body);
-<br/>
+<br />
 if (PEAR::isError($mail)) {
 echo("&lt;p&gt;" . $mail-&gt;getMessage() . "&lt;/p&gt;");
 } else {
@@ -63,7 +63,7 @@ echo("&lt;p&gt;Message successfully sent!&lt;/p&gt;");
 </pre>
 </div>
 <div class="alert alert-note">
-<div class="alert-icon"><img alt="" height="60" src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
 <p>If you’re using Google to host your email, you must change the $host line to the following:</p>
 <div class="preboxcontainer">
