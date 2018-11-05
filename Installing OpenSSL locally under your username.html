@@ -1,0 +1,105 @@
+<h2>Overview</h2>
+<p>OpenSSL is a toolkit for the Transport Layer Security (TLS) and Secure Sockets Layer (SSL) protocols. It is also a general-purpose cryptography library. It is used to secure connections on the server and within your software.</p>
+<p>This is already installed on all DreamHost servers. As of Nov 2018, DreamHost runs version <span class="code">OpenSSL 1.0.1f</span>.</p>
+<h2>Do I need to install my own version?</h2>
+<p>The version on the server works for the majority of all web applications. However, newer software may require a higher version. For example, Python 3.7.1 requires version 1.0.2 or above. In you wish to use software that requires a higher version, you must install the newer version of OpenSSL locally under your <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Enabling-Shell-access">Shell user</a>. </p>
+<h2>Installing OpenSSL</h2>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>This example installs version 1.1.1.</p>
+</div>
+</div>
+<ol>
+<li>Visit <a href="https://www.openssl.org/source/">https://www.openssl.org/source/</a> and locate the version you wish to download. Right click it and choose 'Copy link address'.</li>
+<li>Run 'wget' to download the file.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wget https://www.openssl.org/source/openssl-1.1.1.tar.gz</span></pre>
+</div>
+</li>
+<li>You should also confirm the file's integrity by downloading the SHA256 file on the same page next to it.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">https://www.openssl.org/source/openssl-1.1.1.tar.gz.sha256</span></pre>
+</div>
+</li>
+<li>Once both files are downloaded, view the checksum to confirm the version you downloaded is safe to use.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">sha256sum openssl-1.1.1.tar.gz</span>
+2836875a0f89c03d0fdf483941512613a50cfb421d6fd94b9f41d7279d586a3d  openssl-1.1.1.tar.gz
+<span class="server">[server]$ </span><span class="command">cat openssl-1.1.1.tar.gz.sha256</span>
+2836875a0f89c03d0fdf483941512613a50cfb421d6fd94b9f41d7279d586a3d</pre>
+</div>
+If they match, proceed with the next step.</li>
+<li>Decompress this file.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">tar zxvf https://www.openssl.org/source/openssl-1.0.2p.tar.gz</span></pre>
+</div>
+</li>
+<li>Change into the new openssl directory
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd openssl-1.1.1</span></pre>
+</div>
+</li>
+<li>Configure the file:
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-west-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>This will configure it to be installed in a directory named 'openssl' under your user. Make sure to change 'username' to your <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Enabling-Shell-access">Shell user</a>.</p>
+<p>You can install it anywhere you like, just make sure you <strong>DO NOT</strong> install it into a directory named 'openssl-1.1.1'. This directory was already created when you decompressed the .tar.gz file. If you configure it to install there, it will fail (since it already exists).</p>
+<p>View the following OpenSSL page for information on configuration options:</p>
+<ul>
+<li><a href="https://wiki.openssl.org/index.php/Compilation_and_Installation#Configuration">Compilation and Installation</a></li>
+</ul>
+</div>
+</div>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">./config --prefix=/home/username/openssl --openssldir=/home/username/openssl no-ssl2</span></pre>
+</div>
+</li>
+<li>Run make. Once that is finished, run make test:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">make</span>
+<span class="server">[server]$ </span><span class="command">make test</span></pre>
+</div>
+At the end you should see 'All tests successful'.</li>
+<li>Run make install
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">make install</span></pre>
+</div>
+</li>
+<li>Change back to your home directory.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~</span></pre>
+</div>
+</li>
+<li>Add the following lines to your .bash_profile. View '<a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Creating and editing a file via SSH</a>' for instructions.
+<div class="preboxcontainer">
+<pre class="prebox">export PATH=$HOME/openssl/bin:$PATH
+export LD_LIBRARY_PATH=$HOME/openssl/lib</pre>
+</div>
+</li>
+<li>Source the .bash_profile
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">. ~/.bash_profile</span></pre>
+</div>
+</li>
+<li>Test to confirm it's installed in the correct location and that the version is 1.1.1.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">which openssl</span>
+/home/username/openssl/bin/openssl
+<span class="server">[server]$ </span><span class="command">openssl version</span>
+OpenSSL 1.1.1  11 Sep 2018</pre>
+</div>
+</li>
+</ol>
+<p>OpenSSL has been installed locally under your username.</p>
+<h2>See also</h2>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Enabling-Shell-access">Enabling Shell access</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215464538-How-do-I-configure-PuTTY-">How do I configure PuTTY?</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216557548-Available-shells-at-DreamHost">Available shells at DreamHost</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215360828-SSH-client-software">SSH client software</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216041277-Troubleshooting-SSH">Troubleshooting SSH</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214750888-UNIX-commands-overview">UNIX commands</a></li>
+</ul>
