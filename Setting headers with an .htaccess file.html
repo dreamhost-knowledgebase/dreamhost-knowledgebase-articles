@@ -79,6 +79,25 @@ Content-Type: text/html
 <li><a href="https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security">https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security</a></li>
 <li><a href="https://www.owasp.org/index.php/HTTP_Strict_Transport_Security_Cheat_Sheet">https://www.owasp.org/index.php/HTTP_Strict_Transport_Security_Cheat_Sheet</a></li>
 </ul>
+<p>Adding the following to your .htaccess file will enable CORS.</p>
+<div class="preboxcontainer">
+<pre class="prebox">Header add Access-Control-Allow-Origin: "*"
+Header add Access-Control-Allow-Methods: "GET,POST,OPTIONS,DELETE,PUT"
+Header add Access-Control-Allow-Headers: "Content-Type"
+</pre>
+</div>
+<p>You can then test if it's active on a site such as this:</p>
+<ul>
+<li><a href="https://tools.geekflare.com/tools/cors-test">tools.geekflare.com/tools/cors-test</a></li>
+</ul>
+<p>You can also use curl to test. Just substitute example.com with your website.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">curl -H "Origin: http://example.com" \
+  -H "Access-Control-Request-Method: POST" \
+  -H "Access-Control-Request-Headers: X-Requested-With" \
+  -X OPTIONS --verbose \
+  https://www.googleapis.com/discovery/v1/apis?fields=</span></pre>
+</div>
 <h2><span id="See_also">See also</span></h2>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216456227--htaccess-overview">.htaccess overview</a></li>
