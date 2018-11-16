@@ -13,49 +13,51 @@
 <div class="preboxcontainer">
 <pre class="prebox">SUBCOMMANDS
 
-  cache               Manage the object cache.
-  cap                 Manage user capabilities.
-  checksum            Verify WordPress core checksums.
-  cli                 Manage WP-CLI itself.
-  comment             Manage comments.
-  config              Manage the wp-config.php file
-  core                Download, install, update and manage a WordPress install.
-  cron                Manage WP-Cron events and schedules.
-  db                  Perform basic database operations using credentials stored in wp-config.php
+  cache               Adds, removes, fetches, and flushes the WP Object Cache object.
+  cap                 Adds, removes, and lists capabilities of a user role.
+  cli                 Review current WP-CLI info, check for updates, or see defined aliases.
+  comment             Creates, updates, deletes, and moderates comments.
+  config              Generates and reads the wp-config.php file.
+  core                Downloads, installs, updates, and manages a WordPress installation.
+  cron                Tests, runs, and deletes WP-Cron events; manages WP-Cron schedules.
+  db                  Performs basic database operations using credentials stored in wp-config.php.
+  dh-find-check       Combines finding and checking whether the installation is still hosted.
   doctor              Diagnose what ails WordPress.
-  eval                Execute arbitrary PHP code.
-  eval-file           Load and execute a PHP file.
-  export              Export WordPress content to a WXR file.
-  find                Find WordPress installs on the filesystem.
+  embed               Inspects oEmbed providers, clears embed cache, and more.
+  eval                Executes arbitrary PHP code.
+  eval-file           Loads and executes a PHP file.
+  export              Exports WordPress content to a WXR file.
+  find                Find WordPress installations on the filesystem.
   help                Get help on WP-CLI, or on a specific command.
-  host-check          Check that the WordPress install is still hosted at its internal domain.
-  import              Import content from a WXR file.
-  language
-  media               Manage attachments.
-  menu                List, create, assign, and delete menus.
-  network
-  option              Manage options.
-  package             Manage WP-CLI packages.
-  plugin              Manage plugins.
-  post                Manage posts.
-  post-type           Manage post types.
+  host-check          Checks hosting status for WordPress installation.
+  import              Imports content from a given WXR file.
+  language            Installs, activates, and manages language packs.
+  media               Imports files as attachments, regenerates thumbnails, or lists registered image sizes.
+  menu                Lists, creates, assigns, and deletes the active theme's navigation menus.
+  network             Perform network-wide operations.
+  option              Retrieves and sets site options, including plugin and WordPress settings.
+  package             Lists, installs, and removes WP-CLI packages.
+  php-compat          Scan WordPress, plugins and themes for PHP version compatibility.
+  plugin              Manages plugins, including installs, activations, and updates.
+  post                Manages posts, content, and meta.
+  post-type           Retrieves details on the site's registered post types.
   profile
-  rewrite             Manage rewrite rules.
-  role                Manage user roles.
-  scaffold            Generate code for post types, taxonomies, plugins, child themes, etc.
-  search-replace      Search/replace strings in the database.
-  server              Launch PHP's built-in web server for this specific WordPress installation.
-  shell               Interactive PHP console.
-  sidebar             Manage sidebars.
-  site                Perform site-wide operations.
-  super-admin         Manage super admins on WordPress multisite.
-  taxonomy            Manage taxonomies.
-  term                Manage terms.
-  theme               Manage themes.
-  transient           Manage transients.
-  user                Manage users.
-  widget              Manage sidebar widgets.
-</pre>
+  reinstall           Reinstalls WordPress core, themes, and plugins.
+  rewrite             Lists or flushes the site's rewrite rules, updates the permalink structure.
+  role                Manages user roles, including creating new roles and resetting to defaults.
+  scaffold            Generates code for post types, taxonomies, plugins, child themes, etc.
+  search-replace      Searches/replaces strings in the database.
+  server              Launches PHP's built-in web server for a specific WordPress installation.
+  shell               Opens an interactive PHP console for running and testing PHP code.
+  sidebar             Lists registered sidebars.
+  site                Creates, deletes, empties, moderates, and lists one or more sites on a multisite installation.
+  super-admin         Lists, adds, or removes super admin users on a multisite installation.
+  taxonomy            Retrieves information about registered taxonomies.
+  term                Manages taxonomy terms and term meta, with create, delete, and list commands.
+  theme               Manages themes, including installs, activations, and updates.
+  transient           Adds, gets, and deletes entries in the WordPress Transient Cache.
+  user                Manages users, along with their roles, capabilities, and meta.
+  widget              Manages widgets, including adding and moving them within sidebars.</pre>
 </div>
 <h2><span id="Finding_more_information_on_a_command">Finding more information on a command</span></h2>
 <p>To get more information on a specific command, run the --help option. For example:</p>
@@ -111,6 +113,18 @@ Plugin installed successfully.
 <h2>Plugins</h2>
 <dl>
 <dd>
+<h3>Installing a plugin</h3>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp plugin install PLUGIN_NAME</span></pre>
+</div>
+<h3>Activating a plugin</h3>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp plugin activate PLUGIN_NAME</span></pre>
+</div>
+</dd>
+</dl>
+<dl>
+<dd>
 <h3><span id="Deactivating_a_plugin">Deactivating a plugin</span></h3>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">wp plugin deactivate PLUGIN_NAME</span></pre>
@@ -128,6 +142,14 @@ Plugin installed successfully.
 </dd>
 </dl>
 <h2>Themes</h2>
+<dl>
+<dd>
+<h3>Installing a theme</h3>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp theme install THEME_NAME</span></pre>
+</div>
+</dd>
+</dl>
 <dl>
 <dd>
 <h3><span id="Deactivating_a_theme">Deactivating a theme</span></h3>
@@ -176,16 +198,13 @@ Plugin installed successfully.
 <h2><span id="Flushing_your_cache">Flushing your cache</span></h2>
 <dl>
 <dd>
-<p>Depending on which plugin you’re using, run one of these to flush your cache:</p>
+<p>Run this to flush your cache:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">wp cache flush</span></pre>
 </div>
 <dl>
-<dd><em><strong>-or-</strong></em></dd>
+<dd></dd>
 </dl>
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp super-cache flush</span></pre>
-</div>
 </dd>
 </dl>
 <h2>Updating</h2>
