@@ -5,7 +5,7 @@
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215912848-How-to-launch-an-instance-using-the-DreamCompute-dashboard">Launched an instance</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/115003441752-Adding-a-website-to-DreamCompute">Added your primary website to DreamCompute</a> (i.e., example.com)
 <div class="alert alert-important">
-<div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-icon"><img height="60" src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60"/></div>
 <div class="alert-content">
 <p>This article assumes you've created your site in the /var/www directory and not your /home/username directory.</p>
 </div>
@@ -31,7 +31,7 @@
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">ls -1 /etc/apache2/mods-enabled | grep rewrite</span>
 rewrite.load
 <span class="server">[server]$ </span><span class="command">ls -1 /etc/apache2/mods-enabled | grep ssl</span>
-ssl.conf<br />ssl.load</pre>
+ssl.conf<br/>ssl.load</pre>
 </div>
 <h2>Creating the certificate</h2>
 <p>Run the following commands in order to create your Wildcard certificate.</p>
@@ -39,7 +39,7 @@ ssl.conf<br />ssl.load</pre>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216201547-Connect-to-your-instance-with-SSH-keys-overview">Log into your instance</a>.</li>
 <li>Run the commands below to switch to your root user and install a Let's Encrypt certificate.
 <div class="alert alert-important">
-<div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-icon"><img height="60" src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60"/></div>
 <div class="alert-content">
 <p>Make sure to change 'example.com' to your actual domain name in the command below.</p>
 </div>
@@ -80,7 +80,7 @@ Before continuing, verify the record is deployed.
 -------------------------------------------------------------------------------</pre>
 </div>
 <div class="alert alert-important">
-<div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-icon"><img height="60" src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60"/></div>
 <div class="alert-content">
 <p>DO NOT click the 'Enter' key yet. You must first set up this record in your DreamHost panel.</p>
 <p>The most simple way to do this is to click <span class="code">CTRL + C</span> on your keyboard to abort the current terminal process. Next, copy the long TXT record from your terminal and paste it into your DreamHost panel.</p>
@@ -91,7 +91,7 @@ Before continuing, verify the record is deployed.
 <li>Click the 'DNS' link under your domain.</li>
 <li>Using the information above, create a new TXT record as follows:
 <dl>
-<dd><img src="https://objects-us-east-1.dream.io/kbimages/images/2018-04_dho_add_wildcard_cert_01.png" alt="" /></dd>
+<dd><img alt="" src="https://objects-us-east-1.dream.io/kbimages/images/2018-04_dho_add_wildcard_cert_01.png"/></dd>
 </dl>
 Enter the following:
 <ul>
@@ -181,7 +181,7 @@ IMPORTANT NOTES:
     RewriteCond %{SERVER_NAME} =example.com [OR]
     RewriteCond %{SERVER_NAME} =www.example.com
     RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [END,NE,R=permanent]</span>
-<br />&lt;/VirtualHost&gt;</pre>
+<br/>&lt;/VirtualHost&gt;</pre>
 </div>
 <p>These new lines will redirect the http version of your site to https.</p>
 <p>Next, create a new .conf file for your Let's Encrypt certificate. The name will be <strong>example.com-le-ssl.conf</strong>. Make sure to change 'example.com' to your actual domain name.</p>
@@ -190,7 +190,7 @@ IMPORTANT NOTES:
 </div>
 <p>In this file add the following code.</p>
 <div class="alert alert-important">
-<div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-icon"><img height="60" src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60"/></div>
 <div class="alert-content">
 <p>Make sure to change 'example.com' to your actual domain name.</p>
 </div>
@@ -229,7 +229,7 @@ Enabling site example.com-le-ssl</pre>
 <h2>Configure your subdomains to use this certificate</h2>
 <p>Make an additional files for any subdomains you wish to use this same certificate for. For example, if you want the subdomain sub1.example.com to also be protected by this Wildcard certificate, add files named <strong>sub1.example.com.conf</strong> and <strong>sub1.example.com-le-ssl.conf</strong> to the /etc/apache2/sites-available directory as shown above.</p>
 <div class="alert alert-important">
-<div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-icon"><img height="60" src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60"/></div>
 <div class="alert-content">
 <p>When editing the sub1.example.com-le-ssl.conf file, make sure to change 'sub1.example.com' to your actual <strong>sub</strong>.domain name, except for the last 2 lines:</p>
 <p>SSLCertificateFile /etc/letsencrypt/live/<span class="code">example.com</span>/fullchain.pem</p>
@@ -244,7 +244,7 @@ Enabling site example.com-le-ssl</pre>
     DocumentRoot /var/www/sub1.example.com
     ErrorLog ${APACHE_LOG_DIR}/sub1.example.com-ssl-error.log
     CustomLog ${APACHE_LOG_DIR}/sub1.example.com-ssl-access.log combined  
-    ServerAlias sub1.example.com<br />
+    ServerAlias sub1.example.com<br/>
     SSLCertificateFile /etc/letsencrypt/live/<span class="command">example.com</span>/fullchain.pem
     SSLCertificateKeyFile /etc/letsencrypt/live/<span class="command">example.com</span>/privkey.pem
     Include /opt/certbot/certbot-apache/certbot_apache/options-ssl-apache.conf
