@@ -4,7 +4,7 @@
 <li><a href="http://magento.com/">http://magento.com/</a></li>
 </ul>
 <div class="alert alert-important">
-<div class="alert-icon"><img alt="" height="60" src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
 <p>Magento uses a large amount of server resources. Because of this, you can only install and run Magento on a <a href="/hc/en-us/articles/215280058-Virtual-Private-Server-overview-VPS-">VPS</a> or <a href="/hc/en-us/articles/215279658-Dedicated-server-overview">Dedicated</a> server. Running it on Shared hosting will cause the site to hit <a href="https://help.dreamhost.com/hc/en-us/articles/216540488-Why-were-my-processes-killed-on-my-Shared-server-">memory limits</a> which can cause slowness and downtime.</p>
 <p>For optimal performance (especially for larger stores), a Dedicated server or <a href="https://help.dreamhost.com/hc/en-us/categories/202115418-DreamCompute-Cloud-Servers">DreamCompute</a> is recommended due to the presence of a local MySQL instance.</p>
@@ -21,7 +21,7 @@
 <dd></dd>
 </dl>
 <div class="alert alert-note">
-<div class="alert-icon"><img alt="" height="60" src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
 <p>Magento provides the option to download the installation file in a .zip, .tar, or .tar.bz2 format. .tar.bz2 is recommended since it's the smallest file to download, but any format will work.</p>
 </div>
@@ -34,7 +34,7 @@
 <li><a href="/hc/en-us/articles/221691727-Creating-a-MySQL-database">Creating a database</a></li>
 </ul>
 </li>
-<li>Set your domain to use PHP 7.0 or higher. View the following article for further information:
+<li>Set your domain to use PHP 7.1 or higher. View the following article for further information:
 <ul>
 <li><a href="/hc/en-us/articles/214895317-How-do-I-change-the-PHP-version-of-my-site-">Changing the PHP version</a></li>
 </ul>
@@ -49,6 +49,15 @@
 </ol>
 <h2>Editing your .htaccess file</h2>
 <p>Your .htaccess file has several lines in it mentioning <strong>IfVersion</strong>. This requires 'mod_version' to be installed on the server. Since DreamHost servers do not have this module installed, you must manually remove those lines from the .htaccess file.</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>You can also download the edited .htaccess file below. NOTE: This is the Magento .htaccess file for version 2.3.</p>
+<ul>
+<li><a href="https://objects-us-east-1.dream.io/kbfiles/.htaccess">Magento 2.3 .htaccess file</a></li>
+</ul>
+</div>
+</div>
 <ol>
 <li>Open your .htaccess file via <a href="https://help.dreamhost.com/hc/en-us/articles/115000098272-Creating-and-editing-a-file-via-FTP">FTP</a> or <a href="https://help.dreamhost.com/hc/en-us/articles/214200668-How-do-I-create-a-phprc-file-via-SSH-">SSH</a>.</li>
 <li>Here is an example of a block you'll see.
@@ -80,6 +89,12 @@
 <li><a href="http://devdocs.magento.com/guides/m1x/install/installing_install.html#install-magento">Magento devdocs – Installing Magento CE or EE</a></li>
 </ul>
 <h2><span id="Troubleshooting">Troubleshooting</span></h2>
+<h3>The site does not load after editing the .htaccess file</h3>
+<p>It's possible that after editing your .htaccess file, visiting your site displays a 500 error. Check your site's <a href="https://help.dreamhost.com/hc/en-us/articles/216512197-Viewing-your-access-and-error-logs-via-SFTP">error.log file</a> and you may see the following:</p>
+<div class="preboxcontainer">
+<pre class="prebox">mod_fcgid: stderr: PHP Parse error: syntax error, unexpected '?', expecting variable (T_VARIABLE) in /home/username/example.com/vendor/magento/framework/Filesystem/Directory/Write.php on line 35</pre>
+</div>
+<p>This is due to the version of Magento not being compatible with the version of PHP you're using. If you're using Magento version 2.3, make sure you're only using PHP 7.1 or 7.2. That will resolve this error message.</p>
 <h3><span id="I_can.27t_find_the_installation_wizard">I can't find the installation wizard</span></h3>
 <p>If you’re unable to load the Magento installation wizard, you may have the installation file in another location other than the domain’s root web directory. Check to make sure the installation file is not in a subdirectory, and also make sure all files, folders, and subfolders have the correct permission.</p>
 <h3><span id="Links_don.27t_redirect_correctly">Links don't redirect correctly</span></h3>
@@ -106,7 +121,7 @@ RewriteRule . /index.php [L]
 </div>
 It will look like this:
 <dl>
-<dd><img class="img-border" src="https://objects-us-east-1.dream.io/kbimages/images/2018-08_magento_phpmyadmin_command.png"/></dd>
+<dd><img class="img-border" src="https://objects-us-east-1.dream.io/kbimages/images/2018-08_magento_phpmyadmin_command.png" /></dd>
 </dl>
 </li>
 <li>Click the <strong>Go</strong> button to run it.</li>
