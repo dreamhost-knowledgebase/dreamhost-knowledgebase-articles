@@ -1,12 +1,3 @@
-<div class="alert alert-important">
-<div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
-<div class="alert-content">
-<p>This article uses the new DreamObjects cluster of 'objects-us-east-1.dream.io'. If you have an older DreamObjects account and have not migrated your data yet, your hostname may need to point to 'objects-us-west-1.dream.io' instead. Please review the following migration article for further details.</p>
-<ul>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/360002135871#what-cluster-is-my-data-on">What cluster is my DreamObjects data currently on?</a></li>
-</ul>
-</div>
-</div>
 <p><a class="reference external" href="https://rclone.org">Rclone</a> is an rsync-like tool for Windows, Mac OS, Linux, and other operating systems designed for cloud storage such as DreamObjects.</p>
 <p>It features:</p>
 <ul class="simple">
@@ -28,10 +19,11 @@
 <li><a href="https://rclone.org/downloads/">rclone.org Downloads</a></li>
 </ul>
 </li>
-<li>Once downloaded, navigate to the directory the file was downloaded to. (NOTE: In Windows you can navigate to the /Downloads directory and extract the rclone files. You then need to open your command prompt and navigate to the directory the files were extracted to.</li>
+<li>Once downloaded, navigate to the directory the file was downloaded to. (NOTE: In Windows you can navigate to the /Downloads directory and extract the rclone files.) Copy the directory in your Explorer bar.</li>
+<li>You then need to open your command prompt and navigate to the directory the files were extracted to. </li>
 <li>In your terminal or command prompt, run the following to begin configuring rclone using the interactive configuration tool.
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">rclone config</span>
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">rclone config</span>
 No remotes found - make a new one
 n) New remote
 s) Set configuration password
@@ -49,55 +41,92 @@ n/s/q&gt; <span class="command">n</span></pre>
 <p>Pick a name you want to assign to this connection. This example uses the name 'dreamobjects'.</p>
 <div class="preboxcontainer">
 <pre class="prebox">Type of storage to configure.
+Enter a string value. Press Enter for the default ("").
 Choose a number from below, or type in your own value
- 1 / Amazon Drive
+ 1 / A stackable unification remote, which can appear to merge the contents of several remotes
+   \ "union"
+ 2 / Alias for a existing remote
+   \ "alias"
+ 3 / Amazon Drive
    \ "amazon cloud drive"
- 2 / Amazon S3 (also Dreamhost, Ceph, Minio)
+ 4 / Amazon S3 Compliant Storage Providers (AWS, Ceph, Dreamhost, IBM COS, Minio)
    \ "s3"
- 3 / Backblaze B2
+ 5 / Backblaze B2
    \ "b2"
- 4 / Box
+ 6 / Box
    \ "box"
- 5 / Cache a remote
+ 7 / Cache a remote
    \ "cache"
- 6 / Dropbox
+ 8 / Dropbox
    \ "dropbox"
- 7 / Encrypt/Decrypt a remote
+ 9 / Encrypt/Decrypt a remote
    \ "crypt"
- 8 / FTP Connection
+10 / FTP Connection
    \ "ftp"
- 9 / Google Cloud Storage (this is not Google Drive)
+11 / Google Cloud Storage (this is not Google Drive)
    \ "google cloud storage"
-10 / Google Drive
+12 / Google Drive
    \ "drive"
-11 / Hubic
+13 / Hubic
    \ "hubic"
-12 / Local Disk
+14 / JottaCloud
+   \ "jottacloud"
+15 / Local Disk
    \ "local"
-13 / Microsoft Azure Blob Storage
+16 / Mega
+   \ "mega"
+17 / Microsoft Azure Blob Storage
    \ "azureblob"
-14 / Microsoft OneDrive
+18 / Microsoft OneDrive
    \ "onedrive"
-15 / Openstack Swift (Rackspace Cloud Files, Memset Memstore, OVH)
+19 / OpenDrive
+   \ "opendrive"
+20 / Openstack Swift (Rackspace Cloud Files, Memset Memstore, OVH)
    \ "swift"
-16 / Pcloud
+21 / Pcloud
    \ "pcloud"
-17 / QingCloud Object Storage
+22 / QingCloud Object Storage
    \ "qingstor"
-18 / SSH/SFTP Connection
+23 / SSH/SFTP Connection
    \ "sftp"
-19 / Webdav
+24 / Webdav
    \ "webdav"
-20 / Yandex Disk
+25 / Yandex Disk
    \ "yandex"
-21 / http Connection
+26 / http Connection
    \ "http"
-Storage&gt; <span class="command">2</span></pre>
+Storage&gt; <span class="command">4</span></pre>
 </div>
 </li>
-<li>Next configure the type of storage as <cite>Amazon S3 (</cite>option <cite>2).</cite> 
+<li>Next configure the type of storage as <cite>Amazon S3 (</cite>option <cite>4).</cite> 
 <div class="preboxcontainer">
-<pre class="prebox">Get AWS credentials from runtime (environment variables or EC2/ECS meta data if no env vars). Only applies if access_key_id and secret_access_key is blank.
+<pre class="prebox">Choose your S3 provider.
+Enter a string value. Press Enter for the default ("").
+Choose a number from below, or type in your own value
+ 1 / Amazon Web Services (AWS) S3
+   \ "AWS"
+ 2 / Ceph Object Storage
+   \ "Ceph"
+ 3 / Digital Ocean Spaces
+   \ "DigitalOcean"
+ 4 / Dreamhost DreamObjects
+   \ "Dreamhost"
+ 5 / IBM COS S3
+   \ "IBMCOS"
+ 6 / Minio Object Storage
+   \ "Minio"
+ 7 / Wasabi Object Storage
+   \ "Wasabi"
+ 8 / Any other S3 compatible provider
+   \ "Other"
+provider&gt; <span class="command">4</span></pre>
+</div>
+</li>
+<li>Choose #4 for DreamHost.
+<div class="preboxcontainer">
+<pre class="prebox">Get AWS credentials from runtime (environment variables or EC2/ECS meta data if no env vars).
+Only applies if access_key_id and secret_access_key is blank.
+Enter a boolean value (true or false). Press Enter for the default ("false").
 Choose a number from below, or type in your own value
  1 / Enter AWS credentials in the next step
    \ "false"
@@ -108,118 +137,34 @@ env_auth&gt; <span class="command">1</span></pre>
 </li>
 <li>Select option 1.
 <div class="preboxcontainer">
-<pre class="prebox">AWS Access Key ID - leave blank for anonymous access or runtime credentials.
-access_key_id&gt; your_access_key
-AWS Secret Access Key (password) - leave blank for anonymous access or runtime credentials.
-secret_access_key&gt; your_secret_key</pre>
+<pre class="prebox">AWS Access Key ID.<br />Leave blank for anonymous access or runtime credentials.<br />Enter a string value. Press Enter for the default ("").<br />access_key_id&gt; <span class="command">YOUR_ACCESS_KEY</span><br />AWS Secret Access Key (password)<br />Leave blank for anonymous access or runtime credentials.<br />Enter a string value. Press Enter for the default ("").<br />secret_access_key&gt; <span class="command">YOUR_SECRET_KEY</span></pre>
 </div>
 </li>
 <li>
 <p>Replace your_access_key and your_secret_key with your actual Access Key and its corresponding Secret Key. These can be located on the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=cloud.objects&amp;" target="_blank" rel="noopener">DreamObjects</a> page.</p>
 <div class="preboxcontainer">
-<pre class="prebox">Region to connect to.
-Choose a number from below, or type in your own value
-   / The default endpoint - a good choice if you are unsure.
- 1 | US Region, Northern Virginia or Pacific Northwest.
-   | Leave location constraint empty.
-   \ "us-east-1"
-  / US East (Ohio) Region
- 2 | Needs location constraint us-east-2.
-   \ "us-east-2"
-   / US West (Oregon) Region
- 3 | Needs location constraint us-west-2.
-   \ "us-west-2"
-   / US West (Northern California) Region
- 4 | Needs location constraint us-east-1.
-   \ "us-east-1"
-   / Canada (Central) Region
- 5 | Needs location constraint ca-central-1.
-   \ "ca-central-1"
-   / EU (Ireland) Region
- 6 | Needs location constraint EU or eu-east-1.
-   \ "eu-east-1"
-   / EU (London) Region
- 7 | Needs location constraint eu-west-2.
-   \ "eu-west-2"
-   / EU (Frankfurt) Region
- 8 | Needs location constraint eu-central-1.
-   \ "eu-central-1"
-   / Asia Pacific (Singapore) Region
- 9 | Needs location constraint ap-southeast-1.
-   \ "ap-southeast-1"
-   / Asia Pacific (Sydney) Region
-10 | Needs location constraint ap-southeast-2.
-   \ "ap-southeast-2"
-   / Asia Pacific (Tokyo) Region
-11 | Needs location constraint ap-northeast-1.
-   \ "ap-northeast-1"
-   / Asia Pacific (Seoul)
-12 | Needs location constraint ap-northeast-2.
-   \ "ap-northeast-2"
-   / Asia Pacific (Mumbai)
-13 | Needs location constraint ap-south-1.
-   \ "ap-south-1"
-   / South America (Sao Paulo) Region
-14 | Needs location constraint sa-east-1.
-   \ "sa-east-1"
-   / If using an S3 clone that only understands v2 signatures
-15 | eg Ceph/Dreamhost
-   | set this and make sure you set the endpoint.
-   \ "other-v2-signature"
-   / If using an S3 clone that understands v4 signatures set this
-16 | and make sure you set the endpoint.
-   \ "other-v4-signature"
-region&gt;</pre>
+<pre class="prebox">Region to connect to.<br />Leave blank if you are using an S3 clone and you don't have a region.<br />Enter a string value. Press Enter for the default ("").<br />Choose a number from below, or type in your own value<br /> 1 / Use this if unsure. Will use v4 signatures and an empty region.<br /> \ ""<br /> 2 / Use this only if v4 signatures don't work, eg pre Jewel/v10 CEPH.<br /> \ "other-v2-signature"<br />region&gt;</pre>
 </div>
 </li>
-<li>
-<p>Leave this option blank and press "[Enter]" to continue.</p>
+<li>Click the "[Enter]" key to continue.
 <div class="preboxcontainer">
-<pre class="prebox">Endpoint for S3 API.
-Leave blank if using AWS to use the default endpoint for the region.
-Specify if using an S3 clone such as Ceph.
-endpoint&gt; <span class="command">objects-us-east-1.dream.io</span></pre>
+<pre class="prebox">Endpoint for S3 API.<br />Required when using an S3 clone.<br />Enter a string value. Press Enter for the default ("").<br />Choose a number from below, or type in your own value<br /> 1 / Dream Objects endpoint<br /> \ "objects-us-west-1.dream.io"<br />endpoint&gt; <span class="command">objects-us-east-1.dream.io</span></pre>
 </div>
 </li>
 <li>Enter DreamObject's hostname as the endpoint for the S3 API.<br />
 <div class="preboxcontainer">
-<pre class="prebox">Location constraint - must be set to match the Region. Used when creating buckets only.
-Choose a number from below, or type in your own value
- 1 / Empty for US Region, Northern Virginia or Pacific Northwest.
-   \ ""
- 2 / US East (Ohio) Region.
-   \ "us-east-2"
- 3 / US West (Oregon) Region.
-   \ "us-west-2"
- 4 / US West (Northern California) Region.
-   \ "us-east-1"
- 5 / Canada (Central) Region.
-   \ "ca-central-1"
- 6 / EU (Ireland) Region.
-   \ "eu-east-1"
- 7 / EU (London) Region.
-   \ "eu-west-2"
- 8 / EU Region.
-   \ "EU"
- 9 / Asia Pacific (Singapore) Region.
-   \ "ap-southeast-1"
-10 / Asia Pacific (Sydney) Region.
-   \ "ap-southeast-2"
-11 / Asia Pacific (Tokyo) Region.
-   \ "ap-northeast-1"
-12 / Asia Pacific (Seoul)
-   \ "ap-northeast-2"
-13 / Asia Pacific (Mumbai)
-   \ "ap-south-1"
-14 / South America (Sao Paulo) Region.
-   \ "sa-east-1"
-location_constraint&gt; </pre>
+<pre class="prebox">Location constraint - must be set to match the Region.<br />Leave blank if not sure. Used when creating buckets only.<br />Enter a string value. Press Enter for the default ("").<br />location_constraint&gt;</pre>
 </div>
 </li>
 <li>As with the Region, leave this option blank and press "[Enter]" to continue.<br />
 <div class="preboxcontainer">
-<pre class="prebox">Canned ACL used when creating buckets and/or storing objects in S3.
-For more info visit http://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html#canned-acl
+<pre class="prebox">Canned ACL used when creating buckets and storing or copying objects.
+
+For more info visit https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html#canned-acl
+
+Note that this ACL is applied when server side copying objects as S3
+doesn't copy the ACL from the source but rather writes a fresh one.
+Enter a string value. Press Enter for the default ("").
 Choose a number from below, or type in your own value
  1 / Owner gets FULL_CONTROL. No one else has access rights (default).
    \ "private"
@@ -239,60 +184,17 @@ Choose a number from below, or type in your own value
 acl&gt; <span class="command">private</span></pre>
 </div>
 </li>
-<li>Set the canned ACL based on how you want to use rclone. This example uses "private".<br />
-<div class="alert alert-important">
-<div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
-<div class="alert-content">For more information about DreamObjects S3-compatible APIs, read DreamHost's article here:
-<ul>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/217590537-How-To-Use-DreamObjects-S3-compatible-API">How To Use DreamObjects S3-compatible API</a></li>
-</ul>
-</div>
-</div>
+<li>Set the canned ACL based on how you want to use rclone. This example uses "private".
 <div class="preboxcontainer">
-<pre class="prebox">The server-side encryption algorithm used when storing this object in S3.
-Choose a number from below, or type in your own value
- 1 / None
-   \ ""
- 2 / AES256
-   \ "AES256"
-server_side_encryption&gt; <span class="command">1</span></pre>
+<pre class="prebox">Edit advanced config? (y/n)
+y) Yes
+n) No
+y/n&gt; <span class="command">n</span></pre>
 </div>
 </li>
-<li>DreamObjects (and more specifically Ceph) currently does not support server-side encryption, so pick 1.<br />
+<li>Choose if you want to edit the advanced config. This example chooses not to.
 <div class="preboxcontainer">
-<pre class="prebox">The storage class to use when storing objects in S3.
-Choose a number from below, or type in your own value
- 1 / Default
-   \ ""
- 2 / Standard storage class
-   \ "STANDARD"
- 3 / Reduced redundancy storage class
-   \ "REDUCED_REDUNDANCY"
- 4 / Standard Infrequent Access storage class
-   \ "STANDARD_IA"
-storage_class&gt;
-</pre>
-</div>
-</li>
-<li>Leave this option blank and press "[Enter]" to continue.<br />
-<div class="preboxcontainer">
-<pre class="prebox">Remote config
---------------------
-[dreamobjects]
-env_auth = false
-access_key_id = your_access_key
-secret_access_key = your_secret_key
-region = other-v2-signature
-endpoint = objects-us-east-1.dream.io
-location_constraint =
-acl = private
-server_side_encryption =
-storage_class =
---------------------
-y) Yes this is OK
-e) Edit this remote
-d) Delete this remote
-y/e/d&gt; <span class="command">y</span></pre>
+<pre class="prebox">Remote config<br />--------------------<br />[dreamobjects]<br />type = s3<br />provider = Dreamhost<br />env_auth = false<br />access_key_id = YOUR_ACCESS_KEY<br />secret_access_key = YOUR_SECRETE_KEY<br />endpoint = objects-us-east-1.dream.io<br />acl = private<br />--------------------<br />y) Yes this is OK<br />e) Edit this remote<br />d) Delete this remote<br />y/e/d&gt; <span class="command">y</span></pre>
 </div>
 </li>
 <li>Type in 'y'.
@@ -306,9 +208,11 @@ dreamobjects         s3
 e) Edit existing remote
 n) New remote
 d) Delete remote
+r) Rename remote
+c) Copy remote
 s) Set configuration password
 q) Quit config
-e/n/d/s/q&gt; <span class="command">q</span></pre>
+e/n/d/r/c/s/q&gt; <span class="command">q</span></pre>
 </div>
 </li>
 <li>Finally, review the remote you configured. If everything looks correct, save it by entering <cite>y</cite> and quit the configuration wizard by entering <cite>q</cite>.</li>
