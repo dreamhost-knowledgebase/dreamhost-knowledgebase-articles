@@ -6,7 +6,7 @@
 <p>You will need to be careful how you set things up to prevent such problems. This often leads to problems where websites on a PS will stop working due to memory saturation during peak hours and will then start working normally again once the traffic dies down to more manageable levels.</p>
 <h2><span id="Raising_the_amount_of_Apache_processes_allowed_to_spawn">Raising the amount of Apache processes allowed to spawn</span></h2>
 <div class="alert alert-note">
-<div class="alert-icon"><img alt="" height="60" src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
 <p>As of March 2016, new VPS plans are created with a specific amount of disk space and RAM. It's not possible to adjust the RAM on these new machines. However, older VPS machines still have the ability to adjust their RAM allocation.</p>
 </div>
@@ -15,10 +15,10 @@
 <h2><span id="Checking_your_memory_usage">Checking your memory usage</span></h2>
 <p>You can view a graph of your private server’s memory usage in your panel.</p>
 <ol>
-<li>Go to the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=vps.dashboard&amp;" target="_blank">Dashboard</a> page.</li>
+<li>Go to the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=vps.dashboard&amp;" target="_blank" rel="noopener">Dashboard</a> page.</li>
 <li>To the right of your VPS, click the RAM graph icon under the ‘Usage’ column.
 <dl>
-<dd><img alt="01 VPS Troubleshooting.fw.png" class="img-border" height="331" src="https://objects-us-east-1.dream.io/kbimages/images/01_VPS_Troubleshooting.fw.png" width="692"/></dd>
+<dd><img class="img-border" src="https://objects-us-east-1.dream.io/kbimages/images/01_VPS_Troubleshooting.fw.png" alt="01 VPS Troubleshooting.fw.png" width="692" height="331" /></dd>
 </dl>
 </li>
 </ol>
@@ -26,7 +26,7 @@
 <h2><span id="The_top.2C_free.2C_and_ps_aux_commands">The top, free, and ps aux commands</span></h2>
 <p>To obtain more information on exactly what's going on, you'll need to SSH into your PS.</p>
 <div class="alert alert-tip">
-<div class="alert-icon"><img alt="" height="60" src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-tip-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-tip-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
 <p>Open two connections in separate windows so you can easily review the results.</p>
 </div>
@@ -37,15 +37,15 @@
 <p>While examining your top output, it's important to know what information you need to look at. The memory allocation you set in your panel relates to physical memory being used (as opposed to virtual memory). That memory corresponds to the RES column in top output. Below is what top output sorted by memory ('[Shift] + m') might look like (the actual processes will likely be different on your PS):</p>
 <div class="preboxcontainer">
 <pre class="prebox">PID   USER     PR NI   VIRT  RES SHR   S  %CPU  %MEM    TIME+   COMMAND
-14871 exampleu  20   0  250m  14m 8340  S  5     1.3   0:04.12  php56.cgi
-23591 exampleu  20   0  250m  12m 8256  S  6     1.3   0:00.36  php56.cgi
-23618 exampleu  20   0  250m  13m 8256  S  4     1.3   0:00.19  php56.cgi
-23684 exampleu  20   0  250m  12m 8256  S  7     1.3   0:00.10  php56.cgi
-23652 exampleu  20   0  250m  13m 8256  S  6     1.3   0:00.18  php56.cgi
-23654 exampleu  20   0  250m  15m 8252  S  6     1.3   0:00.17  php56.cgi
+14871 exampleu  20   0  250m  14m 8340  S  5     1.3   0:04.12  php71.cgi
+23591 exampleu  20   0  250m  12m 8256  S  6     1.3   0:00.36  php71.cgi
+23618 exampleu  20   0  250m  13m 8256  S  4     1.3   0:00.19  php71.cgi
+23684 exampleu  20   0  250m  12m 8256  S  7     1.3   0:00.10  php71.cgi
+23652 exampleu  20   0  250m  13m 8256  S  6     1.3   0:00.18  php71.cgi
+23654 exampleu  20   0  250m  15m 8252  S  6     1.3   0:00.17  php71.cgi
 </pre>
 </div>
-<p>In the above example, you'll see a series of php56.cgi processes running which means the site spawning these processes is running under PHP 5.6. In the RES column, you can see how much memory each is using. In this case, they're all using between 12–15 MB of memory. On a busy PS, you'll likely have quite a few Apache processes running. Those average around 9-11 MB of memory each. Apache and PHP processes multiply as your sites start serving more requests, so you can see that memory usage can quite easily skyrocket if you begin to receive a lot of traffic.</p>
+<p>In the above example, you'll see a series of php71.cgi processes running which means the site spawning these processes is running under PHP 7.1. In the RES column, you can see how much memory each is using. In this case, they're all using between 12–15 MB of memory. On a busy PS, you'll likely have quite a few Apache processes running. Those average around 9-11 MB of memory each. Apache and PHP processes multiply as your sites start serving more requests, so you can see that memory usage can quite easily skyrocket if you begin to receive a lot of traffic.</p>
 <h3><span id="Using_the_free_command">Using the free command</span></h3>
 <p>In your other window, you can run free -m. This command displays the current memory usage on your PS and should look something like this:</p>
 <div class="preboxcontainer">
