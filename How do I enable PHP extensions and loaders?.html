@@ -4,12 +4,30 @@
 <p>The standard term for a PHP configuration file is php.ini. However, DreamHost uses the term "phprc" file instead. This acts the same way – only the name is different. In this article, only the term phprc is used.</p>
 </div>
 </div>
-<p>PHP Loaders are extensions to PHP which load special types of PHP files. You must modify your phprc file to activate the loader required by your special PHP files. Below are links to pages that provide further instructions on installing and using the various PHP loaders:</p>
+<h2>Loaders and Extensions</h2>
+<h3>Loaders</h3>
+<p>PHP Loaders are extensions to PHP which load special types of PHP files that have been encoded with an encoding product such as ionCube Loader.</p>
+<p>To activate the loader, you must add a line to your phprc file. Below are links to pages that provide further instructions on installing and using the various PHP loaders:</p>
 <ul>
 <li><a href="/hc/en-us/articles/214897027-Enabling-ionCube-Loader">Enabling ionCube Loader</a></li>
 <li><a href="/hc/en-us/articles/215082687-Installing-ZendGuard-Loader">Installing ZendGuard Loader</a></li>
 </ul>
-<h2>Creating a phprc file</h2>
+<h3>Extensions</h3>
+<p>PHP Extensions are libraries of pre-built code. They allow you to use specific functions already created to simplify your code. The following is a current list of PHP Extensions:</p>
+<ul>
+<li><a href="http://php.net/manual/en/extensions.alphabetical.php">http://php.net/manual/en/extensions.alphabetical.php</a></li>
+</ul>
+<p>Some extensions are already activated by default (such as Phar). Others are not, but can be activated by adding a line to your phprc file.</p>
+<h2>Checking if an Extension is already active</h2>
+<p>Before adding an extension, make sure it's not already activated by default. For example, the Phar extension is already activate with any version of PHP at DreamHost. If you then add the phar.so extension to your phprc file, your site will thrown an error, so it's important to only add an extension if needed. </p>
+<p>You can view any currently activate extension by adding a phpinfo.php file to your site.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214895287-How-do-I-view-my-PHP-environment-settings-">Viewing PHP environment settings</a></li>
+</ul>
+<p>If an extension is already active, you'll see its corresponding block when visiting the phpinfo.php file. For example, this shows that the Phar extension is active.</p>
+<p><img class="img-border" src="https://objects-us-east-1.dream.io/kbimages/images/phar.png" alt="phar extension" /></p>
+<h2>Adding an extension</h2>
+<h3>Step 1 — Create a phprc file</h3>
 <p>View the following articles for instructions on how to create a phprc file.</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/214894037-How-do-I-create-a-phprc-file-via-FTP-">How do I create a phprc file via FTP? </a></li>
@@ -20,13 +38,65 @@
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/115000098272-Creating-and-editing-a-file-via-FTP">Creating and editing a file via FTP</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Creating and editing a file via SSH</a></li>
 </ul>
-<h2><span id="Loading_PHP_extensions">Loading PHP extensions</span></h2>
-<p>Depending on which version of PHP you choose to use, you may notice certain extensions are not enabled by default (for example, <a href="https://help.dreamhost.com/hc/en-us/articles/360003820252-How-to-enable-the-intl-extension">intl</a>).</p>
-<p>To load an extension, add the following line your phprc file (view the links above for instructions on how to create and edit a phprc file):</p>
+<h3>Step 2 — <span id="Loading_PHP_extensions">Load the extension</span></h3>
+<p>To load an extension, add the following line your phprc file (make sure to change 'extension_name' to the actual extension.):</p>
+<dl>
+<dd>extension = <strong>extension_name</strong>.so</dd>
+</dl>
+<p>For example, this is what you would add to enable the intl extension.</p>
 <div class="preboxcontainer">
 <pre class="prebox">extension = intl.so</pre>
 </div>
+<p>Below is a list of common extensions you may need to add to your phprc file.</p>
+<table class="wikitable">
+<tbody>
+<tr>
+<th bgcolor="#F2F2F2">Extension</th>
+<th bgcolor="#F2F2F2">Line in phprc file</th>
+</tr>
+<tr>
+<td class="table-fonts" style="width: 50%;">curl </td>
+<td class="table-fonts" style="width: 50%;">extension = curl.so</td>
+</tr>
+<tr>
+<td class="table-fonts" style="width: 50%;">fileinfo </td>
+<td class="table-fonts" style="width: 50%;"><a href="https://help.dreamhost.com/hc/en-us/articles/214205858-fileinfo">Already enabled by default</a></td>
+</tr>
+<tr>
+<td class="table-fonts" style="width: 50%;">imagick </td>
+<td class="table-fonts" style="width: 50%;">extension = imagick.so</td>
+</tr>
+<tr>
+<td class="table-fonts" style="width: 50%;">intl </td>
+<td class="table-fonts" style="width: 50%;">extension = intl.so</td>
+</tr>
+<tr>
+<td class="table-fonts" style="width: 50%;">mysqli</td>
+<td class="table-fonts" style="width: 50%;">extension = mysqli.so</td>
+</tr>
+<tr>
+<td class="table-fonts" style="width: 50%;">phar</td>
+<td class="table-fonts" style="width: 50%;">Already enabled by default</td>
+</tr>
+<tr>
+<td class="table-fonts" style="width: 50%;">zip</td>
+<td class="table-fonts" style="width: 50%;">extension = zip.so</td>
+</tr>
+</tbody>
+</table>
+<h3>Step 3 — Kill off all running php processes</h3>
+<p>Make sure to <a href="https://help.dreamhost.com/hc/en-us/articles/214200748-My-phprc-file-isn-t-updating">kill running php processes</a> to ensure your new settings take effect.</p>
+<h3>Step 4 — Confirming your changes</h3>
+<p>After you've edited the file and killed off all PHP processes, check to confirm the extension has been enabled. You can do this by creating a <a href="https://help.dreamhost.com/hc/en-us/articles/214895287-How-do-I-view-my-PHP-environment-settings-">phpinfo.php file</a>. You should see the following:</p>
+<dl>
+<dd><img class="img-border" src="https://objects-us-east-1.dream.io/kbimages/images/2018-05_php_extension_intl.png" alt="" /></dd>
+</dl>
+<p>If you do not see your changes have updated, try killing off your PHP processes again:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214200748-My-phprc-file-isn-t-updating">My phprc file isn't updating</a></li>
+</ul>
 <h2><span id="Compiling_PHP_extensions">Compiling PHP extensions</span></h2>
+<p>Some extensions are not complied with PHP. In these instances, you must download the extension and compile it manually.</p>
 <p>Visit the following links for a list of available extensions:</p>
 <ul>
 <li><a href="http://php.net/manual/en/extensions.php">php.net extensions</a></li>
