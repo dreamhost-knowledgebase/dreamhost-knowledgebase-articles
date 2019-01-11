@@ -1,0 +1,122 @@
+<p>If your domain is not using DreamHost's <a href="https://help.dreamhost.com/hc/en-us/articles/216385467-Nameservers-overview">nameservers</a>, the mail-related DNS records will not be automatically active for the domain. You'll need to manually set up those records at the host where your domain's <a href="https://help.dreamhost.com/hc/en-us/articles/215413857-DreamHost-DNS-overview">DNS</a> is managed. You can verify where your nameservers are pointed at <a href="http://whoisweb.dreamhost.com">http://whoisweb.dreamhost.com</a>.</p>
+<ul>
+<li>All the mail-related DNS records are automatically created in the DreamHost panel when a domain has email addresses set up on the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=mail.addresses&amp;" target="_blank">Manage Email</a> page.</li>
+<li>You can find your Mail DNS records on the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;" target="_blank">Manage Domains</a> page.</li>
+</ul>
+<div class="alert alert-note">
+<div class="alert-icon"><img height="60" src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60"></div>
+<div class="alert-content">
+<p>If you're looking for information on how to set up your email in a client, view the following articles:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214918038-Email-client-configuration-overview">Email client configuration overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215612887-Email-client-protocols-and-port-numbers">Email client protocols and port numbers</a></li>
+</ul>
+</div>
+</div>
+<h2>Locating your email DNS records</h2>
+<ol>
+<li>Click the ‘DNS’ link under the domain to view your records.
+<div class="alert alert-note">
+<div class="alert-icon"><img alt="" height="60" src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60"></div>
+<div class="alert-content">
+<p>Please note that the records below are only examples. Your specific DNS records will be different.</p>
+<p>The examples below <strong>ONLY</strong> show email DNS records. Your website will have additions records you can read about in this article:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215413857-DreamHost-DNS-overview">DreamHost DNS overview</a></li>
+</ul>
+</div>
+</div>
+<dl>
+<dd><img alt="" class="img-border" src="https://objects-us-east-1.dream.io/kbimages/images/2018-09_panel_email_dns_records.png"></dd>
+</dl>
+There are two types of mail-related DNS records.
+<dl>
+<dt><strong>MX records</strong></dt>
+<dd>tells senders where emails for you should be delivered to.</dd>
+<dd></dd>
+<dd>For example, if <a href="https://help.dreamhost.com/hc/en-us/articles/215686487-How-do-I-configure-my-Anti-spam-settings-">Spam filtering</a> was <strong>NOT</strong> enabled, they would look like this:</dd>
+</dl>
+<dl>
+<dd>
+<ul>
+<li>mx1.dreamhost.com</li>
+<li>mx2.dreamhost.com</li>
+</ul>
+</dd>
+</dl>
+<dl>
+<dd>If <a href="https://help.dreamhost.com/hc/en-us/articles/215686487-How-do-I-configure-my-Anti-spam-settings-">Spam Filtering has been enabled</a> your MX records would be the following:
+<ul>
+<li>vade-in1.mail.dreamhost.com</li>
+<li>vade-in2.mail.dreamhost.com</li>
+</ul>
+</dd>
+</dl>
+<dl>
+<dt><strong>A records</strong></dt>
+<dd>used by your mail program when you connect to the mail server to view your inbox or send out emails. There are several mail A records for your domain.</dd>
+</dl>
+</li>
+<li>Find the following records:
+<table class="wikitable">
+<tbody>
+<tr>
+<th bgcolor="#F2F2F2">DNS record</th>
+<th bgcolor="#F2F2F2">Example value</th>
+</tr>
+<tr>
+<td>_domainkey</td>
+<td><a href="https://help.dreamhost.com/hc/en-us/articles/215029758-What-are-DKIM-records-">DKIM records</a> sign emails to help verify the sender.</td>
+</tr>
+<tr>
+<td>_autodiscover._tcp (SRV)</td>
+<td>5 0 443 autoconfig.dreamhost.com — This is an SRV record that assists email applications automatically configure the correct settings.</td>
+</tr>
+<tr>
+<td>autoconfig (CNAME)</td>
+<td>autoconfig.dreamhost.com — This is a CNAME record that assists email applications automatically configure the correct settings.</td>
+</tr>
+<tr>
+<td>*mail. (A)</td>
+<td>64.90.62.162 — This is a standard subdomain that can be used to connect your client or program to the mail server.</td>
+</tr>
+<tr>
+<td>*mail. (MX)</td>
+<td>
+<p>This domain has <a href="https://help.dreamhost.com/hc/en-us/articles/215686487-How-do-I-configure-my-Anti-spam-settings-">enabled Spam filtering</a>, so the MX records appear as:<br><strong>vade-in1.mail.dreamhost.com </strong><br><strong> vade-in2.mail.dreamhost.com</strong>. </p>
+<p>If Spam filtering was not enabled, you'd see <strong>mx1.dreamhost.com</strong> and <strong>mx2.dreamhost.com</strong>.<br> <br><img class="img-border" src="https://objects-us-east-1.dream.io/kbimages/images/2018-06_panel_mail_cluster_mx_records.png">  </p>
+</td>
+</tr>
+<tr>
+<td>*mailboxes. (A)</td>
+<td>66.33.205.233 — This is used to log into the DreamHost <a href="https://help.dreamhost.com/hc/en-us/articles/217133137-The-Mailboxes-interface">Mailboxes interface</a>.</td>
+</tr>
+<tr>
+<td>*www.mailboxes. (A)</td>
+<td>66.33.205.233 — This is used to log into the DreamHost <a href="https://help.dreamhost.com/hc/en-us/articles/217133137-The-Mailboxes-interface">Mailboxes interface</a>.</td>
+</tr>
+<tr>
+<td>*webmail. (A)</td>
+<td>69.163.136.138 — This is used to log into the DreamHost <a href="https://help.dreamhost.com/hc/en-us/articles/215683287-How-do-I-access-Webmail-">webmail panel</a>.</td>
+</tr>
+<tr>
+<td>*www.webmail. (A)</td>
+<td>69.163.136.138 — This is used to log into the DreamHost <a href="https://help.dreamhost.com/hc/en-us/articles/215683287-How-do-I-access-Webmail-">webmail panel</a>.</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Enter all those records in to the system where the domain's DNS is hosted and managed.</li>
+</ol>
+<div class="alert alert-note">
+<div class="alert-icon"><img alt="" height="60" src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60"></div>
+<div class="alert-content">
+<p>After you make the DNS adjustment, it will then take several hours for the changes to update online due to <a href="/hc/en-us/articles/215840248-DNS-propagation-overview">DNS propagation</a>.</p>
+</div>
+</div>
+<h2><span id="See_also">See also</span></h2>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215032408-What-is-an-MX-record-">What is an MX record?</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215035328-How-do-I-change-my-MX-records-">How do I change my MX records?</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215035868-How-can-I-view-my-DreamHost-email-if-my-MX-records-are-not-pointed-to-DreamHost-">How can I view my DreamHost email if my MX records are not pointed to DreamHost?</a></li>
+</ul>
