@@ -2,7 +2,7 @@
 <p><strong>Transport Layer Security</strong> (<strong>TLS</strong>) and its predecessor, <strong>Secure Sockets Layer</strong> (<strong>SSL</strong>), are <a href="https://en.wikipedia.org/wiki/Cryptographic_protocol">cryptographic protocols</a> that provide secure communications on the Internet for such things as web browsing, email, faxing, instant messaging, and other data transfers.</p>
 <h2><span id="Why_add_an_SSL_certificate.3F">Why add an SSL certificate?</span></h2>
 <div class="alert alert-note">
-<div class="alert-icon"><img alt="" height="60" src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
 <p>View the following links for further details on how to configure an SSL certificate at DreamHost:</p>
 <ul>
@@ -23,14 +23,20 @@
 <li>help give your site a ranking boost. Search engines such as Google provide small ranking boosts when sites are securely hosted.</li>
 </ul>
 <div class="alert alert-note">
-<div class="alert-icon"><img alt="" height="60" src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
 <p>If your site processes customer credit card data, you must add an SSL certificate to your site to protect this information. View the <a href="https://help.dreamhost.com/hc/en-us/articles/215089118-Adding-an-SSL-certificate-overview">'Adding an SSL certificate overview'</a> article for further details.</p>
 </div>
 </div>
 <h2><span id="When_wouldn.E2.80.99t_I_need_an_SSL_certificate.3F">When wouldn’t I need an SSL certificate?</span></h2>
-<p>If you site does not require a user login, or request any other sensitive information from visitors, then it doesn't need an SSL certificate.</p>
-<p>In other words, if your site only has a some descriptive text and a few images, then you don't need an SSL certificate.</p>
+<p>All sites should use an SSL certificate due to the fact that modern web browsers (such as Chrome) will display the site as insecure when visited.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360003425491-Not-Secure-warning-in-Google-Chrome">Not Secure warning in Google Chrome</a></li>
+</ul>
+<p>As time goes on, more and more browsers will require SSL certificates to view your site, so it's recommended that you at least add a free 'Let's Encrypt' certificate to your site.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216539548-Adding-a-free-Let-s-Encrypt-certificate">Adding a free Let's Encrypt certificate</a></li>
+</ul>
 <h2><span id="Adding_an_SSL_certificate_to_your_domain">Adding an SSL certificate to your domain</span></h2>
 <p>View the <a href="/hc/en-us/articles/215089118-Adding-an-SSL-certificate-overview">Adding an SSL certificate</a> article for details on how to add an SSL certificate to your domain.</p>
 <h2><span id="Troubleshooting">Troubleshooting</span></h2>
@@ -38,24 +44,21 @@
 <li>If your secure site doesn't show any data, make sure that it works properly by using the regular protocol. For example, browse to <a href="http://example.com">http://example.com</a> and you should see your web site load normally.</li>
 </ul>
 <ul>
-<li>If you get a security pop-up message when you visit your secure site, you may not have the certificate installed correctly or the certificate may belong to a different site. Ask your certificate authority and/or DreamHost support for assistance. You can submit a ticket in your panel on the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=support.msg&amp;" target="_blank">Contact Support</a> page.</li>
+<li>If you get a security pop-up message when you visit your secure site, you may not have the certificate installed correctly or the certificate may belong to a different site. Ask your certificate authority and/or DreamHost support for assistance. You can submit a ticket in your panel on the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=support.msg&amp;" target="_blank" rel="noopener">Contact Support</a> page.</li>
 </ul>
 <ul>
 <li>You may see a pop-up that says some elements on the page are secure and others are not secure. The problem is that a page on your secure site includes items (such as images, CSS files, or JavaScript files) that link to the http:// URL for your site or an external website. You must make sure that everything on the page is linked from a secure site. For example, image URLs should start with https:// for externally linked files. If the files are part of your website, then use a <a href="http://www.w3schools.com/html/html_links.asp">relative</a> URL.</li>
 </ul>
 <h2><span id="Advanced_topics">Advanced topics</span></h2>
-<h3><span id="Transport_selection">Transport selection</span></h3>
-<p>Your pages won't be encrypted if your website visitor surfed to example.com since the default transport for browsers is http, not https. One solution is to use links to visit specific pages on the secure site as needed. For example, your links could send customers to <a href="https://example.com/securepage">https://example.com/securepage</a> whenever necessary.</p>
-<p>You could also add a few lines to your <a href="/hc/en-us/articles/216456227--htaccess-overview">.htaccess file</a>. These line automatically redirect <a href="http://example.com">http://example.com</a> to <a href="https://example.com">https://example.com</a>.</p>
-<h3><span id="Automatic_redirection_from_HTTP_to_HTTPS">Automatic redirection from HTTP to HTTPS</span></h3>
-<p>Add the following to the .htaccess file:</p>
-<div class="preboxcontainer">
-<pre class="prebox">RewriteEngine On
-RewriteCond %{HTTPS} off
-RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
-</pre>
-</div>
-<p>For more information on .htaccess files, see .htaccess.</p>
+<h3><span id="Transport_selection">Forcing HTTPS</span></h3>
+<p>Your pages won't be encrypted if your website visitor surfed to http://example.com since the default transport for browsers is http, not https. To fix this, it's recommended that you add a configuration file to force all connections to your site to use HTTPS. View the following article for further information:<span id="Automatic_redirection_from_HTTP_to_HTTPS"></span></p>
+<ul class="article-list">
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115003505112-How-to-force-your-site-to-redirect-to-https-SSL-">How to force your site to redirect to https (SSL)</a></li>
+</ul>
+<p>The majority of DreamHost users will need to create an .htaccess file to do this. View the following article for those instructions:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215747758-Force-your-site-to-load-securely-with-an-htaccess-file">Force your site to load securely with an .htaccess file</a></li>
+</ul>
 <h2><span id="Remember_that_security_is_deeper_than_the_HTTPS_protocol">Remember that security is deeper than the HTTPS protocol</span></h2>
 <p>While protocols allow for data encryption, there is more to securing a site than installing a secure certificate. Incorrect file permissions, outdated software, and other aspects can also cause problems.</p>
 <p>For more information on keeping your site and account secure, review the following article on Security:</p>
@@ -65,7 +68,7 @@ RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
 </ul>
 <h2><span id="TLS_versions">Which versions of TLS are available at DreamHost?</span></h2>
 <div class="alert alert-important">
-<div class="alert-icon"><img height="60" src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
 <p>As of January 29th 2018, DreamHost will no longer support TLS 1.0 on its web servers. If you're still using a browser that is only able to connect using TLS 1.0, you will not be able to view websites hosted at DreamHost using HTTPS. This means any site using an <a href="https://help.dreamhost.com/hc/en-us/articles/216041537-Secure-Hosting-overview">SSL certificate</a>.</p>
 <p>To check what versions of TLS your web browser supports, view the following site:</p>
