@@ -1,59 +1,28 @@
-<p>Before attempting to set up Secure Hosting, please familiarize yourself with the information in the <a href="/hc/en-us/articles/216041537-Secure-Hosting-overview">Secure Hosting</a> article. It's crucial that the initial configuration is done correctly as there are some parameters that cannot be changed afterward without completely removing and then re-adding Secure Hosting from your domain.</p>
-<p>Once you familiarize yourself with the information in the <a href="/hc/en-us/articles/216041537-Secure-Hosting-overview">Secure Hosting</a> article, proceed with the following steps to add your SSL certificate. </p>
+<p>A self-signed certificate is an SSL certificate that has not been validated by a Certificate Authority (CA). That's what meant in that it is 'self' signed.</p>
+<p>The level of encryption can be the same as any other certificate, but because it's not validated by a CA, the browser will display a warning when visiting the site.</p>
+<p>For this reason, these types of certificates are only recommended for internal use on your website where no visitor would ever see or come into contact with. </p>
 <h2><span id="self_signed_warnings">Browser warnings for self-signed certificates</span></h2>
-<p>A self-signed certificate is <strong>NOT</strong> signed by a trusted authority. That's what meant in that it is 'self' signed. Because a trusted authority did not sign it, browsers cannot trust it. It will still function normally, but visitors to your site will see a warning. Below are examples of what a visitor would see in Firefox and Chrome.</p>
+<p>Because a trusted authority did not sign it, browsers cannot trust it. It will still function normally, but visitors to your site will see a warning. Below are examples of what a visitor would see in Firefox and Chrome.</p>
 <div class="alert alert-important">
-<div class="alert-icon"><img height="60" src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
 <p>If you want to attract visitors to your site, <strong>DO NOT</strong> use a self-signed certificate.</p>
 </div>
 </div>
 <p><strong>Firefox</strong></p>
-<p><img alt="" class="img-border" height="456" src="https://objects-us-east-1.dream.io/kbimages/images/2018-05_ssl_self_signed_warning_01.png" width="684"/></p>
+<p><img class="img-border" src="https://objects-us-east-1.dream.io/kbimages/images/2018-05_ssl_self_signed_warning_01.png" alt="" width="684" height="456" /></p>
 <p><strong>Chrome</strong></p>
-<p><img alt="" class="img-border" height="452" src="https://objects-us-east-1.dream.io/kbimages/images/2018-05_ssl_self_signed_warning_02.png" width="563"/></p>
-<h2>Two methods to add a self-signed certificate</h2>
-<h3>Method #1</h3>
-<ol>
-<li>Navigate to the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.secure&amp;" target="_blank">Secure Hosting</a> page. The top section titled 'Active SSL certificates' lists any active SSL certificates for your domains.
-<dl>
-<dd><em>The next section titled 'Add a new SSL certificate' lists three options to add an SSL to your domain:</em></dd>
-</dl>
-<dl>
-<dd><img alt="SSL panel 01.png" class="img-border" src="https://objects-us-east-1.dream.io/kbimages/images/SSL_panel_01.png"/></dd>
-</dl>
-</li>
-<li>Click the option to add a 'Self-signed SSL'.
-<dl>
-<dd><img alt="SSL panel 04.png" class="img-border" src="https://objects-us-east-1.dream.io/kbimages/images/SSL_panel_04.png"/></dd>
-</dl>
-</li>
-<li>From the dropdown, choose your domain and if you wish to purchase a <a href="https://help.dreamhost.com/hc/en-us/articles/216109647-Unique-IP-overview">Unique IP</a> address.
-<div class="alert alert-note">
-<div class="alert-icon"><img height="60" src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60"/></div>
-<div class="alert-content">
-<p>In order for a domain/subdomain to show in the dropdown menu, it must be set as <a href="https://help.dreamhost.com/hc/en-us/articles/215416227-How-do-I-add-a-domain-">'Fully Hosted</a>', '<a href="https://help.dreamhost.com/hc/en-us/articles/215455377-How-do-I-redirect-my-domain-">Redirect</a>', '<a href="https://help.dreamhost.com/hc/en-us/articles/215416417-Mirror-domain-overview">Mirrored</a>', or 'Parked'.</p>
-</div>
-</div>
-</li>
-<li>Click the <strong>'Add now!'</strong> button.
-<dl>
-<dd><em>A Success message appears confirming the certificate has been added.</em></dd>
-</dl>
-</li>
-</ol>
-<h3>Method #2</h3>
-<ol>
-<li>Navigate to the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;" target="_blank">Manage Domains</a> page.
-<dl>
-<dd><em>The 'Manage Domains' page opens:</em></dd>
-</dl>
-<dl>
-<dd><img alt="Secure Hosting Add button.fw.png" class="img-border" src="https://objects-us-east-1.dream.io/kbimages/images/2018-09_panel_ssl_add_new_cert.png"/></dd>
-</dl>
-</li>
-<li>You are then taken to the 'Secure Hosting' page. As shown above, this is where you can select the type of certificate you'd like to install.</li>
-</ol>
+<p><img class="img-border" src="https://objects-us-east-1.dream.io/kbimages/images/2018-05_ssl_self_signed_warning_02.png" alt="" width="563" height="452" /></p>
+<h2>Creating a self-signed certificate</h2>
+<p>There is no way in the DreamHost panel to add a self-signed certificate. You have two options to create this type of cert.</p>
+<ul>
+<li>Create it via SSH command line</li>
+<li>3rd party website</li>
+</ul>
+<p>Once created, you can then import it into your site in the DreamHost panel using the following article:</p>
+<ul class="article-list">
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215089668-How-do-I-install-a-third-party-SSL-certificate-">How do I install a third-party SSL certificate?</a></li>
+</ul>
 <h2>Forcing your site to load HTTPS be default</h2>
 <p>Even after you have added the SSL certificate to your site, visitors will not be able to use it unless they manually type in 'https' before your domain name. This defeats the purpose of adding it in the first place since the certificate is meant to protect all of your website traffic.</p>
 <p>There are several ways to fix this. View the following article for instructions on how to create a configuration file to redirect all visitor traffic to the secure version of your URL (https).</p>
