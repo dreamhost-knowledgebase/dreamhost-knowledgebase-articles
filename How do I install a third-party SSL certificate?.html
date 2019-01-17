@@ -10,8 +10,19 @@
 </div>
 </div>
 <h2>Installing the certificate</h2>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>All of the following commands must be ran on the server where your website is hosted.</p>
+</div>
+</div>
 <ol>
 <li>Navigate to the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.secure&amp;" target="_blank" rel="noopener">Secure Hosting</a> page. A list of your domains display.
+<dl>
+<dd><img class="img-border" src="https://objects-us-east-1.dream.io/kbimages/images/2019-01_panel_ssl_add_button.png" /></dd>
+</dl>
+</li>
+<li>To the right of your domain, click the <strong>Add</strong> button. 
 <dl>
 <dd><img class="img-border" src="https://objects-us-east-1.dream.io/kbimages/images/2019-01_panel_ssl_import_cert_01.png" /></dd>
 </dl>
@@ -33,9 +44,34 @@
 </ul>
 </dd>
 </dl>
-Into these fields, enter your 3rd party certificate information.</li>
+Into these fields, enter your 3rd party certificate information.
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p><strong>Important note about the private key header and footer</strong></p>
+<p>If your private key was created with <a href="https://www.ietf.org/rfc/rfc5208.txt">PKCS #8 syntax</a>, the header and footer appear like this:</p>
+<div class="preboxcontainer">
+<pre class="prebox">-----BEGIN PRIVATE KEY-----
+...
+-----END PRIVATE KEY-----</pre>
+</div>
+<p>In order for the panel to accep this key, you must add <span class="code">RSA</span> to both the header and footer. For example:</p>
+<div class="preboxcontainer">
+<pre class="prebox">-----BEGIN RSA PRIVATE KEY-----
+...
+-----END RSA PRIVATE KEY-----</pre>
+</div>
+<p>The panel will then accept your key.</p>
+</div>
+</div>
+</li>
 <li>When finished, click the <strong>Proceed with Certificate Configuration</strong> button.</li>
-<li>If there aren't any errors, the new certificate is pushed out to the live servers within 15 minutes.</li>
+<li>If there aren't any errors, the new certificate is pushed out to the live servers within 15 minutes.
+<dl>
+<dd><img class="img-border" src="https://objects-us-east-1.dream.io/kbimages/images/imported.png" /></dd>
+</dl>
+</li>
+<li>Back on the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.secure&amp;" target="_blank" rel="noopener">Secure Hosting</a> page, you can see the certificate now shows as 'Imported'.</li>
 <li>Load your site in a browser using https.
 <ul>
 <li>You can see the padlock icon at the beginning of the URL; if you click on the icon, you’ll see that the cert is verified and active.</li>
