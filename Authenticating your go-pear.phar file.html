@@ -1,0 +1,49 @@
+<p>On Jan 19, 2019, pear.php.net released statement that their web server had been compromised and that a tainted go-pear.phar file was discovered. You can view the current status here:</p>
+<ul>
+<li><a href="http://pear.php.net/">http://pear.php.net/</a></li>
+</ul>
+<h2>What does this mean?</h2>
+<p>If you downloaded the go-pear.phar file from php.net from July 2018 to Jan 2019, there's a possibility you downloaded an infected file. You should check to confirm the authenticity of this file.</p>
+<h2>Why would I have downloaded this file?</h2>
+<p>There are several PHP installations that require PEAR. For example:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214392988-How-do-I-install-PEAR-">How do I install PEAR?</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216140597-How-do-I-send-PHP-mail-via-SMTP-">How do I send PHP mail via SMTP?</a></li>
+</ul>
+<h2>How do I check the go-pear.phar file's authenticity?</h2>
+<p>The following steps walk you through how to check your current go-pear.phar file.</p>
+<ol>
+<li>Use <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH</a> to log into your site where you are currently using PEAR.</li>
+<li>Navigate to the directory you previously downloaded the go-pear.phar file to. This is most likely your user's home directory.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~</span></pre>
+</div>
+</li>
+<li>Check the md5sum value.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">md5sum go-pear.phar</span></pre>
+</div>
+</li>
+<li>When you run this command, a long string of numbers and letters is returned. The infected file has the following hash value.
+<div class="preboxcontainer">
+<pre class="prebox">1e26d9dd3110af79a9595f1a77a82de7</pre>
+</div>
+</li>
+<li>If you see this value returned, you should proceed to disable the previous PEAR installation files and folders.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">mv go-pear.phar go-pear.phar_COMPROMISED</span>
+<span class="server">[server]$ </span><span class="command">mv .pearrc .pearrc_COMPROMISED</span>
+<span class="server">[server]$ </span><span class="command">mv pear pear_COMPROMISED</span></pre>
+</div>
+</li>
+<li>Next, download a fresh copy of the go-pear.phar file here:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wget https://github.com/pear/pearweb_phars/blob/master/go-pear.phar</span></pre>
+</div>
+</li>
+<li>You can then use the newly downloaded file to re-install PEAR using this article:
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214392988-How-do-I-install-PEAR-">How do I install PEAR?</a></li>
+</ul>
+</li>
+</ol>
