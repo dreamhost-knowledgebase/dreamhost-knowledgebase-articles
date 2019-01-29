@@ -1,26 +1,41 @@
-<p>Make sure to create a CSR at DreamHost before requesting your SSL certificate from your chosen Certificate Authority. That company will then be able to use this CSR to generate your SSL certificate.</p>
+<p>If you would like to purchase an SSL certificate from another company, make sure to first create a CSR at DreamHost before requesting it from your chosen Certificate Authority. That company will then be able to use this CSR to generate your SSL certificate.</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/218084098-CSR-overview">CSR overview</a></li>
 </ul>
-<p>If you already have a private key, Certificate Signing Request (CSR), intermediate certificate, and signed SSL certificate (in PEM format), you can install them yourself after setting up <a href="/hc/en-us/articles/216041537-Secure-Hosting-overview">Secure Hosting</a> for the domain.</p>
+<p>If you already have a private key, Certificate Signing Request (CSR), intermediate certificate, and signed SSL certificate (in PEM format), you can install them yourself after setting up <a href="https://help.dreamhost.com/hc/en-us/articles/216041537-SSL-certificates-overview">an SSL certificate</a> for the domain.</p>
 <div class="alert alert-important">
 <div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
 <p>If you already have a signed SSL certificate but do NOT have the corresponding private key, you won't be able install it on DreamHost's servers. Also, do NOT create a private key that is password protected, as the DreamHost panel does not accept these.</p>
 </div>
 </div>
+<h2>Installing the certificate</h2>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>All of the following commands must be ran on the server where your website is hosted.</p>
+</div>
+</div>
 <ol>
-<li>Review the <a href="/hc/en-us/articles/215767487-How-do-I-add-a-free-self-signed-SSL-certificate-">Adding Secure Hosting (self-signed certificate)</a> article to add Secure Hosting and a self-signed certificate to your domain.
+<li>Navigate to the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.secure&amp;" target="_blank" rel="noopener">Secure Hosting</a> page. A list of your domains display.
 <dl>
-<dd><img class="img-border" src="https://objects-us-east-1.dream.io/kbimages/images/Cert_Settings.png" alt="Cert_Settings.png" /></dd>
+<dd><img class="img-border" src="https://objects-us-east-1.dream.io/kbimages/images/2019-01_panel_ssl_add_button.png" /></dd>
 </dl>
 </li>
-<li>Open the 'Secure Hosting' page, and then click the 'Change' link to the right of your domain/subdomain.
+<li>To the right of your domain, click the <strong>Add</strong> button. 
 <dl>
-<dd><img class="img-border" src="https://objects-us-east-1.dream.io/kbimages/images/Import_SSL_Cert.png" alt="Import_SSL_Cert.png" /></dd>
+<dd><img class="img-border" src="https://objects-us-east-1.dream.io/kbimages/images/2019-01_panel_ssl_import_cert_01.png" /></dd>
 </dl>
+</li>
+<li>At the top, click the tab titled 'Import a Certificate'.</li>
+<li>Next click the <strong>Select This Option</strong> button.
 <dl>
-<dd><em>Four boxes appear on the 'Certificate Settings' page:</em>
+<dd><img class="img-border" src="https://objects-us-east-1.dream.io/kbimages/images/2019-01_panel_ssl_import_cert_02.png" /></dd>
+</dl>
+</li>
+<li>The next page displays four empty boxes.
+<dl>
+<dd>
 <ul>
 <li>Certificate Signing Request</li>
 <li>Certificate</li>
@@ -29,27 +44,34 @@
 </ul>
 </dd>
 </dl>
+Into these fields, enter your 3rd party certificate information.
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p><strong>Important note about the private key header and footer</strong></p>
+<p>If your private key was created with <a href="https://www.ietf.org/rfc/rfc5208.txt">PKCS #8 syntax</a>, the header and footer appear like this:</p>
+<div class="preboxcontainer">
+<pre class="prebox">-----BEGIN PRIVATE KEY-----
+...
+-----END PRIVATE KEY-----</pre>
+</div>
+<p>In order for the panel to accept this key, you must add <span class="code">RSA</span> to both the header and footer. For example:</p>
+<div class="preboxcontainer">
+<pre class="prebox">-----BEGIN RSA PRIVATE KEY-----
+...
+-----END RSA PRIVATE KEY-----</pre>
+</div>
+<p>The panel will then accept your key.</p>
+</div>
+</div>
 </li>
-<li>Using your 3rd party certificate information, overwrite the existing certificate text in each of the boxes. For example, in the 'Certificate' box:
-<ul>
-<li>Be sure to include everything, including the "<strong>-----BEGIN CERTIFICATE-----" &amp; "-----END CERTIFICATE-----</strong>" lines.</li>
-<li>Use the vertical scroll bars to view the entire contents of the Certificate box after pasting.</li>
-<li>Make sure that you have only one certificate installed; if not, re-paste the proper certificate and verify again.</li>
-</ul>
+<li>When finished, click the <strong>Proceed with Certificate Configuration</strong> button.</li>
+<li>If there aren't any errors, the new certificate is pushed out to the live servers within 15 minutes.
+<dl>
+<dd><img class="img-border" src="https://objects-us-east-1.dream.io/kbimages/images/imported.png" /></dd>
+</dl>
 </li>
-<li>In the 'Private Key' box, paste the certificate's private key. You must obtain this from the company you purchased the SSL certificate from.
-<ul>
-<li>Be sure to include everything, including the "<strong>-----BEGIN RSA PRIVATE KEY-----" &amp; "-----END RSA PRIVATE KEY-----</strong>" lines.</li>
-<li>Use the vertical scroll bars to view the entire contents of the Certificate box after pasting.</li>
-</ul>
-</li>
-<li>If you have an intermediate certificate (or bundle file), then install it yourself by pasting it into the "Intermediate Certificate" box (at the bottom of the page).
-<ul>
-<li>Be sure to include everything, including the "<strong>-----BEGIN CERTIFICATE-----" &amp; "-----END CERTIFICATE-----</strong>" lines as there may be several of them for this intermediate certificate.</li>
-<li>Make sure to copy them all.</li>
-</ul>
-</li>
-<li>Click the <strong>Save changes now!</strong> button. <br /> <em>If there aren't any errors, the new certificate is pushed out to the live servers within 15 minutes.</em></li>
+<li>Back on the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.secure&amp;" target="_blank" rel="noopener">Secure Hosting</a> page, you can see the certificate now shows as 'Imported'.</li>
 <li>Load your site in a browser using https.
 <ul>
 <li>You can see the padlock icon at the beginning of the URL; if you click on the icon, you’ll see that the cert is verified and active.</li>
@@ -67,7 +89,7 @@
 <li><a href="/hc/en-us/articles/215089118-Adding-an-SSL-certificate-overview">Adding an SSL certificate overview</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216539548-Adding-a-free-Let-s-Encrypt-certificate">Adding a free Let's Encrypt certificate</a></li>
 <li><a href="/hc/en-us/articles/216539558-Let-s-Encrypt-SSL-certificate-overview">Let's Encrypt SSL certificate overview</a></li>
-<li><a href="/hc/en-us/articles/216041537-Secure-Hosting-overview">Secure Hosting overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216041537-SSL-certificates-overview">SSL certificates overview</a></li>
 <li><a href="/hc/en-us/articles/215089778-What-do-I-need-from-DreamHost-before-purchasing-a-third-party-SSL-certificate-">What do I need from DreamHost before purchasing a third party SSL certificate?</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215089748-How-do-I-purchase-a-professionally-signed-SSL-certificate-">How do I purchase a professionally-signed SSL certificate?</a></li>
 <li><a href="/hc/en-us/articles/215767487-How-do-I-add-a-free-self-signed-SSL-certificate-">How do I add a free self-signed SSL certificate?</a></li>
