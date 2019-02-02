@@ -118,7 +118,7 @@
 </div>
 <div id="deploying-a-cors-configuration">
 <h2>Deploying a CORS configuration</h2>
-<p>A minority of S3 clients support deploying CORS configurations. Some (such as boto) also support programmatically constructing a CORS configuration. (See the links in the <strong>clients</strong> section below for examples of deploying a CORS configuration on various clients.) Other clients not listed may also support CORS policies, and the listing should not be taken as exhaustive or guaranteed correct (some clients have experienced broken CORS support at some points).</p>
+<p>A minority of S3 clients support deploying CORS configurations. See the links in the <strong>clients</strong> section below for examples of deploying a CORS configuration on various clients. Other clients not listed may also support CORS policies, and the listing should not be taken as exhaustive or guaranteed correct (some clients have experienced broken CORS support at some points).</p>
 <div id="s3cmd-1-6-0-and-newer">
 <h3>s3cmd (1.6.0 and newer)</h3>
 <p>Since 1.6.0, <a href="https://help.dreamhost.com/hc/en-us/articles/215916627-S3cmd">S3cmd</a> supports setting or deleting a CORS config; however it does not support getting it back except as a part of an “info” request.</p>
@@ -134,86 +134,10 @@ s3cmd setcors rules.xml s3://bucketname
 # Delete the CORS rules
 s3cmd delcors s3://bucketname
 # Get bucket info including CORS rules
-s3cmd info s3://bucketname
-</pre>
+s3cmd info s3://bucketname</pre>
 </div>
 <div id="python-boto-pre-made-xml">
-<h3>Python/BOTO (pre-made XML)</h3>
-<p>The following is a minimal snippet of boto Python to deploy a CORS configuration to DreamObjects:</p>
-<div class="preboxcontainer">
-<pre class="prebox">from boto.s3.connection import S3Connection
-host = 'objects-us-east-1.dream.io'
-access_key = '...'
-secret_key = '...'
-conn = S3Connection(
-    host=host,
-    aws_access_key_id=access_key,
-    aws_secret_access_key=secret_key,
-    )
-my_cors_conf = """
-&lt;CORSConfiguration&gt;
-&lt; policy goes here &gt;
-&lt;/CORSConfiguration&gt;
-"""
-bucket = conn.get_bucket('examplebucketname')
-bucket.set_cors_xml(my_cors_conf)</pre>
-</div>
 <div id="python-boto-programmatic">
-<h3>Python/BOTO (Programmatic)</h3>
-<p>The following is a minimal snippet of boto Python to construct and deploy CORS configuration to DreamObjects:</p>
-<div class="preboxcontainer">
-<pre class="prebox">import boto.s3.connection
-import boto.s3.cors
-import itertools
-
-host = 'objects-us-east-1.dream.io'
-access_key = '...'
-secret_key = '...'
-bucket_name = '...'
-
-conn = boto.s3.connection.S3Connection(host=host, aws_access_key_id=access_key, aws_secret_access_key=secret_key)
-bucket = conn.get_bucket(bucket_name)
-
-try:
-    corsobj = bucket.get_cors()
-except:
-    corsobj = boto.s3.cors.CORSConfiguration()
-
-id = 'DH-CORS-Example-ID1234' # each rule MAY have an optional ID, and if so they MUST be unique
-domains = ['example.com', 'demo.com', '...' ] # edit as needed
-methods = ['GET', 'HEAD', 'PUT', 'POST', 'DELETE' ] # edit as needed, this covers AWS JS SDK + WebFont
-ahdr = ['Authorization', 'Content-*', 'X-Amz-*', 'Origin', 'Host'] # edit as needed, this covers AWS JS SDK + WebFont
-ehdr = ['ETag', 'Content-MD5']
-
-# Construct the origins from domains, allowing HTTP, HTTPS, on the domain with and without 'www.'
-# If you want to require HTTPS, you should remove 'http' element from the first list
-protocols = ['http', 'https']
-domain_prefix = ['','www.']
-origins_tuple = itertools.product(protocols, domain_prefix, domains)
-origins = ['{0}://{1}{2}'.format(*t) for t in origins_tuple]
-
-# Add the rule to the CORS object
-corsobj.add_rule(
-    methods,
-    origins,
-    id=id,
-    allowed_header=ahdr,
-    max_age_seconds=3600,
-    expose_header=ehdr,
-    )
-
-# This little bit of magic allows us to deduplicate CORS rules:
-# 1. Allow us to compare CORSRule elements
-def CORSRule_eq(self, other):
-    return self.__dict__ == other.__dict__
-
-boto.s3.cors.CORSRule.__eq__ = CORSRule_eq
-# 2. Now find unique elements
-corsobj = boto.s3.cors.CORSConfiguration([key for key,_ in itertools.groupby(corsobj)])
-
-# Put the updated CORS on the bucket
-bucket.set_cors(corsobj)</pre>
-</div>
 <div id="compatibility-notes">
 <h2>Compatibility notes</h2>
 <ul class="simple">
@@ -237,7 +161,6 @@ bucket.set_cors(corsobj)</pre>
 <h3>Clients</h3>
 <ul class="simple">
 <li><a class="reference external" href="http://s3browser.com/s3-bucket-cors-configuration.php">S3 Browser: Bucket CORS Configuration</a></li>
-<li><a class="reference external" href="https://boto.readthedocs.io/en/latest/ref/s3.html">boto: S3</a></li>
 <li><a class="reference external" href="http://www.bucketexplorer.com/documentation/amazon-s3--manage-cross-origin-resource-sharing.html">Bucket Explorer: Amazon S3 - Manage Cross-Origin Resource Sharing (CORS)</a></li>
 <li><a class="reference external" href="https://trac.cyberduck.io/wiki/help/en/howto/s3">CyberDuck: Not supported as of 2015/09/29</a></li>
 </ul>
