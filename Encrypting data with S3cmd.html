@@ -1,0 +1,63 @@
+<h2><span id="encrypting-data">How to encrypt your data</span></h2>
+<p>S3cmd can encrypt your data while uploading to DreamObjects. To use this functionality, you must first configure your .s3cfg file as shown in this article:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360022542692-Installing-S3cmd">Installing S3cmd</a></li>
+</ul>
+<h3>Configuring your .s3cfg file</h3>
+<p>Open the file:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">nano ~/.s3cfg</span></pre>
+</div>
+<p>Add the following lines so you can use encryption.  Make sure to create your own password for 'gpg_passphrase':</p>
+<div class="preboxcontainer">
+<pre class="prebox">check_ssl_certificate = True
+check_ssl_hostname = True
+gpg_command = /usr/bin/gpg
+gpg_decrypt = %(gpg_command)s -d --verbose --no-use-agent --batch --yes --passphrase-fd %(passphrase_fd)s -o %(output_file)s %(input_file)s
+gpg_encrypt = %(gpg_command)s -c --verbose --no-use-agent --batch --yes --passphrase-fd %(passphrase_fd)s -o %(output_file)s %(input_file)s
+gpg_passphrase = <span class="command">yourpassword</span></pre>
+</div>
+<p>Your configuration is now set up to encrypt data.</p>
+<h3>Encrypting data while uploading</h3>
+<p>To encrypt your data while uploading, use the <span class="code">-e</span> flag. In the following example, 'bucket-name' is the name of the bucket you're uploading content to. textfile.txt is the name of the single file you're uploading:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command"> s3cmd -e put testfile.txt s3://bucket-name</span>
+
+upload: '/tmp/tmpfile-zFGwbLHMVEINdHh3615n' -&gt; 's3://bucket-name/testfile.txt'  [1 of 1]
+ 63 of 63   100% in    0s   129.96 B/s  done</pre>
+</div>
+<p>To confirm it is encrypted, navigate to the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=cloud.objects&amp;" target="_blank" rel="noopener">DreamObjects</a> page. Click the 'View Objects' button under your username. A prompt opens for you to view objects in your bucket.</p>
+<p><img src="https://objects-us-east-1.dream.io/kbimages/images/2018-06_panel_dho-viewing-object.png"></p>
+<p>Click the object, copy the URL, and then paste it into a browser.</p>
+<p><img class="img-border" src="https://objects-us-east-1.dream.io/kbimages/images/2018-06_dho-viewing-encrypted-object.png"></p>
+<p>You'll see the data in the file is encrypted.</p>
+<h3>Decrypting a file</h3>
+<p>When you use s3cmd to download an encrypted file, it's automatically decrypted for you:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd get s3://bucket-name/encrypted-file.txt</span>
+download: 's3://bucket-name/encrypted-file.txt' -&gt; './encrypted-file.txt'  [1 of 1]
+ 70 of 70   100% in    0s   323.19 B/s  done</pre>
+</div>
+<p>If you read the contents of the file, you'll see it's no longer encrypted:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cat encrypted-file.txt</span>
+Testing a file</pre>
+</div>
+<h2>Signing an S3 URL to provide limited public access</h2>
+<p>You can manually set an expiration date for a file to be accessed. To do this, you must first convert the date into a Unix Epoch timestamp.</p>
+<ol>
+<li>Decide on the date you wish to allow the URL to be signed/accessed until.</li>
+<li>Visit <a href="https://www.epochconverter.com/">Epoch Converter</a> to convert your date to an Epoch Timestamp. It will look like a string of numbers. For example: 1540232086</li>
+<li>Run the following command to sign the URL until this timestamp. (Make sure to change the bucket name and file name to your actual information.)
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd signurl s3://my_bucket/my_file.png 1540232086</span>
+http://my-bucket.objects-us-east-1.dream.io/my_file.png?AWSAccessKeyId=DHDPTCQ3WFGHPSS5FAXG&amp;Expires=1540232086&amp;Signature=9nf8f9kG%2FqDa76rmET4R%2FpbtaGM%3D</pre>
+</div>
+</li>
+<li>This outputs the signed URL. You can now share this URL so anyone can access that file until the date you have specified.</li>
+</ol>
+<p>You can also sign it for 1 week using this format:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd signurl s3://my_bucket/my_file.png $(echo "`date +%s` + 3600 * 24 * 7" | bc)</span></pre>
+</div>
+<div class="footer"> </div>
