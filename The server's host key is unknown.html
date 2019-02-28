@@ -1,12 +1,12 @@
 <div class="alert alert-important">
-<div class="alert-icon"><img height="60" src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
 <p>This article explains how to verify you're connecting to a DreamHost server and that your connection is secure. If you follow the steps in this article and the fingerprint values do not match what shows in your DreamHost panel, DO NOT CONNECT to the server. <a href="https://help.dreamhost.com/hc/en-us/articles/218084068-Contacting-support-overview">Contact DreamHost support</a> so they may investigate why the fingerprints are different.</p>
 </div>
 </div>
 <h2>Verifying the fingerprint using an FTP client</h2>
 <div class="alert alert-note">
-<div class="alert-icon"><img height="60" src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
 <p>The following examples must be ran in an SSH terminal. View the following articles for further information:</p>
 <ul>
@@ -23,22 +23,22 @@
 </dl>
 <p>For example:</p>
 <dl>
-<dd><img alt="" src="https://objects-us-east-1.dream.io/kbimages/images/2018-06_panel_server_host_keys_01.png"/></dd>
+<dd><img src="https://objects-us-east-1.dream.io/kbimages/images/2018-06_panel_server_host_keys_01.png" alt="" /></dd>
 </dl>
-<p>To confirm if this is the correct server, navigate to the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=users.sshkeys&amp;" rel="noopener" target="_blank">SSH Keys</a> page. On that page, you'll see your server along with its matching Fingerprints. </p>
+<p>To confirm if this is the correct server, navigate to the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=users.sshkeys&amp;" target="_blank" rel="noopener">SSH Keys</a> page. On that page, you'll see your server along with its matching Fingerprints.</p>
 <p>For example:</p>
 <dl>
-<dd><img alt="" class="img-border" src="https://objects-us-east-1.dream.io/kbimages/images/2018-06_panel_server_host_keys_02.png"/></dd>
+<dd><img class="img-border" src="https://objects-us-east-1.dream.io/kbimages/images/2018-06_panel_server_host_keys_02.png" alt="" /></dd>
 </dl>
 <p>Compare the two to confirm it's the same server. You can then accept the warning and log in normally.</p>
-<h2>Using SSH to verify the server's fingerprint</h2>
+<h2><span id="using-ssh-to-verify-fingerprint">Using SSH to verify the server's fingerprint</span></h2>
 <p>You can use SSH to verify the server's fingerprint using a few commands. Please note that some commands only work on specific versions of OpenSSH. To verify your current version, run the following command:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">ssh -V</span></pre>
 </div>
 <p>This responds with the version number. There are a few command that do NOT work if the version is lower than 6.8.</p>
 <p>The following examples are going to use the fingerprints from the Shared server named batroc:</p>
-<p><img class="img-border" src="https://objects-us-east-1.dream.io/kbimages/images/2018-11_panel_ssh-keys_verifying-fingerprints_01.png"/></p>
+<p><img class="img-border" src="https://objects-us-east-1.dream.io/kbimages/images/2018-11_panel_ssh-keys_verifying-fingerprints_01.png" /></p>
 <h3>Using OpenSSH version 7.6p1</h3>
 <p>A common command to run is: FingerprintHash.</p>
 <h4>Check the RSA (MD5) fingerprint</h4>
@@ -81,7 +81,7 @@ ED25519 key fingerprint is <span class="green">SHA256:q3JfuvuldJy5u/ETWHW7HBQ3Zq
 <p>As mentioned above, the 'FingerprintHash' command does not work on OpenSSH versions lower than 6.8. However you can run ssh-keyscan to download the public key, then check its fingerprints.</p>
 <p>First, download the public key from the server.</p>
 <div class="alert alert-note">
-<div class="alert-icon"><img height="60" src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">Depending on the version of OpenSSH you're using, only certain keys will be downloaded. Versions lower than 6.8 will default to MD5.</div>
 </div>
 <div class="preboxcontainer">
@@ -113,9 +113,11 @@ batroc.dreamhost.com ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbml
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">awk '{print $3}' batrockeys.pub | base64 -d | sha256sum -b | awk '{print $1}' | xxd -r -p | base64</span>
 <span class="green">ijqWGQW20bkvOViujUO5PRknle09aDPUjh25u60T7eQ=</span></pre>
 </div>
-<h2><span id="See_also">See also</span></h2><div class="solvvy-hidden">
+<h2><span id="See_also">See also</span></h2>
+<div class="solvvy-hidden">
 <ul>
 <li><a href="/hc/en-us/articles/215613107-List-of-FTP-client-software">List of FTP client software</a></li>
 <li><a href="/hc/en-us/articles/214920778-Where-do-I-put-my-files-once-connected-via-FTP-">Where do I put my files once connected via FTP?</a></li>
 <li><a href="/hc/en-us/articles/215613037-How-do-I-show-hidden-files-on-my-FTP-client-">How do I show hidden files on my FTP client?</a></li>
-</ul></div>
+</ul>
+</div>
