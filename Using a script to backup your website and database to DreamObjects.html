@@ -1,3 +1,4 @@
+<div class="solvvy-solution">
 <p>Using a simple shell script, you can automate website and database backups to DreamObjects. This script does the following:</p>
 <ul>
 <li>dumps a database in the format "mm-dd-yyyy_db-name_.sql" to the directory "/home/username/backup/example.com”</li>
@@ -6,32 +7,36 @@
 <li>uploads the website .zip file to DreamObjects</li>
 <li>deletes the database and website zip file on the web server to conserve space</li>
 </ul>
+</div>
 <h2>Step 1 — Setting up your DreamObjects bucket</h2>
+<div class="solvvy-solution">
 <ol>
 <li>View the following article to create a DreamObjects account, add a user, and create a bucket.
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/214823108-What-is-DreamObjects-">What is DreamObjects?</a></li>
 </ul>
 <dl>
-<dd><img alt="01_DHO_Panel_Upload.fw.png" class="img-border" src="https://objects-us-east-1.dream.io/kbimages/images/01_DHO_Panel_Upload.fw.png"/></dd>
+<dd><img class="img-border solvvy-hidden" src="https://objects-us-east-1.dream.io/kbimages/images/01_DHO_Panel_Upload.fw.png" alt="01_DHO_Panel_Upload.fw.png" /></dd>
 </dl>
 </li>
-<li>On the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=cloud.objects" rel="noopener" target="_blank">DreamObjects</a> page, locate the User that contains the bucket you wish to work with, then click the <strong>View Objects</strong> button.
+<li>On the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=cloud.objects" target="_blank" rel="noopener">DreamObjects</a> page, locate the User that contains the bucket you wish to work with, then click the <strong>View Objects</strong> button.
 <dl>
 <dd>
 <p><em>The available buckets appear in the following window:</em></p>
-<div class="figure"><img alt="02_DHO_Panel_Upload.fw.png" src="https://objects-us-east-1.dream.io/kbimages/images/02_DHO_Panel_Upload.fw.png"/></div>
+<div class="figure"><img class="solvvy-hidden" src="https://objects-us-east-1.dream.io/kbimages/images/02_DHO_Panel_Upload.fw.png" alt="02_DHO_Panel_Upload.fw.png" /></div>
 </dd>
 </dl>
 </li>
 <li>Select the bucket you wish to upload objects to.
 <dl>
-<dd><img class="img-border" src="https://objects-us-east-1.dream.io/kbimages/images/2018-06_panel_dho-add-folder.png"/></dd>
+<dd><img class="img-border solvvy-hidden" src="https://objects-us-east-1.dream.io/kbimages/images/2018-06_panel_dho-add-folder.png" /></dd>
 </dl>
 </li>
 <li>Click the 'Add Folder' link and add a new folder called 'backups'. This folder will be used to upload your website and database backups.</li>
 </ol>
-<h2>Step 3 — Creating the backup script</h2>
+</div>
+<h2>Step 2 — Creating the backup script</h2>
+<div class="solvvy-solution">
 <ol>
 <li>Log into your server via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH</a>.</li>
 <li>Create a new directory named 'backup' in your user's home directory.
@@ -64,7 +69,7 @@ sqldb=( <span class="command">your-db-name</span> )
 opath=$HOME/<span class="command">backup/</span>
 mysqlhost=<span class="command">mysql.example.com</span>
 username=<span class="command">db-username</span>
-password=<span class="command">db-user-password<br/></span>webdir=$HOME/<span class="command">example.com</span>
+password=<span class="command">db-user-password<br /></span>webdir=$HOME/<span class="command">example.com</span>
 today=$(date +%m-%d-%Y)
 
 for (( i = 0; i &lt; ${#domain[@]}; i++))
@@ -91,13 +96,17 @@ find $HOME/backup/* -type d -exec rm -rf {} \; 2&gt; /dev/null</pre>
 </li>
 </ol>
 <p>The above code backs up your database and website files to your DreamObjects bucket inside a folder named /backups.</p>
+</div>
 <h2>Step 3 — Install aws-cli</h2>
+<div class="solvvy-solution">
 <p>aws-cli is a command line client that allows you to manage your DreamObjects data. To install, you'll need to create a Python virtual environment. In that, you can install aws-cli.</p>
 <p>View the following article for instructions on how to install and configure aws-cli for your bucket.</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216335908-Installing-and-configuring-AWS-CLI">Installing and configuring AWS CLI</a></li>
 </ul>
+</div>
 <h2>Step 4 — Running the file</h2>
+<div class="solvvy-solution">
 <h3>Running it manually</h3>
 <p>After activating your virtual environment, you can run the file manually with the following command:</p>
 <div class="preboxcontainer">
@@ -106,7 +115,7 @@ find $HOME/backup/* -type d -exec rm -rf {} \; 2&gt; /dev/null</pre>
 <h3>Running it with a cron job</h3>
 <p>You can also create a <a href="https://help.dreamhost.com/hc/en-us/articles/215088668-How-do-I-create-a-cron-job-">cron job</a> to run this automatically at specific times. To do this, create a new file named something like 'websitebackup.sh' with the following code.</p>
 <div class="alert alert-note">
-<div class="alert-icon"><img height="60" src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
 <p>Make sure to change 'my-user-bucket' to the name of your virtual environment, and example.com-backup.sh to the name of your backup file.</p>
 </div>
@@ -118,7 +127,9 @@ sh ~/backup/example.com-backup.sh</pre>
 </div>
 <p>View the <a href="https://help.dreamhost.com/hc/en-us/articles/215088668-How-do-I-create-a-cron-job-">How do I create a cron job?</a> article to create your cron job. In the text box, enter the following command (change the username to your Shell user).</p>
 <p><strong>/bin/bash /home/username/websitebackup.sh</strong></p>
-<h2><span id="See_also">See also</span></h2><div class="solvvy-hidden">
+</div>
+<h2><span id="See_also">See also</span></h2>
+<div class="solvvy-hidden">
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215099117-MySQL-overview">MySQL overview</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/214395738-phpMyAdmin-How-to-backup-or-export-a-database-or-table">phpMyAdmin — How to backup / export a database or table</a></li>
@@ -134,4 +145,5 @@ sh ~/backup/example.com-backup.sh</pre>
 <h3>External links</h3>
 <ul>
 <li><a href="http://dev.mysql.com/doc/refman/5.0/en/mysqldump.html">MySQL 5.0 Reference Manual: mysqldump</a></li>
-</ul></div>
+</ul>
+</div>
