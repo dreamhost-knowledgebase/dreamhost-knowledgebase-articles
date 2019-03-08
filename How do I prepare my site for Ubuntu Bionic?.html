@@ -6,7 +6,7 @@
 <div class="table-of-content container">
 <ul class="simple">
 <li><a class="reference internal" href="#prep">What to expect</a></li>
-<li><a class="reference internal" href="#mysql">MySQL server changes</a></li>
+<li><a class="reference internal" href="#mysql">MySQL</a></li>
 <li><a class="reference internal" href="#telnet">Telnet</a></li>
 <li><a class="reference internal" href="#boto_s3cmd">Boto-rsync and S3cmd</a></li>
 <li><a class="reference internal" href="#ruby">Ruby version change (from 1.9.3.4 to 2.5.1)</a></li>
@@ -23,8 +23,11 @@
 <p>DreamHost will contact you via email in advance of the upgrade.</p>
 <p>The time frame of an upgrade can vary from server to server, however the timing ensures that there are several highly trained engineers on hand should any major issues arise. The upgrade itself should take no longer than an hour to complete.</p>
 <p>Any services that rely on the availability of your MySQL server (WordPress or any other database-driven websites, applications, and so on) will not be reachable until the upgrade is complete. This will NOT affect cloud or email services.</p>
-<h2><span id="mysql">MySQL server changes</span></h2>
-<p>DreamHost MySQL servers will be upgraded to MySQL version to 5.7 as part of the Ubuntu upgrade. MySQL 5.7 has <a href="https://dev.mysql.com/doc/refman/5.7/en/keywords.html">a list of "reserved" words</a> you cannot use as a database name. If you are affected by this, you have already been contacted by support and should <a href="/hc/en-us/articles/360021851311-Renaming-your-database-in-the-DreamHost-panel">change your database name</a> immediately, as instructed.</p>
+<h2><span id="mysql">MySQL</span></h2>
+<h3>Server changes</h3>
+<p>DreamHost MySQL servers will be upgraded to MySQL version to 5.7 as part of the Ubuntu upgrade.</p>
+<h3>Reserved words</h3>
+<p>MySQL 5.7 includes list of "reserved" words (such as ‘SELECT’, ‘DELETE’, ‘BIGINT’, and ‘VIRTUAL’) that cannot be used as a database name and must be escaped. These words are reserved and require special treatment for use as identifiers such as table and column names. Please see the MySQL <a href="https://dev.mysql.com/doc/refman/5.7/en/keywords.html" target="_self">Keywords and Reserved Words</a> article for more information.</p>
 <h2>Web server changes</h2>
 <h3><span id="telnet">Telnet</span></h3>
 <p>Because Telnet is a deprecated protocol, it is removed from the latest version of Ubuntu Bionic in order to help keep your server secure. If you require telnet, DreamHost recommends running it on your local computer instead.</p>
@@ -46,6 +49,12 @@
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">touch  tmp/restart.txt</span>
 </pre>
 </div>
+<h3>GCC version change to 7</h3>
+<p>Bionic comes with gcc-7, but older versions of Ruby require gcc-6. If you require a version of Ruby earlier than 2.4, you must compile GCC locally first as gcc-6 is no longer supported.</p>
+<ul>
+<li><a href="https://gcc.gnu.org/install/index.html">https://gcc.gnu.org/install/index.html</a></li>
+</ul>
+<p>If possible, it is strongly recommended you migrate your site to a newer version entirely.</p>
 <h3><span id="perl">Perl version change (from 5.18.4 to 5.26)</span></h3>
 <p>Ubuntu Bionic includes a new version of Perl, 5.26.</p>
 <p>For more information on updating your version of Perl, visit the following article:</p>
