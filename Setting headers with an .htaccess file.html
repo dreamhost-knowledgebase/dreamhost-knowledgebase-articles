@@ -1,3 +1,4 @@
+<h2> </h2>
 <h2>Creating an .htaccess file on your DreamHost web server</h2>
 <p>View the following article for instructions on how to create an .htaccess file on your web server:</p>
 <ul>
@@ -106,8 +107,57 @@ Header add Access-Control-Allow-Headers: "Content-Type"
 Header always append X-Frame-Options SAMEORIGIN
 &lt;/IfModule&gt;</pre>
 </div>
-<h2><span id="See_also">See also</span></h2><div class="solvvy-hidden">
+<h2>Cross-site Scripting protection (XSS)</h2>
+<p>This header helps to protect your visitors against Cross-site Scripting attacks. View the following article for further details:</p>
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection">developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection</a></li>
+</ul>
+<div class="preboxcontainer">
+<pre class="prebox"># X-XSS-Protection
+&lt;IfModule mod_headers.c&gt;
+Header set X-XSS-Protection "1; mode=block"
+&lt;/IfModule&gt;</pre>
+</div>
+<h2>X-Content-Type-Options</h2>
+<p>This header blocks content sniffing that could transform non-executable MIME types into executable MIME types. View the following article for further details:</p>
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options">developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options</a></li>
+</ul>
+<div class="preboxcontainer">
+<pre class="prebox">#X-Content-Type-Options
+&lt;IfModule mod_headers.c&gt;
+  Header set X-Content-Type-Options nosniff
+&lt;/IfModule&gt;</pre>
+</div>
+<h2>X-Content-Type-Options</h2>
+<p>This header blocks content sniffing that could transform non-executable MIME types into executable MIME types. View the following article for further details:</p>
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options">developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options</a></li>
+</ul>
+<div class="preboxcontainer">
+<pre class="prebox">#X-Content-Type-Options
+&lt;IfModule mod_headers.c&gt;
+  Header set X-Content-Type-Options nosniff
+&lt;/IfModule&gt;</pre>
+</div>
+<h2>Content-Security-Policy</h2>
+<p>This header specifies approved sources of content the browser is allowed to load. The example below tells the browser to only load content originating from the specified website over HTTPS. </p>
+<p>If you're going to force the HTTPS rule, make sure you're already added an SSL certificate and are forcing all connections to use it.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215089118-Adding-an-SSL-certificate-overview" target="_self">Adding an SSL certificate overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115003505112-How-to-force-your-site-to-redirect-to-https-SSL-" target="_self">How to force your site to redirect to https (SSL)</a></li>
+</ul>
+<p>View the following article for further details:</p>
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP">developer.mozilla.org/en-US/docs/Web/HTTP/CSP</a></li>
+</ul>
+<div class="preboxcontainer">
+<pre class="prebox">Header set Content-Security-Policy "default-src https://example.com:443"</pre>
+</div>
+<h2><span id="See_also">See also</span></h2>
+<div class="solvvy-hidden">
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216456227--htaccess-overview">.htaccess overview</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/217738987-What-can-I-do-with-an-htaccess-file-">What can I do with an .htaccess file?</a></li>
-</ul></div>
+</ul>
+</div>
