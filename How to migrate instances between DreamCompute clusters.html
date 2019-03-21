@@ -1,3 +1,4 @@
+<h2>Overview</h2>
 <p>DreamCompute offers multiple clusters (also often called availability zones) which are independent OpenStack installations with their own servers, storage, and control panel. Some clusters have different features, such as SSD storage or different hardware that is useful for a given task. Migrating instances and data between clusters is not automated at this time, but this guide shows you how to accomplish this yourself.</p>
 <p>This guide assumes that you are comfortable working with SSH as well as some command line utilities like <span class="code">dd</span> and the OpenStack CLI. For more information about those utilities, see the articles below.</p>
 <ul>
@@ -13,7 +14,7 @@
 <h3>SSH keys</h3>
 <p>Each cluster manages its SSH Keys separately, so if you have your keys already set up in the source cluster, you must set up the same keys (or new ones) in the destination cluster. You can grab the public key of any key pair in your project from the (<a href="https://iad2.dreamcompute.com/project/key_pairs/">'Project' &gt; 'Compute' &gt; 'Key Pairs'</a>) page of the DreamCompute dashboard.</p>
 <dl>
-<dd><img class="img-border" src="https://objects-us-east-1.dream.io/kbimages/images/migrate-instances-between-clusters_01.png" alt="" /></dd>
+<dd><img alt="" class="img-border" src="https://objects-us-east-1.dream.io/kbimages/images/migrate-instances-between-clusters_01.png"/></dd>
 </dl>
 <dl>
 <dd>To get to that page, just click on the key pair name.</dd>
@@ -27,7 +28,7 @@
 <h2>Migrating a volume-backed instance using the OpenStack CLI</h2>
 <p>For this type of move, it is necessary to delete the instance so that it leaves behind a volume to migrate.</p>
 <div class="alert alert-important">
-<div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-icon"><img height="60" src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60"/></div>
 <div class="alert-content">
 <p>This method requires that you did not select "Yes" for the "Delete Volume on Instance Delete" option when you created your instance. If you did, please skip to the last section for <a class="reference external" href="#migrating-an-ephemeral-instance-using-the-openstack-cli">instructions on migrating running instances</a>. If you continue, you may permanently destroy and lose your data.</p>
 </div>
