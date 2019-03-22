@@ -1,6 +1,6 @@
-<h2>Overview</h2>
+<h2>Overview</h2><div class="solvvy-solution">
 <p>This article guides you through the process of creating a Wildcard 'Let's Encrypt' certificate on your domain hosted on DreamCompute. With this configuration, a single SSL certificate is set up on your primary domain (example.com), but all subdomains under (such as blog.example.com) it will also be able to use the certificate.</p>
-<h2>Configuring your site and instance</h2>
+</div><h2>Configuring your site and instance</h2><div class="solvvy-solution">
 <p>This article assumes you've already done the following:</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215912848-How-to-launch-an-instance-using-the-DreamCompute-dashboard">Launched an instance</a></li>
@@ -15,7 +15,7 @@
 <li>Using the same steps, added any subdomains you want hosted to DreamCompute (i.e., blog.example.com)</li>
 </ul>
 <p>If you've followed those steps, your website and its subdomains will already be resolving from the DreamCompute instance. You can now create the Wildcard certificate to use for all of those domains.</p>
-<h2>Enable mod_rewrite and ssl</h2>
+</div><h2>Enable mod_rewrite and ssl</h2><div class="solvvy-solution">
 <p>Before continuing, make sure that mod_rewrite and ssl are enabled on your server. You can confirm by running the following commands:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">ls -1 /etc/apache2/mods-enabled | grep rewrite</span>
@@ -34,7 +34,7 @@ rewrite.load
 <span class="server">[server]$ </span><span class="command">ls -1 /etc/apache2/mods-enabled | grep ssl</span>
 ssl.conf<br/>ssl.load</pre>
 </div>
-<h2>Creating the certificate</h2>
+</div><h2>Creating the certificate</h2><div class="solvvy-solution">
 <p>Run the following commands in order to create your Wildcard certificate.</p>
 <ol>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216201547-Connect-to-your-instance-with-SSH-keys-overview">Log into your instance</a>.</li>
@@ -158,7 +158,7 @@ IMPORTANT NOTES:
 </div>
 </li>
 </ol>
-<h2>Configure your domain to use this certificate</h2>
+</div><h2>Configure your domain to use this certificate</h2><div class="solvvy-solution">
 <p>Navigate to your /site-available directory.</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">root@[server]# </span><span class="command">cd /etc/apache2/sites-available</span></pre>
@@ -227,7 +227,7 @@ Enabling site example.com-le-ssl</pre>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo service apache2 reload</span></pre>
 </div>
-<h2>Configure your subdomains to use this certificate</h2>
+</div><h2>Configure your subdomains to use this certificate</h2><div class="solvvy-solution">
 <p>Make an additional files for any subdomains you wish to use this same certificate for. For example, if you want the subdomain sub1.example.com to also be protected by this Wildcard certificate, add files named <strong>sub1.example.com.conf</strong> and <strong>sub1.example.com-le-ssl.conf</strong> to the /etc/apache2/sites-available directory as shown above.</p>
 <div class="alert alert-important">
 <div class="alert-icon"><img height="60" src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60"/></div>
@@ -263,4 +263,4 @@ Enabling site example.com-le-ssl</pre>
 <p>Finally, reload Apache so it knows about the new configurations.</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">sudo service apache2 reload</span></pre>
-</div>
+</div></div>
