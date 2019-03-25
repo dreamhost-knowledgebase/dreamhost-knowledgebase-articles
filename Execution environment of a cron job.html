@@ -1,4 +1,4 @@
-<h2>Overview</h2>
+<h2>Overview</h2><div class="solvvy-solution">
 <p>The cron daemon was designed in such a way that it does NOT execute commands within your normal shell environment. This means you cannot use bare commands in cron the way you would from the SSH shell command line. This is because the PATH environment variable is <em>/usr/bin:/bin</em>, and the SHELL environment variable is set to <em>/bin/sh</em>.</p>
 <h3>Examples</h3>
 <p>This is an example using the 'wp' command.</p>
@@ -21,23 +21,23 @@
 <div class="preboxcontainer">
 <pre class="prebox">/usr/bin/wp</pre>
 </div>
-<h2><span id="Using_sudo_and_cron_with_an_admin_user">Using sudo and cron with an admin user on a Dedicated server</span></h2>
+</div><h2><span id="Using_sudo_and_cron_with_an_admin_user">Using sudo and cron with an admin user on a Dedicated server</span></h2><div class="solvvy-solution">
 <p>If you’re on a Dedicated Server and have an <a href="https://help.dreamhost.com/hc/en-us/articles/215945467-How-do-I-add-users-to-a-Dedicated-server-">admin user</a>, do not use 'sudo' in your crontab. Instead of your script working, you’ll get an error like this.</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">sudo: no tty present and no askpass program specified</span></pre>
 </div>
 <p>This is because 'sudo' requires a password to be entered in order to run and cron jobs (along with any program/command/script you could execute from them) do not allow any input to be specified.</p>
 <p>If you need root level permissions for a script, you’ll need to create a file in crontab format in the /etc/cron.d/ directory. Of course, make sure to keep a backup of that file as that location is outside the /home directory and not included in DreamHost’s internal backups.</p>
-<h2><span id="MAILTO_variable_requirement">MAILTO variable requirement</span></h2>
+</div><h2><span id="MAILTO_variable_requirement">MAILTO variable requirement</span></h2><div class="solvvy-solution">
 <p>For performance reasons, DreamHost now requires all crontabs to have a MAILTO variable set.</p>
 <p>The MAILTO variable can be set to anything. If you leave it blank, it does not email output of your cronjobs. You can set it to your username to have it delivered to your user as usual, or you can specify an external email address. Please note that if you specify an external email address, any cron emails that get sent (including completion/error notification messages) factor in to your shell user's hourly email sending quota. For more information about that limit, please view the <a href="/hc/en-us/articles/215730437-SMTP-quota-limits">SMTP quota</a> article.</p>
 <div class="alert alert-note">
-<div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-icon"><img alt="" height="60" src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60"/></div>
 <div class="alert-content">
 <p>If your cron job doesn't create any output on the command line, no email is sent even if the cron job is set to send email.</p>
 </div>
 </div>
-<h2><span id="Examples_of_a_valid_MAILTO_configuration_in_a_crontab_file">Examples of a valid MAILTO configuration in a crontab file</span></h2>
+</div><h2><span id="Examples_of_a_valid_MAILTO_configuration_in_a_crontab_file">Examples of a valid MAILTO configuration in a crontab file</span></h2><div class="solvvy-solution">
 <p>To disable sending cronjob output via email:</p>
 <div class="preboxcontainer">
 <pre class="prebox">MAILTO=""</pre>
@@ -51,12 +51,12 @@
 <pre class="prebox">MAILTO=youruser</pre>
 </div>
 <div class="alert alert-note">
-<div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-icon"><img alt="" height="60" src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60"/></div>
 <div class="alert-content">
 <p>As stated when running <code>man 5 crontab</code>, strings are not parsed for environmental substitutions or replacement of variables. This means that MAILTO=$LOGNAME does not work.</p>
 </div>
 </div>
-<h2><span id="Cron_job_character_limit">Cron job character limit</span></h2>
+</div><h2><span id="Cron_job_character_limit">Cron job character limit</span></h2><div class="solvvy-solution">
 <p>When adding/modifying a cron job in the panel, the 'Command to run' field specifies a maximum of 1000 characters. This limit does not include the additional content DreamHost adds to the cron job (such as locking or the sh -c $’’ encapsulation). On average, that additional content should not be more than 100 characters. Violating the limit results in this warning:</p>
 <div class="preboxcontainer">
 <pre class="prebox">/bin/sh: -c: line 1: unexpected EOF while looking for matching `''
@@ -67,7 +67,7 @@
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">. ~/cron.sh</span></pre>
 </div>
 <p>Be sure to review the Execution environment section above to make sure you account for any missing variables, paths, and/or declarations.</p>
-<h2><span id="see">See also</span></h2>
+</div><h2><span id="see">See also</span></h2>
 <div class="solvvy-hidden">
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>

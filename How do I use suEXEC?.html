@@ -1,13 +1,13 @@
-<h2>Overview</h2>
+<h2>Overview</h2><div class="solvvy-solution">
 <p>suEXEC (which stands for "switch user execution") provides <a href="/hc/en-us/articles/217214317-Apache-HTTP-Server">Apache</a> users the ability to run <a href="/hc/en-us/articles/217297307-CGI-overview">CGI</a> and SSI programs under user IDs different from the user ID of the calling web server. Normally, when a CGI or SSI program executes, it runs as the same user who is running the web server.</p>
 <p>As a security precaution, suEXEC REQUIRES that all CGI scripts and the directories in which they reside not be writable by anyone but the owner user. suEXEC performs checks on the executed CGI to ensure security for the server. It has strict permission checking that results in a "500 Internal Server Error" if the permissions of the script are not set correctly. It also cleans the environment by only passing through those environment variables that are considered safe.</p>
 <p>When used properly, this feature can considerably reduce the security risks involved with allowing users to develop and run private CGI or SSI programs.</p>
-<h2><span id="Script_permissions">Script permissions</span></h2>
+</div><h2><span id="Script_permissions">Script permissions</span></h2><div class="solvvy-solution">
 <p>Because of the way suEXEC handles security, the directory in which your CGI script lives and the script itself must not be writable by anyone but the user. If it is writable, a "500 Internal Server Error" appears. The script must also be executable, and the easiest way to set permissions is with chmod:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command"> chmod 755 script.cgi</span></pre>
 </div>
-<h2><span id="Apache_module_mod_env">Apache module mod_env</span></h2>
+</div><h2><span id="Apache_module_mod_env">Apache module mod_env</span></h2><div class="solvvy-solution">
 <p>Because suEXEC cleans the environment by wiping out all the environment variables except those deemed safe by the server's configuration, the directives provided by <a href="http://httpd.apache.org/docs/2.2/mod/mod_env.html">mod_env</a> such as SetEnv, PassEnv, and SetEnvIf don't work as expected.</p>
 <p>Say you have foobar.cgi installed at both /home/username/example.com and /home/username/example2.com:</p>
 <div class="preboxcontainer">
@@ -32,7 +32,7 @@ print $ENV{FOOBAR};</pre>
 <p>When you visit example.com/foobar.cgi in your browser, you'd expect it to print foo, and when you visit example2.com/foobar.cgi, you'd expect bar. Instead, default is printed both times.</p>
 <p>At first, you might assume mod_env is not installed or that the SetEnv directive is not allowed from .htaccess. In fact, SetEnv is working just fine. It is setting the environment variable; suEXEC just isn't passing it to your CGI script.</p>
 <p>On the one hand, if you're developing your own application, you can just keep this in mind while developing it and not design your application to use non-standard environmental variables. If, on the other hand, you are using a third-party application and modifying the source code would be prohibitively difficult and/or time-consuming (or if you just need to have those custom environment variables in the application you're developing yourself), there are a few workarounds which are described in the next section.</p>
-<h2><span id="Workarounds">Workarounds</span></h2>
+</div><h2><span id="Workarounds">Workarounds</span></h2><div class="solvvy-solution">
 <h3><span id="Workaround_A:_Prepending_HTTP_to_variable_name">Workaround A: Prepending HTTP_ to variable name</span></h3>
 <p>The way DreamHost configures suEXEC, it allows any environment variable that begins with HTTP_ through. So, if you change your .htaccess to:</p>
 <div class="preboxcontainer">
@@ -82,7 +82,7 @@ RewriteRule ^application/.*\.cgi /wrapper.cgi
 <li>wrapper.cgi can call a script outside your domain's directory. This is actually what you probably want to do, as the wrapper in both /home/exampleuser/example.com/ and /home/exampleuser/example2.com can refer to the same script(s) in /home/shared.</li>
 </ul>
 <p>Workaround C is convoluted but is suitable for a far wider range of cases than either Workaround A or Workaround B. Unlike Workaround A, you can set an environmental variable for hundreds (or thousands) of files by editing just two files (wrapper.cgi and .htaccess. And, when you set an environmental variable for a third-party application, you don't have to modify any files when you upgrade the application. You can have multiple wrapper scripts, so unlike Workaround B, the context (or environment) can actually alter the behavior of the script(s). Simply copy wrapper.cgi and .htaccess from example.com to example2.com, edit wrapper.cgi, and then change export FOOBAR=foo to export FOOBAR=bar, and you're done.</p>
-<h2><span id="See_also">See also</span></h2><div class="solvvy-hidden">
+</div><h2><span id="See_also">See also</span></h2><div class="solvvy-hidden">
 <h3>Internal links</h3>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>

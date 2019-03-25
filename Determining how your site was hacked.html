@@ -1,4 +1,4 @@
-<h2>Overview</h2>
+<h2>Overview</h2><div class="solvvy-solution">
 <div class="alert alert-tip">
 <div class="alert-icon"><img alt="" height="60" src="https://kbimages.dreamhosters.com/images/dh-kb-tip-icon.svg" width="60"/></div>
 <div class="alert-content">
@@ -12,7 +12,7 @@
 <li>You have world-writable directory permissions on web-accessible folders.</li>
 </ol>
 <p>Perhaps counter-intuitively, CGI hacks are more common than FTP/SSH password hacks primarily due to the sheer proliferation of pre-bundled software that people set up and frequently later forget to update. However, FTP/SSH hacks are the easiest to check up on. World-writable folders attacks are possible when the attacker is in the same machine that your account is. With world-writable permissions (o=w), anyone with an account on the hosting machine is able to put files there.</p>
-<h2><span id="Looking_for_FTP.2FSSH_hacks">Looking for FTP/SSH hacks</span></h2>
+</div><h2><span id="Looking_for_FTP.2FSSH_hacks">Looking for FTP/SSH hacks</span></h2><div class="solvvy-solution">
 <p>Since recent FTP/SSH hacks are easiest to spot, start by eliminating this option. Log into your user via SSH and run the following commands.</p>
 <p>Shows you your login history for the current month:</p>
 <div class="preboxcontainer">
@@ -63,7 +63,7 @@ youruser pts/2        66.33.XXX.XXX    Tue May 20 13:06 - 13:22  (00:15)
 <li>Discontinue use of FTP which sends your password over the Internet in plaintext, and then switch to <a href="https://help.dreamhost.com/hc/en-us/articles/115000675027#FTP_security">SFTP</a> or <a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a>. You can disable FTP for the account in the control panel on the same page that you changed your password.</li>
 <li>Ensure there is up-to-date virus/malware scanning on any computers on which you've used the password/user in question.</li>
 </ol>
-<h2><span id="Looking_for_CGI_hacks">Looking for CGI hacks</span></h2>
+</div><h2><span id="Looking_for_CGI_hacks">Looking for CGI hacks</span></h2><div class="solvvy-solution">
 <h3><span id="Checking_your_logs_on_a_specific_date">Checking your logs on a specific date</span></h3>
 <p>If possible, start by trying to determine when the hack occurred. This can often be determined by noting the modification date of any files which have been modified by the hacker. Usually, they will all share a common modification time. If that time can be determined, check the logs for that day and time to see what was requested or posted to your site.</p>
 <p>Careful examination of your log files often reveals exactly how your site was hacked. Every request and post to your site is logged and the log files can not be changed by the user, so the record of the attack is preserved provided that the exploit was discovered within the 30 days or so which are recorded in the logs.</p>
@@ -75,7 +75,7 @@ youruser pts/2        66.33.XXX.XXX    Tue May 20 13:06 - 13:22  (00:15)
 </div>
 <p>This returns a report of all requests to your site from all available logs sorted in ascending order. Since the majority of requests should (hopefully) be legitimate, it's easiest to start by looking at the top of the report — the least frequent requests — for evidence of the exploit:</p>
 <p>It's not uncommon to see many requests which should not be there, as this is the nature of a website since it is publicly accessible. These requests do not, in and of themselves, indicate a breach, but should be investigated to see if the request successfully revealed a vulnerability.</p>
-<h2><span id="Looking_for_world-writable_directories">Looking for world-writable directories</span></h2>
+</div><h2><span id="Looking_for_world-writable_directories">Looking for world-writable directories</span></h2><div class="solvvy-solution">
 <p>World-writable directories allow file writing by any user on the machine, and these directories can be mass-scanned. It's recommended that you perform this step anytime you suspect a breach.</p>
 <p>Even if you're sure you didn't make any permission mistakes, some less security-aware software vendors or plugin developers often use system commands or language-native permission-management functions to make some directories (usually ones used for caching and temporary files, session files, and so on) to ease installation and management.</p>
 <p>To scan for directories with world-writable permissions, use the UNIX find tool. Run this command via SSH in your domain’s web directory.</p>
@@ -98,7 +98,7 @@ youruser pts/2        66.33.XXX.XXX    Tue May 20 13:06 - 13:22  (00:15)
 <li>Other directories are not touched.</li>
 </ul>
 <p>It's always better to enumerate all the world-writable directories and then deciding the proper permissions. Some folders require special attention.</p>
-<h2>See also</h2><div class="solvvy-hidden">
+</div><h2>See also</h2><div class="solvvy-hidden">
 <ul>
 <li><a href="/hc/en-us/categories/202186727">List of website troubleshooting articles</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>

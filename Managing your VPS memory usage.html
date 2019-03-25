@@ -1,11 +1,11 @@
-<h2>Overview</h2>
+<h2>Overview</h2><div class="solvvy-solution">
 <p>Every DreamHost <a href="/hc/en-us/articles/215280058">virtual private server</a> (VPS) uses roughly 100 MB of memory as a baseline without any user processes running. That's because there are a number of system processes that have to run in order for your PS to work (sshd, proftpd, and so on). It's important that you keep this in mind when allocating memory for your PS since that initial 100 MB of memory is largely unusable for your site processes.</p>
 <p>After that initial 100 MB, most of the memory that is used by your PS consists of Apache and PHP processes (or in the case of a Rails applications, Passenger and Rails processes).</p>
-<h2><span id="Example_of_how_processes_use_memory">Example of how processes use memory</span></h2>
+</div><h2><span id="Example_of_how_processes_use_memory">Example of how processes use memory</span></h2><div class="solvvy-solution">
 <p>Whenever someone views your website, the PHP file for the page they view is parsed and executed by a PHP CGI process. At the same time, an Apache process will need to run, in order to serve the resulting HTML output from the script to the browser.</p>
 <p>The number of these processes that run is proportional to the amount of traffic you have. For example, if you have a large influx of traffic, additional PHP and Apache processes will spawn to facilitate that traffic. In fact, Apache and PHP will continue to spawn processes as requested until your PS is completely out of memory.</p>
 <p>You will need to be careful how you set things up to prevent such problems. This often leads to problems where websites on a PS will stop working due to memory saturation during peak hours and will then start working normally again once the traffic dies down to more manageable levels.</p>
-<h2><span id="Raising_the_amount_of_Apache_processes_allowed_to_spawn">Raising the amount of Apache processes allowed to spawn</span></h2>
+</div><h2><span id="Raising_the_amount_of_Apache_processes_allowed_to_spawn">Raising the amount of Apache processes allowed to spawn</span></h2><div class="solvvy-solution">
 <div class="alert alert-note">
 <div class="alert-icon"><img alt="" height="60" src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60"/></div>
 <div class="alert-content">
@@ -13,7 +13,7 @@
 </div>
 </div>
 <p>Another important consideration is that all private servers are configured to scale the number of Apache instances allowed to spawn with the amount of memory you allocate for it. In most cases, this works fine when your site isn't getting a lot of traffic. If your site is getting a significant amount of traffic, increasing the memory allocation basically allows more of that significant traffic to be served, where previously it would have been getting extremely slow load times or errors. So, until you hit the amount of memory needed to serve all of your viewers optimally, the memory usage for your site may scale upwards as you increase your memory limit.</p>
-<h2><span id="Checking_your_memory_usage">Checking your memory usage</span></h2>
+</div><h2><span id="Checking_your_memory_usage">Checking your memory usage</span></h2><div class="solvvy-solution">
 <p>You can view a graph of your private server’s memory usage in your panel.</p>
 <ol>
 <li>Go to the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=vps.dashboard&amp;" rel="noopener" target="_blank">Dashboard</a> page.</li>
@@ -24,7 +24,7 @@
 </li>
 </ol>
 <p>The memory usage graph on your web panel is helpful for seeing usage trends, but isn't really helpful for getting a good picture of what's actually going on in real time since these graphs are generally updated once a day around midnight PST and are an average of the day's use.</p>
-<h2><span id="The_top.2C_free.2C_and_ps_aux_commands">The top, free, and ps aux commands</span></h2>
+</div><h2><span id="The_top.2C_free.2C_and_ps_aux_commands">The top, free, and ps aux commands</span></h2><div class="solvvy-solution">
 <p>To obtain more information on exactly what's going on, you'll need to SSH into your PS.</p>
 <div class="alert alert-tip">
 <div class="alert-icon"><img alt="" height="60" src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-tip-icon.svg" width="60"/></div>
@@ -78,7 +78,7 @@
 </pre>
 </div>
 <p>This allows you to observe all the PHP processes that are running.</p>
-<h2>See also</h2><div class="solvvy-hidden">
+</div><h2>See also</h2><div class="solvvy-hidden">
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/214879308-VPS-optimization-overview">VPS optimization overview</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/214879438-Recovering-from-memory-saturation">Recovering from memory saturation</a></li>
