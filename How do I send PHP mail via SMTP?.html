@@ -1,14 +1,5 @@
 <h2>Overview</h2>
 <div class="solvvy-solution">
-<div class="alert alert-important">
-<div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
-<div class="alert-content">
-<p>On Jan 19, 2019, pear.php.net released statement that their web server had been compromised and that a tainted go-pear.phar file was discovered. If you had previously downloaded the go-pear.phar file to install PEAR, you should check to confirm its authenticity using the following article:</p>
-<ul>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/360022095512-Authenticating-your-go-pear-phar-file">Authenticating your go-pear.phar file</a></li>
-</ul>
-</div>
-</div>
 <p>When you use the <a href="/hc/en-us/articles/215507058-PHP-mail-overview">PHP mail function</a>, you are sending email directly from your web server. This can cause issues if the FROM address isn’t set properly or if your email isn’t hosted with DreamHost. Sending mail via SMTP is recommended as email is sent from the mail server rather than the web server. View the <a href="/hc/en-us/articles/215507068-Troubleshooting-PHP-mail-">PHP mail troubleshooting</a> article for details.</p>
 <p>There are a few options to send PHP mail via SMTP. For example:</p>
 <ul>
@@ -19,11 +10,18 @@
 </div>
 <h2>Configuring PEAR to send mail</h2>
 <div class="solvvy-solution">
-<p>At this time, pear.php.net is down, so the normal install commands do not function.</p>
-<p>To install packages, you must download them manually to your server. Visit the following article for instructions.</p>
-<ul>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/214392988#installing-packages-while-pear.php.net-is-down">Installing packages while pear.php.net is down</a></li>
-</ul>
+<p>The following steps walk you through how to enable this:</p>
+<ol>
+<li>Visit the <a href="/hc/en-us/articles/214392988-How-do-I-install-PEAR-">PEAR</a> article to install PEAR on your web server.</li>
+<li>Install the necessary PEAR Mail packages. Visit <a href="/hc/en-us/articles/214395118-Troubleshooting-PEAR-errors">PEAR Troubleshooting</a> for instructions. For example, you'll need the Mail and Net_SMTP packages.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">pear install Mail</span>
+<span class="server">[server]$ </span><span class="command">pear install Net_SMTP</span>
+</pre>
+</div>
+</li>
+<li>Create a PHP file that uses PEAR to send mail via SMTP.</li>
+</ol>
 </div>
 <h2>Configuring PHP to send SMTP mail</h2>
 <div class="solvvy-solution">
@@ -35,7 +33,7 @@
 </div>
 </div>
 <h3>Finding your mail hostname</h3>
-<p>Make sure to use smtp.dreamhost.com for the hostname if you're sending from an email hosted at DreamHost.</p>
+<p>Make sure to use your <a href="https://help.dreamhost.com/hc/en-us/articles/214918038#Server_names">mail server name</a> for the mail hostname. This would either be imap.dreamhost.com or pop.dreamhost.com, depending on the connection type you prefer. The example below uses the hostname of 'imap.dreamhost.com'.</p>
 <div class="preboxcontainer">
 <pre class="prebox">&lt;?php
 
@@ -44,7 +42,7 @@ error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED ^ E_STRICT);
 set_include_path("." . PATH_SEPARATOR . ($UserDir = dirname($_SERVER['DOCUMENT_ROOT'])) . "/pear/php" . PATH_SEPARATOR . get_include_path());
 require_once "Mail.php";
 
-$host = "ssl://<span class="command"><strong>smtp.dreamhost.com</strong></span>";
+$host = "ssl://<strong>smtp</strong><span class="command"><strong>.dreamhost.com</strong></span>";
 $username = "<span class="command"><strong>youremail@example.com</strong></span>";
 $password = "<span class="command"><strong>your email password</strong></span>";
 $port = "465";
