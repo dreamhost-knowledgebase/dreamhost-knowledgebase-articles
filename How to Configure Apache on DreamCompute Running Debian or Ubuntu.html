@@ -1,11 +1,8 @@
 <h2>Overview</h2>
-<div class="document">
-<div class="documentwrapper">
-<div class="body">
-<div id="how-to-configure-apache-on-dreamcompute-running-debian-or-ubuntu">
+<div class="solvvy-solution">
 <p>Apache is the most widely used HTTP server on the internet and DreamHost uses it as the default HTTP server for all hosting products.</p>
 <div class="alert alert-note">
-<div class="alert-icon"><img height="60" src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
 <p>These instructions assume you have launched an instance running a Debian or Ubuntu. View the following article for instructions on how to launch an instance:</p>
 <ul>
@@ -13,8 +10,9 @@
 </ul>
 </div>
 </div>
-<div id="installing-apache">
+</div>
 <h2>Log into your server as the default user</h2>
+<div class="solvvy-solution">
 <p>Log into your new instance using the SSH Keys you assigned when creating it.</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216201547-Connect-to-your-instance-with-ssh-keys-overview">Connect to your instance with SSH Keys overview</a></li>
@@ -23,19 +21,18 @@
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/228377408-How-to-find-the-default-user-of-an-image">How to find the default user of an image</a></li>
 </ul>
+</div>
 <h2>Installing Apache</h2>
+<div class="solvvy-solution">
 <p>Run the following commands:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">user@server:$ </span><span class="command">sudo apt-get update</span>
 <span class="server">user@server:$ </span><span class="command">sudo apt-get install -y apache2</span></pre>
 </div>
 <p>When it completes, the apache HTTP server is installed and runs with its default configuration. If you visit the <a href="https://help.dreamhost.com/hc/en-us/articles/115001754711-Locating-the-IP-Address-of-your-instance">public IP address of your instance</a> in your browser, you will see the Apache default page.</p>
-<img src="https://objects-us-east-1.dream.io/kbimages/images/Apache_default_page.png"/>
-<div id="apache-directories-and-main-configuration-files">
+<img src="https://objects-us-east-1.dream.io/kbimages/images/Apache_default_page.png" />
 <h2>The /etc/apache2 directory</h2>
 <p>This directory contains all the configuration files for your Apache server. If you <a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">edit any of the files</a> you'll find that most include details on the file's general purpose at the top.</p>
-</div>
-<div id="etc-apache2-apache2-conf-file">
 <h3>/etc/apache2/apache2.conf File</h3>
 <p>This is the main configuration file that ultimately controls how Apache functions. While it is possible to completely configure your sites and modules directly in this file, instead it is recommended to use smaller individual files for each of your sites and modules for simplicity. See the 'Adding a website to DreamCompute' article for further instructions on how to add site config files in the /etc/apache2/sites-available directory.</p>
 <ul>
@@ -58,7 +55,9 @@
 <dl>
 <dd>Define the number of seconds to wait for another request before ending the KeepAlive persistent connection. Default: 5</dd>
 </dl>
+</div>
 <h2>MPM Configuration</h2>
+<div class="solvvy-solution">
 <p>Debian and Ubuntu have different Apache packages that are optimized for different situations. Each package is a different flavor of MPM (multi-processing module) and settings for each are defined near the end of this file.</p>
 <p>The packages available are:</p>
 <ul>
@@ -78,10 +77,10 @@
 <span class="server">user@server:$ </span><span class="command">sudo a2enmod mpm_prefork</span>
 <span class="server">user@server:$ </span><span class="command">sudo service apache2 restart</span></pre>
 </div>
-<div id="virtual-hosts">
+</div>
 <h2>Virtual Hosts</h2>
+<div class="solvvy-solution">
 <p>Virtual hosts define each site so that Apache knows what it should do when it receives a request. You can view all virtual host configuration files in the /etc/apache2/sites-available directory.</p>
-<div id="etc-apache2-sites-available-default">
 <h3>/etc/apache2/sites-available/000-default.conf</h3>
 <p>The /etc/apache2-sites-available directory contains a default configuration file titled '000-default.conf'. This configuration files is responsible for the following:</p>
 <ul class="simple">
@@ -89,10 +88,8 @@
 <li>If you only expect to have one site on your DreamCompute instance, you could use this file and no others if you prefer.</li>
 <li>For those with multiple sites, this can be used to instruct the visitor that they may have done something wrong, or redirect them to another site.</li>
 </ul>
-</div>
-<div id="etc-apache2-sites-available-yoursitehere">
 <h3>/etc/apache2/sites-available/example.com.conf</h3>
-<p>Any site added to your DreamCompute instance would have its own configuration file created. If your site was 'example.com', the configuration file would be titled 'example.com.conf'. </p>
+<p>Any site added to your DreamCompute instance would have its own configuration file created. If your site was 'example.com', the configuration file would be titled 'example.com.conf'.</p>
 <ul class="simple">
 <li>For each site you wish to configure, it is recommended you name a file similar to your site name in the <strong>/etc/apache2/sites-available/</strong> directory.</li>
 <li>There are several example virtual hosts available on Apache’s wiki <a class="reference external" href="http://wiki.apache.org/httpd/ExampleVhosts">Example Vhosts page</a>. A basic one for listening on port 80 (http) with custom logging is shown below:</li>
@@ -111,7 +108,9 @@ ErrorLog /var/log/apache/www.example.com-error.log
 <div class="preboxcontainer">
 <pre class="prebox">&lt;VirtualHost 1.1.1.1:80&gt;</pre>
 </div>
+</div>
 <h2>Add your site code</h2>
+<div class="solvvy-solution">
 <p>Now that the config file is created, you should add your site's code to the server. You'll add it in the following directory:</p>
 <div class="preboxcontainer">
 <pre class="prebox">/var/www/example.com/index.html</pre>
@@ -134,8 +133,8 @@ ErrorLog /var/log/apache/www.example.com-error.log
 <p>These commands create a symlink for your sites file from /etc/apache2/sites-enabled to its corresponding file in /etc/apache2/sites-available.</p>
 </div>
 </div>
-<div id="modules">
 <h2>Modules</h2>
+<div class="solvvy-solution">
 <p>Modules can be enabled or disabled by the following commands:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">user@server:$ </span><span class="command">sudo a2enmod &lt;module-name&gt;</span>
@@ -146,16 +145,10 @@ ErrorLog /var/log/apache/www.example.com-error.log
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">user@server:$ </span><span class="command">sudo service apache2 reload</span></pre>
 </div>
+</div>
 <div class="footer"> </div>
 <!--DreamCompute Button-->
 <div class="dream-sign-up">
 <h2>Deploy Your Apps On Cloud Servers Today</h2>
-<a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
+<div class="solvvy-hidden"><a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a></div>
 </div>
