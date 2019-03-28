@@ -1,6 +1,9 @@
 <h2>Overview</h2>
+<div class="solvvy-solution">
 <p>This article explains how to install ownCloud on a DreamCompute Ubuntu instance.</p>
+</div>
 <h2>Launch an instance</h2>
+<div class="solvvy-solution">
 <p>First, launch an Ubuntu 16.04 LTS instance. View the following category of articles for different ways to do this:</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/sections/115000240012-Launching">Launching an instance</a></li>
@@ -9,19 +12,21 @@
 <p>It is recommended to boot a <a href="https://help.dreamhost.com/hc/en-us/articles/217701757-What-s-the-difference-between-ephemeral-and-volume-boot-disks-">volume backed instance</a> as they are permanent as opposed to <a href="https://help.dreamhost.com/hc/en-us/articles/217701757-What-s-the-difference-between-ephemeral-and-volume-boot-disks-">ephemeral disks</a> and can be larger than 80GB in size if larger amounts of data will be stored. This can be done in the <a class="reference external" href="https://help.dreamhost.com/hc/en-us/articles/215912848-How-to-launch-an-instance-using-the-DreamCompute-dashboard">DreamCompute dashboard</a>.</p>
 <h3>Using multiple instances</h3>
 <p>Optionally, multiple instances can be used such as one hosting ownCloud HTTP and a second hosting the database. It is strongly recommended to use <a class="reference external" href="https://help.dreamhost.com/hc/en-us/articles/229789688-Private-networking-overview">private networking</a> for such a setup. The other differences include the MySQL instance having a security group rule to open port 3306, MySQL listening on the correct IP address, and MySQL user allowing other than localhost.</p>
+</div>
 <h2>Log into your server</h2>
+<div class="solvvy-solution">
 <p>To start installing software, log in to your DreamCompute instance:</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216201547-Connect-to-your-instance-with-ssh-keys-overview">Connecting to your instance with SSH Keys</a></li>
 </ul>
-<div id="installing-mariadb">
+</div>
 <h2>Installing MariaDB</h2>
+<div class="solvvy-solution">
 <p>Run the following commands to install MariaDB:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo apt-get update
 <span class="server">[user@server]$ </span><span class="command">sudo apt-get install -y mariadb-server
 </span></span></pre>
-</div>
 </div>
 <p>During installation the root database user will be set up without a password, however an authentication plugin will prevent login from anyone but the operating system root user. A password can be set if desired, otherwise MySQL root access is gained like so:</p>
 <div class="preboxcontainer">
@@ -37,8 +42,9 @@ Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 MariaDB [(none)]&gt;
 </pre>
 </div>
-<div id="configuring-mariadb">
+</div>
 <h2>Configuring MariaDB</h2>
+<div class="solvvy-solution">
 <p>By default the database server will listen only on localhost, not exposing the MySQL server to the outside world. This is optimal for security, but can be equally as secure as a separate instance with private networking.</p>
 <div id="add-a-mysql-user-for-owncloud">
 <h3>Add a MySQL user for ownCloud</h3>
@@ -50,7 +56,7 @@ MariaDB [(none)]&gt;
 </div>
 <p>Next, run the following commands in order.</p>
 <div class="alert alert-note">
-<div class="alert-icon"><img height="60" src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
 <p>This example uses 'owncloud' as the MySQL user name and database name for simplicity. <strong>PASSWORD</strong> is the desired password for the database.</p>
 </div>
@@ -64,13 +70,12 @@ MariaDB [(none)]&gt;
 </pre>
 </div>
 </div>
-<div id="installing-the-owncloud-application">
 <h2>Installing the ownCloud application</h2>
-<div id="installing-dependencies">
+<div class="solvvy-solution">
 <h3>Installing Dependencies</h3>
 <p>Now that a database has been created that ownCloud can use you can deploy the frontend application. Run the following:</p>
 <div class="alert alert-important">
-<div class="alert-icon"><img height="60" src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
 <p>The backslash character \ is used when entering a long command. When you enter the \, the terminal command continues to the next line until you finish entering it.</p>
 <p>You could also remove the \ character and put every parameter into a single line.</p>
@@ -82,9 +87,7 @@ php-json php-mysql php-curl php-intl php-mcrypt \
 php-imagick php-zip php-dom php-mbstring
 </span></pre>
 </div>
-</div>
 <h3>Downloading ownCloud</h3>
-<div id="downloading-owncloud">
 <p>You must now download the actual ownCloud application.</p>
 <ol>
 <li>Navigate to <a class="reference external" href="https://owncloud.org/install/#instructions-server">https://owncloud.org/install/#instructions-server</a> in a browser.</li>
@@ -113,7 +116,7 @@ This will download a compressed copy of the ownCloud application.</li>
 </div>
 </div>
 <div class="alert alert-note">
-<div class="alert-icon"><img height="60" src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
 <p>If you see the error <strong>sudo: unable to resolve host</strong>, ignore it. You can check the /var/www/ directory to confirm the 'owncloud' folder has been correctly copied.</p>
 </div>
@@ -171,11 +174,10 @@ This will download a compressed copy of the ownCloud application.</li>
 <span class="server">[user@server]$ </span><span class="command">sudo service apache2 restart</span>
 </pre>
 </div>
-<div id="finishing-the-installation">
+</div>
 <h2>Finishing the installation</h2>
+<div class="solvvy-solution">
 <p>At this point, everything is configured on the server. Open a browser and visit <a class="reference external" href="https://IP/owncloud">https://IP/owncloud</a> where <strong>IP</strong> is the <a href="https://help.dreamhost.com/hc/en-us/articles/218672058-Configuring-DNS-for-your-domains">IP address of your instance</a>. The website will ask for a username and password, a data storage location (which can be kept as the default), and then the database information.</p>
 <p>If you used the defaults above, the username and database name are 'owncloud', the host can remain set to 'localhost', and the password is the one you created above.</p>
 <p>Click to continue, and if all is setup correctly the ownCloud Files page will load.</p>
-</div>
-</div>
 </div>

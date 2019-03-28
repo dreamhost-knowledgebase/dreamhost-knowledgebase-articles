@@ -1,14 +1,14 @@
 <h2>Overview</h2>
+<div class="solvvy-solution">
 <p>nginx is a high performance web server designed for serving high-performance, scalable applications in an efficient, responsive manner. It can be used to serve static content, load balance HTTP requests, and reverse proxy FCGI/PSGI/USWGI and arbitrary TCP connections. Given this, it's important to be able to securely configure and deploy nginx installations to provide a secure web frontend for your application and minimize attack surfaces.</p>
-<div id="securing-the-binary">
+</div>
 <h2>Securing the binary</h2>
-<div id="keep-updated">
+<div class="solvvy-solution">
 <h3>Keep updated</h3>
 <p>nginx's core codebase (memory management, socket handling, etc) is very secure and stable, though vulnerabilities in the main binary itself do pop up from time to time. For this reason it's very important to keep nginx up-to-date. Most modern Linux distributions will not push the latest version of nginx into their default package lists, so to install the latest version of nginx via a package, you may need to add additional package repositories to your system. See nginx's documentation below for per-distro details.</p>
 <ul>
-<li><a href="http://nginx.org/en/linux_packages.html#stable" rel="noopener" target="_blank">nginx.org: Linux packages - Pre-Built Packages for Stable version</a></li>
+<li><a href="http://nginx.org/en/linux_packages.html#stable" target="_blank" rel="noopener">nginx.org: Linux packages - Pre-Built Packages for Stable version</a></li>
 </ul>
-</div>
 <div id="compiling-from-source">
 <h3>Compiling from source</h3>
 <p>As an alternative to building packages, it's possible to build nginx from source. Doing so allows you to run the latest version available from the nginx development team and allows for additional security configurations. Building from source requires a few steps. First, you'll need to make sure you have the necessary operating system packages for compiling from source.</p>
@@ -38,7 +38,6 @@ gpg:               imported: 1  (RSA: 1)
 gpg: no ultimately trusted keys found
 </pre>
 </div>
-</div>
 <p>Now verify the signature:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@server]$ </span><span class="command">gpg --trusted-key 0x520A9993A1C052F8 --verify nginx-1.12.2.tar.gz{.asc,}</span>
@@ -66,8 +65,9 @@ gpg: Good signature from "Maxim Dounin &lt;mdounin@mdounin.ru&gt;"
 </div>
 </div>
 <p>The configure script provided with the nginx script provides a large number of compile-time options.</p>
-<div id="securing-configurations">
+</div>
 <h2>Securing configurations</h2>
+<div class="solvvy-solution">
 <p>Computers are only as smart as the people using them. nginx is built to be stable and secure, but it will only be as secure as the user who configures it. Once nginx is built and installed, configuring the server to be as minimal as possible is important.</p>
 <div id="run-as-an-unprivileged-user">
 <h3>Run as an unprivileged user</h3>
@@ -81,14 +81,11 @@ gpg: Good signature from "Maxim Dounin &lt;mdounin@mdounin.ru&gt;"
 <pre class="prebox">user nginx;</pre>
 </div>
 </div>
-</div>
-<div id="disable-server-tokens">
 <h3>Disable Server Tokens</h3>
 <p>The HTTP spec recommends (but does not require) that web servers identify themselves via the <cite>Server</cite> header. Historically, web servers have included their version information as part of this header. Disclosing the version of nginx running can be undesirable, particularly in environments sensitive to information disclosure. nginx can be configured to not display its version in the <cite>Server</cite> header by editing the nginx.conf file with the following:</p>
 <div class="preboxcontainer">
 <pre class="prebox">server_tokens off;
 </pre>
-</div>
 </div>
 <div id="hide-upstream-proxy-headers">
 <h3>Hide upstream proxy headers</h3>
@@ -161,11 +158,11 @@ user2:password2
 user3:password3
 </pre>
 </div>
-<div id="securing-ssl-tls">
+</div>
 <h2>Securing SSL/TLS</h2>
+<div class="solvvy-solution">
 <p>nginx excels at serving SSL/TLS traffic. Configuring your web server to provide securing SSL/TLS configurations for clients is essential to maintaining a secure connection.</p>
 <p>As a note, it's strongly recommended that encrypted traffic use only newer TLS protocols, instead of legacy SSL. Both versions of SSL widely available today (SSLv2 and SSLv3) have severe security flaws, and should never be used in production environments. Historically, the directives associated with SSL/TLS configuration in nginx are prefixed with <cite>ssl</cite>. However to promote the use of modern security protocols, this tutorial uses the term 'TLS' when referencing encrypted (HTTPS) traffic, and 'ssl' when applicable to specific nginx configuration directives.</p>
-<div id="turn-tls-on">
 <h3>Turn TLS On</h3>
 <p>In order to serve encrypted traffic, SSL/TLS needs to be enabled for your server. Fortunately, encrypted connections can be enabled/disabled on a per-server basis in nginx:</p>
 <div class="preboxcontainer">
@@ -180,13 +177,10 @@ server {
 }
 </pre>
 </div>
-</div>
-</div>
-<div id="enable-strong-tls-ciphers">
 <h3>Enable strong TLS ciphers</h3>
 <p>By default, nginx allows for a wide variety of cryptographic ciphers to be used in TLS connections. Some of these ciphers are legacy offerings that are weak or prone to attack, and shouldn't be used. DreamHost recommends using the Modern or Intermediate cipher suites outlined by Mozilla here:</p>
 <ul>
-<li><a href="https://wiki.mozilla.org/Security/Server_Side_TLS" rel="noopener" target="_blank">MozillaWiki - Security/Server Side TLS</a></li>
+<li><a href="https://wiki.mozilla.org/Security/Server_Side_TLS" target="_blank" rel="noopener">MozillaWiki - Security/Server Side TLS</a></li>
 </ul>
 <p>The modern list of ciphers is stronger, but will cause connectivity problems for older platforms like Internet Explorer or Windows XP. Additionally, it's recommended that the server prefer which ciphers can be used:</p>
 <div class="preboxcontainer">
@@ -194,8 +188,6 @@ server {
 ssl_prefer_server_ciphers on;
 </pre>
 </div>
-</div>
-<div id="enable-tls-session-caching">
 <h3>Enable TLS session caching</h3>
 <p>Opening a new TLS connection to a server is very expensive as a result of the cryptographic protocols involved. To maintain a high-performance environment, it's recommended to cache existing TLS connections so that each new request from a client/browser does not need to perform the full TLS handshake:</p>
 <div class="preboxcontainer">
@@ -203,14 +195,11 @@ ssl_prefer_server_ciphers on;
 ssl_session_timeout 5m;
 </pre>
 </div>
-</div>
-<div id="use-custom-diffie-hellman-parameters">
 <h3>Use custom Diffie-Hellman parameters</h3>
 <p>The Logjam attack, published in 2015, showed that it was possible for attackers (such as nation-state actors) to break the Diffie-Hellman key exchange, used to implement forward secrecy (essentially, another layer on top of existing encrypted messages). Mitigating this attack is possible in nginx by computing a unique set of Diffie-Hellman parameters and configuring nginx to use this value:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@server]$ </span><span class="command">openssl dhparam 2048 &gt; /path/to/dhparam</span>
 </pre>
-</div>
 </div>
 <p>From here you only need to tell nginx to use the custom values you generated above:</p>
 <div class="preboxcontainer">
@@ -245,8 +234,9 @@ server {
 }
 </pre>
 </div>
-<div id="additional-security-measures">
+</div>
 <h2>Additional security measures</h2>
+<div class="solvvy-solution">
 <p>Beyond the basics of installing a secure nginx binary, locking down access to sensitive areas of your site, and properly serving TLS connections, there are some additional steps that can be taken for the extra security-conscious user.</p>
 <div id="install-a-waf">
 <h3>Install a WAF</h3>
@@ -272,7 +262,7 @@ server {
 <h3>Automated Log Analysis + Monitoring</h3>
 <p>Programs like Fail2Ban can be used to monitor nginx access and error logs, searching for attack patterns and taking actions against the attacking client (such as dropping IP addresses, reporting malicious behavior to the IP's owner, etc). Fail2Ban is extensible, allowing you to write your own search pattern and response behavior. For more information and details on installation and configuration, see the project's GitHub page here:</p>
 <ul>
-<li><a class="reference external" href="https://github.com/fail2ban/fail2ban" rel="noopener" target="_blank">fail2ban GitHub project page</a></li>
+<li><a class="reference external" href="https://github.com/fail2ban/fail2ban" target="_blank" rel="noopener">fail2ban GitHub project page</a></li>
 </ul>
 </div>
 <div id="limit-input-traffic-via-iptables">

@@ -1,6 +1,5 @@
-<h2>Overview</h2><div class="solvvy-solution">
 <div class="alert alert-note">
-<div class="alert-icon"><img height="60" src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
 <p>This guide assumes you've already installed PEAR using the following guide:</p>
 <ul>
@@ -8,13 +7,56 @@
 </ul>
 </div>
 </div>
-<p>It’s possible your PHP site will throw an error if certain PEAR packages are not installed.</p>
-<p>At this time, pear.php.net is down, so the normal install commands do not function.</p>
-<p>To install packages, you must download them manually to your server. Visit the following article for instructions.</p>
-<ul>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/214392988#installing-packages-while-pear.php.net-is-down">Installing packages while pear.php.net is down</a></li>
-</ul>
-</div><h2>Script errors</h2><div class="solvvy-solution">
+<p>It’s possible your PHP site will throw an error if certain PEAR packages are not installed. For example, if you get an error referencing any of the following, run the command below (in your users directory) to install that package.</p>
+<table style="border: 1px solid #BEBEBE; width: 40%;" border="1" cellspacing="0" cellpadding="10">
+<tbody>
+<tr style="font-style: bold;">
+<th bgcolor="#F2F2F2">Error reference</th>
+<th bgcolor="#F2F2F2">Command to fix</th>
+</tr>
+<tr>
+<td><strong>Mail.php</strong></td>
+<td>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">pear install --alldeps Mail</span></pre>
+</div>
+</td>
+</tr>
+<tr>
+<td><strong>Mail/mime.php</strong></td>
+<td>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">pear install --alldeps Mail_Mime</span></pre>
+</div>
+</td>
+</tr>
+<tr>
+<td><strong>Console/Getopt.php</strong></td>
+<td>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">pear install --alldeps Console_Getopt</span></pre>
+</div>
+</td>
+</tr>
+<tr>
+<td><strong>DB.php</strong></td>
+<td>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">pear install --alldeps MDB2</span></pre>
+</div>
+</td>
+</tr>
+<tr>
+<td><strong>Net/SMTP.php</strong></td>
+<td>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">pear install --alldeps Net_SMTP</span></pre>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<h2>Script errors</h2>
 <p>When you create a script that references PEAR, make sure to <a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">add these two lines</a> at the very top of that script:</p>
 <div class="preboxcontainer">
 <pre class="prebox">error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED ^ E_STRICT);
@@ -30,8 +72,20 @@ set_include_path("." . PATH_SEPARATOR . ($UserDir = dirname($_SERVER['DOCUMENT_R
 <pre class="prebox">$pear_user_config = $UserDir . "/.pearrc";</pre>
 </div>
 <p>Where <strong>$UserDir = dirname($_SERVER['DOCUMENT_ROOT'])</strong> dynamically determines your DreamHost home directory, e.g., '/home/user'.</p>
-</div><h2>See also</h2><div class="solvvy-hidden">
+<h2>Installation error</h2>
+<p>You may see the following error after attempting to install a package:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">pear install --onlyreqdeps Mail</span><span class="cmdoutput">
+No releases available for package "pear.php.net/Mail"
+install failed</span>
+</pre>
+</div>
+<p>To fix this error, view the following article section:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214392988#Changing_the_tmp_directory">Changing the /tmp directory PEAR uses</a></li>
+</ul>
+<h2>See also</h2>
 <ul>
 <li><a href="/hc/en-us/articles/214202188-PHP-overview">PHP overview</a></li>
 <li><a href="/hc/en-us/articles/214392988-How-do-I-install-PEAR-">How do I install PEAR?</a></li>
-</ul></div>
+</ul>
