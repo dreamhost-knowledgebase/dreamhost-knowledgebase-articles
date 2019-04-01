@@ -1,11 +1,9 @@
 <h2>Overview</h2>
-<div class="document">
-<div class="documentwrapper">
-<div class="body" role="main">
-<div id="installing-modsecurity-with-apache-on-ubuntu-14-04">
+<div class="solvvy-solution">
 <p>ModSecurity is an open source web application firewall (WAF) designed as a module for Apache web servers. ModSecurity provides a flexible rule engine, allowing users to write (or use third-party) rules for protecting websites from attacks such as XSS, SQLi, CSRF, DDoS, and brute force login (as well as a number of other exploits). This tutorial walks through the basics of installing and configuring ModSecurity for an Apache web server. This tutorial assumes that <a href="https://help.dreamhost.com/hc/en-us/articles/215879457-How-to-Configure-Apache-on-DreamCompute-Running-Debian-or-Ubuntu">Apache is already installed</a> and running.</p>
-<div id="installing-modsecurity">
+</div>
 <h2>Installing ModSecurity</h2>
+<div class="solvvy-solution">
 <p>Log in and switch to your root user.</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo su -</span></pre>
@@ -27,10 +25,10 @@
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[root@server]# </span><span class="command">service apache2 reload</span></pre>
 </div>
-<div id="configuring-modsecurity">
+</div>
 <h2>Configuring ModSecurity</h2>
+<div class="solvvy-solution">
 <p>The recommended default config file provided for ModSecurity has very few actual protective rules configured, but is a good starting point. In this tutorial the OWASP Core Rule Set (CRS) is used to provide additional protection.</p>
-<div id="enabling-crs-rulesets">
 <h3>Enabling CRS Rulesets</h3>
 <p>The Ubuntu package for ModSecurity recommends a separate package containing the CRS rulesets, which can be used as an extra source of rules for WAF. Configure ModSecurity to read rule files from the <cite>activated_rules</cite> directory by adding the following directives to the <strong><cite>/etc/apache2/mods-enabled/security2.conf</cite></strong> file:</p>
 <div class="preboxcontainer">
@@ -49,7 +47,6 @@ IncludeOptional "/usr/share/modsecurity-crs/activated_rules/*.conf"</pre>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[root@server]# </span><span class="command">service apache2 reload</span></pre>
 </div>
-<div id="activating-modsecurity">
 <h3>Activating ModSecurity</h3>
 <p>ModSecurity initially runs in <cite>DetectionOnly</cite> mode, in which the WAF examines HTTP(S) traffic, but does not actually block malicious requests. This must be adjusted in order for ModSecurity to deny attack traffic. In the file <strong><cite>/etc/modsecurity/modsecurity.conf</cite></strong>, find the directive <cite>SecRuleEngine</cite>:</p>
 <div class="preboxcontainer">
@@ -63,22 +60,16 @@ IncludeOptional "/usr/share/modsecurity-crs/activated_rules/*.conf"</pre>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[root@server]# </span><span class="command">service apache2 restart</span></pre>
 </div>
-<div id="further-configuration">
+</div>
 <h2>Further Configuration</h2>
+<div class="solvvy-solution">
 <p>WAF environments can be complex and time-consuming to tune and adjust based on your server’s needs which is largely why the CRS was created. If you need to write or change custom rules, it’s recommended to read though the <a class="reference external" href="https://github.com/SpiderLabs/ModSecurity/wiki/Reference-Manual">ModSecurity reference manual</a>.</p>
 <p>Additionally, the <cite>modsecurity-users</cite> mailing list and <cite>#modsecurity</cite> room on Freenode IRC are excellent resources for experienced ModSecurity users and developers.</p>
 </div>
-</div>
-</div>
-</div>
 <div class="clearer"> </div>
-</div>
 <div class="footer"> </div>
 <!--DreamCompute Button-->
 <div class="dream-sign-up">
 <h2>Deploy Your Apps On Cloud Servers Today</h2>
-<a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a></div>
-</div>
-</div>
-</div>
+<div class="solvvy-hidden"><a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a></div>
 </div>
