@@ -1,4 +1,5 @@
 <h2>Overview</h2>
+<div class="solvvy-solution">
 <p>DreamCompute offers multiple clusters (also often called availability zones) which are independent OpenStack installations with their own servers, storage and control panel. Some clusters have different features, such as SSD storage that is useful for a given data storage plan. Migrating data between clusters is not automated at this time, but this guide will show you how to accomplish this yourself.</p>
 <p>This guide assumes that you are comfortable working with SSH as well as some command line utilities like <span class="code">dd</span> and the OpenStack CLI. For more information about those utilities, see the articles below.</p>
 <ul>
@@ -6,8 +7,9 @@
 <li><a class="reference external" href="http://man7.org/linux/man-pages/man1/dd.1.html">http://man7.org/linux/man-pages/man1/dd.1.html</a></li>
 <li><a class="reference internal" href="https://help.dreamhost.com/hc/en-us/articles/235817468-Getting-started-with-the-OpenStack-command-line-client">Getting started with the OpenStack command line client</a></li>
 </ul>
-<div id="things-to-keep-in-mind">
+</div>
 <h2>Things to keep in mind</h2>
+<div class="solvvy-solution">
 <p>Here are a few things to keep in mind and plan while doing a migration.</p>
 <h3>Volumes only</h3>
 <p>This guide focuses solely on migrating volumes, which is useful if you have multiple volumes attached to a single instance and wish to maintain that storage schema in the new cluster. Please note that this method does not work with ephemeral storage and is intended only for volume to volume copying. If you wish to move instances, please see the article below.</p>
@@ -16,8 +18,9 @@
 </ul>
 <h3>Plan a maintenance window</h3>
 <p>To avoid corruption or other odd behavior, it is safest to move the data when the volume has no running services or open files. The copying of the data is generally fairly quick for smaller volumes, but for larger volumes could take some time. Remember, the copy must complete before service can be restored.</p>
-<div id="migrate-a-volume-using-ssh-and-dd">
+</div>
 <h2>Migrate a Volume using SSH and dd</h2>
+<div class="solvvy-solution">
 <p>For this type of move, the assumption is that you have stopped all services using the data on the volume, safely unmounted any partitions on the instance using it, and detached it from the instance in the Volumes menu in the dashboard.</p>
 <p>As an overview, the following will be set up to accomplish this task.</p>
 <div class="code">
@@ -32,7 +35,9 @@
 +----------------+      +--------------+
 </pre>
 </div>
+</div>
 <h2>Migration procedure</h2>
+<div class="solvvy-solution">
 <ol>
 <li>Create two new "copy machine" instances (one each in the source and destination clusters), using the smallest available flavor. This guide uses Ubuntu 14.04, but the commands should be similar on any Ubuntu system. It is also recommended that you make the instances ephemeral, since they will not be needed after the migration is complete.</li>
 <li>For simplicity, the two temporary instances will be connected using passwords instead of SSH keys, but you can do this any way you prefer. To set up the instances for password authentication, turn it on with the following commands.
@@ -65,5 +70,4 @@
 </li>
 <li>Once the command has completed, detach the destination volume from the instance and check that it has the data you want by trying to boot it, or by attaching it to another instance. If everything looks correct, you are done and can destroy both temporary instances.</li>
 </ol>
-</div>
 </div>

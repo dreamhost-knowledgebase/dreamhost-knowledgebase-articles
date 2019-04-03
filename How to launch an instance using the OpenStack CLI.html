@@ -1,8 +1,5 @@
 <h2>Overview</h2>
-<div class="document">
-<div class="documentwrapper">
-<div class="body">
-<div id="how-to-launch-a-virtual-server-on-dreamcompute">
+<div class="solvvy-solution">
 <p>Virtual machines that run inside the cloud are called instances. Before you can launch an instance, gather the following parameters:</p>
 <ul class="simple">
 <li><strong>Instance source</strong> — Can be an image, snapshot, or block storage volume that contains an image or snapshot.</li>
@@ -19,8 +16,9 @@
 <li><strong>Volume</strong> — You can also attach a block storage device, or volume, for persistent storage.</li>
 </ul>
 <p>You can launch an instance directly from one of the available OpenStack images, or from an image that you have copied to a persistent volume. The OpenStack Image service provides a pool of images that are accessible to members of different projects.</p>
-<div id="gather-parameters-to-launch-an-instance">
+</div>
 <h2>Gather parameters to launch an instance</h2>
+<div class="solvvy-solution">
 <p>The following examples use the <a href="https://help.dreamhost.com/hc/en-us/articles/235817468-Getting-started-with-the-OpenStack-command-line-client">OpenStack command line client</a>:</p>
 <span id="List_Flavors"></span>
 <h3>List the available flavors</h3>
@@ -82,7 +80,9 @@
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack keypair list</span></pre>
 </div>
+</div>
 <h2>Launch an instance from an image</h2>
+<div class="solvvy-solution">
 <p>After you've gathered the required parameters, you can now <a href="https://docs.openstack.org/python-openstackclient/pike/cli/command-objects/server.html#server-create">create an instance</a>. At this point, you should have the following credentials:</p>
 <ul>
 <li><strong>flavor</strong> — 300</li>
@@ -91,7 +91,7 @@
 <li><strong>security group</strong> — 29acef25-b59f-43a0-babf-6a5bb5cc7bed</li>
 <li><strong>servername</strong> — You can name it anything you like, but in this example myNewServer will be used.
 <div class="alert alert-important">
-<div class="alert-icon"><img height="60" src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
 <p>If you boot an instance with an INSTANCE_NAME greater than 63 characters, Compute truncates it automatically when turning it into a host name to ensure the correct functionality of dnsmasq.</p>
 </div>
@@ -108,7 +108,7 @@
                         myNewServer</span></pre>
 </div>
 <div class="alert alert-important">
-<div class="alert-icon"><img height="60" src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
 <p>The backslash character \ is used when entering a long command. When you enter the \, the terminal command continues to the next line until you finish entering it.</p>
 <p>You could also remove the \ character and put every parameter into a single line. For example:</p>
@@ -152,7 +152,7 @@
 +-----------------------------+-------------------------------------------------+</pre>
 </div>
 <p>A status of <strong>BUILD </strong>indicates that the instance has started, but is not yet online. A status of <strong>ACTIVE </strong>indicates that the instance is active. Copy the administrative password value from the <code class="docutils literal"><span class="pre">adminPass</span></code> field. You can use this password later to log in to your server.</p>
-<p>You'll also be able to see the new server instance in your <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=cloud.compute&amp;" rel="noopener" target="_blank">DreamCompute panel</a>.</p>
+<p>You'll also be able to see the new server instance in your <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=cloud.compute&amp;" target="_blank" rel="noopener">DreamCompute panel</a>.</p>
 <p>For more options, use the following command or view OpenStack's documentation below.</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack help server create</span>
@@ -162,7 +162,7 @@
 <li><a href="https://docs.openstack.org/python-openstackclient/pike/cli/command-objects/server.html#server-create">https://docs.openstack.org/python-openstackclient/pike/cli/command-objects/server.html#server-create</a></li>
 </ul>
 <div class="alert alert-important">
-<div class="alert-icon"><img height="60" src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
 <p>You can also place arbitrary local files into the instance file system at creation time by using the <strong>--file &lt;dest-filename=source-filename&gt;</strong> parameter. You can store up to five files.</p>
 <p>For example, if you have a special authorized keys file named <strong>special_authorized_keysfile</strong> that you want to put on the instance rather than using the regular SSH key injection, you can add the <strong>–file</strong> option as shown in the following example.</p>
@@ -171,7 +171,9 @@
 </div>
 </div>
 </div>
+</div>
 <h2>Check if the instance is online</h2>
+<div class="solvvy-solution">
 <p>Use the <span class="code">list</span> command to view a list of all servers:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server list</span>
@@ -184,17 +186,14 @@
 </div>
 <p>The list shows the ID, Name, Status, IP addresses, Image, and Flavor for all instances in the project.</p>
 <div class="alert alert-important">
-<div class="alert-icon"><img height="60" src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
 <p>If you do not provide a key pair, you will be unable to access the instance.</p>
+</div>
 </div>
 </div>
 <!--DreamCompute Button-->
 <div class="dream-sign-up">
 <h2>Deploy Your Apps On Cloud Servers Today</h2>
-<a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a></div>
-</div>
-</div>
-</div>
-</div>
+<div class="solvvy-hidden"><a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a></div>
 </div>

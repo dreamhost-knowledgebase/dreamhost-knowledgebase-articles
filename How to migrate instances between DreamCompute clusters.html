@@ -1,4 +1,5 @@
 <h2>Overview</h2>
+<div class="solvvy-solution">
 <p>DreamCompute offers multiple clusters (also often called availability zones) which are independent OpenStack installations with their own servers, storage, and control panel. Some clusters have different features, such as SSD storage or different hardware that is useful for a given task. Migrating instances and data between clusters is not automated at this time, but this guide shows you how to accomplish this yourself.</p>
 <p>This guide assumes that you are comfortable working with SSH as well as some command line utilities like <span class="code">dd</span> and the OpenStack CLI. For more information about those utilities, see the articles below.</p>
 <ul>
@@ -6,15 +7,16 @@
 <li><a class="reference external" href="http://man7.org/linux/man-pages/man1/dd.1.html">http://man7.org/linux/man-pages/man1/dd.1.html</a></li>
 <li><a class="reference internal" href="https://help.dreamhost.com/hc/en-us/articles/235817468-Getting-started-with-the-OpenStack-command-line-client">Getting started with the OpenStack command line client</a></li>
 </ul>
-<div id="things-to-keep-in-mind">
+</div>
 <h2>Things to keep in mind</h2>
+<div class="solvvy-solution">
 <p>Here are a few things to keep in mind and plan before a migration.</p>
 <h3>IP addresses will change</h3>
 <p>Each cluster has assigned blocks of IP addresses, therefore floating IPs, public IPv4, and public IPv6 addresses cannot be transferred between clusters. If you are using private networks (optional in US-East 2), the specific assigned 10.x.x.x address may also change.</p>
 <h3>SSH keys</h3>
 <p>Each cluster manages its SSH Keys separately, so if you have your keys already set up in the source cluster, you must set up the same keys (or new ones) in the destination cluster. You can grab the public key of any key pair in your project from the (<a href="https://iad2.dreamcompute.com/project/key_pairs/">'Project' &gt; 'Compute' &gt; 'Key Pairs'</a>) page of the DreamCompute dashboard.</p>
 <dl>
-<dd><img alt="" class="img-border" src="https://objects-us-east-1.dream.io/kbimages/images/migrate-instances-between-clusters_01.png"/></dd>
+<dd><img class="img-border" src="https://objects-us-east-1.dream.io/kbimages/images/migrate-instances-between-clusters_01.png" alt="" /></dd>
 </dl>
 <dl>
 <dd>To get to that page, just click on the key pair name.</dd>
@@ -24,11 +26,12 @@
 <p>Additionally, DNS must be updated from the old public IPs to the new ones. Depending on the time to live (TTL) of your DNS provider, this process can take a matter of minutes up to 24 hours. DNS zones managed by DreamHost can have the TTL changed from 4 hours to 5 minutes if you <a href="https://help.dreamhost.com/hc/en-us/articles/218084068-Contacting-support-overview">contact support</a> at least 24 hours in advance of your changes. This can help minimize propagation time.</p>
 <h3>Ephemeral instances</h3>
 <p>Ephemeral instances cannot have their data accessed by other instances when they are shut off. These instances can only be migrated while running, so it is best to shut down as many services as possible to limit the possibility of corruption. Please see the last section below for <a class="reference external" href="#migrating-an-ephemeral-instance-using-the-openstack-cli">instructions on migrating running instances</a>.</p>
-<div id="migrating-a-volume-backed-instance-using-the-openstack-cli">
+</div>
 <h2>Migrating a volume-backed instance using the OpenStack CLI</h2>
+<div class="solvvy-solution">
 <p>For this type of move, it is necessary to delete the instance so that it leaves behind a volume to migrate.</p>
 <div class="alert alert-important">
-<div class="alert-icon"><img height="60" src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
 <p>This method requires that you did not select "Yes" for the "Delete Volume on Instance Delete" option when you created your instance. If you did, please skip to the last section for <a class="reference external" href="#migrating-an-ephemeral-instance-using-the-openstack-cli">instructions on migrating running instances</a>. If you continue, you may permanently destroy and lose your data.</p>
 </div>
@@ -45,7 +48,6 @@
 | Volume To Copy |
 +----------------+
 </pre>
-</div>
 </div>
 <h3>Migration procedure</h3>
 <ol class="arabic simple">
@@ -64,7 +66,7 @@
 </pre>
 </div>
 </li>
-<li>Set up your openstack.rc file for the DESTINATION cluster on this new instance. View the following article for instructions on how to download this file: 
+<li>Set up your openstack.rc file for the DESTINATION cluster on this new instance. View the following article for instructions on how to download this file:
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/228047207-How-to-download-your-DreamCompute-openrc-file">How to download your DreamCompute openrc file</a></li>
 </ul>
@@ -104,8 +106,9 @@
 <li>Wait for this command to finish running. If successful, it should output the info about the new image that was created.</li>
 </ol>
 <p>You are now ready to go to the DESTINATION cluster to start up a new instance and to select the image that was just uploaded as the source. If the data is meant to be persistent, it is best to specify that you want to create a new volume in the "Source" tab when launching the new instance.</p>
-<div id="migrating-an-ephemeral-instance-using-the-openstack-cli">
+</div>
 <h2>Migrating an ephemeral instance using the OpenStack CLI</h2>
+<div class="solvvy-solution">
 <p>This type of migration is not recommended. However it may be necessary in some situations and so is included here.</p>
 <ol>
 <li>Shut down as many services on the instance as possible (such as database servers, http servers, and so on), ideally leaving only default system tools and sshd running.</li>
@@ -123,7 +126,7 @@
 </pre>
 </div>
 </li>
-<li>Set up your openstack.rc file for the DESTINATION cluster on this new instance. View the following article for instructions on how to download this file: 
+<li>Set up your openstack.rc file for the DESTINATION cluster on this new instance. View the following article for instructions on how to download this file:
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/228047207-How-to-download-your-DreamCompute-openrc-file">How to download your DreamCompute openrc file</a></li>
 </ul>
@@ -153,5 +156,4 @@
 <li>Wait for the command to finish running. If successful, it should output the info about the new image that was created.</li>
 </ol>
 <p>You are now ready to go to the DESTINATION cluster to start up a new instance and to select the image that was just uploaded as the source. If the data is meant to be persistent, it is best to specify that you want to create a new volume in the "Source" tab when launching the new instance.</p>
-</div>
 </div>
