@@ -1,19 +1,19 @@
-<h2>Setting up Bootstrap</h2>
+<h2>Setting up Bootstrap</h2><div class="solvvy-solution">
 <div class="alert alert-warning">
-<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-warning-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-icon"><img alt="" height="60" src="https://kbimages.dreamhosters.com/images/dh-kb-warning-icon.svg" width="60"/></div>
 <div class="alert-content">
-<p><strong>POSSIBLE OUTDATED INFORMATION!</strong><br /> The information on this page may not function or work as intended. DreamHost support is unable to assist with any customizations. Use at your own risk!</p>
+<p><strong>POSSIBLE OUTDATED INFORMATION!</strong><br/> The information on this page may not function or work as intended. DreamHost support is unable to assist with any customizations. Use at your own risk!</p>
 </div>
 </div>
 <p>The following is a quick procedure for establishing a simple FCGI application running Python.</p>
 <ol>
-<li>Navigate to the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;" target="_blank" rel="noopener">Manage Domains</a> page.</li>
+<li>Navigate to the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;" rel="noopener" target="_blank">Manage Domains</a> page.</li>
 <li>Click the 'Edit' link under the domain you wish to edit, and scroll down to the Web Options section.</li>
 <li>Enable your domain for FastCGI support.</li>
 <li>Download fcgi.py, and save it in your PYTHONPATH.</li>
 <li>Create your default page handler, <span class="code">dispatch.fcgi</span>:
 <div class="alert alert-important">
-<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-icon"><img alt="" height="60" src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60"/></div>
 <div class="alert-content">
 <ul>
 <li>You must use dispatch.fcgi or you will find that the process is <a href="https://help.dreamhost.com/hc/en-us/articles/216540488-Why-were-my-processes-killed-on-my-Shared-server-">killed</a> in the middle of execution. You can find more information in the <a href="/hc/en-us/articles/215317698-Django-troubleshooting">Django troubleshooting</a> article.</li>
@@ -49,7 +49,7 @@ RewriteRule ^(.*)$ dispatch.fcgi/$1 [L]</pre>
 </li>
 <li>After it updates, refresh the page with <span class="code">touch dispatch.fcgi</span>.</li>
 </ol>
-<h2>Sample setup</h2>
+</div><h2>Sample setup</h2><div class="solvvy-solution">
 <p>The following is a sample setup for getting FCGI and Python to work together:</p>
 <ol>
 <li>Download Virtual Python:
@@ -58,7 +58,7 @@ RewriteRule ^(.*)$ dispatch.fcgi/$1 [L]</pre>
 </pre>
 </div>
 <div class="alert alert-note">
-<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-icon"><img alt="" height="60" src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60"/></div>
 <div class="alert-content">
 <p><span class="code">virtualenv</span> is preferred to virtual-python, as it automates a lot of this process. See <a href="/hc/en-us/articles/215489338-Installing-virtualenv-and-custom-modules-in-Python">Installing Python virtualenv</a> for further details.</p>
 </div>
@@ -93,7 +93,7 @@ export PATH="$HOME/packages/bin:$PATH"</pre>
 </li>
 <li>Download <span class="code">fcgi.py</span> and place it into <span class="code">~/packages/lib/python2.3/site-packages</span>. You can alternately use Flup, as shown in the following section.
 <div class="alert alert-important">
-<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-icon"><img alt="" height="60" src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60"/></div>
 <div class="alert-content">
 <p><span class="code">fcgi.py</span> serves full Python Tracebacks in HTML by default, which is a security issue. You must override the <span class="code">[WSGI]Server.error()</span> method.</p>
 </div>
@@ -128,7 +128,7 @@ RewriteRule ^(.*)$ dispatch.fcgi/$1 [L]</pre>
 </li>
 <li>Wait a few minutes, and then test http://www.example.com/dispatch.fcgi.</li>
 </ol>
-<h2>Using Flup</h2>
+</div><h2>Using Flup</h2><div class="solvvy-solution">
 <p>As an alternate to using fcgi.py, you can run Flup to use FastCGI on DreamHost. If you choose to do so, you don't need to download or install fcgi.py. Instead, simply install Flup with <span class="code">easy_install</span>:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">easy_install Flup</span>
@@ -157,7 +157,7 @@ def test_app(environ, start_response):
 WSGIServer(test_app).run()</pre>
 </div>
 <p>No changes are required to your .htaccess file or anything else. Once the 'Hello World" works, you're ready to start using Python. Simply install what you need via <span class="code">easy_install</span> and proceed from there.</p>
-<h2>Troubleshooting</h2>
+</div><h2>Troubleshooting</h2><div class="solvvy-solution">
 <p>You can diagnose a lot of errors by running <span class="code">dispatch.fcgi</span> from the command line:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">./dispatch.fcgi</span>
@@ -169,7 +169,7 @@ WSGIServer(test_app).run()</pre>
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">chmod 755 dispatch.fcgi</span>
 </pre>
 </div>
-<h2>See also</h2>
+</div><h2>See also</h2>
 <div class="solvvy-hidden">
 <ul>
 <li><a href="/hc/en-us/articles/216137717-Python-overview">Python</a></li>

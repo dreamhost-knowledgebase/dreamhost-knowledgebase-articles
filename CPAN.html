@@ -1,17 +1,20 @@
 <div class="document">
 <div class="documentwrapper">
 <div class="body">
-<div id="CPAN">
+<div id="CPAN" class="solvvy-hidden">
 <div class="table-of-content container">
 <ul class="simple">
 <li><a class="reference internal" href="#setting_up">Setting up CPAN</a></li>
+<li><a class="reference internal" href="#installing-modules">Installing modules</a></li>
+<li><a class="reference internal" href="#viewing-modules">Viewing modules</a></li>
 <li><a class="reference internal" href="#cgi">Making your FastCGI / CGI scripts work</a></li>
-<li><a class="reference internal" href="#modules">Installing Module::Build and many other modules</a></li>
-<li><a class="reference internal" href="#other">Other modules</a></li>
-<li><a class="reference internal" href="#configure">Configuring CPAN</a></li>
-<li><a class="reference internal" href="#minus_local">Using CPAN Minus and local::lib</a></li>
+<li><a class="reference internal" href="#module-build">Installing Module::Build and many other modules</a></li>
+<li><a class="reference internal" href="#other-modules">Other modules</a></li>
+<li><a class="reference internal" href="#configuring-cpan">Configuring CPAN</a></li>
+<li><a class="reference internal" href="#minus">Using CPAN Minus and local::lib</a></li>
 <li><a class="reference internal" href="#killed">Killed</a></li>
 </ul>
+</div>
 </div>
 <div class="alert alert-important">
 <div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
@@ -29,6 +32,7 @@
 <p>CPAN normally requires root access, but this article shows you how to set up CPAN as a non-root user.</p>
 <span id="setting_up"></span>
 <h2>Setting up CPAN</h2>
+<div class="solvvy-solution">
 <ol>
 <li>Log into your server via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH</a>.</li>
 <li>Create the following directories:
@@ -127,7 +131,10 @@ You can re-run configuration any time with 'o conf init' in the CPAN shell</pre>
 </div>
 <em>This puts you back in your normal shell.</em></li>
 </ol>
+</div>
+<span id="installing-modules"></span>
 <h2>Installing modules</h2>
+<div class="solvvy-solution">
 <p>Now that everything is set up, you can install the modules.</p>
 <ol>
 <li>Open cpan again:
@@ -142,7 +149,10 @@ You can re-run configuration any time with 'o conf init' in the CPAN shell</pre>
 </div>
 </li>
 </ol>
+</div>
+<span id="viewing-modules"></span>
 <h2>Viewing modules</h2>
+<div class="solvvy-solution">
 <p>You can also check if and where modules are installed within CPAN. Type in the letter 'i' followed by the module name. For example:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[cpan[1] </span><span class="command">i XML::Simple</span>
@@ -154,7 +164,10 @@ Module id = XML::Simple
     INST_FILE    /home/username/perl5/lib/perl5/XML/Simple.pm
     INST_VERSION 2.24</pre>
 </div>
+</div>
+<span id="cgi"></span>
 <h2>Making your FastCGI / CGI scripts work</h2>
+<div class="solvvy-solution">
 <p>Any CGI or Fast CGI scripts must have the following at the top in order to use the locally installed modules:</p>
 <div class="preboxcontainer">
 <pre class="prebox">use lib qw( /home/<em>username</em>/<em>perlmods</em>/lib/perl/5.x /home/<em>username</em>/<em>perlmods</em>/lib/perl/5.x.x 
@@ -238,9 +251,15 @@ cat &gt; ${HOME}/.cpan/CPAN/MyConfig.pm &lt;&lt;eof
 __END__
 eof</pre>
 </div>
+</div>
+<span id="module-build"></span>
 <h2>Installing Module::Build and many other modules</h2>
+<div class="solvvy-solution">
 <p>If you're installing Module::Build or others which use Module::Build in their installation, it might help to add the above PERL5LIB lines to your .profile (or .bash_profile), otherwise anything you build won't know how to read the Module::Build Build script.</p>
+</div>
+<span id="other-modules"></span>
 <h2>Other modules</h2>
+<div class="solvvy-solution">
 <p>Please note that some modules do not install correctly from CPAN as non-root and to a non-standard path. They must be built and installed manually (that is, using the build scripts provided with the modules). Two specifically are:</p>
 <h3>DateTime</h3>
 <p>DateTime (as of 0.68) requires the install step to be executed like so using the "--install_base" option:</p>
@@ -269,7 +288,10 @@ eof</pre>
 </li>
 <li>Proceed with your make/make test/make install.</li>
 </ol>
+</div>
+<span id="configuring-cpan"></span>
 <h2>Configuring CPAN</h2>
+<div class="solvvy-solution">
 <p>If you need to manually configure settings, you can access your configuration in the file:</p>
 <div class="preboxcontainer">
 <pre class="prebox">~/.cpan/CPAN/MyConfig.pm</pre>
@@ -283,7 +305,10 @@ eof</pre>
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">perldoc CPAN</span>
 </pre>
 </div>
+</div>
+<span id="minus"></span>
 <h2>Using CPAN Minus and local::lib</h2>
+<div class="solvvy-solution">
 <p>Tatsuhiko Miyagawa's CPAN Minus (<a href="https://github.com/miyagawa/cpanminus">github</a> <a href="http://search.cpan.org/perldoc?App::cpanminus">cpan</a>) makes it even easier to add support for your own Perl modules. Use</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">cpanm -L ~/perlmod <em>module</em> <em>...</em></span>
@@ -294,7 +319,10 @@ eof</pre>
 <pre class="prebox">use local::lib '~/perlmod';</pre>
 </div>
 <p>to use these modules.</p>
+</div>
+<span id="killed"></span>
 <h2>Killed</h2>
+<div class="solvvy-solution">
 <p>There is a monitor service running that may kill your perl installs. Visit the following article for more information.</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216540488-Why-were-my-processes-killed-on-my-Shared-server-">Why were my processes killed on my Shared server?</a></li>
@@ -302,5 +330,4 @@ eof</pre>
 </div>
 </div>
 </div>
-<div class="clearer"> </div>
 </div>

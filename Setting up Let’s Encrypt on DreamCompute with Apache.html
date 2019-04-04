@@ -1,22 +1,19 @@
-<div class="document">
-<div class="documentwrapper">
-<div class="body">
-<div id="setting-up-let-s-encrypt-on-dreamcompute-with-apache">
-<div id="what-is-let-s-encrypt">
 <h2>What is Let’s Encrypt?</h2>
+<div class="solvvy-solution">
 <p><a class="reference external" href="https://letsencrypt.org">Let’s Encrypt</a> is a new certificate authority that provides absolutely free secure certificates to help get the Internet to 100% HTTPS on the Internet.</p>
 <p>DreamHost has integrated Let’s Encrypt support into its panel for hosted services, but if you want to set up automatically-renewing certificates for domains you host on a DreamCompute instance, you’ll need to do a little bit of manual installation. But the good news is, it doesn’t take long, and once you finish the setup, you should never have to worry about renewing a certificate ever again!</p>
 </div>
-<div id="get-the-code">
 <h2>Get the code</h2>
+<div class="solvvy-solution">
 <p>Start by logging into your DreamCompute instance. It shouldn’t matter too much which distribution of Linux you’re running, but make sure you have the <code class="docutils literal"><span class="pre">git</span></code> package installed so that you can clone the letsencrypt repository, like so:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[root@server]# </span><span class="command">sudo -s</span>
 <span class="server">[root@server]# </span><span class="command">cd /opt</span>
 <span class="server">[root@server]# </span><span class="command">git clone git://github.com/certbot/certbot</span></pre>
 </div>
-<div id="get-your-first-certificate">
+</div>
 <h2>Get your first certificate</h2>
+<div class="solvvy-solution">
 <p>Before you do this, you’ll need to make sure that your domain is actually pointing at your DreamCompute instance’s IP address, and that your webserver is configured to respond to requests for your domain name. This is required because 'Let’s Encrypt' performs checks to make sure that you control domain names that you request certificates for. If you have not already done this, view the article below for assistance:</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/218672058-Configuring-DNS-for-your-domains">Configuring DNS for your domains</a></li>
@@ -45,14 +42,15 @@ Redirecting vhost in /etc/apache2/sites-enabled/example.com.conf to ssl vhost in
 </div>
 <p>This will finalize your new certificate. You shouldn’t even need to restart your webserver or modify a configuration file as the Apache plugin for certbot-auto was designed to handle this for you.</p>
 </div>
-<div id="adding-a-subdomain-to-an-existing-certificate">
 <h2>Adding a subdomain to an existing certificate</h2>
+<div class="solvvy-solution">
 <p>If after running that script you realize that you also need a certificate for a related subdomain, you can run the certbot-auto command again with additional parameters.</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[root@server]# </span><span class="command">/opt/certbot/certbot -auto --apache -d example.com -d sub.example.com</span></pre>
 </div>
-<div id="automatic-renewal">
+</div>
 <h2>Automatic renewal</h2>
+<div class="solvvy-solution">
 <p>You can have your system automatically renew all of the certificates for you using a small shell script which looks like this:</p>
 <div class="preboxcontainer">
 <pre class="prebox">#!/bin/bash
@@ -69,10 +67,5 @@ Redirecting vhost in /etc/apache2/sites-enabled/example.com.conf to ssl vhost in
 <!--DreamCompute Button-->
 <div class="dream-sign-up">
 <h2 id="h_849006449121518042594193">Deploy Your Apps On Cloud Servers Today</h2>
-<a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a></div>
-</div>
-</div>
-</div>
-</div>
-</div>
+<div class="solvvy-hidden"><a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a></div>
 </div>

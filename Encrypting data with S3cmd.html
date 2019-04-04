@@ -1,4 +1,4 @@
-<h2><span id="encrypting-data">How to encrypt your data</span></h2>
+<h2><span id="encrypting-data">How to encrypt your data</span></h2><div class="solvvy-solution">
 <p>S3cmd can encrypt your data while uploading to DreamObjects. To use this functionality, you must first configure your .s3cfg file as shown in this article:</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/360022542692-Installing-S3cmd">Installing S3cmd</a></li>
@@ -26,10 +26,10 @@ gpg_passphrase = <span class="command">yourpassword</span></pre>
 upload: '/tmp/tmpfile-zFGwbLHMVEINdHh3615n' -&gt; 's3://bucket-name/testfile.txt'  [1 of 1]
  63 of 63   100% in    0s   129.96 B/s  done</pre>
 </div>
-<p>To confirm it is encrypted, navigate to the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=cloud.objects&amp;" target="_blank" rel="noopener">DreamObjects</a> page. Click the 'View Objects' button under your username. A prompt opens for you to view objects in your bucket.</p>
-<p><img src="https://objects-us-east-1.dream.io/kbimages/images/2018-06_panel_dho-viewing-object.png"></p>
+<p>To confirm it is encrypted, navigate to the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=cloud.objects&amp;" rel="noopener" target="_blank">DreamObjects</a> page. Click the 'View Objects' button under your username. A prompt opens for you to view objects in your bucket.</p>
+<p><img src="https://objects-us-east-1.dream.io/kbimages/images/2018-06_panel_dho-viewing-object.png"/></p>
 <p>Click the object, copy the URL, and then paste it into a browser.</p>
-<p><img class="img-border" src="https://objects-us-east-1.dream.io/kbimages/images/2018-06_dho-viewing-encrypted-object.png"></p>
+<p><img class="img-border" src="https://objects-us-east-1.dream.io/kbimages/images/2018-06_dho-viewing-encrypted-object.png"/></p>
 <p>You'll see the data in the file is encrypted.</p>
 <h3>Decrypting a file</h3>
 <p>When you use s3cmd to download an encrypted file, it's automatically decrypted for you:</p>
@@ -43,7 +43,7 @@ download: 's3://bucket-name/encrypted-file.txt' -&gt; './encrypted-file.txt'  [1
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">cat encrypted-file.txt</span>
 Testing a file</pre>
 </div>
-<h2>Signing an S3 URL to provide limited public access</h2>
+</div><h2>Signing an S3 URL to provide limited public access</h2><div class="solvvy-solution">
 <p>You can manually set an expiration date for a file to be accessed. To do this, you must first convert the date into a Unix Epoch timestamp.</p>
 <ol>
 <li>Decide on the date you wish to allow the URL to be signed/accessed until.</li>
@@ -60,4 +60,4 @@ http://my-bucket.objects-us-east-1.dream.io/my_file.png?AWSAccessKeyId=DHDPTCQ3W
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd signurl s3://my_bucket/my_file.png $(echo "`date +%s` + 3600 * 24 * 7" | bc)</span></pre>
 </div>
-<div class="footer"> </div>
+<div class="footer"> </div></div>

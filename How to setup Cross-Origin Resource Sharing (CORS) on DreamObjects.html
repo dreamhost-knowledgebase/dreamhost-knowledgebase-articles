@@ -1,7 +1,9 @@
 <h2>Overview</h2>
+<div class="solvvy-solution">
 <p>This article describes how to set up the Cross-Origin Resource Sharing (<strong>CORS</strong>) capabilities of DreamObjects as implemented in Ceph, and is intended for any users that need to set up DreamObjects for use across domains, such as WebFonts, or cross-domain uploads.</p>
-<div id="background-and-use-cases">
+ </div>
 <h2>Background and use cases</h2>
+<div class="solvvy-solution">
 <p>Cross-origin resource sharing (CORS) is a mechanism that allows restricted resources (e.g., fonts) on a web page to become available to another domain outside the domain from which the resource originated. A restricted resource is any that would violate the same-origin policy of the browser.</p>
 <p>In plain terms, a CORS policy request is how the browser determines if it’s actually permitted to perform non-trivial requests from one domain to another. Some canonical examples of these are WebFonts and JavaScript-based (XMLHttpRequest) uploads to an external storage service.</p>
 <div id="use-case-cross-domain-uploads">
@@ -14,8 +16,8 @@
 <p>This same-origin policy is mandated by the <a class="reference external" href="http://www.w3.org/TR/css3-fonts/#same-origin-restriction">CSS3-Fonts specification</a>.</p>
 </div>
 </div>
-<div id="dreamobjects-cors-usage">
 <h2>DreamObjects CORS usage</h2>
+<div class="solvvy-solution">
 <p>DreamObjects provides CORS-policy responses to browser requests, based on the CORS configuration.</p>
 <p>A CORS configuration on DreamObjects:</p>
 <ul class="simple">
@@ -23,9 +25,7 @@
 <li>is handled individually for each bucket, and</li>
 <li>uses the Amazon S3 syntax for CORS configuration.</li>
 </ul>
-<div id="constructing-a-cors-configuration">
 <h3>Constructing a CORS configuration</h3>
-<div id="rules-for-cors-policies">
 <h4>Rules for CORS policies</h4>
 <p>The following are the general rules for making a CORS configuration:</p>
 <ul class="simple">
@@ -39,8 +39,6 @@
 <li>Each rule may specify zero or more exposed response headers (which are sent back from the server to the client).</li>
 <li>Each rule may specify a cache validity time of zero or more seconds. If not included, the client should supply their own default.</li>
 </ul>
-</div>
-<div id="example-webfont-policy">
 <h4>Example WebFont policy</h4>
 <p>If you need to host a WebFont on DreamObjects, you’ll want to include a policy such as the following example (assuming your site is www.example.com and also works at example.com):</p>
 <div class="preboxcontainer">
@@ -61,7 +59,6 @@
 &lt;/CORSConfiguration&gt;
 </pre>
 </div>
-<div id="example-aws-s3-js-policy">
 <h4>Example AWS S3 JS policy</h4>
 <p>The following policy permits users of the AWS S3 JavaScript SDK, on both example.com and www.example.com, on both HTTP and HTTPS, to upload to DreamObjects, with both the PUT and POST methods:</p>
 <div class="preboxcontainer">
@@ -97,7 +94,6 @@
 &lt;/CORSConfiguration&gt;
 </pre>
 </div>
-<div id="example-wildcard-policy-insecure">
 <h4>Example Wildcard policy (<em>INSECURE!</em>)</h4>
 <p>The following policy, while completely insecure, allows ALL methods from any origin. It does NOT however expose custom headers:</p>
 <div class="preboxcontainer">
@@ -117,14 +113,14 @@
 &lt;/CORSConfiguration&gt;
 </pre>
 </div>
-<div id="deploying-a-cors-configuration">
+</div>
 <h2>Deploying a CORS configuration</h2>
+<div class="solvvy-solution">
 <p>A minority of S3 clients support deploying CORS configurations. See the links in the <strong>clients</strong> section below for examples of deploying a CORS configuration on various clients. Other clients not listed may also support CORS policies, and the listing should not be taken as exhaustive or guaranteed correct (some clients have experienced broken CORS support at some points).</p>
-<div id="s3cmd-1-6-0-and-newer">
 <h3>s3cmd (1.6.0 and newer)</h3>
 <p>Since 1.6.0, <a href="https://help.dreamhost.com/hc/en-us/articles/215916627-Installing-S3cmd">S3cmd</a> supports setting or deleting a CORS config; however it does not support getting it back except as a part of an “info” request.</p>
 <div class="alert alert-important">
-<div class="alert-icon"><img height="60" src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
 <p>Make sure you have a working <a class="reference external" href="https://help.dreamhost.com/hc/en-us/articles/215916627-Installing-S3cmd">installation of S3cmd</a> before proceeding.</p>
 </div>
@@ -137,18 +133,17 @@ s3cmd delcors s3://bucketname
 # Get bucket info including CORS rules
 s3cmd info s3://bucketname</pre>
 </div>
-<div id="python-boto-pre-made-xml">
-<div id="python-boto-programmatic">
-<div id="compatibility-notes">
+</div>
 <h2>Compatibility notes</h2>
+<div class="solvvy-solution">
 <ul class="simple">
 <li>DreamObjects was originally implemented with only a default CORS policy of the <strong>*</strong> wildcard, which permitted ANY origin to be used; no per-bucket CORS was originally available.</li>
 <li>As of 2015/10/01, per-bucket CORS policies are fully supported, but the wildcard in some places remained in place to avoid inadvertent breakages.</li>
 <li>As of 2016/02/01, this wildcard became unavailable, and users who need CORS functionality MUST deploy their own CORS configuration to the relevant buckets.</li>
 </ul>
 </div>
-<div id="see-also">
-<h2>See also</h2><div class="solvvy-hidden">
+<h2>See also</h2>
+<div class="solvvy-hidden">
 <div id="background">
 <h3>Background</h3>
 <ul class="simple">
@@ -181,13 +176,5 @@ s3cmd info s3://bucketname</pre>
 <!--DreamObjects Button-->
 <div class="dream-sign-up">
 <h2>Start Storing Your Data Today!</h2>
-<a href="https://www.dreamhost.com/cloud/storage/">Sign Up for DreamObjects</a></div>
+<div class="solvvy-hidden"><a href="https://www.dreamhost.com/cloud/storage/">Sign Up for DreamObjects</a></div>
 </div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div></div>
