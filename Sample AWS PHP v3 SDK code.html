@@ -1,7 +1,7 @@
 <div class="document">
 <div class="documentwrapper">
 <div class="body">
-<div id="sample_aws_php.v3_sdk">
+<div id="sample_aws_php.v3_sdk" class="solvvy-hidden">
 <div class="table-of-content container">
 <ul class="simple">
 <li><a class="reference internal" href="#connection">Creating a connection</a></li>
@@ -17,9 +17,10 @@
 <li><a class="reference internal" href="#generate_download_url">Generating object download URLs</a></li>
 </ul>
 </div>
+</div>
 <span id="EXACT_HEADING_NAME"></span>
 <div class="alert alert-note">
-<div class="alert-icon"><img alt="" height="60" src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
 <p>It's not recommended to store credentials in an executable file. A better option is to load credentials from 'environment variables' or from a 'credentials ini file'. View the following site for further details:</p>
 <ul>
@@ -28,6 +29,7 @@
 </div>
 </div>
 <h2><span id="connection">Creating a connection</span></h2>
+<div class="solvvy-solution">
 <p>Creates an S3 client object to interact with the DHO server:</p>
 <div class="preboxcontainer">
 <pre class="prebox">define('AWS_KEY', 'your_access_key');
@@ -51,7 +53,9 @@ $client = new Aws\S3\S3Client([
     ]
 ]);</pre>
 </div>
+</div>
 <h2><span id="owned_buckets">Listing owned Buckets</span></h2>
+<div class="solvvy-solution">
 <p>Lists buckets owned by the S3 user:</p>
 <div class="preboxcontainer">
 <pre class="prebox">$buckets = $client-&gt;listBuckets();
@@ -70,7 +74,9 @@ try {
 mahbuckat2   2011-04-21T18:05:48.000Z
 mahbuckat3   2011-04-21T18:07:18.000Z</pre>
 </div>
+</div>
 <h2><span id="create_bucket">Creating a Bucket</span></h2>
+<div class="solvvy-solution">
 <div class="preboxcontainer">
 <pre class="prebox">$BUCKET_NAME='my-new-bucket';
 try {
@@ -83,7 +89,9 @@ try {
     echo "\n";
 }</pre>
 </div>
+</div>
 <h2><span id="buckets_contents">Listing a Bucket’s contents</span></h2>
+<div class="solvvy-solution">
 <div class="preboxcontainer">
 <pre class="prebox">$objects = $client-&gt;listObjectsV2([
         'Bucket' =&gt; 'my-new-bucket',
@@ -97,14 +105,18 @@ foreach ($objects['Contents'] as $object){
 <pre class="prebox">myphoto1.jpg 251262  2011-08-08T21:35:48.000Z
 myphoto2.jpg 262518  2011-08-08T21:38:01.000Z</pre>
 </div>
+</div>
 <h2><span id="delete_contents">Deleting the entire contents of a Bucket</span></h2>
+<div class="solvvy-solution">
 <div class="preboxcontainer">
 <pre class="prebox">$batch = Aws\S3\BatchDelete::fromListObjects($client, ['Bucket' =&gt; 'my-new-bucket']);
 $batch-&gt;delete();</pre>
 </div>
+</div>
 <h2><span id="delete_bucket">Deleting a Bucket</span></h2>
+<div class="solvvy-solution">
 <div class="alert alert-important">
-<div class="alert-icon"><img alt="" height="60" src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
 <p>The Bucket must be empty, otherwise the following call does not work.</p>
 </div>
@@ -112,7 +124,9 @@ $batch-&gt;delete();</pre>
 <div class="preboxcontainer">
 <pre class="prebox">$client-&gt;deleteBucket(array('Bucket' =&gt; 'my-new-bucket'));</pre>
 </div>
+</div>
 <h2><span id="create_object">Creating an object</span></h2>
+<div class="solvvy-solution">
 <p>Uploads a file from the filesystem and sets it to 'private':</p>
 <div class="preboxcontainer">
 <pre class="prebox">$bucket = 'my-bucket-name';
@@ -129,7 +143,9 @@ try{
     echo $e-&gt;getMessage() . "\n";
 }</pre>
 </div>
+</div>
 <h2><span id="change_acl">Changing an object’s Access Control List (ACL)</span></h2>
+<div class="solvvy-solution">
 <p>Changes the availability of the object <span class="code">hello.txt</span> to 'publicly readable', and object <span class="code">secret_plans.txt</span> to 'private'.</p>
 <div class="preboxcontainer">
 <pre class="prebox">$client-&gt;putObjectAcl(array(
@@ -144,7 +160,7 @@ $client-&gt;putObjectAcl(array(
 ));</pre>
 </div>
 <div class="alert alert-important">
-<div class="alert-icon"><img alt="" height="60" src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
 <p>An ACL can be either private, public-read, public-read-write, authenticated-read, bucket-owner-read, or bucket-owner-full-control. See the following for more information:</p>
 <ul>
@@ -152,7 +168,9 @@ $client-&gt;putObjectAcl(array(
 </ul>
 </div>
 </div>
+</div>
 <h2><span id="delete_object">Deleting an object</span></h2>
+<div class="solvvy-solution">
 <p>Deletes the object <span class="code">goodbye.txt</span>:</p>
 <div class="preboxcontainer">
 <pre class="prebox">$client-&gt;deleteObject(array(
@@ -160,7 +178,9 @@ $client-&gt;putObjectAcl(array(
     'Key'    =&gt; 'goodbye.txt',
 ));</pre>
 </div>
+</div>
 <h2><span id="download_object">Downloading an object to a file</span></h2>
+<div class="solvvy-solution">
 <p>Downloads the object <span class="code">poetry.pdf</span> from ‘my-bucket-name’ and saves it in <span class="code">/home/larry/documents</span>:</p>
 <div class="preboxcontainer">
 <pre class="prebox">$client-&gt;getObject(array(
@@ -169,7 +189,9 @@ $client-&gt;putObjectAcl(array(
     'SaveAs' =&gt; '/home/larry/documents/poetry.pdf'
 ));</pre>
 </div>
+</div>
 <h2><span id="generate_download_url">Generating object download URLs (unsigned and pre-signed)</span></h2>
+<div class="solvvy-solution">
 <p>Generates an unsigned download URL for <span class="code">hello.txt</span>. This works because <span class="code">hello.txt</span> was made public by setting the ACL above, which then generates a signed download URL for <span class="code">secret_plans.txt</span> that works for 1 hour. Signed download URLs work for the time period even if the object is private (when the time period is up, the URL stops working):</p>
 <div class="preboxcontainer">
 <pre class="prebox">$plain_url = $client-&gt;getObjectUrl('my-bucket-name', 'hello.txt');
@@ -191,4 +213,3 @@ http://my-bucket-name.objects-us-east-1.dream.io/secret_plans.txt?Signature=XXXX
 </div>
 </div>
 </div>
-<div class="clearer"> </div>
