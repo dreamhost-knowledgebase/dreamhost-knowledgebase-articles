@@ -7,13 +7,16 @@
 <li><a class="reference internal" href="#rados-s3-api">DreamObjects RADOS S3 API</a></li>
 <li><a class="reference internal" href="#common-entities-s3">Common Entities</a></li>
 <li><a class="reference internal" href="#authentication-s3">How To Authenticate to DreamObjects with S3 API</a></li>
-<li><a class="reference internal" href="#service-operations-s3">Understanding DreamObjects S3-compatible Service Operations</a></li>
+<li><a class="reference internal" href="#understanding-dreamobjects-s3-compatible-access-control-list">Understanding DreamObjects S3-compatible Access Control List</a></li>
+<li><a class="reference internal" href="#understanding-dreamobjects-s3-compatible-service-operations">Understanding DreamObjects S3-compatible Service Operations</a></li>
 <li><a class="reference internal" href="#bucket-operations-s3">Understanding DreamObjects S3-compatible Bucket Operations</a></li>
 <li><a class="reference internal" href="#object-operations-s3">Understand DreamObjects S3-compatible Object Operations</a></li>
 </ul>
 </div>
-<div id="dreamobjects-rados-s3-api"><span id="rados-s3-api"></span>
+<div id="dreamobjects-rados-s3-api"> </div>
+<span id="rados-s3-api"></span>
 <h2>DreamObjects RADOS S3 API</h2>
+<div class="solvvy-solution">
 <p>DreamObjects supports the Amazon S3 API, so it’s easy to use your existing apps. However, unlike Amazon, DreamObjects uses RGW, the RADOS Gateway that is built on the CEPH file store.</p>
 <div id="features-supported">
 <h3>Features Supported</h3>
@@ -140,7 +143,7 @@
 </tbody>
 </table>
 </div>
-<div id="unsupported-header-fields">
+<div id="unsupported-header-fields"> </div>
 <h3>Unsupported Header Fields</h3>
 <p>The following common request header fields are not supported:</p>
 <table class="docutils" border="1"><colgroup> <col width="69%" /> <col width="31%" /> </colgroup>
@@ -178,22 +181,23 @@
 </tbody>
 </table>
 </div>
-</div>
-<div id="common-entities"><span id="common-entities-s3"></span>
+<div id="common-entities"> </div>
+<span id="common-entities-s3"></span>
 <h2>Common Entities</h2>
-<div id="bucket-and-host-name">
+<div class="solvvy-solution">
+<div id="bucket-and-host-name"> </div>
 <h3>Bucket and Host Name</h3>
 <p>There are two different modes of accessing the buckets. The first (preferred) method identifies the bucket as the top-level directory in the URI:</p>
 <div class="preboxcontainer">
 <pre class="prebox">GET /mybucket HTTP/1.1
-Host: objects-us-east-1.dream.io
-</pre>
+                  Host: objects-us-east-1.dream.io
+                  </pre>
 </div>
 <p>The second method identifies the bucket via a virtual bucket host name. For example:</p>
 <div class="preboxcontainer">
 <pre class="prebox">GET / HTTP/1.1
-Host: mybucket.objects-us-east-1.dream.io
-</pre>
+                  Host: mybucket.objects-us-east-1.dream.io
+                  </pre>
 </div>
 <div class="alert alert-important">
 <div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
@@ -201,7 +205,7 @@ Host: mybucket.objects-us-east-1.dream.io
 <p>DreamHost prefers the first method, because the second method requires expensive domain certification and DNS wild cards.</p>
 </div>
 </div>
-<div id="common-request-headers">
+<div id="common-request-headers"> </div>
 <h3>Common Request Headers</h3>
 <table class="docutils" border="1"><colgroup> <col width="32%" /> <col width="68%" /> </colgroup>
 <thead valign="bottom">
@@ -229,8 +233,7 @@ Host: mybucket.objects-us-east-1.dream.io
 </tr>
 </tbody>
 </table>
-</div>
-<div id="common-response-status">
+<div id="common-response-status"> </div>
 <h3>Common Response Status</h3>
 <table class="docutils" border="1"><colgroup> <col width="30%" /> <col width="70%" /> </colgroup>
 <thead valign="bottom">
@@ -371,22 +374,23 @@ Host: mybucket.objects-us-east-1.dream.io
 </tbody>
 </table>
 </div>
-</div>
-<div id="how-to-authenticate-to-dreamobjects-with-s3-api"><span id="authentication-s3"></span>
+<div id="how-to-authenticate-to-dreamobjects-with-s3-api"> </div>
+<span id="authentication-s3"></span>
 <h2>How To Authenticate to DreamObjects with S3 API</h2>
+<div class="solvvy-solution">
 <p>Requests to DreamObjects can be either authenticated or unauthenticated. DreamObjects assumes unauthenticated requests are sent by an anonymous user. DreamObjects also supports canned ACLs.</p>
-<div id="authentication">
+<div id="authentication"> </div>
 <h3>Authentication</h3>
 <p>Authenticating a request requires including an <a href="https://help.dreamhost.com/hc/en-us/articles/215986357-DreamObjects-Keys">Access Key</a> and a Hash-based Message Authentication Code (HMAC) in the request before it is sent to the RGW server. RGW uses an S3-compatible authentication approach:</p>
 <div class="preboxcontainer">
 <pre class="prebox">HTTP/1.1
-PUT /buckets/bucket/object.mpeg
-Host: objects-us-east-1.dream.io
-Date: Mon, 2 Jan 2012 00:01:01 +0000
-Content-Encoding: mpeg
-Content-Length: 9999999
-
-Authorization: AWS {access-key}:{hash-of-header-and-secret}</pre>
+                      PUT /buckets/bucket/object.mpeg
+                      Host: objects-us-east-1.dream.io
+                      Date: Mon, 2 Jan 2012 00:01:01 +0000
+                      Content-Encoding: mpeg
+                      Content-Length: 9999999
+                      
+                      Authorization: AWS {access-key}:{hash-of-header-and-secret}</pre>
 </div>
 <p>In the foregoing example, replace <code class="docutils literal"><span class="pre">{access-key}</span></code> with the value for your access key ID followed by a colon (<code class="docutils literal"><span class="pre">:</span></code>). Replace <code class="docutils literal"><span class="pre">{hash-of-header-and-secret}</span></code> with a hash of the header string and the secret corresponding to the access key ID.</p>
 <p>To generate the hash of the header string and secret:</p>
@@ -409,9 +413,9 @@ Authorization: AWS {access-key}:{hash-of-header-and-secret}</pre>
 </ol>
 <p>Replace the <code class="docutils literal"><span class="pre">{hash-of-header-and-secret}</span></code> with the base-64 encoded HMAC string.</p>
 </div>
-</div>
 <div id="understanding-dreamobjects-s3-compatible-access-control-list">
 <h2>Understanding DreamObjects S3-compatible Access Control List</h2>
+<div class="solvvy-solution">
 <p>DreamObjects supports S3-compatible Access Control List (ACL) functionality. An ACL is a list of access grants that specify which operations a user can perform on a bucket or on an object. Each grant has a different meaning when applied to a bucket versus applied to an object:</p>
 <table class="docutils" border="1"><colgroup> <col width="15%" /> <col width="47%" /> <col width="38%" /> </colgroup>
 <thead valign="bottom">
@@ -450,20 +454,22 @@ Authorization: AWS {access-key}:{hash-of-header-and-secret}</pre>
 </tbody>
 </table>
 </div>
-<div id="understanding-dreamobjects-s3-compatible-service-operations"><span id="service-operations-s3"></span>
+<div id="understanding-dreamobjects-s3-compatible-service-operations"> </div>
+<span id="service-operations-s3"></span>
 <h2>Understanding DreamObjects S3-compatible Service Operations</h2>
-<div id="list-buckets">
+<div class="solvvy-solution">
+<div id="list-buckets"> </div>
 <h3>List Buckets</h3>
 <p><code class="docutils literal"><span class="pre">GET</span> <span class="pre">/</span></code> returns a list of buckets created by the user making the request. <code class="docutils literal"><span class="pre">GET</span> <span class="pre">/</span></code> only returns buckets created by an authenticated user. You cannot make an anonymous request.</p>
-<div id="syntax">
+<div id="syntax"> </div>
 <h4>Syntax</h4>
 <div class="preboxcontainer">
 <pre class="prebox">GET / HTTP/1.1
-Host: objects-us-east-1.dream.io
-
-Authorization: AWS {access-key}:{hash-of-header-and-secret}</pre>
+                        Host: objects-us-east-1.dream.io
+                        
+                        Authorization: AWS {access-key}:{hash-of-header-and-secret}</pre>
 </div>
-<div id="response-entities">
+<div id="response-entities"> </div>
 <h4>Response Entities</h4>
 <table class="docutils" border="1"><colgroup> <col width="26%" /> <col width="12%" /> <col width="61%" /> </colgroup>
 <thead valign="bottom">
@@ -517,11 +523,11 @@ Authorization: AWS {access-key}:{hash-of-header-and-secret}</pre>
 </tbody>
 </table>
 </div>
-</div>
-</div>
-<div id="understanding-dreamobjects-s3-compatible-bucket-operations"><span id="bucket-operations-s3"></span>
+<div id="understanding-dreamobjects-s3-compatible-bucket-operations"> </div>
+<span id="bucket-operations-s3"></span>
 <h2>Understanding DreamObjects S3-compatible Bucket Operations</h2>
-<div id="put-bucket">
+<div class="solvvy-solution">
+<div id="put-bucket"> </div>
 <h3>PUT Bucket</h3>
 <p>Creates a new <a href="https://help.dreamhost.com/hc/en-us/articles/215321178-DreamObjects-Buckets">bucket</a>. To create a bucket, you must have a <a href="https://help.dreamhost.com/hc/en-us/articles/215986327-DreamObjects-Users">user ID</a> and a valid AWS Access Key ID to authenticate requests. You may not create buckets as an anonymous user.</p>
 <div class="alert alert-important">
@@ -530,7 +536,7 @@ Authorization: AWS {access-key}:{hash-of-header-and-secret}</pre>
 <p>DreamHost does not support request entities for <code class="docutils literal"><span class="pre">PUT</span> <span class="pre">/{bucket}</span></code> in this release.</p>
 </div>
 </div>
-<div id="constraints">
+<div id="constraints"> </div>
 <h4>Constraints</h4>
 <p>In general, bucket names should follow domain name constraints:</p>
 <ul class="simple">
@@ -538,17 +544,16 @@ Authorization: AWS {access-key}:{hash-of-header-and-secret}</pre>
 <li>Bucket names must begin and end with a lowercase letter.</li>
 <li>Bucket names may contain a dash (-).</li>
 </ul>
-</div>
-<div id="id1">
+<div id="id1"> </div>
 <h4>Syntax</h4>
 <div class="preboxcontainer">
 <pre class="prebox">PUT /{bucket} HTTP/1.1
-Host: objects-us-east-1.dream.io
-x-amz-acl: public-read-write
-
-Authorization: AWS {access-key}:{hash-of-header-and-secret}</pre>
+                              Host: objects-us-east-1.dream.io
+                              x-amz-acl: public-read-write
+                              
+                              Authorization: AWS {access-key}:{hash-of-header-and-secret}</pre>
 </div>
-<div id="parameters">
+<div id="parameters"> </div>
 <h4>Parameters</h4>
 <table class="docutils" border="1"><colgroup> <col width="12%" /> <col width="17%" /> <col width="61%" /> <col width="10%" /> </colgroup>
 <thead valign="bottom">
@@ -568,8 +573,7 @@ Authorization: AWS {access-key}:{hash-of-header-and-secret}</pre>
 </tr>
 </tbody>
 </table>
-</div>
-<div id="http-response">
+<div id="http-response"> </div>
 <h4>HTTP Response</h4>
 <p>If the bucket name is unique, within constraints and unused, the operation succeeds.</p>
 <p>If a bucket with the same name already exists and the user is the bucket owner, the operation succeeds.</p>
@@ -590,20 +594,17 @@ Authorization: AWS {access-key}:{hash-of-header-and-secret}</pre>
 </tr>
 </tbody>
 </table>
-</div>
-</div>
-<div id="delete-bucket">
+<div id="delete-bucket"> </div>
 <h3>DELETE Bucket</h3>
 <p>Deletes a bucket. You can reuse bucket names following a successful bucket removal.</p>
-<div id="id2">
+<div id="id2"> </div>
 <h4>Syntax</h4>
 <div class="preboxcontainer">
 <pre class="prebox">DELETE /{bucket} HTTP/1.1
-Host: objects-us-east-1.dream.io
-
-Authorization: AWS {access-key}:{hash-of-header-and-secret}</pre>
-</div>
-<div id="id3">
+                              Host: objects-us-east-1.dream.io
+                              
+                              Authorization: AWS {access-key}:{hash-of-header-and-secret}</pre>
+<div id="id3"> </div>
 <h4>HTTP Response</h4>
 <table class="docutils" border="1"><colgroup> <col width="31%" /> <col width="31%" /> <col width="38%" /> </colgroup>
 <thead valign="bottom">
@@ -622,18 +623,17 @@ Authorization: AWS {access-key}:{hash-of-header-and-secret}</pre>
 </tbody>
 </table>
 </div>
-</div>
-<div id="get-bucket">
+<div id="get-bucket"> </div>
 <h3>GET Bucket</h3>
 <p>Returns a list of bucket objects.</p>
-<div id="id4">
+<div id="id4"> </div>
 <h4>Syntax</h4>
 <div class="preboxcontainer">
 <pre class="prebox">GET /{bucket}?max-keys=25 HTTP/1.1
-Host: objects-us-east-1.dream.io
-</pre>
+                              Host: objects-us-east-1.dream.io
+                              </pre>
 </div>
-<div id="id5">
+<div id="id5"> </div>
 <h4>Parameters</h4>
 <table class="docutils" border="1"><colgroup> <col width="17%" /> <col width="11%" /> <col width="72%" /> </colgroup>
 <thead valign="bottom">
@@ -666,8 +666,7 @@ Host: objects-us-east-1.dream.io
 </tr>
 </tbody>
 </table>
-</div>
-<div id="id6">
+<div id="id6"> </div>
 <h4>HTTP Response</h4>
 <table class="docutils" border="1"><colgroup> <col width="30%" /> <col width="30%" /> <col width="40%" /> </colgroup>
 <thead valign="bottom">
@@ -685,8 +684,7 @@ Host: objects-us-east-1.dream.io
 </tr>
 </tbody>
 </table>
-</div>
-<div id="bucket-response-entities">
+<div id="bucket-response-entities"> </div>
 <h4>Bucket Response Entities</h4>
 <p><code class="docutils literal"><span class="pre">GET</span> <span class="pre">/{bucket}</span></code> returns a container for buckets with the following fields.</p>
 <table class="docutils" border="1"><colgroup> <col width="21%" /> <col width="9%" /> <col width="70%" /> </colgroup>
@@ -740,8 +738,7 @@ Host: objects-us-east-1.dream.io
 </tr>
 </tbody>
 </table>
-</div>
-<div id="object-response-entities">
+<div id="object-response-entities"> </div>
 <h4>Object Response Entities</h4>
 <p>The <code class="docutils literal"><span class="pre">ListBucketResult</span></code> contains objects, where each object is within a <code class="docutils literal"><span class="pre">Contents</span></code> container.</p>
 <table class="docutils" border="1"><colgroup> <col width="31%" /> <col width="14%" /> <col width="55%" /> </colgroup>
@@ -785,21 +782,19 @@ Host: objects-us-east-1.dream.io
 </tr>
 </tbody>
 </table>
-</div>
-</div>
-<div id="get-bucket-acl">
+<div id="get-bucket-acl"> </div>
 <h3>Get Bucket ACL</h3>
 <p>Retrieves the bucket access control list. The user must be the bucket owner or be granted <code class="docutils literal"><span class="pre">READ_ACP</span></code> permission on the bucket.</p>
-<div id="id7">
+<div id="id7"> </div>
 <h4>Syntax</h4>
 <p>Add the <code class="docutils literal"><span class="pre">acl</span></code> subresource to the bucket request as shown below.</p>
 <div class="preboxcontainer">
 <pre class="prebox">GET /{bucket}?acl HTTP/1.1
-Host: objects-us-east-1.dream.io
-
-Authorization: AWS {access-key}:{hash-of-header-and-secret}</pre>
+                              Host: objects-us-east-1.dream.io
+                              
+                              Authorization: AWS {access-key}:{hash-of-header-and-secret}</pre>
 </div>
-<div id="id8">
+<div id="id8"> </div>
 <h4>Response Entities</h4>
 <table class="docutils" border="1"><colgroup> <col width="20%" /> <col width="10%" /> <col width="70%" /> </colgroup>
 <thead valign="bottom">
@@ -852,18 +847,16 @@ Authorization: AWS {access-key}:{hash-of-header-and-secret}</pre>
 </tr>
 </tbody>
 </table>
-</div>
-</div>
-<div id="put-bucket-acl">
+<div id="put-bucket-acl"> </div>
 <h3>PUT Bucket ACL</h3>
 <p>Sets an access control to an existing bucket. The user needs to be the bucket owner or to have been granted <code class="docutils literal"><span class="pre">WRITE_ACP</span></code> permission on the bucket.</p>
-<div id="id9">
+<div id="id9"> </div>
 <h4>Syntax</h4>
 <p>Add the <code class="docutils literal"><span class="pre">acl</span></code> subresource to the bucket request as shown below.</p>
 <div class="preboxcontainer">
 <pre class="prebox">PUT /{bucket}?acl HTTP/1.1</pre>
 </div>
-<div id="request-entities">
+<div id="request-entities"> </div>
 <h4>Request Entities</h4>
 <table class="docutils" border="1"><colgroup> <col width="20%" /> <col width="10%" /> <col width="70%" /> </colgroup>
 <thead valign="bottom">
@@ -916,18 +909,16 @@ Authorization: AWS {access-key}:{hash-of-header-and-secret}</pre>
 </tr>
 </tbody>
 </table>
-</div>
-</div>
-<div id="list-bucket-multipart-uploads">
+<div id="list-bucket-multipart-uploads"> </div>
 <h3>List Bucket Multipart Uploads</h3>
 <p><code class="docutils literal"><span class="pre">GET</span> <span class="pre">/?uploads</span></code> returns a list of the current in-progress multipart uploads–i.e., the application initiates a multipart upload, but the service hasn’t completed all the uploads yet.</p>
-<div id="id10">
+<div id="id10"> </div>
 <h4>Syntax</h4>
 <div class="preboxcontainer">
 <pre class="prebox">GET /{bucket}?uploads HTTP/1.1
-</pre>
+                              </pre>
 </div>
-<div id="id11">
+<div id="id11"> </div>
 <h4>Parameters</h4>
 <p>You can specify parameters for <code class="docutils literal"><span class="pre">GET</span> <span class="pre">/{bucket}?uploads</span></code>, but none of them are required.</p>
 <table class="docutils" border="1"><colgroup> <col width="20%" /> <col width="9%" /> <col width="71%" /> </colgroup>
@@ -971,8 +962,7 @@ Authorization: AWS {access-key}:{hash-of-header-and-secret}</pre>
 </tr>
 </tbody>
 </table>
-</div>
-<div id="id12">
+<div id="id12"> </div>
 <h4>Response Entities</h4>
 <table class="docutils" border="1"><colgroup> <col width="26%" /> <col width="8%" /> <col width="66%" /> </colgroup>
 <thead valign="bottom">
@@ -1091,20 +1081,20 @@ Authorization: AWS {access-key}:{hash-of-header-and-secret}</pre>
 </tbody>
 </table>
 </div>
-</div>
-</div>
-<div id="understand-dreamobjects-s3-compatible-object-operations"><span id="object-operations-s3"></span>
+<div id="understand-dreamobjects-s3-compatible-object-operations"> </div>
+<span id="object-operations-s3"></span>
 <h2>Understand DreamObjects S3-compatible Object Operations</h2>
-<div id="put-object">
+<div class="solvvy-solution">
+<div id="put-object"> </div>
 <h3>Put Object</h3>
 <p>Adds an object to a bucket. You must have write permissions on the bucket to perform this operation.</p>
-<div id="id13">
+<div id="id13"> </div>
 <h4>Syntax</h4>
 <div class="preboxcontainer">
 <pre class="prebox">PUT /{bucket}/{object} HTTP/1.1
-</pre>
+                                                </pre>
 </div>
-<div id="request-headers">
+<div id="request-headers"> </div>
 <h4>Request Headers</h4>
 <table class="docutils" border="1"><colgroup> <col width="14%" /> <col width="28%" /> <col width="50%" /> <col width="8%" /> </colgroup>
 <thead valign="bottom">
@@ -1142,16 +1132,14 @@ Authorization: AWS {access-key}:{hash-of-header-and-secret}</pre>
 </tr>
 </tbody>
 </table>
-</div>
-</div>
-<div id="copy-object">
+<div id="copy-object"> </div>
 <h3>Copy Object</h3>
 <p>To copy an object, use <code class="docutils literal"><span class="pre">PUT</span></code> and specify a destination bucket and the object name.</p>
-<div id="id14">
+<div id="id14"> </div>
 <h4>Syntax</h4>
 <div class="preboxcontainer">
 <pre class="prebox">PUT /{dest-bucket}/{dest-object} HTTP/1.1
-x-amz-copy-source: {source-bucket}/{source-object}</pre>
+                                                x-amz-copy-source: {source-bucket}/{source-object}</pre>
 </div>
 <div id="id15">
 <h4>Request Headers</h4>
@@ -1203,8 +1191,7 @@ x-amz-copy-source: {source-bucket}/{source-object}</pre>
 </tr>
 </tbody>
 </table>
-</div>
-<div id="id16">
+<div id="id16"> </div>
 <h4>Response Entities</h4>
 <table class="docutils" border="1"><colgroup> <col width="29%" /> <col width="15%" /> <col width="56%" /> </colgroup>
 <thead valign="bottom">
@@ -1232,27 +1219,25 @@ x-amz-copy-source: {source-bucket}/{source-object}</pre>
 </tr>
 </tbody>
 </table>
-</div>
-</div>
-<div id="remove-object">
+<div id="remove-object"> </div>
 <h3>Remove Object</h3>
 <p>Removes an object. Requires WRITE permission set on the containing bucket.</p>
-<div id="id17">
+<div id="id17"> </div>
 <h4>Syntax</h4>
 <div class="preboxcontainer">
 <pre class="prebox">DELETE /{bucket}/{object} HTTP/1.1
-</pre>
+                                                </pre>
 </div>
 <div id="get-object">
 <h3>Get Object</h3>
 <p>Retrieves an object from a bucket within RADOS.</p>
-<div id="id18">
+<div id="id18"> </div>
 <h4>Syntax</h4>
 <div class="preboxcontainer">
 <pre class="prebox">GET /{bucket}/{object} HTTP/1.1
-</pre>
+                                                </pre>
 </div>
-<div id="id19">
+<div id="id19"> </div>
 <h4>Request Headers</h4>
 <table class="docutils" border="1"><colgroup> <col width="23%" /> <col width="40%" /> <col width="27%" /> <col width="10%" /> </colgroup>
 <thead valign="bottom">
@@ -1296,8 +1281,7 @@ x-amz-copy-source: {source-bucket}/{source-object}</pre>
 </tr>
 </tbody>
 </table>
-</div>
-<div id="response-headers">
+<div id="response-headers"> </div>
 <h4>Response Headers</h4>
 <table class="docutils" border="1"><colgroup> <col width="17%" /> <col width="83%" /> </colgroup>
 <thead valign="bottom">
@@ -1313,18 +1297,16 @@ x-amz-copy-source: {source-bucket}/{source-object}</pre>
 </tr>
 </tbody>
 </table>
-</div>
-</div>
-<div id="get-object-info">
+<div id="get-object-info"> </div>
 <h3>Get Object Info</h3>
 <p>Returns information about object. This request returns the same header information as with the Get Object request, but includes the metadata only, not the object data payload.</p>
-<div id="id20">
+<div id="id20"> </div>
 <h4>Syntax</h4>
 <div class="preboxcontainer">
 <pre class="prebox">HEAD /{bucket}/{object} HTTP/1.1
-</pre>
+                                                </pre>
 </div>
-<div id="id21">
+<div id="id21"> </div>
 <h4>Request Headers</h4>
 <table class="docutils" border="1"><colgroup> <col width="23%" /> <col width="40%" /> <col width="27%" /> <col width="10%" /> </colgroup>
 <thead valign="bottom">
@@ -1368,17 +1350,15 @@ x-amz-copy-source: {source-bucket}/{source-object}</pre>
 </tr>
 </tbody>
 </table>
-</div>
-</div>
-<div id="get-object-acl">
+<div id="get-object-acl"> </div>
 <h3>Get Object ACL</h3>
-<div id="id22">
+<div id="id22"> </div>
 <h4>Syntax</h4>
 <div class="preboxcontainer">
 <pre class="prebox">GET /{bucket}/{object}?acl HTTP/1.1
-</pre>
+                                                </pre>
 </div>
-<div id="id23">
+<div id="id23"> </div>
 <h4>Response Entities</h4>
 <table class="docutils" border="1"><colgroup> <col width="20%" /> <col width="10%" /> <col width="70%" /> </colgroup>
 <thead valign="bottom">
@@ -1431,17 +1411,15 @@ x-amz-copy-source: {source-bucket}/{source-object}</pre>
 </tr>
 </tbody>
 </table>
-</div>
-</div>
-<div id="set-object-acl">
+<div id="set-object-acl"> </div>
 <h3>Set Object ACL</h3>
-<div id="id24">
+<div id="id24"> </div>
 <h4>Syntax</h4>
 <div class="preboxcontainer">
 <pre class="prebox">PUT /{bucket}/{object}?acl
-</pre>
+                                                </pre>
 </div>
-<div id="id25">
+<div id="id25"> </div>
 <h4>Request Entities</h4>
 <table class="docutils" border="1"><colgroup> <col width="20%" /> <col width="10%" /> <col width="70%" /> </colgroup>
 <thead valign="bottom">
@@ -1494,18 +1472,16 @@ x-amz-copy-source: {source-bucket}/{source-object}</pre>
 </tr>
 </tbody>
 </table>
-</div>
-</div>
-<div id="initiate-multi-part-upload">
+<div id="initiate-multi-part-upload"> </div>
 <h3>Initiate Multi-part Upload</h3>
 <p>Initiate a multi-part upload process.</p>
-<div id="id26">
+<div id="id26"> </div>
 <h4>Syntax</h4>
 <div class="preboxcontainer">
 <pre class="prebox">POST /{bucket}/{object}?uploads
-</pre>
+                                                </pre>
 </div>
-<div id="id27">
+<div id="id27"> </div>
 <h4>Request Headers</h4>
 <table class="docutils" border="1"><colgroup> <col width="14%" /> <col width="28%" /> <col width="50%" /> <col width="8%" /> </colgroup>
 <thead valign="bottom">
@@ -1543,8 +1519,7 @@ x-amz-copy-source: {source-bucket}/{source-object}</pre>
 </tr>
 </tbody>
 </table>
-</div>
-<div id="id28">
+<div id="id28"> </div>
 <h4>Response Entities</h4>
 <table class="docutils" border="1"><colgroup> <col width="26%" /> <col width="8%" /> <col width="66%" /> </colgroup>
 <thead valign="bottom">
@@ -1577,17 +1552,15 @@ x-amz-copy-source: {source-bucket}/{source-object}</pre>
 </tr>
 </tbody>
 </table>
-</div>
-</div>
-<div id="multipart-upload-part">
+<div id="multipart-upload-part"> </div>
 <h3>Multipart Upload Part</h3>
-<div id="id29">
+<div id="id29"> </div>
 <h4>Syntax</h4>
 <div class="preboxcontainer">
 <pre class="prebox">PUT /{bucket}/{object}?partNumber=&amp;uploadId= HTTP/1.1
-</pre>
+                                                </pre>
 </div>
-<div id="id30">
+<div id="id30"> </div>
 <h4>HTTP Response</h4>
 <p>The following HTTP response may be returned:</p>
 <table class="docutils" border="1"><colgroup> <col width="14%" /> <col width="15%" /> <col width="70%" /> </colgroup>
@@ -1606,17 +1579,15 @@ x-amz-copy-source: {source-bucket}/{source-object}</pre>
 </tr>
 </tbody>
 </table>
-</div>
-</div>
-<div id="list-multipart-upload-parts">
+<div id="list-multipart-upload-parts"> </div>
 <h3>List Multipart Upload Parts</h3>
-<div id="id31">
+<div id="id31"> </div>
 <h4>Syntax</h4>
 <div class="preboxcontainer">
 <pre class="prebox">GET /{bucket}/{object}?uploadId=123 HTTP/1.1
-</pre>
+                                                </pre>
 </div>
-<div id="id32">
+<div id="id32"> </div>
 <h4>Response Entities</h4>
 <table class="docutils" border="1"><colgroup> <col width="26%" /> <col width="8%" /> <col width="66%" /> </colgroup>
 <thead valign="bottom">
@@ -1714,18 +1685,16 @@ x-amz-copy-source: {source-bucket}/{source-object}</pre>
 </tr>
 </tbody>
 </table>
-</div>
-</div>
-<div id="complete-multipart-upload">
+<div id="complete-multipart-upload"> </div>
 <h3>Complete Multipart Upload</h3>
 <p>Assembles uploaded parts and creates a new object, thereby completing a multipart upload.</p>
-<div id="id33">
+<div id="id33"> </div>
 <h4>Syntax</h4>
 <div class="preboxcontainer">
 <pre class="prebox">POST /{bucket}/{object}?uploadId= HTTP/1.1
-</pre>
+                                                </pre>
 </div>
-<div id="id34">
+<div id="id34"> </div>
 <h4>Request Entities</h4>
 <table class="docutils" border="1"><colgroup> <col width="31%" /> <col width="12%" /> <col width="48%" /> <col width="9%" /> </colgroup>
 <thead valign="bottom">
@@ -1763,8 +1732,7 @@ x-amz-copy-source: {source-bucket}/{source-object}</pre>
 </tr>
 </tbody>
 </table>
-</div>
-<div id="id35">
+<div id="id35"> </div>
 <h4>Response Entities</h4>
 <table class="docutils" border="1"><colgroup> <col width="35%" /> <col width="12%" /> <col width="52%" /> </colgroup>
 <thead valign="bottom">
@@ -1802,43 +1770,21 @@ x-amz-copy-source: {source-bucket}/{source-object}</pre>
 </tr>
 </tbody>
 </table>
-</div>
-</div>
-<div id="abort-multipart-upload">
+<div id="abort-multipart-upload"> </div>
 <h3>Abort Multipart Upload</h3>
-<div id="id36">
+<div id="id36"> </div>
 <h4>Syntax</h4>
 <div class="preboxcontainer">
 <pre class="prebox">DELETE /{bucket}/{object}?uploadId= HTTP/1.1
-</pre>
+                                                </pre>
 </div>
 </div>
 </div>
 </div>
-</div>
-</div>
-<div class="clearer"> </div>
-</div>
-<div class="footer"> </div>
 <!--DreamObjects Button-->
 <div class="dream-sign-up">
 <h2>Start Storing Your Data Today!</h2>
-<a href="https://www.dreamhost.com/cloud/storage/">Sign Up for DreamObjects</a></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
+<div class="solvvy-hidden"><a href="https://www.dreamhost.com/cloud/storage/">Sign Up for DreamObjects</a></div>
 </div>
 </div>
 </div>
