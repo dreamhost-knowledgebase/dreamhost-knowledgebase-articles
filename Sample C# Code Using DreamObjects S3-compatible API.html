@@ -1,7 +1,7 @@
 <div class="document">
 <div class="documentwrapper">
 <div class="body">
-<div id="sample-c-code-using-dreamobjects-s3-compatible-api">
+<div id="sample-c-code-using-dreamobjects-s3-compatible-api" class="solvvy-hidden">
 <div class="table-of-content container">
 <ul class="simple">
 <li><a class="reference internal" href="#s3-c-creating-a-connection">Creating a Connection</a></li>
@@ -17,9 +17,12 @@
 <li><a class="reference internal" href="#s3-c-generate-object-download-urls">Generate Object Download URLs (signed and unsigned)</a></li>
 </ul>
 </div>
+</div>
 <p>This article lists several C# code examples to interact with DreamObjects.</p>
-<div id="creating-a-connection"><span id="s3-c-creating-a-connection"></span>
+<div id="creating-a-connection"> </div>
+<span id="s3-c-creating-a-connection"></span>
 <h2>Creating a Connection</h2>
+<div class="solvvy-solution">
 <p>Create a connection so you can interact with the server.</p>
 <div class="preboxcontainer">
 <pre class="prebox">using System;
@@ -39,8 +42,11 @@ AmazonS3 client = Amazon.AWSClientFactory.CreateAmazonS3Client(
         config
         );</pre>
 </div>
-<div id="listing-owned-buckets"><span id="s3-c-listing-owned-buckets"></span>
+</div>
+<div id="listing-owned-buckets"> </div>
+<span id="s3-c-listing-owned-buckets"></span>
 <h2>Listing Owned Buckets</h2>
+<div class="solvvy-solution">
 <p>Get a list of Buckets you own. This also prints out the bucket name and creation date of each bucket.</p>
 <div class="preboxcontainer">
 <pre class="prebox">ListBucketResponse response = client.ListBuckets();
@@ -55,16 +61,22 @@ foreach (S3Bucket b in response.Buckets)
 mahbuckat2   2011-04-21T18:05:48.000Z
 mahbuckat3   2011-04-21T18:07:18.000Z</pre>
 </div>
-<div id="creating-a-bucket"><span id="s3-c-creating-a-buckets"></span>
+</div>
+<div id="creating-a-bucket"> </div>
+<span id="s3-c-creating-a-buckets"></span>
 <h2>Creating a Bucket</h2>
+<div class="solvvy-solution">
 <p>Create a new bucket called <code class="docutils literal"><span class="pre">my-new-bucket.</span></code></p>
 <div class="preboxcontainer">
 <pre class="prebox">PutBucketRequest request = new PutBucketRequest();
 request.BucketName = "my-new-bucket";
 client.PutBucket(request);</pre>
 </div>
-<div id="listing-a-bucket-s-content"><span id="s3-c-listing-a-buckets-content"></span>
+</div>
+<div id="listing-a-bucket-s-content"> </div>
+<span id="s3-c-listing-a-buckets-content"></span>
 <h2>Listing a Bucket’s Content</h2>
+<div class="solvvy-solution">
 <p>Get a list of objects in the bucket. This also prints out each object’s name, the file size, and last modified date.</p>
 <div class="preboxcontainer">
 <pre class="prebox">ListObjectsRequest request = new ListObjectsRequest();
@@ -80,8 +92,11 @@ foreach (S3Object o in response.S3Objects)
 <pre class="prebox">myphoto1.jpg 251262  2011-08-08T21:35:48.000Z
 myphoto2.jpg 262518  2011-08-08T21:38:01.000Z</pre>
 </div>
-<div id="deleting-a-bucket"><span id="s3-c-deleting-a-bucket"></span>
+</div>
+<div id="deleting-a-bucket"> </div>
+<span id="s3-c-deleting-a-bucket"></span>
 <h2>Deleting a Bucket</h2>
+<div class="solvvy-solution">
 <div class="alert alert-important">
 <div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
@@ -93,16 +108,22 @@ myphoto2.jpg 262518  2011-08-08T21:38:01.000Z</pre>
 request.BucketName = "my-new-bucket";
 client.DeleteBucket(request);</pre>
 </div>
-<div id="forced-delete-for-non-empty-buckets"><span id="s3-c-forced-delete-for-non-empty-buckets"></span>
+</div>
+<div id="forced-delete-for-non-empty-buckets"> </div>
+<span id="s3-c-forced-delete-for-non-empty-buckets"></span>
 <h2>Forced Delete for Non-empty Buckets</h2>
+<div class="solvvy-solution">
 <div class="alert alert-important">
 <div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
 <p>not available</p>
 </div>
 </div>
-<div id="creating-an-object"><span id="s3-c-creating-an-objects"></span>
+</div>
+<div id="creating-an-object"> </div>
+<span id="s3-c-creating-an-objects"></span>
 <h2>Creating an Object</h2>
+<div class="solvvy-solution">
 <p>Create a file <code class="docutils literal"><span class="pre">hello.txt</span></code> with the string <code class="docutils literal"><span class="pre">"Hello</span> <span class="pre">World!"</span></code></p>
 <div class="preboxcontainer">
 <pre class="prebox">PutObjectRequest request = new PutObjectRequest();
@@ -112,8 +133,11 @@ request.ContentType = "text/plain";
 request.ContentBody = "Hello World!";
 client.PutObject(request);</pre>
 </div>
-<div id="change-an-object-s-acl"><span id="s3-c-change-an-objects-acl"></span>
+</div>
+<div id="change-an-object-s-acl"> </div>
+<span id="s3-c-change-an-objects-acl"></span>
 <h2>Change an Object’s ACL</h2>
+<div class="solvvy-solution">
 <p>Make the object <code class="docutils literal"><span class="pre">hello.txt</span></code> publicly readable and <code class="docutils literal"><span class="pre">secret_plans.txt</span></code> to be private.</p>
 <div class="preboxcontainer">
 <pre class="prebox">SetACLRequest request = new SetACLRequest();
@@ -128,8 +152,11 @@ request2.Key        = "secret_plans.txt";
 request2.CannedACL  = S3CannedACL.Private;
 client.SetACL(request2);</pre>
 </div>
-<div id="download-an-object-to-a-file"><span id="s3-c-download-an-object"></span>
+</div>
+<div id="download-an-object-to-a-file"> </div>
+<span id="s3-c-download-an-object"></span>
 <h2>Download an Object (to a file)</h2>
+<div class="solvvy-solution">
 <p>Download the object <code class="docutils literal"><span class="pre">perl_poetry.pdf</span></code> and save it in <code class="docutils literal"><span class="pre">C:\Users\larry\Documents.</span></code></p>
 <div class="preboxcontainer">
 <pre class="prebox">GetObjectRequest request = new GetObjectRequest();
@@ -138,8 +165,11 @@ request.Key        = "perl_poetry.pdf"
 GetObjectResponse response = client.GetObject(request);
 response.WriteResponseStreamToFile("C:\\Users\\larry\\Documents\\perl_poetry.pdf");</pre>
 </div>
-<div id="delete-an-object"><span id="s3-c-delete-an-object"></span>
+</div>
+<div id="delete-an-object"> </div>
+<span id="s3-c-delete-an-object"></span>
 <h2>Delete an Object</h2>
+<div class="solvvy-solution">
 <p>Delete the object <code class="docutils literal"><span class="pre">goodbye.txt.</span></code></p>
 <div class="preboxcontainer">
 <pre class="prebox">DeleteObjectRequest request = new DeleteObjectRequest();
@@ -147,8 +177,11 @@ request.BucketName = "my-new-bucket";
 request.Key        = "goodbye.txt";
 client.DeleteObject(request);</pre>
 </div>
-<div id="generate-object-download-urls-signed-and-unsigned"><span id="s3-c-generate-object-download-urls"></span>
+</div>
+<div id="generate-object-download-urls-signed-and-unsigned"> </div>
+<span id="s3-c-generate-object-download-urls"></span>
 <h2>Generate Object Download URLs (signed and unsigned)</h2>
+<div class="solvvy-solution">
 <p>This generates an unsigned download URL for <code class="docutils literal"><span class="pre">hello.txt</span></code>. This works because <code class="docutils literal"><span class="pre">hello.txt</span></code> was made public by setting the ACL above. This then generates a signed download URL for <code class="docutils literal"><span class="pre">secret_plans.txt</span></code> that will work for 1 hour. Signed download URLs will work for the time period even if the object is private (when the time period is up, the URL will stop working).</p>
 <div class="alert alert-important">
 <div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
@@ -174,17 +207,7 @@ Console.WriteLine(url);</pre>
 <!--DreamObjects Button-->
 <div class="dream-sign-up">
 <h2>Start Storing Your Data Today!</h2>
-<a href="https://www.dreamhost.com/cloud/storage/">Sign Up for DreamObjects</a></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
+<div class="solvvy-hidden"><a href="https://www.dreamhost.com/cloud/storage/">Sign Up for DreamObjects</a></div>
 </div>
 </div>
 </div>
