@@ -2,31 +2,28 @@
 <div class="solvvy-solution">
 <p>This article lists several common commands for your reference.</p>
 <div class="alert alert-note">
-<div class="alert-icon"><img height="60" src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
-<p>If you have multiple images or volumes with the same name, you will need to use IDs instead of names in the commands below.</p>
-</div>
-</div>
-<div class="alert alert-note">
-<div class="alert-icon"><img height="60" src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60"/></div>
-<div class="alert-content">
-<p>Some of the examples below contain a back slash character at the end of each line. This back slash continues the command on the next line. If you like, you can remove this character and put the entire command on a single line.</p>
+<ul>
+<li>If you have multiple images or volumes with the same name, you must use IDs instead of names in the commands below.</li>
+<li>Some of the examples below contain a back slash character at the end of each line. This back slash continues the command on the next line. If you like, you can remove this character and put the entire command on a single line.</li>
+</ul>
 </div>
 </div>
 </div>
 <h2>Images</h2>
 <div class="solvvy-solution">
-<p>List images you can access</p>
+<p>List images you can access:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack image list</span>
 </pre>
 </div>
-<p>Delete specified image</p>
+<p>Delete specified image:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack image delete IMAGE</span>
 </pre>
 </div>
-<p>Describe a specific image</p>
+<p>Describe a specific image:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack image show IMAGE</span>
 </pre>
@@ -34,43 +31,43 @@
 </div>
 <h2>Compute</h2>
 <div class="solvvy-solution">
-<p>List instances, check status of instance</p>
+<p>List instances and check status of instance:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server list</span>
 </pre>
 </div>
-<p>List flavors</p>
+<p>List flavors:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack flavor list</span>
 </pre>
 </div>
-<p>Boot an ephemeral instance</p>
+<p>Boot an ephemeral instance:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server create --image IMAGE \
 --flavor FLAVOR --key-name KEY INSTANCE_NAME</span>
 </pre>
 </div>
-<p>Show details of instance</p>
+<p>Show details of instance:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server show INSTANCE</span>
 </pre>
 </div>
-<p>View console log of instance</p>
+<p>View console log of instance:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack console log show INSTANCE</span>
 </pre>
 </div>
-<p>Generate console URL for instance</p>
+<p>Generate console URL for instance:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack console url show INSTANCE</span>
 </pre>
 </div>
-<p>Set metadata on an instance</p>
+<p>Set metadata on an instance:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server set --property newmeta='my meta data' INSTANCE</span>
 </pre>
 </div>
-<p>Create and verify details of an instance snapshot</p>
+<p>Create and verify details of an instance snapshot:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server image create --name IMAGE --wait INSTANCE</span>
 <span class="server">[user@localhost]$ </span><span class="command">openstack image show IMAGE</span>
@@ -78,49 +75,59 @@
 </div>
 <div id="pause-suspend-stop-resize-rebuild-reboot-an-instance"> </div>
 <h3>Pause, suspend, stop, resize, rebuild, reboot an instance</h3>
-<p>Pause</p>
+<p>Pause – stores the state of the VM in RAM. A paused server continues to run in a frozen state. <strong>Pausing instances does not make them unbillable:</strong></p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server pause INSTANCE</span>
 </pre>
 </div>
-<p>Unpause</p>
+<p>Unpause – returns a paused server back to an active state:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server unpause INSTANCE</span>
 </pre>
 </div>
-<p>Suspend</p>
+<p>Suspend – suspends a server. Administrative users may wish to suspend a server if it's infrequently used or to perform a system maintenance. When you suspend a server, its VM state is stored on disk, all memory is written to disk, and the virtual machine is stopped. <strong>Suspending instances does not make them unbillable:</strong></p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server suspend INSTANCE</span>
 </pre>
 </div>
-<p>Unsuspend</p>
+<p>Unsuspend – resumes a suspended server to an active state:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server resume INSTANCE</span>
 </pre>
 </div>
-<p>Stop</p>
+<p>Lock – locks a server. This prevents any non-administrative users with access to your DreamCompute project from modifying or manipulating the instance itself using either the DreamCompute dashboard ('https://iad2.dreamcompute.com') or the OpenStack command-line client:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server lock INSTANCE</span>
+</pre>
+</div>
+<p>Unlock – unlocks a server in locked state so additional operations can be performed on the server by non-admin users. By default, only owner or administrator can unlock a server:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server unlock INSTANCE</span>
+</pre>
+</div>
+<p>Stop:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server stop INSTANCE</span>
 </pre>
 </div>
-<p>Start</p>
+<p>Start:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server start INSTANCE</span>
 </pre>
 </div>
-<p>Resize</p>
+<p>Resize:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack resize --flavor FLAVOR INSTANCE</span>
 <span class="server">[user@localhost]$ </span><span class="command">openstack resize --confirm --wait INSTANCE</span>
 <span class="server">[user@localhost]$ </span><span class="command">openstack resize --revert --wait INSTANCE</span>
 </pre>
 </div>
-<p>Rebuild</p>
+<p>Rebuild:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server rebuild --wait INSTANCE</span>
 </pre>
 </div>
-<p>Reboot</p>
+<p>Reboot:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server reboot --wait --soft INSTANCE</span>
 <span class="server">[user@localhost]$ </span><span class="command">openstack server reboot --hard --wait INSTANCE</span>
@@ -130,23 +137,23 @@
 <h2>Block Storage</h2>
 <div class="solvvy-solution">
 <p>Used to manage volumes that attach to instances and volume snapshots.</p>
-<p>Create a new and empty 6 GB volume.</p>
+<p>Create a new and empty 6 GB volume:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack volume create --size 6 VOLUME</span>
 </pre>
 </div>
-<p>Boot an instance to attach the new volume to.</p>
+<p>Boot an instance to attach the new volume to:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server create --image IMAGE \
 --flavor FLAVOR --key-name KEY INSTANCE</span>
 </pre>
 </div>
-<p>List volumes and view status of volume.</p>
+<p>List volumes and view status of volume:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack volume list</span>
 </pre>
 </div>
-<p>Attach volume to an instance after instance is active and volume is available.</p>
+<p>Attach volume to an instance after an instance is active and volume is available:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server add volume INSTANCE VOLUME</span>
 </pre>
