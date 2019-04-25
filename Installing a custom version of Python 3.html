@@ -7,7 +7,7 @@
 <li><a href="#3.7.1">Installing Python 3.7.1</a></li>
 </ul>
 <div class="alert alert-note">
-<div class="alert-icon"><img height="60" src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
 <p>To run the following commands, you must log into your server via SSH with your Shell user. View the following articles for more information:</p>
 <ul>
@@ -27,7 +27,7 @@
 <span class="server">[server]$ </span><span class="command">mkdir tmp</span>
 <span class="server">[server]$ </span><span class="command">cd tmp</span>
 <span class="server">[server]$ </span><span class="command">wget https://www.python.org/ftp/python/3.6.2/Python-3.6.2.tgz</span>
-<span class="server">[server]$ </span><span class="command">tar zxvf Python-3.6.2.tgz</span> <br/><span class="server">[server]$ </span><span class="command">cd Python-3.6.2</span> <br/><span class="server">[server]$ </span><span class="command">./configure --prefix=$HOME/opt/python-3.6.2</span>
+<span class="server">[server]$ </span><span class="command">tar zxvf Python-3.6.2.tgz</span> <br /><span class="server">[server]$ </span><span class="command">cd Python-3.6.2</span> <br /><span class="server">[server]$ </span><span class="command">./configure --prefix=$HOME/opt/python-3.6.2</span>
 <span class="server">[server]$ </span><span class="command">make</span>
 <span class="server">[server]$ </span><span class="command">make install</span></pre>
 </div>
@@ -61,7 +61,7 @@
 <span class="cmdoutput">Python 3.6.2</span></pre>
 </div>
 <div class="alert alert-note">
-<div class="alert-icon"><img alt="" height="60" src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
 <p>If there is no response then the newly downloaded copy is not being used. Most often this is due to the .bash_profile not being updated correctly. Try logging out and back in again. If necessary, repeat the steps above.</p>
 </div>
@@ -71,8 +71,8 @@
 </div>
 <h2><span id="3.7.1">Installing Python 3.7.1</span></h2>
 <div class="solvvy-solution">
-<h3>Important note about version 3.7.1</h3>
-<p>Version 3.7.1 requires newer versions of OpenSSL (1.0.2 or newer) than what DreamHost's servers currently provide. As such, you'll need to also install OpenSSL locally, then configure Python to use this local version of OpenSSL. View the following link for details:</p>
+<h3>Important note about version 3.7.1 on Trusty servers</h3>
+<p>If your server is running Ubuntu 14 (Trusty) and you wish to install Version 3.7.1+ of Python, you will need to install a custom version of OpenSSL. This is because newer Python versions require OpenSSL (1.0.2 or newer) which the older Ubuntu servers do not provide. As such, you'll need to also install OpenSSL locally, then configure Python to use this local version of OpenSSL. View the following link for details:</p>
 <ul>
 <li><a href="https://docs.python.org/3/library/ssl.html">https://docs.python.org/3/library/ssl.html</a></li>
 </ul>
@@ -80,7 +80,21 @@
 <dl>
 <dd>Changed in version 3.6: OpenSSL 0.9.8, 1.0.0 and 1.0.1 are deprecated and no longer supported. In the future the ssl module will require at least OpenSSL 1.0.2 or 1.1.0</dd>
 </dl>
-<p>DreamHost's OpenSSL version is currently 1.0.1f. To use newer versions of Python, you'll need to install the required version of OpenSSL locally under your user.</p>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>This only applies if your server is running Ubuntu 14. You can tell by running the following command via SSH:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cat /etc/issue</span>
+Ubuntu 14.04.5 LTS \n \l</pre>
+</div>
+<p>If your server is running version 18 (Bionic), you do not need to install OpenSSL.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cat /etc/issue</span>
+Ubuntu 18.04.1 LTS \n \l</pre>
+</div>
+</div>
+</div>
 <h3>Installing OpenSSL</h3>
 <p>View the following article for instructions on installing OpenSSL locally under your Shell user:</p>
 <ul>
@@ -94,7 +108,7 @@
 <span class="server">[server]$ </span><span class="command">mkdir tmp</span>
 <span class="server">[server]$ </span><span class="command">cd tmp</span>
 <span class="server">[server]$ </span><span class="command">wget https://www.python.org/ftp/python/3.7.1/Python-3.7.1.tgz</span>
-<span class="server">[server]$ </span><span class="command">tar zxvf Python-3.7.1.tgz</span> <br/><span class="server">[server]$ </span><span class="command">cd Python-3.7.1</span></pre>
+<span class="server">[server]$ </span><span class="command">tar zxvf Python-3.7.1.tgz</span> <br /><span class="server">[server]$ </span><span class="command">cd Python-3.7.1</span></pre>
 </div>
 </li>
 <li>Change into the 'Modules' directory.
@@ -115,7 +129,7 @@
         -L$(SSL)/lib -lssl -lcrypto</pre>
 </div>
 </li>
-<li>Change back to the Python-3.7.1 directory. You can now configure and install Python.<br/>
+<li>Change back to the Python-3.7.1 directory. You can now configure and install Python.<br />
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ..</span>
 <span class="server">[server]$ </span><span class="command">./configure --prefix=$HOME/opt/python-3.7.1</span>
@@ -152,7 +166,7 @@
 <span class="cmdoutput">Python 3.7.1</span></pre>
 </div>
 <div class="alert alert-note">
-<div class="alert-icon"><img alt="" height="60" src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
 <p>If there is no response then the newly downloaded copy is not being used. Most often this is due to the .bash_profile not being updated correctly. Try logging out and back in again. If necessary, repeat the steps above.</p>
 </div>
