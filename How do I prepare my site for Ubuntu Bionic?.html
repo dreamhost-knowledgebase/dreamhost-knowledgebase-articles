@@ -7,16 +7,20 @@
 <ul class="simple">
 <li><a class="reference internal" href="#prep">What to expect</a></li>
 <li><a class="reference internal" href="#mysql">MySQL</a></li>
-<li><a class="reference internal" href="#telnet">Telnet</a></li>
-<li><a class="reference internal" href="#boto_s3cmd">Boto-rsync and S3cmd</a></li>
-<li><a class="reference internal" href="#ruby">Ruby version change (from 1.9.3.4 to 2.5.1)</a></li>
-<li><a class="reference internal" href="#gcc">GCC version change to 7</a></li>
-<li><a class="reference internal" href="#passenger">Passenger</a></li>
-<li><a class="reference internal" href="#perl">Perl version change (from 5.18.4 to 5.26)</a></li>
-<li><a class="reference internal" href="#python">Python version changes</a></li>
-<li><a class="reference internal" href="#java">Java version change (from 7u151 to 8u171)</a></li>
-<li><a class="reference internal" href="#apache">Apache version change (from 2.2 to 2.4)</a></li>
-<li><a class="reference internal" href="#ffmpeg_libav">FFmpeg and Libav</a></li>
+<li><a class="reference internal subtoc" href="#serverchanges">Server Changes</a></li>
+<li><a class="reference internal subtoc" href="#reserved">Reserved words</a></li>
+<li><a class="reference internal" href="#webserver">Web server</a></li>
+<li><a class="reference internal subtoc" href="#telnet">Telnet</a></li>
+<li><a class="reference internal subtoc" href="#boto_s3cmd">Boto-rsync and S3cmd</a></li>
+<li><a class="reference internal subtoc" href="#ruby">Ruby version change (from 1.9.3.4 to 2.5.1)</a></li>
+<li><a class="reference internal subtoc" href="#gcc">GCC version change to 7</a></li>
+<li><a class="reference internal subtoc" href="#passenger">Passenger</a></li>
+<li><a class="reference internal subtoc" href="#perl">Perl version change (from 5.18.4 to 5.26)</a></li>
+<li><a class="reference internal subtoc" href="#python">Python version changes</a></li>
+<li><a class="reference internal subtoc" href="#java">Java version change (from 7u151 to 8u171)</a></li>
+<li><a class="reference internal subtoc" href="#apache">Apache version change (from 2.2 to 2.4)</a></li>
+<li><a class="reference internal subtoc" href="#ffmpeg_libav">FFmpeg and Libav</a></li>
+<li><a class="reference internal subtoc" href="#filterprovider">FilterProvider syntax change</a></li>
 <li><a class="reference internal" href="#support">How can I find support?</a></li>
 </ul>
 </div>
@@ -30,12 +34,12 @@
 </div>
 <h2><span id="mysql">MySQL</span></h2>
 <div class="solvvy-solution">
-<h3>Server changes</h3>
+<h3><span id="serverchanges">Server changes</span></h3>
 <p>DreamHost MySQL servers will be upgraded to MySQL version to 5.7 as part of the Ubuntu upgrade.</p>
-<h3>Reserved words</h3>
+<h3><span id="reserved">Reserved words</span></h3>
 <p>MySQL 5.7 includes list of "reserved" words (such as ‘SELECT’, ‘DELETE’, ‘BIGINT’, and ‘VIRTUAL’) that cannot be used as a database name and must be escaped. These words are reserved and require special treatment for use as identifiers such as table and column names. Please see the MySQL <a href="https://dev.mysql.com/doc/refman/5.7/en/keywords.html" target="_self">Keywords and Reserved Words</a> article for more information.</p>
 </div>
-<h2>Web server changes</h2>
+<h2><span id="webserver">Web server changes</span></h2>
 <div class="solvvy-solution">
 <h3><span id="telnet">Telnet</span></h3>
 <p>Because Telnet is a deprecated protocol, it is removed from the latest version of Ubuntu Bionic in order to help keep your server secure. If you require telnet, DreamHost recommends running it on your local computer instead.</p>
@@ -121,6 +125,20 @@
 <h3><span id="ffmpeg_libav">FFmpeg and Libav</span></h3>
 <p>Both of these libraries are changing in the Bionic upgrade of Ubuntu.</p>
 <p>In Ubuntu Trusty, Libav replaced FFmpeg, and FFmpeg was removed from Trusty entirely. With the Bionic upgrade, this is being reversed: FFmpeg is back, and Libav has been removed. Please make sure you update your file settings accordingly.</p>
+<h3><span id="filterprovider">FilterProvider syntax change</span></h3>
+<p>In Apache 2.4, the syntax for FilterProvider has changed.</p>
+<p>Sample old version:</p>
+<div class="preboxcontainer">
+<pre class="prebox">FilterProvider COMPRESS DEFLATE resp=Content-Type $text/html</pre>
+</div>
+<p>Sample new version:</p>
+<div class="preboxcontainer">
+<pre class="prebox">FilterProvider COMPRESS DEFLATE "%{Content_Type} = 'text/html'"</pre>
+</div>
+<p>You can read more about this in the Apache 2.4 mod_filter documentation:</p>
+<ul>
+<li><a href="https://httpd.apache.org/docs/2.4/mod/mod_filter.html" target="_self">https://httpd.apache.org/docs/2.4/mod/mod_filter.html</a></li>
+</ul>
 </div>
 <h2><span id="support">How can I find support?</span></h2>
 <div class="solvvy-solution">
