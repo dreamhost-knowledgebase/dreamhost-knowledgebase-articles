@@ -175,6 +175,7 @@ Ubuntu 18.04.1 LTS \n \l</pre>
 </ol>
 </div>
 <h2>Troubleshooting</h2>
+<h3>pip3 error</h3>
 <div class="solvvy-solution">
 <p>It's possible you'll see the following error after installing version 3.7.1 when running pip.</p>
 <div class="preboxcontainer">
@@ -185,6 +186,17 @@ Ubuntu 18.04.1 LTS \n \l</pre>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/360001435926-Installing-OpenSSL-locally-under-your-username">Installing OpenSSL locally under your username</a></li>
 </ul>
 <p>If you're still seeing the error, re-install Python.</p>
+</div>
+<div class="solvvy-solution">
+<h3>libssl error when installing Python 3</h3>
+<p>You may see the following error when compiling Python 3.</p>
+<p><strong>checking for X509_VERIFY_PARAM_set1_host in libssl... no</strong></p>
+<p>If you run <span class="code">make</span> you'll see the following error:</p>
+<p><strong>Could not build the ssl module! Python requires an OpenSSL 1.0.2 or 1.1 compatible libssl with X509_VERIFY_PARAM_set1_host().</strong></p>
+<p>Adding the following line when <a href="https://help.dreamhost.com/hc/en-us/articles/360001435926-Installing-OpenSSL-locally-under-your-username" target="_self">installing a custom version of OpenSSL</a> to your .bash_profile resolves this.</p>
+<div class="preboxcontainer">
+<pre class="prebox">export LDFLAGS="-L/home/<span class="command">username</span>/openssl/lib -Wl,-rpath,/home/<span class="command">username</span>/openssl/lib"</pre>
+</div>
 </div>
 <h2>If you're using Django</h2>
 <div class="solvvy-solution">
