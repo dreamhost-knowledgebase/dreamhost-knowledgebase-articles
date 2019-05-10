@@ -1,6 +1,7 @@
-<h2>Overview</h2><div class="solvvy-solution">
+<h2>Overview</h2>
+<div class="solvvy-solution">
 <div class="alert alert-note">
-<div class="alert-icon"><img height="60" src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
 <p>This article shows how to create a Django (version 2+) project. If you need to create a Django (version 1) project, view the following article instead:</p>
 <ul>
@@ -12,12 +13,16 @@
 </ul>
 </div>
 </div>
-</div><h2>What version of Python is compatible with Django 2?</h2><div class="solvvy-solution">
+</div>
+<h2>What version of Python is compatible with Django 2?</h2>
+<div class="solvvy-solution">
 <p>You must be using Python 3.4 or higher to use Django 2. View the following chart for a full list of compatible versions:</p>
 <ul>
 <li><a href="https://docs.djangoproject.com/en/2.0/faq/install/#what-python-version-can-i-use-with-django">What Python version can I use with Django?</a></li>
 </ul>
-</div><h2>Initial setup</h2><div class="solvvy-solution">
+</div>
+<h2>Initial setup</h2>
+<div class="solvvy-solution">
 <p>First, make sure you've installed a custom version of Python and created a virtual environment in your website's directory:</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/115000702772-Installing-a-custom-version-of-Python-3">Installing a custom version of Python 3</a></li>
@@ -31,9 +36,11 @@
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216385637-How-do-I-enable-Passenger-on-my-domain-">How do I enable Passenger on my domain?</a></li>
 </ul>
-</div><h2>Creating a Django project</h2><div class="solvvy-solution">
+</div>
+<h2>Creating a Django project</h2>
+<div class="solvvy-solution">
 <div class="alert alert-note">
-<div class="alert-icon"><img height="60" src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
 <p>To run the commands in this article, you must log into your server via SSH with your Shell user. View the following articles for more information:</p>
 <ul>
@@ -55,7 +62,7 @@
 <li>Replace 'example.com' with your domain name.</li>
 </ul>
 <div class="alert alert-note">
-<div class="alert-icon"><img alt="" height="60" src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
 <p>When you run the 'startproject' command, it creates a new folder in your site directory named whatever your Django project name is.</p>
 </div>
@@ -65,7 +72,7 @@
 <div class="preboxcontainer">
 <pre class="prebox">import sys, os
 INTERP = "<span class="command">/home/username/example.com/my_project/bin/python3</span>"
-#INTERP is present twice so that the new python interpreter <br/>#knows the actual executable path 
+#INTERP is present twice so that the new python interpreter <br />#knows the actual executable path 
 if sys.executable != INTERP: os.execl(INTERP, INTERP, *sys.argv)
 
 cwd = os.getcwd()
@@ -81,7 +88,7 @@ application = get_wsgi_application()
 </pre>
 </div>
 <div class="alert alert-note">
-<div class="alert-icon"><img alt="" height="60" src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
 <p>Be sure to replace the following in the passenger_wsgi.py file:</p>
 <ul>
@@ -170,10 +177,15 @@ Update it to include your domain name.
 <pre class="prebox"><span class="server">(my_project) [server]$ </span><span class="command">cd ~/example.com/&lt;projectname&gt;</span></pre>
 </div>
 </li>
+<li>Make sure mysqlclient is installed.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">(my_project) [server]$ </span><span class="command">pip3 install mysqlclient</span></pre>
+</div>
+</li>
 <li>Once configured, run migrate in your project directory:
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">(my_project) [server]$ </span><span class="command">python3 manage.py migrate</span>
-Operations to perform:<br/> Apply all migrations: admin, auth, contenttypes, sessions<br/>Running migrations:<br/> Applying contenttypes.0001_initial... OK<br/> Applying auth.0001_initial... OK<br/> Applying admin.0001_initial... OK<br/> Applying admin.0002_logentry_remove_auto_add... OK<br/> Applying contenttypes.0002_remove_content_type_name... OK<br/> Applying auth.0002_alter_permission_name_max_length... OK<br/> Applying auth.0003_alter_user_email_max_length... OK<br/> Applying auth.0004_alter_user_username_opts... OK<br/> Applying auth.0005_alter_user_last_login_null... OK<br/> Applying auth.0006_require_contenttypes_0002... OK<br/> Applying auth.0007_alter_validators_add_error_messages... OK<br/> Applying auth.0008_alter_user_username_max_length... OK<br/> Applying sessions.0001_initial... OK</pre>
+Operations to perform:<br /> Apply all migrations: admin, auth, contenttypes, sessions<br />Running migrations:<br /> Applying contenttypes.0001_initial... OK<br /> Applying auth.0001_initial... OK<br /> Applying admin.0001_initial... OK<br /> Applying admin.0002_logentry_remove_auto_add... OK<br /> Applying contenttypes.0002_remove_content_type_name... OK<br /> Applying auth.0002_alter_permission_name_max_length... OK<br /> Applying auth.0003_alter_user_email_max_length... OK<br /> Applying auth.0004_alter_user_username_opts... OK<br /> Applying auth.0005_alter_user_last_login_null... OK<br /> Applying auth.0006_require_contenttypes_0002... OK<br /> Applying auth.0007_alter_validators_add_error_messages... OK<br /> Applying auth.0008_alter_user_username_max_length... OK<br /> Applying sessions.0001_initial... OK</pre>
 </div>
 </li>
 <li>Create a superuser:
@@ -204,19 +216,26 @@ Superuser created successfully.</span></pre>
 </div>
 </li>
 </ol>
-</div><h2>Confirming the installation was successful</h2><div class="solvvy-solution">
+</div>
+<h2>Confirming the installation was successful</h2>
+<div class="solvvy-solution">
 <p>Visit your website.</p>
 <dl>
-<dd><img alt="" class="img-border" src="https://kbimages.dreamhosters.com/images/2018-04_django-create-project.png"/></dd>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-04_django-create-project.png" alt="" /></dd>
 </dl>
 <p>You should now see the standard Django holding page and be able to access the admin console at example.com/admin/.</p>
-</div><h2>Troubleshooting</h2><div class="solvvy-solution">
+</div>
+<h2>Troubleshooting</h2>
+<div class="solvvy-solution">
 <p>If you notice any errors after installing, check to see if you have an .htaccess file in your site's directories. It's possible the code in it could cause issues with your installation.</p>
-</div><h2>See also</h2><div class="solvvy-hidden">
+</div>
+<h2>See also</h2>
+<div class="solvvy-hidden">
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215319598-Django-overview">Django overview</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215317948-How-to-install-Django-using-virtualenv">How to install Django using virtualenv</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215317698-Django-troubleshooting">Django troubleshooting</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216137717-Python-overview">Python overview</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/115000695551-Installing-and-using-virtualenv-with-Python-3">Installing and using virtualenv with Python 3</a></li>
-</ul></div>
+</ul>
+</div>
