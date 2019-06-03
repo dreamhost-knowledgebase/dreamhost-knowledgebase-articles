@@ -1,7 +1,10 @@
-<h2>Overview</h2><div class="solvvy-solution">
+<h2>Overview</h2>
+<div class="solvvy-solution">
 <p>This article shows how to manually create a custom cron job using your <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Enabling-Shell-access">Shell user</a>. It involves logging into the server via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH</a> to run several commands.</p>
 <p>These instructions can also be used to edit an existing cron job you created in the panel, however for simplicity, it's recommended that if you created it in the panel, you continue to edit it from the panel.</p>
-</div><h2>Basic details</h2><div class="solvvy-solution">
+</div>
+<h2>Basic details</h2>
+<div class="solvvy-solution">
 <p>The crontab files are where the lists of jobs and other instructions to the cron daemon are kept. Each user at DreamHost has their own individual crontab file that can be access by running the following command under your <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Enabling-Shell-access">Shell user</a>:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">crontab -e</span>
@@ -12,7 +15,9 @@
 <p>Each line has five time/date fields, followed by a command, followed by a newline character ('\n'). A common problem is not including a newline, so hit 'Enter/Return' a time or three at the end of your command.</p>
 <p>Another common problem is automatic word-wrap breaking up a long line into multiple lines, so make sure your text editor doesn't do this.</p>
 <p>Blank lines and leading spaces and tabs are ignored. Lines whose first non-space character is a hash-sign (#) are ignored as they are considered comments. Note that comments are not allowed on the same line as cron commands, since they are interpreted as being part of the command. Similarly, comments are not allowed on the same line as environment variable settings (like MAILTO).</p>
-</div><h2>What if I already created a cron job in the panel under my Shell user?</h2><div class="solvvy-solution">
+</div>
+<h2>What if I already created a cron job in the panel under my Shell user?</h2>
+<div class="solvvy-solution">
 <p>There are two ways to create custom cron jobs.</p>
 <ul>
 <li>Editing the existing crontab on the server</li>
@@ -27,7 +32,9 @@
 <pre class="prebox"><span class="server">[server]$</span><span class="command"> crontab /home/username/mycrontab</span></pre>
 </div>
 <p>However, if you then add or edit a cron job in the panel, your custom crontab will be overwritten. So you need to either use the server's crontab, or your custom crontab.</p>
-</div><h2>Manually creating a custom cron job</h2><div class="solvvy-solution">
+</div>
+<h2>Manually creating a custom cron job</h2>
+<div class="solvvy-solution">
 <p>The instructions below explain how to add a custom cron job under your Shell user. These instructions assume you have NOT added a cron job in the panel yet, so the crontab file is blank.</p>
 <ol>
 <ol>
@@ -56,7 +63,7 @@ Choose 1-13 [3]: <span class="command">3</span>
 </pre>
 </div>
 </li>
-<li>You are then asked to choose an editor to view this file. #3 uses the program 'nano' which is the easiest option. View the '<a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Creating and editing a file via SSH</a>' article for instructions on how to use nano. </li>
+<li>You are then asked to choose an editor to view this file. #3 uses the program 'nano' which is the easiest option. View the '<a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Creating and editing a file via SSH</a>' article for instructions on how to use nano.</li>
 <li>You are presented with this new crontab file:
 <div class="preboxcontainer">
 <pre class="prebox"># Edit this file to introduce tasks to be run by cron.
@@ -90,7 +97,7 @@ MAILTO="user@example.com"
 13 20 * * * php  /home/example_username/mail.php</pre>
 </div>
 <div class="alert alert-note">
-<div class="alert-icon"><img height="60" src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
 <p>There are two parts to the command. The first part must specify the path to the program you'd like to use to run the cron job. For example let's say you have a PHP file named script.php in your domains directory:</p>
 <ul>
@@ -112,10 +119,12 @@ MAILTO="user@example.com"
 </ol>
 </ol>
 <p>That's it. The cron job should now run every day at 8:13pm.</p>
-</div><h2><span id="Manually_editing_crontab">Crontab commands</span></h2><div class="solvvy-solution">
-<div class="mw-content-ltr" dir="ltr" id="mw-content-text" lang="en">
+</div>
+<h2><span id="Manually_editing_crontab">Crontab commands</span></h2>
+<div class="solvvy-solution">
+<div id="mw-content-text" class="mw-content-ltr" dir="ltr" lang="en">
 <div class="alert alert-important">
-<div class="alert-icon"><img alt="" height="60" src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
 <p>Please note that if you choose to replace the server's crontab, all cron jobs created in the panel for this specific username will no longer function since they would have been overwritten on the server.</p>
 <p>Additionally, if you update any cron jobs under this user in the panel, it will overwrite your custom crontab. The crontab will be replaced in its original form as created in the panel.</p>
@@ -141,9 +150,11 @@ MAILTO="user@example.com"
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">crontab -r
 </span></pre>
 </div>
-</div><h2><span id="Date.2FTime_fields">Explanation of the Date/Time fields</span></h2><div class="solvvy-solution">
+</div>
+<h2><span id="Date.2FTime_fields">Explanation of the Date/Time fields</span></h2>
+<div class="solvvy-solution">
 <p>The first five fields of the line are the date and time field which specify how frequently and when to execute a command. When adding the cron job in the DreamHost panel, the Date/Time is added for you automatically based on your 'When to run' setting.</p>
-<table border="1" cellpadding="4" cellspacing="0">
+<table border="1" cellspacing="0" cellpadding="4">
 <tbody>
 <tr>
 <th>Field no.</th>
@@ -177,7 +188,12 @@ MAILTO="user@example.com"
 </tr>
 </tbody>
 </table>
-<p>Note: For day of the week, both 0 and 7 are considered Sunday. The time is based on that of the server running cron.</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>For day of the week, both 0 and 7 are considered Sunday. The time is based on that of the server running cron.</p>
+</div>
+</div>
 <p>Another (graphical) way of looking at these fields.</p>
 <div class="preboxcontainer">
 <pre class="prebox"> # * * * * *  command to execute
@@ -262,13 +278,19 @@ MAILTO="user@example.com"
 <ul>
 <li><a href="https://en.wikipedia.org/wiki/Cron#Nonstandard_predefined_scheduling_definitions">Cron – Nonstandard predefined scheduling definitions</a></li>
 </ul>
-</div><h2><span id="Output">Output</span></h2><div class="solvvy-solution">
+</div>
+<h2><span id="Output">Output</span></h2>
+<div class="solvvy-solution">
 <p>The output of the cron job is determined by what is sent to the terminal as a result of the commands/script that are executed. By default, all output is emailed to the location specified in the <a href="/hc/en-us/articles/215767107-Execution-environment-of-a-cron-job">MAILTO</a> variable (see the MAILTO variable requirement section for more information). As noted above, if your cron job command doesn't create any output on the command line then no email is sent.</p>
 <p>You can provide special instructions for the standard out (STDOUT) and standard error (STDERR) output by using the "&gt;" operator. When you use "&gt;" without a number before it, it defaults to "1&gt;". This is the standard (non-error) output.</p>
 <p>When you use "2&gt;" you are specifying what to do with the error output. So, for example, "&gt;my_file.txt" would redirect standard output to a file called "my_file.txt", and "2&gt;my_errors.txt" would redirect the errors to a file called "my_errors.txt".</p>
-</div><h2><span id="Permissions">Permissions</span></h2><div class="solvvy-solution">
+</div>
+<h2><span id="Permissions">Permissions</span></h2>
+<div class="solvvy-solution">
 <p>By default, files created on DreamHost's servers have a permissions level of 644. If you choose to execute a script via cron, you may need to set the permissions for the file to 744 using <a href="http://linux.die.net/man/1/chmod">chmod</a> in order to allow it to execute properly.</p>
-</div><h2><span id="Examples">Examples of custom cron scripts</span></h2><div class="solvvy-solution">
+</div>
+<h2><span id="Examples">Examples of custom cron scripts</span></h2>
+<div class="solvvy-solution">
 <p>The following examples show what you could add to to a new file in order to create a cron job.</p>
 <p><strong>Example 1</strong>: This runs a command at 4:10 PM PST/PDT, and emails you the regular and error output to the destination specified by MAILTO.</p>
 <div class="preboxcontainer">
@@ -313,16 +335,18 @@ MAILTO="user@example.com"
 <pre class="prebox">*/10 * * * */usr/bin/wget -P /home/username/cronfolder/ https://example.com/index.html
 </pre>
 </div>
-</div><h2>Dedicated server editing</h2><div class="solvvy-solution">
+</div>
+<h2>Dedicated server editing</h2>
+<div class="solvvy-solution">
 <p>If you are logged in as a <a href="https://help.dreamhost.com/hc/en-us/articles/215945467-How-do-I-add-users-to-a-Dedicated-server-">Dedicated server admin user</a>, you can edit the crontab file directly. It is stored here:</p>
 <div class="preboxcontainer">
 <pre class="prebox">/var/spool/cron/crontabs/youruser
 </pre>
 </div>
-<p>You’ll need to use <code>sudo</code> on your Dedicated server (or start an interactive session as the root user with <code>sudo -i</code>) to access that file. </p>
-<div class="mw-content-ltr" dir="ltr" id="mw-content-text" lang="en">
+<p>You’ll need to use <code>sudo</code> on your Dedicated server (or start an interactive session as the root user with <code>sudo -i</code>) to access that file.</p>
+<div id="mw-content-text" class="mw-content-ltr" dir="ltr" lang="en">
 <div class="alert alert-important">
-<div class="alert-icon"><img alt="" height="60" src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
 <p>If you require sudo/admin access, you must upgrade to a Dedicated server.</p>
 </div>
@@ -333,7 +357,9 @@ MAILTO="user@example.com"
 </pre>
 </div>
 </div>
-</div><h2>See also</h2><div class="solvvy-hidden">
+</div>
+<h2>See also</h2>
+<div class="solvvy-hidden">
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215088608-Crontab-overview">Crontab overview </a></li>
@@ -341,4 +367,5 @@ MAILTO="user@example.com"
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215088668-How-do-I-create-a-cron-job-">How do I create a cron job?</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/214202238-Command-line-PHP-overview">Command line PHP overview</a></li>
 </ul>
-</div></div>
+</div>
+</div>
