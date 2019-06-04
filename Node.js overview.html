@@ -1,189 +1,26 @@
-<h2>Overview</h2><div class="solvvy-solution">
+<h2>Overview</h2>
+<div class="solvvy-solution">
 <p>Node.js is a newer runtime environment that has become very popular among web developers. It uses JavaScript, traditionally a front end programming language on the server side.</p>
-</div><h2>Can Node.js be used on shared servers?</h2><div class="solvvy-solution">
+</div>
+<h2>Can Node.js be used on shared servers?</h2>
+<div class="solvvy-solution">
 <p>No. DreamHost does not support Node.js on shared web servers, as the <a href="http://grsecurity.net/">security setup</a> on DreamHost shared servers is incompatible with compiling or running Node.js.</p>
 <p>If you try to compile Node.js on one of the shared web servers, your user will automatically be banned through grsec (taking down all the PHP websites that run under that user) and the server will have to be rebooted before your user can be unbanned. If you do it one more time, you will be forced to move to a <a href="/hc/en-us/articles/215280058-Private-server-overview">VPS</a>.</p>
 <p>DreamHost's VPS and <a href="/hc/en-us/articles/215279658-Dedicated-server-overview">Dedicated</a> servers can run Node.js just fine.</p>
-</div><h2><span id="Enabling_Node.js_using_the_DreamHost_panel">Deploying Node.js with Passenger using the DreamHost panel</span></h2><div class="solvvy-solution">
+</div>
+<h2><span id="Enabling_Node.js_using_the_DreamHost_panel">Deploying Node.js with Passenger using the DreamHost panel</span></h2>
+<div class="solvvy-solution">
 <p>Visit the following article to learn how to deploy Node.js with Passenger in the panel:</p>
 <ul>
 <li><a href="/hc/en-us/articles/216635318-How-to-enable-Node-js">How to Enable Node.js</a></li>
 </ul>
-</div><h2><span id="Installing_a_custom_version_of_NVM_and_Node.js">Installing a custom version of NVM and Node.js</span></h2><div class="solvvy-solution">
-<div class="alert alert-important">
-<div class="alert-icon"><img alt="" height="60" src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60"/></div>
-<div class="alert-content">
-<p>DreamHost support is unable to assist with custom installations. The directions below will explain how to install Node.js but if you find anything is not working as intended, you must contact a developer for further assistance.</p>
 </div>
-</div>
-<p>The following steps use Node Version Manager to install.</p>
-<ol>
-<li>Check the version of Passenger running on your private server. The server must run version 4.0.37 or later.
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">dpkg -l | grep passenger</span>
-</pre>
-</div>
-</li>
-<li>Visit the following page to determine what version of NVM to install:
+<h2><span id="Installing_a_custom_version_of_NVM_and_Node.js">Installing a custom version of NVM and Node.js</span></h2>
+<p>View the following article for instructions on how to install a custom version of Node.js.</p>
 <ul>
-<li><a href="https://github.com/creationix/nvm#install-script">https://github.com/creationix/nvm</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360029083351-Installing-a-custom-version-of-NVM-and-Node-js" target="_self">Installing a custom version of NVM and Node.js</a></li>
 </ul>
-</li>
-<li>Make sure you're in your user's directory.
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~</span></pre>
-</div>
-</li>
-<li>Run the following command to download NVM. Change the version number as needed:
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash</span></pre>
-</div>
-<ul>
-<li>This command installs NVM into a new directory under your user named /.nvm</li>
-<li>This command also adds the following to your .bashrc file:</li>
-</ul>
-<div class="preboxcontainer">
-<pre class="prebox">export NVM_DIR="$HOME/.nvm"<br/>[ -s "$NVM_DIR/nvm.sh" ] &amp;&amp; \. "$NVM_DIR/nvm.sh" # This loads nvm<br/>[ -s "$NVM_DIR/bash_completion" ] &amp;&amp; \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
-</pre>
-</div>
-</li>
-<li>View the <a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">creating and editing a file via SSH</a> article for instructions on how to edit your existing .bash_profile. In this file, add the following line.
-<div class="preboxcontainer">
-<pre class="prebox">source ~/.bashrc</pre>
-</div>
-</li>
-<li>Run the following command to allow your shell to use this new version of nvm:
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">. ~/.bash_profile</span></pre>
-</div>
-</li>
-<li>To test if you can now use NVM, run the following which should respond with the version you have installed:
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">nvm --version</span>
-<span class="cmdoutput">0.34.0</span>
-</pre>
-</div>
-</li>
-<li>Check which versions of Node.js are available:
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">nvm ls-remote</span></pre>
-</div>
-</li>
-<li>Install any version of Node.js you wish:
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">nvm install 10.15.1</span></pre>
-</div>
-</li>
-<li>Check which version of Node.js is running by entering the following:
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">node -v</span>
-<span class="cmdoutput">v10.15.1</span>
-</pre>
-</div>
-</li>
-</ol>
-</div><h2><span id="Node_Package_Manager">Node Package Manager</span></h2><div class="solvvy-solution">
-<p>At this point you have NVM and Node.js installed and active. Node Package Manager is also installed with Node.js. Visit the following page for further details on npm:</p>
-<ul>
-<li><a href="https://docs.npmjs.com/">https://docs.npmjs.com/</a></li>
-</ul>
-<p>Check the version by running the following command:</p>
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">npm -v</span></pre>
-</div>
-<p>To update npm to the latest version, run the following command:</p>
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">npm install npm@latest -g</span></pre>
-</div>
-<p>Check the directory NPM writes to. Run the following command:</p>
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">npm config get prefix</span>
-<span class="cmdoutput">/home/exampleuser/.nvm/versions/node/v6.10.0</span>
-</pre>
-</div>
-<p>If you installed NVM as shown above, you'll see the directory response as the /.nvm folder under your current user.</p>
-</div><h2><span id="Installing_packages">Installing packages</span></h2><div class="solvvy-solution">
-<p>View the following page for instructions on how to install packages locally or globally:</p>
-<ul>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/115004415628-Node-js-installing-packages">How to install packages</a></li>
-</ul>
-</div><h2><span id="Testing_Node.js">Testing Node.js</span></h2><div class="solvvy-solution">
-<p>Now that you have installed Node.js you can create a simple test script to confirm if it's functioning.</p>
-</div><h2><span id="Simple_.27Hello_World.21.27_script">Simple 'Hello World!' script</span></h2><div class="solvvy-solution">
-<p>Create and run this script within your terminal:</p>
-<ol>
-<li>Create a file named HelloWorld.js, and then add the following in the file:
-<div class="preboxcontainer">
-<pre class="prebox">console.log('Hello World!');</pre>
-</div>
-</li>
-<li>Run the following in your terminal to run the script:
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">node HelloWorld.js</span>
-<span class="cmdoutput">Hello World!</span>
-</pre>
-</div>
-<p>If correctly installed you will see the console respond with <code>Hello World!</code></p>
-</li>
-</ol>
-</div><h2><span id="Website_example">Website example</span></h2><div class="solvvy-solution">
-<p>You can also create a basic HTTP server to load a site.</p>
-<ol>
-<li>Create a file in your web directory titled server.js, and then add the following code in the file:
-<div class="preboxcontainer">
-<pre class="prebox">var http = require("http");
-
-http.createServer(function(request, response) {
-  response.writeHead(200, {"Content-Type": "text/plain"});
-  response.write("Hello World");
-  response.end();
-}).listen(8888);
-</pre>
-</div>
-<ul>
-<li>This HTTP server will listen on port 8888.</li>
-</ul>
-</li>
-<li>Start the server by running the following:
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">node server.js</span></pre>
-</div>
-</li>
-<li>If you have <a href="/hc/en-us/articles/216635318-How-to-enable-Node-js">enabled Node.js in the panel</a>, you can just visit your site to see the file functioning. If you have not enabled Node.js in the panel, visit the page in a browser with port 8888 appended to the end. For example, http://example.com:8888.
-<p>If running correctly, your site will display the text <code>Hello World!</code>.</p>
-</li>
-</ol>
-<div class="alert alert-note">
-<div class="alert-icon"><img alt="" height="60" src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60"/></div>
-<div class="alert-content">
-<p>This example was taken from <a href="http://www.nodebeginner.org/#building-the-application-stack">http://www.nodebeginner.org/#building-the-application-stack</a>.</p>
-</div>
-</div>
-</div><h2>Troubleshooting</h2><div class="solvvy-solution">
-<h3>Passenger is not using your custom version of Node.js</h3>
-<p>If you find the custom version you installed is not being used, add the following code to an .htaccess file in your project's directory:</p>
-<div class="preboxcontainer">
-<pre class="prebox">PassengerNodejs /home/username/.nvm/versions/node/v10.15.1/bin/node</pre>
-</div>
-<div class="alert alert-note">
-<div class="alert-icon"><img height="60" src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60"/></div>
-<div class="alert-content">
-<p>Make sure to change the username and version to the version you have installed.</p>
-</div>
-</div>
-<p>Next, reload Passenger my running the following command in the app's directory:</p>
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">mkdir tmp &amp;&amp; touch restart.txt</span></pre>
-</div>
-<p>In the future, you just need to touch the restart.txt file to restart the application.</p>
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">touch tmp/restart.txt</span></pre>
-</div>
-<p>View the following page for further details:</p>
-<ul>
-<li><a href="https://www.phusionpassenger.com/library/config/apache/reference/">https://www.phusionpassenger.com/library/config/apache/reference/</a></li>
-</ul>
-</div><h2><span id="See_also">See also</span></h2>
+<h2><span id="See_also">See also</span></h2>
 <div class="solvvy-hidden">
 <h3>Internal links</h3>
 <ul>
@@ -195,7 +32,7 @@ http.createServer(function(request, response) {
 </ul>
 <h3>External links</h3>
 <ul>
-<li><a class="new" href="https://en.wikipedia.org/wiki/Node.js" title="W:Node.js (page does not exist)">Wikipedia article on Node.js</a></li>
+<li><a class="new" title="W:Node.js (page does not exist)" href="https://en.wikipedia.org/wiki/Node.js">Wikipedia article on Node.js</a></li>
 <li><a href="https://nodejs.org/">nodejs.org</a></li>
 </ul>
 </div>
