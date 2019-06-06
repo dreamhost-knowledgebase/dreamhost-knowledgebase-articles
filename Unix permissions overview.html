@@ -1,0 +1,104 @@
+<h2>Overview</h2>
+<div class="solvvy-solution">
+<p>Every file and directory of your website is controlled by specific permissions which control what access is granted to the file or directory. For example, every file/directory has three types of owner and permissions.</p>
+<p>This article explains the basics of permissions. View the following article for instructions on how to change permissions via SSH or FTP.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214751018-UNIX-commands-Changing-permissions" target="_self">Changing permissions</a></li>
+</ul>
+</div>
+<h2>Owners</h2>
+<div class="solvvy-solution">
+<p>The following are the three types of owners of a file or directory.</p>
+<ul>
+<li><strong>User </strong>— Owner of the file. This is most often the user that uploaded or created it.</li>
+<li><strong>Group </strong>— A group that can contain multiple users that have the same access to the file/directory.</li>
+<li><strong>Public </strong>— This can be thought of a World permissions. Anyone who visits your site to view a file.</li>
+</ul>
+</div>
+<h2>Permissions</h2>
+<div class="solvvy-solution">
+<p>Each owner then has three permissions to the file or directory. These are:</p>
+<ul>
+<li><strong>Read (r)</strong>— Gives the owner the ability to read and open the file or view the directories contents.</li>
+<li><strong>Write (w) </strong>— Gives the owner the ability to edit the contents of the file, or manage files in a directory and to delete the directory (when empty).</li>
+<li><strong>Execute (x) </strong>— Gives the owner the ability to run the file or navigate within the directory.</li>
+</ul>
+</div>
+<h2>Owner and Permission breakdown</h2>
+<div class="solvvy-solution">
+<p>When put together, the three permissions for each owner look like this.</p>
+<table class="wikitable"><colgroup> <col width="45%" /> <col width="55%" /> </colgroup>
+<tbody>
+<tr>
+<th bgcolor="#F2F2F2">Owner</th>
+<th bgcolor="#F2F2F2">Permissions</th>
+</tr>
+<tr>
+<td>User</td>
+<td>Read<br /> Write<br /> Execute</td>
+</tr>
+<tr>
+<td>Group</td>
+<td>Read<br /> Write<br /> Execute</td>
+</tr>
+<tr>
+<td>Public</td>
+<td>Read<br /> Write<br /> Execute</td>
+</tr>
+</tbody>
+</table>
+<p>These can then be viewed on the server via SSH, or using an FTP client.</p>
+</div>
+<h2>Viewing permissions via SSH</h2>
+<div class="solvvy-solution">
+<p>If you log into your server via SSH, you can run <span class="code">ls -la</span> to view permissions. For example:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">ls -la</span>
+drwxrwxr-x  4 exampleuser pg5034488   4096 Sep 18  2018 example.com
+-rw-r--r--  1 exampleuser pg5034488      0 Dec  8  2016 test.txt
+lrwxrwxrwx  1 bob        webmasters     11 Apr 11  14:08 link -&gt; dir</pre>
+</div>
+<p>The permissions are displayed horizontally. To the far left of each file or directory name, there are ten characters which show the attributes and permissions of the file. The first column indicates whether the entry is a:</p>
+<ul>
+<li>directory (<strong>d</strong>),</li>
+<li>a regular file (<strong>-</strong>), or</li>
+<li>a symbolic link (<strong>l</strong>).</li>
+</ul>
+<p>The other nine characters are organized into three groups of three:</p>
+<table class="wikitable"><colgroup> <col width="15%" /> <col width="85%" /> </colgroup>
+<tbody>
+<tr>
+<td>(d<strong>rwx</strong>r-xr-x)</td>
+<td>The first group of three characters are the owner permissions. (You are the owner of your files).</td>
+</tr>
+<tr>
+<td>(drwx<strong>rwx</strong>r-x)</td>
+<td>The second group of three characters are group permissions. These permissions are shared by others users in your same group.</td>
+</tr>
+<tr>
+<td>(drwxr-x<strong>r-x</strong>)</td>
+<td>The third group of three characters are public permissions for anyone else (such as the public).</td>
+</tr>
+</tbody>
+</table>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>For a link, the mode <em>always</em> gives all permissions. That is, since the symbolic link acts like the file or directory it points to (e.g., cd link above would change you into dir), the permissions of the destination are the permissions that are really in effect.</p>
+</div>
+</div>
+</div>
+<h2>Viewing permissions in an FTP client</h2>
+<div class="solvvy-solution">
+<p>In an FTP client, permissions for a file would be displayed as follows.</p>
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/filezilla-permissions_01.png" /></dd>
+</dl>
+</div>
+<h2>Changing permissions</h2>
+<div class="solvvy-solution">
+<p>View the following article for information on how to change your file or directory permissions.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214751018-UNIX-commands-Changing-permissions" target="_self">Changing permissions</a></li>
+</ul>
+</div>

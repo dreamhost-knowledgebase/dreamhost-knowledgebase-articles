@@ -1,99 +1,165 @@
-<h2><span id="Mode">Mode</span></h2>
+<h2>Overview</h2>
 <div class="solvvy-solution">
-<p>Every file in Unix is assigned a mode. The mode determines the type of file being viewed, the access allowed to the file by different groups, and a few other things.</p>
-<p>The command to modify the mode is chmod and users can only modify files they own.</p>
-</div>
-<h2><span id="The_type_of_file">The type of file</span></h2>
-<div class="solvvy-solution">
-<p>The first thing mode determines is the type of file. This part cannot be altered through chmod, though it could be seen when running a command to view files and folders within a directory such as “ls -l”:</p>
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">ls -l</span>
-drwxrwsr-x    9 bob      webmasters   4096 Apr  4 19:44 dir
--rw-rw-r--    1 bob      webmasters   6121 Apr  4 19:44 file.txt
-lrwxrwxrwx    1 bob      webmasters     11 Apr 11 14:08 link -&gt; dir
-</pre>
-</div>
-<p>To the far left of each file or directory name, there are ten characters which show the attributes and permissions of the file.</p>
-<p>The first column indicates whether the entry is a:</p>
+<p>This article shows how to change file or directory permissions using SSH or FTP. For an overview of permissions, view the following article:</p>
 <ul>
-<li>directory (<strong>d</strong>),</li>
-<li>a regular file (<strong>-</strong>), or</li>
-<li>a symbolic link (<strong>l</strong>).</li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360029138491" target="_self">Permissions overview</a></li>
 </ul>
 </div>
-<h2><span id="Permission_groups">Permission groups</span></h2>
+<h2>Changing permissions via SSH</h2>
 <div class="solvvy-solution">
-<p>The other nine characters are organized into three groups of three:</p>
-<table class="wikitable"><colgroup> <col width="15%" /> <col width="85%" /> </colgroup>
+<p>If you're logged into your server via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview" target="_self">SSH</a>, you can change permissions by running the <span class="code">chmod</span> command. There are two ways to set permissions using chmod.</p>
+<div class="solvvy-solution">
+<ul>
+<li>Numeric Mode</li>
+<li>Named Mode</li>
+</ul>
+<p>Numeric Mode is easier to understand as you just need to add up the values.</p>
+<h3><span id="Numeric_Mode">Numeric Mode</span></h3>
+<p>Using the numeric mode, you can assign numbers to each permission. For example:</p>
+<dl>
+<dd>4 = r (read)</dd>
+<dd>2 = w (write)</dd>
+<dd>1 = x (execute)</dd>
+</dl>
+<p>Then, you would add all three together for each owner to get the full value. The following table illustrates the different permissions each owner could possibly have.</p>
+<table border="1" cellspacing="0" cellpadding="4">
 <tbody>
 <tr>
-<td>(d<strong>rwx</strong>r-xr-x)</td>
-<td>The first group of three characters after the file type pertains to the owner permissions. (You are the owner of your files).</td>
+<td><strong>7</strong></td>
+<td>read, write, and execute ("rwx")</td>
+<td>4 + 2 + 1 = 7</td>
 </tr>
 <tr>
-<td>(drwx<strong>r-x</strong>r-x)</td>
-<td>The second group of three characters after the file type pertains to group permissions. These permissions are shared by others users in your same group.</td>
+<td><strong>6</strong></td>
+<td>read and write ("rw-")</td>
+<td>4 + 2 = 6</td>
 </tr>
 <tr>
-<td>(drwxr-x<strong>r-x</strong>)</td>
-<td>The third group of three characters after the file type pertains to anyone else (such as the public).</td>
+<td><strong>5</strong></td>
+<td>read and execute ("r-x")</td>
+<td>4 + 0 + 1 = 5</td>
+</tr>
+<tr>
+<td><strong>4</strong></td>
+<td>read only ("r--")</td>
+<td>4 + 0 + 0 = 4</td>
+</tr>
+<tr>
+<td><strong>3</strong></td>
+<td>write and execute (rare) ("-wx")</td>
+<td>0 + 2 + 1 = 3</td>
+</tr>
+<tr>
+<td><strong>2</strong></td>
+<td>write only (rare) ("-w-")</td>
+<td>0 + 2 + 0 = 2</td>
+</tr>
+<tr>
+<td><strong>1</strong></td>
+<td>execute only (rare) ("--x")</td>
+<td>0 + 0 + 1 = 1</td>
+</tr>
+<tr>
+<td><strong>0</strong></td>
+<td>no permissions ("---")</td>
+<td>0 + 0 + 0 = 0</td>
 </tr>
 </tbody>
 </table>
+<p>Remember, there are three sets of owners of a file or directory:</p>
+<ul>
+<li>User</li>
+<li>Group</li>
+<li>Public</li>
+</ul>
+<p>All three have their own permissions. Thus, all three must now be added together to get the full value.</p>
+<h3><span id="Examples_2">Examples</span></h3>
+<table class="wikitable">
+<tbody>
+<tr>
+<th>Command</th>
+<th>Permissions</th>
+</tr>
+<tr>
+<td>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">chmod 600 file.txt</span></pre>
 </div>
-<h2><span id="Permission_types_for_files.2C_directories.2C_and_links">Permission types for files, directories, and links</span></h2>
-<div class="solvvy-solution">
-<p>The nine characters that follow the file type determine the permissions that each group has on a file or directory.</p>
-<p>The following describe the permissions for a <strong>regular file</strong>:</p>
-<dl>
-<dt><strong>The “r” permission</strong></dt>
-<dd>Read ("r") means that the grantee has permission to open the file and look at its contents.</dd>
-<dt><strong>The “w” permission</strong></dt>
-<dd>Write ("w") means that the grantee has permission to edit or delete the file.</dd>
-<dt><strong>The “x” permission</strong></dt>
-<dd>Execute ("x") means that the grantee can run the file like a program (for example, for scripts).</dd>
-</dl>
-<p>The following describes permissions for a <strong>directory</strong>:</p>
-<dl>
-<dt><strong>The “r” permission</strong></dt>
-<dd>Read ("r") means that the grantee has permission to see what files and directories have been placed inside of that directory.</dd>
-<dt><strong>The “w” permission</strong></dt>
-<dd>Write ("w") means that the grantee has permission to create new files within that directory and to delete the directory (when empty).</dd>
-<dt><strong>The “x” permission</strong></dt>
-<dd>Execute ("x") means that the grantee can "cd" or change into the directory. (Without "x", the user can't actually read or write either.)</dd>
-</dl>
-<dl>
-<dd></dd>
-<dd></dd>
-</dl>
+</td>
+<td>
+<p><strong>-rw-------</strong></p>
+<ul>
+<li>Only the User has read and write permissions.</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">chmod 700 dir</span></pre>
+</div>
+</td>
+<td>
+<p><strong>drwx------</strong></p>
+<ul>
+<li>Only the Owner has read, write and execute permissions</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">chmod 755 file.txt</span></pre>
+</div>
+</td>
+<td>
+<p><strong>-rwx-wx-wx</strong></p>
+<ul>
+<li>The User has read, write and execute permissions.</li>
+<li>The Group only has write and execute permissions.</li>
+<li>All others have write and execute permissions.</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">chmod 644 file.txt</span></pre>
+</div>
+</td>
+<td>
+<p><strong>-rw-r--r--</strong></p>
+<ul>
+<li>The User has read and write permissions.</li>
+<li>The Group has read permissions.</li>
+<li>Others have read permissions.</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">chmod 664 file.txt</span></pre>
+</div>
+</td>
+<td>
+<p><strong>-rw-rw-r--</strong></p>
+<ul>
+<li>The User has read and write permissions.</li>
+<li>The Group has read and write permissions.</li>
+<li>Others have only read permissions.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 <div class="alert alert-note">
 <div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
-<p>For a link, the mode <em>always</em> gives all permissions. That is, since the symbolic link acts like the file or directory it points to (e.g., cd link above would change you into dir), the permissions of the destination are the permissions that are really in effect.</p>
+<p>While the above commands regarding chmod are useful, it can be understandable if a user doesn’t want to have to log in via SSH just to change permissions on a file. Fortunately, many FTP clients such as <a href="#filezilla" target="_self">FileZilla</a> have the ability to change permissions directly within the client.</p>
 </div>
 </div>
 </div>
-<h2><span id="Special_permissions">Special permissions</span></h2>
-<div class="solvvy-solution">
-<p>Special permissions can be added which allow you the special ability to automatically change users or group, or to specify a directory as a "temporary" directory.</p>
-<h3><span id="The_.E2.80.98s.E2.80.99_flag">The ‘s’ flag</span></h3>
-<p>An ‘<strong>s</strong>’ can be added to the owner or group ‘read’ permission. This indicates the setuid/setgid permission.</p>
-<ul>
-<li>If set on the group read permission, it sets the setgid bit. This means that any user who changes into that directory suddenly performs all actions as if the owners group was their default group. This can be helpful if you want all files in that directory to be created/owned by that owner group.</li>
-</ul>
-<ul>
-<li>If set on the owners read permission, it sets the setuid bit. This is not usually a good idea, so don't do it unless you really know what you're doing.</li>
-</ul>
-<h3><span id="The_.E2.80.98t.E2.80.99_flag">The ‘t’ flag</span></h3>
-<p>The <strong>t</strong> flag is basically the same thing as the "s" flag for a user or group, but is used when applied to all others. Here, the meaning is a little different. It means that anyone can create a file in the directory, but only the owner is allowed to remove the file, regardless of permissions set. This is the "temporary" directory permission and should also be avoided unless you really know what you're doing.</p>
-<p>Review the following Linux article for further details:</p>
-<ul>
-<li><a href="https://www.linux.com/learn/tutorials/309527-understanding-linux-file-permissions">Understanding Linux File Permissions</a></li>
-</ul>
-</div>
-<h2><span id="chmod">chmod</span></h2>
-<div class="solvvy-solution">
-<p>There are a few ways that permissions could be set using chmod. The first is “Named Mode” which is a bit more difficult to comprehend. The second is “Numeric Mode” which is a little easier since you just need to add the values together.</p>
 <h3><span id="Named_Mode">Named Mode</span></h3>
 <p>There are two sets of permissions to assign when using ‘Named Mode’, which are ‘who’ and ‘what’ permissions. For example:</p>
 <p><strong>who permissions</strong></p>
@@ -160,151 +226,33 @@ lrwxrwxrwx    1 bob      webmasters     11 Apr 11 14:08 link -&gt; dir
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">chmod g+s somedir</span></pre>
 </div>
-<h3><span id="Numeric_Mode">Numeric Mode</span></h3>
-<p>Using the numeric mode, you can assign numbers to each permission. For example:</p>
+</div>
+<h2><span id="Special_permissions">Special permissions</span></h2>
+<div class="solvvy-solution">
+<p>Special permissions can be added which allow you the special ability to automatically change users or group, or to specify a directory as a "temporary" directory.</p>
+<h3><span id="The_.E2.80.98s.E2.80.99_flag">The ‘s’ flag</span></h3>
+<p>An ‘<strong>s</strong>’ can be added to the owner or group ‘read’ permission. This indicates the setuid/setgid permission.</p>
+<ul>
+<li>If set on the group read permission, it sets the setgid bit. This means that any user who changes into that directory suddenly performs all actions as if the owners group was their default group. This can be helpful if you want all files in that directory to be created/owned by that owner group.</li>
+</ul>
+<ul>
+<li>If set on the owners read permission, it sets the setuid bit. This is not usually a good idea, so don't do it unless you really know what you're doing.</li>
+</ul>
+<h3><span id="The_.E2.80.98t.E2.80.99_flag">The ‘t’ flag</span></h3>
+<p>The <strong>t</strong> flag is basically the same thing as the "s" flag for a user or group, but is used when applied to all others. Here, the meaning is a little different. It means that anyone can create a file in the directory, but only the owner is allowed to remove the file, regardless of permissions set. This is the "temporary" directory permission and should also be avoided unless you really know what you're doing.</p>
+<p>Review the following Linux article for further details:</p>
+<ul>
+<li><a href="https://www.linux.com/learn/tutorials/309527-understanding-linux-file-permissions">Understanding Linux File Permissions</a></li>
+</ul>
+</div>
+<h2><span id="filezilla">Changing permissions in an FTP client</span></h2>
+<div class="solvvy-solution">
+<p>If you right click on a file in an FTP client, you can vivew it's permissions. For example:</p>
 <dl>
-<dd>4 = r</dd>
-<dd>2 = w</dd>
-<dd>1 = x</dd>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/filezilla-permissions_01.png" /></dd>
 </dl>
-<p>Then, you would add all three together in each set of permissions to get the full value. The following table illustrates this idea:</p>
-<table border="1" cellspacing="0" cellpadding="4">
-<tbody>
-<tr>
-<td><strong>7</strong></td>
-<td>read, write, and execute ("rwx")</td>
-<td>4 + 2 + 1 = 7</td>
-</tr>
-<tr>
-<td><strong>6</strong></td>
-<td>read and write ("rw-")</td>
-<td>4 + 2 = 6</td>
-</tr>
-<tr>
-<td><strong>5</strong></td>
-<td>read and execute ("r-x")</td>
-<td>4 + 0 + 1 = 5</td>
-</tr>
-<tr>
-<td><strong>4</strong></td>
-<td>read only ("r--")</td>
-<td>4 + 0 + 0 = 4</td>
-</tr>
-<tr>
-<td><strong>3</strong></td>
-<td>write and execute (rare) ("-wx")</td>
-<td>0 + 2 + 1 = 3</td>
-</tr>
-<tr>
-<td><strong>2</strong></td>
-<td>write only (rare) ("-w-")</td>
-<td>0 + 2 + 0 = 2</td>
-</tr>
-<tr>
-<td><strong>1</strong></td>
-<td>execute only (rare) ("--x")</td>
-<td>0 + 0 + 1 = 1</td>
-</tr>
-<tr>
-<td><strong>0</strong></td>
-<td>no permissions ("---")</td>
-<td>0 + 0 + 0 = 0</td>
-</tr>
-</tbody>
-</table>
-<p>Remember, there are three sets of permissions:</p>
-<ul>
-<li>User</li>
-<li>Group</li>
-<li>Other</li>
-</ul>
-<p>Thus, all three must now be added together to get the full value.</p>
-<h3><span id="Examples_2">Examples</span></h3>
-<table class="wikitable">
-<tbody>
-<tr>
-<th>Command</th>
-<th>Permissions</th>
-</tr>
-<tr>
-<td>
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">chmod 600 file.txt</span></pre>
-</div>
-</td>
-<td>
-<p><strong>-rw-------</strong></p>
-<ul>
-<li>Only the User has read and write permissions.</li>
-</ul>
-</td>
-</tr>
-<tr>
-<td>
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">chmod 700 dir</span></pre>
-</div>
-</td>
-<td>
-<p><strong>drwx------</strong></p>
-<ul>
-<li>Only the Owner has read, write and execute permissions</li>
-</ul>
-</td>
-</tr>
-<tr>
-<td>
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">chmod 755 program</span></pre>
-</div>
-</td>
-<td>
-<p><strong>-rwx-wx-wx</strong></p>
-<ul>
-<li>The User has read, write and execute permissions.</li>
-<li>The Group only has write and execute permissions.</li>
-<li>All others have write and execute permissions.</li>
-</ul>
-</td>
-</tr>
-<tr>
-<td>
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">chmod 644 file.txt</span></pre>
-</div>
-</td>
-<td>
-<p><strong>-rw-r--r--</strong></p>
-<ul>
-<li>The User has read and write permissions.</li>
-<li>The Group has read permissions.</li>
-<li>Others have read permissions.</li>
-</ul>
-</td>
-</tr>
-<tr>
-<td>
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">chmod 664 file.txt</span></pre>
-</div>
-</td>
-<td>
-<p><strong>-rw-rw-r--</strong></p>
-<ul>
-<li>The User has read and write permissions.</li>
-<li>The Group has read and write permissions.</li>
-<li>Others have only read permissions.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<div class="alert alert-note">
-<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
-<div class="alert-content">
-<p>While the above commands regarding chmod are useful, it can be understandable if a user doesn’t want to have to log in via SSH just to change permissions on a file. Fortunately, many FTP clients such as FileZilla have the ability to change permissions directly within the client.</p>
-</div>
-</div>
+<p>As discussed above, this format uses the Numeric Mode to set permissions. You just need to add up the values to change them.</p>
+<p>This example uses Filezilla. You can either click the checkboxes, or type in the Numeric value of the permissions you need to change.</p>
 </div>
 <h2><span id="See_also">See also</span></h2>
 <div class="solvvy-hidden">
