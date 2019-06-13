@@ -1,16 +1,25 @@
-<h2>Overview</h2><div class="solvvy-solution">
+<h2>Overview</h2>
+<div class="solvvy-solution">
 <p>When emails are sent, the email program or script can say the sender is "from" any address it wants. Email spoofing occurs when email is sent with a forged FROM address. For example, you can send emails from your website example.com that are "from" FakeFromAddress@example.com. So, it’s always possible to change the FROM address when sending email.</p>
 <p>This article details good and bad spoofing and explains DreamHost’s sender domain policy which protects legitimate email.</p>
-</div><h2><span id="What_is_useful_spoofing.3F">What is useful spoofing?</span></h2><div class="solvvy-solution">
+</div>
+<h2><span id="What_is_useful_spoofing.3F">What is useful spoofing?</span></h2>
+<div class="solvvy-solution">
 <p>Without spoofing, any email sent from your website would be sent "from" youruser@yourserver.dreamhost.com. While that's accurate, it's not very nice to look at, and can be confusing to site users or customers who expect to see the email coming from the same domain name as your website. So in a sense, the email is spoofed to clearly show it’s originating from your website.</p>
-</div><h2><span id="What_is_Bad_spoofing.3F">What is Bad spoofing?</span></h2><div class="solvvy-solution">
+</div>
+<h2><span id="What_is_Bad_spoofing.3F">What is Bad spoofing?</span></h2>
+<div class="solvvy-solution">
 <p>Spammers often use email spoofing to hide from where their spam emails are sent. They do this so they can send out hundreds of emails that appear to be originating from your website. If you receive "undeliverable" bounced emails that you never actually sent, a spammer could be spoofing your domain.</p>
-</div><h2><span id="Protecting_against_bad_spoofing">Protecting against bad spoofing</span></h2><div class="solvvy-solution">
+</div>
+<h2><span id="Protecting_against_bad_spoofing">Protecting against bad spoofing</span></h2>
+<div class="solvvy-solution">
 <p>DKIM records can make spoofed emails more easily recognizable as suspicious, and hopefully discourage the spammers from spoofing your domain:</p>
 <ul>
 <li><a href="/hc/en-us/articles/215029758-What-are-DKIM-records-">DKIM</a> is a method of email authentication that is enabled automatically for all DreamHost mail accounts.</li>
 </ul>
-</div><h2><span id="PHP_code">PHP code</span></h2><div class="solvvy-solution">
+</div>
+<h2><span id="PHP_code">PHP code</span></h2>
+<div class="solvvy-solution">
 <p>This basic code sends contact form emails using your email address as the sender. The $visitor_name, $visitor_email, and $message are set by the contact form:</p>
 <div class="preboxcontainer">
 <pre class="prebox">//set the recipient email address, where to send emails to
@@ -36,7 +45,7 @@ mail($to_email, $subject, $emailMessage, $header);
 <dd></dd>
 </dl>
 <div class="alert alert-note">
-<div class="alert-icon"><img alt="" height="60" src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
 <p>This code only spoofed the FROM header (the one seen in a mail client program). Any bounces or error messages from the mail server are sent to the <a href="https://en.wikipedia.org/wiki/Bounce_address">envelope sender</a>, which was left unspoofed and will still be the default username@server.dreamhost.com address.</p>
 </div>
@@ -49,16 +58,20 @@ mail($to_email, $subject, $emailMessage, $header);
 <ul>
 <li><a href="/hc/en-us/articles/215507058-PHP-mail-overview">PHP mail()</a></li>
 </ul>
-</div><h2><span id="What_if_my_domain_doesn.27t_use_DreamHost-hosted_mail_service.3F_.28SMTP.29">What if my domain doesn't use DreamHost-hosted mail service? (SMTP)</span></h2><div class="solvvy-solution">
+</div>
+<h2><span id="What_if_my_domain_doesn.27t_use_DreamHost-hosted_mail_service.3F_.28SMTP.29">What if my domain doesn't use DreamHost-hosted mail service? (SMTP)</span></h2>
+<div class="solvvy-solution">
 <p>If your domain does not use regular DreamHost-hosted mail service, then your domain may have mail service from another provider like Google Suite. For these domains, your website must use SMTP to connect directly to your domain's mail server. In this way, your website logs in to your mail account at that host and sends email through their server instead of through DreamHost's mail servers.</p>
 <ul>
 <li>WordPress has SMTP support via a plugin. There are many SMTP plugins to choose from, <a href="http://wordpress.org/extend/plugins/configure-smtp/">Configure SMTP</a> is one</li>
-<li>Joomla has built-in <a href="https://docs.joomla.org/J3.1:Global_configuration#.E2.80.9CMail_Settings.E2.80.9D_Group">SMTP support (version 3.1)</a></li>
+<li>Joomla has built-in <a href="https://docs.joomla.org/J3.1:Global_configuration#.E2.80.9CMail_Settings.E2.80.9D_Group" rel="nofollow">SMTP support (version 3.1)</a></li>
 <li>phpBB has built-in <a href="https://www.phpbb.com/support/docs/en/3.0/ug/adminguide/general_client/">SMTP support</a></li>
 <li>ZenCart has built-in <a href="http://www.zen-cart.com/wiki/index.php/Admin_-_Configuration_-_E-Mail_Options">SMTP support</a></li>
 </ul>
 <p>If your website was built by you or someone else by hand and is written in PHP, you can add SMTP support using <a href="/hc/en-us/articles/215842658-PHPmailer-overview">PHPMailer</a>. Just use the SMTP host/server your email provider gives you, and your username and password in their system. Another option is to use the PEAR Mail package to send via SMTP. View the <a href="/hc/en-us/articles/216140597-How-do-I-send-PHP-mail-via-SMTP-">Sending SMTP mail</a> article for an example.</p>
-</div><h2>See also</h2><div class="solvvy-hidden">
+</div>
+<h2>See also</h2>
+<div class="solvvy-hidden">
 <h3>Internal links</h3>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215035988-How-to-spoof-in-your-CMS-or-web-application">How to spoof in your CMS or web application</a></li>
@@ -71,4 +84,5 @@ mail($to_email, $subject, $emailMessage, $header);
 <li><a href="https://en.wikipedia.org/wiki/Email_spoofing">Email spoofing</a></li>
 <li><a href="https://en.wikipedia.org/wiki/Bounce_address">Bounce address</a></li>
 <li><a href="http://php.net/manual/en/function.mail.php">php.net mail</a></li>
-</ul></div>
+</ul>
+</div>
