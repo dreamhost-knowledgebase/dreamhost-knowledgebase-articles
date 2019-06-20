@@ -14,6 +14,7 @@
 <ul>
 <li><a href="https://github.com/yyuu/pyenv">https://github.com/yyuu/pyenv</a></li>
 </ul>
+<h3>Create a tmp directory</h3>
 <p>Since the user doesn't have permission to the /var/foo/bar/tmp folder, you will have a "BUILD FAILED" error. Make sure you create a tmp folder in your home folder and tell pyenv to use it:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~</span>
@@ -21,19 +22,47 @@
 <span class="server">[server]$ </span><span class="command">echo 'export TMPDIR="$HOME/tmp"' &gt;&gt; ~/.bash_profile</span>
 </pre>
 </div>
-<p>Due to resource limitations on shared hosting, your processes may be killed when compiling math modules such as numpy, pandas, matplotlib, etc. The best solution is to use `anaconda` or `miniconda` packages under `pyenv`.</p>
+<p>Due to resource limitations on shared hosting, your processes may be killed when compiling modules. The best solution is to use 'anaconda' or 'miniconda' packages under 'pyenv'.</p>
+<h3>Install pyenv</h3>
+<p>You can find the instructions to install here:</p>
+<ul>
+<li><a href="https://github.com/pyenv/pyenv#installation">https://github.com/pyenv/pyenv#installation</a></li>
+</ul>
+<p>The following steps explain how to install under your DreamHost username.</p>
+<ol>
+<li>Make sure you're in your user's home directory.
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">pyenv update</span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~</span></pre>
 </div>
-<p>Check what's available</p>
+</li>
+<li>Clone the repository.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">git clone https://github.com/pyenv/pyenv.git ~/.pyenv</span></pre>
+</div>
+</li>
+<li>Run the following three commands to add lines to your .bash_profile.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">echo 'export PYENV_ROOT="$HOME/.pyenv"' &gt;&gt; ~/.bash_profile</span>
+<span class="server">[server]$ </span><span class="command">echo 'export PATH="$PYENV_ROOT/bin:$PATH"' &gt;&gt; ~/.bash_profile</span>
+<span class="server">[server]$ </span><span class="command">echo -e 'if command -v pyenv 1&gt;/dev/null 2&gt;&amp;1; then\n  eval "$(pyenv init -)"\nfi' &gt;&gt; ~/.bash_profile</span></pre>
+</div>
+</li>
+<li>Restart your Shell.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">exec "$SHELL"</span></pre>
+</div>
+</li>
+<li>Check what packages are available to install.
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">pyenv install --list </span></pre>
 </div>
-<p>Install the version you desire</p>
+</li>
+<li>Install a package. For example:
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">pyenv install anaconda-x.x.x</span></pre>
 </div>
-</div>
+</li>
+</ol>
 <h2>See also</h2>
 <div class="solvvy-hidden">
 <ul>
@@ -47,4 +76,5 @@
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/115000695551-Installing-and-using-Python-s-virtualenv-using-Python-3">Installing and using virtualenv with Python 3</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215503458-Python-setuptools">Python setuptools</a></li>
 </ul>
+</div>
 </div>
