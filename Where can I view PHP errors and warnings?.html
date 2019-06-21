@@ -1,26 +1,79 @@
-<h2>Overview</h2><div class="solvvy-solution">
+<h2>Overview</h2>
+<div class="solvvy-solution">
 <p>When PHP changes are made on your site (usually from <a href="https://help.dreamhost.com/hc/en-us/articles/214895317-How-do-I-change-the-PHP-version-of-my-site-">upgrading the PHP version</a>), you may find that PHP throws errors and warnings. In the past, these would display on your website and you could turn them off using a phprc file.</p>
 <p>DreamHost now disables all PHP warnings by default. This means you should never see them on your website when making changes to PHP.</p>
-</div><h2>Where can I view PHP errors and warnings?</h2><div class="solvvy-solution">
+</div>
+<h2>Where can I view PHP errors and warnings?</h2>
+<div class="solvvy-solution">
 <p>Since these warnings have been turned off globally, you won't see them on your site. But you can still see all PHP errors and warnings in your error.log file.</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216512197-Viewing-your-access-and-error-logs-via-SFTP">Viewing your access and error logs via SFTP</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216512217-Viewing-and-examining-your-error-log-via-SSH">Viewing and examining your error log via SSH</a></li>
 </ul>
-</div><h2>How can I display the warnings on my site?</h2><div class="solvvy-solution">
+</div>
+<h2>How can I display the warnings on my site?</h2>
+<div class="solvvy-solution">
 <p>To display the warnings on your site, you just need to <a href="https://help.dreamhost.com/hc/en-us/articles/214894037-How-do-I-create-a-phprc-file-via-FTP-">add the following line to your phprc file</a>:</p>
 <div class="preboxcontainer">
 <pre class="prebox">display_errors = on</pre>
 </div>
 <p>If any PHP errors are thrown, they will now display on your site.</p>
-</div><h2>Setting error reporting in your script</h2><div class="solvvy-solution">
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>This is <strong>NOT</strong> recommended on a live website since visitors will see the errors. The better option is to specify which types of errors you'd like to log and enable PHP error logging as described below.</p>
+</div>
+</div>
+</div>
+<h2>Controlling what type of errors display</h2>
+<p>PHP allows you to specify which type of errors you would like displayed, or to save to your PHP error log file. For example:</p>
+<table class="wikitable"><colgroup> <col width="38%" /> <col width="62%" /> </colgroup>
+<tbody>
+<tr>
+<th bgcolor="#F2F2F2">PHP directive</th>
+<th bgcolor="#F2F2F2">Explanation</th>
+</tr>
+<tr>
+<td>error_reporting = E_ALL </td>
+<td>Logs all errors and warnings</td>
+</tr>
+<tr>
+<td>error_reporting = E_ERROR</td>
+<td>Fatal errors that occur during PHP's initial startup. </td>
+</tr>
+<tr>
+<td>error_reporting = E_WARNING</td>
+<td>Run-time warnings (non-fatal errors). Execution of the script is not halted.</td>
+</tr>
+<tr>
+<td>error_reporting = E_NOTICE</td>
+<td>Logs runtime notices (usually bugs in your website code)</td>
+</tr>
+</tbody>
+</table>
+<p>A full list of options can be found here:</p>
+<ul>
+<li><a href="https://php.net/manual/en/errorfunc.constants.php" target="_self">https://php.net/manual/en/errorfunc.constants.php</a></li>
+</ul>
+<p>Additionally, you can exclude certain types of errors by using the bitwise operator <span class="code">~</span>. For example, this will show all errors except NOTICE and DEPRECATED warnings.</p>
+<div class="preboxcontainer">
+<pre class="prebox">error_reporting = E_ALL &amp; ~E_NOTICE &amp; ~E_DEPRECATED</pre>
+</div>
+<p>Once added to your phprc file, you can then enable your PHP error log.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214199378-How-do-I-enable-PHP-error-logging-" target="_self">How do I enable PHP error logging?</a></li>
+</ul>
+<p>This allows you to view the errors in your log file, instead of displaying them on your website.</p>
+<h2>Setting error reporting in your script</h2>
+<div class="solvvy-solution">
 <p>As mentioned above, the phprc file controls which errors are displayed. As such, the following lines will not function in your PHP script to display errors:</p>
 <div class="preboxcontainer">
 <pre class="prebox">ini_set('display_errors',1);
 error_reporting(E_ALL);</pre>
 </div>
 <p>The only way to display errors is to edit your phprc file.</p>
-</div><h2>See also</h2>
+</div>
+<h2>See also</h2>
 <div class="solvvy-hidden">
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/214200688-php-ini-overview">php.ini overview</a></li>
