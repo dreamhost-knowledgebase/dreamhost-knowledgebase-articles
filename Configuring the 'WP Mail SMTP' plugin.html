@@ -1,0 +1,99 @@
+<h2>Overview</h2>
+<div class="solvvy-solution">
+<p>WordPress has several SMTP plugins you can use to force any FROM address you like. This is important for two major reasons:</p>
+<ul>
+<li>It allows you to send email directly through your mail server as opposed to the web server. This helps to prevent issues with <a href="/hc/en-us/articles/215036058-Sender-domain-policy-and-spoofing-overview">Sender Domain Policy and Spoofing</a>.</li>
+<li>It allows you to send email FROM another email host. For example, you can use your GMAIL address as the FROM email instead of your DreamHost address</li>
+</ul>
+<p>One popular plugin option is <a href="https://wordpress.org/plugins/wp-mail-smtp/" target="_self">WP Mail SMTP</a>. This article walks you through how to configure this plugin.</p>
+</div>
+<h2><span id="WP_Mail_SMTP">WP Mail SMTP</span></h2>
+<div class="solvvy-solution">
+<ol>
+<li>In the WordPress dashboard, click 'Plugins &gt; Add New' in the left pane.</li>
+<li>Search for wp-mail-smtp. It can also <a href="https://wordpress.org/plugins/wp-mail-smtp/" target="_self">be found here</a>.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2019-03_wordpress_smtp-plugin_01.png" /></dd>
+</dl>
+</li>
+<li>Click the <strong>Install</strong> button, then <strong>Activate. </strong></li>
+<li>After it's installed and activated, navigate to the 'Plugins' page in your WordPress dashboard.
+<dl>
+<dd><img class="solvvy-hidden" src="https://kbimages.dreamhosters.com/images/01_WP_Mail_SMTP.png" alt="01 WP Mail SMTP.png" /></dd>
+</dl>
+</li>
+<li>Click the 'Settings' link under the plugin.
+<dl>
+<dd><img class="solvvy-hidden" src="https://kbimages.dreamhosters.com/images/2019-03_wordpress_smtp-plugin_02.png" alt="02 WP Mail SMTP.png" /></dd>
+</dl>
+</li>
+<li>Fill in the following fields:
+<ul>
+<li><strong>From Email</strong> - Enter the email you wish to send FROM</li>
+<li><strong>Force From Email</strong> - Check this box</li>
+<li><strong>From Name</strong> - Enter a name you'd like to appear as being sent FROM</li>
+<li><strong>Force From Name</strong> - Check this if you wish to force the FROM name</li>
+<li><strong>Mailer</strong> - Choose 'Other SMTP'</li>
+<li><strong>Return Path</strong> - Check this box</li>
+</ul>
+<dl>
+<dd><img class="solvvy-hidden" src="https://kbimages.dreamhosters.com/images/2019-03_wordpress_smtp-plugin_03.png" /></dd>
+</dl>
+</li>
+<li>Scroll down to the 'Other SMTP' section. Make sure to toggle the 'Authentication' button.
+<ul>
+<li><strong>SMTP Host</strong> - smtp.dreamhost.com</li>
+<li><strong>Encryption</strong> - Use TLS encryption</li>
+<li><strong>SMTP Port </strong>- 587</li>
+<li><strong>Username</strong> - Enter your DreamHost email address</li>
+<li><strong>Password</strong> - Enter your email address password</li>
+</ul>
+</li>
+<li>Click the <strong>Save Settings</strong> button.</li>
+</ol>
+<p>Your form will now send FROM the email you entered above.</p>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>The plugin mentions that you should add the following lines to your wp-config.php file.</p>
+<div class="preboxcontainer">
+<pre class="prebox">define( 'WPMS_ON', true );
+define( 'WPMS_SMTP_PASS', 'your_password' );</pre>
+</div>
+<p>Do not add these. Adding these will prevent the plugin from sending.</p>
+</div>
+</div>
+<h2>Testing the plugin</h2>
+<dl>
+<dd><img class="solvvy-hidden img-border" src="https://kbimages.dreamhosters.com/images/2019-03_wordpress_smtp-plugin_04.png" /></dd>
+</dl>
+<p>Scroll to the top and click the 'Email Test' tab. Click the <strong>Send Email</strong> button to test. You should see it was sent successfully.</p>
+<h2>Alternative plugins</h2>
+<div class="solvvy-solution">
+<p>There are several other SMTP plugins you can use to send email. After logging into your WordPress site, select 'Plugins &gt; Add New' in the left pane. You can then search for the term 'SMTP' to view other options.</p>
+<ul>
+<li><a href="https://codex.wordpress.org/Managing_Plugins">Managing Plugins</a></li>
+</ul>
+</div>
+<h2>Allowing GMAIL to send from your mail application</h2>
+<div class="solvvy-solution">
+<p>The following guide shows how to create a Google Web Application which is needed to send email using a Gmail address.</p>
+<ul>
+<li><a href="https://wpforms.com/how-to-securely-send-wordpress-emails-using-gmail-smtp/" target="_self">How to Send Emails Using Gmail SMTP</a></li>
+</ul>
+<p>If you're using your GMAIL address to send via SMTP, you must first allow your application access to your GMAIL address. If you do not do this, your email will not authenticate and not send. View the following article for details:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115001719551-Troubleshooting-GMAIL-SMTP-authentication-errors">Troubleshooting GMAIL SMTP authentication errors</a></li>
+</ul>
+</div>
+<h2>See also</h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360001310966-How-to-log-into-your-WordPress-site">How to log into your WordPress site</a></li>
+<li><a style="background-color: #ffffff;" href="https://help.dreamhost.com/hc/en-us/articles/215300817-Managing-WordPress-plugins">Managing WordPress plugins</a></li>
+<li><a style="background-color: #ffffff;" href="https://help.dreamhost.com/hc/en-us/articles/215527157-Managing-WordPress-themes">Managing WordPress themes</a></li>
+<li><a style="background-color: #ffffff;" href="/hc/en-us/articles/214831378-Troubleshooting-WordPress-contact-forms">Troubleshooting WordPress contact forms</a></li>
+<li><a href="/hc/en-us/articles/215612887-Email-client-protocols-and-port-numbers">Email client protocols and port numbers</a></li>
+</ul>
+</div>
+</div>
