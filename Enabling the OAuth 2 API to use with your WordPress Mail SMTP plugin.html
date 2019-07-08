@@ -1,0 +1,160 @@
+<h2>Overview</h2>
+<p>This article explains how to enable OAuth2 in your Google panel to authenticate your WordPress 'WP Mail SMTP' plugin. This allows you to send FROM your Google address using this plugin. The credentials created during this process can be used in any Plugin that allows them.</p>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>When following these instructions, make sure you're signed into your WordPress site and Google using the same browser.</p>
+</div>
+</div>
+<h2>Configure the SMTP plugin in WordPress</h2>
+<p>First, view the following article for instructions on how to configure the WordPress SMTP plugin for your Gmail address:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360029770912-Configuring-the-WP-Mail-SMTP-plugin-with-Gmail" target="_self">Configuring the 'WP Mail SMTP' plugin with Gmail</a></li>
+</ul>
+<p>Once set up, you are still not able to send. You now must allow Google to send email from your WordPress site. You can do this by logging into your Google account. You have two options.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115001719551-Troubleshooting-GMAIL-SMTP-authentication-errors" target="_self">Allow 'Less secure apps' in Gmail</a></li>
+<li><a href="#setting-up-oauth2" target="_self">Enable OAuth2 authentication (most secure)</a></li>
+</ul>
+<p>If you do not wish to use the 'Less secure apps' option, proceed with the steps below to enable OAuth2 authentication.</p>
+<h2><span id="setting-up-oauth2">Setting up OAuth2 in your Google account</span></h2>
+<p>Now that your WordPress plugin is set up, you must allow Google to send from your site. You can enable this within your Google account.</p>
+<ol>
+<li>Log into your Google account</li>
+<li>Visit the following link in your Google account.
+<ul>
+<li><a href="https://console.developers.google.com/flows/enableapi?apiid=gmail&amp;credential=client_key&amp;pli=1" target="_blank" rel="noopener"> https://console.developers.google.com/flows/enableapi?apiid=gmail&amp;credential=client_key&amp;pli=1 </a></li>
+</ul>
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/google-oauth2_01_2.png" /></dd>
+</dl>
+If this is the first time you've enabled the API, agree to the terms of service and click <strong>Agree and continue</strong>.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/google-oauth2_01.png" /></dd>
+</dl>
+If you've enabled this in the past, choose 'Create a project' in the dropdown, then click <strong>Continue</strong>.</li>
+<li>The next screen confirms the API has been enabled.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/google-oauth2_02.png" /></dd>
+</dl>
+</li>
+<li>Click <strong>Go to credentials</strong>.<br />
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/google-oauth2_03.png" /></dd>
+</dl>
+</li>
+<li>In the first dropdown choose 'Gmail API'. In the next choose 'Web browser'. Click the radio button titled 'User data'.</li>
+<li>Click <strong>What credentials do I need?</strong>.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/google-oauth2_04.png" /></dd>
+</dl>
+</li>
+<li>A pop-up displays notifying you that you must first set up an OAuth consent screen. Click 'SET UP CONSENT SCREEN'.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/google-oauth2_05_2.png" /></dd>
+</dl>
+</li>
+<li>Under Application name, enter the name of your application.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/google-oauth2_06.png" /></dd>
+</dl>
+</li>
+<li>Enter your WordPress URL under 'Authorized domains'.</li>
+<li>Press the 'Enter' key to save your domain name.</li>
+<li>Click <strong>Save</strong>.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/google-oauth2_07.png" /></dd>
+</dl>
+</li>
+<li>A pop-up appears. Click 'Create credentials'. From the dropdown, select 'OAuth client ID'.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/google-oauth2_08.png" /></dd>
+</dl>
+</li>
+<li>Under 'Application type' select 'Web application'.</li>
+<li>Give a name to this client ID.</li>
+<li>Under 'Authorized JavaScript origins', enter your site's full URL and press the 'Enter' key to save.</li>
+<li>Copy the 'Authorized redirect URI' from your WordPress dashboard. This can be found when <a href="https://help.dreamhost.com/hc/en-us/articles/360029770912" target="_self">configuring the SMTP plugin</a>. For example:
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/google-oauth2_10.png" /></dd>
+</dl>
+</li>
+<li>Click the <strong>Create</strong> button.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/google-oauth2_11.png" /></dd>
+</dl>
+</li>
+<li>A pop-up displays with your new 'client ID' and 'client secret'.</li>
+<li>Log into your WordPress dashboard and open your 'WP Mail SMTP' plugin.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/google-oauth2_12.png" /></dd>
+</dl>
+</li>
+<li>Enter the 'Client ID' and 'Client Secret' in your WordPress plugin.</li>
+<li>Click <strong>Save Settings</strong>.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/google-oauth2_13.png" /></dd>
+</dl>
+</li>
+<li>Click <strong>Allow plugin to send emails using your Google account</strong>.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/google-oauth2_14.png" /></dd>
+</dl>
+</li>
+<li>On the pop-up, choose the email address you wish to send your WordPress form FROM.
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p><strong>IMPORTANT</strong>: The email address you use at this time to log in will be the email address your WordPress form sends FROM. This will override any email address you have configured in your WordPress SMTP form. Make sure to log into the Google account you wish to send emails from.</p>
+</div>
+</div>
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/google-oauth2_19.png" /></dd>
+</dl>
+At first you'll see a message informing you that the APP is not verified. Google states in its <a href="https://support.google.com/cloud/answer/7454865?hl=en" target="_self">Unverified Apps documentation</a> that this isn't necesary for OAuth2 WordPress plugins. It states the following:
+<dl>
+<dd>
+<ul>
+<li><strong>OAuth-based plugins:</strong> if you're setting up an OAuth-based plugin for a popular platform, such as SMTP for Wordpress, you don't need to go through the verification process.</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li>Click 'Advanced'.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/google-oauth2_20.png" /></dd>
+</dl>
+</li>
+<li>Click 'Go to example.com (unsafe)'.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/google-oauth2_21.png" /></dd>
+</dl>
+</li>
+<li>Click <strong>Allow</strong>.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/google-oauth2_22.png" /></dd>
+</dl>
+</li>
+<li>Click <strong>Allow</strong>.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/google-oauth2_24.png" /></dd>
+</dl>
+</li>
+<li>A message displays in your WordPress panel confirming the app has been linked to your site.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/google-oauth2_16.png" /></dd>
+</dl>
+</li>
+<li>Click the 'Email Test' tab, then click <strong>Send Email</strong>.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/google-oauth2_17.png" /></dd>
+</dl>
+</li>
+<li>You should see a success message. Check your inbox to confirm the email arrived.</li>
+</ol>
+<h2>See also</h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360029770912-Configuring-the-WP-Mail-SMTP-plugin-with-Gmail" target="_self">Configuring the 'WP Mail SMTP' plugin with Gmail</a></li>
+</ul>
+</div>
