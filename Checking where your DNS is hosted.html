@@ -1,0 +1,52 @@
+<h2>Overview</h2>
+<div class="solvvy-solution">
+<p>This article explains how to check where your Nameservers and A records are hosted. For an overview of DNS, view the following article.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215413857-DreamHost-DNS-overview" target="_self">DreamHost DNS overview</a></li>
+</ul>
+</div>
+<h2>Using online tools to check your DNS</h2>
+<div class="solvvy-solution">
+<p>There are many websites available for you to check your DNS. For example.</p>
+<h3><span id="General_DNS_record_lookups">General DNS record lookups</span></h3>
+<ul>
+<li><a href="http://centralops.net/co/">Centralops.net</a> – Various DNS tests</li>
+<li><a href="http://network-tools.com/">Network-tools.com</a> – Various DNS tests</li>
+<li><a href="http://itools.subhashbose.com/webtools/nslookup.html">Multiple record lookup</a> – Easily specify from a range of records you wish to lookup</li>
+<li><a href="http://www.internic.net/whois.html">Nameserver lookup</a> – Used to check details of nameserver records</li>
+</ul>
+<h3><span id="DNS_propagation_tests">DNS propagation tests</span></h3>
+<p>If you just updated your DNS, use the following tool to check what locations it has updated online.</p>
+<ul>
+<li><a href="https://www.whatsmydns.net/">whatsmydns.net</a> – Used to check if your DNS records have propagated in different locations</li>
+</ul>
+</div>
+<h2>Checking your site's DNS via SSH</h2>
+<div class="solvvy-solution">
+<p>The following lists several commands you can run to check your site's DNS values. To run these commands, you must use an SSH terminal. View the <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview" target="_self">SSH overview</a> article for details.</p>
+<h3>Checking Nameservers</h3>
+<p>This command checks where your site's Nameservers are currently hosted. The +short option simplifies the output so you only see the Nameservers without additional information.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">dig ns example.com +short</span>
+ns2.dreamhost.com.
+ns1.dreamhost.com.
+ns3.dreamhost.com.
+</pre>
+</div>
+<h3>Checking A records</h3>
+<p>This checks where the A records (IP addresses) of your site are hosted.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">dig example.com +short</span>
+173.236.185.214
+<span class="server">[server]$ </span><span class="command">dig www.example.com +short</span>
+173.236.185.214
+</pre>
+</div>
+<p>You can then run the <span class="code">host</span> command to check where that IP is hosted from.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">host 173.236.185.214</span>
+214.185.236.173.in-addr.arpa domain name pointer apache2-emu.tool.dreamhost.com.
+</pre>
+</div>
+<p>This shows it's hosted on the DreamHost server named 'tool'.</p>
+</div>
