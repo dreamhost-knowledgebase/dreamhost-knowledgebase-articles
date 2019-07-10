@@ -1,3 +1,22 @@
+<div class="document">
+<div class="documentwrapper">
+<div class="body">
+<div id="passenger_troubleshooting" class="solvvy-hidden">
+<div class="table-of-content container">
+<ul class="simple">
+<li><a class="reference internal" href="#Application_not_restarting">Application not restarting</a></li>
+<li><a class="reference internal" href="#Broken_pipe_error">Broken pipe error</a></li>
+<li><a class="reference internal" href="#Production_log_is_not_written_to">Production log isn't written to</a></li>
+<li><a class="reference internal" href="#Missing_connection_settings">Missing connection settings</a></li>
+<li><a class="reference internal" href="#Using_a_socket_connection_rather_than_a_host">Using a socket connection rather than a host</a></li>
+<li><a class="reference internal" href="#Misnaming_parameters">Misnaming parameters</a></li>
+<li><a class="reference internal" href="#Passenger_cannot_find_rails">Passenger can't find rails</a></li>
+<li><a class="reference internal" href="#ERB_comments_cause_the_beginning_of_your_view_to_vanish">ERB comments cause the beginning of your view to vanish</a></li>
+<li><a class="reference internal" href="#error_friendly_pages">Enabling Passenger error-friendly pages</a></li>
+</ul>
+</div>
+</div>
+<span id="EXACT_HEADING_NAME"></span>
 <h2>Overview</h2>
 <div class="solvvy-solution">
 <div class="alert alert-important">
@@ -23,7 +42,7 @@
 </dl>
 <p>If you get an error message mentioning a broken pipe with the exception class <strong>PhusionPassenger::Railz::ApplicationSpawner::Error</strong> as depicted in the image, you're most likely running into memory limit problems. What's happening is the request being processed by Passenger caused your user memory limit on the server to be exceeded and the Rails process that was handling that request was killed. Unfortunately, there isn't a much that can be done about this since even a very basic Rails application requires a lot of memory up front. This happens even more frequently if you have more than one Rails application hosted from the same account. The best way to ensure that you don't run into this problem is to move your Rails sites over to a <a href="/hc/en-us/articles/215280058-Virtual-Private-Server-overview-VPS-">VPS</a>. That gives you guaranteed, scalable memory that you can adjust until your memory needs are met.</p>
 </div>
-<h2><span id="Production_log_isn.27t_written_to">Production log isn't written to</span></h2>
+<h2><span id="Production_log_is_not_written_to">Production log isn't written to</span></h2>
 <div class="solvvy-solution">
 <p>This is most often caused by a misconfigured database.yml file. If your database.yml file isn't configured correctly, Passenger dies before your application is loaded. As such, you get no helpful error messages from Passenger and your production.log file isn't touched.</p>
 </div>
@@ -94,7 +113,7 @@
 </pre>
 </div>
 </div>
-<h2><span id="Passenger_can.27t_find_rails">Passenger can't find rails</span></h2>
+<h2><span id="Passenger_cannot_find_rails">Passenger can't find rails</span></h2>
 <div class="solvvy-solution">
 <p>There have been some instances where this error pops up when deploying applications that include their own config.ru, such as Fat Free CRM. If you come across this error, try renaming the config.ru and see if the error goes away.</p>
 </div>
@@ -118,6 +137,13 @@
 <p>This bug can surprise you because the above view renders exactly as it should under Mongrel in a development environment.</p>
 <p>The solution, is to eliminate the comment or replace it with an old-school HTML comment (the &lt;!-- kind).</p>
 </div>
+<h2><span id="error_friendly_pages">Enabling Passenger error-friendly pages</span></h2>
+<div class="solvvy-solution">
+<p>Passenger error-friendly pages help you troubleshoot upgrade issues. To enable, add the following to an .htaccess file within the application:</p>
+<div class="preboxcontainer">
+<pre class="prebox">PassengerFriendlyErrorPages on</pre>
+</div>
+</div>
 <h2>See also</h2>
 <div class="solvvy-hidden">
 <ul>
@@ -126,3 +152,7 @@
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215769548-Passenger-and-Python-WSGI">Passenger and Python WSGI</a></li>
 </ul>
 </div>
+</div>
+</div>
+</div>
+<div class="clearer"> </div>
