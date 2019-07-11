@@ -15,6 +15,13 @@
 <p>Directory indexing allows visitors to view a list of files instead of the actual webpage. When directory indexing is enabled, visitors can look inside any directory that does not have an index.html (or index.php, etc.) file in it and browse the contents of the directory. This is probably not the behavior you typically want, especially if said directory contains something like script configuration files that could pose a security risk.</p>
 <p>Directory indexing is enabled by default at DreamHost. This allows you to further control what files control your site when visited.</p>
 </div>
+<h2>'Coming soon' page displays even though it doesn't exist</h2>
+<div class="solvvy-solution">
+<p>If your web server was recently upgraded to Ubuntu 18 (Bionic), you may see your site displaying a 'Coming Soon' page that does not exist on your web server. Add the following line to your site's .htaccess file to resolve this.</p>
+<div class="preboxcontainer">
+<pre class="prebox">DirectoryIndex disabled</pre>
+</div>
+</div>
 <h2><span id="Turning_off_directory_indexes">Turning off directory indexes</span></h2>
 <div class="solvvy-solution">
 <p>Place the following line in an .htaccess file in your domain's folder to disable directory indexes throughout your entire site:</p>
@@ -24,7 +31,7 @@
 </div>
 <p>Now, if someone tries to browse the contents of any directory of your site, they'll get a 403 (Forbidden) error.</p>
 <div class="alert alert-note">
-<div class="alert-icon"><img alt="" height="60" src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
 <p>If a subdirectory contains an index file (such as index.html), that directory will still load. This option only disables directories without index files.</p>
 </div>

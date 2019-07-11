@@ -1,0 +1,129 @@
+<h2>Overview</h2>
+<div class="solvvy-solution">
+<p>There are two DNS options to control where your site is hosted.</p>
+<ul>
+<li>Changing the Nameservers (this must be done at your site's <a href="https://help.dreamhost.com/hc/en-us/articles/215413857#registrar" target="_self">Registrar</a>)</li>
+<li>Changing the A records</li>
+</ul>
+</div>
+<h2>Checking where your DNS is hosted</h2>
+<div class="solvvy-solution">
+<p>This article helps you to determine where your <strong>website</strong> is hosted. In order to figure this out, you must first check where your site's <strong>DNS</strong> is hosted.</p>
+<p>The following article explains how to view where your current DNS records are pointed.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360030415072-Checking-where-your-DNS-is-hosted" target="_self">Checking where your DNS is hosted</a></li>
+</ul>
+</div>
+<h2>What happens when you change your DNS?</h2>
+<div class="solvvy-solution">
+<h3>Changing the Nameservers</h3>
+<p>All of your site's DNS records are controlled at the company where the Nameservers are pointed.</p>
+<p>Changing your Nameservers points <strong>ALL</strong> of your site's DNS records to a specific company. This means your website, email, mysql, ftp, ssh, and any other records are then controlled at the new company.</p>
+<p>You must log into the company where you purchased your domain registration in order to change the Nameservers. The company is called your domain's Registrar.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215413857#registrar" target="_self">Domain Registrar</a></li>
+</ul>
+<h3>Changing the A records</h3>
+<p>A records are only the IP addresses of your website. This would be the IP address for the www and non-www version of your site. For example:</p>
+<ul>
+<li>example.com</li>
+<li>www.example.com</li>
+</ul>
+<p>If you only point your A records to a different company, only your website is hosted at the new company. All of your other DNS records (email, mysql, ftp, ssh) continue to be hosted where your Nameservers are pointed.</p>
+<p>The illustrations below show a few ways this could be implemented.</p>
+</div>
+<h2>Different ways to point your DNS</h2>
+<div class="solvvy-solution">
+<h3>Nameservers examples</h3>
+<table class="wikitable"><colgroup> <col width="15%" /> <col width="20%" /> <col width="20%" /> <col width="15%" /> <col width="60%" /> </colgroup>
+<tbody>
+<tr>
+<th bgcolor="#F2F2F2">Registrar</th>
+<th bgcolor="#F2F2F2">Where are the Nameservers pointed?</th>
+<th bgcolor="#F2F2F2">Where are the A records pointed?</th>
+<th bgcolor="#F2F2F2">Hosting company</th>
+<th bgcolor="#F2F2F2">Explanation</th>
+</tr>
+<tr>
+<td>DreamHost</td>
+<td>DreamHost Nameservers<br /> <br /> ns1.dreamhost.com<br /> ns2.dreamhost.com<br /> ns3.dreamhost.com</td>
+<td>A records have not been changed</td>
+<td class="table-background-green">DreamHost</td>
+<td>Since the Nameservers are pointed to DreamHost, and the A records have not been adjusted, the site is hosted at DreamHost</td>
+</tr>
+<tr>
+<td>Another company</td>
+<td>DreamHost Nameservers<br /> <br /> ns1.dreamhost.com<br /> ns2.dreamhost.com<br /> ns3.dreamhost.com</td>
+<td>A records have not been changed</td>
+<td class="table-background-green">DreamHost</td>
+<td>Since the Nameservers are pointed to DreamHost, and the A records have not been adjusted, the site is hosted at DreamHost.</td>
+</tr>
+<tr>
+<td>Another company</td>
+<td>Non-DreamHost Nameservers<br /> <br /> ns1.nameserver.com<br /> ns2.nameserver.com</td>
+<td>A records have not been changed</td>
+<td class="table-background-red">Another company</td>
+<td>Since the Nameservers are NOT pointed to DreamHost, and the A records have not been adjusted, the site is NOT hosted at DreamHost.</td>
+</tr>
+<tr>
+<td>DreamHost</td>
+<td>Non-DreamHost Nameservers<br /> <br /> ns1.nameserver.com<br /> ns2.nameserver.com</td>
+<td>A records have not been changed</td>
+<td class="table-background-red">Another company</td>
+<td>Since the Nameservers are NOT pointed to DreamHost, and the A records have not been adjusted, the site is NOT hosted at DreamHost.</td>
+</tr>
+</tbody>
+</table>
+<h3>A records examples</h3>
+<table class="wikitable"><colgroup> <col width="15%" /> <col width="20%" /> <col width="20%" /> <col width="15%" /> <col width="60%" /> </colgroup>
+<tbody>
+<tr>
+<th bgcolor="#F2F2F2">Registrar</th>
+<th bgcolor="#F2F2F2">Where are the Nameservers pointed?</th>
+<th bgcolor="#F2F2F2">Where are the A records pointed?</th>
+<th bgcolor="#F2F2F2">Hosting company</th>
+<th bgcolor="#F2F2F2">Explanation</th>
+</tr>
+<tr>
+<td>DreamHost</td>
+<td>DreamHost Nameservers<br /> <br /> ns1.dreamhost.com<br /> ns2.dreamhost.com<br /> ns3.dreamhost.com</td>
+<td>A records are pointing to another company</td>
+<td class="table-background-red">Another company</td>
+<td>
+<p>The Nameservers are pointed to DreamHost, but the A records are pointing to another company, therefore the site is hosted at that other company.</p>
+<p>All other DNS records continue to be hosted at DreamHost since that's where the Nameservers are pointed.</p>
+</td>
+</tr>
+<tr>
+<td>Another company</td>
+<td>DreamHost Nameservers<br /> <br /> ns1.dreamhost.com<br /> ns2.dreamhost.com<br /> ns3.dreamhost.com</td>
+<td>A records are pointing to another company</td>
+<td class="table-background-red">Another company</td>
+<td>
+<p>The Nameservers are pointed to DreamHost, but the A records are pointing to another company, therefore the site is hosted at that other company.</p>
+<p>All other DNS records continue to be hosted at DreamHost since that's where the Nameservers are pointed.</p>
+</td>
+</tr>
+<tr>
+<td>Another company</td>
+<td>Non-DreamHost Nameservers<br /> <br /> ns1.nameserver.com<br /> ns2.nameserver.com</td>
+<td>A records are pointed to DreamHost</td>
+<td class="table-background-green">DreamHost</td>
+<td>
+<p>Since the A records are pointed to DreamHost, the site is hosted at DreamHost.</p>
+<p>However, all other DNS records continue to be hosted at the other company since that's where the Nameservers are pointed.</p>
+</td>
+</tr>
+<tr>
+<td>DreamHost</td>
+<td>Non-DreamHost Nameservers<br /> <br /> ns1.nameserver.com<br /> ns2.nameserver.com</td>
+<td>A records are pointed to DreamHost</td>
+<td class="table-background-green">DreamHost</td>
+<td>
+<p>Since the A records are pointed to DreamHost, the site is hosted at DreamHost.</p>
+<p>However, all other DNS records continue to be hosted at the other company since that's where the Nameservers are pointed.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
