@@ -2,13 +2,13 @@
 <div class="solvvy-solution">
 <p>It’s possible that when you visit your site, you see an error that states ‘Site Not Found’:</p>
 <dl>
-<dd><img alt="Site Not Found Dreambot.fw.png" src="https://kbimages.dreamhosters.com/images/Site_Not_Found_Dreambot.fw.png"/></dd>
+<dd><img src="https://kbimages.dreamhosters.com/images/Site_Not_Found_Dreambot.fw.png" alt="Site Not Found Dreambot.fw.png" /></dd>
 </dl>
 <p>This article guides you through why you may be seeing this error and how to resolve it.</p>
 </div>
 <h2><span id="The_root_cause_of_the_error">The root cause of the error</span></h2>
 <div class="solvvy-solution">
-<p>The 'Site Not Found' error means the IP address your domain is using is not pointed to the <a href="https://help.dreamhost.com/hc/en-us/articles/214694378-What-DNS-records-do-I-point-my-site-to-">correct IP</a>.</p>
+<p>The 'Site Not Found' error means the IP address your domain is using is not pointed to the <a href="https://help.dreamhost.com/hc/en-us/articles/214694378-What-DreamHost-DNS-records-do-I-point-my-site-to-">correct IP</a>.</p>
 <p>More technically, the 'Site Not Found' error means that the DNS records for your domain are resolving to the IP address of an Apache web server service that is not configured for your domain.</p>
 <p>When this happens, the Apache web server is designed to just show the <em>first domain listed</em> in its config file. To make sure that nobody's site ever accidentally shows a random site hosted on the same Apache service, DreamHost makes the first domain in <strong>all</strong> its config files show the same custom error page.</p>
 <p>There are a few reasons why your IP may not be correctly pointed to your web server IP which are explained below.</p>
@@ -25,9 +25,9 @@
 <div class="solvvy-solution">
 <p>Frequently this error appears due to a change in your IP address, which is commonly triggered by removing hosting for a domain and then setting up a <a href="https://help.dreamhost.com/hc/en-us/articles/215416417-Mirror-domain-overview">MIRROR</a>, <a href="https://help.dreamhost.com/hc/en-us/articles/215455377-How-do-I-redirect-my-domain-">REDIRECT</a>, PARK, or <a href="https://help.dreamhost.com/hc/en-us/articles/216512358-Cloaking-a-domain">CLOAK</a>. While changes to the DreamHost DNS are nearly instantaneous, the new information doesn't reach other servers around the world until the other servers expire the old data that they are holding on to. This is referred to as <a href="/hc/en-us/articles/215840248-DNS-propagation-overview">DNS propagation</a>.</p>
 <p>The reason why you get this error during this period of time is that the DNS information you are receiving to your local computer is outdated, and the Apache instance that you are being incorrectly sent to no longer has any record of your site. Depending on your location, it can take up to several hours for DNS changes to propagate, so the best thing to do is leave your domain alone for a few hours before attempting any sort of fix.</p>
-<p>In addition, if you go to <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;" rel="noopener" target="_blank">Manage Domains</a> and click the small 'DNS' link under a domain, you are presented with a DNS page.</p>
+<p>In addition, if you go to <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;" target="_blank" rel="noopener">Manage Domains</a> and click the small 'DNS' link under a domain, you are presented with a DNS page.</p>
 <dl>
-<dd><img alt="Refresh_DNS_Go_button" class="img-border" src="https://kbimages.dreamhosters.com/images/2018-09_panel_domains_refresh_dns.png"/></dd>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-09_panel_domains_refresh_dns.png" alt="Refresh_DNS_Go_button" /></dd>
 </dl>
 <p>When you click the blue <strong>Go!</strong> button at the top, a DNS update is forced in DreamHost's system. But again, DNS propagation online may still take several hours.</p>
 </div>
@@ -84,7 +84,7 @@ Address: 64.90.47.165</span>
 <div class="solvvy-solution">
 <p>There are several ways to solve this problem.</p>
 <div class="alert alert-note">
-<div class="alert-icon"><img alt="" height="60" src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
 <p>If this problem appears shortly after making a configuration change for the domain in the control panel, this could be caused by the IP address changing for that domain. If that's the case, this error should go away within about 4 hours – once the DNS change propagates throughout the Internet. This is normal. If it doesn't go away after 6 hours, then try the following troubleshooting techniques.</p>
 </div>
@@ -92,15 +92,15 @@ Address: 64.90.47.165</span>
 </div>
 <h2><span id="Rebuilding_httpd_conf_via_DreamHost.27s_control_panel">Rebuilding httpd conf via DreamHost's control panel</span></h2>
 <div class="solvvy-solution">
-<p>Go to <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;" rel="noopener" target="_blank">Manage Domains</a> in your panel and click on the <strong>Edit</strong> button to the right of the domain under the ‘Web Hosting’ column. There's no need to change anything on this page. Simply save by pressing the blue <strong>Change settings</strong> button. Then wait up to 10 minutes to see if the problem is solved. With this solution you've simply rebuilt the httpd configuration file on the web server.</p>
+<p>Go to <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;" target="_blank" rel="noopener">Manage Domains</a> in your panel and click on the <strong>Edit</strong> button to the right of the domain under the ‘Web Hosting’ column. There's no need to change anything on this page. Simply save by pressing the blue <strong>Change settings</strong> button. Then wait up to 10 minutes to see if the problem is solved. With this solution you've simply rebuilt the httpd configuration file on the web server.</p>
 </div>
 <h2><span id="If_you.27re_not_using_DreamHost.27s_DNS">If you're not using DreamHost's DNS</span></h2>
 <div class="solvvy-solution">
 <p>If you aren't using DreamHost to manage your domain's DNS, most likely the IP address that points to DreamHost by your DNS provider is incorrect.</p>
 <p>You can figure out the correct IP by querying the DreamHost nameserver with one of the commands in the above section (depending on your Operating System).</p>
-<p>Here's another way to <a href="https://help.dreamhost.com/hc/en-us/articles/214694378-What-DNS-records-do-I-point-my-site-to-">find the correct IP</a>:</p>
+<p>Here's another way to <a href="https://help.dreamhost.com/hc/en-us/articles/214694378-What-DreamHost-DNS-records-do-I-point-my-site-to-">find the correct IP</a>:</p>
 <ol>
-<li>Log in to your panel at <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;" rel="noopener" target="_blank">Manage Domains</a>.</li>
+<li>Log in to your panel at <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;" target="_blank" rel="noopener">Manage Domains</a>.</li>
 <li>Click the ‘DNS’ link under your domain.</li>
 <li>When the Manage Domains page opens, find the A record in the "non-editable" section.</li>
 <li>Update your A record with your DNS provider to point to this DreamHost IP.</li>
@@ -114,7 +114,7 @@ Address: 64.90.47.165</span>
 <h2><span id="Contacting_support">Contacting support</span></h2>
 <div class="solvvy-solution">
 <p>If you cannot solve this problem using the suggestions above, please feel free to contact support for further assistance.</p>
-<p>You can contact support through your panel at <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=support.msg&amp;" rel="noopener" target="_blank">Contact Support</a>. Or visit the following article for other contact methods:</p>
+<p>You can contact support through your panel at <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=support.msg&amp;" target="_blank" rel="noopener">Contact Support</a>. Or visit the following article for other contact methods:</p>
 <ul>
 <li><a href="/hc/en-us/articles/218084068-Contacting-support-overview">Contacting DreamHost</a></li>
 </ul>
@@ -131,7 +131,7 @@ Address: 64.90.47.165</span>
 <p>In this instance, the solution is the same – edit the domain and click <strong>Change Settings</strong>. Then wait for it to propagate. You can also try disabling and re-enabling Passenger on the same domain edit page as well.</p>
 <p>This changes the domain configuration settings without altering the domain DNS records.</p>
 <div class="alert alert-note">
-<div class="alert-icon"><img alt="" height="60" src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
 <p>This will NOT work for cloaked domains since the cloaking service is on a special machine and the DNS will ALWAYS have to change when activating/deactivating cloaked domains.</p>
 </div>

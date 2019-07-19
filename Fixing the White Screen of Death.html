@@ -1,0 +1,104 @@
+<h2>Overview</h2>
+<div class="solvvy-solution">
+<p>The WordPress 'White Screen of Death' (WSOD) causes your site to display a blank white page without any further information. It's most often caused by a PHP error, however it can be difficult to troubleshoot since no errors are displayed when this happens.</p>
+<p>This article lists common troubleshooting steps you can take to fix your site.</p>
+<ul>
+<li><a href="#recovery-mode" target="_self">Using Recovery Mode in WordPress 5.2+</a></li>
+<li><a href="#basic-troubleshooting-steps" target="_self">Basic troubleshooting steps</a></li>
+</ul>
+</div>
+<h2><span id="recovery-mode">WSOD warning in WordPress 5.2</span></h2>
+<div class="solvvy-solution">
+<p>WordPress 5.2 introduces new service to help troubleshooting the WSOD. If your site crashes due to a theme or plugin issue, one of the following messages are shown:</p>
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/wordpress-wsod_01.png" alt="wordpress wsod message" /></dd>
+</dl>
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/wordpress-wsod_02.png" alt="wordpress wsod message" /></dd>
+</dl>
+<p>If this happens, an email is sent to the site admin with a unique URL that allows you to enter your site through "Recovery Mode".</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>If you did not receive the email, <a href="#troubleshooting-email" target="_self">view the troubleshooting steps below</a>.</p>
+</div>
+</div>
+<p>Once logged in, you will see a warning similar to this at the top of your dashboard.</p>
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/wordpress-wsod_06.png" alt="wordpress wsod message" /></dd>
+</dl>
+<p>Here you can deactivate the plugin or theme causing problems. In this example, there is an issue with the Theme. Click the link to go to the 'Appearance &gt; Themes' page. There you will show the following.</p>
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/wordpress-wsod_03-2.png" alt="wordpress wsod message" /></dd>
+</dl>
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/wordpress-wsod_04.png" alt="wordpress wsod message" /></dd>
+</dl>
+<p>At the bottom you can see the theme named 'Button' is failing to load. Click the <strong>Resume</strong> button next to the theme.</p>
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/wordpress-wsod_05.png" alt="wordpress wsod message" /></dd>
+</dl>
+<p>It's possible that the theme or plugin will continue to fail to function. If so, and you've exhausted <a href="#basic-troubleshooting-steps" target="_self">all other troubleshooting steps</a>, the final solution may be to re-install a fresh copy of the theme or plugin.</p>
+<h3><span id="troubleshooting-email">I did not receive the email</span></h3>
+<p>If you did not receive the email, proceed with the following troubleshooting steps.</p>
+<h4><strong>Flush your cache</strong></h4>
+<p>Flush any caching plugins you might be running, as well as server, browser, and Cloudflare cache. </p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214588698-Installing-WP-Super-Cache" target="_self">Installing WP Super Cache</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215300647-Managing-the-DreamPress-cache" target="_self">Managing the DreamPress cache</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214693248#Flushing_your_cache" target="_self">Flushing cache using wp-cli</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216477847-How-to-clear-or-temporarily-suspend-your-Cloudflare-cache" target="_self">Clearing your Cloudflare cache</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216456827-How-to-clear-your-browser-s-cache" target="_self">Clearing your browser cache</a></li>
+</ul>
+<h4><strong>Troubleshooting with your browser</strong></h4>
+<p>Your browser can help you identify JavaScript issues or conflicts using its built-in tools. View the following article for further information.</p>
+<ul>
+<li><a href="https://wordpress.org/support/article/using-your-browser-to-diagnose-javascript-errors/" target="_self">Using Your Browser to Diagnose JavaScript Errors</a></li>
+</ul>
+<h4><strong>Make sure you have the Visual Editor enabled</strong></h4>
+<p>Visit your 'Users-&gt;Your Profile' page. The first option will disable the visual editor. Make sure that option is <strong>un</strong>-checked.</p>
+<h4><strong>Reinstall the core WordPress files</strong></h4>
+<p>Trying reinstalling the core WordPress files. Your /wp-content directory will remain untouched.</p>
+<ul>
+<li class="solvvy-solution"><a href="https://help.dreamhost.com/hc/en-us/articles/360028822932-Reinstalling-WordPress" target="_self">Reinstalling WordPress</a></li>
+</ul>
+</div>
+<h2><span id="basic-troubleshooting-steps">Basic troubleshooting steps</span></h2>
+<div class="solvvy-solution">
+<h3>Disable your plugins </h3>
+<p>Errors with a plugin or theme are often the cause of the WSOD error. You should try to first disable your plugins to see if that fixes the error.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215300817#Disabling_plugins" target="_self">Disabling plugins</a></li>
+</ul>
+<h3>Activating a different theme</h3>
+<p>You can also try activating a different them using wp-cli. </p>
+<ol>
+<li>First, check which themes are available to activate.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp theme list</span></pre>
+</div>
+</li>
+<li>You can then activate a different theme. For example, this shows how to activate the default theme named 'twentynineteen'.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp theme activate twentynineteen</span></pre>
+</div>
+</li>
+<li>Check your site to see if that fixed the error.</li>
+</ol>
+<h3>Enable WordPress DEBUG</h3>
+<p>WordPress has a built in feature that allows you to view and log errors. View the following article for instructions on how to activate this.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360029327771-Enabling-the-WordPress-Debug-log" target="_self">Enabling the WordPress Debug log</a></li>
+</ul>
+<p>During that process, you can choose to either view the errors on your live site, or log them in a file on your server.</p>
+<h3>Raise your PHP Memory Limit</h3>
+<p>PHP needs a certain amount of memory to function properly. How much you need depends on your website, but you can always raise this limit in your PHP settings. View the following for instructions on raising this in WordPress.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214893937-How-do-I-increase-the-PHP-memory-limit-" target="_self">How do I increase the PHP memory limit?</a></li>
+</ul>
+<h3>Flush your cache</h3>
+<p>You can also use wp-cli to flush your site's cache on the server. View the following article for further details on wp-cli and this command.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214693248#Flushing_your_cache" target="_self">Flushing your cache</a></li>
+</ul>
+</div>

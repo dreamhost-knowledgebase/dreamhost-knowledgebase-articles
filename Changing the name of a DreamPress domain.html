@@ -1,76 +1,88 @@
-<h2>Overview</h2><div class="solvvy-solution">
+<h2>Overview</h2>
+<div class="solvvy-solution">
 <p>This article explains how to change the name of your DreamPress site to a different domain name. These instructions can be used for a regular domain name like 'example.com' or a DreamPress temporary domain like 'example.dream.press'.</p>
-<p>Make sure the domain you're changing the name to is already set as <a href="https://help.dreamhost.com/hc/en-us/articles/115000760591-Setting-your-domain-to-DNS-Only-" style="background-color: #ffffff; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 13px;" target="_self">DNS Only</a><span style="font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 13px;">. You can then use the domain name changer in the panel.</span></p>
+<p>Make sure the domain you're changing the name to is already set as <a style="background-color: #ffffff; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 13px;" href="https://help.dreamhost.com/hc/en-us/articles/115000760591-Setting-your-domain-to-DNS-Only-" target="_self">DNS Only</a><span style="font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 13px;">. You can then use the domain name changer in the panel.</span></p>
 <div class="alert alert-note">
-<div class="alert-icon"><img alt="" height="60" src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
 <p>You can use the domain name changer in the DreamPress dashboard to change any temporary domain, not just dream.press subdomains.</p>
 </div>
 </div>
-</div><h2>Preparing your domain for migration</h2><div class="solvvy-solution">
+</div>
+<h2>Preparing your domain for migration</h2>
+<div class="solvvy-solution">
 <p>Confirm the following for the domain you are migrating TO. If any of the following items are not configured, your site will not connect after it's migrated.</p>
 <h3>Remove hosting</h3>
-<p>The domain you migrate TO cannot be hosted. If it is, you must remove hosting for the domain before proceeding. You can do this by setting the domain as <a href="https://help.dreamhost.com/hc/en-us/articles/115000760591-Setting-your-domain-to-DNS-Only-" style="background-color: #ffffff;" target="_self">DNS Only</a>. This is so the domain can safely be migrated without breaking a live site.</p>
+<p>The domain you migrate TO cannot be hosted. If it is, you must remove hosting for the domain before proceeding. You can do this by setting the domain as <a style="background-color: #ffffff;" href="https://help.dreamhost.com/hc/en-us/articles/115000760591-Setting-your-domain-to-DNS-Only-" target="_self">DNS Only</a>. This is so the domain can safely be migrated without breaking a live site.</p>
 <h3>Remove any 'previously existing' mysql hostnames</h3>
 <div class="alert alert-warning">
-<div class="alert-icon"><img alt="" height="60" src="https://kbimages.dreamhosters.com/images/dh-kb-warning-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-warning-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
 <p>This step is extremely important.</p>
 </div>
 </div>
-<p>If a mysql hostname already exists in your panel for the new domain, you must delete it first. For example, navigate to the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=advanced.mysql" rel="noopener" target="_blank">MySQL Databases</a> page. If you have databases, you'll see hostnames listed under the name of the MySQL server. This MySQL server will either have a Shared server name, or a VPS name. This example shows a Shared MySQL server named 'bowl' on which the hostname already exists:</p>
+<p>If a mysql hostname already exists in your panel for the new domain, you must delete it first. For example, navigate to the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=advanced.mysql" target="_blank" rel="noopener">MySQL Databases</a> page. If you have databases, you'll see hostnames listed under the name of the MySQL server. This MySQL server will either have a Shared server name, or a VPS name. This example shows a Shared MySQL server named 'bowl' on which the hostname already exists:</p>
 <dl>
-<dd><img alt="" class="img-border" src="https://kbimages.dreamhosters.com/images/2018-05_panel_dreampress_changing_a_plan_02.png"/></dd>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-05_panel_dreampress_changing_a_plan_02.png" alt="" /></dd>
 </dl>
 <p>If you are moving DreamPress to a new domain called <strong>example.com</strong>, search for <strong>mysql</strong>.example.com. If you see it listed, delete it.</p>
 <p>If it exists and you do not remove it, your panel will not be able to update your database with the correct hostname. Since it will not connect to the correct hostname, you'll see a 'Error establishing a database connection' error when you migrate.</p>
 <p>If you've created DreamPress correctly, the hostname will show under your DreamPress server. The DreamPress servername starts with 'dp' and a long series of letters and numbers. Here's an example:</p>
 <dl>
-<dd><img alt="" class="img-border" src="https://kbimages.dreamhosters.com/images/2018-05_panel_dreampress_changing_a_plan_03.png"/></dd>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-05_panel_dreampress_changing_a_plan_03.png" alt="" /></dd>
 </dl>
 <p>If this already exists for your site, leave it as it is.</p>
 <h3>Remove custom DNS</h3>
 <p>Make sure there are no <a href="https://help.dreamhost.com/hc/en-us/articles/215414867-How-do-I-add-custom-DNS-records-">Custom DNS</a><strong>A</strong> or <strong>CNAME</strong> records on the domain you are migrating TO (if any exist that point to a different web host). If there are, delete the custom records. Other Custom DNS records are fine to leave in place.</p>
-</div><h2><span id="changing_your_domain">Step 1 — Changing your domain</span></h2><div class="solvvy-solution">
+</div>
+<h2><span id="changing_your_domain">Step 1 — Changing your domain</span></h2>
+<div class="solvvy-solution">
 <div class="alert alert-note">
-<div class="alert-icon"><img alt="" height="60" src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
 <p><a href="https://help.dreamhost.com/hc/en-us/articles/115006051887-Using-JetPack-with-DreamPress">JetPack Premium</a> will not automatically connect when you rename your domain. To reconnect, simply log back into your WordPress admin page. JetPack should reconnect after you log in.</p>
 </div>
 </div>
 <p>To change the DreamPress domain:</p>
 <ol>
-<li>Navigate to the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=wordpress.dreampress&amp;" rel="noopener" target="_blank">DreamPress</a> page.
+<li>Navigate to the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=wordpress.dreampress&amp;" target="_blank" rel="noopener">DreamPress</a> page.
 <dl>
-<dd><img alt="" class="img-border" src="https://kbimages.dreamhosters.com/images/2018-10_panel_dreampress_add_08.fw.png"/></dd>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-10_panel_dreampress_add_08.fw.png" alt="" /></dd>
 </dl>
 </li>
 <li>Click the '<strong>Manage</strong>' button next to your domain.
 <dl>
-<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-08_panel_dreampress_change_domain.png"/></dd>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-08_panel_dreampress_change_domain.png" /></dd>
 </dl>
 </li>
 <li>Click the 'Domain' tab at the top, and then click 'Choose existing domains'.</li>
 <li>Select your domain name from the drop-down menu, and then click the <strong>Change Domain</strong> button to finish. The following warning appears notifying you that any previous backups from the old domain name will be removed.
 <dl>
-<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-08_panel_dreampress_change_domain_warning.png"/></dd>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-08_panel_dreampress_change_domain_warning.png" /></dd>
 </dl>
 <dl>
 <dd><em>It takes 4-6 hours for the DNS to update for your new domain at DreamHost.</em></dd>
 </dl>
 </li>
 </ol>
-</div><h2>Step 2 — Waiting for your DreamHost DNS to update</h2><div class="solvvy-solution">
+</div>
+<h2>Step 2 — Waiting for your DreamHost DNS to update</h2>
+<div class="solvvy-solution">
 <p>As stated above, it can take 4-6 hours for the DNS to update at DreamHost. If you point your DNS at your current host to DreamHost before the DNS has updated on DreamHost's servers, the site will not connect.</p>
 <p>It's recommended that you wait 4-6 hours before updating your DNS at your current host.</p>
-</div><h2>Step 3 — Updating your DNS at your current host</h2><div class="solvvy-solution">
-<p>Finally, log into your current registrar and <a href="https://help.dreamhost.com/hc/en-us/articles/214694378-What-DNS-records-do-I-point-my-site-to-">point your DNS to DreamHost</a>. After the DNS <a href="https://help.dreamhost.com/hc/en-us/articles/215840248-DNS-propagation-overview">propagates</a>, your site will be hosted with DreamPress.</p>
-</div><h2>Error establishing a database connection</h2><div class="solvvy-solution">
+</div>
+<h2>Step 3 — Updating your DNS at your current host</h2>
+<div class="solvvy-solution">
+<p>Finally, log into your current registrar and <a href="https://help.dreamhost.com/hc/en-us/articles/214694378-What-DreamHost-DNS-records-do-I-point-my-site-to-">point your DNS to DreamHost</a>. After the DNS <a href="https://help.dreamhost.com/hc/en-us/articles/215840248-DNS-propagation-overview">propagates</a>, your site will be hosted with DreamPress.</p>
+</div>
+<h2>Error establishing a database connection</h2>
+<div class="solvvy-solution">
 <p>This error most likely occurred because you did not remove the old hostname as mentioned above in the section titled 'Remove any mysql hostnames'.</p>
-<p>The reason is because the panel still has the old hostname for the 'DNS Only' site still set up on the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=advanced.mysql" rel="noopener" target="_blank">MySQL Databases</a> page. Since this wasn't deleted, the panel could not move the old hostname to the DreamPress database.</p>
+<p>The reason is because the panel still has the old hostname for the 'DNS Only' site still set up on the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=advanced.mysql" target="_blank" rel="noopener">MySQL Databases</a> page. Since this wasn't deleted, the panel could not move the old hostname to the DreamPress database.</p>
 <p>To fix, you must update your wp-config.php file with the OLD hostname. Navigate to the MySQL databases page. Search for your DreamPress database. Note the hostname.</p>
 <p>Log into your server via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH</a> and <a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">edit your wp-config.php file</a>. In that file, update the hostname line with this old hostname (the one that still shows in the panel next to your DreamPress database).</p>
-</div><h2>See also</h2>
+</div>
+<h2>See also</h2>
 <div class="solvvy-hidden">
 <ul>
 <li><a href="/hc/en-us/articles/214581158-DreamPress-overview">DreamPress overview </a></li>
