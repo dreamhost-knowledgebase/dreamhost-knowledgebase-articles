@@ -1,4 +1,5 @@
-<h2>Overview</h2><div class="solvvy-solution">
+<h2>Overview</h2>
+<div class="solvvy-solution">
 <p>Domain-based Message Authentication, Reporting and Conformance (DMARC) is an Inbound email policy built on top of SPF and DKIM records, designed to detect and prevent fraudulent email.</p>
 <p>When you add a DMARC policy to your domain, you choose to inform the recipient that your emails are protected by SPF and/or DKIM records, and what to do if your DMARC policy fails alignment with those records.</p>
 <h3>Example of the DMARC sending process</h3>
@@ -10,8 +11,10 @@
 <li>If the SPF/DKIM records pass validation, they must then pass something called 'alignment'.</li>
 <li>If 'alignment' is passed, the email is received.</li>
 </ol>
-<p>If 'alignment' is not passed (even if SPF/DKIM check are passed), then the message fails. This helps to ensure that fraudulent activity appearing to come from the domain is blocked. </p>
-</div><h2>What is alignment?</h2><div class="solvvy-solution">
+<p>If 'alignment' is not passed (even if SPF/DKIM check are passed), then the message fails. This helps to ensure that fraudulent activity appearing to come from the domain is blocked.</p>
+</div>
+<h2>What is alignment?</h2>
+<div class="solvvy-solution">
 <p>The DMARC policy checks the domain name listed in the message's <span class="code">From:</span> field. It then compares that domain to other authenticated domain names listed in the email's header. If they are identical, your DMARC policy is aligned.</p>
 <p>If not, you should contact your email host and ask for instructions on how to ensure your records are aligned.</p>
 <h3>Strict and relaxed alignment</h3>
@@ -26,13 +29,17 @@
 <li>example.net</li>
 <li>example.com.au</li>
 </ul>
-</div><h2>What if the message fails alignment?</h2><div class="solvvy-solution">
+</div>
+<h2>What if the message fails alignment?</h2>
+<div class="solvvy-solution">
 <p>The sender's DMARC policy contains information on how to handle emails that fail authentication. Two types of reports can be created:</p>
 <ul>
 <li><strong>Aggregate reports</strong> — sent as XML format once a day, consisting of aggregate data of all DMARC failures</li>
 <li><strong>Forensic reports</strong> (aka Failure reports) — generated immediately and consist of individual emails that failed</li>
 </ul>
-</div><h2>Configuring a DMARC policy</h2><div class="solvvy-solution">
+</div>
+<h2>Configuring a DMARC policy</h2>
+<div class="solvvy-solution">
 <ol>
 <li>Configure an <a href="https://help.dreamhost.com/hc/en-us/articles/216107737-SPF-overview">SPF</a> and/or <a href="https://help.dreamhost.com/hc/en-us/articles/215029758-What-are-DKIM-records-">DKIM</a> record on your domain.</li>
 <li>Send an email to yourself (or another address you own). Once received, view its headers. Verify domain alignment by identifying the domain listed as the sending address. It may be located in the following places:
@@ -49,28 +56,38 @@ The domains mentioned in all of these areas must be identical, otherwise DMARC w
 <li>dmarc_forensic@example.com</li>
 </ul>
 </li>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/215414867#TXT_record">Create the TXT record</a>. Below is a basic configuration that handles the majority of your DMARC needs. Just make sure to adjust the email addresses to the addresses you created above to receive incoming reports.
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215414867#TXT_record">Create the TXT record</a>.
+<ol>
+<li>In your panel, navigate to the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;" target="_blank" rel="noopener">Manage Domains</a> page.</li>
+<li>Click the 'DNS' link under your domain.</li>
+<li>When the following page opens, enter a new TXT record as shown in the following example:
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/dmarc-record.png" /></dd>
+</dl>
+<ul>
+<li><strong>Name</strong> — _dmarc</li>
+<li><strong>Type</strong> — TXT</li>
+<li><strong>Value</strong> — Below is a basic configuration that handles the majority of your DMARC needs. Just make sure to adjust the email addresses to the addresses you created above to receive incoming reports.
 <div class="preboxcontainer">
 <pre class="prebox">v=DMARC1; p=none; fo=1; rua=mailto:dmarc_agg@example.com;ruf=mailto:dmarc_forensic@example.com;pct=100</pre>
 </div>
 View the section below for further details on the different options you can use.</li>
-<li>In your panel, navigate to the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;" rel="noopener" target="_blank">Manage Domains</a> page.</li>
-<li>Click the 'DNS' link under your domain.</li>
-<li>When the following page opens, enter a new TXT record as shown in the following example:
-<dl>
-<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/dmarc-record.png"/></dd>
-</dl>
+</ul>
+</li>
+</ol>
 </li>
 </ol>
 <p>Within 4-6 hrs the record will update online.</p>
-</div><h2>Tags you can use in your DMARC record</h2><div class="solvvy-solution">
+</div>
+<h2>Tags you can use in your DMARC record</h2>
+<div class="solvvy-solution">
 <h3>Required tags</h3>
 <p>There are 2 required tags, <strong>v</strong> and <strong>p</strong>.</p>
 <h4><strong>The v tag</strong></h4>
 <p>The v tag identifies the text record as a DMARC record. This must be the first tag and have a value of DMARC1.</p>
 <h4><strong>The p tag</strong></h4>
 <p>The p tag identifies the action the domain owner requests the recipient to take for failed messages. Options are:</p>
-<table class="wikitable"><colgroup> <col width="15%"/> <col width="85%"/> </colgroup>
+<table class="wikitable"><colgroup> <col width="15%" /> <col width="85%" /> </colgroup>
 <tbody>
 <tr>
 <th bgcolor="#F2F2F2">Tag</th>
@@ -92,7 +109,7 @@ View the section below for further details on the different options you can use.
 </table>
 <h3>Email tags</h3>
 <p>These indicate where reports are sent.</p>
-<table class="wikitable"><colgroup> <col width="15%"/> <col width="85%"/> </colgroup>
+<table class="wikitable"><colgroup> <col width="15%" /> <col width="85%" /> </colgroup>
 <tbody>
 <tr>
 <th bgcolor="#F2F2F2">Tag</th>
@@ -110,7 +127,7 @@ View the section below for further details on the different options you can use.
 </table>
 <h3>Reporting tag</h3>
 <p><strong>fo</strong> controls when a failure report is created.</p>
-<table class="wikitable"><colgroup> <col width="15%"/> <col width="85%"/> </colgroup>
+<table class="wikitable"><colgroup> <col width="15%" /> <col width="85%" /> </colgroup>
 <tbody>
 <tr>
 <th bgcolor="#F2F2F2">Tag</th>
@@ -137,7 +154,7 @@ View the section below for further details on the different options you can use.
 <p>A setting of fo=1 is recommended as it provides the most amount of data about any failures.</p>
 <h3>Optional tags</h3>
 <p>The following tags use a default value if the tag isn't set:</p>
-<table class="wikitable"><colgroup> <col width="15%"/> <col width="85%"/> </colgroup>
+<table class="wikitable"><colgroup> <col width="15%" /> <col width="85%" /> </colgroup>
 <tbody>
 <tr>
 <th bgcolor="#F2F2F2">Tag</th>
@@ -167,7 +184,7 @@ View the section below for further details on the different options you can use.
 </table>
 <h3>Subdomain tag</h3>
 <p>The sp tag is used to set a different reporting policy for a subdomain. For example, you could set the primary domain to use <span class="code">p=reject</span> while setting all subdomains under this domain to use <span class="code">sp=quarantine</span>.</p>
-<table class="wikitable"><colgroup> <col width="15%"/> <col width="85%"/> </colgroup>
+<table class="wikitable"><colgroup> <col width="15%" /> <col width="85%" /> </colgroup>
 <tbody>
 <tr>
 <th bgcolor="#F2F2F2">Tag</th>
@@ -175,7 +192,7 @@ View the section below for further details on the different options you can use.
 </tr>
 <tr>
 <td>sp</td>
-<td>Sets a reporting policy for the subdomain, different form the primary domain. For example:<br/>
+<td>Sets a reporting policy for the subdomain, different form the primary domain. For example:<br />
 <div class="preboxcontainer">
 <pre class="prebox">v=DMARC1; p=none; <span class="command">sp=quarantine;</span>fo=1; rua=mailto:dmarc_agg@example.com;ruf=mailto:dmarc_forensic@example.com;pct=100&lt;</pre>
 </div>
@@ -183,8 +200,11 @@ View the section below for further details on the different options you can use.
 </tr>
 </tbody>
 </table>
-</div><h2>See also</h2><div class="solvvy-hidden">
+</div>
+<h2>See also</h2>
+<div class="solvvy-hidden">
 <ul>
 <li><a href="https://dmarc.org/overview/">dmarc.org/overview</a></li>
 <li><a href="https://en.wikipedia.org/wiki/DMARC">DMARC (Wikipedia)</a></li>
-</ul></div>
+</ul>
+</div>
