@@ -1,0 +1,127 @@
+<h2>Overview</h2>
+<div class="solvvy-solution">
+<div id="content" class="mw-body">
+<div id="bodyContent" class="mw-body-content">
+<div id="mw-content-text" class="mw-content-ltr" dir="ltr" lang="en">
+<p>PHPMailer allows you to send email from your site via SMTP. Visit <a href="https://github.com/PHPMailer/PHPMailer/blob/master/README.md">PHPMailer’s GitHub page</a> for further details on what it has to offer.</p>
+<p>This article explains how to install PHPMailer on a Shared server. If your website is on a VPS or Dedicated  server, view the following article instead.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360031176531" target="_self">Installing PHPMailer on a VPS or Dedicated server</a></li>
+</ul>
+</div>
+<h2><span id="How_to_download_PHPMailer">Installing PHPMailer</span></h2>
+<div class="solvvy-solution">
+<ol>
+<li>Log into your server via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview" target="_self">SSH</a>.</li>
+<li>Make sure you're in your user's home directory.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~</span></pre>
+</div>
+</li>
+<li>Download the zip file from GitHub.com.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wget https://github.com/PHPMailer/PHPMailer/archive/master.zip</span></pre>
+</div>
+</li>
+<li>Unzip the file.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">unzip master.zip</span></pre>
+</div>
+This creates a directory named 'PHPMailer-master'.</li>
+<li>Rename this directory.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">mv PHPMailer-master PHPMailer</span></pre>
+</div>
+</li>
+</ol>
+</div>
+<h2><span id="Basic_code_example">Basic code example for email hosted at DreamHost</span></h2>
+<div class="solvvy-solution">
+<p>Insert the following code into a PHP file.</p>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60"></div>
+<div class="alert-content">
+<p>You only need to update the code in bold.</p>
+<p><strong>username</strong> — Make sure to change the 'username' field to your actual <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Enabling-Shell-access">shell username</a>. You can also view this by running the following command.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">echo $USER</span>
+username</pre>
+</div>
+<p><strong>Host </strong>— In the past, it was possible to use mail.example.com to connect (where example.com is your actual domain name). Due to how modern mail clients handle security, this is now NOT recommended as it may throw connection errors. Please ensure you are only using smtp.dreamhost.com when connecting to your DreamHost address.</p>
+<p><strong>Username</strong> and <strong>setFrom</strong> must both be an email on the domain you're sending from.</p>
+</div>
+</div>
+<div class="preboxcontainer">
+<pre class="prebox">&lt;?php
+// Import PHPMailer classes into the global namespace
+// These must be at the top of your script, not inside a function
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require '/home/<span class="command">username</span>/PHPMailer/src/Exception.php';
+require '/home/<span class="command">username</span>/PHPMailer/src/PHPMailer.php';
+require '/home/<span class="command">username</span>/PHPMailer/src/SMTP.php';
+
+$mail = new PHPMailer(true);                              // Passing `true` enables exceptions
+try {
+    //Server settings
+    $mail-&gt;SMTPDebug = 2;                                 // Enable verbose debug output
+    $mail-&gt;isSMTP();                                      // Set mailer to use SMTP
+    $mail-&gt;Host = '<span class="command">smtp.dreamhost.com</span>';                   // Specify main and backup SMTP servers
+    $mail-&gt;SMTPAuth = true;                               // Enable SMTP authentication
+    $mail-&gt;Username = '<span class="command">contact@example.com'</span>;              // SMTP username
+    $mail-&gt;Password = '<span class="command">secret</span>';                           // SMTP password
+    $mail-&gt;SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
+    $mail-&gt;Port = 587;                                    // TCP port to connect to
+
+    //Recipients
+    $mail-&gt;setFrom('<span class="command">contact@example.com</span>', 'Mailer');          //This is the email your form sends From
+    $mail-&gt;addAddress('<span class="command">recipient@dreamhost.com</span>', '<span class="command">Joe User</span>'); // Add a recipient address
+    //$mail-&gt;addAddress('contact@example.com');               // Name is optional
+    //$mail-&gt;addReplyTo('info@example.com', 'Information');
+    //$mail-&gt;addCC('cc@example.com');
+    //$mail-&gt;addBCC('bcc@example.com');
+
+    //Attachments
+    //$mail-&gt;addAttachment('/var/tmp/file.tar.gz');         // Add attachments
+    //$mail-&gt;addAttachment('/tmp/image.jpg', 'new.jpg');    // Optional name
+
+    //Content
+    $mail-&gt;isHTML(true);                                  // Set email format to HTML
+    $mail-&gt;Subject = '<span class="command">Subject line goes here</span>';
+    $mail-&gt;Body    = '<span class="command">Body text goes here</span>';
+    //$mail-&gt;AltBody = 'This is the body in plain text for non-HTML mail clients';
+
+    $mail-&gt;send();
+    echo 'Message has been sent';
+} catch (Exception $e) {
+    echo 'Message could not be sent.';
+    echo 'Mailer Error: ' . $mail-&gt;ErrorInfo;
+}<br>?&gt;</pre>
+</div>
+</div>
+<h2>Allowing GMAIL to send from your mail application</h2>
+<div class="solvvy-solution">
+<p>If you're using your GMAIL address to send via SMTP, you must first allow your application access to your GMAIL address. If you do not do this, your email will not authenticate and not send. View the following article for details:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115001719551-Troubleshooting-GMAIL-SMTP-authentication-errors">Troubleshooting GMAIL SMTP authentication errors</a></li>
+</ul>
+</div>
+<h2><span id="See_also">See also</span></h2>
+<div class="solvvy-hidden">
+<h3>Internal links</h3>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
+<li><a style="background-color:#ffffff" href="https://help.dreamhost.com/hc/en-us/articles/215507058-PHP-mail-overview">PHP mail() overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216140597-How-do-I-send-PHP-mail-via-SMTP-">How do I send PHP mail via SMTP?</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215507068-Troubleshooting-PHP-mail-">Troubleshooting PHP mail()</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215730437-SMTP-quota-limits">SMTP quota limits</a></li>
+</ul>
+<h3>External links</h3>
+<ul>
+<li><a href="https://code.google.com/a/apache-extras.org/p/phpmailer/wiki/UsefulTutorial">PHPMAILER tutorial</a> – Google code</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
