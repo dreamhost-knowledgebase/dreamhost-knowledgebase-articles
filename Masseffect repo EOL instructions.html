@@ -9,7 +9,7 @@
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">grep mirrors.dreamcompute.com /etc/apt/sources.list</span>
 </pre>
 </div>
-<p>If nothing returns from this command, you are <strong>NOT </strong>affected and can continue using your VM as is. However, if you are affected by this work, you will see a result that looks similar to the following:</p>
+<p>If nothing returns from this command, you are <strong>NOT&nbsp;</strong>affected and can continue using your VM as is. However, if you are affected by this work, you will see a result that looks similar to the following:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">grep mirrors.dreamcompute.com /etc/apt/sources.list</span>
 deb http://mirrors.dreamcompute.com/ubuntu/ trusty main restricted
@@ -25,21 +25,21 @@ deb-src http://mirrors.dreamcompute.com/ubuntu/ trusty-updates main restricted</
 <p>The most disruptive solution would be to build a new VM and migrate your workload to this VM. Specifics on how to do this depends entirely on what software is running and how sensitive it is to changes such as IPs, OS versions, and so on.</p>
 <h3>Option two: Mirroring your VM</h3>
 <p>Even though DreamHost won’t be hosting a mirror of Ubuntu-14.04, Canonical has committed to continuing to provide support for Ubuntu-14.04 until April of 2022. As such, you can change the mirror your VM uses to point at Canonical’s <a href="http://iad-2.clouds.archive.ubuntu.com/ubuntu/">apt repository</a>.</p>
-<p>There following shows one way to do this:</p>
-<ol>
-<li>Edit the file by hand using the <span class="code">vim</span> command:
+<p>The following are three different methods to accomplish this:</p>
+<p><strong>Method #1</strong></p>
+<p>Edit the file by hand using the <span class="code">vim</span> command:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">sudo vim /etc/apt/sources.list</span>
 </pre>
 </div>
-</li>
-<li>Edit the file using the <span class="code">sed</span> command:
+<p><strong>Method #2</strong></p>
+<p>Edit the file using the <span class="code">sed</span> command:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">sudo sed -i 's/mirrors.dreamcompute.com/iad-2.clouds.archive.ubuntu.com/g' /etc/apt/sources.list</span>
 </pre>
 </div>
-</li>
-<li>Modify the file using a simple Ansible playbook. The following example is a simple playbook you can run (<span class="code">ansible-playbook fixit.yml</span>) to swap out the apt mirrors:
+<p><strong>Method #3</strong></p>
+<p>Modify the file using a simple Ansible playbook. The following example is a simple playbook you can run (<span class="code">ansible-playbook fixit.yml</span>) to swap out the apt mirrors:</p>
 <div class="preboxcontainer">
 <pre class="prebox">---
 - name: Update apt mirrors
@@ -51,10 +51,8 @@ deb-src http://mirrors.dreamcompute.com/ubuntu/ trusty-updates main restricted</
   tasks:
     - name: Replace old mirror with new mirror
       replace:
-        path: /home/dwahlstrom/tmp/oldaptmirror.list.1
+        path: /etc/apt/sources.list
         regexp: mirrors.dreamcompute.com
         replace: iad-2.clouds.archive.ubuntu.com</pre>
 </div>
-</li>
-</ol>
 </div>
