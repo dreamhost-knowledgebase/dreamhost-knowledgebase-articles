@@ -12,9 +12,16 @@
 </div>
 <h2>What to change in the examples below?</h2>
 <div class="solvvy-solution">
-<p>The examples below can be entered into your .htaccess file exactly as shown. Just make sure to adjust the actual path to the file so the .htaccess file knows where it's located. Also, if you see the domain 'example.com', change this to your own domain name.</p>
+<p>The examples below can be entered into your .htaccess file exactly as shown. Just make sure to adjust the actual path to the file so the .htaccess file knows where it's located.&nbsp;Also, if you see the domain 'example.com', change this to your own domain name.</p>
 </div>
-<h2><span id="Redirecting_a_URL">Redirecting a URL</span></h2>
+<h2><span id="Redirecting_a_URL">Redirecting all URLs</span></h2>
+<div class="solvvy-solution">
+<p>The following line redirects all URLs on your site to the new site.</p>
+<div class="preboxcontainer">
+<pre class="prebox">Redirect 301 / https://example.com/</pre>
+</div>
+</div>
+<h2><span id="Redirecting_a_URL">Redirecting a single URL</span></h2>
 <div class="solvvy-solution">
 <p>Using Redirect in an .htaccess file enables you to redirect users from an old page to a new page without having to keep the old page. For example, if you use index.html as your index file and then later rename index.html to home.html, you could set up a redirect to send users from index.html to home.html. For example:</p>
 <p><strong>Redirect to a local site file</strong></p>
@@ -81,8 +88,8 @@
 <div class="preboxcontainer">
 <pre class="prebox">Options +SymLinksIfOwnerMatch 
 RewriteEngine On 
-RewriteCond %{REQUEST_FILENAME} !-f 
-RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond&nbsp;%{REQUEST_FILENAME}&nbsp;!-f 
+RewriteCond&nbsp;%{REQUEST_FILENAME}&nbsp;!-d
 RewriteRule . /index.php [L]
 </pre>
 </div>
@@ -101,7 +108,7 @@ RewriteRule ^$ /subdir1/ [L]
 <div class="solvvy-solution">
 <div class="preboxcontainer">
 <pre class="prebox">RewriteEngine On
-RewriteCond %{HTTP_HOST} ^<span class="command">example.com</span>
+RewriteCond&nbsp;%{HTTP_HOST} ^<span class="command">example.com</span>
 RewriteRule (.*) http://<span class="command">www.example.com</span>/$1 [R=301,L]
 </pre>
 </div>
@@ -110,7 +117,7 @@ RewriteRule (.*) http://<span class="command">www.example.com</span>/$1 [R=301,L
 <div class="solvvy-solution">
 <div class="preboxcontainer">
 <pre class="prebox">RewriteEngine On
-RewriteCond %{HTTP_HOST} ^<span class="command">www.example.com</span>
+RewriteCond&nbsp;%{HTTP_HOST} ^<span class="command">www.example.com</span>
 RewriteRule (.*) http://<span class="command">example.com</span>/$1 [R=301,L]</pre>
 </div>
 </div>
@@ -151,8 +158,8 @@ RewriteRule ^<span class="command">([0-9]+).html /abc.php</span>?id=$1 [QSA,L]
 RewriteEngine On
 RewriteBase /
 RewriteRule ^index\.php$ - [L]
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond&nbsp;%{REQUEST_FILENAME}&nbsp;!-f
+RewriteCond&nbsp;%{REQUEST_FILENAME}&nbsp;!-d
 RewriteRule . /<span class="command">index.php</span> [L]
 &lt;/IfModule&gt;
 </pre>
