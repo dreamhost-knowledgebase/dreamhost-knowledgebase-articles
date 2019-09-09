@@ -1,16 +1,21 @@
-<h2>Overview</h2><div class="solvvy-solution">
+<h2>Overview</h2>
+<div class="solvvy-solution">
 <div class="alert alert-important">
-<div class="alert-icon"><img alt="" height="60" src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
 <p>Your domain must run on a <a href="https://help.dreamhost.com/hc/en-us/articles/215280058-Virtual-Private-Server-VPS-overview-">private server (VPS)</a> or <a href="https://help.dreamhost.com/hc/en-us/articles/217300897-Dedicated-panel">Dedicated server</a> running Ubuntu in order to enable Node.js.</p>
 </div>
 </div>
 <p><a href="/hc/en-us/articles/217185397-Node-js-overview">Node.js</a> is a JavaScript runtime environment used to develop server tools and applications. It uses JavaScript, traditionally a front end programming language on the server side.</p>
 <p>This article describes how to enable Node.js to work with Passenger using the DreamHost panel.</p>
-</div><h2>Can Node.js be used without enabling in the panel?</h2><div class="solvvy-solution">
+</div>
+<h2>Can Node.js be used without enabling in the panel?</h2>
+<div class="solvvy-solution">
 <p>Yes. You can create a Node.js app and deploy it manually. However, this can be a lot of work. Deploying your Node.js app with Passenger is <a href="https://github.com/phusion/passenger/wiki/Phusion-Passenger%3A-Node.js-tutorial#understanding_passenger">much easier and recommended</a>.</p>
 <p>If you chose to not use Passenger, you would need to find a way to manually deploy your application.</p>
-</div><h2>What does the panel checkbox do?</h2><div class="solvvy-solution">
+</div>
+<h2>What does the panel checkbox do?</h2>
+<div class="solvvy-solution">
 <p>When you enable the checkbox feature in the panel, Passenger knows your website is set up to run a Node.js app and automatically deploys it using Passenger.</p>
 <p>For example, if you have the following setup:</p>
 <div class="preboxcontainer">
@@ -24,44 +29,47 @@
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">which node</span>
 <span class="cmdoutput">/usr/bin/node</span></pre>
 </div>
-<p>If you <a href="https://help.dreamhost.com/hc/en-us/articles/217185397#Installing_a_custom_version_of_NVM_and_Node.js">installed a custom version</a>, Node.js automatically writes lines to your user's .bashrc file. Those lines change the version to your locally installed version. For example: </p>
+<p>If you <a href="https://help.dreamhost.com/hc/en-us/articles/217185397#Installing_a_custom_version_of_NVM_and_Node.js">installed a custom version</a>, Node.js automatically writes lines to your user's .bashrc file. Those lines change the version to your locally installed version. For example:&nbsp;</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">which node</span>
 <span class="cmdoutput">/home/exampleuser/.nvm/versions/node/v10.15.1/bin/node</span></pre>
 </div>
-</div><h2><span id="Enabling_Node.js_in_the_panel">Enabling Node.js in the panel</span></h2><div class="solvvy-solution">
+</div>
+<h2><span id="Enabling_Node.js_in_the_panel">Enabling Node.js in the panel</span></h2>
+<div class="solvvy-solution">
 <p>To enable Node.js:</p>
 <ol>
-<li>Navigate to the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;" rel="noopener" target="_blank">Manage Domains</a> page.</li>
-<li>Click the <strong>Edit</strong> button to the right of your domain under the 'Web Hosting' column.<br/>
+<li>Navigate to the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;" target="_blank" rel="noopener">Manage Domains</a> page.</li>
+<li>Click the 'Edit' link to the right of your domain under the 'Web Hosting' column.<br />
 <dl>
 <dd><em>The 'Manage Domains' settings page opens:</em></dd>
-<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-07_panel_enable_rvm_01.png"/></dd>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-07_panel_enable_rvm_01.png" /></dd>
 </dl>
 </li>
 <li>Scroll down to the 'Web Options' section and check the '<a href="/hc/en-us/articles/215769578-Passenger-overview">Passenger</a> (Ruby/NodeJS/Python apps only):' check box.
 <dl>
-<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/01_Passenger.png"/></dd>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/01_Passenger.png" /></dd>
 </dl>
 </li>
 <li>Checking this displays a pop-up warning.
 <div class="alert alert-important">
-<div class="alert-icon"><img height="60" src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
 <p>If you already have a /public directory in the current 'Web directory, clicking OK will only switch the 'Web directory' to this new /public folder. Nothing in it is removed.</p>
 <p>If you do not already have a /public directory, the panel creates it for you with a coming soon page. The files in your current 'Web directory' remain untouched.</p>
 </div>
 </div>
 </li>
-<li>Click <strong>OK</strong>.</li>
-<li>Your 'Web directory' field automatically adds a /public folder to the end. The NodeJS check box also appears:
+<li>Click&nbsp;<strong>OK</strong>.</li>
+<li>Your 'Web directory' field automatically adds a /public folder to the end.&nbsp;The NodeJS check box also appears:
 <dl>
-<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-08_panel_nodejs_enable.png"/></dd>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-08_panel_nodejs_enable.png" /></dd>
 </dl>
 </li>
 <li>Check the 'NodeJS:' check box to allow Node.js to use Passenger on your domain.</li>
 </ol>
-</div><h2><span id="See_also">See also</span></h2>
+</div>
+<h2><span id="See_also">See also</span></h2>
 <div class="solvvy-hidden">
 <h3>Internal links</h3>
 <ul>
@@ -70,7 +78,7 @@
 </ul>
 <h3>External links</h3>
 <ul>
-<li><a class="new" href="https://en.wikipedia.org/wiki/Node.js" title="W:Node.js (page does not exist)">Wikipedia article on Node.js</a></li>
+<li><a class="new" title="W:Node.js (page does not exist)" href="https://en.wikipedia.org/wiki/Node.js">Wikipedia article on Node.js</a></li>
 <li><a href="https://nodejs.org/">nodejs.org</a></li>
 </ul>
 </div>
