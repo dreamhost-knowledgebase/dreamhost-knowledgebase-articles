@@ -1,0 +1,134 @@
+<h2>Overview</h2>
+<div class="solvvy-solution">
+<p>When you enable G Suite, your mail DNS records need to be pointed to Google. How this happens is based on where your DNS is currently hosted.</p>
+<ul>
+<li>If your DNS is hosted at DreamHost</li>
+<li>If your DNS is not hosted at DreamHost</li>
+</ul>
+</div>
+<h2>If your DNS is hosted at DreamHost</h2>
+<div class="solvvy-solution">
+<p>If your <a href="https://help.dreamhost.com/hc/en-us/articles/216385467-Nameservers-overview" target="_self">nameservers</a> are currently pointed to DreamHost, your site's DNS is hosted at DreamHost. In this case, DreamHost sets up your MX records, verifies the domain with a token in a TXT record, and updates your site's SPF record. For example, the following DNS records are adjusted.</p>
+<h3>MX records</h3>
+<div class="preboxcontainer">
+<pre class="prebox">ALT1.ASPMX.L.GOOGLE.com
+ALT2.ASPMX.L.GOOGLE.com
+ALT3.ASPMX.L.GOOGLE.com
+ALT4.ASPMX.L.GOOGLE.com
+ASPMX.L.GOOGLE.com</pre>
+</div>
+<h3>SPF record</h3>
+<div class="preboxcontainer">
+<pre class="prebox">v=spf1 include:_spf.google.com ~all</pre>
+</div>
+<h3>CNAME</h3>
+<p>DreamHost creates a custom CNAME for the 'mail' subdomain that points to <span class="code">ghs.googlehosted.com</span>.</p>
+<h3>TXT verification</h3>
+<p>DreamHost uses the method of creating a TXT record with a verification string. This verification string is added automatically when you sign up for G Suite in your DreamHost panel.&nbsp;To view this record, navigate to the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.manage" target="_blank" rel="noopener">Manage Domains</a> page in your panel. Click the 'DNS' link under your domain to view the record.</p>
+</div>
+<h2>If your DNS is not pointed to DreamHost</h2>
+<div class="solvvy-solution">
+<p>If your <a href="https://help.dreamhost.com/hc/en-us/articles/216385467-Nameservers-overview" target="_self">nameservers</a> are pointed to another company, DreamHost sends you an email with information on how to update your DNS records at that company. Here are a few links that may be of help for some popular hosts.</p>
+<ul>
+<li style="font-weight: 400;"><span style="font-weight: 400;">GoDaddy</span><span style="font-weight: 400;"> — </span><a href="https://www.godaddy.com/help/change-my-ip-address-20134"><span style="font-weight: 400;">Change my IP address</span></a></li>
+<li style="font-weight: 400;"><span style="font-weight: 400;">Shopify — </span><a href="https://help.shopify.com/en/manual/domains/managing-domains/advanced-settings"><span style="font-weight: 400;">View or edit the DNS for a domain</span></a></li>
+<li style="font-weight: 400;"><span style="font-weight: 400;">Squarespace </span><span style="font-weight: 400;">— </span><a href="https://support.squarespace.com/hc/en-us/articles/360002101888#toc-mx-records"><span style="font-weight: 400;">Option 2 to add custom records manually</span></a></li>
+<li><span style="font-weight: 400;">Wix </span><span style="font-weight: 400;">— </span><a href="https://support.wix.com/en/article/adding-or-updating-mx-records-in-your-wix-account"><span style="font-weight: 400;">Adding MX records</span></a></li>
+</ul>
+<p>View the following link for information on what MX records you need to update at your current host.</p>
+<ul>
+<li><a href="https://support.google.com/a/answer/174125"><span style="font-weight: 400;">https://support.google.com/a/answer/174125</span></a></li>
+</ul>
+<p><span style="font-weight: 400;">Your hosting company may use different labels for the name and value fields. You may also be required to add the trailing period at the end of the server name. M</span>ake sure you follow the specific instructions for your domain host when entering these values.</p>
+<table class="wikitable"><colgroup> <col width="15%" /> <col width="15%" /> <col width="15%" /> <col width="15%" /> <col width="30%" /> </colgroup>
+<tbody>
+<tr>
+<th bgcolor="#F2F2F2">Name/Host/Alias</th>
+<th bgcolor="#F2F2F2">Time to Live (TTL*)</th>
+<th bgcolor="#F2F2F2">Record Type</th>
+<th bgcolor="#F2F2F2">Priority</th>
+<th bgcolor="#F2F2F2">Value/Answer/Destination</th>
+</tr>
+<tr>
+<td>Blank or @</td>
+<td>3600</td>
+<td>MX</td>
+<td>1</td>
+<td>ASPMX.L.GOOGLE.COM.</td>
+</tr>
+<tr>
+<td>Blank or @</td>
+<td>3600</td>
+<td>MX</td>
+<td>5</td>
+<td>ALT1.ASPMX.L.GOOGLE.COM.</td>
+</tr>
+<tr>
+<td>Blank or @</td>
+<td>3600</td>
+<td>MX</td>
+<td>5</td>
+<td>ALT2.ASPMX.L.GOOGLE.COM.</td>
+</tr>
+<tr>
+<td>Blank or @</td>
+<td>3600</td>
+<td>MX</td>
+<td>10</td>
+<td>ALT3.ASPMX.L.GOOGLE.COM.</td>
+</tr>
+<tr>
+<td>Blank or @</td>
+<td>3600</td>
+<td>MX</td>
+<td>10</td>
+<td>ALT4.ASPMX.L.GOOGLE.COM.</td>
+</tr>
+</tbody>
+</table>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>The <a href="https://support.google.com/a/answer/48090#TTL" target="_self">TTL</a> is the number of seconds before subsequent changes to the MX record go into effect. Once the MX records are configured correctly, it is recommended you change the TTL value from 3600 to 86400, which tells servers across the Internet to check every 24 hours for updates to the MX record instead of every hour.</p>
+</div>
+</div>
+<h3><span style="font-weight: 400;">Domain verification with an MX record</span></h3>
+<p><span style="font-weight: 400;">You can also verify your domain for G Suite with an MX record. The G Suite Setup Wizard provides a unique MX record, with a priority of 15, for verification. This record is only available from the Setup Wizard that is encountered right after you sign up for G Suite.</span></p>
+<h3><span style="font-weight: 400;">Optional CNAME records</span></h3>
+<p><span style="font-weight: 400;">You may also <a href="https://help.dreamhost.com/hc/en-us/articles/215414867#CNAME_record" target="_self">create the following CNAME records</a> if you need them.</span></p>
+<table class="wikitable"><colgroup> <col width="20%" /> <col width="20%" /> <col width="20%" /> <col width="20%" /> </colgroup>
+<tbody>
+<tr>
+<th bgcolor="#F2F2F2">CNAME</th>
+<th bgcolor="#F2F2F2">Time to Live (TTL)</th>
+<th bgcolor="#F2F2F2">Record Type</th>
+<th bgcolor="#F2F2F2">Value</th>
+</tr>
+<tr>
+<td>mail</td>
+<td>3600</td>
+<td>CNAME</td>
+<td><span style="font-weight: 400;">ghs.googlehosted.com</span></td>
+</tr>
+<tr>
+<td>calendar</td>
+<td>3600</td>
+<td>CNAME</td>
+<td><span style="font-weight: 400;">ghs.googlehosted.com</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2>DNS</h2>
+<div class="solvvy-solution">
+<p>G Suite provides an API for resellers. Documentation can be found at the following link:</p>
+<ul>
+<li><a class="external-link" href="https://developers.google.com/admin-sdk/reseller/v1/codelab/end-to-end" rel="nofollow">https://developers.google.com/admin-sdk/reseller/v1/codelab/end-to-end</a></li>
+</ul>
+</div>
+<h2>See also</h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="https://support.google.com/a/answer/33786?hl=en" target="_self">Authorize email senders with SPF</a></li>
+</ul>
+</div>
