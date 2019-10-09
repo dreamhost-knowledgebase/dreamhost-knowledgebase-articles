@@ -1,23 +1,19 @@
-<h2>Overview</h2><div class="solvvy-solution">
-<p>Memory saturation is when your PS is using up its entire allotment of memory. When this happens, a variety of things will start to happen. Your sites will likely stop responding in many cases, but beyond that other essential processes on your PS will stop responding as well such as the SSH server, FTP server, streaming media server, and so. It's entirely possible for your VPS to enter a state where you can't even log in due to memory saturation.</p>
-</div><h2>Checking for the cause</h2><div class="solvvy-solution">
+<h2>Overview</h2>
+<div class="solvvy-solution">
+<p>Memory saturation is when your VPS is using up its entire allotment of memory. When this happens, a variety of things will start to happen. Your sites will likely stop responding in many cases, but beyond that other essential processes on your VPS will stop responding as well such as the SSH server, FTP server, streaming media server, and so. It's entirely possible for your VPS to enter a state where you can't even log in due to memory saturation.</p>
+</div>
+<h2>Checking for the cause</h2>
+<div class="solvvy-solution">
 <p>You can usually tell if this is happening to you by checking a few things:</p>
+<h3>Checking your resource graph in the panel</h3>
 <ul>
-<li>Check the VPS Dashboard to <a href="https://help.dreamhost.com/hc/en-us/articles/214880128-How-to-check-your-resource-usage-on-a-VPS">view your usage graph</a>.</li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214880128-How-to-check-your-resource-usage-on-a-VPS" target="_self">How to check your resource usage on a VPS</a></li>
 </ul>
-<p>If the resource usage graph is showing your memory spiking high above the memory allocated, then this is likely what's happening. If you can still log in to your PS via SSH, then try running the free -m command. This will show you how much free memory you have available. The closer that is to zero, the worse you are. At zero, you've reached total memory saturation, and what happens next can be unpredictable.</p>
-<p>Once you've determined that there is no free memory available, the fastest way to resolve it is to temporarily increase the memory allocation for your PS until you have some breathing room (unutilized and freely available memory). At that point, you can either leave the memory allocation there until you optimize your site and server and get your memory usage under control. Otherwise, you can start disabling your active sites until your memory gets into a range you are more comfortable with. This gives you room to optimize without having to spend more money on memory.</p>
-<div class="alert alert-note">
-<div class="alert-icon"><img alt="" height="60" src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60"/></div>
-<div class="alert-content">
-<p>It's best to over allocate than under allocate! You don't want to find out that you've under allocated by your visitors/customers complaining about your sites not working properly.</p>
+<p>If the resource usage graph is showing your memory spiking high above the memory allocated, then this is likely what's happening.</p>
+<h3>Run the 'free' command'</h3>
+<p>If you are still able to log into your VPS via SSH, then try running the <span class="code">free -m</span> command. This shows you how much free memory you have available. The closer that is to zero, the worse you are. At zero, you've reached total memory saturation, and what happens next can be unpredictable.</p>
 </div>
-</div>
-<p>You're only charged for the period of time that you have the slider in a particular position, so it's safe to experiment.</p>
-<ul>
-<li>One easy way to disable a site is to simply rename its web directory. For example, if you had a domain titled example.com, you could rename its web directory from example.com to example.com_disabled. By doing this, Apache will start serving 404 Not Found error pages for that domain. While this will still require memory, it will keep new PHP processes from spawning and will likely reduce traffic significantly to the point where your server is no longer overloaded.</li>
-</ul>
-</div><h2>See also</h2>
+<h2>See also</h2>
 <div class="solvvy-hidden">
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/214879308-VPS-optimization-overview">VPS optimization overview</a></li>
