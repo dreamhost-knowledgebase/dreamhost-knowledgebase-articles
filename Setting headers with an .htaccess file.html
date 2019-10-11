@@ -61,7 +61,7 @@ AddDefaultCharset ISO-8859-1
 <ul>
 <li><a href="https://content-security-policy.com/">https://content-security-policy.com/</a></li>
 </ul>
-<h3>Strict-Transport-Security (HSTS)</h3>
+<h3><span id="hsts">Strict-Transport-Security (HSTS)</span></h3>
 <p>Tells browsers to ONLY interact with the site using HTTPS and never HTTP. View the following pages for further details.</p>
 <ul>
 <li><a href="https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security">https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security</a></li>
@@ -69,7 +69,7 @@ AddDefaultCharset ISO-8859-1
 </ul>
 <p>You can enable this in your .htaccess file with the following code:</p>
 <div class="preboxcontainer">
-<pre class="prebox">Header add Strict-Transport-Security "max-age=31415926;includeSubDomains;"</pre>
+<pre class="prebox">Header add Strict-Transport-Security "max-age=31536000;includeSubDomains;"</pre>
 </div>
 <p>You can then test if it's active by running the following curl command:</p>
 <div class="preboxcontainer">
@@ -86,10 +86,25 @@ Content-Type: text/html
 </pre>
 </div>
 <p>You should see the 'Strict-Transport-Security' header in the response.</p>
+<h3>hsts preload and Cloudflare</h3>
+<p>Chrome offers you the option to add your domain to their HSTS preload list.</p>
+<ul>
+<li><a href="https://hstspreload.org">https://hstspreload.org</a></li>
+</ul>
+<p>If you have enabled Cloudflare in the DreamHost panel, it forces you to add the 'www' subdomain as shown in this articles.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215457387-How-do-I-add-or-remove-www-from-my-domain-" target="_self">How do I add or remove www from my domain?</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216477717-How-to-enable-Cloudflare-on-your-domain" target="_self">How to enable Cloudflare on your domain</a></li>
+</ul>
+<p>Adding the 'www' subdomain in the panel will cause the HSTS preload check to fail with the following message.</p>
+<div class="preboxcontainer">
+<pre class="prebox">`http://example.com` (HTTP) should immediately redirect to `https://example.com`<br />(HTTPS) before adding the www subdomain. Right now, the first redirect is to <br />`http://www.example.com/`. The extra redirect is required to ensure that any <br />browser which supports HSTS will record the HSTS entry for the top level domain,<br />not just the subdomain.</pre>
+</div>
+<p>If you wish to use Cloudflare and add your domain to the HSTS preload list, you must purchase a Cloudflare account directly from Cloudflare. This will allow you the option to remove the 'www' subdomain.</p>
 </div>
 <h2>Enabling CORS</h2>
 <div class="solvvy-solution">
-<p><a href="https://en.wikipedia.org/wiki/Cross-origin_resource_sharing">Cross Origin Resource Sharing</a> (CORS) allows restricted resources on a website to be requested from another domain outside the domain from which it was originally served. View the following pages for further details.</p>
+<p><a href="https://en.wikipedia.org/wiki/Cross-origin_resource_sharing">Cross Origin Resource Sharing</a> (CORS) allows restricted resources on a website&nbsp;to be requested from another domain outside the domain from which it was originally served. View the following pages for further details.</p>
 <ul>
 <li><a href="https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security">https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security</a></li>
 <li><a href="https://www.owasp.org/index.php/HTTP_Strict_Transport_Security_Cheat_Sheet">https://www.owasp.org/index.php/HTTP_Strict_Transport_Security_Cheat_Sheet</a></li>
@@ -139,7 +154,7 @@ Header set X-XSS-Protection "1; mode=block"
 </div>
 <h2>X-Content-Type-Options</h2>
 <div class="solvvy-solution">
-<p>This header blocks content sniffing that could transform non-executable MIME types into executable MIME types. View the following article for further details:</p>
+<p>This header blocks content sniffing that could transform non-executable MIME types into executable MIME types.&nbsp;View the following article for further details:</p>
 <ul>
 <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options">developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options</a></li>
 </ul>
