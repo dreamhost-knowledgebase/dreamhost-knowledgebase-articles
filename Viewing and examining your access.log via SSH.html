@@ -15,9 +15,16 @@
 <ul>
 <li><a href="/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
 </ul>
-<p>After you're logged in, navigate to the /logs/example.com/http directory.</p>
+<p>After you're logged in, navigate to the correct logs directory.</p>
+<h3>What logs directory should I view?</h3>
+<p>If you have added an <a href="https://help.dreamhost.com/hc/en-us/articles/216041537-SSL-certificates-overview" target="_self">SSL certificate</a> to your website, you will see two folders. One for /http and one for /https. For example:</p>
+<ul>
+<li>/logs/example.com/http</li>
+<li>/logs/example.com/https</li>
+</ul>
+<p>If you visit your site and see it's using HTTPS in the URL (https://example.com), this means you should view the /https directory. If your site is displaying HTTP when visited, you would view the /http directory instead. The following examples assume your site is using HTTPS.</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~/logs/example.com/http</span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~/logs/example.com/https</span></pre>
 </div>
 <p>This is where you’ll run the following commands.</p>
 </div>
@@ -96,7 +103,7 @@ allow from all
 <tr>
 <td>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">for k in `ls -S */http/access.log`; do wc -l $k | sort -r -n; done</span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">for k in `ls -S */https/access.log`; do wc -l $k | sort -r -n; done</span></pre>
 </div>
 </td>
 <td>
@@ -126,7 +133,7 @@ allow from all
 <tr>
 <td style="width: 44%;">
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">for k in `ls -S /home/*/logs/*/http/access.log`; do wc -l $k | sort -r -n; done</span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">for k in `ls -S /home/*/logs/*/https/access.log`; do wc -l $k | sort -r -n; done</span></pre>
 </div>
 </td>
 <td>
@@ -139,7 +146,7 @@ allow from all
 <tr>
 <td style="width: 44%;">
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">tail -f -q /home/*/logs/*/http/access.log</span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">tail -f -q /home/*/logs/*/https/access.log</span></pre>
 </div>
 </td>
 <td>
@@ -189,7 +196,7 @@ allow from all
 <tr>
 <td style="width: 44%;">
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">for k in `ls -S /home/*/logs/*/http/access.log`; do wc -l $k | sort -r -n; done</span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">for k in `ls -S /home/*/logs/*/https/access.log`; do wc -l $k | sort -r -n; done</span></pre>
 </div>
 </td>
 <td>
@@ -202,7 +209,7 @@ allow from all
 <tr>
 <td style="width: 44%;">
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">tail -f -q /home/*/logs/*/http/access.log</span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">tail -f -q /home/*/logs/*/https/access.log</span></pre>
 </div>
 </td>
 <td>
@@ -225,8 +232,8 @@ allow from all
 <div class="solvvy-solution">
 <p>You may see the following error response after running the command to view all traffic for all domains on a server.</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">for k in `ls -S /home/*/logs/*/http/access.log`; do wc -l $k | sort -r -n; done</span>
-<span class="cmdoutput">ls: cannot access /home/*/logs/*/http/access.log: No such file or directory
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">for k in `ls -S /home/*/logs/*/https/access.log`; do wc -l $k | sort -r -n; done</span>
+<span class="cmdoutput">ls: cannot access /home/*/logs/*/https/access.log: No such file or directory
 </span></pre>
 </div>
 <p>This error occurs when you run the command as an SFTP user. You must run it as a 'Shell' user on a VPS or 'Shell' or 'Admin' user on a Dedicated server.</p>
