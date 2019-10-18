@@ -1,3 +1,19 @@
+<div class="document">
+<div class="documentwrapper">
+<div class="body">
+<div id="article-name" class="solvvy-hidden">
+<div class="table-of-content container">
+<div class="altTitle">Force your site to load securely</div>
+<ul class="simple">
+<li><a class="reference internal" href="#what-to-change">What to change in the examples below?</a></li>
+<li><a class="reference internal" href="#Forcing_the_domain_to_serve_securely_using_HTTPS">Forcing the domain to serve securely using HTTPS (for any site)</a></li>
+<li><a class="reference internal" href="#Forcing_HTTPS_with_WordPress">Forcing HTTPS with WordPress</a></li>
+<li><a class="reference internal" href="#Forcing_HTTPS_with_DreamPress">Forcing HTTPS with DreamPress</a></li>
+<li><a class="reference internal" href="#troubleshooting">Troubleshooting</a></li>
+<li><a class="reference internal" href="#resolving-mixed-content-warnings">Resolving mixed content warnings</a></li>
+</ul>
+</div>
+</div>
 <h2>Overview</h2>
 <div class="solvvy-solution">
 <p>If you have <a href="https://help.dreamhost.com/hc/en-us/articles/215089118-Adding-an-SSL-certificate-overview">added an SSL certificate</a> to your domain, you can force all visits to your site to use HTTPS to ensure your traffic is secure. This page lists examples on how to do this depending on how your site is hosted.</p>
@@ -27,7 +43,7 @@
 </div>
 </div>
 </div>
-<h2>What to change in the examples below?</h2>
+<h2><span id="what-to-change">What to change in the examples below?</span></h2>
 <div class="solvvy-solution">
 <p>The examples below can be entered into your .htaccess file exactly as shown.</p>
 <p>Only if the example contains a URL in bold should you change that to your actual URL. For example, if you see the domain 'example.com', change this to your own domain name.</p>
@@ -115,7 +131,7 @@ RewriteCond %{HTTP:X-Forwarded-Proto} !https
 RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301,NE] </pre>
 </div>
 </div>
-<h2>Troubleshooting</h2>
+<h2><span id="troubleshooting">Troubleshooting</span></h2>
 <div class="solvvy-solution">
 <h3>Cloudflare</h3>
 <p>If you've enabled <a href="https://help.dreamhost.com/hc/en-us/articles/215873088-Cloudflare-overview">Cloudflare</a> in the DreamHost panel, your site must use the 'www' subdomain. Make sure your .htaccess file does not have any redirects to the non-www version of your URL. If it does and you're using Cloudflare, you may experience a 'Too many redirects' error in your browser.</p>
@@ -130,6 +146,13 @@ RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301,NE] </pre>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/115000294332-WordPress-too-many-redirects-error">WordPress 'too many redirects' error</a></li>
 </ul>
 </div>
+<h2><span id="resolving-mixed-content-warnings">Resolving mixed content warnings</span></h2>
+<div class="solvvy-solution">
+<p>Even when your site is correctly redirecting to the secure URL, it's possible the browser will still throw a warning indicating that some resources such as links are pointed to the non-secure version. You can add additional code to your .htaccess file to resolves those warnings. View the following article for details.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215364618#content-security-policy" target="_self">Resolving the warning by adding code to your .htaccess file</a></li>
+</ul>
+</div>
 <h2><span id="See_also">See also</span></h2>
 <div class="solvvy-hidden">
 <ul>
@@ -139,4 +162,7 @@ RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301,NE] </pre>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216456087-Creating-redirects-with-Nginx">Force your Nginx website to load securely</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/218428687-How-do-I-use-an-SSL-certificate-with-WordPress-">How do I use an SSL certificate with WordPress?</a></li>
 </ul>
+</div>
+</div>
+</div>
 </div>

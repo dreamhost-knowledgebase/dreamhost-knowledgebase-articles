@@ -1,7 +1,7 @@
 <h2>Overview</h2>
 <div class="solvvy-solution">
 <div class="alert alert-note">
-<div class="alert-icon"><img height="60" src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
 <p>This guide assumes you've already installed PEAR using the following guide:</p>
 <ul>
@@ -10,7 +10,7 @@
 </div>
 </div>
 <p>It’s possible your PHP site will throw an error if certain PEAR packages are not installed. For example, if you get an error referencing any of the following, run the command below (in your users directory) to install that package.</p>
-<table border="1" cellpadding="10" cellspacing="0" style="border: 1px solid #BEBEBE; width: 40%;">
+<table style="border: 1px solid #BEBEBE; width: 40%;" border="1" cellspacing="0" cellpadding="10">
 <tbody>
 <tr style="font-style: bold;">
 <th bgcolor="#F2F2F2">Error reference</th>
@@ -90,6 +90,22 @@ install failed</span>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/214392988#Changing_the_tmp_directory">Changing the /tmp directory PEAR uses</a></li>
 </ul>
+<p>If that doesn't work, try updating channels and upgrading. This will display if there are any errors connecting to pear.php.net. For example:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">pear update-channels</span>
+Updating channel "doc.php.net"
+Update of Channel "doc.php.net" succeeded
+Updating channel "pear.php.net"
+<span class="command">Channel "pear.php.net" is not responding over http://, failed with message: Connection to `ssl://pear.php.net:443' failed:
+Trying channel "pear.php.net" over https:// instead
+Cannot retrieve channel.xml for channel "pear.php.net" (Connection to `ssl://pear.php.net:443' failed: )</span>
+Updating channel "pecl.php.net"
+Update of Channel "pecl.php.net" succeeded
+
+<span class="server">[server]$ </span><span class="command">pear upgrade</span>
+Error getting channel info from pear.php.net: Connection to `ssl://pear.php.net:443' failed:</pre>
+</div>
+<p>In this case it's an issue with the pear.php.net website that needs to be resolved on their end.</p>
 </div>
 <h2>See also</h2>
 <div class="solvvy-hidden">
