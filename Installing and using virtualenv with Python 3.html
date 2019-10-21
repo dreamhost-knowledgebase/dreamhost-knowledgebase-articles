@@ -16,6 +16,10 @@
 <h2><span id="Installing_Virtualenv">Installing Virtualenv using pip3</span></h2>
 <div class="solvvy-solution">
 <p>Virtualenv is installed by default on all DreamHost servers for Python 2 versions. If you're working with Python 3, you should install virtualenv using pip3.</p>
+<p>You may want to first upgrade pip3.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command"> python3 -m pip install --upgrade pip</span></pre>
+</div>
 <p>These instructions assume you've already installed a <a href="/hc/en-us/articles/115000702772-Installing-a-custom-version-of-Python-3">custom version of Python 3</a>. After it's installed and your&nbsp;shell is using this version, run pip3 to install virtualenv:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">pip3 install virtualenv<br /></span><span class="cmdoutput">Collecting virtualenv
@@ -119,6 +123,16 @@ Running virtualenv with interpreter /home/example_username/opt/python-3.6.2/bin/
 <p>Adding the following line when <a href="https://help.dreamhost.com/hc/en-us/articles/360001435926-Installing-OpenSSL-locally-under-your-username" target="_self">installing a custom version of OpenSSL</a> to your .bash_profile resolves this.</p>
 <div class="preboxcontainer">
 <pre class="prebox">export LC_ALL="en_US.UTF-8"</pre>
+</div>
+<h3>Use the full path to your custom virtualenv</h3>
+<p>It's also possible that when you run the <span class="code">virtualenv</span> command, it's using a version outside of your custom installation. Try running this instead to confirm the full path to your Python3 virtualenv.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">which virtualenv</span>    
+/home/user/opt/python-3.8.0/bin/virtualenv</pre>
+</div>
+<p>This should respond with the version in your custom Python3 directory. You can then create a virtualenv using the full path like this:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">/home/user/opt/python-3.8.0/bin/virtualenv -p /home/user/opt/python-3.8.0/bin/python3 my_project</span></pre>
 </div>
 </div>
 <h2>See also</h2>
