@@ -1,0 +1,78 @@
+<h2>Overview</h2>
+<div class="solvvy-solution">
+<p>DreamHost has partnered with the makers of BlogVault to provide <a href="https://wordpress.org/plugins/dreamhost-automated-migration/">DreamHost Automated Migration</a>, a free WordPress plugin that allows you to make WordPress site migrations to DreamHost fast and easy.</p>
+<p>This plugin works with the vast majority of WordPress sites migrating to DreamHost. If you believe you might have an unusual site configuration or web host, see the FAQs section at the end of the article.</p>
+</div>
+<h2>Before you begin a migration</h2>
+<div class="solvvy-solution">
+<ul>
+<li>Test and install all available updates for WordPress, including all installed themes and plugins. Make sure your site has no errors or hacked code.</li>
+<li>To avoid any downtime on your site, keep the domain’s DNS pointed at your old host until migration is complete and you’ve had a chance to look at the migrated site at DreamHost.</li>
+</ul>
+</div>
+<h2>Installing the DreamHost Automated Migration plugin</h2>
+<div class="solvvy-solution">
+<ol>
+<li>If you haven’t already, <a href="/hc/en-us/articles/215416227-How-do-I-add-a-domain-">Add Hosting</a>&nbsp;to your domain in your DreamHost panel. You can add WordPress as a&nbsp;<a href="/hc/en-us/articles/215915837-How-do-I-install-a-One-Click-Install-" target="_self">One-Click Install</a>.
+<ul>
+<li>It’s okay to do this while your domain is hosted at your old host. Adding hosting on DreamHost does not typically affect your old hosting and your existing site will remain live for now.</li>
+<li>if you are concerned about affecting your existing live site, you can add a temporary subdomain name ending with <span class="code">.dream.press</span> for DreamPress servers, or <span class="code">.dreamhosters.com</span> for all other hosting. This will create extra work at the end of the process if you do this.</li>
+</ul>
+</li>
+<li>Find the following information about your DreamHost account:
+<ul>
+<li><strong>FTP/SFTP User</strong>: Navigate to <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.manage" target="_blank" rel="noopener">Manage Domains</a> and make a note of your User to the right of your domain.</li>
+<li><strong>Host/Server Address</strong>: Click the user to find the server name at the top to the right of the username. Example: (on servername) Follow the below server address format for your hosting plan:</li>
+<ul>
+<li><strong>Shared Hosting plan</strong> — <span class="code">servername.dreamhost.com</span></li>
+<li><strong>DreamPress or VPS plan</strong> — <span class="code">servername.dreamhostps.com</span></li>
+<li><strong>Dedicated Server plan</strong> — <span class="code">servername.dreamservers.com</span></li>
+</ul>
+<li><strong>FTP or SFTP</strong>: Double check that your user type is either <a href="/hc/en-us/articles/115000675027-FTP-overview-and-credentials">SFTP</a> or <a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a>. If it's FTP, switch the user type to SFTP or SSH (which also provides SFTP).</li>
+<li><strong>FTP/SFTP Password</strong>: Set a password for this user and click 'Save Changes'. Have this information ready to enter in the next step.</li>
+</ul>
+</li>
+<li>Install and activate the DreamHost Automated Migration plugin on the WordPress site at your old host:
+<ol type="a">
+<li>From the WordPress Admin Dashboard for your site, go to Plugins &gt; Add New.</li>
+<li>In the search field, type 'DreamHost Automated Migration' and click the <strong>Install</strong> button for the correct plugin.</li>
+<li>Click <strong>Activate</strong>. The Migration page opens automatically.</li>
+<li>Enter an email address where you would like to receive notifications about migration status and completion.</li>
+<li>Enter the web address (Destination Site URL) for your site. Usually this is the same address as your site on your current host. If you are using a DreamHost temporary subdomain or if you will be changing your domain for your site, use that address instead. Make sure to enter 'https://' at the beginning of the web address if you plan to use a secure certificate.</li>
+<li>Enter the FTP information you obtained in Step 2.</li>
+<li>Review and agree to the Terms of Service and Privacy Policy if you agree and wish to continue.</li>
+<li>Click the <strong>Migrate</strong> button.</li>
+</ol>
+</li>
+<li>Bookmark the URL to check your migration’s progress and you close the browser tab or window while it is running. Most migrations take under an hour, but if your site is larger than a couple GB of data, it can take more than an hour or two. Once completed, you will receive a notification email at the address you entered during the step above.</li>
+</ol>
+</div>
+<h2>Checking your migrated site and making it live on DreamHost</h2>
+<div class="solvvy-solution">
+<h3>If your domain is the same on DreamHost and the old host</h3>
+<p>Add '.dream.website' to the end of your domain to view the migrated site on DreamHost. For example, if your domain is 'example.com', view your migrated site at 'example.com.dream.website'.</p>
+<p>Once you are satisfied with the migrated site, change your domain’s DNS to point to DreamHost.</p>
+<h3>If you chose a different domain name on DreamHost from the old host</h3>
+<p>You can use the different domain name to view your site live on DreamHost. Make sure any new domain name you chose is already using DreamHost DNS records.</p>
+<h3>If you are using a temporary sub-domain name ending in .dreamhosters.com or .dream.press</h3>
+<p>You can use the temporary sub-domain name immediately to view the migrated site.</p>
+<ul>
+<li>On DreamPress, when you are ready to make your site live on DreamHost using your real domain, follow <a href="/hc/en-us/articles/115004353927-Changing-the-name-of-a-DreamPress-domain">these instructions</a> to rename your domain.</li>
+<li>On all other hosting plans, when you are ready to make your site live on DreamHost using your real domain name, follow <a href="/hc/en-us/articles/214693138-How-to-move-WordPress-to-a-different-domain-at-DreamHost">these instructions</a> to rename your domain.</li>
+</ul>
+</div>
+<h2>FAQs</h2>
+<div class="solvvy-solution">
+<h3>Can I use this plugin to migrate a WP multisite?</h3>
+<p>Yes, the Migrate to DreamHost plugin allows the migration of a WordPress network or Multisite install. After installing the plugin, make sure to 'Network Activate' it to ensure it can run from the Network Admin dashboard. However, please note the following considerations:</p>
+<ul>
+<li>The migration must move the whole network to DreamHost. It does not allow the migration of individual subsites, or the import of a subsite into a different network.</li>
+<li>The recommended hosting plans for WordPress Multisite is a DreamHost VPS, Dedicated, or DreamCompute. Multisite installs on Shared and DreamPress plans are not recommended or supported.</li>
+<li>DreamHost Support does not offer technical assistance with Multisite installs.</li>
+</ul>
+<h3>Are there any restrictions or limitations?</h3>
+<p>The plugin will work with the vast majority of WordPress sites, themes, plugins and configurations.</p>
+<p>However, please note that WordPress sites on WordPress.com cannot be migrated using this or any other plugin as an exact copy of the original site to any other host. You can however import the content of your pages, posts, and embedded images using the instructions found on this page.</p>
+<p>Your site must already be a WordPress site in order to migrate an exact copy of your site using this or any other plugin. This means that the Migrate to DreamHost plugin cannot be used to migrate other types of sites, such as those built using Wix, Weebly, SquareSpace, Joomla, or other site builders.</p>
+<p>At this time, you can migrate a WordPress site of any size using this plugin. Please note the time to complete the migration increases for larger sites.</p>
+</div>
