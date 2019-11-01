@@ -1,9 +1,15 @@
 <p>For larger file uploads, most S3 clients make use of the multi-part-upload (MPU) feature of the S3 protocol. This allows the client to break large files into smaller chunks, upload these smaller chunks, and re-try any chunks that failed without having to start over.</p>
 <p>Most S3 clients are good about cleaning up <em><strong>MPU data</strong></em> that it no longer needs, but if a connection drops or the client crashes, it could leave this data behind. The data is generally not used again, however it may silently use additional disk space on your account until it is removed. It is worthwhile to check for and remove this <strong><em>MPU data</em></strong> if disk storage costs appear larger than expected.</p>
 <p>Most S3 clients don’t have a <strong><em>MPU data</em></strong> purge feature, so in the following example, Python and the boto library is used to check for and clean up this data.</p>
+<h2>Step 1&nbsp;— Create a .boto file to store your keys.</h2>
+<p>View the following article for instructions on how to create a .boto config file. This will be used to store your DreamObjects keys.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115000376631-Creating-a-boto-file-to-store-your-keys" target="_self">Creating a .boto file to store your keys</a></li>
+</ul>
+<p>There should now be a file named .boto in your user's home directory which stores your DreamObjects keys.</p>
 <div id="using-the-clean-up-script">
-<h2>Using the clean-up script</h2>
-<p>This script is an all-in-one solution that prompts you for the <a href="https://help.dreamhost.com/hc/en-us/articles/215986357-DreamObjects-Keys">Access and Secret key</a>, then iterates over all buckets checking for <strong><em>MPU data</em></strong>. If any is found, it displays the file name, the date it was uploaded, its size, and then prompts you if it should be deleted.</p>
+<h2>Step 2 — Create the&nbsp;clean-up script</h2>
+<p>This script&nbsp;iterates over all buckets checking for <strong><em>MPU data</em></strong>. If any are found, it displays the file name, the date it was uploaded, its size, and then prompts you if it should be deleted.</p>
 <div class="alert alert-important">
 <div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
@@ -12,15 +18,19 @@
 </div>
 <div id="clean-up-script-code">
 <h3>Clean-up script code</h3>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>You do not need to adjust any of the code below since your keys are already stored in your .boto file from step 1 above.</p>
+</div>
+</div>
 <div class="preboxcontainer">
 <pre class="prebox">#!/usr/bin/python
 
 import boto
 
 # Connect to DreamObjects
-accesskey = str(raw_input('Access Key: '))
-secretkey = str(raw_input('Secret Key: '))
-c = boto.connect_s3(accesskey, secretkey, host='objects-us-east-1.dream.io')
+c = boto.connect_s3(host='objects-us-east-1.dream.io')
 
 # Iterate over all buckets
 for b in c.get_all_buckets():
@@ -57,26 +67,7 @@ for b in c.get_all_buckets():
 </div>
 <h3>Clean-up script example output</h3>
 <div class="preboxcontainer">
-<pre class="prebox">Access Key:  ACCESS KEY
-Secret Key:  SECRET KEY
-
-Bucket: homemovies
-2016-02-12T14:08:40.000Z 1986 - merry xmas.ts 1174405120 1.09GB
-2016-01-19T14:18:19.000Z 1994 alaska trip.ts 251658240 0.23GB
-2016-02-23T14:41:23.000Z 1994 alaska trip.ts 943718400 0.87GB
-2016-01-19T20:35:30.000Z 1994 alaska trip.ts 2384317892 2.22GB
-2016-01-20T20:57:49.000Z 1994 alaska trip.ts 1195376640 1.11GB
-Total: 5.54GB
-Delete MPU data? (y/n) y
-MPU data deleted!
-
-Bucket: operatingsystemimages
-2015-05-11T18:01:46.000Z coreos_production_iso_image.iso 150994944 0.14GB
-2015-05-11T18:00:36.000Z coreos_production_iso_image.iso 150994944 0.14GB
-2016-02-12T15:04:08.000Z win7.vdi 8965324800 8.34GB
-Total: 8.62GB
-Delete MPU data? (y/n) y
-MPU data deleted!
+<pre class="prebox">Bucket: my-user-bucket<br />2019-02-20T19:36:21.072Z backups/example.com/02-20-2019_example.com.zip 0.1GB<br />Total: 0.1GB<br />Delete MPU data? (y/n) y<br />MPU data deleted!
 
 Bucket: workbackup
 Total: 0.00GB
