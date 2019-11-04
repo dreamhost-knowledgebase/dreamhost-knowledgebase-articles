@@ -1,0 +1,40 @@
+<h2>Generalidades</h2>
+<div class="solvvy-solution">
+<p>Puedes notar el siguiente error cuando visites tu sitio o iniciando sesión en él:</p>
+<div class="preboxcontainer">
+<pre class="prebox">Warning: Cannot modify header information - headers already sent by (output started at...'''</pre>
+</div>
+<p>Esto esencialmente es un inconveniente con como tu sitio está codificado. Muy a menudo esto simplemente significa que que fué enviado al buscador antes de la función PHP header() fuera requerida. Técnicamente hablando, una vez que el bloque del encabezado haya sido enviado, no puedes agregar más líneas del mismo.</p>
+</div>
+<h2>Corregir el error dentro del código de PHP (avanzado)</h2>
+<div class="solvvy-solution">
+<p>Esto es normalmente causado por tu código enviando información al buscador antes de la función del header(). Asegúrate que la función del header() esté en tu código antes de cualquier otro código. Esto podría requerir a un desarrollador para editar el código existente en tu sitio.</p>
+</div>
+<h2>Corregir el error dentro del archivo phprc (fácil)</h2>
+<div class="solvvy-solution">
+<p>Si no quieres hacer ningún ajuste a tu código, puedes crear un archivo phprc y agregar unas líneas a éste para resolver este inconveniente.</p>
+<p>Mira los siguientes artículos para ver instrucciones de como crear un archivo phprc.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/214894037--C%C3%B3mo-creo-un-archivo-phprc-a-trav%C3%A9s-de-FTP-" target="_self">¿Como crear un archivo phprc vía FTP?</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214200668-How-do-I-create-a-phprc-file-via-SSH-" target="_self">¿Cómo crear un archivo phprc vía SSH?</a></li>
+</ul>
+<p>Si el archivo ya existe, vé los siguientes artículos para ver instrucciones de cómo actualizar (dependiendo si usas FTP o SSH):</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/115000098272-Crear-y-editar-un-archivo-v%C3%ADa-FTP" target="_self">Crear y editar un archivo vía FTP</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/115006413028-Crear-y-editar-un-archivo-via-SSH" target="_self">Crear y editar un archivo vía SSH</a></li>
+</ul>
+<p>Una vez creado, agrega la siguiente línea en el archivo phprc:</p>
+<div class="preboxcontainer">
+<pre class="prebox">output_buffering = 4096</pre>
+</div>
+</div>
+<h2>Ver también</h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214200688-php-ini-overview" target="_self">Generalidades de php.ini</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214205508-Updating-PHP-overview-" target="_self">Generalidades de actualizar PHP</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/214894037--C%C3%B3mo-creo-un-archivo-phprc-a-trav%C3%A9s-de-FTP-" target="_self">¿Como crear un archivo phprc vía FTP?</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214200668-How-do-I-create-a-phprc-file-via-SSH-" target="_self">¿Como crear un archivo phprc vía SSH?</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/214200748-Mi-archivo-phprc-no-se-actualiza" target="_self">Mi archivo phprc no está actualizando</a></li>
+</ul>
+</div>

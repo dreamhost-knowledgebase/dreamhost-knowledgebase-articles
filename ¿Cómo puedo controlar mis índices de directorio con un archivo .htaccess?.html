@@ -1,0 +1,98 @@
+<h2>Creando un archivo .htaccess en tu servidor web de DreamHost</h2>
+<div class="solvvy-solution">
+<p>Visita el siguiente artículo para obtener instrucciones sobre cómo crear un archivo .htaccess en tu servidor web:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/216456227#crear-un-archivo-htaccess-en-tu-servidor-web-dreamhost" target="_self">Crear un archivo .htaccess en tu servidor web DreamHost</a></li>
+</ul>
+<p>Si el archivo ya existe, visita los siguientes artículos para obtener instrucciones sobre cómo actualizarlo (dependiendo de si estás utilizando un cliente FTP o SSH):</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/115000098272-Crear-y-editar-un-archivo-v%C3%ADa-FTP" target="_self">Crear y editar un archivo vía FTP</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/115006413028-Crear-y-editar-un-archivo-via-SSH" target="_self">Crear y editar un archivo vía SSH</a></li>
+</ul>
+</div>
+<h2>¿Qué es la indexación de directorios?</h2>
+<div class="solvvy-solution">
+<p>La indexación de directorios le permite a los visitantes ver una lista de archivos en lugar de la página web como tal. Cuando se habilita la indexación de directorios, los visitantes pueden mirar dentro de cualquier directorio que no tenga un archivo index.html (o index.php, etc.) en él y examinar el contenido del directorio. Lo más probable es que este no sea el comportamiento que deseas, especialmente si dicho directorio contiene algo así como archivos de configuración de script que podrían representar un riesgo para la seguridad.</p>
+<p>La indexación de directorios está habilitada de forma predeterminada en DreamHost. Esto te permite controlar mejor qué archivos controlan su sitio cuando se visitan.</p>
+</div>
+<h2>La página 'Coming soon' se muestra asi no exista</h2>
+<div class="solvvy-solution">
+<p>Si tu servidor web se actualizó recientemente a Ubuntu 18 (Bionic), puede que veas tu sitio mostrando una página con el mensaje "Próximamente" el cual no existe en tu servidor web. Agrega la siguiente línea al archivo .htaccess de tu sitio para resolver esto.</p>
+<div class="preboxcontainer">
+<pre class="prebox">DirectoryIndex disabled</pre>
+</div>
+</div>
+<h2>Desactivando índices de directorios</h2>
+<div class="solvvy-solution">
+<p>Coloca la siguiente línea en un archivo .htaccess en la carpeta de tu dominio para deshabilitar los índices de directorio en todo tu sitio:</p>
+<div class="preboxcontainer">
+<pre class="prebox">Options -Indexes
+</pre>
+</div>
+<p>Ahora, si alguien intenta visitar el contenido de cualquier directorio de tu sitio, obtendrán un error 403 (Prohibido).</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Si un subdirectorio contiene un archivo de índice (como index.html), ese directorio aún va a ser cargado. Esta opción solo deshabilita directorios sin archivos de índice.</p>
+</div>
+</div>
+</div>
+<h2>Activar índices de directorios para ciertas carpetas en específico</h2>
+<div class="solvvy-solution">
+<p>Si hay un directorio en particular en tu sitio que quieres que la gente pueda navegar, simplemente crea un nuevo archivo .htaccess en esa carpeta en particular. Agrega lo siguiente:</p>
+<div class="preboxcontainer">
+<pre class="prebox">Options +Indexes</pre>
+</div>
+<p>Esto anula la configuración "global" y permite a los usuarios ver el contenido de ese directorio.</p>
+</div>
+<h2>Archivos de índice alternativos</h2>
+<div class="solvvy-solution">
+<p>Cuando un visitante accede a tu sitio web, el servidor busca en la carpeta un archivo de índice. Algunos ejemplos de archivos de índice comunes son:</p>
+<ul>
+<li>index.htm</li>
+<li>index.html</li>
+<li>index.php</li>
+<li>index.cgi</li>
+<li>index.pl</li>
+</ul>
+<p>Los archivos de índice admitidos dependen de la configuración del servidor. Los servidores de DreamHost están configurados para:</p>
+<div class="preboxcontainer">
+<pre class="prebox">DirectoryIndex index.html index.shtml index.htm Index.html Index.htm Index.shtml default.htm Default.htm default.html Default.html default.shtml Default.shtml page1.html index.pl index.cgi index.php index.php3 index.phtml home.htm home.html home.shtml index.wml index.pcgi quickstart.html
+</pre>
+</div>
+<ul>
+<li>Mientras nombre tu archivo de "índice" con cualquiera de los anteriores, este se cargará automáticamente.</li>
+</ul>
+<ul>
+<li>Cuando agregas un nuevo dominio/subdominio a tu cuenta, DreamHost crea un archivo quickstart.html por ti y lo coloca en tu directorio que se carga de manera predeterminada a menos que lo elimines o agregues tu propio archivo de índice.</li>
+</ul>
+<ul>
+<li>Si tienes dos archivos con nombres de la lista anterior, Apache muestra el que aparece primero (por ejemplo, se mostrará index.html, incluso si tienes un archivo index.php en el mismo directorio).</li>
+</ul>
+<ul>
+<li>Puedes cambiar tu propia configuración de DirectoryIndex para que sea lo que quieras con un archivo .htaccess. Si el servidor no puede encontrar un archivo de índice, este intenta mostrar un índice de todos los archivos dentro del directorio actual. Sin embargo, si esta opción está deshabilitada, el servidor va a mostrar un error 404 de prohibido.</li>
+</ul>
+<p>Usando un archivo .htaccess, puedes cambiar el archivo de índice a cualquier otra cosa que no sea uno de los valores predeterminados de índice mencionados anteriormente. Para hacer esto, inserta la siguiente línea en un archivo .htaccess:</p>
+<div class="preboxcontainer">
+<pre class="prebox">DirectoryIndex pagename.html</pre>
+</div>
+<p>Cambia pagename.html por la página que deseas usar como archivo de índice. Luego, al visitar tu sitio, el archivo pagename.html es lo que muestra, no tu archivo index.html.</p>
+<p>Si especificas algo como example.html para que sea el índice de directorio y no has subido este archivo en tu directorio web, Apache muestra una lista de todos los archivos, ya que no puede encontrar el que especificaste. Ten cuidado al colocar esta regla (o cualquier regla), ya que es recursiva.</p>
+</div>
+<h2>Listado de directorios a prueba de fallos</h2>
+<div class="solvvy-solution">
+<p>Lo que ves a continuación permite que un archivo en específico cargue por dado el caso no haya un archivo de índice ya establecido:</p>
+<div class="preboxcontainer">
+<pre class="prebox">Options -Indexes
+DirectoryIndex index.php index.html /example.php
+</pre>
+</div>
+<p>Cuando un visitante solicita un directorio, Apache busca index.php, luego index.html, y si no se encuentra ninguno, muestra /example.php.</p>
+</div>
+<h2>Ver también</h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/216456227-Generalidades-de-htaccess" target="_self">Generalidades de .htaccess</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/217738987-What-can-I-do-with-an-htaccess-file-" target="_self">¿Qué puedo hacer con un archivo .htaccess?</a></li>
+</ul>
+</div>

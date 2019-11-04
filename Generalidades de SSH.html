@@ -1,0 +1,146 @@
+<h2>Generalidades</h2>
+<div class="solvvy-solution">
+<p><strong>SSH</strong>, (o Secure Shell), es un protocolo de red criptográfico utilizado para asegurar las conexiones de red a través de una red no segura. Para usar SSH, debes usar un cliente SSH para conectarte al servidor. Una vez conectado, puedes ejecutar comandos manualmente dentro de una aplicación de terminal.</p>
+<p>Todas las conexiones dentro de tu cliente SSH viajan a través de una conexión segura, en lugar de texto sin formato. Gracias a esto, la conexión es encriptada y segura.</p>
+<h3>Versiones de SSH en DreamHost</h3>
+<p>Los servidores utilizando Ubuntu 18 (Bionic) ejecutan la versión 7.6p1 de SSH. Los servidores utilizando Ubuntu 14 (Trusty) ejecutan la versión 6.6.1p1.</p>
+</div>
+<h2>Diferencia entre SSH y FTP</h2>
+<div class="solvvy-solution">
+<h3>FTP</h3>
+<p>FTP utiliza un cliente FTP (como Filezilla) para conectarse al servidor. Este cliente es un cliente visual en el que puedes ver los directorios y archivos en tu computadora local y el servidor como iconos. Luego, puedes hacer clic en estos iconos para interactuar según te sea necesario. Por ejemplo:</p>
+<p><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-04_Filezilla_01.png" /></p>
+<p>Uno de los mayores inconvenientes de FTP es que no puedes ejecutar comandos específicos para realizar una tarea en particular. Con FTP, puedes subir/descargar archivos y directorios. También puedes cambiarles el nombre a los directorios, pero no puedes ejecutar un comando que haga algo.</p>
+<h3>SSH</h3>
+<p>Con SSH, utilizas un cliente de terminal (o Shell) para conectarte al servidor. No hay una descripción visual de datos dentro del Shell. Todo es texto de línea de comandos. Por ejemplo, este comando comprueba los servidores de nombres para dreamhost.com:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">dig ns +short dreamhost.com</span>
+ns1.dreamhost.com
+ns2.dreamhost.com
+ns3.dreamhost.com</pre>
+</div>
+<p>En este entorno, puedes escribir comandos para ejecutar tareas o herramientas específicas, lo cual no es posible con FTP. Por ejemplo:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/217213327-Wget">wget</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216688028-cURL-overview">curl</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/215840708-Traceroute">traceroute</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216661778-Rsync">rsync</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115000683852-Using-the-top-command-to-troubleshoot-your-website">top</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216560958-Website-tools#Command_line_tools" target="_self">otras herramientas</a></li>
+</ul>
+<p>Estas herramientas pueden facilitar mucho el solucionar problemas y ayudar con la administración de tu sitio web. Sin embargo, SSH puede ser difícil de usar para los nuevos usuarios, por lo que se recomienda un poco de conocimiento de UNIX Shell.</p>
+</div>
+<h2>¿Debo usar SSH o FTP?</h2>
+<div class="solvvy-solution">
+<p>SSH puede hacer todo lo que FTP puede hacer, sin embargo, es más difícil de usar y no se recomienda para principiantes. Si estás realizando ajustes simples a tu sitio web, como subir/descargar archivos, FTP es la opción más fácil.</p>
+<p>Si necesitas ejecutar comandos específicos, se necesita SSH.</p>
+</div>
+<h2>Cómo usar SSH</h2>
+<div class="solvvy-solution">
+<h3>Paso 1 - Habilitar el acceso a shell</h3>
+<p>Antes de poder iniciar sesión en tu servidor a través de SSH, debes cambiar el usuario de tu sitio web a un usuario de SHELL en el&nbsp;<a href="http://panel.dreamhost.com/">panel</a>. Este proceso se detalla en el siguiente artículo ‘Habilitar el acceso a shell':</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/216385837-C%C3%B3mo-crear-un-usuario-con-acceso-Shell-SSH-" target="_self">Cómo crear un usuario con acceso Shell (SSH)</a></li>
+</ul>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Este usuario de Shell es el nombre de usuario que utilizas para iniciar sesión en tu servidor como se muestra a continuación.</p>
+</div>
+</div>
+<h3>Paso 2 - Abrir una aplicación de terminal</h3>
+<p>Un terminal es un programa que se utiliza para escribir comandos de Shell. Hay varios clientes de terminales (aplicaciones) que puedes utilizar en cualquier sistema operativo. Visita el siguiente artículo para ver las opciones más fáciles para Windows, Mac y Linux:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215360828-SSH-client-software" target="_self">Programas de cliente SSH</a></li>
+</ul>
+<p>Una vez que hayas elegido un terminal, ábrelo para ver una pantalla en blanco. Aquí puedes ingresar un comando para iniciar sesión en tu servidor.</p>
+<h3>Paso 3 - Localizar tu nombre de host</h3>
+<p>Cuando estés listo para iniciar sesión en tu servidor a través de SSH, necesitarás saber tu nombre de host. Esto puede variar según el tipo de servidor en el que se encuentre el sitio. Visita el artículo&nbsp;'<a href="https://help.dreamhost.com/hc/es/articles/115000675027#nombre-de-host" target="_self">Cómo encontrar el nombre de tu servidor</a>'&nbsp;para obtener detalles sobre cómo obtener el nombre correcto.</p>
+<p>La siguiente tabla también se puede utilizar para localizar tu nombre de host.</p>
+<table class="wikitable">
+<tbody>
+<tr style="font-style: bold;">
+<th bgcolor="#F2F2F2">Hostname</th>
+<th bgcolor="#F2F2F2">Description</th>
+</tr>
+<tr>
+<td>example.com</td>
+<td>Puedes usar esto si está iniciando sesión en un sitio web específico. Simplemente cambia 'example.com' a tu nombre de dominio real. Tu sitio debe estar alojado en DreamHost para que esto funcione.</td>
+</tr>
+<tr>
+<td>server.dreamhost.com</td>
+<td>'server' es el nombre de tu&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/215560437-Qu%C3%A9-tipos-de-planes-de-alojamiento-est%C3%A1n-disponibles-" target="_self">servidor Shared</a></td>
+</tr>
+<tr>
+<td>ps123456.dreamhostps.com</td>
+<td>'ps123456' <span style="font-weight: 400;">es el nombre de tu&nbsp;</span><a href="https://help.dreamhost.com/hc/es/articles/215280058-Generalidades-de-Servidor-Virtual-Privado-VPS-" target="_self">servidor&nbsp;VPS</a></td>
+</tr>
+<tr>
+<td>ds123456.dreamservers.com</td>
+<td>'ds123456'&nbsp;<span style="font-weight: 400;">es el nombre de tu</span>&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/215279658-Dedicated-server-overview" target="_self">servidor Dedicated</a></td>
+</tr>
+<tr>
+<td>dp-ab12cd34ef.dreamhostps.com</td>
+<td>'dp-ab12cd34ef'&nbsp;<span style="font-weight: 400;">es el nombre de tu</span>&nbsp;<a href="https://panel.dreamhost.com/index.cgi?tree=wordpress.dreampress&amp;" target="_self">instancia de DreamPress</a></td>
+</tr>
+</tbody>
+</table>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Este artículo utiliza server.dreamhost.com como ejemplo general. Asegúrate de usar el nombre de servidor correcto para tu sitio o servidor en particular.</p>
+</div>
+</div>
+<h3>Paso 4 - Iniciar sesión en tu servidor</h3>
+<p>Para iniciar sesión, escribe 'ssh', seguido de tu nombre de usuario de Shell, un signo @ y luego el nombre de tu servidor. Por ejemplo:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">ssh username@server.dreamhost.com</span></pre>
+</div>
+<p><em>-o-</em></p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">ssh username@example.com</span></pre>
+</div>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Asegúrate de cambiar <strong>example.com</strong> a tu dominio real, o <strong>server.dreamhost.com</strong> al servidor al que te estás conectando.</p>
+</div>
+</div>
+<p>Luego, se te solicita la contraseña del usuario Shell. Ingresala y estarás conectado.</p>
+</div>
+<h2>Cómo configurar el inicio de sesión sin contraseña</h2>
+<div class="solvvy-solution">
+<p>Una vez que configuras un usuario de shell, debes ingresar su contraseña cada vez que inicias sesión en el servidor. Si deseas evitar ingresar tu contraseña a cada instante, puedes configurar el inicio de sesión sin contraseña. De esta manera vas a iniciar sesión automáticamente todas la veces sin la necesidad de ingresar tu contraseña.</p>
+<h3>Cómo configurar el inicio de sesión sin contraseña en Mac OS X y Linux</h3>
+<p>Visita el siguiente artículo para obtener instrucciones sobre cómo habilitar esto en OS X y Linux:</p>
+<ul>
+<li><a href="/hc/en-us/articles/216499537-How-to-configure-passwordless-login-in-Mac-OS-X-and-Linux" target="_self">Cómo configurar el inicio de sesión sin contraseña en Mac OS X y Linux</a></li>
+</ul>
+<h3>Cómo configurar el inicio de sesión sin contraseña en Windows</h3>
+<p>Si estás utilizando Windows, deberás descargar un programa de terceros llamado PuTTY para poder emular un entorno de shell. Visita los siguientes artículos para obtener más detalles:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215464538-How-do-I-configure-PuTTY-" target="_self">¿Cómo configurar PuTTY?</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215464758-How-do-I-set-up-passwordless-login-in-PuTTY-" target="_self">¿Cómo configurar el inicio de sesión sin contraseña en PuTTY?</a></li>
+</ul>
+</div>
+<h2>Ver también</h2>
+<div class="solvvy-hidden">
+<h3>Enlaces internos</h3>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/216385837-C%C3%B3mo-crear-un-usuario-con-acceso-Shell-SSH-" target="_self">Cómo crear un usuario con acceso Shell (SSH)</a></li>
+<li><a href="/hc/en-us/articles/215360828-SSH-client-software" target="_self">Programas de cliente SSH</a></li>
+<li><a href="/hc/en-us/articles/216041277-Troubleshooting-SSH" target="_self">Solución de problemas con SSH</a></li>
+<li><a href="/hc/en-us/articles/216499537-How-to-configure-passwordless-login-in-Mac-OS-X-and-Linux" target="_self">Cómo configurar el inicio de sesión sin contraseña en Mac OS X y Linux</a></li>
+<li><a href="/hc/en-us/articles/215464758-How-do-I-set-up-passwordless-login-in-PuTTY-" target="_self">¿Cómo configurar el inicio de sesión sin contraseña en PuTTY?</a></li>
+<li><a href="/hc/en-us/articles/214750888-UNIX-commands-overview" target="_self">Comandos UNIX</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/217239087-Actualizando-claves-de-host" target="_self">Actualizar claves de host</a></li>
+</ul>
+<h3>Enlaces externos</h3>
+<ul>
+<li><a href="http://mah.everybody.org/docs/ssh" target="_self">Usar ssh-agent con ssh</a></li>
+<li><a href="http://www.openssh.org/" target="_self">El proyecto OpenSSH</a></li>
+<li><a href="http://www.wikipedia.org/wiki/SSH" target="_self">SSH en Wikipedia</a></li>
+<li><a href="http://www.ss64.com/bash/" target="_self">Un índice A-Z de comandos de Linux BASH en el sitio web de Simon Sheppard</a></li>
+<li><a href="/hc/en-us/articles/215464538" target="_self">¿Cómo configurar PuTTY?</a></li>
+</ul>
+</div>

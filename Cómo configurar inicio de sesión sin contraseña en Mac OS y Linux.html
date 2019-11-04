@@ -1,0 +1,249 @@
+<h2>Generalidades</h2>
+<div class="solvvy-solution">
+<p>Una vez configures tu&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/216385837-C%C3%B3mo-crear-un-usuario-con-acceso-Shell-SSH-" target="_self">usuario Shell</a>&nbsp;e intentes iniciar sesión vía&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/216041267-Generalidades-de-SSH" target="_self">SSH</a>, vas a encontrar que debes ingresar tu contraseña cada vez. Si quieres evitar ingresarla todas las veces, puedes configurar un Inicio de Sesión sin Contraseña. De esta manera, podrás iniciar sesión automáticamente sin ingresar la misma.</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>En este artículo, 'usuario@server.dreamhost.com' es usado como ejemplo de inicio de sesión.</p>
+<ul>
+<li>Asegúrate de reemplazar el usuario por tu <a href="https://help.dreamhost.com/hc/es/articles/216385837-C%C3%B3mo-crear-un-usuario-con-acceso-Shell-SSH-" target="_self">usuario de Shell</a>.</li>
+<li>Asegúrate de reemplazar el nombre del servidor con tu&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/115000675027#nombre-de-host" target="_self">servidor DreamHost</a>.</li>
+</ul>
+</div>
+</div>
+<p>Las siguientes son instrucciones de cómo configurar un Inicio de Sesión sin Contraseña para cualquier Unix, Linux, OSX, o máquina Cygwin.</p>
+</div>
+<h2>Paso 1 – Generar la llave de emparejamiento</h2>
+<div class="solvvy-solution">
+<p>En tu computador personal:</p>
+<ol>
+<li>Genera una llave privada RSA usando&nbsp;<a class="new" title="Template:W (page does not exist)" href="https://en.wikipedia.org/wiki/Ssh-keygen">ssh-keygen</a>&nbsp;(a menos que ya hayas creado una).
+<ul>
+<li>Si estás usando Linux o Mac OS X, abre tu terminal y corre el siguiente comando con tu usuario:</li>
+</ul>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[local]$ </span><span class="command">ssh-keygen -t rsa</span></pre>
+</div>
+<dl>
+<dd>Esto crea una llave de emparejamiento pública/privada del tipo (-t) rsa.</dd>
+</dl>
+<div class="preboxcontainer">
+<pre class="prebox">Generating a public/private rsa key pair.
+Enter the file in which you wish to save they key (i.e., /home/username/.ssh/id_rsa).
+</pre>
+</div>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Si das click en 'Enter' la clave será creada con el nombre por defecto como 'id_rsa'. Tu puedes nombrarlo de la forma que quieras, pero si seleccionas el nombre por defecto, necesitarás dejarle saber a tu cliente SSH sobre el nuevo nombre de la llave. Ve el paso #3 para más detalles.</p>
+<p>También, si seleccionas usar un nombre personalizado, asegúrate de especificar el camino completo a tu directorio de ssh. Si no lo haces, la nueva llave de emparejamiento es creada en el directorio que estás corriendo el comando.</p>
+</div>
+</div>
+<dl>
+<dd>Una vez la llave de emparejamiento es creada, deberás ingresar los siguientes ítems:</dd>
+</dl>
+</li>
+<li>Da click a <strong>Enter</strong> en tu teclado para continuar.<br />
+<div class="preboxcontainer">
+<pre class="prebox">Enter a passphrase (leave empty for no passphrase).</pre>
+</div>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>No necesitas entrar una frase de contraseña, pero es altamente recomendado pues protege tu clave si ésta es comprometida. Si pasa, la persona necesitará la frase de contraseña para desbloquearla.</p>
+<p>La excepción a esto es si estas corriendo un proceso automatizado como un cron job. Ahí deberás dejar la contraseña fuera. Desde&nbsp;&nbsp;<a href="https://www.ssh.com/ssh/copy-id">ssh.com</a>:</p>
+<dl>
+<dd>"Generalmente todas las claves usadas para accesos interactivos deben tener una frase de contraseña. Las claves que no las tengan son útiles para procesos completamente automatizados."</dd>
+</dl>
+</div>
+</div>
+</li>
+<li>Da click en <strong>Enter</strong> en tu teclado para continuar.<br />
+<div class="preboxcontainer">
+<pre class="prebox">Enter same passphrase again:</pre>
+</div>
+</li>
+<li>Da click en <strong>Enter</strong> en tu teclado para continuar.</li>
+<li>Cuando hayas terminado, da click en <strong>Enter</strong> en tu teclado.<br />
+<dl>
+<dd><em>El siguiente mensaje aparecerá:</em></dd>
+</dl>
+<div class="preboxcontainer">
+<pre class="prebox">Your identification has been saved in /home/username/.ssh/id_rsa
+Your public key has been saved in /home/username/.ssh/id_sra.pub
+
+The key fingerprint is:
+ar:bc:d3:9e:g3:1f:63:6f:6b:32:2e:97:ee:42:e1:be username@server.dreamhost.com
+
+The key’s randomart image is:
+
++--[ RSA 2048]----+
+| ..+**B.o++o     |
+|  . o+==o. o     |
+|    . .oo.=      |
+|      . +E+ .    |
+|        S .      |
+|                 |
+|                 |
+|                 |
+|                 |
++-----------------+
+</pre>
+</div>
+</li>
+</ol>
+</div>
+<h2>Paso 2 – Copiar la llave pública que acabas de crear en tu computador personal a tu servidor DreamHost</h2>
+<div class="solvvy-solution">
+<h3><span id="Linux">Linux</span></h3>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Cuando estas usando Linux tienes dos opciones: Puedes usar ssh-copy-id o las instrucciones de abajo para Mac OS X. Ambos trabajan copiando la llave pública local a tu servidor DreamHost.</p>
+</div>
+</div>
+<ol>
+<li>Copia la llave pública de tu computador local a tu servidor DreamHost corriendo el siguiente comando en tu máquina Linux:<br />
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[local]$ </span><span class="command">ssh-copy-id -i ~/.ssh/id_rsa.pub username@server.dreamhost.com</span>
+</pre>
+</div>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Si obtienes el mensaje de error: "Too many arguments" (Demasiados argumentos) asegúrate de ver el comando. El banderín -i debe estar usandose.</p>
+</div>
+</div>
+</li>
+<li>Este comando responde con lo siguiente:<br />
+<div class="preboxcontainer">
+<pre class="prebox">/usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
+/usr/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed == if you are prompted now it is to install the new keys
+username@server.dreamhost.com's password:
+</pre>
+</div>
+</li>
+<li>Ingresa tu contraseña y verás lo siguiente:<br />
+<div class="preboxcontainer">
+<pre class="prebox">Number of key(s) added: 1</pre>
+</div>
+<p>Ahora trata de iniciar sesión en la máquina, con <strong>ssh username@server.dreamhost.com</strong> y asegúrate que las llaves que querías fueron agregadas.</p>
+</li>
+</ol>
+<h3>Comando en Mac OS X</h3>
+<ol>
+<li>Corre el siguiente comando para copiar la llave pública de tu computador local a tu servidor DreamHost.<br />
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[local]$ </span><span class="command">cat ~/.ssh/id_rsa.pub | ssh username@server.dreamhost.com "mkdir ~/.ssh; cat &gt;&gt; ~/.ssh/authorized_keys"</span>
+</pre>
+</div>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<ul>
+<li>Este comando asume que <strong>NO</strong> tienes un directorio /.ssh dentro de tu usuario de DreamHost. Este comando crea el directorio /.ssh por tu en el servidor DreamHost.</li>
+</ul>
+<ul>
+<li><span style="font-weight: 400;">Si ya tienes un directorio /.ssh en tu servidor web, solo elimina la sección 'mkdir ~/.ssh;' manteniendo las doble comillas. Por ejemplo</span>:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[local]$ </span><span class="command">cat ~/.ssh/id_rsa.pub | ssh username@server.dreamhost.com "cat &gt;&gt; ~/.ssh/authorized_keys"</span></pre>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</li>
+<li>Este comando responde a lo siguiente:
+<div class="preboxcontainer">
+<pre class="prebox">The authenticity of host 'server.dreamhost.com (208.113.136.55)' can't be established.
+RSA key fingerprint is 50:46:95:5f:27:c9:fc:f5:f5:32:d4:3a:e9:cb:4f:9f.
+Are you sure you want to continue connecting (yes/no)? yes
+
+Warning: Permanently added 'server.dreamhost.com,208.113.136.55' (RSA) to the list of known hosts.
+
+username@server.dreamhost.com's password:
+</pre>
+</div>
+</li>
+<li>Puedes confirmar la huella digital en tu panel en la página de&nbsp;<a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=users.sshkeys&amp;" target="_blank" rel="noopener">SSH Keys</a>.</li>
+<li>Ingresa 'yes' para continuar.</li>
+<li>Ingresa la contraseña de el usuario de ssh.</li>
+</ol>
+<p>Los comandos de arriba crean una nueva carpeta dentro de tu usuario de Dreamhost llamado <strong>/.ssh</strong> con permisos 700..</p>
+<p>En esa carpeta está tu archivo<strong> authorized_keys</strong> el cual fue copiado de tu computador local con los permisos 600.</p>
+</div>
+<h2>Paso 3 – Agregar tu clave personalizada a tu cliente SSH</h2>
+<div class="solvvy-solution">
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Este paso solamente es necesario si le diste un nombre personalizado a tu clave en el PASO #1.</p>
+</div>
+</div>
+<p>Cuando crear una llave de emparejamiento, tu escoges cómo nombrarla. Por ejemplo, el nombre por defecto es 'id_rsa' pero tu puedes nombrarla como quieras mientras la creas. Sin embargo, si escoges un nombre personalizado, necesitarás hacerle saber a tu cliente de SSH sobre esa nueva clave.</p>
+<p>Esto lo haces iniciando un agente de SSH. Inicia el agente de SSH corriendo el siguiente comando. Asegúrate de usar la comilla negra <strong>`</strong> y no una sola comilla - esta comilla negra es usualmente en la parte superior izquierda de tu teclado en la tecla tilde ~.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[local]$ </span><span class="command">eval `ssh-agent`</span>
+</pre>
+</div>
+<p>Puedes correr el siguiente comando (asegúrate de cambiar customkey_rsa al nombre de tu llave):</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[local]$ </span><span class="command">ssh-add ~/.ssh/customkey_rsa</span></pre>
+</div>
+<p>Puedes confirmar si fué agregado corriendo el comando:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[local]$ </span><span class="command">ssh-add -l</span>
+2048 aa:42:d4:46:81:43:65:7f:4e:53:94:5f:2f:0d:fd:bd customkey_rsa (RSA)</pre>
+</div>
+<p>Este responderá con tu huella digital de clave privada. Puedes confirmar esa huella digital generando una huella digital de un archivo de llave pública personalizado.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[local]$ </span><span class="command">ssh-keygen -l -f customkey_rsa.pub</span>
+2048 aa:42:d4:46:81:43:65:7f:4e:53:94:5f:2f:0d:fd:bd user@server (RSA)</pre>
+</div>
+</div>
+<h2>Paso 4 – Confirmar la conexión SSH</h2>
+<div class="solvvy-solution">
+<p>Si todo está configurado correctamente, debes ya ser capaz de acceder a tu cuenta de DreamHost a través de SSH sin contraseña. Corre este comando en tu computador local donde creaste la llave original de emparejamiento.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">ssh username@server.dreamhost.com</span>
+</pre>
+</div>
+<p>Deberás poder ser capaz de iniciar sesión sin usar contraseña.</p>
+</div>
+<h2>Especificar una llave de emparejamiento para usar con SSH</h2>
+<div class="solvvy-solution">
+<p>Por defecto, tu cliente usará la identidad (clave privada) llamada ~/.ssh/id_rsa. Sin embargo, si has creado más de una llave, puedes especificar cual de esas usar cuando te conectes, usando la bandera -i. Por ejemplo:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">ssh -i ~/.ssh/customkey username@server.dreamhost.com</span>
+</pre>
+</div>
+<h3>Confirmar la identidad usada</h3>
+<p>Puedes confirmar la identidad (llave privada) usada si usas -v.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">ssh -v username@server.dreamhost.com</span>
+</pre>
+</div>
+<p>Esto mostrará muchos comandos, pero vas a buscar por estas líneas para confirmar la identidad que estás usando.</p>
+<div class="preboxcontainer">
+<pre class="prebox">debug1: identity file /home/user/.ssh/id_rsa type 1
+debug1: identity file /home/user/.ssh/id_rsa-cert type -1<br />debug1: Offering RSA public key: /home/user/.ssh/id_rsa</pre>
+</div>
+<p>En este ejemplo, id_rsa key esta siendo usado.</p>
+<h3>¿Que pasa cuando tengo más de una llave de emparejamiento?</h3>
+<p>Si tienes más de una llave, necesitarás agregarlas todas en el agente de SSH. Por ejemplo, si tienes una llave id_rsa en adición a una llave personalizada, asegúrate de agregar ambas usando ssh-add (como se muestra arriba). Esto asegurará que la línea 'Offering RSA public key' anterior muestre la llave correcta cuando se conecta.</p>
+</div>
+<h2>Solución de problemas</h2>
+<div class="solvvy-solution">
+<p>Si no te estás logueando automáticamente, mira el siguiente artículo para ver posibles soluciones:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215906508-Troubleshooting-passwordless-login" target="_self">Solucionando problemas de inicio de sesión sin contraseña</a></li>
+</ul>
+</div>
+<h2>Ver también</h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/216041267-Generalidades-de-SSH" target="_self">Generalidades de SSH</a></li>
+<li><a style="background-color: #ffffff;" href="/hc/en-us/articles/215906508-Troubleshooting-passwordless-login" target="_self">Solucionando problemas de inicio de sesión sin contraseña</a></li>
+<li><a style="background-color: #ffffff;" href="/hc/en-us/articles/215464758-How-do-I-set-up-passwordless-login-in-PuTTY-" target="_self">¿Como configuro el inicio de sesión sin contraseña en PuTTY?</a></li>
+</ul>
+</div>

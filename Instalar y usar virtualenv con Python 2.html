@@ -1,0 +1,136 @@
+<h2>Generalidades</h2>
+<div class="solvvy-solution">
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Este artículo usa la versión 2.7 de Python. Si quieres configurar un virtualenv usando Python 3, ve a este artículo:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/115000695551-Instalar-y-usar-virtualenv-con-Python-3" target="_self">Instalar y usar virtualenv de Python usando Python 3</a></li>
+</ul>
+</div>
+</div>
+<p><a href="https://pypi.python.org/pypi/virtualenv">Virtualenv</a>&nbsp;es una herramienta usada para crear un ambiente aislado de Python. Este ambiente tiene sus propios directorios de instalación que no comparte librerías con otros ambientes virtuales (y opcionalmente no accede las librerías instaladas globalmente tampoco).</p>
+<p>Virtualenv es la manera más fácil recomendada para configurar un ambiente Python personalizado.</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Para correr los siguientes comandos, tú debes iniciar sesión en el servidor vía SSH con tu usuario Shell. Vé los siguientes artículos para más información.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/216041267-Generalidades-de-SSH" target="_self">Generalidades de SSH</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/216385837-C%C3%B3mo-crear-un-usuario-con-acceso-Shell-SSH-" target="_self">Cómo crear un usuario con acceso Shell (SSH)</a></li>
+</ul>
+</div>
+</div>
+</div>
+<h2><span id="Installing_Virtualenv">Installing Virtualenv Instalar Virtualenv</span></h2>
+<div class="solvvy-solution">
+<p>Virtualenv no está instalado por defecto en los servidores de DreamHost. Para ello, debes instalar una versión personalizada de Python.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115000218612-Installing-a-custom-version-of-Python" target="_self">Instalar una versión personalizada de Python 2</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/115000702772-Instalar-una-versi%C3%B3n-personalizada-de-Python-3" target="_self">Instalar una versión personalizada de Python 3</a></li>
+</ul>
+<p>Cuando tu instalas una versión personalizada, pip también se instala con el. Tu puedes entonces usar pip para instalar virtualenv como se muestra:</p>
+<h4><strong>Python 2</strong></h4>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">pip install virtualenv</span></pre>
+</div>
+</div>
+<h4><strong>Python 3</strong></h4>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">pip3 install virtualenv</span></pre>
+</div>
+<h2>Crear un ambiente virtual usando una versión personalizada de Python</h2>
+<div class="solvvy-solution">
+<p>Cuando trabajas con un ambiente virtual en Python es común usar una versión personalizada de Python más que la versión del servidor. Vé el siguiente artículo para instalar cualquier versión de Python que quieras.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115000218612-Installing-a-custom-version-of-Python-2" target="_self">Instalar una versión personalizada de Python 2</a></li>
+</ul>
+<p>Para crear un ambiente virtual nuevo usando una versión personalizada de Python, sigue los siguientes pasos:</p>
+<ol>
+<li>Toma nota del camino que toma el archivo para la versión personalizada de Python ya instalada. Si has seguido las instrucciones del&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/115000218612-Installing-a-custom-version-of-Python-2" target="_self">artículo de instalación</a>, el camino es:
+<div class="preboxcontainer">
+<pre class="prebox">/home/username/opt/python-2.7.15/bin/python</pre>
+</div>
+</li>
+<li>Navega al directorio de tu sitio, donde crearás el nuevo ambiente virtual:<br />
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd $HOME/example.com</span></pre>
+</div>
+</li>
+<li><span style="font-weight: 400;">Crea un ambiente virtual al mismo tiempo que especificas la versión de Python que deseas usar. Asegúrate de cambiar 'username' por tu usuario de Shell. En este ejemplo, el proyecto es titulado 'my_project', pero puedes cambiarlo por el nombre que quieras.</span>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Asegúrate de especificar el camino de tu instalación personalizada de Python 2. Si no, terminarás usando la versión del sistema de Python.</p>
+</div>
+</div>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">virtualenv -p /home/username/opt/python-2.7.15/bin/python my_project</span></pre>
+</div>
+</li>
+<li>Esto crea una copia local de tu ambiente específico a este sitio web. Mientras trabajas en éste, deberás activar el ambiente local para asegurarte que estás trabajando con las versiones correctas de tus paquetes y herramientas.</li>
+<li>Corre el siguiente comando para activar este nuevo ambiente virtual:</li>
+<li>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">source my_project/bin/activate</span></pre>
+</div>
+<em>El nombre del ambiente virtual actual aparecerá ahora en la parte izquierda del intento. Por ejemplo:</em><br />
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">(my_project) [server]$ </span></pre>
+</div>
+</li>
+<li>Finalmente, revisa la versión de Python usada.<br />
+<pre class="prebox"><span class="server">(my_project) [server]$ </span><span class="command">python -V</span>
+<span class="cmdoutput">Python 2.7.15</span></pre>
+</li>
+</ol>
+<p>De ahora en adelante, cualquier paquete que instales usando pip será ubicado en la carpeta del proyecto en el ambiente virtual, aislado de la instalación global de Python.</p>
+</div>
+<h2>Actualizar pip</h2>
+<div class="solvvy-solution">
+<p>Es buena idea actualizar la versión de pip par asegurarte de que puedes instalar los módulos actuales.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">(my_project) [server]$ </span><span class="command">python -m pip install --upgrade pip</span></pre>
+</div>
+<p>Puedes ver entonces la versión.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">(my_project) [server]$ </span><span class="command">pip --version</span></pre>
+</div>
+</div>
+<h2>Desactivar tu virtualenv</h2>
+<div class="solvvy-solution">
+<p>Si has terminado de trabajar con el ambiente virtual por el momento, puedes desactivarlo corriendo lo siguiente:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">(my_project) [server]$ </span><span class="command">deactivate</span></pre>
+</div>
+<ul>
+<li>Esto te envía de vuelta a la configuración por defecto de Shell.</li>
+</ul>
+</div>
+<h2>Eliminar tu ambiente virtual</h2>
+<div class="solvvy-solution">
+<p>Para eliminar un ambiente virtual, solo elimina la carpeta del proyecto. En este caso, sería:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">rm -rf my_project</span></pre>
+</div>
+<h2>Instalar módulos personalizados</h2>
+<div class="solvvy-solution">
+<p>Vé el siguiente artículo para información de como usar pip para instalar módulos Python.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115000221112-Using-pip-to-install-Python-2-modules" target="_self">Usar pip para instalar módulos de Python 2</a></li>
+</ul>
+</div>
+<h2>Ver también</h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216137717-Python-overview" target="_self">Generalidades de Python</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/216041267-Generalidades-de-SSH" target="_self">Generalidades de SSH</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/215317948-C%C3%B3mo-instalar-Django-usando-virtualenv" target="_self">Cómo instalar Django usando virtualenv</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216128557-Guidelines-for-setting-up-a-Python-file-at-DreamHost" target="_self">Guías para configurar un archivo Python en DreamHost</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215489188-How-to-install-a-newer-version-of-SWIG" target="_self">Cómo instalar una versión nueva de SWIG</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115000218612-Installing-a-custom-version-of-Python" target="_self">Instalar una versión personalizada de Python</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216137637-Pyenv-simple-Python-version-management" target="_self">Manejo simple de una versión Python</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215503458-Python-setuptools" target="_self">Herramientas de configuración de Python </a></li>
+</ul>
+</div>
+</div>

@@ -1,0 +1,124 @@
+<h2>Generalidades</h2>
+<div class="solvvy-solution">
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Este artículo explica cómo ver tu error log vía SSH lo cual requiere conocimientos básicos de un terminal Shell. Para ver opción más fácil de FTP, vé el siguiente artículo:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/216512197-Ver-tus-registros-de-acceso-y-error-via-SFTP" target="_self">Ver tu acceso y logs de errores vía SFTP</a></li>
+</ul>
+</div>
+</div>
+<p>Para efectos de solución de problemas, a veces necesitarás ver el log de errores de tu sitio y acceder a los logs para ver información de por qué puede ocurrir un error. Este artículo explica como ver esos logs a través de SFTP y Shell.</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<ul>
+<li>Para ver los logs, debes iniciar sesión en tu servidor y navegar al directorio logs/ejemplo.com/http.</li>
+<li>Los logs son rotados todas las noches entonces access.log y error.log solo mostrará los logs de hoy, mientras error.log.0 y access.log.0 contiene los logs del día anterior.</li>
+<li>Los archivos de logs son eliminados después de esto, por lo que es recomendado verlos tan pronto como sea posible.</li>
+<li>Por un reciente&nbsp;<a href="https://ec.europa.eu/commission/priorities/justice-and-fundamental-rights/data-protection/2018-reform-eu-data-protection-rules_en">GDPR</a> (Mayo 2018), DreamHost almacena los logs HTTP por 3 días por defecto.</li>
+</ul>
+</div>
+</div>
+</div>
+<h2>Ver logs vía SSH</h2>
+<div class="solvvy-solution">
+<ol>
+<li>Da click en este artículo de&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/216041267-Generalidades-de-SSH" target="_self">Generalidades de SSH</a>&nbsp;para ver instrucciones de cómo iniciar sesión en tu servidor.</li>
+<li>Escribe lo siguiente para cambiar tu directorio al directorio /logs del usuario:<br />
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~/logs</span></pre>
+</div>
+</li>
+<li>Escribe lo siguiente para ver todos los dominios dentro del usuario:<br />
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">ls -la</span></pre>
+</div>
+</li>
+<li>cd dentro de la carpeta del dominio deseada.</li>
+<li>cd dentro de la carpeta del dominio /http.<br />
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd http</span></pre>
+</div>
+</li>
+<li>Escribe lo siguiente para ver la lista de los archivos de tu log:<br />
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">ls</span></pre>
+</div>
+</li>
+</ol>
+</div>
+<h2>Descomprimir archivos que terminan en .gz</h2>
+<div class="solvvy-solution">
+<p>Los archivos viejos son compresos y terminan en .gz. Da click en el siguiente artículo para ver instrucciones de como descomprimir esos archivos.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115002768331#Decompress_a_ZIP_Archive" target="_self">Descomprimir un archivo .gz</a></li>
+</ul>
+</div>
+<h2>Leer los errores más recientes usando el comando "tail"</h2>
+<div class="solvvy-solution">
+<p>Lo siguiente muestra varios usos del comando <span class="code">tail</span> que puedes correr dentro del directorio apropiado para leer partes específicas del log.</p>
+<p>For example: Usa el comando <span class="code">tail</span> para leer las últimas líneas del archivo.</p>
+<table class="wikitable">
+<tbody>
+<tr style="font-style: bold;">
+<th bgcolor="#F2F2F2">Command</th>
+<th bgcolor="#F2F2F2">Description</th>
+</tr>
+<tr>
+<td>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">tail -n 10 error.log</span></pre>
+</div>
+</td>
+<td>Muestra las 10 últimas líneas del log de errores.</td>
+</tr>
+<tr>
+<td>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">tail -f error.log</span></pre>
+</div>
+</td>
+<td>Muestra las nuevas líneas agregadas del archivo del log en tiempo real en el Shell.</td>
+</tr>
+<tr>
+<td>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">tail -n 100 error.log | more</span></pre>
+</div>
+</td>
+<td>Muestra las últimas 100 líneas una sola línea al mismo tiempo usando el comando <span class="code">more</span>.<br />
+<ul>
+<li>Útil para mostrar más líneas que puedan caber en tu ventana Shell.</li>
+<li>Presiona la barra espaciadora para ver la siguiente línea.</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td>ctrl + c</td>
+<td>Elimina la cola <span class="code">tail</span> y retorna al línea de comando.Searching for a specific term using the "grep" command</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2>Buscar por un término en específico usando el comando "grep"</h2>
+<div class="solvvy-solution">
+<p>Puedes usar el comando grep para buscar un término en específico dentro de los archivos. Esto ayuda particularmente cuando buscas un log de errores pues puede ser tedioso para ciertos errores que necesitan ser vistos y otros que necesitan ser ignorados.</p>
+<p>Por ejemplo, si necesitas ver errores solamente relacionados al Testing2.jpg puedes correr este comando:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cat error.log | grep “Testing2.jpg”</span></pre>
+</div>
+<p>El comando cat error.log enlista todo dentro del log. Puedes notar varias entradas que muestran "File does not exist" (Archivo no existente) que a veces es irrelevante y puede ser ignorado. Debes siempre asegurarte que este es el caso, sin embargo; si estas seguro que no son importantes, filtralos corriendo el siguiente comando:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cat error.log | grep -v “exist”</span></pre>
+</div>
+</div>
+<h2>Ver también</h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/216512197-Ver-tus-registros-de-acceso-y-error-via-SFTP" target="_self">Ver los logs de acceso y errores vía SFTP</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/115000675027-Generalidades-sobre-FTP-y-credenciales" target="_self">Generalidades de FTP</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115000683852-Using-the-top-command-to-troubleshoot-your-website" target="_self">Usar 'top' para ver procesos corriendo</a></li>
+</ul>
+</div>

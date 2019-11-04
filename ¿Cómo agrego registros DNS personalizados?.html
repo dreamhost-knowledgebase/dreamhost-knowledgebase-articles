@@ -1,0 +1,279 @@
+<h2>Generalidades</h2>
+<div class="solvvy-solution">
+<p>Tu puedes agregar registros DNS personalizados para un dominio configurado como 'Dominio Alojado', así como un dominio configurado solo para DNS. Todo depende de qué registros estés creando y para qué los necesites.</p>
+<p>En términos generales, si deseas que tu sitio esté alojado en los servidores de DreamHost, debes mantener tu sitio como 'Dominio Alojado' (Fully Hosted). Sin embargo, si deseas que tu sitio apunte, mediante la creación de registros A o CNAME, a un servicio de alojamiento externo, el primer paso es eliminar el servicio de alojamiento que esté utilizando tu dominio en DreamHost.</p>
+<p>Los siguientes pasos explican cómo configurar un dominio para Solo DNS (si es necesario) e igualmente cómo crear los siguientes tipos de registros DNS personalizados.</p>
+<ul>
+<li><a href="#registro-a" target="_self">Registro A</a></li>
+<li><a href="#registro-cname" target="_self">Registro CNAME</a></li>
+<li><a href="#servidores-de-nombre" target="_self">Servidores de Nombre</a></li>
+<li><a href="#registro-srv" target="_self">Registro SRV</a></li>
+<li><a href="#registro-txt" target="_self">Registro TXT</a></li>
+</ul>
+</div>
+<h2>Configurar tu dominio a Solo DNS</h2>
+<div class="solvvy-solution">
+<p>Visita el siguiente artículo para obtener instrucciones sobre cómo configurar tu dominio como 'Solo DNS'.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115000760591-Setting-your-domain-to-DNS-Only-" target="_self">Configurando tu dominio a 'Solo DNS'</a></li>
+</ul>
+<p>Esto es necesario si&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/215416227-C%C3%B3mo-agrego-un-dominio-" target="_self">tu sitio está alojado actualmente</a>&nbsp;en DreamHost y deseas apuntar tu DNS a otra compañía de alojamiento utilizando registros A o CNAME.</p>
+</div>
+<h2><span id="registro-a">Registro A&nbsp;</span></h2>
+<div class="solvvy-solution">
+<p>Los registros A son&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/217294917-IP-Address" target="_self">direcciones IP</a>.&nbsp;Se pueden agregar para apuntar tu sitio web a una compañía de alojamiento diferente, o diferentes subdominios de tu sitio a servicios externos.</p>
+<h3>Apuntar un subdominio a una dirección IP específica</h3>
+<p>El siguiente ejemplo muestra cómo apuntar un subdominio de example.com a una dirección IP específica. Por ejemplo, si tu sitio es example.com y este utiliza los&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/216385467-Generalidades-de-los-Nameservers" target="_self">servidores de nombres</a>, de DreamHost, puedes crear un sitio llamado <strong>blog</strong>.example.com o <strong>store</strong>.example.com. Luego de esto, puedes configurar este subdominio para que apunte a una empresa de alojamiento externa. Esto es útil si deseas que un subdominio apunte a un <a href="https://help.dreamhost.com/hc/en-us/sections/203242327-Third-Party-Applications" target="_self">alojamiento externo</a>.</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>El siguiente ejemplo muestra cómo crear un subdominio llamado <strong>subdomain.example.com</strong> y cómo apuntarlo a una IP. Asegúrate de cambiar la dirección IP a la IP que te brinda el servicio de alojamiento externo.</p>
+</div>
+</div>
+<ol>
+<li>Haz clic en el enlace 'DNS' ubicado bajo tu dominio en la página&nbsp;<a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;" target="_blank" rel="noopener">Manage Domains</a>.
+<dl>
+<dd><img class="img-border solvvy-hidden" src="https://kbimages.dreamhosters.com/images/01_Custom_DNS_A_record.png" alt="01 Custom DNS A record.png" width="500" height="248" /></dd>
+</dl>
+</li>
+<li>Ingresa lo siguiente en tres campos para crear el registro A:<br />
+<ul>
+<li><strong>Name</strong>: Para el dominio principal, deja en blanco el campo 'Nombre'. Para 'www' u otros subdominios, puedes ingresar el nombre del subdominio en este campo.</li>
+</ul>
+<em>Este campo suele ser cualquiera de los siguientes: www, blog, dev, store, etc.</em><br />
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>No agregues el símbolo @ en este campo. Este se agrega automáticamente.</p>
+</div>
+</div>
+<ul>
+<li><strong>Type</strong>: El registro 'Tipo' por defecto es 'A'.</li>
+</ul>
+<ul>
+<li><strong>Value</strong>: Introduce la dirección IP en el campo 'Valor'.</li>
+</ul>
+<em>Esta es la dirección IP a la que quieres que apunte este dominio/subdominio.</em></li>
+<li>Haz clic en botón <strong>Add Record Now!</strong>.</li>
+</ol>
+<p>La propagación del nuevo registro A comienza y puede demorar hasta 6 horas antes de que los nuevos registros se actualicen en línea.</p>
+</div>
+<h2>Registros CNAME</h2>
+<div class="solvvy-solution">
+<p>Al igual que con los registros A personalizados, puedes apuntar tu alojamiento a otro diferente a DreamHost con un registro CNAME. Este registro se crea para señalar un dominio a otro en lugar de apuntar un dominio a una dirección IP como con el registro A personalizado.</p>
+<p>Ten en cuenta que el <strong>registro raíz A</strong> (por ejemplo, example.com) no puede ser un registro CNAME y siempre debe ser un registro A.</p>
+<ol>
+<li>Haz clic en el enlace DNS debajo del nombre de dominio en la página&nbsp;<a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;" target="_blank" rel="noopener">Manage Domains</a>.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/01_Custom_DNS_CNAME_record.png" alt="01 Custom DNS CNAME record.png" width="500" height="247" /></dd>
+</dl>
+</li>
+<li>Introduce lo siguiente:<br />
+<ul>
+<li><strong>Name</strong>: Este campo puede ser cualquier cosa. Pero muy a menudo es sólo www. Al agregar www, vas a apuntar el subdominio www a un servicio de alojamiento diferente a DreamHost.</li>
+</ul>
+<em>En el ejemplo anterior, el registro CNAME se denomina "calendar" y apunta a "ghs.google.com".</em><br />
+<ul>
+<li><strong>Type</strong>: En el menú desplegable, selecciona 'CNAME'.</li>
+<li><strong>Value</strong>: Ingresa la ubicación a la que deseas que apunte este registro.<br />
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Los registros CNAME no pueden comenzar con un guión bajo.</p>
+</div>
+</div>
+</li>
+</ul>
+</li>
+<li>Haz clic en botón <strong>Add Record Now!</strong>.</li>
+</ol>
+<p>Después de hacer clic en el botón <strong>Add Record Now!</strong>, comienza la propagación del nuevo registro. Esto puede llevar hasta 6 horas antes de que los nuevos registros se actualicen en línea.</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Es posible que veas el siguiente error al agregar un CNAME:</p>
+<p><strong>You already have a record for this name. You can't have a CNAME and any other record on the same name.</strong></p>
+<p>Esto generalmente significa que estás intentando agregar un CNAME para 'www', pero como ese registro ya existe en tu configuración de DNS, no puedes agregar un segundo. Si necesitas agregar un CNAME para el subdominio www, primero debes configurar tu dominio a Solo DNS.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115000760591-Setting-your-domain-to-DNS-Only-" target="_self">Configuración de tu dominio a Solo DNS</a></li>
+</ul>
+<p>Si estás intentando agregar un registro CNAME para otra cosa, <a href="https://help.dreamhost.com/hc/es/articles/215413857-Generalidades-de-los-DNS-de-DreamHost" target="_self">revisa tus registros DNS</a> para ver si el registro que estás agregando ya existe.</p>
+</div>
+</div>
+</div>
+<h2>Servidores de Nombre</h2>
+<div class="solvvy-solution">
+<p>Para obtener detalles sobre cómo configurar servidores de nombres personalizados/vanidad, visita el siguiente artículo.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/216385467-Generalidades-de-los-Nameservers" target="_self">Nombres de Servidor</a></li>
+</ul>
+</div>
+<h2>Registro SRV</h2>
+<div class="solvvy-solution">
+<p>Los registros SRV (servicio) son otro conjunto de registros que se pueden aplicar a tu dominio. Ciertos programas y aplicaciones pueden requerir la configuración de estos tipos de registros para activar estos servicios.</p>
+<p>Tu registro SRV estándar tendrá este tipo de formato:</p>
+<div class="preboxcontainer">
+<pre class="prebox">_service._protocol.name. TTL class SRV priority weight port target.</pre>
+</div>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Cuando estés ingresando un registro SRV en tu panel, ignora los campos TTL, clase y SRV. Un ejemplo completo está abajo.</p>
+</div>
+</div>
+<p>Los siguientes dos registros SRV de Microsoft son algunos de los registros SRV más comunes que están configurados para un dominio. El ejemplo se puede ver aquí:</p>
+<ul>
+<li><a href="https://support.office.com/en-us/article/Create-DNS-records-at-any-DNS-hosting-provider-for-Office-365-7b7b075d-79f9-4e37-8a9e-fb60c1d95166#BKMK_add_SRV" target="_self">Dos registros SRV de Microsoft</a></li>
+</ul>
+<table border="1">
+<tbody>
+<tr>
+<th bgcolor="#F2F2F2">Type</th>
+<th bgcolor="#F2F2F2">Name</th>
+<th bgcolor="#F2F2F2">Target</th>
+<th bgcolor="#F2F2F2">Protocol</th>
+<th bgcolor="#F2F2F2">Service</th>
+<th bgcolor="#F2F2F2">Priority</th>
+<th bgcolor="#F2F2F2">Weight</th>
+<th bgcolor="#F2F2F2">Port</th>
+<th bgcolor="#F2F2F2">TTL</th>
+</tr>
+<tr>
+<td>SRV</td>
+<td>@</td>
+<td>sipdir.online.lync.com</td>
+<td>_tls</td>
+<td>_sip</td>
+<td>100</td>
+<td>1</td>
+<td>443</td>
+<td>1 hour</td>
+</tr>
+<tr>
+<td>SRV</td>
+<td>@</td>
+<td>sipfed.online.lync.com</td>
+<td>_tcp</td>
+<td>_sipfederationtls</td>
+<td>100</td>
+<td>1</td>
+<td>5061</td>
+<td>1 hour</td>
+</tr>
+</tbody>
+</table>
+<p>A continuación se muestra un ejemplo de cómo configurar uno de los registros anteriores.</p>
+<ol>
+<li>En tu panel, ve a&nbsp;<a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;" target="_blank" rel="noopener">Manage Domains</a>.</li>
+<li>Haz clic en el enlace 'DNS' debajo de tu nombre de dominio:<br /> <br />
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/01_Custom_DNS_SRV_record.png" alt="01 Custom DNS SRV record.png" width="500" height="245" />
+<ul>
+<li><strong>Name</strong>: _sipfederationtls._tcp</li>
+</ul>
+<dl>
+<dd>Este es el 'Servicio' seguido por el 'Protocolo'.<br /> En la captura de pantalla anterior, solo se está creando uno de los registros SRV. Repite estos pasos para el segundo registro.</dd>
+</dl>
+</dd>
+</dl>
+<dl>
+<dd>
+<ul>
+<li><strong>Type</strong>:&nbsp;Seleccione SRV en el menú desplegable.</li>
+</ul>
+</dd>
+</dl>
+<dl>
+<dd>
+<ul>
+<li><strong>Value</strong>: Debes ingresar los valores en el orden (prioridad) (peso) (puerto) (destino)</li>
+</ul>
+</dd>
+</dl>
+<dl>
+<dd>Usando el ejemplo del alojamiento de correo de MS anterior, el valor del primer registro es:</dd>
+</dl>
+<dl>
+<dd>
+<div class="preboxcontainer">
+<pre class="prebox">100 1 5061 sipfed.online.lync.com.</pre>
+</div>
+</dd>
+</dl>
+<dl>
+<dd>Los siguientes valores se utilizan en el ejemplo anterior:<br />
+<dl>
+<dd>prioridad = 100</dd>
+<dd>peso = 1</dd>
+<dd>puerto = 5061</dd>
+<dd>destino = sipfed.online.lync.com</dd>
+</dl>
+</dd>
+</dl>
+</li>
+<li>Haz clic en el botón <strong>Add Record Now!</strong>.</li>
+</ol>
+<p>Después de hacer clic en el botón <strong>Add Record Now!</strong>, la propagación del nuevo registro A comienza y puede demorar hasta 6 horas antes de que los nuevos registros se actualicen en línea.</p>
+<p>Los dos registros van a verse de la siguiente manera una vez creados:</p>
+<div class="preboxcontainer">
+<pre class="prebox">_sipfederationtls._tcp	SRV	100 1 5061 sipfed.online.lync.com.
+
+_sip._tls	        SRV	100 1 443 sipdir.online.lync.com.</pre>
+</div>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Se aplica un período final al final del registro una vez que se crea. Esto no causará ningún problema.</p>
+</div>
+</div>
+</div>
+<h2>Registro TXT</h2>
+<div class="solvvy-solution">
+<p>Ver el&nbsp;<a class="extiw" title="w:TXT Record" href="http://en.wikipedia.org/wiki/TXT_Record" target="_self">registro TXT</a>&nbsp;en Wikipedia.</p>
+<ol>
+<li>Ve a la página <a href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;" target="_self">Manage Domains</a>.</li>
+<li>Haz clic en el enlace 'DNS' debajo del nombre de dominio.<br />
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/01_Custom_DNS_TXT_record.png" alt="01 Custom DNS TXT record.png" /></dd>
+</dl>
+</li>
+<li>Introduce lo siguiente:<br />
+<ul>
+<li><strong>Name</strong>: Este campo puede ser cualquier cosa. Muy a menudo se deja en blanco.</li>
+<li><strong>Type</strong>: En el menú desplegable, selecciona 'TXT'.</li>
+<li><strong>Value</strong>: Ingrese la ubicación a la que deseas que apunte este registro.</li>
+</ul>
+<em>El ejemplo anterior es un registro TXT típico de Google para verificación de sitios.</em></li>
+<li>Haga clic en el botón <strong>Add Record Now!</strong> para guardar los cambios.</li>
+</ol>
+<p>Después de hacer clic en el botón <strong>Add Record Now!</strong>, comienza la propagación del nuevo registro. Esto puede llevar hasta 6 horas antes de que los nuevos registros se actualicen en línea.</p>
+</div>
+<h2>Detalles adicionales</h2>
+<div class="solvvy-solution">
+<ul>
+<li>Al igual que con todos los cambios en el DNS, estos registros necesitan tiempo para actualizarse en línea. Es posible que las cosas empiecen a tardar algunas horas en comenzar a funcionar. Puedes vaciar el DNS para ver si esto acelera el proceso de propagación, pero no hay garantías de que esto ayude. Puedes leer las instrucciones para descargar el DNS aquí:</li>
+<ul>
+<li><a href="/hc/en-us/articles/215680477-Flush-DNS-overview" target="_self">Vaciar DNS</a></li>
+</ul>
+</ul>
+<ul>
+<li>Los cambios de DNS pueden tardar hasta 6 horas en resolverse. Si tus servidores de nombre apuntan a DreamHost y los servicios configurados para el registro creado no están activos dentro de este tiempo, puedes ponerte en contacto con soporte para obtener ayuda en&nbsp;<a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=support.msg&amp;" target="_blank" rel="noopener">Contact Support</a>.</li>
+</ul>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>El soporte de DreamHost puede indicarte dónde puede crear registros personalizados y verificar si el registro se aplica correctamente a tu dominio. Sin embargo, el soporte no puede ayudar a configurar estos registros personalizados o confirmar si el registro creado es correcto o no.</p>
+</div>
+</div>
+</div>
+<h2>Ver también</h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/214694348-Registros-DNS-básicos" target="_self">Registros DNS básicos</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/215413857-Generalidades-de-los-DNS-de-DreamHost" target="_self">Generalidades de los DNS de DreamHost</a></li>
+<li><a href="/hc/en-us/articles/215840248-DNS-propagation-overview" target="_self">Generalidades de la propagaciónd e DNS</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214694378-What-DreamHost-DNS-records-do-I-point-my-site-to-" target="_self">¿A qué registros DNS apunto mi sitio?</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/360001074423-Editar-o-eliminar-DNS-personalizados" target="_self">Editar o eliminar registros DNS personalizados</a></li>
+<li><a href="/hc/en-us/articles/214750688-Transferring-website-hosting-to-another-company" target="_self">Transferir el alojamiento web a otra empresa</a></li>
+</ul>
+</div>

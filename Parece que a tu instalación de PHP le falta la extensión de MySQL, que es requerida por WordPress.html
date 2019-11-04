@@ -1,0 +1,57 @@
+<h2>Generalidades</h2>
+<div class="solvvy-solution">
+<p>Al visitar tu sitio de WordPress, es posible que veas este error:</p>
+<div class="preboxcontainer">
+<pre class="prebox">Your PHP installation appears to be missing the MySQL extension which is required by WordPress.</pre>
+</div>
+<p>Esto generalmente se debe a una personalización de la versión de PHP en tus archivos .htaccess o phprc.</p>
+</div>
+<h2>Comprueba qué versión de PHP está usando tu sitio</h2>
+<div class="solvvy-solution">
+<p>Primero, verifica qué versión de PHP está usando tu sitio con un archivo phpinfo.php.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/214895287-Ver-la-versión-y-la-configuración-de-PHP-de-tu-sitio" target="_self">¿Cómo veo la configuración de mi entorno PHP?</a></li>
+</ul>
+<p>Asegúrate de que coincida con la versión de PHP que muestra tu panel para tu dominio.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214898997-What-version-of-PHP-is-my-site-using-" target="_self">¿Qué versión de PHP está usando mi sitio?</a></li>
+</ul>
+<p>Si hay una discrepancia, hay una personalización potencial en algún lugar que hace que las versiones sean diferentes.</p>
+</div>
+<h2>Comprueba si hay personalizaciones</h2>
+<div class="solvvy-solution">
+<h3>Revisa tu archivo .htaccess en búsqueda de personalizaciones de PHP</h3>
+<p>Primero, verifica el archivo <a href="https://help.dreamhost.com/hc/es/articles/216456227-Generalidades-de-htaccess" target="_self">.htaccess</a> en el directorio principal de tu sitio web. Lo más probable es que se encuentre aquí:</p>
+<ul>
+<li>/home/username/example.com/.htaccess</li>
+</ul>
+<p>Abre ese archivo en un cliente&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/115000098272-Crear-y-editar-un-archivo-v%C3%ADa-FTP">FTP</a>&nbsp;o&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/115006413028-Crear-y-editar-un-archivo-via-SSH">SSH</a>. Asegúrate de que no haya líneas que hagan referencia a una versión diferente de PHP.</p>
+<h3>Revisa tu archivo phprc en búsqueda de personalizaciones de PHP</h3>
+<p>Después de confirmar qué versión de PHP estás usando el sitio anterior, verifica tu archivo&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/214200688-php-ini-overview">phprc file</a>. Lo puedes encontrar aquí:</p>
+<ul>
+<li>/home/username/.php/php#.#/phprc</li>
+</ul>
+<p>Asegúrate de ajustar el php #. # a la versión de PHP que está usando tu sitio. Verifica tu archivo phprc utilizando un cliente&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/115000098272-Crear-y-editar-un-archivo-v%C3%ADa-FTP">FTP</a>&nbsp;o&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/115006413028-Crear-y-editar-un-archivo-via-SSH">SSH</a>&nbsp;para asegurarte de que no haya personalizaciones que puedan causar un problema.</p>
+</div>
+<h2>Para servidores Dedicated</h2>
+<div class="solvvy-solution">
+<p>Si estás en un servidor Dedicated, tu versión de MySQL puede ser 5.6. Si es así, y estás viendo este error, agrega la siguiente línea al archivo phprc de su sitio.</p>
+<div class="preboxcontainer">
+<pre class="prebox">extension = mysql.so</pre>
+</div>
+<p>Visita el siguiente artículo para obtener instrucciones sobre cómo añadir esta información:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214893957-How-do-I-enable-PHP-extensions-and-loaders-" target="_self">Cómo agregar extensiones PHP y loaders</a></li>
+</ul>
+</div>
+<h2>Ver también</h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/360001310966-Cómo-iniciar-sesión-en-tu-sitio-WordPress" target="_self">Cómo iniciar sesión en tu sitio de WordPress</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/214895287-Ver-la-versión-y-la-configuración-de-PHP-de-tu-sitio" target="_self">¿Cómo veo la configuración de mi entorno PHP?</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214898997-What-version-of-PHP-is-my-site-using-" target="_self">¿Qué versión de PHP está usando mi sitio?</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/115000098272-Crear-y-editar-un-archivo-v%C3%ADa-FTP" target="_self">Crear y editar un archivo via FTP</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/115006413028-Crear-y-editar-un-archivo-via-SSH" target="_self">Crear y editar un archivo via SSH</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214200688-php-ini-overview" target="_self">Generalidades de php.ini</a></li>
+</ul>
+</div>

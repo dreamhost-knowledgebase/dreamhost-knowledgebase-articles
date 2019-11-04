@@ -1,0 +1,173 @@
+<div class="document">
+<div class="documentwrapper">
+<div class="body">
+<div id="article-name" class="solvvy-hidden">
+<div class="table-of-content container">
+<div class="altTitle">Force your site to load securely</div>
+<ul class="simple">
+<li><a class="reference internal" href="#que-cambiar">¿Qué cambiar en los siguientes ejemplos?</a></li>
+<li><a class="reference internal" href="#forzar-un-dominio">Forzar un dominio para que sirva de forma segura usando HTTPS (para cualquier sitio)</a></li>
+<li><a class="reference internal" href="#forzar-https-con-wordpress">Forzar HTTPS con WordPress</a></li>
+<li><a class="reference internal" href="#forzar-https-con-dreampress">Forzar HTTPS con DreamPress</a></li>
+<li><a class="reference internal" href="#solucion-de-problemas">Solución de problemas</a></li>
+<li><a class="reference internal" href="#resolviendo">Resolviendo advertencias de contenido mixto</a></li>
+</ul>
+</div>
+</div>
+<h2>Generalidades</h2>
+<div class="solvvy-solution">
+<p>Si tu has&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/215089118-Generalidades-de-el-proceso-de-agregar-un-certificado-SSL" target="_self">agregado un certificado SSL</a> a tu dominio, puedes forzar a todos los visitantes de tu sitio a usar HTTPS para asegurarte que tu tráfico es seguro. Esta página enumera ejemplos de cómo hacerlo dependiendo de cómo tu sitio está alojado.</p>
+<p>Da click en cualquiera de los siguientes artículos para ver instrucciones de como crear/editar un archivo .htaccess en tu servidor.</p>
+<p>View either of the following articles for instructions on how to create/edit an .htaccess file on your server.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/115000098272-Crear-y-editar-un-archivo-v%C3%ADa-FTP" target="_self">Crear y editar un archivo vía FTP</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/115006413028-Crear-y-editar-un-archivo-via-SSH" target="_self">Crear y editar un archivo vía SSH</a></li>
+</ul>
+<p>Ten en cuenta que tu cliente FTP debe estar configurado para mostrar los archivos ocultos. Si no, no vas a ver el archivo .htaccess. Da click en el siguiente artículo para ver detalles en cómo ver los archivos ocultos:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215613037-How-do-I-show-hidden-files-on-my-FTP-client-" target="_self">¿Cómo muestro los archivos oculto en mi cliente de FTP?</a></li>
+</ul>
+<h3>¿Dónde debería ser creado el archivo .htaccess?</h3>
+<p>El archivo .htaccess debería estar localizado en el directorio primario del sitio web. Si tu sitio es 'example.com', el archivo .htaccess ira en el directorio /home/username/example.com. También puedes confirmar el directorio web del sitio en el panel.</p>
+<ol>
+<li>Navega hasta la página <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;" target="_blank" rel="noopener">Manage Domains</a>.</li>
+<li>Da click en el enlace 'Edit' a la derecha de tu dominio debajo de la columna 'Web Hosting'.&nbsp;<br />
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-06_panel_domains_add_new_domain_03.png" /></dd>
+</dl>
+</li>
+<li>Ahí verás la sección del directorio web de tu sitio.</li>
+</ol>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Recuerda que tu cliente FTP debe estar configurado para mostrar los archivos escondidos. Si no, no verás el archivo .htaccess. Ve el siguiente artículo para saber cómo ver los archivos escondidos:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215613037-How-do-I-show-hidden-files-on-my-FTP-client-" target="_self">¿Cómo muestro los archivos escondidos en mi cliente FTP?</a></li>
+</ul>
+</div>
+</div>
+</div>
+<h2><span id="que-cambiar">¿Qué cambiar en los siguientes ejemplos?</span></h2>
+<div class="solvvy-solution">
+<p>Los siguientes ejemplos pueden ser ingresados en tu archivo .htaccess exactamente como se muestra.</p>
+<p>Solo si el ejemplo contiene una URL en negrita, tu debes cambiarla por tu actual URL.<br /> Por ejemplo, si tu ves el dominio “example.com”, cambialo por el dominio de tu propiedad.</p>
+</div>
+<h2><span id="forzar-un-dominio"> Forzar un dominio para que sirva de forma segura usando HTTPS (para cualquier sitio)</span></h2>
+<div class="solvvy-solution">
+<p>Lo que vas a ver a continuación, fuerza a cualquier requerimiento http a ser reescrito usando https. Por ejemplo, el siguiente código fuerza el requerimiento http://example.com a cargar https://example.com. Esto también fuerza a los recursos vinculados directamente (imágenes, css, etc.) a usar https:</p>
+<div class="preboxcontainer">
+<pre class="prebox">RewriteEngine On
+RewriteCond&nbsp;%{HTTPS}&nbsp;!=on
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301,NE] 
+</pre>
+</div>
+<p>Si esto no te funciona, primero revisa las terminaciones de la línea. Copiar/pegar desde tu buscador web a un editor de texto puede no funcionar bien, entonces después de pegar dentro de tu editor de texto tu deberás eliminar cada salto de línea y agregarla de vuelta (salto de línea = tecla de retorno).</p>
+</div>
+<h2><span id="forzar-https-con-wordpress">Forzar HTTPS con WordPress</span></h2>
+<div class="solvvy-solution">
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Si tu archivo .htaccess ya contiene algunos&nbsp;<a href="https://codex.wordpress.org/htaccess" target="_self">códigos agregados por defecto</a>, ingresa lo siguiente arriba o abajo de ese código. Nunca ingreses código dentro de las etiquetas de comentario que empiezan y terminan con:</p>
+<dl>
+<dd># BEGIN WordPress<br /> # END WordPress</dd>
+</dl>
+</div>
+</div>
+<p>Es posible para un visitante ingresar directamente a una URL HTTP en tu sitio WordPress, aún cuando el certificado SSL está activo. Para forzar cualquier requerimiento HTTP a redireccionar a HTTPS, tu puedes agregar código a tu archivo .htaccess de WordPress. Hay dos opciones de código abajo para que los uses.&nbsp;El primero deberá funcionar como se muestra, pero si no, intenta la opción dos en vez.</p>
+<h3><span style="font-weight: 400;">Opción&nbsp;</span>#1</h3>
+<div class="preboxcontainer">
+<pre class="prebox">RewriteEngine On
+RewriteCond&nbsp;%{HTTPS}&nbsp;!=on
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301,NE] 
+</pre>
+</div>
+<h3>Ejemplo completo incluido el código por defecto de WordPress</h3>
+<p>Abajo es como se verá tu archivo de .htaccess con con el nuevo código HTTPS y el código de WordPress ya existente.</p>
+<div class="preboxcontainer">
+<pre class="prebox">RewriteEngine On
+RewriteCond&nbsp;%{HTTPS}&nbsp;!=on
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301,NE] 
+
+# BEGIN WordPress
+&lt;IfModule mod_rewrite.c&gt;
+RewriteEngine On
+RewriteBase /
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+&lt;/IfModule&gt;
+# END WordPress</pre>
+</div>
+<h3>Option #2</h3>
+<p>En este ejemplo, asegurate de cambiar “example.com” a tu dominio.</p>
+<div class="preboxcontainer">
+<pre class="prebox">RewriteEngine On 
+RewriteCond %{SERVER_PORT} 80 
+RewriteRule ^(.*)$ https://<span class="command">www.example.com</span>/$1 [R=301,L,NE]</pre>
+</div>
+<h3>Ejemplo completo incluido el código por defecto de WordPress</h3>
+<p>Abajo es como se verá tu archivo de .htaccess con con el nuevo código HTTPS y el código de WordPress ya existente.</p>
+<div class="preboxcontainer">
+<pre class="prebox">RewriteEngine On 
+RewriteCond %{SERVER_PORT} 80 
+RewriteRule ^(.*)$ https://<span class="command">www.example.com</span>/$1 [R=301,L,NE]
+
+# BEGIN WordPress
+&lt;IfModule mod_rewrite.c&gt;
+RewriteEngine On
+RewriteBase /
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+&lt;/IfModule&gt;
+# END WordPress</pre>
+</div>
+</div>
+<h2><span id="forzar-https-con-dreampress">Forzar HTTPS con DreamPress</span></h2>
+<div class="solvvy-solution">
+<p>Es posible para un visitante ingresar directamente con una URL HTTP a tu sitio DreamPress. Para forzar cualquier requerimiento HTTP a redireccionar a HTTPS, agrega lo siguiente a tu archivo .htaccess a tu WordPress.</p>
+<div class="preboxcontainer">
+<pre class="prebox">RewriteEngine On
+RewriteCond %{HTTP:X-Forwarded-Proto} !https
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301,NE] </pre>
+</div>
+</div>
+<h2><span id="solucion-de-problemas">Solución de problemas</span></h2>
+<div class="solvvy-solution">
+<h3>Cloudflare</h3>
+<p>Si tu tienes habilitado&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/215873088-Generalidades-de-Cloudflare">Cloudflare</a> en el panel de DreamHost, tu sitio debe usar el subdominio “www”. Asegúrate que tu archivo .htaccess no tiene ningún redireccionamiento a la versión non-www de tu URL. Si lo hace y estas usando Cloudflare, you podrás experimentar el error “Muchas redirecciones” o 'Too many redirects' en tu buscador.</p>
+<h3>WordPress</h3>
+<p>Esto también puede ser un inconveniente con WordPress pues este requiere URLs en la base de datos para usar o no “www” para operar correctamente. Da click en el siguiente artículo Da click en el siguiente artículo para ver más detalles.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/215457387#cuando-eliminas-www-rompe-wordpress" target="_self">Eliminar “www” quiebra WordPress</a></li>
+</ul>
+<h3>Error de infinitas redirecciones</h3>
+<p>Da click en el siguiente artículo si ves que tu sitio redirecciona en círculos después de hacer esos cambios.</p>
+<ul class="article-list">
+<li><a href="https://help.dreamhost.com/hc/es/articles/115000294332-Error-de-WordPress-too-many-redirects-" target="_self">Error “too many redirects” en WordPress</a></li>
+</ul>
+</div>
+<h2><span id="resolviendo">Resolviendo advertencias de contenido mixto</span></h2>
+<div class="solvvy-solution">
+<p>Incluso cuando tu sitio está redirigiendo correctamente a la URL segura, es posible que el navegador siga emitiendo una advertencia que indica que algunos recursos, como los enlaces, apuntan a la versión no segura. Puedes agregar código adicional a tu archivo .htaccess para resolver esas advertencias. Ver el siguiente artículo para más detalles.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215364618#content-security-policy" target="_self">Resolver la advertencia agregando código a tu archivo .htaccess</a></li>
+</ul>
+</div>
+<h2>Ver también</h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/216456227-Generalidades-de-htaccess" target="_self">Generalidades de .htaccess</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/217738987-What-can-I-do-with-an-htaccess-file-" target="_self">¿Que puedo hacer con un archivo .htaccess?</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/215089118-Generalidades-de-el-proceso-de-agregar-un-certificado-SSL" target="_self">Generalidades de el proceso de agregar un certificado SSL</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216456087-Creating-redirects-with-Nginx" target="_self">Forzar tu sitio Nginx a cargar de una forma segura</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/218428687--C%C3%B3mo-uso-un-certificado-SSL-con-WordPress-" target="_self">¿Cómo usar un certificado SSL con WordPress?</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>

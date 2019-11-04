@@ -1,0 +1,135 @@
+<h2>Crear un archivo .htaccess en tu servidor web DreamHost</h2>
+<div class="solvvy-solution">
+<p>Da click en el siguiente artículo para ver instrucciones de como crear un archivo .htaccess en tu servidor web:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/216456227#crear-un-archivo-htaccess-en-tu-servidor-web-dreamhost" target="_self">Crear un archivo .htaccess en tu servidor web DreamHost</a></li>
+</ul>
+<p>Si el archivo ya existe, da click en los siguientes artículos para ver instrucciones de como actualizarlo (dependiendo si estás usando FTP o SSH):</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/115000098272-Crear-y-editar-un-archivo-v%C3%ADa-FTP" target="_self">Crear y editar un archivo vía FTP</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/115006413028-Crear-y-editar-un-archivo-via-SSH" target="_blank" rel="noopener">Crear y editar un archivo vía SSH</a></li>
+</ul>
+<p>Una vez el archivo ha sido creado, puedes agregar los ejemplos de código abajo de él.</p>
+</div>
+<h2>Negar acceso a archivos</h2>
+<div class="solvvy-solution">
+<h3>Rechazar acceso a extensiones de archivo específicos</h3>
+<p>El siguiente código fuerza a cualquier archivo terminado en .inc a dar el error 404 cuando sea visitado:</p>
+<div class="preboxcontainer">
+<pre class="prebox">&lt;Files ~ "\.inc$"&gt;  
+Order Allow,Deny
+Deny from All
+&lt;/Files&gt;
+</pre>
+</div>
+</div>
+<h2>Negar acceso a archivos "escondidos"</h2>
+<div class="solvvy-solution">
+<p>Los archivos que empiezan con un punto son considerados "escondidos" por UNIX. Usualmente, no quieres darlos a ver a los visitantes.</p>
+<p>DreamHost deshabilita el acceso a '.htaccess' y '.htpasswd', pero puedes recursivamente negar todos los accesos a todos los archivos poniendo el siguiente .htaccess dentro del nivel más alto.</p>
+<div class="preboxcontainer">
+<pre class="prebox">RedirectMatch 403 /\..*$</pre>
+</div>
+</div>
+<h2>Negar acceso a carpetas</h2>
+<div class="solvvy-solution">
+<h3>Negar acceso a listar el directorio</h3>
+<p>Si no tienes un archivo index en tu directorio, todos tus archivos son listados en una lista de directorio para que que lo vea cualquiera. El siguiente código fuerza a esta lista a dar un error 404 Forbidden cuando lo visiten:</p>
+<div class="preboxcontainer">
+<pre class="prebox">Options -Indexes
+</pre>
+</div>
+</div>
+<h2>Negar acceso durante una hora específica en el día</h2>
+<div class="solvvy-solution">
+<p>Si deseas bloquear el acceso a archivos en un directorio durante un momento específico en el día, entonces agrega el siguiente código a tu archivo de .htaccess:</p>
+<div class="preboxcontainer">
+<pre class="prebox">RewriteEngine On
+# If the hour is 16 (4 PM)
+RewriteCond&nbsp;%{TIME_HOUR} ^16$
+# Then deny all access
+RewriteRule ^.*$ - [F,L]
+</pre>
+</div>
+<p>Si alguien visita el directorio a cualquier hora entre las 4:00 – 4:59 pm, un error 500 Internal server error se mostrará. Tu puedes especificar multiples horas también.</p>
+<div class="preboxcontainer">
+<pre class="prebox">RewriteEngine On
+# Multiple hour blocks
+# If the hour is 4 PM or 5 PM or 8 AM
+RewriteCond&nbsp;%{TIME_HOUR} ^16|17|08$
+# Then deny all access
+RewriteRule ^.*$ - [F,L]</pre>
+</div>
+</div>
+<h2>Negar acceso a un directorio</h2>
+<div class="solvvy-solution">
+<p>Si tienes un directorio llamado "blah" que quieres bloquear, pero puede aparecer en cualquier lado de tu directorio, usa el siguiente código:</p>
+<div class="preboxcontainer">
+<pre class="prebox">RewriteEngine On
+RewriteRule (^|/)blah(/|$) - [F]
+</pre>
+</div>
+</div>
+<h2>Negar acceso de IPs específicas</h2>
+<div class="solvvy-solution">
+<p>Si tienes problemas con ciertos visitantes de tu sitio web, puedes rechazarlos fácilmente. Hay dos maneras diferentes de rechazar visitantes:</p>
+<ul>
+<li>Usando su dirección IP, o</li>
+<li>El dominio del que están visitando.</li>
+</ul>
+<p>He aquí un ejemplo que niega un usuario por su dirección IP:</p>
+<div class="preboxcontainer">
+<pre class="prebox">deny from 173.236.241.100</pre>
+</div>
+<p>Cuando el usuario trata de conectar tu sitio desde esa IP específica, ellos verán un error 403 Forbidden. Si quieres bloquear un bloque entero de IPs, solo deja el último octeto por fuera. Por ejemplo:</p>
+<div class="preboxcontainer">
+<pre class="prebox">deny from 173.236.241.</pre>
+</div>
+<p>Esto niega acceso a cualquiera que tenga esa IP en el rango de 173.236.241.0 a 173.236.241.255.</p>
+<p>El siguiente link es una herramienta online útil que genera automáticamente rangos de IP:</p>
+<ul>
+<li><a href="http://ip2cidr.com/" target="_self">IP a CIDR</a></li>
+</ul>
+</div>
+<h2>Permitir acceso a una IP específica</h2>
+<div class="solvvy-solution">
+<p>Si necesitas negar acceso a tu sitio a todos pero poder seguir accediendo con tu IP u otra específica para visitarlo, usa esto:</p>
+<div class="preboxcontainer">
+<pre class="prebox">order deny,allow
+deny from all
+allow from &lt;YOUR_IP_ADDRESS&gt;
+</pre>
+</div>
+</div>
+<h2>Negar acceso a un dominio específico</h2>
+<div class="solvvy-solution">
+<p>Esto niega acceso a cualquiera que se conecte a tu sitio desde www.example.com. Si alguien da click en un link en ejemplo.com que redireccione a tu sitio, ellos verán un error 403 Forbidden error:</p>
+<div class="preboxcontainer">
+<pre class="prebox">SetEnvIfNoCase Referer "example.com" bad_referer
+Order Allow,Deny
+Allow from ALL
+Deny from env=bad_referer
+</pre>
+</div>
+<p>Este ejemplo arroja un error 500 Internal Server Error para cualquiera enlazando de example.com:</p>
+<div class="preboxcontainer">
+<pre class="prebox">RewriteEngine on
+RewriteCond&nbsp;%{HTTP_REFERER} example\.com [NC,OR]
+RewriteRule .* - [F]
+</pre>
+</div>
+<p>El siguiente ejemplo redirecciona a cualquier visitante conectando de ejemplo.com a google.com:</p>
+<div class="preboxcontainer">
+<pre class="prebox">RewriteEngine On
+RewriteCond&nbsp;%{HTTP_REFERER} ^http://example.com/
+RewriteRule /* http://www.google.com [R,L]
+</pre>
+</div>
+</div>
+<h2>Ver también</h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/216456227-Generalidades-de-htaccess" target="_self">Generalidades de .htaccess</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/217738987-What-can-I-do-with-an-htaccess-file-" target="_self">¿Que puedo hacer con un archivo .htaccess?</a></li>
+</ul>
+</div>

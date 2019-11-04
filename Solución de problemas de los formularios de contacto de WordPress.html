@@ -1,0 +1,115 @@
+<h2>Generalidades</h2>
+<div class="solvvy-solution">
+<p>Los correos electrónicos enviados por formularios de contacto deben enviarse desde el sitio web con una dirección de correo electrónico 'de' como &lt;contact@example.com&gt; (suponiendo que tu sitio web sea 'example.com').</p>
+<dl>
+<dd></dd>
+<dd></dd>
+</dl>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>WordPress nunca debe usar la dirección de correo electrónico del cliente ingresada en el formulario como la dirección 'de'.</p>
+</div>
+</div>
+<p>Dado que tu sitio web está enviando correos electrónicos, la dirección 'de'&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/215029918-How-do-I-add-an-email-address-" target="_self">solo debe ser una que tu controles y coincida con el dominio del sitio</a>.&nbsp;La dirección de correo electrónico que el visitante del sitio ingresa en el formulario de contacto se puede colocar en el encabezado Responder a (Reply-To), de modo que cuando hagas clic en responder en el correo electrónico, se le envía al mismo visitante. Esto está relacionado con un cambio en la política de correo que DreamHost anunció en abril de 2012. Más detalles también se enumeran aquí:</p>
+<ul>
+<li><a href="/hc/en-us/articles/215036058-Sender-domain-policy-and-spoofing-overview" target="_self">Política de dominio del remitente y suplantación de identidad</a></li>
+</ul>
+<p>Este es un ejemplo de una forma inteligente de enviar correos electrónicos desde un formulario de contacto:</p>
+<div class="preboxcontainer">
+<pre class="prebox">From: Site Visitor &lt;contact@example.com&gt;
+Reply-To: Site Visitor &lt;site@example.com&gt;
+To: Admin &lt;admin@example.com&gt;
+Subject: Contact Form Submission
+</pre>
+</div>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Las direcciones de correo electrónico anteriores suponen que tu sitio web es 'example.com' y que estas son direcciones que has configurado en el dominio.</p>
+</div>
+</div>
+</div>
+<h2><span id="Contact_Form_7">Contact Form 7</span></h2>
+<div class="solvvy-solution">
+<p><a href="http://contactform7.com/">Contact Form 7</a>&nbsp;es un plugin de formulario de contacto que te permite controlar completamente los correos electrónicos que envías, directamente desde el panel de administración de WordPress. Puedes usarlo para enviar correos electrónicos con el nombre del visitante del sitio y la dirección de correo electrónico del administrador del sitio.</p>
+<p>Para configurar Contact Form 7:</p>
+<ol>
+<li>Inicia sesión en tu sitio de WordPress en example.com/wp-admin.</li>
+<li>En la columna de la izquierda, haz clic en la categoría 'Plugins' y luego haz clic en la parte de arriba en 'Add New'.<br />
+<dl>
+<dd><img src="https://kbimages.dreamhosters.com/images/Install_Contact_Form_7.png" alt="Install Contact Form 7.png" width="678" height="269" /></dd>
+</dl>
+</li>
+<li>En el campo de búsqueda, ingresa <strong>Contact Form 7</strong>. Localiza el complemento o plugin e instálalo.</li>
+<li>Después de que esté instalado, búscalo en la página 'Plugins'.<br />
+<dl>
+<dd><img src="https://kbimages.dreamhosters.com/images/03_WordPress_Troubleshooting.fw.png" alt="03 WordPress Troubleshooting.fw.png" width="616" height="87" /></dd>
+</dl>
+</li>
+<li>Haz clic en el enlace 'Settings'.<br />
+<dl>
+<dd><img src="https://kbimages.dreamhosters.com/images/04_WordPress_Troubleshooting.fw.png" alt="04 WordPress Troubleshooting.fw.png" width="209" height="151" /></dd>
+</dl>
+</li>
+<li>Encuentra el formulario de contacto específico que deseas editar y luego haz clic en el enlace 'Edit'.<br />
+<dl>
+<dd><img src="https://kbimages.dreamhosters.com/images/05_WordPress_Troubleshooting.fw.png" alt="05 WordPress Troubleshooting.fw.png" width="483" height="441" /></dd>
+</dl>
+</li>
+<li>Haz clic en la pestaña 'Mail' en la parte de arriba.</li>
+<li>Ajusta los campos 'From' y 'Additional Headers' como se muestra arriba.</li>
+</ol>
+<p>Visita los siguientes artículos para mayor información:</p>
+<ul>
+<li><a href="http://contactform7.com/adding-cc-bcc-and-other-mail-headers/">Adding CC, BCC, and other mail headers</a></li>
+<li><a href="http://savorywatt.com/2012/10/10/fix-contact-form-7-not-working-with-dreamhost/">Fix Contact Form 7 not working with DreamHost</a></li>
+</ul>
+</div>
+<h2><span id="Jetpack_contact_form">Jetpack contact form</span></h2>
+<div class="solvvy-solution">
+<p>El formulario de contacto de Jetpack no tiene una opción para ajustar fácilmente la dirección de origen para enviar el correo. Puedes hackear manualmente el código PHP de Jetpack para ajustar eso, pero cualquier modificación al código de Jetpack corre el riesgo de sobrescribirse cada vez que Jetpack se actualice. Además, los códigos abreviados de los formularios de contacto de Jetpack pueden interferir con otros formularios de contacto.</p>
+<p>De forma predeterminada, el formulario de contacto de Jetpack no está habilitado. Sin embargo, si lo habilitaste en el pasado, puedes deshabilitar el formulario de contacto de Jetpack para usar todas las demás funciones interesantes de Jetpack mientras usas un formulario de contacto de plugin diferente.</p>
+<ol>
+<li>Después de iniciar sesión en tu panel de WordPress, visita la página de módulos de Jetpack en la siguiente URL:<br />
+<ul>
+<li><strong>example.com/wp-admin/admin.php?page=jetpack_modules</strong></li>
+</ul>
+<img src="https://kbimages.dreamhosters.com/images/Jetpack_deactivate_contact_form.png" alt="Jetpack_deactivate_contact_form" /></li>
+<li>Desplázate sobre la opción 'Contact Form', luego haz clic en el enlace 'Deactivate' en la parte derecha.<br />
+<dl></dl>
+</li>
+</ol>
+</div>
+<h2>WPForms-lite</h2>
+<div class="solvvy-solution">
+<p><a href="https://wordpress.org/plugins/wpforms-lite/">WPForms-lite</a>&nbsp;te permite cambiar las opciones 'From' y 'Reply-To' en su configuración.</p>
+<ol>
+<li>Después de instalar el plugin, haz clic en el elemento de menú 'WPForms' en el panel izquierdo.</li>
+<li>Pasa el mouse sobre el nombre de tu formulario. Algunas opciones aparecen debajo de él. Haz clic en 'Edit'. Esto carga tu forma.</li>
+<li>En el menú de la izquierda, selecciona 'Settings'.</li>
+<li>En la ventana emergente, escoge 'Notifications'.<br />
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/wpforms-lite-edit-from.png" alt="06 WPForms-lite.png" width="498" height="257" /></dd>
+</dl>
+</li>
+<li>Desplázate hacia abajo hasta los campos de correo electrónico 'From Email' y 'Reply-To' y actualiza según sea necesario.</li>
+</ol>
+</div>
+<h2>¿Qué pasa si quiero usar un correo electrónico 'de' que NO está en mi dominio?</h2>
+<div class="solvvy-solution">
+<p>Si no deseas utilizar un correo electrónico 'de' que está en tu dominio (como contact@example.com), puedes forzar la autenticación SMTP mediante el uso de un plugin. Ver el siguiente artículo para más detalles:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/215526937-Configurar-el-plugin-WP-MAIL-SMTP-" target="_self">Configurar el plugin 'WP Mail SMTP'</a></li>
+</ul>
+</div>
+<h2>Ver también</h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/360001310966-Cómo-iniciar-sesión-en-tu-sitio-WordPress" target="_self">¿Cómo acceder a mi sitio WordPress?</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/215526937-Configurar-el-plugin-WP-MAIL-SMTP-" target="_self">Configurar el plugin 'WP Mail SMTP'</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/215612887-Protocolos-y-n%C3%BAmeros-de-puerto-para-clientes-de-correo-electr%C3%B3nico" target="_self">Protocolos de cliente de correo electrónico y números de puerto</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/215300817-Administrar-plugins-de-WordPress" target="_self">Administrar plugins de WordPress</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/215527157-Administrar-los-temas-de-WordPress" target="_self">Administrar temas de WordPress</a></li>
+</ul>
+</div>

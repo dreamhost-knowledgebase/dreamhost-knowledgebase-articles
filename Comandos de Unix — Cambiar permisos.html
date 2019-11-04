@@ -1,0 +1,263 @@
+<h2>Generalidades</h2>
+<div class="solvvy-solution">
+<p>Este artículo muestra cómo cambiar los permisos de un archivo o directorio usando SSH o FTP. Para ver las generalidades de los permisos, vé el siguiente artículo:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360029138491" target="_self">Generalidades de los permisos</a></li>
+</ul>
+</div>
+<h2>Cambiar permisos vía SSH</h2>
+<div class="solvvy-solution">
+<p>Si has iniciado sesión en tu servidor vía&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/216041267-Generalidades-de-SSH" target="_self">SSH</a>,&nbsp;puedes cambiar los permisos corriendo el comando chmod. Hay dos maneras de establecer permisos usando chmod.</p>
+<div class="solvvy-solution">
+<ul>
+<li>Modo numérico</li>
+<li>Modo nombrado</li>
+</ul>
+<p>El modo numérico es más fácil de entender pues solo debes agregar los valores.</p>
+<h3>Modo Numérico</h3>
+<p>Usar el modo numérico, puedes asignar números a casa permiso. Por ejemplo:</p>
+<dl>
+<dd>4 = r (leer)</dd>
+<dd>2 = w (escribir)</dd>
+<dd>1 = x (ejecutar)</dd>
+</dl>
+<p>Luego, agregarás los tres al tiempo para cada dueño para cada que cada dueño tenga su valor completo. La siguiente tabla ilustra los diferentes permisos que cada dueño posiblemente pueda tener.</p>
+<table border="1" cellspacing="0" cellpadding="4">
+<tbody>
+<tr>
+<td><strong>7</strong></td>
+<td>leer, escribir y ejecutar ("rwx")</td>
+<td>4 + 2 + 1 = 7</td>
+</tr>
+<tr>
+<td><strong>6</strong></td>
+<td>Leer y escribir ("rw-")</td>
+<td>4 + 2 = 6</td>
+</tr>
+<tr>
+<td><strong>5</strong></td>
+<td>Leer y ejecutar ("r-x")</td>
+<td>4 + 0 + 1 = 5</td>
+</tr>
+<tr>
+<td><strong>4</strong></td>
+<td>Solo leer ("r--")</td>
+<td>4 + 0 + 0 = 4</td>
+</tr>
+<tr>
+<td><strong>3</strong></td>
+<td>Escribir y ejecutar (raro) ("-wx")</td>
+<td>0 + 2 + 1 = 3</td>
+</tr>
+<tr>
+<td><strong>2</strong></td>
+<td>Solo escribir (raro) ("-w-")</td>
+<td>0 + 2 + 0 = 2</td>
+</tr>
+<tr>
+<td><strong>1</strong></td>
+<td>Solo ejecutar (raro) ("--x")</td>
+<td>0 + 0 + 1 = 1</td>
+</tr>
+<tr>
+<td><strong>0</strong></td>
+<td>Sin permisos ("---")</td>
+<td>0 + 0 + 0 = 0</td>
+</tr>
+</tbody>
+</table>
+<p>Recuerda, hay tres clases de combinaciones de dueños de un archivo o directorio:</p>
+<ul>
+<li>Usuario</li>
+<li>Grupo</li>
+<li>Público</li>
+</ul>
+<p>Todos tres tienen sus propios permisos, Así, todos tres tienen ahora que ser agregados juntos para obtener un valor completo.</p>
+<h3>Ejemplos</h3>
+<table class="wikitable">
+<tbody>
+<tr>
+<th>Command</th>
+<th>Permissions</th>
+</tr>
+<tr>
+<td>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">chmod 600 file.txt</span></pre>
+</div>
+</td>
+<td>
+<p><strong>-rw-------</strong></p>
+<ul>
+<li>Solo el Usuario lee y escribe permisos.</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">chmod 700 dir</span></pre>
+</div>
+</td>
+<td>
+<p><strong>drwx------</strong></p>
+<ul>
+<li>Solo el Dueño tiene permisos de leer, escribir y ejecutar.</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">chmod 755 file.txt</span></pre>
+</div>
+</td>
+<td>
+<p><strong>-rwx-wx-wx</strong></p>
+<ul>
+<li>El Usuario tiene permisos de leer, escribir y ejecutar.</li>
+<li>El Grupo solo tiene permisos de escribir y ejecutar.</li>
+<li>Todos los demás tienen permisos de escribir y ejecutar.</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">chmod 644 file.txt</span></pre>
+</div>
+</td>
+<td>
+<p><strong>-rw-r--r--</strong></p>
+<ul>
+<li>El Usuario tiene permisos de leer y escribir</li>
+<li>El Grupo tiene permisos de leer.</li>
+<li>Otros tienen permisos de leer.</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">chmod 664 file.txt</span></pre>
+</div>
+</td>
+<td>
+<p><strong>-rw-rw-r--</strong></p>
+<ul>
+<li>El Usuario tiene permisos de leer y escribir.</li>
+<li>El Grupo tiene permisos de leer y escribir.</li>
+<li>Otros tiene permisos solo de leer.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Mientras que los comandos de arriba sobre chmod son útiles, puede ser entendido si un usuario no quiere tener que iniciar sesión vía SSH solo para cambiar permisos en un archivo. Afortunadamente, muchos clientes FTP como&nbsp;<a href="#filezilla" target="_self">FileZilla</a>&nbsp;tienen la habilidad de cambiar permisos directamente con el cliente.</p>
+</div>
+</div>
+</div>
+<h3>Modo Nombrado</h3>
+<p>Hay dos grupos de permisos a asignar cuando se usa el 'Modo Nombrado', los cuales son el 'quién' y el 'que' de los permisos. Por ejemplo:</p>
+<p><strong>Permisos de quién</strong></p>
+<table border="1" cellspacing="0" cellpadding="4">
+<tbody>
+<tr>
+<td><strong>u</strong></td>
+<td>Cambia los bits del usuario</td>
+</tr>
+<tr>
+<td><strong>g</strong></td>
+<td>Cambia los bits del grupo</td>
+</tr>
+<tr>
+<td><strong>o</strong></td>
+<td>Cambia los bits de los Otros</td>
+</tr>
+<tr>
+<td><strong>a</strong></td>
+<td>Cambia los bits para todos</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Permisos de qué</strong></p>
+<table border="1" cellspacing="0" cellpadding="4">
+<tbody>
+<tr>
+<td><strong>r</strong></td>
+<td>Da acceso a leer</td>
+</tr>
+<tr>
+<td><strong>w</strong></td>
+<td>Da acceso a escribir</td>
+</tr>
+<tr>
+<td><strong>x</strong></td>
+<td>Da acceso a ejecutar</td>
+</tr>
+<tr>
+<td><strong>s</strong></td>
+<td>Pone un sticky bit</td>
+</tr>
+</tbody>
+</table>
+<p>Usar ("+") y ("-") con la información de arriba, te permite combinar permisos de los grupos 'quién' y 'qué' para asignar los permisos exactos que deseas.</p>
+<h3>Ejemplos</h3>
+<p>El formato para usar chmod en los siguientes comandos es:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">chmod “groups”+”access” file.example</span></pre>
+</div>
+<p>Permite a todo el mundo leer file.txt. En el siguiente ejemplo, 'a' es un bit para 'todos' y el permiso de 'r' (leer) es agregado:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">chmod a+r file.txt</span></pre>
+</div>
+<p>Elimina todos los permisos de todos, excepto por el dueño que retiene cualquier permiso formal. En el siguiente ejemplo, 'g' es un bit de grupo, 'o' es el bit para 'otros usuarios' y el signo ("-") elimina todos los permisos (rwx):</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">chmod go-rwx file.txt</span></pre>
+</div>
+<p>El archivo llamado script.cgi ahora es ejecutable por un usuario y un grupo. En el siguiente ejemplo, 'u' es el bit de usuario, 'g' es el bit de 'grupo', y el permiso 'x' es agregado a ambos:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">chmod ug+x script.cgi</span></pre>
+</div>
+<p>Todos los archivos creados en el directorio somrdir son propiedad del grupo que posea somedir. En el siguiente ejemplo, 'g' es el bit de grupo y la banderilla 's' es agregada a él.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">chmod g+s somedir</span></pre>
+</div>
+</div>
+<h2>Permisos especiales</h2>
+<div class="solvvy-solution">
+<p>Los permisos especiales pueden ser agregados lo cual te permite la habilidad especial de cambiar usuarios o grupo, o especificar un directorio como directorio "temporal".</p>
+<h3>La banderilla 's'</h3>
+<p>Una 's' puede ser agregada al dueño o grupo con permisos de 'leer'. Esto indica el permiso setuid/setgid.</p>
+<ul>
+<li>Si configuras el grupo con el permiso de leer, el configura el bit de setgid. Esto quiere decir que cualquier usuario que cambie en el directorio de plataformas repentinamente todas las acciones como si los dueños del grupo fueran los del grupo por defecto. Esto puede ser útil si quieres que todos los archivos en ese directorio puedan crear/ser propietarios de ese grupo dueño.</li>
+</ul>
+<ul>
+<li>Si configuras los dueños con permisos de lectura, éste configura el bit de setuid. Esta no es normalmente una buena idea, entonces no lo hagas a menos que sepas realmente lo que estás haciendo.</li>
+</ul>
+<h3>La banderilla 't'</h3>
+<p>La banderilla 't' es básicamente la misma cosa que la 's' para un usuario o grupo, pero es usada cuando aplica para todos los otros. Aquí, el significado es un poco diferente. Quiere decir que cualquiera puede crear un archivo en el directorio, pero solo el propietario es capaz de eliminar ese archivo, no importan los permisos asignados. Este es el permiso al directorio "temporal" y deberá también ser ignorado a menos que sepas lo que estás haciendo.</p>
+</div>
+<h2>Cambiar permisos en un cliente FTP</h2>
+<div class="solvvy-solution">
+<p>Si das click derecho a un archivo en un cliente FTP, podrás ver sus permisos. Por ejemplo:</p>
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/filezilla-permissions_01.png" /></dd>
+</dl>
+<p>Como se discutió arriba, este formato usa el Modo Numérico para configurar permisos. Solo necesitas agregar los valores para cambiarlo.</p>
+<p>Este ejemplo usa Filezilla. Puedes dar click en las cajas, o escribir en el valor Numérico de los permisos que necesitas cambiar.</p>
+</div>
+<h2>Ver también</h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/216041267-Generalidades-de-SSH" target="_self">Generalidades de SSH</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214750888-UNIX-commands-overview" target="_self">Generalidades de los comandos de UNIX</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214750918-UNIX-commands-Changing-ownership" target="_self">Comandos de UNIX — Cambiar propiedad</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215465297-UNIX-commands-Working-with-directories" target="_self">Comandos de UNIX — Trabajar en directorios</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214750848-UNIX-commands-Working-with-files" target="_self">Comandos de UNIX — Trabajar con archivos</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115002768331-UNIX-commands-Decompressing-files" target="_self">Comandos de UNIX — Descomprimir archivos</a></li>
+</ul>
+</div>

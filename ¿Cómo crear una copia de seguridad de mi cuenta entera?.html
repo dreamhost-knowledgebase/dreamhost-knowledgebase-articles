@@ -1,0 +1,138 @@
+<h2>Generalidades</h2>
+<div class="solvvy-solution">
+<p>La opción de un click en el panel para hacer el respaldo de tu cuenta la puedes encontrar en la página&nbsp;<a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=billing.backup&amp;" target="_blank" rel="noopener">Backup Your Account</a>. Esta es una manera muy simple de hacer una copia de seguridad de toda tu cuenta incluyendo todos los usuarios, bases de datos, y buzones de correo electrónico.</p>
+</div>
+<h2>Cómo respaldar tu cuenta</h2>
+<div class="solvvy-solution">
+<p>Cuando abre la página <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=billing.backup&amp;" target="_blank" rel="noopener">Backup Your Account</a>,&nbsp;verás la opción de 1 clic cerca del final de la página:</p>
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-06_panel_account_backup_01.png" alt="" /></dd>
+</dl>
+<p>Haz click en el botón <strong>Back me up!</strong>.&nbsp;El proceso de respaldo empieza y tomará un tiempo para completarse dependiendo en la cantidad de contenido que necesite ser respaldado. Recibirás un correo electrónico notificando cuando haya finalizado la copia de seguridad.</p>
+</div>
+<h2>Confirmación de tu copia de seguridad</h2>
+<div class="solvvy-solution">
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-06_panel_account_backup_02.png" alt="" /></dd>
+</dl>
+<p>Dicha notificación vía correo electrónico te redirige a la página “Copia de Seguridad” donde verás los siguientes detalles:</p>
+</div>
+<h2>Vista de tu Copia de Seguridad</h2>
+<div class="solvvy-solution">
+<p>Cuando el respaldo se complete, vas a ver todos tus archivos en una lista en el panel con extensiones como <span class="code">.tar.gz</span> o <span class="code">.sql.gz</span>; vas a ver algo como esto:</p>
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-06_panel_account_backup_03.png" alt="" /></dd>
+</dl>
+<p>Verás enlaces como estos:</p>
+<p><strong>Los usuarios de correo electrónico podrán aparecer así:</strong></p>
+<dl>
+<dd>mail/usuario@example.com.tar.gz</dd>
+</dl>
+<p><strong>Las bases de datos podrán aparecer así:</strong></p>
+<dl>
+<dd>mysql/basededatos.sql.gz</dd>
+</dl>
+<p><strong>Los usuarios podrán aparecer así:</strong></p>
+<dl>
+<dd>usuario/servidor_usuario.tar.gz</dd>
+</dl>
+<p>La columna 'tamaño' muestra el peso de cada uno de los archivos. Todas las copias de seguridad están en la lista como archivos <span class="code">.tar.gz</span> o <span class="code">.sql.gz</span> para que los puedas descargar de manera local.</p>
+</div>
+<h2>Cómo descargar tu copia de seguridad via Línea de Comando</h2>
+<div class="solvvy-solution">
+<h4><strong>Mac y Linux</strong></h4>
+<p>Puedes descargar estos archivos directamente a tu servidor o computador Mac OSX / Linux usando ya sea <span class="code">curl</span> o <span class="code">wget</span>.</p>
+<h4><strong>Windows</strong></h4>
+<p>Si estás corriendo Windows vas a necesitar&nbsp;<a href="https://curl.haxx.se/download.html" target="_self">instalar curl</a>.&nbsp;Puedes descargar el archivo comprimido zip desde la sección Win64 - Generic.</p>
+</div>
+<h3>Cómo descargar usando curl</h3>
+<div class="solvvy-solution">
+<p>Aquí encontrarás un ejemplo de cómo descargar un solo archivo usando el comando <span class="code">curl</span>.</p>
+<ol>
+<li>En tu panel, haz click derecho en el enlace del archivo. En este ejemplo es <span class="code">usuario/servidor_usuario.tar.gz</span>.</li>
+<li>Desde el menú emergente selecciona 'Copiar Ubicación del Enlace'. Pega esto en un editor simple de texto para guardarlo por ahora. En general es una URL muy larga.</li>
+<li>En Mac o Linux, abre una terminal. En Windows, abre tu herramienta de comandos.</li>
+<li>Corre el comando <span class="code">curl</span> o <span class="code">wget</span> para descargar el archivo.</li>
+</ol>
+<h4>curl ejemplo</h4>
+<p>Corre el comando <span class="code">curl</span> con la siguiente sintaxis:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="command">curl --insecure --output filename.tar.gz "COPIED_LINK_LOCATION"</span>
+</pre>
+</div>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>El archivo <span class="code">nombre.tar.gz</span> es uno de los nombres de archivos en tu panel en la página&nbsp;<a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=billing.backup&amp;" target="_blank" rel="noopener">Backup Your Account</a>. Asegúrate de <strong>NO</strong> incluir la primera parte del nombre del archivo antes de la barra inclinada. Si el enlace en el panel es 'usuario/servidor_usuario.tar.gz', el nombre del archivo debe tomarse solamente como 'servidor_usuario.tar.gz'.</p>
+<p>La parte que dice 'Copiar Ubicación del Enlace' es la información que copiaste cuando hiciste click derecho en el nombre del archivo y que pegaste en tu editor de texto.</p>
+</div>
+</div>
+<p>Aquí está el ejemplo completo de <span class="code">curl</span>:</p>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Asegúrate de poner la URL completa entre comillas dobles. Si no lo haces, el comando no descargará el archivo.</p>
+</div>
+</div>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">curl --insecure --output servername_username.tar.gz "https://objects-us-east-1.dream.io/accountbackup/1358572/2016-12-06-SLRG8WEQ57K6CQTE/user/server_username.tar.gz?AWSAccessKeyId=2XoecBOZcL8WQXo9DT9E&amp;Signature=9HWxQE28LaYxxGXX6NsvcEELAwE%3D&amp;Expires=1451659279"</span></pre>
+</div>
+</div>
+<h3>Cómo descargar usando wget</h3>
+<div class="solvvy-solution">
+<p>Corre el comando <span class="code">wget</span> con la siguiente sintaxis:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="command">wget --no-check-certificate --output-document=filename.tar.gz "COPIED_LINK_LOCATION"</span>
+</pre>
+</div>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>El archivo nombre.tar.gz es uno de los nombres de archivos en tu panel en la página&nbsp;&nbsp;<a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=billing.backup&amp;" target="_blank" rel="noopener">Backup Your Account</a>. Asegúrate de <strong>NO</strong> incluir la primera parte del nombre del archivo antes de la barra inclinada. Si el enlace en el panel es 'usuario/servidor_usuario.tar.gz', el nombre del archivo debe tomarse solamente como 'servidor_usuario.tar.gz'.</p>
+<p>La parte que dice 'Copiar Ubicación del Enlace' es la información que copiaste cuando hiciste click derecho en el nombre del archivo y que pegaste en tu editor de texto.</p>
+</div>
+</div>
+<p>Aquí está el ejemplo completo de <span class="code">wget</span>:</p>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Asegúrate de poner la URL completa entre comillas dobles. Si no lo haces, el comando no descargará el archivo.</p>
+</div>
+</div>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wget --no-check-certificate --output-document=servername_username.tar.gz "https://objects-us-east-1.dream.io/accountbackup/1358572/2016-12-06-SLRG8WEQ57K6CQTE/user/server_username.tar.gz?AWSAccessKeyId=2XoecBOZcL8WQXo9DT9E&amp;Signature=9HWxQE28LaYxxGXX6NsvcEELAwE%3D&amp;Expires=1451659279"</span></pre>
+</div>
+</div>
+<h2>Hacer click en el archivo para descargarlo</h2>
+<div class="solvvy-solution">
+<p>También puedes hacer click en cada uno de los archivos directamente para descargarlos uno por uno a tu computador. Desafortunadamente, no hay una opción en el momento para descargar todos los archivos al mismo tiempo.</p>
+</div>
+<h2>Cómo descomprimir los archivos descargados</h2>
+<div class="solvvy-solution">
+<ol>
+<li>Cuando descargues los archivos en tu computador, estarán en un formato comprimido <span class="code">.tar.gz</span> o <span class="code">.sql.gz</span>.</li>
+<li>Si estás usando Windows, necesitarás un programa para descomprimir como&nbsp;<a href="https://www.7-zip.org/">7-Zip</a>.</li>
+<li>Si estás usando Mac o Linux, puedes correr el siguiente comando para descomprimir archivos <span class="code">.tar.gz</span>:<br />
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">macbook$ </span><span class="command">tar -zxvf user\@example.com.tar.gz</span></pre>
+</div>
+Si el archivo tiene una extensión <span class="code">.sql.gz</span> ,corre el siguiente comando:<br />
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">macbook$ </span><span class="command">gunzip databasename.sql.gz</span></pre>
+</div>
+</li>
+</ol>
+</div>
+<h2>Solución de Problemas</h2>
+<div class="solvvy-solution">
+<p>Si crees que la copia de seguridad realizada no se ejecutó por completo y no incluye realmente toda la información de tu cuenta, por favor&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/218084068-Generalidades-sobre-contactar-a-soporte" target="_self">contacta a soporte</a>&nbsp;para obtener asistencia.</p>
+</div>
+<h2>Ver también</h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="/hc/en-us/articles/215768237-How-can-I-manually-backup-my-data-" target="_self">Cómo puedo hacer una copia de seguridad manualmente?</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/215768257--C%C3%B3mo-restauro-mi-sitio-web-" target="_self">Cómo restauro mi sitio web?</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/217906467-Backup-or-restore-your-Dedicated-site-files" target="_self">Restaura o respalda tus archivos del servidor Dedicado</a></li>
+<li><a href="/hc/en-us/articles/215089888-WordPress-backup-tools" target="_self">Herramientas de respaldo de WordPress</a></li>
+</ul>
+</div>

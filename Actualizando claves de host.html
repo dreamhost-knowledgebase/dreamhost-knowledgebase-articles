@@ -1,0 +1,117 @@
+<h2>Generalidades</h2>
+<div class="solvvy-solution">
+<p>Esta guía proporciona formas de eliminar las advertencias que ves cuando te conecta a tu dominio/servidor web a través de&nbsp;<a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a>.&nbsp;La advertencia a la que se refiere esta guía es la de 'claves de host no coinciden':</p>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Si eliminas las entradas de known_host como se recomienda aquí, vas a estar vulnerable a un ataque de 'hombre en el medio'.</p>
+</div>
+</div>
+</div>
+<h2>El mensaje de error</h2>
+<div class="solvvy-solution">
+<p>Si ves la siguiente advertencia al acceder a tu dominio o servidor web a través de&nbsp;<a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a>, generalmente significa que la clave de host no coincide con la clave en tu archivo known_host.</p>
+<div class="preboxcontainer">
+<pre class="prebox">@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@ WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED! @
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!
+Someone could be eavesdropping on you right now (man-in-the-middle attack)!
+It is also possible that the RSA host key has just been changed.
+The fingerprint for the RSA key sent by the remote host is
+REMOVED FOR SECURITY REASONS
+Please contact your system administrator.
+Add correct host key in /home/USER/.ssh/known_hosts to get rid of this message.
+Offending key in /home/USER/.ssh/known_hosts:10278
+Password authentication is disabled to avoid man-in-the-middle attacks.
+Keyboard-interactive authentication is disabled to avoid man-in-the-middle attacks.
+
+–
+</pre>
+</div>
+<p>Esto no suele ser un motivo de preocupación y puede remediarse de diferentes maneras.</p>
+</div>
+<h2>Resolviendo el mensaje de advertencia</h2>
+<div class="solvvy-solution">
+<p>Hay tres métodos para eliminar este error. Ten en cuenta que la modificación para corregir esto debe realizarse en el lado del cliente SSH, por lo que si obtienes esta conexión desde tu casa/trabajo, debes actualizar esa computadora en específico.</p>
+<h3>Método uno -- Generar una nueva clave de host (MAC o Linux)</h3>
+<p>Ejecuta el siguiente comando en tu shell:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">ssh-keygen -R HOSTNAME.</span>
+</pre>
+</div>
+<ul>
+<li>Este método simplemente genera la nueva clave de host y lo conecta a tu host/dominio. Este es probablemente el método más simple.</li>
+</ul>
+<h3>Método dos -- Eliminar tu archivo known_hosts</h3>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Si inicias sesión en otros servidores, no elimines el archivo known_hosts o no tendrás forma de saber si tus claves SSH han cambiado.</p>
+</div>
+</div>
+<p>Elimine archivo known_hosts por completo (en tu computadora local) si tienes varios hosts que necesitan ser actualizados. En el primer inicio de sesión, este va a confirmar la nueva clave.</p>
+<ul>
+<li><strong>En una máquina Mac o Linux</strong> -- el archivo known_hosts se encuentra en el directorio .ssh/known_hosts. Simplemente debes ejecutar este comando en una terminal para eliminar el archivo known_host:</li>
+</ul>
+<dl>
+<dd>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">rm .ssh/known_hosts</span>
+</pre>
+</div>
+</dd>
+</dl>
+<ul>
+<li><strong>En una máquina con Windows que utiliza&nbsp;<a href="/hc/en-us/articles/215464538-How-do-I-configure-PuTTY-">PuTTY</a></strong> –&nbsp;debes acceder al registro para eliminar el known_hosts:</li>
+</ul>
+<ol>
+<li>Abre 'regedit.exe' haciendo una búsqueda.</li>
+<li>Ve a HKEY_CURRENT_USER\Software\SimonTatham\PuTTY\SshHostKeys</li>
+<li>Elimina todas las claves allí o elimina la clave de host individual.</li>
+</ol>
+<h3>Método Tres - Editar el archivo known_hosts</h3>
+<p>Edita el archivo known_hosts. En el caso anterior, abre el archivo /home/USER/.ssh/known_hosts en el editor de texto preferido y luego elimina la línea que está causando el problema.</p>
+<ul>
+<li>Esto es similar al método dos, pero en lugar de eliminar todo el archivo .known_hosts, eliminas la línea de host específica en el archivo.</li>
+<li>El mensaje de advertencia enumera el número de línea; Se puede encontrar después del nombre del archivo en el error. En el mensaje de error anterior, el número de línea es 10,278. Si estás usando una máquina Mac o Linux y estás&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH" target="_self">usando el editor "vi"</a>,&nbsp;simplemente puedes escribir el siguiente comando para saltar a esa línea:</li>
+</ul>
+<dl>
+<dd>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">vim +10278</span></pre>
+</div>
+</dd>
+</dl>
+<dl>
+<dd>El editor se abre a esa línea específica. Haz clic dos veces en la tecla ‘d’ para eliminar esa línea y luego ingresa lo siguiente para guardar:</dd>
+</dl>
+<dl>
+<dd>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">:x</span></pre>
+</div>
+</dd>
+</dl>
+<p>Visita el siguiente artículo para obtener más detalles sobre cómo usar 'vim'.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH" target="_self">Crear y editar un archivo a través de SSH</a></li>
+</ul>
+<p>En una máquina Windows que utiliza&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/215464538-How-do-I-configure-PuTTY-">PuTTY</a>, navega a la carpeta de Registro como se muestra en el método dos en la parte superior. En ese directorio, aparece una lista de nombres de host. Haz clic con el botón derecho en el que necesitas eliminar y luego seleccione 'Eliminar'.</p>
+</div>
+<h2>Ver también</h2>
+<div class="solvvy-hidden">
+<h3>Enlaces internos</h3>
+<ul>
+<li><a style="background-color: #ffffff;" href="https://help.dreamhost.com/hc/es/articles/216041267-Generalidades-de-SSH" target="_self">Generalidades de SSH</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/216385837-C%C3%B3mo-crear-un-usuario-con-acceso-Shell-SSH-" target="_self">Cómo crear un usuario con acceso Shell (SSH)</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216557548-Available-shells-at-DreamHost" target="_self">Tipos de Shell disponibles en DreamHost</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214750888-UNIX-commands-overview" target="_self">Comandos UNIX</a></li>
+</ul>
+<h3>Enlaces externos</h3>
+<ul>
+<li><a href="http://mah.everybody.org/docs/ssh" target="_self">Usando ssh-agent con ssh</a></li>
+<li><a href="http://www.openssh.org/" target="_self">El proyecto OpenSSH</a></li>
+<li><a href="http://www.ss64.com/bash/" target="_self">Un índice A-Z de comandos de Linux BASH en el sitio web de Simon Sheppard</a></li>
+</ul>
+</div>

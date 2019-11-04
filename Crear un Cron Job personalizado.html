@@ -1,0 +1,372 @@
+<h2>Generalidades</h2>
+<div class="solvvy-solution">
+<p>Este artículo muestra cómo crear manualmente un cron job usando tu&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/216385837-C%C3%B3mo-crear-un-usuario-con-acceso-Shell-SSH-" target="_self">usuario Shell</a>.&nbsp;Esto envuelve iniciar sesión dentro del servidor vía&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/216041267-Generalidades-de-SSH" target="_self">SSH</a>&nbsp;para correr varios comandos.</p>
+<p>Estas instrucciones pueden ser usadas también para editar un cron job existente creado en el panel, sin embargo por simplicidad, es recomendado que si lo has creado en el panel, seguirlo editando desde el panel.</p>
+</div>
+<h2>Detalles básicos</h2>
+<div class="solvvy-solution">
+<p>Los archivos crontab están donde las listas de jobs y otras instrucciones del cron daemon están guardadas. Cada usuario en DreamHost tiene su propio archivo crontab que puede ser accesado corriendo el siguiente comando en tu&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/216385837-C%C3%B3mo-crear-un-usuario-con-acceso-Shell-SSH-" target="_self">usuario Shell</a>:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">crontab -e</span>
+</pre>
+</div>
+<p>Los archivos crontab son simples archivos de texto que tienen un formato en particular. Cada línea del archivo crontab sigue un formato en particular como series de campos, separados por espacios y/o pestañas. Cada campo puede tener un valor singular o series de valores. Un cronjob debe tener exactamente una línea, pero ésta puede ser una línea larga (más de 80 caracteres).</p>
+<h3>Cosas a ver cuando estás creando/editando un crontab</h3>
+<p>Cada línea tiene cinco campos de tiempo/fecha, seguido por un comando, seguido por una nueva línea de caracter ('\n'). Un problema común es no incluir una nueva línea, entonces presiona “Enter/Devolverse” una o tres veces al final de tu comando.</p>
+<p>Otro problema común es romper automáticamente un ajuste de línea de una línea larga a múltiples líneas, asegúrate de que tu editor no haga esto.</p>
+<p>Las líneas vacías, los espacios principales y pestañas son ignorados. La líneas que su primer caracter es el signo numeral (#) son ignorados pues son considerados comentarios. Nota que los comentarios no son permitidos en la misma línea que los comandos de cron, pues son interpretados como parte del comando. Similarmente, los comentarios no son permitidos en la misma línea como configuraciones variables del ambiente (cómo MAILTO).</p>
+</div>
+<h2>¿Que pasa si ya he creado un cron job en el panel dentro del usuario Shell?</h2>
+<div class="solvvy-solution">
+<p>Hay dos manera de crear cron jobs personalizados.</p>
+<ul>
+<li>Editar el crontab existente en el servidor</li>
+<li>Usar un archivo personalizado crontab</li>
+</ul>
+<h3>Si ya has editado el crontab existente</h3>
+<p>Si ya has creado un cron job en tu panel, puedes verlo corriendo crontab -e en tu usuario Shell. Si tu editas el archivo para agregar otro cron job debajo del existente del panel, el cron job del panel continuará funcionando normalmente en adición al nuevo código editado.</p>
+<p>Cualquier ajuste en el panel no afectará tu código personalizado.</p>
+<h3>Si tu cambias el servidor crontab con tu crontab personalizado</h3>
+<p>Puedes también usar un crontab personalizado que has creado. Si haces esto, el crontab del servidor se sobreescribirá. Puedes también reemplazar el crontab del servidor corriendo lo siguiente:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$</span><span class="command"> crontab /home/username/mycrontab</span></pre>
+</div>
+<p>Sin embargo, si tu agregas o editas un cron job en el panel, tu crontab personalizado será sobre escrito. Entonces necesitarás usar el crontab del servidor, o usar tu crontab personalizado.</p>
+</div>
+<h2>Crear manualmente un cron job personalizado</h2>
+<div class="solvvy-solution">
+<p>Las siguientes instrucciones explican cómo agregar un cron job en tu usuario Shell. Estas instrucciones asumen que NO has agregado un cron job en tu panel todavía, entonces el archivo crontab está vacío.</p>
+<ol>
+<ol>
+<li>Inicia sesion en tu servidor vía&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/216041267-Generalidades-de-SSH" target="_self">SSH</a>&nbsp;usando el usuario Shell en el que deseas crear el cron job.</li>
+<li>Una vez dentro, corre el siguiente comando para abrir el archivo crontab.<br />
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">crontab -e</span>
+no crontab for example_username - using an empty one
+
+Select an editor.  To change later, run 'select-editor'.
+  1. /bin/ed
+  2. /bin/elvis-tiny
+  3. /bin/nano        &lt;---- easiest
+  4. /usr/bin/emacs24
+  5. /usr/bin/jed
+  6. /usr/bin/jmacs
+  7. /usr/bin/joe
+  8. /usr/bin/jpico
+  9. /usr/bin/jstar
+  10. /usr/bin/mcedit
+  11. /usr/bin/rjoe
+  12. /usr/bin/vim.basic
+  13. /usr/bin/vim.tiny
+
+Choose 1-13 [3]: <span class="command">3</span>
+</pre>
+</div>
+</li>
+<li>Deberás escoger un editor para ver este archivo #3 usa un programa “nano” el cual es el más fácil. Vé el artículo&nbsp;'<a href="https://help.dreamhost.com/hc/es/articles/115006413028-Crear-y-editar-un-archivo-via-SSH" target="_self">Crear y editar un archivo cía SSH</a>'&nbsp;para ver instrucciones de como usar nano.</li>
+<li>Se te presentará este nuevo archivo crontab:<br />
+<div class="preboxcontainer">
+<pre class="prebox"># Edit this file to introduce tasks to be run by cron.
+#
+# Each task to run has to be defined through a single line
+# indicating with different fields when the task will be run
+# and what command to run for the task
+#
+# To define the time you can provide concrete values for
+# minute (m), hour (h), day of month (dom), month (mon),
+# and day of week (dow) or use '*' in these fields (for 'any').#
+# Notice that tasks will be started based on the cron's system
+# daemon's notion of time and timezones.
+#
+# Output of the crontab jobs (including errors) is sent through
+# email to the user the crontab file belongs to (unless redirected).
+#
+# For example, you can run a backup of all your user accounts
+# at 5 a.m every week with:
+# 0 5 * * 1 tar -zcf /var/backups/home.tgz /home/
+#
+# For more information see the manual pages of crontab(5) and cron(8)
+#
+# m h  dom mon dow   command</pre>
+</div>
+</li>
+<li>En la parte inferior, agrega el código para tu cron job. Este ejemplo corre un archivo llamado mail.php dentro del usuario "ejemplo_usuario". Esto debe ser llamado de la misma manera que el usuario con el que estás logueado. Este ejemplo corre el cron job a las 8:13 pm.<br />
+<div class="preboxcontainer">
+<pre class="prebox"># Custom cron job
+MAILTO="user@example.com"
+13 20 * * * php  /home/example_username/mail.php</pre>
+</div>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Hay dos partes del comando. La primera debe especificar el camino al programa que deseas usar para correr el cron job. Por ejemplo digamos que tu tienes un archivo PHP llamado script.php en tu directorio de dominios:</p>
+<ul>
+<li>/home/username/example.com/script.php</li>
+</ul>
+<p>Para correr este comando ingresaras el camino que has escogido de la versión de PHP seguido por un espacio, seguido luego por el camino al archivo:</p>
+<ul>
+<li>/usr/local/php71/bin/php /home/username/example.com/script.php</li>
+</ul>
+<p>Usarás también la versión por defecto usando “php” en vez del camino completo.</p>
+</div>
+</div>
+</li>
+<li>Guarda el archivo. Verás la siguiente respuesta:<br />
+<div class="preboxcontainer">
+<pre class="prebox">crontab: installing new crontab</pre>
+</div>
+</li>
+</ol>
+</ol>
+<p>Y eso es todo, El cron job correrá cada día a las 8:13 pm.</p>
+</div>
+<h2>Comandos de Crontab</h2>
+<div class="solvvy-solution">
+<div id="mw-content-text" class="mw-content-ltr" dir="ltr" lang="en">
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Date cuenta que si tu escoges reemplazar el servidor de crontab, todos tus cron job creados en el panel para un usuario no seguirá funcionando pues han sido sobreescritos en el servidor.</p>
+<p>Adicionalmente, si tu actualizas tus cron jobs dentro de este usuario en el panel, va a sobreescribir tu crontab personalizado. El crontab se reemplazará en su forma original creada en el panel.</p>
+</div>
+</div>
+<h3>Reemplazar tu crontab existente con tu archivo crontab personalizado</h3>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">crontab /home/username/filename</span>
+</pre>
+</div>
+<h3>Editar tu servidor crontab</h3>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">crontab -e</span>
+</pre>
+</div>
+<h3>Ver tu crontab</h3>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">crontab -l</span>
+</pre>
+</div>
+<h3>Eliminar tu crontab</h3>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">crontab -r
+</span></pre>
+</div>
+</div>
+<h2>Explicación de los campos de hora/fecha</h2>
+<div class="solvvy-solution">
+<p>Los primeros cinco campos de la línea son los campos de fecha y hora lo cual especifican cómo y cuándo ejecutar un comando. Cuando agregues un cron job al panel de DreamHost la Hora/Fecha es agregada automáticamente por tí basado en tu configuración 'When to run' o 'Cuando correr'.</p>
+<table border="1" cellspacing="0" cellpadding="4">
+<tbody>
+<tr>
+<th>Field no.</th>
+<th>Description</th>
+<th>Permitted values</th>
+</tr>
+<tr>
+<td>1</td>
+<td>minute</td>
+<td>0-59</td>
+</tr>
+<tr>
+<td>2</td>
+<td>hour</td>
+<td>0-23</td>
+</tr>
+<tr>
+<td>3</td>
+<td>day of the month</td>
+<td>1-31</td>
+</tr>
+<tr>
+<td>4</td>
+<td>month</td>
+<td>1-12</td>
+</tr>
+<tr>
+<td>5</td>
+<td>day of the week</td>
+<td>0-7</td>
+</tr>
+</tbody>
+</table>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Nota: Para el día de la semana, ambos 0 y 7 son considerados domingo.</p>
+</div>
+</div>
+El tiempo es basado en eso del servidor que corre el cron.
+<p>Otra manera (gráfica) es viendo estos campos.</p>
+<div class="preboxcontainer">
+<pre class="prebox"> # * * * * *  command to execute
+ # │ │ │ │ │
+ # │ │ │ │ │
+ # │ │ │ │ └───── day of week (0 - 6) (0 to 6 are Sunday to Saturday, or use names; 7 is Sunday, the same as 0)
+ # │ │ │ └────────── month (1 - 12)
+ # │ │ └─────────────── day of month (1 - 31)
+ # │ └──────────────────── hour (0 - 23)
+ # └───────────────────────── min (0 - 59)
+</pre>
+</div>
+<p>Hay varias maneras de especificar múltiples valores en esos campos.</p>
+<ul>
+<li>El operador de coma (',') coma especifica una lista de valores.<br />
+<ul>
+<li>1,3,4,7,8</li>
+</ul>
+</li>
+<li>El operador guión ('-') especifica un rango de valores.<br />
+<ul>
+<li>1-6</li>
+<li>Esto es equivalente a "1,2,3,4,5,6".</li>
+</ul>
+</li>
+<li>El operador asterisco ('*') (frecuentemente conocido como wildcard) especifica todos los posibles valores para un campo. Por ejemplo, un asterisco en el campo de la hora (segundo) será equivalente a 'cada hora'.</li>
+<li>El operador barra inclinada ('/') puede ser usado en conjunción con un asterisco para saltar unos valores de números dados. Ejemplo:<br />
+<ul>
+<li>/3</li>
+<li>Esto significa saltar cada tercer valor. Entonces "*/3" en el campo de la hora es equivalente a "0,3,6,9,12,15,18,21"; "*" específica 'cada hora' pero el "/3" Significa solo el valor primero, cuarto y séptimo dado por "*" usados.</li>
+</ul>
+</li>
+</ul>
+<p>Puedes también usar una de las cuerdas especiales para poner el los campos de tiempo/hora.</p>
+<table class="wikitable" style="width: 786.233px;">
+<tbody>
+<tr>
+<th style="width: 93px;">Entrada</th>
+<th style="width: 201px;">Descripción</th>
+<th style="width: 83px;">Equivalent e a</th>
+<th style="width: 396.233px;">Ejemplo</th>
+</tr>
+<tr>
+<td style="width: 93px;"><code>@yearly (or @annually)</code></td>
+<td style="width: 201px;">Run once a year at midnight on January 1</td>
+<td style="width: 83px;"><code>0 0 1 1 *</code></td>
+<td style="width: 396.233px;">@yearly php /home/example_username/mail.php</td>
+</tr>
+<tr>
+<td style="width: 93px;"><code>@monthly</code></td>
+<td style="width: 201px;">Run once a month at midnight on the first day of the month</td>
+<td style="width: 83px;"><code>0 0 1 * * </code></td>
+<td style="width: 396.233px;">@monthly php /home/example_username/mail.php</td>
+</tr>
+<tr>
+<td style="width: 93px;"><code>@weekly</code></td>
+<td style="width: 201px;">Run once a week at midnight on Sunday morning</td>
+<td style="width: 83px;"><code>0 0 * * 0 </code></td>
+<td style="width: 396.233px;">@weekly php /home/example_username/mail.php</td>
+</tr>
+<tr>
+<td style="width: 93px;"><code>@daily (or @midnight)</code></td>
+<td style="width: 201px;">Run once a day at midnight</td>
+<td style="width: 83px;"><code>0 0 * * *</code></td>
+<td style="width: 396.233px;">@daily php /home/example_username/mail.php</td>
+</tr>
+<tr>
+<td style="width: 93px;"><code>@hourly</code></td>
+<td style="width: 201px;">Run once an hour at the beginning of the hour</td>
+<td style="width: 83px;"><code>0 * * * *</code></td>
+<td style="width: 396.233px;">@hourly php /home/example_username/mail.php</td>
+</tr>
+<tr>
+<td style="width: 93px;"><code>@reboot</code></td>
+<td style="width: 201px;">Run at startup (of the cron daemon)</td>
+<td style="width: 83px;"><code>@reboot</code></td>
+<td style="width: 396.233px;">@reboot php /home/example_username/mail.php</td>
+</tr>
+</tbody>
+</table>
+<p>Revisa el siguiente artículo de Wikipedia para más información:</p>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Cron#Nonstandard_predefined_scheduling_definitions" target="_self">Cron – Definiciones de horarios predefinidos no estandarizados</a></li>
+</ul>
+</div>
+<h2>Salida</h2>
+<div class="solvvy-solution">
+<p>La salida del cron job es determinado por lo que es enviado al terminal como resultado de los comandos/scripts que son ejecutados. Por defecto, todas las salidas son enviadas por correo a la variable&nbsp;<a href="/hc/en-us/articles/215767107-Execution-environment-of-a-cron-job">MAILTO</a>&nbsp;(ver la sección del requerimiento de la variable MAILTO para más información). Como se ve arriba, si un comando de cron job no crea ninguna salida en el comando entonces ningún correo es enviado.</p>
+<p>Tú puedes proveer de instrucciones especiales para la salida estándar o "standard out" (STDOUT), un error estándar o un "standard error" (STDERR) usando el operador "&gt;". Cuando tu usas "&gt;" sin un número antes de él, se pondrá automáticamente como "1&gt;". Esta es la salida estándar de no error (non-error).</p>
+<p>Cuando usas "2&gt;" estás especificando qué hacer con la salida del error. Por ejemplo, "&gt;mi_archivo.txt" redirecciona la salida estándar a un archivo llamado "&gt;mi_archivo.txt", y "2&gt;mis_errores.txt" redirecciona los errores a un archivo llamado "mis_errores.txt".</p>
+</div>
+<h2>Permisos</h2>
+<div class="solvvy-solution">
+<p>Por defecto, los archivos creados en los servidores de DreamHost tienen permisos nivel 644. Si tu escoges ejecutar un script vía cron, puedes necesitar poner los permisos del archivo a 744 usando&nbsp;&nbsp;<a href="http://linux.die.net/man/1/chmod">chmod</a> para permitir que se ejecute correctamente.</p>
+</div>
+<h2>Ejemplos de scripts de cron personalizados</h2>
+<div class="solvvy-solution">
+<p>Los siguientes ejemplos muestran lo que tú puedes agregar a un nuevo archivo para crear un cron job.</p>
+<p><strong>Ejemplo 1</strong>: Esto corre el comando a las 4:10 PM PST/PDT, y envía un correo con la salida del error regular al destinatario especificado por MAILTO.</p>
+<div class="preboxcontainer">
+<pre class="prebox">10 16 * * * perl /home/username/bin/yourscript.pl
+</pre>
+</div>
+<p><strong>Ejemplo 2</strong>: Esto corre el comando a las 2:00 AM PST/PDT el sábado, y la única salida son errores.</p>
+<div class="preboxcontainer">
+<pre class="prebox">0 2 * * 6 sh /home/username/weekly/weekly-pruning.sh &gt; /dev/null
+</pre>
+</div>
+<p><strong>Ejemplo 3</strong>: Esto corre a la medianoche del nuevo año (Enero 1) y no hay salida.</p>
+<div class="preboxcontainer">
+<pre class="prebox">0 0 1 1 0 python /home/username/happy.new.years.py &gt;/dev/null 2&gt;&amp;1
+</pre>
+</div>
+<p>2&gt;&amp;1 es una redirección especial que envía el error estándar ("2&gt;") al mismo lugar que la salida estándar ("&gt;" or "1&gt;").</p>
+<p><strong>Ejemplo 4</strong>: Esto corre un script de PHP llamado cron.php empezando cada hora.</p>
+<div class="preboxcontainer">
+<pre class="prebox">0 * * * * php /home/username/cron.php
+</pre>
+</div>
+<p><strong>Ejemplo 5</strong>: Esto corre el script local (localizado en DreamHost) cada 15 minutos.</p>
+<div class="preboxcontainer">
+<pre class="prebox">*/15 * * * * /usr/local/php71/bin/php /home/example_username/myscript.php
+</pre>
+</div>
+<p><strong>Ejemplo 6</strong>: Esto corre un script especial (alojado en otro lugar) cada 30 minutos usando curl.</p>
+<div class="preboxcontainer">
+<pre class="prebox">*/30 * * * * /usr/bin/curl -s http://example.com/send.php &amp;&gt; /dev/null
+</pre>
+</div>
+<p>&amp;&gt;/dev/null es una abreviación para 1&gt; /dev/null 2&gt; &amp;1. Redirecciona ambos descriptor de archivos 2 (STDERR) y descriptor 1 (STDOUT) a /dev/null.</p>
+<p>Ve&nbsp;<a href="http://unix.stackexchange.com/a/70971">http://unix.stackexchange.com/a/70971</a>&nbsp;para más información.</p>
+<p><strong>Ejemplo 7</strong>: Esto corre el script local (alojado en DreamHost) cada 10 minutos.</p>
+<div class="preboxcontainer">
+<pre class="prebox">*/10 * * * * /usr/local/php71/bin/php /home/example_username/myscript.php
+</pre>
+</div>
+<p><strong>Ejemplo 8</strong>: Esto usa wget para descargar un archivo al directorio llamado /cronfolder.</p>
+<div class="preboxcontainer">
+<pre class="prebox">*/10 * * * */usr/bin/wget -P /home/username/cronfolder/ https://example.com/index.html
+</pre>
+</div>
+</div>
+<h2>Editar un servidor dedicado</h2>
+<div class="solvvy-solution">
+<p>Si estás logueado como usuario&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/215945467-How-do-I-add-users-to-a-Dedicated-server-" target="_self">administrador de servidor Dedicado</a>,&nbsp;tu puedes editar el archivo crontab directamente. Está almacenado aquí.</p>
+<div class="preboxcontainer">
+<pre class="prebox">/var/spool/cron/crontabs/youruser
+</pre>
+</div>
+<p>Necesitarás usar&nbsp;<code>sudo</code>&nbsp;en tu servidor Dedicado (o iniciar una sesión interactiva como el usuario root con&nbsp;<code>sudo -i</code>) para acceder al archivo.</p>
+<div id="mw-content-text" class="mw-content-ltr" dir="ltr" lang="en">
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Si requieres acceso sudo/admin, debes mejorar a un servidor Dedicado.</p>
+</div>
+</div>
+<p>Ejemplo (abriendo el archivo con el editor de texto "vi"):</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">sudo vi /var/spool/cron/crontabs/youruser</span>
+</pre>
+</div>
+</div>
+</div>
+<h2>Ver también</h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/216041267-Generalidades-de-SSH" target="_self">Generalidades de SSH</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215088608-Crontab-overview" target="_self">Generalidades de Crontab</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215767107-Execution-environment-of-a-cron-job" target="_self">Ambiente de ejecución de un cron job</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/215088668--Cómo-crear-un-cron-job-" target="_self">¿Como creo un cron job?</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214202238-Command-line-PHP-overview" target="_self">Generalidades de las líneas de comando de PHP</a></li>
+</ul>
+</div>
+</div>

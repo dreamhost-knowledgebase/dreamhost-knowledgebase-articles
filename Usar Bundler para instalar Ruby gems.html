@@ -1,0 +1,134 @@
+<h2>Generalidades</h2>
+<div class="solvvy-solution">
+<p>Si tu aplicación Ruby no inicia por una gema perdida, debes instalarla localmente usando <a href="http://bundler.io/">Bundler</a>.</p>
+<p>Bundler provee un ambiente constante para los proyectos Ruby rastreando e instalando las gemas exactas y las versiones que tu necesitas. Bundler prevé dependencias y asegura que las gemas que necesitas esten presentes en desarrollo, andamiaje y producción. Empezar a trabajar en un proyecto es tan simple como correr el comando <span class="code">bundle install</span>.</p>
+<p>Lo siguiente describe cómo configurar y usar Bundler para tus aplicaciones RubyGem.</p>
+</div>
+<h2>Configurar Bundler</h2>
+<div class="solvvy-solution">
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Este artículo asume que ya has configurado el sitio Ruby on Rails basado en las siguientes guías de instalación:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/217185247-Ruby-Version-Manager-RVM-" target="_self">Administrador de la versión de Ruby (RVM)</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/217185437-How-to-enable-RVM" target="_self">Como habilitar RVM</a></li>
+</ul>
+</div>
+</div>
+<ol>
+<li>Abre una ventana terminal y corre el siguiente comando:<br />
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">gem install bundler</span>
+</pre>
+</div>
+</li>
+<li>Navega a tu directorio root del proyecto.</li>
+<li>Especifica tus dependencias en un Gemfile <a href="http://bundler.io/gemfile.html">Gemfile</a> (archivo Gem):
+<div class="preboxcontainer">
+<pre class="prebox">source 'https://rubygems.org'
+gem 'nokogiri'
+gem 'rack', '~&gt;1.1'
+gem 'rspec', :require =&gt; 'spec'
+</pre>
+</div>
+</li>
+<li>Instala todas las gemas requeridas de tus fuentes especificadas.<br />
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">bundle install</span>
+</pre>
+</div>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>El segundo comando agrega el <span class="code">Gemfile</span> y <span class="code">Gemfile.lock</span> para tu repositorio, lo cual asegura otros desarrollos en tu app, como tu ambiente desplegado, todos usan los mismos códigos de terceros que estas usando ahora.</p>
+</div>
+</div>
+</li>
+<li>Dentro de tu app, <a href="http://bundler.io/v1.12/bundler_setup.html" target="_self">carga el ambiente bundle</a>:
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Este paso es necesario solamente si no estás corriendo RVM.</p>
+</div>
+</div>
+<div class="preboxcontainer">
+<pre class="prebox">require 'rubygems'
+require 'bundler/setup'
+
+# require your gems as usual
+require 'nokogiri'
+</pre>
+</div>
+</li>
+<li>Corre un ejecutable que venga con una gema en tu bundle:<br />
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">bundle exec rspec spec/models</span>
+</pre>
+</div>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>En algunos casos, correr ejecutables sin bundle exec puede funcionar, si el ejecutable está instalado en tu sistema y no saca ninguna gema que haga conflicto con tu bundle. Sin embargo, esto es no es seguro ni recomendable. Aún cuando pareciera que funciona, puede no hacerlo en el futuro u otras máquinas.</p>
+</div>
+</div>
+</li>
+<li>Para crear un atajo a gemas en tu bundle, corre lo siguiente:<br />
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">bundle install --binstubs</span>
+</pre>
+</div>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">bin/rspec spec/models</span>
+</pre>
+</div>
+</li>
+</ol>
+<p>Estos <a href="http://bundler.io/man/bundle-exec.1.html" target="_self">ejecutables</a> instalados dentro de bin son alcanzados dentro del bundle, y siempre funcionará.</p>
+</div>
+<h2>Crear un RubyGem con Bundler</h2>
+<div class="solvvy-solution">
+<p>Bundler es también una manera fácil para crear nuevas gemas. Justo como puedes crear un proyecto de Rails estándar usando nuevos rails, puedes crear un proyecto de gema estándar con bundle gem.<br /> Crear una nueva gema con README, gemspec, Rakefile, estructura de directorios y todos los códigos repetitivos que necesites describir, probar, y publicar una gema:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">bundle gem my_gem</span>
+<span class="cmdoutput">
+create  my_gem/Gemfile
+      create  my_gem/.gitignore
+      create  my_gem/lib/my_gem.rb
+      create  my_gem/lib/my_gem/version.rb
+      create  my_gem/my_gem.gemspec
+      create  my_gem/Rakefile
+      create  my_gem/README.md
+      create  my_gem/bin/console
+      create  my_gem/bin/setup
+      create  my_gem/CODE_OF_CONDUCT.md
+      create  my_gem/LICENSE.txt
+      create  my_gem/.travis.yml
+      create  my_gem/test/test_helper.rb
+      create  my_gem/test/my_gem_test.rb
+Initializing git repo in ./my_gem
+</span>
+</pre>
+</div>
+</div>
+<h2>Usar Bundler con aplicaciones Ruby</h2>
+<div class="solvvy-solution">
+<ul>
+<li><a href="http://bundler.io/rubygems.html" target="_self">Usar Bundler con Rubygem gemspecs</a></li>
+<li><a href="http://bundler.io/rubymotion.html" target="_self">Usar Bundler con RubyMotion</a></li>
+</ul>
+</div>
+<h2>Ver también</h2>
+<div class="solvvy-hidden">
+<h3>Links externos de Bundler</h3>
+<ul>
+<li><a href="http://bundler.io/" target="_self">¿Que es Bundler?</a></li>
+<li><a href="http://bundler.io/v1.12/#getting-started" target="_self">Empezando</a></li>
+<li><a href="http://bundler.io/whats_new.html" target="_self">Qué hay de nuevo en cada lanzamiento</a></li>
+<li><a href="http://bundler.io/rationale.html" target="_self">Razón fundamental y propósito de Bundler</a></li>
+<li><a href="http://bundler.io/gemfile.html" target="_self">Gemfiles (archivos gema)</a></li>
+<li><a href="http://bundler.io/bundle_install.html" target="_self">Instalar Bundle</a></li>
+<li><a href="http://bundler.io/man/bundle-gem.1.html" target="_self">Gema Bundle</a></li>
+<li><a href="http://bundler.io/man/bundle-exec.1.html" target="_self">Ejecutables</a></li>
+</ul>
+</div>

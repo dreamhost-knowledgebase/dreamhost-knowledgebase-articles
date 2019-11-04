@@ -1,0 +1,106 @@
+<h2>Generalidades</h2>
+<div class="solvvy-solution">
+<p>Este artículo explica cómo eliminar los registros DNS no editables predeterminados para tu dominio.</p>
+<p>Cuando tu dominio está como '<a href="/hc/es/articles/215416227" target="_self">Dominio Alojado</a>', este tiene varias direcciones IP de DreamHost (registros A) asignadas que controlan dónde está alojado el sitio. Si los <a href="https://help.dreamhost.com/hc/es/articles/216385467-Generalidades-de-los-Nameservers" target="_self">servidores de nombres</a> de tu sitio apuntan a DreamHost y tu sitio está como "Dominio Alojado", este está alojado en los servidores de DreamHost.</p>
+<p>Si los <a href="https://help.dreamhost.com/hc/es/articles/216385467-Generalidades-de-los-Nameservers" target="_self">servidores de nombres</a> de tu sitio apuntan a DreamHost pero <strong>NO</strong> deseas alojar el sitio en DreamHost, debes eliminar el alojamiento al cual elimina estas direcciones IP. Configurar el sitio como 'DNS only' elimina el alojamiento y los registros A de tu sitio. Luego de esto, podrás <a href="/hc/es/articles/215414867" target="_self">agregar registros DNS personalizados</a> para apuntar tu sitio a otra empresa de alojamiento.</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Esto solo funciona con el nombre de dominio principal como 'example.com'. Esto NO funciona con subdominios como 'blog.example.com'. Para los subdominios, debes agregar registros DNS personalizados al dominio principal como se explica a continuación.</p>
+</div>
+</div>
+</div>
+<h2>Agregar un nuevo dominio como 'DNS Only'</h2>
+<div class="solvvy-solution">
+<ol>
+<li>Abre la página de&nbsp;<a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.manage" target="_blank" rel="noopener">Manage Domains</a>.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-10_panel_manage-domains_add-hosting.png" /></dd>
+</dl>
+</li>
+<li><span style="font-weight: 400;">Haz clic en el enlace</span>&nbsp;<strong>Add Hosting to a Domain / Sub-Domain</strong>.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-08_panel_dns_only.png" /></dd>
+</dl>
+</li>
+<li>Cuando se abra la página siguiente, desplázate hacia abajo hasta 'DNS Only'.</li>
+<li>Ingresa el dominio que deseas establecer como 'DNS Only' y haz clic en el botón <strong>Host DNS Only</strong>.</li>
+</ol>
+</div>
+<h2>Cambiar un dominio alojado a 'DNS Only'</h2>
+<div class="solvvy-solution">
+<ol>
+<li><span style="font-weight: 400;">Navega a la página de</span>&nbsp;<a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;" target="_blank" rel="noopener">Manage Domains</a>.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-08_panel_remove_hosting.png" /></dd>
+</dl>
+</li>
+<li><strong><span style="font-weight: 400;">A la derecha del dominio debajo de la columna 'Alojamiento Web , haz clic en el botón&nbsp;</span>Remove</strong>. <span style="font-weight: 400;">Esto configura el dominio como 'DNS Only'</span> (<span style="font-weight: 400;">si no tienes un</span>&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/216041537-SSL-certificates-overview" target="_self">certificado SSL</a> <span style="font-weight: 400;">habilitado en el dominio</span>).</li>
+</ol>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p><span style="font-weight: 400;">Si tienes un</span>&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/216041537-SSL-certificates-overview" target="_self">certificado SSL</a>&nbsp;enabled on the domain, <span style="font-weight: 400;">la página&nbsp;</span>'Manage Domains' <span style="font-weight: 400;">solo muestra 'dns' a la derecha de tu dominio cuando debería decir</span> 'DNS Only'. <span style="font-weight: 400;">Esto se debe al certificado SSL activo</span>.</p>
+<p><span style="font-weight: 400;">Debes eliminar el certificado SSL del dominio para poder eliminar todos los registros DNS y configurar el dominio como</span> 'DNS Only'. <span style="font-weight: 400;">Visita la siguiente sección para obtener instrucciones</span>.</p>
+</div>
+</div>
+<h3>Eliminar alojamiento seguro</h3>
+<p><span style="font-weight: 400;">Si has</span>&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/216041537-SSL-certificates-overview" target="_self">agregado un certificado SSL</a> <span style="font-weight: 400;">&nbsp;a tu dominio, debes eliminarlo para que se eliminen tus registros DNS</span>.</p>
+<ol>
+<li><span style="font-weight: 400;">Navega a la página de</span>&nbsp;<a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;" target="_blank" rel="noopener">Manage Domains</a>.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-08_panel_https_on.png" /></dd>
+</dl>
+</li>
+<li><span style="font-weight: 400;">A la derecha del dominio puedes ver</span> 'https On'. <span style="font-weight: 400;">Haz clic en este enlace</span>.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-08_panel_remove_ssl_certificate.png" /></dd>
+</dl>
+</li>
+<li><span style="font-weight: 400;">Te llevará a la página de alojamiento seguro para este dominio. En esa página, haz clic en el botón</span> '<strong>Remove https for example.com</strong>'.</li>
+<li><span style="font-weight: 400;">Navega de vuelta a la página de</span>&nbsp;<a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;" target="_blank" rel="noopener">Manage Domains</a>.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-08_panel_dns_only_link.png" /></dd>
+</dl>
+</li>
+<li><span style="font-weight: 400;">A la derecha de tu dominio ahora verás</span> 'DNS Only'. <span style="font-weight: 400;">También puedes hacer clic en el enlace 'DNS' debajo de tu dominio para confirmar que se han eliminado los registros</span>.</li>
+</ol>
+</div>
+<h3>¿Qué registros DNS se eliminan?</h3>
+<div class="solvvy-solution">
+<p><span style="font-weight: 400;">Cuando configuras un dominio como</span> 'DNS only', <span style="font-weight: 400;">eliminas los siguientes registros DNS A</span>:</p>
+<ul>
+<li style="font-weight: 400;"><span style="font-weight: 400;">registro A no www</span></li>
+<li style="font-weight: 400;"><span style="font-weight: 400;">Registro A www</span></li>
+<li style="font-weight: 400;"><span style="font-weight: 400;">Registro A ssh</span></li>
+<li style="font-weight: 400;"><span style="font-weight: 400;">Registro A ftp</span></li>
+</ul>
+<p><span style="font-weight: 400;">A continuación hay algunas cosas a tener en cuenta con respecto a estos cambios</span>:</p>
+<ul>
+<li><strong><span style="font-weight: 400;">No presione el botón&nbsp;</span>Delete</strong>&nbsp;<span style="font-weight: 400;">para el dominio en la página</span> <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;" target="_blank" rel="noopener">Manage Domains</a>. <span style="font-weight: 400;">Esto elimina el dominio de la cuenta junto con los contenidos que anteriormente estaban alojados en este</span>.</li>
+<li><span style="font-weight: 400;">Establecer el dominio en</span> ‘DNS Only’ <span style="font-weight: 400;">no elimina los archivos alojados</span>.&nbsp;<span style="font-weight: 400;">Puedes hacer clic en el botón</span> <strong>Edit</strong> <span style="font-weight: 400;">para establecer el dominio como</span> ‘Fully Hosted’. <span style="font-weight: 400;">Esto crea de nuevo los registros DNS para tu dominio</span>.</li>
+<li><span style="font-weight: 400;">Ten en cuenta que esto solo afecta tu servicio de alojamiento web y deja intactos otros servicios como el correo electrónico (suponiendo que ya tienes un plan de alojamiento activo en tu cuenta). Si has eliminado tu plan de alojamiento pero deseas continuar alojando tu correo electrónico con DreamHost, puedes comprar un <a href="https://help.dreamhost.com/hc/es/articles/360024060072-Plan-de-correo-pago" target="_self">Plan de correo electrónico pagodo</a>.</span></li>
+</ul>
+<p><span style="font-weight: 400;">Además, estos cambios solo son posibles para el dominio principal: los subdominios no se pueden establecer como</span> <span style="font-weight: 400;">DNS Only</span>.</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p><span style="font-weight: 400;">Si este es tu único dominio en la cuenta y lo estás configurando para DNS Only, <strong>NO</strong> necesitas un plan de alojamiento. Un plan de alojamiento solo es necesario si deseas alojar un dominio y su contenido en los servidores DreamHost</span>.</p>
+</div>
+</div>
+</div>
+<h2>¿Qué hacer después de eliminar los registros DNS?</h2>
+<div class="solvvy-solution">
+<p><span style="font-weight: 400;">Una vez que el dominio se establece en</span> 'DNS Only', <span style="font-weight: 400;">puedes</span>&nbsp;<a href="/hc/es/articles/215414867" target="_self">agregar registros DNS personalizados</a> <span style="font-weight: 400;">para apuntar tu sitio a donde quieras</span>.</p>
+</div>
+<h2>Ver también</h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="/hc/es/articles/215414867" target="_self">¿Cómo agrego registros DNS personalizados?</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/214694348-Registros-DNS-básicos" target="_self">Registros DNS básicos</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/215413857-Generalidades-de-los-DNS-de-DreamHost" target="_self">Generalidades de los DNS de DreamHost</a></li>
+<li><a href="/hc/en-us/articles/215840248-DNS-propagation-overview" target="_self">Generalidades de la propagaciónd e DNS</a></li>
+<li><a href="/hc/es/articles/214694378" target="_self">¿A qué registros DNS de DreamHost apunto mi sitio?</a></li>
+<li><a href="/hc/en-us/articles/214750688-Transferring-website-hosting-to-another-company" target="_self">Transferir alojamiento de sitios web a otra empresa</a></li>
+</ul>
+</div>

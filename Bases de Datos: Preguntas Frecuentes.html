@@ -1,0 +1,106 @@
+<h2 class="header-section">Administrar</h2>
+<h2>¿Cómo puedo crear una base de datos?</h2>
+<div class="solvvy-solution">
+<p>Las bases de datos se pueden crear únicamente en el panel de DreamHost. En el momento, no es posible crear bases de datos a través de&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/216041267-Generalidades-de-SSH" target="_self">SSH</a> o&nbsp;<a href="/hc/en-us/articles/214395638-phpMyAdmin-overview">phpMyAdmin</a>. Revisa el siguiente artículo para obtener más detalles:</p>
+<ul>
+<li><a href="/hc/en-us/articles/221621388-Managing-existing-MySQL-databases" target="_self">Cómo administro mi base de datos?</a></li>
+</ul>
+</div>
+<h2>¿Hay algún límite en la cantidad de bases de datos que puedo crear?</h2>
+<div class="solvvy-solution">
+<p>No hay ningún límite y puedes crear todas las bases de datos que desees en prácticamente todos los planes de alojamiento. (Excepto por el plan Starter Shared donde el límite son 5 bases de datos).</p>
+</div>
+<h2>¿Dónde puedo ver los registros de MySQL?</h2>
+<div class="solvvy-solution">
+<p>Infortunadamente, los registros no están disponibles en los servidores compartidos de MySQL. Sin embargo, si has adquirido un MYSQL VPS, el área de soporte puede localizar los registros por ti. Sólo necesitas enviar un ticket a través del panel solicitando dicha información.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/218084068-Generalidades-sobre-contactar-a-soporte" target="_self">Generalidades sobre contactar a soporte</a></li>
+</ul>
+</div>
+<h2>¿Es compatible con el cifrado de bases de datos?</h2>
+<div class="solvvy-solution">
+<p>El cifrado de bases de datos no es ofrecido o proporcionado por DreamHost. Ten en cuenta que si deseas crear una solución personalizada para cifrar tu base de datos y esto requiere acceso a la raíz (root/sudo) del servidor de tus bases de datos, necesitarás obtener un plan&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/215279658-Dedicated-server-overview" target="_self">Dedicado</a>&nbsp;o&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/214840947-What-is-DreamCompute-">DreamCompute</a>.&nbsp;Esos son los únicos planes en los que tendrías acceso directo al servidor de la base de datos.</p>
+</div>
+<h2 class="header-section">Copia de Seguridad</h2>
+<h2>¿Ofrecen copias de seguridad a largo plazo para mis bases de datos?</h2>
+<div class="solvvy-solution">
+<p>Las copias de seguridad a largo plazo no están disponibles para las bases de datos. DreamHost ofrece solamente copias de seguridad de 5 días y honestamente no son garantizadas. Es altamente recomendable que hagas un respaldo local de tus bases de datos frecuentemente.</p>
+</div>
+<h2>¿Cómo puedo hacer una copia de seguridad de mis bases de datos?</h2>
+<div class="solvvy-solution">
+<p>A través de phpmyadmin o conectándote vía SSH puedes realizar el respaldo de tus bases de datos. Las instrucciones las puedes encontrar en el siguiente artículo:</p>
+<ul>
+<li><a href="/hc/en-us/articles/215039758-How-do-I-backup-my-database-" target="_self">¿Cómo hago una copia de seguridad de mis bases de datos MySQL?</a></li>
+</ul>
+</div>
+<h2>Mi dominio no apunta a los DNS de DreamHost o ha expirado. ¿Cómo puedo hacer una copia de seguridad de mi base de datos?</h2>
+<div class="solvvy-solution">
+<p>Si tienes un usuario Shell, puedes acceder a tu servidor web via SSH y ejecutar mysqldump. Una vez completes el respaldo, puedes acceder via FTP para descargar el archivo de la copia de seguridad.</p>
+</div>
+<h2>¿Puedo acceder a mi base de datos con mi usuario de FTP?</h2>
+<div class="solvvy-solution">
+<p>No. Los usuarios de los dominios como Shell, SFTP, y FTP están aislados de los usuarios de las bases de datos, son completamente diferentes ya que tienen propósitos diferentes y están en servidores diferentes. Además, sólo puedes acceder al servidor de la base de datos si tienes un servidor&nbsp;<a href="/hc/en-us/articles/215279658-Dedicated-server-overview" target="_self">Dedicado</a>.</p>
+</div>
+<h2 class="header-section">Permisos y Especificaciones</h2>
+<h2>¿Tengo acceso a la raíz/sudo en un servidor privado de bases de datos (MySQL VPS)?</h2>
+<div class="solvvy-solution">
+<p>No. El servicio MySQL VPS es administrado por DreamHost por lo que el acceso al servidor no está disponible. Solo en un servidor Dedicado tendrás acceso ya que las bases de datos se alojan localmente en el mismo servidor dedicado que los dominios.&nbsp;</p>
+</div>
+<h2>¿Los usuarios de la base de datos tienen todos los privilegios en dicha base de datos?</h2>
+<div class="solvvy-solution">
+<p>No todos los privilegios están habilitados. Revisa el siguiente artículo para ver la lista actual:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115000263911-MySQL-limitations-due-to-shared-hosting" target="_self">MySQL: limitaciones en el servidor compartido</a></li>
+</ul>
+</div>
+<h2>¿Puedo darle acceso limitado a otros usuarios para mi base de datos?</h2>
+<div class="solvvy-solution">
+<p>Sí. Puedes crear múltiples usuarios para acceder a la base de datos y configurar sus privilegios. Revisa el siguiente artículo para obtener más detalles:</p>
+<ul>
+<li><a href="/hc/en-us/articles/215575787#Managing_MySQL_users.2C_allowable_hosts.2C_and_privileges" target="_self">Administrar usuarios MySQL, hosts permitidos, y privilegios</a></li>
+</ul>
+</div>
+<h2 class="header-section">Acceder</h2>
+<h2>Mi dominio apunta a los nombres de servidor (nameservers) de otro proveedor, pero apunta al registro A de DreamHost. ¿Por qué no puedo acceder a la base de datos vía phpMyAdmin?</h2>
+<div class="solvvy-solution">
+<p>Hay un registro A de los DNS asociado específicamente al nombre del host además del registro A del sitio. Así como con el dominio, debes agregar el registro A del nombre del host para que funcione correctamente. Revisa el artículo de DNS para más detalles.</p>
+</div>
+<h2>¿Puedo acceder a mi base datos con una IP?</h2>
+<div class="solvvy-solution">
+<p>No. No puedes usar la IP como una alternativa para acceder directamente a la base de datos.</p>
+</div>
+<h2 class="header-section">General</h2>
+<h2>¿Puedo actualizar la versión de MySQL?</h2>
+<div class="solvvy-solution">
+<p>No.</p>
+</div>
+<h2>¿Cómo puedo importar mi copia de seguridad de la base de datos?</h2>
+<div class="solvvy-solution">
+<p>Puedes hacer esto con un usuario&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/216041267-Generalidades-de-SSH" target="_self">SSH</a> o&nbsp;<a href="/hc/en-us/articles/214395638-phpMyAdmin-overview">phpMyAdmin</a>.&nbsp;Para mayor información, visita el enlace a continuación:</p>
+<ul>
+<li><a href="/hc/en-us/articles/215039938-How-do-I-migrate-my-database-to-DreamHost-" target="_self">¿Cómo migrar una base de datos a DreamHost?</a></li>
+</ul>
+</div>
+<h2>¿Cuáles son los servicios disponibles para bases de datos?</h2>
+<div class="solvvy-solution">
+<p>Todos los planes de alojamiento vienen con un servidor compartido para las bases de datos MySQL. También tienes la opción de adquirir por medio del panel un servidor privado para tus bases de datos. En el enlace debajo verás todos los detalles:</p>
+<ul>
+<li><a href="/hc/en-us/articles/215945917-MySQL-VPS-overview" target="_self">Generalidades de MySQL VPS</a></li>
+</ul>
+</div>
+<h2>¿Por qué no funciona el nombre del host de mi base de datos?</h2>
+<div class="solvvy-solution">
+<p>Varios factores pueden causar esto:</p>
+<ul>
+<li>El dominio no apunta a los&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/215413857-Generalidades-de-los-DNS-de-DreamHost">DNS</a>&nbsp;de DreamHost</li>
+<li>El dominio no está&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/215416227-C%C3%B3mo-agrego-un-dominio-" target="_self">completamente alojado</a>&nbsp;en el panel</li>
+<li>El&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/215864877--Qué-pasa-si-mi-registro-de-dominio-caduca-" target="_self">registro del dominio ha expirado</a></li>
+<li>Has habilitado&nbsp;<a href="/hc/en-us/articles/215769578-Passenger-overview">Passenger</a>,&nbsp;o estás usando&nbsp;<a href="/hc/en-us/articles/216431827-Nginx-overview">Nginx</a> en lugar de Apache.</li>
+</ul>
+</div>
+<h2>Ver También</h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/sections/203272278-Pre-Sales-Questions" target="_self">Lista de preguntas Pre-Venta por tema</a></li>
+</ul>
+</div>

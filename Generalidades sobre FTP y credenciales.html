@@ -1,0 +1,240 @@
+<div class="document">
+<div class="documentwrapper">
+<div class="body">
+<div id="FTP overview and credentials" class="solvvy-hidden">
+<div class="table-of-content container">
+<div class="altTitle">FTP</div>
+<ul class="simple">
+<li><a class="reference internal" href="#dreampress">Sitios de DreamPress</a></li>
+<li><a class="reference internal" href="#localizando-tus-credenciales">Localizando tus credenciales de inicio de sesión FTP</a></li>
+<li><a class="reference internal subtoc" href="#nombre-de-host">Nombre de host / servidor</a></li>
+<li><a class="reference internal subtoc" href="#usuario">Nombre de usuario</a></li>
+<li><a class="reference internal subtoc" href="#contrasena">Contraseña</a></li>
+<li><a class="reference internal subtoc" href="#puerto">Número de puerto</a></li>
+<li><a class="reference internal" href="#donde-coloco-mis-archivos">¿Dónde coloco mis archivos?</a></li>
+<li><a class="reference internal" href="#seguridad">Seguridad FTP</a></li>
+<li><a class="reference internal subtoc" href="#diferencia-entre-ftp-y-sftp">Diferencia entre FTP y SFTP</a></li>
+<li><a class="reference internal subtoc" href="#configuracion">Configuración de un usuario FTP existente a un usuario SFTP</a></li>
+<li><a class="reference internal subtoc" href="#creando">Creando un usuario SFTP al editar un dominio</a></li>
+<li><a class="reference internal subtoc" href="#deshabilitar">Deshabilitar FTP en un servidor VPS</a></li>
+<li><a class="reference internal subtoc" href="#notas">Notas sobre el uso de SFTP</a></li>
+<li><a class="reference internal" href="#host_key_is_unknown">Advertencia: La llave de host del servidor es desconocida</a></li>
+<li><a class="reference internal" href="#ver-tambien">Ver también</a></li>
+</ul>
+</div>
+</div>
+<h2>Generalidades</h2>
+<div class="solvvy-solution">
+<p>El Protocolo de transferencia de archivos (FTP) es un protocolo que se utiliza comúnmente para transferir datos del sitio web desde tu computador local al servidor web remotamente. Esto te permite desarrollar un sitio web localmente (en tu computador) y luego cargarlo al servidor remoto para publicarlo en tu sitio web.</p>
+<p>Una vez que estés conectado y hayas subido tus archivos, puedes usar el siguiente artículo para crear y editar archivos dentro de Filezilla.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/115000098272-Crear-y-editar-un-archivo-v%C3%ADa-FTP" target="_self">Crear y editar archivos vía FTP</a></li>
+</ul>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Para garantizar una conexión segura al conectarte a tu servidor, asegúrate de usar el puerto 22. Esto también se conoce como conexión a través de SFTP. Visita la sección&nbsp;'<a href="/hc/en-us/articles/115000675027#FTP_security" target="_self">Seguridad</a>'&nbsp;a en la parte inferior para obtener más detalles.</p>
+</div>
+</div>
+<h3>Pre-requisitos</h3>
+<div class="prereqs">
+<p>Asegúrate de haber&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/215416227-C%C3%B3mo-agrego-un-dominio-" target="_self">agregado el alojamiento</a>&nbsp;a tu dominio en tu panel de DreamHost. Esto le asigna las credenciales que necesitas para iniciar sesión en tu servidor.</p>
+</div>
+<h3>Elegir un cliente FTP</h3>
+<p>Este artículo utiliza el cliente FTP&nbsp;'<a href="https://filezilla-project.org/">Filezilla</a>'&nbsp;para ilustrar ejemplos. Puedes usar&nbsp;<a href="/hc/en-us/articles/215613107-List-of-FTP-client-software" target="_self">cualquier cliente que desees</a>&nbsp;para iniciar sesión en tu servidor, ya que la configuración es la misma.</p>
+<div class="alert alert-tip">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-tip-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>DreamHost ofrece un cliente FTP incorporado en el panel, llamado 'WebFTP'. Visita el siguiente artículo para obtener más detalles:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/360003490852-Usando-WebFTP" target="_self">Usando WebFTP</a></li>
+</ul>
+</div>
+</div>
+</div>
+<h2><span id="dreampress">Sitios de DreamPress</span></h2>
+<div class="solvvy-solution">
+<p>Si necesitas iniciar sesión en tu sitio DreamPress, usa el siguiente artículo en lugar de este.</p>
+<ul>
+<li><a href="/hc/en-us/articles/360020552911-Logging-into-your-DreamPress-site-via-FTP" target="_self">Iniciar sesión en tu sitio DreamPress a través de FTP</a></li>
+</ul>
+</div>
+<h2><span id="localizando-tus-credenciales">Localizando tus credenciales de inicio de sesión FTP</span></h2>
+<div class="solvvy-solution">
+<p>Vas a necesitar la siguiente información para iniciar sesión en tu servidor web:</p>
+<ul>
+<li><a href="#Finding_your_FTP_server_hostname" target="_self">Servidor FTP / Nombre de host</a></li>
+<li><a href="#Locating_the_correct_FTP_user" target="_self">Nombre de usuario de FTP</a></li>
+<li><a href="#Resetting_your_FTP_user.27s_password" target="_self">Contraseña FTP</a></li>
+<li><a href="#Choosing_the_FTP_port" target="_self">Puerto FTP</a></li>
+</ul>
+<p>Las siguientes secciones explican cómo obtener cada una de estar.</p>
+</div>
+<h2><span id="nombre-de-host">Encontrar el nombre de host de tu servidor FTP</span></h2>
+<div class="solvvy-solution">
+<p>Hay dos nombres de host que puedes utilizar para iniciar sesión en tu servidor DreamHost.</p>
+<ul>
+<li><strong><a href="#sitename" target="_self">El nombre del sitio</a></strong> —&nbsp;Solo puedes usar el nombre de tu sitio para iniciar sesión en tu servidor si los&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/214694378-What-DreamHost-DNS-records-do-I-point-my-site-to-" target="_self">DNS ya apuntan a DreamHost</a></li>
+<li><strong><a href="#servername" target="_self">El nombre del servidor</a></strong> —&nbsp;Sin embargo, siempre vas a poder usar el nombre de tu servidor para iniciar sesión, incluso si los DNS aún no estás apuntado a DreamHost.</li>
+</ul>
+<h3>Usar el nombre de tu sitio</h3>
+<p>Si has&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/215416227-C%C3%B3mo-agrego-un-dominio-" target="_self">agregado alojamiento</a> a tu dominio y los DNS del dominio están configurados para apuntar a tu alojamiento en DreamHost, puedes usar el nombre de tu dominio como el nombre de host FTP. Por ejemplo, si tu sitio web se llama <strong>https://www.example.com</strong> usas <strong>example.com</strong>.</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>No agregues http://www delante del dominio, ya que puede hacer que no se conecte.</p>
+</div>
+</div>
+<p>Así es como se debe ver en Filezilla:</p>
+<img class="solvvy-hidden" src="https://kbimages.dreamhosters.com/images/Filezilla_hostname.png" alt="Filezilla hostname" />
+<h3>Usar el nombre del servidor</h3>
+<p>Si has&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/215416227-C%C3%B3mo-agrego-un-dominio-" target="_self">agregado alojamiento</a>&nbsp;a tu sitio, pero aún no ha apuntado los DNS a DreamHost, aún puedes conectarte al servidor utilizando el nombre de host de este. Para saber en qué servidor se encuentra, inicia sesión en el panel de DreamHost y ve a&nbsp;<a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=billing.account&amp;" target="_blank" rel="noopener">Manage Account</a>.</p>
+<p>Desplázate hasta la sección titulada 'Dominios Alojados'. Allí podrás ver tu nombre de dominio. A la derecha, verás tu usuario y el servidor en el que está configurado:</p>
+<img class="img-border solvvy-hidden" src="https://kbimages.dreamhosters.com/images/2018-09_panel_ftp_credentials_01.png" alt="ServerName.fw.png" />
+<p>En la captura de pantalla anterior, el servidor se llama 'gervais'. Entonces, en este ejemplo, podrías usar el nombre de host <span class="code">gervais.dreamhost.com</span> para iniciar sesión.</p>
+<img class="solvvy-hidden" src="https://kbimages.dreamhosters.com/images/Filezilla_server_hostname.png" alt="Filezilla_server_hostname" />
+<h3>Nombres de host de servidores VPS, Dedicados y DreamPress</h3>
+<p>Si estás alojando tu sitio en un servidor&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/215280058-Generalidades-de-Servidor-Virtual-Privado-VPS-">VPS</a>, <a href="/hc/en-us/articles/215279658-Dedicated-server-overview">Dedicated</a>, o&nbsp;<a href="/hc/en-us/articles/214581158-DreamPress-overview">DreamPress</a>&nbsp;el nombre de host aparece de manera diferente en la columna 'Tipo de servidor'. Por ejemplo:</p>
+<table>
+<tbody>
+<tr>
+<th>Tipo de servidor</th>
+<th>Como aparece</th>
+<th>Nombre de host a utilizar</th>
+</tr>
+<tr>
+<td>VPS</td>
+<td>ps123456</td>
+<td>ps123456.dreamhostps.com</td>
+</tr>
+<tr>
+<td>Dedicated</td>
+<td>ds123456</td>
+<td>ds123456.dreamservers.com</td>
+</tr>
+<tr>
+<td>DreamPress</td>
+<td>dp-1234567890</td>
+<td>dp-1234567890.dreamhostps.com</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2><span id="usuario">Localizar el nombre de usuario</span></h2>
+<div class="solvvy-solution">
+<p>Puedes encontrar el nombre de usuario de FTP que se asocia al alojamiento de tu dominio en el panel. Simplemente inicia sesión y navega a&nbsp;<a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;" target="_blank" rel="noopener">Manage Domains</a>:</p>
+<p>Una vez allí, verás el nombre de usuario a la derecha del dominio en la columna 'Alojamiento web':</p>
+<img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-09_panel_ftp_credentials_02.png" alt="Domains Control Panel.fw.png" />
+<p><span style="font-weight: 400;">Así es como se debe ver en Filezilla:</span></p>
+<img src="https://kbimages.dreamhosters.com/images/Filezilla_username.png" alt="Filezilla username" />
+<h4><span id="contrasena">Restableciendo la contraseña de tu usuario FTP</span></h4>
+<p>Si no sabes la contraseña de tu usuario, puedes cambiarla en el panel. Inicia sesión y navega hasta&nbsp;<a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=users.users&amp;" target="_blank" rel="noopener">Manage Users</a>:</p>
+<ul>
+<li>Haz clic en el botón <strong>Edit</strong>&nbsp;a la derecha de tu nombre de usuario para editarlo. Se abre la siguiente página:</li>
+</ul>
+<img class="img-border solvvy-hidden" src="https://kbimages.dreamhosters.com/images/2018-09_panel_ftp_credentials_03.png" alt="Edit Password.fw.png" />
+<ul>
+<li>En esta página, puedes cambiar la contraseña. Actualízala y luego haz clic en el botón <strong>Save Changes</strong>&nbsp;en la parte inferior.</li>
+</ul>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Después de cambiar tu contraseña, espera hasta 20 minutos para que se actualice en el sistema DreamHost.</p>
+</div>
+</div>
+<p>Este es un ejemplo usando Filezilla:</p>
+<img src="https://kbimages.dreamhosters.com/images/Filezilla_password.png" alt="Filezilla password" /></div>
+<h2><span id="puerto">Escoger el número de puerto</span></h2>
+<div class="solvvy-solution">
+<p>Para conectarse, usa la siguiente configuración de número de puerto para tu tipo de usuario:</p>
+<p><strong>Usuario de FTP</strong> — conectate con el número de puerto <strong>21 <span class="red">(NO SE RECOMIENDA)</span></strong></p>
+<p><strong>Usuario SFTP o SHELL</strong> — conectate con el número de puerto <strong>22</strong></p>
+<p>Puede verificar si tu usuario es un usuario de FTP/SFTP/SHELL en tu panel en <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=users.users&amp;" target="_blank" rel="noopener">Manage Users</a>.</p>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Es muy recomendable que se utilice el puerto 22 con un usuario de SFTP o Shell, ya que ayuda a garantizar que tus datos estén seguros al conectarte. Visita la sección&nbsp;'<a href="#Setting_an_existing_user_to_SFTP" target="_self">Seguridad</a>'&nbsp;en la parte inferior para obtener detalles sobre cómo cambiar tu usuario de FTP a un usuario de SFTP.</p>
+</div>
+</div>
+<p>Este es un ejemplo usando Filezilla usando el puerto 22:</p>
+<img src="https://kbimages.dreamhosters.com/images/Filezilla_port.png" alt="Filezilla password" />
+<p>Finalmente, haz clic en <strong>Quickconnect</strong>&nbsp;para iniciar sesión en tu servidor:</p>
+<img src="https://kbimages.dreamhosters.com/images/Filezilla_connect.png" alt="Filezilla connect" /></div>
+<h2><span id="donde-coloco-mis-archivos">¿Dónde coloco mis archivos?</span></h2>
+<div class="solvvy-solution">
+<p>Una vez que hayas iniciado sesión verás varios archivos y carpetas. Visita el siguiente artículo para obtener instrucciones sobre dónde subir los archivos de tu sitio:</p>
+<ul>
+<li><a href="/hc/en-us/articles/214920778-Where-do-I-put-my-files-once-connected-via-FTP-" target="_self">¿Dónde subo los archivos de mi sitio?</a></li>
+</ul>
+</div>
+<h2><span id="seguridad">Seguridad FTP</span></h2>
+<div class="solvvy-solution">
+<p>Desafortunadamente, FTP (puerto 21) no se considera un protocolo "seguro". Esto significa que los datos entrantes/salientes no están encriptados y están en texto sin formato. Debido a que los datos no están encriptados, una persona excepcionalmente astuta podría interceptar lo que estás enviando.</p>
+<p>Por este motivo, se recomienda que crees un usuario&nbsp;<a href="#Setting_an_existing_user_to_SFTP">SFTP</a> o&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/216385837-C%C3%B3mo-crear-un-usuario-con-acceso-Shell-SSH-">Shell</a> y solo uses el puerto 22 al conectarte.</p>
+<h3><span id="diferencia-entre-ftp-y-sftp">Diferencia entre FTP y SFTP</span></h3>
+<p>SFTP es un protocolo de red diseñado para proporcionar una transferencia segura de archivos a través del protocolo de shell seguro (<a href="https://help.dreamhost.com/hc/es/articles/216041267-Generalidades-de-SSH" target="_self">SSH</a>)&nbsp;SFTP NO es solo una ejecución FTP a través de SSH, sino un nuevo protocolo. A menudo se denomina FTP seguro porque utiliza una capa de transporte cifrada.</p>
+<h3><span id="configuracion">Configuración de un usuario FTP existente a un usuario SFTP</span></h3>
+<p>Ve a la página&nbsp;<a class="panel-link solvvy-hidden" href="https://panel.dreamhost.com/index.cgi?tree=users.users&amp;" target="_blank" rel="noopener">Manage Users</a>.&nbsp;A la derecha de tu nombre de usuario, verás si es un usuario de FTP, SFTP o Shell:</p>
+<img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-09_panel_ftp_credentials_04.png" alt="Change FTP user" />
+<ul>
+<li>Haz clic en el botón <strong>Edit</strong>&nbsp;a la derecha del usuario.</li>
+</ul>
+<img class="img-border solvvy-hidden" src="https://kbimages.dreamhosters.com/images/2018-09_panel_ftp_credentials_05.png" alt="Change FTP user" />
+<ul>
+<li>Elije el botón de opción para 'Usuario SFTP', luego haz clic en el botón <strong>Save Changes</strong>.</li>
+<li>Espera unos 20 minutos a que se actualicen los nuevos ajustes. A continuación, podrás iniciar sesión en tu servidor utilizando el puerto 22.</li>
+</ul>
+<h3><span id="creando">Creando un usuario SFTP al editar un dominio</span></h3>
+<p>Cuando estás editando o agregando un nuevo dominio y agregas un nuevo usuario durante ese proceso, el valor predeterminado es SFTP automáticamente y FTP se deshabilita.</p>
+<p><a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=users.users&amp;" target="_blank" rel="noopener">Manage Users</a>&nbsp;<span style="font-weight: 400;">al editar el usuario:</span></p>
+<img class="img-border solvvy-hidden" src="https://kbimages.dreamhosters.com/images/2018-09_panel_ftp_credentials_06.png" alt="FTP User.fw.png" />
+<h3><span id="deshabilitar">Deshabilitar FTP en un servidor VPS</span></h3>
+<p>Si tienes un&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/215280058-Generalidades-de-Servidor-Virtual-Privado-VPS-">VPS</a>,&nbsp;puedes desactivar completamente el FTP para asegurar aún más tu servidor. Navega a la página de&nbsp;<a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=vps.dashboard&amp;" target="_blank" rel="noopener">VPS</a>.&nbsp;A la derecha del servidor, haz clic en el botón <strong>Configurar</strong>.</p>
+<img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-09_panel_ftp_credentials_07.png" alt="Disable FTP" />
+<p>Haz clic en el menú desplegable a la derecha de 'Servidor FTP' y selecciona 'Inactivo'. Por último, haz clic en <strong>Save ps123456's settings</strong> en la parte inferior para guardar.</p>
+<h3><span id="notas">Notas sobre el uso de SFTP</span></h3>
+<p>Cuando inicies sesión en tu cuenta utilizando SFTP, es posible que notes algunas diferencias con respecto a lo que normalmente verías al iniciar sesión con un usuario de FTP normal.</p>
+<ul>
+<li>Si deseas asegurarte de que otros usuarios (incluso los de tu mismo grupo) no puedan acceder al directorio de inicio de un usuario en particular, puedes habilitar la opción de&nbsp;"<a href="/hc/en-us/articles/215282088-How-do-I-set-up-Enhanced-User-Security-" target="_self">¿Seguridad mejorada?</a>"&nbsp;para ese usuario.</li>
+</ul>
+<ul>
+<li>Vas a observar que también puedes acceder a otros directorios que se encuentran sobre el directorio /home. Eso es normal, ya que todos los usuarios tienen algún nivel de acceso a esos directorios. Sin embargo, como usuario normal, no podrás ver los archivos a los que no tienes acceso ni puedes dañar el servidor.</li>
+</ul>
+<ul>
+<li><strong><span id="archivos-directorios-ocultos">Archivos/Directorios ocultos</span></strong>: En un sistema Unix, los archivos ocultos son aquellos que comienzan con un punto (.) en su nombre. Al igual que con los clientes FTP, los clientes SFTP generalmente tienen la opción de "habilitar/deshabilitar la visualización de archivos ocultos". Si está habilitada, podrás ver estos archivos/directorios (si tu usuario tiene permisos para hacerlo). Si tienes problemas para eliminar un directorio (suponiendo que tiene los permisos correctos para eliminar) y te da un error que dice "el directorio no está vacío", es posible que haya archivos/directorios ocultos en ese directorio que tu cliente FTP no está permitiendote ver. Verifica las opciones de tu programa antes de continuar. Si tienes la opción habilitada para ver los archivos/directorios ocultos y aún no puedes eliminar un directorio, pónte en contacto con el equipo de soporte para obtener ayuda. Provee a soporte con el nombre de servidor, la cuenta de usuario y la ruta completa del directorio que estás tratando de eliminar para que puedan investigar. Visita el&nbsp;<a href="/hc/en-us/articles/215613037-How-do-I-show-hidden-files-on-my-FTP-client-" target="_self">Cómo muestro los archivos ocultos?</a>&nbsp;Artículo para más información.</li>
+</ul>
+</div>
+<h2><span id="host_key_is_unknown">Advertencia: La llave de host del servidor es desconocida</span></h2>
+<div class="solvvy-solution">
+<p>Cuando inicies sesión en un servidor DreamHost, es posible que veas la siguiente advertencia:</p>
+<dl>
+<dd>
+<p><strong>La clave de host del servidor es desconocida. No hay garantía de que el servidor sea el computador que cree que es.</strong></p>
+<p><strong>The server's host key is unknown. You have no guarantee that the server is the computer you think it is.</strong></p>
+</dd>
+</dl>
+<p>Visita el siguiente artículo para obtener más información sobre cómo confirmar los valores clave que estás viendo e iniciar sesión en tu servidor.</p>
+<ul>
+<li><a href="/hc/en-us/articles/360004634231-The-server-s-host-key-is-unknown" target="_self">La clave de host del servidor es desconocida</a></li>
+</ul>
+</div>
+<h2><span id="ver-tambien">Ver también</span></h2>
+<div class="solvvy-hidden">
+<h3>Enlaces internos</h3>
+<ul>
+<li><a href="/hc/en-us/articles/215613107-List-of-FTP-client-software" target="_self">Lista de clientes FTP</a></li>
+<li><a href="/hc/en-us/articles/214920778-Where-do-I-put-my-files-once-connected-via-FTP-" target="_self">¿Dónde pongo mis archivos una vez conectados a través de FTP?</a></li>
+<li><a href="/hc/en-us/articles/215613037-How-do-I-show-hidden-files-on-my-FTP-client-" target="_self">¿Cómo muestro los archivos ocultos en mi cliente FTP?</a></li>
+<li><a href="/hc/en-us/articles/216655867-WinSCP-Uploading-to-your-server" target="_self">WinSCP - Subir a su servidor</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/215613657#Web_FTP" target="_self">Cliente de panel WebFTP</a></li>
+</ul>
+<h3>Enlaces externos</h3>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/File_Transfer_Protocol" target="_self">FTP en Wikipedia</a></li>
+<li><a href="https://en.wikipedia.org/wiki/SSH_File_Transfer_Protocol" target="_self">SFTP en Wikipedia</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="clearer">&nbsp;</div>

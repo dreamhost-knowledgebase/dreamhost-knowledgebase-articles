@@ -1,0 +1,107 @@
+<h2>Generalidades</h2>
+<div class="solvvy-solution">
+<p>Es posible que aunque hayas agregado el&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/214200688-php-ini-overview" target="_self">archivo phprc</a>,&nbsp;correctamente, puede que te des cuentas de los cambios no se vean aplicados en línea. Es posible que debas eliminar todos los procesos PHP en ejecución para garantizar que la configuración nueva surta efecto.</p>
+<p>A continuación se describen los pasos para impulsar los cambios que realices en el archivo phprc.</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Estas instrucciones se aplican a sitios que no son de DreamPress. Si estás intentando actualizar la configuración de PHP en un sitio de DreamPress, consulta el siguiente artículo:</p>
+<ul>
+<li><a href="/hc/en-us/articles/115002582932-Customizing-your-PHP-settings-with-DreamPress" target="_self">Personalizar la configuración PHP en DreamPress</a></li>
+</ul>
+</div>
+</div>
+</div>
+<h2>Actualizar tu archivo phprc file por SSH</h2>
+<div class="solvvy-solution">
+<ol>
+<ol>
+<li>Conectate a tu servidor usando&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/216041267-Generalidades-de-SSH" target="_self">SSH</a>.</li>
+<li>Una vez conectado, ejecuta el siguiente comando teniendo en cuenta la versión PHP de tu sitio, para eliminar los procesos PHP que se estén ejecutando en el momento:</li>
+</ol>
+</ol>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>En los ejemplos a continuación, reemplaza 'usuarioshell'” por tu&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/216385837-C%C3%B3mo-crear-un-usuario-con-acceso-Shell-SSH-" target="_self">usuario SSH</a>&nbsp;todo en minúsculas.</p>
+</div>
+</div>
+<p><strong>For PHP 5.6:</strong></p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">killall -9 php56.cgi -u usuarioshell</span></pre>
+</div>
+<p><strong>For PHP 7.0:</strong></p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">killall -9 php70.cgi -u usuarioshell</span></pre>
+</div>
+<p><strong>For PHP 7.1:</strong></p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">killall -9 php71.cgi -u usuarioshell</span></pre>
+</div>
+<p><strong>For PHP 7.2:</strong></p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">killall -9 php72.cgi -u usuarioshell</span></pre>
+</div>
+<p><strong>For PHP 7.3:</strong></p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">killall -9 php73.cgi -u usuarioshell</span></pre>
+</div>
+<p>Eliminar los procesos PHP de esta manera actualiza tu archivo phprc.</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Si después de ejecutar el comando killall ves <strong>php56.cgi: no process found</strong> (no se encontró ningún proceso), esto significa que no hay procesos PHP en ejecución. Realiza una&nbsp;<a href="/hc/en-us/articles/216456827#Force_page_to_reload" target="_self">actualización completa en su navegador</a>&nbsp;para ver tu página phpinfo.php actualizada. Ahora deberías ver que tu configuración se ha actualizado.</p>
+</div>
+</div>
+</div>
+<h2>Actualizando el archivo phprc en el panel</h2>
+<div class="solvvy-solution">
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Para usar esta opción, tu dominio debe estar&nbsp;<a href="https://help.dreamhost.com/hc/en-us/sections/203272388-Adding-Managing-Domains" target="_self">Completamente Alojado</a>.</p>
+</div>
+</div>
+<p>También puedes actualizar tu archivo phprc guardando la configuración de tu dominio en el panel.</p>
+<ol>
+<li>Navega a la página&nbsp;<a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;" target="_blank" rel="noopener">Manage Domains</a>.</li>
+<li>Haz click en el botón <strong>Edit</strong> a la derecha de tu dominio en la columna 'Web Hosting'.<br />
+<ul>
+<li><em>Se abre la página de configuración 'Manage Domains':</em></li>
+</ul>
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/change-settings.png" /></dd>
+</dl>
+</li>
+<li>En la primera sección, haz click en el botón <strong>Change settings</strong>.<br />
+<ul>
+<li><em>Esto actualizará el archivo phprc en 10 minutos.</em></li>
+</ul>
+</li>
+</ol>
+</div>
+<h2>Actualización del archivo phprc en un servidor Nginx</h2>
+<div class="solvvy-solution">
+<p>Si tu servidor ejecuta Nginx, puedes actualizar los procesos PHP al <a href="/hc/en-us/articles/214200748#Update_your_phprc_file_in_your_panel" target="_self">guardar tu configuración en el panel como se menciona anteriormente</a></p>
+<p>Si estás en un&nbsp;<a href="/hc/en-us/articles/215279658-Dedicated-server-overview" target="_self">Servidor Dedicado</a> con un&nbsp;<a href="/hc/en-us/articles/215945467-How-do-I-add-users-to-a-Dedicated-server-" target="_self">usuario administrador</a>,&nbsp;también puedes volver a cargar y reiniciar Nginx. Consulta el siguiente artículo para más instrucciones:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/216454967-Como-recargar-y-reiniciar-Nginx-Solo-para-servidores-dedicados-" target="_self">Cómo volver a cargar y reiniciar Nginx (solo para servidores Dedicados)</a></li>
+</ul>
+</div>
+<h2>Sitios WordPress</h2>
+<div class="solvvy-solution">
+<p>Si has hecho algún ajuste a la configuración de PHP y tu sitio de WordPress no muestra el nuevo valor, verifica el archivo wp-config.php. Puedes ver una línea como la siguiente:</p>
+<div class="preboxcontainer">
+<pre class="prebox">define( 'WP_MEMORY_LIMIT', '128M' );</pre>
+</div>
+<p>Asegúrate de que cualquier configuración coincida con lo que has agregado al archivo phprc.</p>
+</div>
+<h2>Ver también</h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="/hc/en-us/articles/214200688-php-ini-overview" target="_self">Generalidades sobre php.ini</a></li>
+<li><a href="/hc/en-us/articles/214205508-Updating-PHP-overview-" target="_self">Generalidades sobre actualización de PHP</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/214894037--C%C3%B3mo-creo-un-archivo-phprc-a-trav%C3%A9s-de-FTP-" target="_self">¿Cómo crear un archivo phprc por FTP?</a></li>
+<li><a href="/hc/en-us/articles/214200668-How-do-I-create-a-phprc-file-via-SSH-" target="_self">¿Cómo crear un archivo phprc por SSH?</a></li>
+</ul>
+</div>

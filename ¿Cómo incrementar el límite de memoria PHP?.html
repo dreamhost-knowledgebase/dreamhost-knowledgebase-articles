@@ -1,0 +1,93 @@
+<h2>Generalidades</h2>
+<div class="solvvy-solution">
+<p>Cada instalación de PHP viene con una configuración predeterminada las cuales se ajustan a las necesidades de la mayoría de los sitios web. De vez en cuando , las necesidades de un sitio web requieren un ajuste en las configuraciones del PHP. Por ejemplo, puede que tu sitio necesite incrementar el límite de memoria para permitir que un proceso llegue a término. En ese caso, debes crear un archivo&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/214200688-php-ini-overview">php.ini (phprc)</a>&nbsp;y actualizar dicho valor.</p>
+</div>
+<h2>El archivo phprc en DreamHost</h2>
+<div class="solvvy-solution">
+<p>El término estándar para un archivo de configuración PHP es php.ini. Sin embargo, DreamHost aplica el término "phprc" en su lugar. Este archivo funciona de la misma manera – solo el nombre es diferente. En este artículo, sólo vamos a usar el término phprc.</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Algunas variables (particularmente, el límite de memoria: memory_limit, tamaño máximo de subida por post post_max_size y tamaño máximo de archivo upload_max_filesize) están sujetas a limitaciones internas; hacer un incremento significativamente mayor a los valores predeterminados dará como resultado un mal funcionamiento y ocasionará inconvenientes en tu sitio web.</p>
+</div>
+</div>
+</div>
+<h2>¿Por qué incrementar el límite de memoria PHP?</h2>
+<div class="solvvy-solution">
+<p>PHP permite que se use una cantidad predeterminada de memoria al procesar un sitio web. A veces, un sitio web necesita más que la cantidad predeterminada de memoria. Si ese es el caso, puedes aumentarlo para satisfacer las necesidades de tu sitio.</p>
+<p>También puede recibir un error en su sitio que indica que se ha alcanzado el límite de memoria. Puede aparecer así:</p>
+<div class="preboxcontainer">
+<pre class="prebox">Fatal error: Allowed memory size of 94371840 bytes exhausted (tried to allocate 5072 bytes)</pre>
+</div>
+<p>Este error significa que tu sitio necesita más memoria de la que está disponible actualmente. Si ves un error como este, intenta aumentar el límite de memoria en 10 MB. Luego continúa ajustando según sea necesario.</p>
+</div>
+<h2>Incrementar el límite de memoria PHP</h2>
+<div class="solvvy-solution">
+<p>El límite de memoria predeterminado es 90M y esto suele ser más que suficiente para la mayoría de las necesidades. Si necesitas aumentar este límite, debes crear un archivo phprc. Consulta los siguientes artículos para obtener instrucciones sobre cómo crear un archivo phprc.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/214894037--C%C3%B3mo-creo-un-archivo-phprc-a-trav%C3%A9s-de-FTP-" target="_self">¿Cómo crear un archivo phprc por FTP?</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214200668-How-do-I-create-a-phprc-file-via-SSH-" target="_self">¿Cómo crear un archivo phprc por SSH?</a></li>
+</ul>
+<p>Si el archivo ya existe, revisa los siguientes artículos para obtener instrucciones sobre cómo actualizarlo (dependiendo de si estás utilizando un cliente FTP o SSH):</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/115000098272-Crear-y-editar-un-archivo-v%C3%ADa-FTP" target="_self">Crear y editar un archivo por FTP</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/115006413028-Crear-y-editar-un-archivo-via-SSH" target="_self">Crear y editar un archivo por SSH</a></li>
+</ul>
+<p>Si deseas aumentar este límite, agrega la siguiente línea:</p>
+<div class="preboxcontainer">
+<pre class="prebox">memory_limit = 128M</pre>
+</div>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Si te das cuenta de que está aumentando la memoria en gran medida, es hora de considerar abandonar el alojamiento compartido, ya que tu sitio web tiene mayores necesidades de las que el alojamiento compartido puede proporcionar de manera confiable.</p>
+</div>
+</div>
+</div>
+<h2>Pasos extra para sitios WordPress</h2>
+<div class="solvvy-solution">
+<p>Si estás ejecutando un sitio de WordPress, la configuración en el archivo phprc puede no tener efecto ya que WordPress lo anula en su archivo wp-config.php. Para solucionar esto, solo actualiza el archivo wp-config.php con el límite de memoria específico. Por ejemplo:</p>
+<ol>
+<li>Conectate a tu sitio WordPress ya sea por&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/115000675027-Generalidades-sobre-FTP-y-credenciales">FTP</a> o&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/216041267-Generalidades-de-SSH" target="_self">SSH</a>.</li>
+<li>Asegúrate de estar en el directorio de tu sitio. Verás el archivo wp-config.php aquí.</li>
+<li>Edita el archivo (usando&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/115000098272-Crear-y-editar-un-archivo-v%C3%ADa-FTP">FTP</a> o&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/115006413028-Crear-y-editar-un-archivo-via-SSH">SSH</a>)&nbsp;para agregar las siguientes líneas. Asegúrate de agregarlos antes de la inclusión 'wp-settings.php'. Por ejemplo:
+<div class="preboxcontainer">
+<pre class="prebox">define( 'WP_MEMORY_LIMIT', '128M' );
+define( 'WP_MAX_MEMORY_LIMIT', '128M' );
+
+/** Sets up WordPress vars and included files. */
+require_once(ABSPATH . 'wp-settings.php');</pre>
+</div>
+</li>
+</ol>
+<p>Revisa el siguiente artículo para más información.</p>
+<ul>
+<li><a href="https://codex.wordpress.org/Editing_wp-config.php#Increasing_memory_allocated_to_PHP" target="_self">Incrementar la memoria asignada a PHP</a></li>
+</ul>
+</div>
+<h2>Elimina todos los procesos de php en ejecución</h2>
+<div class="solvvy-solution">
+<p>Asegúrate de&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/214200748-Mi-archivo-phprc-no-se-actualiza" target="_self">eliminar los procesos php en ejecución</a>&nbsp;para asegurarte de que la nueva configuración surta efecto.</p>
+</div>
+<h2>Confirma tus cambios</h2>
+<div class="solvvy-solution">
+<p>Después de editar el archivo y eliminar todos los procesos PHP, debes verificar para confirmar que los valores se hayan actualizado. Esto lo puedes hacer al crear un archivo&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/214895287-Ver-la-versi%C3%B3n-y-la-configuraci%C3%B3n-de-PHP-de-tu-sitio">phpinfo.php file</a>.</p>
+<p>Si no ves que tus cambios se han actualizado, intenta eliminar los procesos PHP nuevamente:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/214200748-Mi-archivo-phprc-no-se-actualiza" target="_self">Mi archivo phprc no se actualiza</a></li>
+</ul>
+</div>
+<h2>Ver también</h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214200688-php-ini-overview" target="_self">Generalidades sobre php.ini</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/216041267-Generalidades-de-SSH" target="_self">Generalidades de SSH</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214199378-How-do-I-enable-PHP-error-logging-" target="_self">¿Cómo habilito el registro de errores de PHP?</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/214200558--Cómo-aumentar-el-límite-de-carga-de-PHP-" target="_self">¿Cómo incrementar el límite de carga de PHP?</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214893957-How-do-I-enable-PHP-extensions-and-loaders-" target="_self">¿Cómo habilitar extensiones y cargadores de PHP?</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214893987-How-do-I-make-global-phprc-changes-on-a-Dedicated-server-" target="_self">¿Cómo hacer cambios en el archivo phprc a nivel global en un servidor dedicado?</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/214200748-Mi-archivo-phprc-no-se-actualiza" target="_self">Mi archivo phprc no se actualiza</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214894197-Where-can-I-view-PHP-errors-and-warnings-" target="_self">¿Dónde puedo ver alertas y errores PHP?</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/214200768-No-puedo-modificar-la-información-del-header" target="_self">No puedo modificar información en el header</a></li>
+</ul>
+</div>

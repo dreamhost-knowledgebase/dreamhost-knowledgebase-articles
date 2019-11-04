@@ -1,0 +1,104 @@
+<h2>Generalidades</h2>
+<div class="solvvy-solution">
+<p>Este artículo describe cómo migrar una instalación de WordPress entre dos dominios alojados en DreamHost. Los dominios que se usan como ejemplo en estas instrucciones son:</p>
+<ul>
+<li>oldsite.example.com</li>
+</ul>
+<dl>
+<dd><em><strong>and</strong></em></dd>
+</dl>
+<ul>
+<li>newsite.example.com</li>
+</ul>
+</div>
+<h2>Paso 1 – Haz una copia de seguridad de tu información</h2>
+<div class="solvvy-solution">
+<p>Siempre debes hacer una copia de seguridad de tus datos antes de realizar cualquier cambio en tu sitio. Consulta el siguiente artículo para obtener instrucciones sobre cómo hacer una copia de seguridad de los archivos, la base de datos y el correo electrónico de tu sitio web:</p>
+<ul>
+<li><a href="/hc/en-us/articles/215768237-How-can-I-manually-backup-my-data-" target="_self">Técnicas de respaldo manual</a></li>
+</ul>
+</div>
+<h2>Paso 2 – Agrega alojamiento para el nuevo sitio</h2>
+<div class="solvvy-solution">
+<p>Agrega el nuevo dominio (newsite.example.com) a tu panel. Asegúrate de configurarlo como un dominio completamente alojado (Fully Hosted):</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/215416227-C%C3%B3mo-agrego-un-dominio-" target="_self">Agregar un Dominio</a></li>
+</ul>
+</div>
+<h2>Paso 3 –&nbsp;Crea una nueva base de datos</h2>
+<div class="solvvy-solution">
+<p>Navega a la página&nbsp;<a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=advanced.mysql" target="_blank" rel="noopener">MySQL Databases</a>&nbsp;y crea un nuevo nombre de host MySQL y una base de datos en limpio.</p>
+<ul>
+<li><a href="/hc/en-us/articles/221691727-Creating-a-MySQL-database" target="_self">Crear una nueva base de datos</a></li>
+</ul>
+</div>
+<h2>Paso 4 – Transfiere tu instalación de WordPress</h2>
+<div class="solvvy-solution">
+<p>Transfiere los archivos de WordPress que respaldaste en el primer paso a tu nuevo dominio. Si tenías direcciones de correo electrónico en el sitio anterior (oldsite.example.com), asegúrate de crear las mismas direcciones en tu nuevo dominio. Luego puedes transferir esos correos electrónicos.</p>
+<ol>
+<li>Importa tus archivos web usando el siguiente artículo:<br />
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/115000675027-Generalidades-sobre-FTP-y-credenciales">FTP</a></li>
+</ul>
+</li>
+<li>Importa tu base de datos usando el artículo Migrar MySQL:<br />
+<ul>
+<li><a href="/hc/en-us/articles/215039938-How-do-I-migrate-my-database-to-DreamHost-" target="_self">Migrar MySQL</a></li>
+</ul>
+</li>
+<li>Transfiere correo electrónico de tu antiguo dominio:<br />
+<ul>
+<li><a href="/hc/en-us/articles/215029918-How-do-I-add-an-email-address-" target="_self">Configuración de correo electrónico</a>:&nbsp;Usa este artículo para configurar tus direcciones de correo electrónico en el nuevo dominio.</li>
+<li><a href="/hc/en-us/articles/215730827-How-do-I-import-my-old-host-s-email-to-my-DreamHost-mail-server-" target="_self">¿Cómo importar correo electrónico?</a>: Este artículo explica cómo importar tu correo electrónico al nuevo dominio.</li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/214918038-Generalidades-de-las-configuraciones-del-cliente-de-correo" target="_self">Configuración del cliente de correo electrónico</a>:&nbsp;Este artículo es una guía de las diferentes configuraciones de correo electrónico que puedes usar.</li>
+</ul>
+</li>
+</ol>
+</div>
+<h2>Paso 5 – Edita el nuevo archivo wp-config.php</h2>
+<div class="solvvy-solution">
+<p>Accede a tu nuevo sitio (newsite.example.com) vía&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/115000675027-Generalidades-sobre-FTP-y-credenciales">FTP</a> o&nbsp; <a href="https://help.dreamhost.com/hc/es/articles/216041267-Generalidades-de-SSH">SSH</a>&nbsp;y abre el archivo wp-config.php (dentro del directorio web de tu sitio). Verás el siguiente contenido:</p>
+<div class="preboxcontainer">
+<pre class="prebox">define('DB_NAME', ‘exampledatabase’);
+define('DB_USER', 'exampledbuser');
+define('DB_PASSWORD', ‘database password here’);
+define('DB_HOST', 'mysql.example.com');
+define('DB_CHARSET', 'utf8');
+define('DB_COLLATE', '');
+
+$table_prefix = 'wp_2hdy121d_';
+</pre>
+</div>
+<p>Actualiza lo siguiente:</p>
+<ul>
+<li>Database name (Nombre de la base de datos)</li>
+<li>Database user (Usuario de la base de datos)</li>
+<li>Database user password (Contraseña del usuario)</li>
+<li>Hostname (Nombre del host)</li>
+<li>Reemplaza el valor existente de $table_prefix de WordPress con el&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/214693178#paso-cinco" target="_self">valor importado de</a> $table_prefix.</li>
+</ul>
+</div>
+<h2>Paso 6 – Actualiza todas las URL en la base de datos</h2>
+<div class="solvvy-solution">
+<p>Ahora debes actualizar todas las URL en la base de datos. Consulta el siguiente artículo para ver varias opciones sobre cómo lograr esto:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/360003304711-Cambiar-todas-las-URL-de-las-bases-de-datos-de-WordPress" target="_self">Cambiar todas las URL en tu base de datos de WordPress</a></li>
+</ul>
+<p>Cuando actualices todas las URL, también se actualizarán las URL de HOME (INICIO) y SITE URL (SITIO).</p>
+<p>En este punto, tu sitio web debería cargar normalmente en el nuevo nombre de dominio.</p>
+</div>
+<h2>Resumen</h2>
+<div class="solvvy-solution">
+<p>Una vez que se completan los pasos anteriores, el nuevo sitio se ve exactamente igual a como aparecía en su antiguo nombre de dominio.</p>
+</div>
+<h2>Ver también</h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/360001310966-C%C3%B3mo-iniciar-sesi%C3%B3n-en-tu-sitio-WordPress" target="_self">¿Cómo acceder a tu sitio WordPress?</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/215525287-Generalidades-sobre-WordPress" target="_self">Generalidades sobre WordPress</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/214693178-C%C3%B3mo-migrar-manualmente-WordPress-a-DreamHost" target="_self">¿Cómo migrar manualmente WordPress a DreamHost?</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/215412347-Actualizar-tus-DNS-después-de-que-tu-sitio-de-WordPress-se-haya-migrado-a-DreamHost" target="_self">Actualiza los DNS después de que tu sitio de WordPress se haya migrado a DreamHost</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/214828548--Cómo-instalo-WordPress-antes-de-que-mis-DNS-apunten-a-DreamHost-" target="_self">¿Cómo instalo WordPress antes de que mis DNS apunten a DreamHost?</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/215525277-C%C3%B3mo-instalar-WordPress-usando-el-Instalador-de-un-clic" target="_self">¿Cómo instalar WordPress usando el instalador de un clic?</a></li>
+</ul>
+</div>

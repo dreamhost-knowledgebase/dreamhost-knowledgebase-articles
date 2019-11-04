@@ -1,0 +1,126 @@
+<h2>Generalidades</h2>
+<div class="solvvy-solution">
+<p>Se recomienda usar virtualenv para instalar Django en los Servidores Compartidos y Privados de DreamHost ya que tu usuario no tiene acceso para hacer instalaciones en directorios compartidos. Al usar virtualenv, creas un entorno aislado con su propia instalación de directorios al cual tu usuario tiene aceso total. Esto te permite instalar una versión personalizada de Python y sus diferentes paquetes, los cuales no están conectados a la instalación global del servidor. Esto sirve para evitar cualquier incoveniente con respecto a los permisos al instalar el software.</p>
+</div>
+<h2><span id="Installing_pip">pip y virtualenv</span></h2>
+<div class="solvvy-solution">
+<p>Revisa los enlaces a continuación para más detalles sobre la instalación usando pip y virtualenv dependiendo de la versión de Python que estés usando:</p>
+<h3>Python 2</h3>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/215489338-Instalar-y-usar-virtualenv-con-Python-2" target="_self">Instalar y usar virtualenv con Python 2</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115000221112-Using-pip-to-install-Python-2-modules" target="_self">Usar pip para instalar módulos de Python 2</a></li>
+</ul>
+<h3>Python 3</h3>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/115000695551-Instalar-y-usar-virtualenv-con-Python-3" target="_self">Instalar y usar virtualenv con Python 3</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/115000699011-Usar-pip3-para-instalar-m%C3%B3dulos-de-Python3" target="_self">Usar pip3 para instalar módulos de Python3</a></li>
+</ul>
+</div>
+<h2>Paso 1 — Instalar una versión personalizada de Python para tu virtualenv</h2>
+<div class="solvvy-solution">
+<p>Si planeas usar Django con un nuevo entorno virtual, lo más probable es que quieras usar una versión específica de Python. Revisa el enlace a continuación (dependiendo de tu versión de Python) para encontrar la información sobre cómo instalar una versión personalizada de Python y crear un entorno virtual, utilizando dicha version personalizada:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115000218612-Installing-a-custom-version-of-Python-2" target="_self">Instalar una versión personalizada de Python 2</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/115000702772-Instalar-una-versi%C3%B3n-personalizada-de-Python-3" target="_self">Instalar una versión personalizada de Python 3</a></li>
+</ul>
+</div>
+<h2>Paso 2 — Crear un entorno virtual</h2>
+<div class="solvvy-solution">
+<p>Revisa el siguiente artículo (dependiendo de tu versión de Python) para crear un entorno virtual:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/215489338-Instalar-y-usar-virtualenv-con-Python-2" target="_self">Instalar y usar virtualenv de Python con la versión de Python 2</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/115000695551-Instalar-y-usar-virtualenv-con-Python-3" target="_self">Instalar y usar virtualenv de Python con la versión de Python 3</a></li>
+</ul>
+<p>Después de haber creado y activado el proyecto en el entorno virtual, puedes proceder a instalar Django dentro del mismo entorno aislado.</p>
+</div>
+<h2><span id="Setting_up_your_Django_site_in_virtualenv">Paso 3 — Montando tu sitio Django en virtualenv</span></h2>
+<div class="solvvy-solution">
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Para ejecutar los comandos que te damos en este artículo, debes acceder a tu servidor via SSH con tu usuario Shell. Revisa los siguentes artículos para mas información:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/216041267-Generalidades-de-SSH" target="_self">Generalidades de SSH</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/216385837-C%C3%B3mo-crear-un-usuario-con-acceso-Shell-SSH-" target="_self">Cómo crear un usuario con acceso Shell (SSH)</a></li>
+</ul>
+</div>
+</div>
+<p>Instala una versión personalizada de Django y cualquier otro paquete requirido por tu sitio web usando pip (por ejemplo, mysqlclient si vas a usar una base de datos con MySQL):</p>
+<h3>Using Python 2</h3>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">(my_project) [server]$ </span><span class="command">pip install Django</span>
+<span class="server">(my_project) [server]$ </span><span class="command">pip install mysqlclient</span></pre>
+</div>
+<h3>Using Python 3</h3>
+<p>Si lo estás instalando en un entorno Python3, usa este comando:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">(my_project) [server]$ </span><span class="command">pip3 install Django</span>
+<span class="server">(my_project) [server]$ </span><span class="command">pip3 install mysqlclient</span></pre>
+</div>
+</div>
+<h2>Instalar versión 2+ de Django</h2>
+<div class="solvvy-solution">
+<p>Si quieres instalar Django&nbsp;<a href="https://www.djangoproject.com/download/">version 2.0.3</a>, debes usar&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/115000702772-Instalar-una-versi%C3%B3n-personalizada-de-Python-3">Python 3</a>.&nbsp;Si intentas instalarlo en un entorno de Python 2, verás los siguientes errores:</p>
+<div class="preboxcontainer">
+<pre class="prebox"> Could not find a version that satisfies the requirement Django==2.0.3 
+ (from versions: 1.1.3, 1.1.4, 1.2, 1.2.1, 1.2.2, 1.2.3, 1.2.4, 1.2.5, 1.2.6, 1.2.7, 1.3, 1.3.1, 
+ 1.3.2, 1.3.3, 1.3.4, 1.3.5, 1.3.6, 1.3.7, 1.4, 1.4.1, 1.4.2, 1.4.3, 1.4.4, 1.4.5, 1.4.6, 1.4.7, 1.4.8, 
+ 1.4.9, 1.4.10, 1.4.11, 1.4.12, 1.4.13, 1.4.14, 1.4.15, 1.4.16, 1.4.17, 1.4.18, 1.4.19, 1.4.20, 
+ 1.4.21, 1.4.22, 1.5, 1.5.1, 1.5.2, 1.5.3, 1.5.4, 1.5.5, 1.5.6, 1.5.7, 1.5.8, 1.5.9, 1.5.10, 1.5.11, 
+ 1.5.12, 1.6, 1.6.1, 1.6.2, 1.6.3, 1.6.4, 1.6.5, 1.6.6, 1.6.7, 1.6.8, 1.6.9, 1.6.10, 1.6.11, 1.7, 
+ 1.7.1, 1.7.2, 1.7.3, 1.7.4, 1.7.5, 1.7.6, 1.7.7, 1.7.8, 1.7.9, 1.7.10, 1.7.11, 1.8a1, 1.8b1, 1.8b2, 
+ 1.8rc1, 1.8, 1.8.1, 1.8.2, 1.8.3, 1.8.4, 1.8.5, 1.8.6, 1.8.7, 1.8.8, 1.8.9, 1.8.10, 1.8.11, 1.8.12, 
+ 1.8.13, 1.8.14, 1.8.15, 1.8.16, 1.8.17, 1.8.18, 1.8.19, 1.9a1, 1.9b1, 1.9rc1, 1.9rc2, 1.9, 1.9.1, 
+ 1.9.2, 1.9.3, 1.9.4, 1.9.5, 1.9.6, 1.9.7, 1.9.8, 1.9.9, 1.9.10, 1.9.11, 1.9.12, 1.9.13, 1.10a1, 
+ 1.10b1, 1.10rc1, 1.10, 1.10.1, 1.10.2, 1.10.3, 1.10.4, 1.10.5, 1.10.6, 1.10.7, 1.10.8, 1.11a1, 
+ 1.11b1, 1.11rc1, 1.11, 1.11.1, 1.11.2, 1.11.3, 1.11.4, 1.11.5, 1.11.6, 1.11.7, 1.11.8, 1.11.9, 
+ 1.11.10, 1.11.11)  
+ No matching distribution found for Django==2.0.3
+
+/home/username/projectname/lib/python2.7/site-packages/pip/_vendor/urllib3/util/ssl_.py:339: SNIMissingWarning: <br />An HTTPS request has been made, but the SNI (Subject Name Indication) extension to TLS is not available on this platform. <br />This may cause the server to present an incorrect TLS certificate, which can cause validation failures. <br />You can upgrade to a newer version of Python to solve this. For more information, <br />see https://urllib3.readthedocs.io/en/latest/advanced-usage.html#ssl-warnings
+  SNIMissingWarning
+/home/username/projectname/lib/python2.7/site-packages/pip/_vendor/urllib3/util/ssl_.py:137: <br />InsecurePlatformWarning: A true SSLContext object is not available. This prevents urllib3 from configuring SSL appropriately <br />and may cause certain SSL connections to fail. You can upgrade to a newer version of Python to solve this. <br />For more information, see https://urllib3.readthedocs.io/en/latest/advanced-usage.html#ssl-warnings
+  InsecurePlatformWarning</pre>
+</div>
+<p>Revisa los siguientes artículos para verificar la compatibiliad entre Python y Django:</p>
+<ul>
+<li><a href="https://docs.djangoproject.com/en/2.0/faq/install/#what-python-version-can-i-use-with-django" target="_self">¿Qué versión de Python puedo usar con Django?</a></li>
+</ul>
+<p>En el siquiente artículo puedes encontrar las instrucciones para crear un proyecto de Django 2 usando Python3:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360002341572-How-to-create-a-Django-2-project-using-virtualenv" target="_self">Cómo crear un proyecto de Django 2 usando virtualenv</a></li>
+</ul>
+</div>
+<h2>Ver la versión de Django</h2>
+<div class="solvvy-solution">
+<p>Ejecuta este comando para ver la versión de Django que instalaste:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">(my_project) [server]$ </span><span class="command">python -c "import django; print(django.get_version())"</span></pre>
+</div>
+</div>
+<h2>Solución de problemas</h2>
+<div class="solvvy-solution">
+<p>Durante la instalación de Django o mysqlclient, es posible que veas el siguiente error:</p>
+<div class="preboxcontainer">
+<pre class="prebox">Command "python setup.py egg_info" failed with error code 1</pre>
+</div>
+<p>Si ves ese error, intenta actualizar la versión de pip en tu entorno virutal. Ejemplo:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">(my_project) [server]$ </span><span class="command">python -m pip install --upgrade pip</span></pre>
+</div>
+<p>O para Python 3</p>
+<pre class="prebox"><span class="server">(my_project) [server]$ </span><span class="command">python3 -m pip install --upgrade pip</span></pre>
+<p>Esto debería corregir el error en la instalación.</p>
+</div>
+<h2>Ver también</h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215319598-Django-overview" target="_self">Generalidades de Django</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215319648-How-to-create-a-Django-1-project-using-virtualenv" target="_self">Cómo crear un proyecto de Django 1 project con virtualenv</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360002341572-How-to-create-a-Django-2-project-using-virtualenv" target="_blank" rel="noopener">Cómo crear un proyecto de Django 2 con virtualenv</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215317698-Django-troubleshooting" target="_self">Solución de problemas de Django</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216137717-Python-overview" target="_self">Generalidades de Python</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/215489338-Instalar-y-usar-virtualenv-con-Python-2" target="_self">Instalar y usar virtualenv con Python 2</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115000695551-Installing-and-using-virtualenv-with-Python-3" target="_self">Instalar y usar virtualenv con Python 3</a></li>
+</ul>
+</div>

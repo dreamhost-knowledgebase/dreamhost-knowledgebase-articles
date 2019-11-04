@@ -1,9 +1,12 @@
-<h2>Overview</h2><div class="solvvy-solution">
+<h2>Overview</h2>
+<div class="solvvy-solution">
 <p>This article lists several commands you can use to mange your DreamObjects data. This article assumes you've already installed S3cmd:</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215916627-Installing-S3cmd">Installing S3cmd</a></li>
 </ul>
-</div><h2>If you're using a custom version of Python</h2><div class="solvvy-solution">
+</div>
+<h2>If you're using a custom version of Python</h2>
+<div class="solvvy-solution">
 <p>The commands below work with the server version of Python. However, you may have installed a custom version of Python using one of the following articles:</p>
 <ul class="article-list">
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/115000218612-Installing-a-custom-version-of-Python-2">Installing a custom version of Python 2</a></li>
@@ -25,13 +28,17 @@ $ pip install python-dateutil
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215489338-Installing-and-using-virtualenv-with-Python-2">Installing and using virtualenv with Python 2</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/115000695551-Installing-and-using-virtualenv-with-Python-3">Installing and using virtualenv with Python 3</a></li>
 </ul>
-</div><h2>Creating</h2><div class="solvvy-solution">
+</div>
+<h2>Creating</h2>
+<div class="solvvy-solution">
 <h4><strong>Making a bucket</strong></h4>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd mb s3://my-new-bucket</span>
 Bucket 's3://my-new-bucket/' created</pre>
 </div>
-</div><h2>Listing</h2><div class="solvvy-solution">
+</div>
+<h2>Listing</h2>
+<div class="solvvy-solution">
 <h4><strong>Listing all buckets</strong></h4>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd ls</span>
@@ -40,28 +47,34 @@ Bucket 's3://my-new-bucket/' created</pre>
 <h4><strong>Listing the contents of a bucket</strong></h4>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd ls s3://my-bucket</span>
-                    DIR s3://my-bucket/backups/<br/>2019-02-04 18:09 11 s3://my-bucket/file1.txt</pre>
+                    DIR s3://my-bucket/backups/<br />2019-02-04 18:09 11 s3://my-bucket/file1.txt</pre>
 </div>
 <h4><strong>Listing the size of a bucket</strong></h4>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd du -H s3://my-bucket</span>
 40G      s3://my-bucket</pre>
 </div>
-</div><h2>Uploading</h2><div class="solvvy-solution">
+</div>
+<h2>Uploading</h2>
+<div class="solvvy-solution">
 <h4><strong>Uploading a file into a bucket</strong></h4>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd put testfile.txt s3://my-bucket</span>
 file.txt -&gt; s3://my-bucket/file.txt  [1 of 1]
 127 of 127   100% in    0s  1522.87 B/s  done</pre>
 </div>
-</div><h2>Downloading</h2><div class="solvvy-solution">
+</div>
+<h2>Downloading</h2>
+<div class="solvvy-solution">
 <h4><strong>Downloading a file from a bucket</strong></h4>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd get s3://my-bucket/file.txt</span>
 s3://my-bucket/file.txt -&gt; ./file.txt  [1 of 1]
 127 of 127   100% in    0s     3.46 kB/s  done</pre>
 </div>
-</div><h2>Deleting</h2><div class="solvvy-solution">
+</div>
+<h2><span id="deleting">Deleting</span></h2>
+<div class="solvvy-solution">
 <h4><strong>Deleting a file in a bucket</strong></h4>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd del s3://my-bucket/file.txt</span>
@@ -72,7 +85,9 @@ File s3://my-bucket/file.txt deleted</pre>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd del --recursive s3://my-bucket --force</span></pre>
 </div>
-</div><h2><span id="permissions">Permissions</span></h2><div class="solvvy-solution">
+</div>
+<h2><span id="permissions">Permissions</span></h2>
+<div class="solvvy-solution">
 <h4><strong>Recursively making every object in a bucket public</strong></h4>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd setacl s3://my-bucket --acl-public --recursive</span></pre>
@@ -88,15 +103,16 @@ File s3://my-bucket/file.txt deleted</pre>
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd setacl s3://my-bucket --acl-private</span></pre>
 </div>
 <p>If you visit your bucket in a browser, only the following information will display.</p>
-<p><img class="img-border" src="https://kbimages.dreamhosters.com/images/dho-directory-listing-01.png"/></p>
+<p><img class="img-border" src="https://kbimages.dreamhosters.com/images/dho-directory-listing-01.png" /></p>
 <h4><strong>Enabling Directory Listing in a bucket</strong></h4>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd setacl s3://my-bucket --acl-public</span></pre>
 </div>
 <p>If you visit your bucket in a browser, the contents of the bucket display.</p>
-<p><img class="img-border" src="https://kbimages.dreamhosters.com/images/dho-directory-listing-02.png"/></p>
-<div class="footer"> </div>
-<!--DreamObjects Button-->
-</div><div class="dream-sign-up">
-<h2>Start Storing Your Data Today!</h2><div class="solvvy-hidden">
-<a href="https://www.dreamhost.com/cloud/storage/">Sign Up for DreamObjects</a></div></div>
+<p><img class="img-border" src="https://kbimages.dreamhosters.com/images/dho-directory-listing-02.png" /></p>
+<div class="footer">&nbsp;</div>
+<!--DreamObjects Button--></div>
+<div class="dream-sign-up">
+<h2>Start Storing Your Data Today!</h2>
+<div class="solvvy-hidden"><a href="https://www.dreamhost.com/cloud/storage/">Sign Up for DreamObjects</a></div>
+</div>

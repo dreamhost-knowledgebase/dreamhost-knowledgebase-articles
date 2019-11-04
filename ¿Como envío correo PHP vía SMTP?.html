@@ -1,0 +1,95 @@
+<h2>Generalidades</h2>
+<div class="solvvy-solution">
+<p>Cuando usas la&nbsp;<a href="/hc/en-us/articles/215507058-PHP-mail-overview" target="_self">funcionalidad de correo PHP</a>,&nbsp;estas enviando correo directamente desde tu servidor web. Esto puede causar inconvenientes en la dirección de REMITENTE si el correo no está bien configurado o si el mismo no está alojado en DreamHost. Enviar correos vía SMTP es recomendado que se envíe desde el servidor de correo más que el servidor web. Vé el artículo&nbsp;<a href="/hc/en-us/articles/215507068-Troubleshooting-PHP-mail-" target="_self">solucionando correos PHP</a> para más detalles.</p>
+<p>Aquí hay algunas opciones para enviar correo PHP vía SMTP. Por ejemplo:</p>
+<ul>
+<li>Usar&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/215842658-PHPmailer-overview">PHPmailer</a></li>
+<li>Usar el paquete de correo PEAR</li>
+</ul>
+<p>Este artículo explica como usar la opción PEAR.</p>
+</div>
+<h2>¿Donde debería agregar esta opción?</h2>
+<div class="solvvy-solution">
+<p>Debes solamente usar esta opción cuando estés creando un formulario personalizado de correo. Si estas usando sofrware como WordPres, debes usar la&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/215526937-Configurar-el-plugin-WP-MAIL-SMTP-" target="_self">herramienta built-in o plugins</a> para enviar vía SMTP.</p>
+</div>
+<h2>Configurar PEAR para enviar correo</h2>
+<div class="solvvy-solution">
+<p>Los siguientes pasos te guiarán en cómo habilitarlo.</p>
+<ol>
+<li>Visita el artículo&nbsp;<a href="/hc/en-us/articles/214392988-How-do-I-install-PEAR-">PEAR</a> para instalarlo en tu servidor web.</li>
+<li>Instala los paquetes necesarios de correo PEAR. Visita&nbsp;<a href="/hc/en-us/articles/214395118-Troubleshooting-PEAR-errors" target="_self">solucionando PEAR</a> para más instrucciones. Por ejemplo, necesitas instalar los paquetes Mail and Net_SMTP:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">pear install --alldeps Mail</span>
+</pre>
+</div>
+</li>
+<li>Crea un archivo PHP que usa PEAR para enviar correo vía SMTP.</li>
+</ol>
+</div>
+<h2>Configurar PHP para enviar correo SMTP</h2>
+<div class="solvvy-solution">
+<p>El siguiente paquete puede ser usado para enviar correo SMTP usando el paquete PEAR de correo. (Mail PEAR)</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Solo necesitas llenar los campos que están en negrita.</p>
+</div>
+</div>
+<h3>Encontrar tu nombre de alojamiento de correo</h3>
+<p>Asegúrate de usar el&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/214918038#nombre-del-servidor" target="_self">nombre de servidor de correo</a> para el nombre de alojamiento de correo. Este puede ser imap.dreamhost.com o pop.dreamhost.com, dependiendo del tipo de conección que tu prefieras. El siguiente ejemplo usa el nombre de alojamiento (hostname) 'imap.dreamhost.com'.</p>
+<div class="preboxcontainer">
+<pre class="prebox">&lt;?php
+
+error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED ^ E_STRICT);
+
+set_include_path("." . PATH_SEPARATOR . ($UserDir = dirname($_SERVER['DOCUMENT_ROOT'])) . "/pear/php" . PATH_SEPARATOR . get_include_path());
+require_once "Mail.php";
+
+$host = "ssl://<span class="command"><strong>smtp.dreamhost.com</strong></span>";
+$username = "<span class="command"><strong>tucorreo@example.com</strong></span>";
+$password = "<span class="command"><strong>la contraseña de tu correo</strong></span>";
+$port = "465";
+$to = "<span class="command"><strong>correo_destinatario@example.com</strong></span>";
+$email_from = "<span class="command"><strong>tucorreo@example.com</strong></span>";
+$email_subject = "<span class="command"><strong>Línea de asunto aquí:</strong></span>";
+$email_body = "<span class="command"><strong>Lo que tu quieras</strong></span>";
+$email_address = "<span class="command"><strong>responder-a@example.com</strong></span>";
+
+$headers = array ('From' =&gt; $email_from, 'To' =&gt; $to, 'Subject' =&gt; $email_subject, 'Reply-To' =&gt; $email_address);
+$smtp = Mail::factory('smtp', array ('host' =&gt; $host, 'port' =&gt; $port, 'auth' =&gt; true, 'username' =&gt; $username, 'password' =&gt; $password));
+$mail = $smtp-&gt;send($to, $headers, $email_body);
+<br />
+if (PEAR::isError($mail)) {
+echo("&lt;p&gt;" . $mail-&gt;getMessage() . "&lt;/p&gt;");
+} else {
+echo("&lt;p&gt;Message successfully sent!&lt;/p&gt;");
+}
+?&gt;
+</pre>
+</div>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Si estás usando Google como tu alojamiento de correo, debes cambiar la línea $host por lo siguiente:</p>
+<div class="preboxcontainer">
+<pre class="prebox">$host = "ssl://smtp.gmail.com";</pre>
+</div>
+</div>
+</div>
+</div>
+<h2>Permitir a GMAIL que envíe correos desde tu aplicación de correos</h2>
+<div class="solvvy-solution">
+<p>Si estás usando un correo de GMAIL para enviar correos vía SMTP, debes primero habilitar el acceso a tu correo de GMAIL a tu aplicación. Si no haces esto, tu correo no se autenticará y no se enviará. Mira este artículo para más detalles.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115001719551-Troubleshooting-GMAIL-SMTP-authentication-errors" target="_self">Solucionar errores de autenticación de GMAIL SMTP</a></li>
+</ul>
+</div>
+<h2>Ver también</h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/216041267-Generalidades-de-SSH" target="_self">Generalidades de SSH</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215842658-PHPmailer-overview" target="_self">Generalidades de PHPmailer</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215507058-PHP-mail-overview" target="_self">Generalidades de PHP mail()</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215507068-Troubleshooting-PHP-mail-" target="_self">Solucionar PHP mail()</a></li>
+</ul>
+</div>

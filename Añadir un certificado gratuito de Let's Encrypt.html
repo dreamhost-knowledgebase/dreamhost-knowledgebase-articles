@@ -1,0 +1,134 @@
+<h2>Generalidades</h2>
+<div class="solvvy-solution">
+<p>Este artículo explica cómo agregar un certificado SSL de Let's Encrypt gratuito a tu dominio.</p>
+<p>Cada dominio debe tener su propio certificado por separado. Esto significa que si deseas un certificado SSL para example.com y blog.example.com, debes agregarlos por separado.</p>
+</div>
+<h2>Antes de agregar el certificado</h2>
+<div class="solvvy-solution">
+<p>Antes de agregar el certificado, asegúrate de que los DNS de tu dominio ya estén apuntando a DreamHost. Esto significa que tus servidores de nombres deben apuntar a DreamHost, o tus registros A (registros www y no www) deben apuntar a la dirección IP de tu dominio (suponiendo que tus servidores de nombres estén en una empresa diferente).</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/216385467-Generalidades-de-los-Nameservers" target="_self">¿Cuáles son los servidores de nombres de DreamHost?</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/215414867#registro-a" target="_self">Cómo agregar un registro A</a></li>
+</ul>
+<p>Esto se debe a que 'Let's Encrypt' agrega una carpeta .well_known/ a tu sitio para autenticar el certificado. Si los DNS de tu sitio no se están resolviendo en DreamHost, el certificado no puede crear esta carpeta para autenticarse y tu panel mostrará lo siguiente:</p>
+<p><img class="img-border" src="https://kbimages.dreamhosters.com/images/2019-01_panel_ssl_lets-encrypt-unavailable.png" /></p>
+<p>Visita las siguientes secciones para verificar tus valores de los DNS.</p>
+<h3>Comprobando donde están apuntados tus servidores de nombres</h3>
+<p>Visita el siguiente enlace para verificar a dónde están apuntando tus servidores de nombres:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/216385467#donde-estan-apuntando-mis-nameservers" target="_self">¿A dónde están apuntado mis servidores de nombres?</a></li>
+</ul>
+<p>Si ya están apuntando a DreamHost, no necesitas cambiar nada.</p>
+<p>Si NO están apuntados a DreamHost, necesitarás apuntarlos a DreamHost o cambiar los dos registros A de tu dominio.</p>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Si tus&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/216385467-Generalidades-de-los-Nameservers" target="_self">Servidores de Nombres</a>&nbsp;NO están alojados en DreamHost, debes agregar registros CAA a tu empresa de hospedaje de DNS actual antes de agregar un certificado SSL en el panel de DreamHost. Visita el siguiente artículo para más detalles.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360029281672-CAA-policy-records" target="_self">Registros de política CAA</a></li>
+</ul>
+</div>
+</div>
+<h3>Actualizando los registros A de tu dominio</h3>
+<p>Como se explicó anteriormente, si tus servidores de nombres no apuntan a DreamHost y no deseas cambiarlos, la otra opción es actualizar los dos registros A de tu dominio.</p>
+<p>Deberás actualizar el registro www A y el registro no www A. Por ejemplo:</p>
+<ul>
+<li>www.example.com</li>
+<li>example.com</li>
+</ul>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Si estás apuntando a un subdominio como blog.example.com, deberás crear el registro www también. Por ejemplo:</p>
+<ul>
+<li>www.blog.example.com</li>
+<li>blog.example.com</li>
+</ul>
+</div>
+</div>
+<p>Estos deben actualizarse en la empresa donde están apuntando tus servidores de nombres. Visita el siguiente artículo para obtener instrucciones sobre cómo encontrar la dirección IP correcta para apuntarlos:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/214694378--A-qu%C3%A9-registros-DNS-apunto-mi-sitio-" target="_self">¿A qué registros DNS apunto mi sitio?</a></li>
+</ul>
+<h3>Reglas del .htaccess</h3>
+<p>Ciertas reglas .htaccess como el bloqueo de IP, las reglas de reescritura y la protección con contraseña pueden hacer que la instalación falle. Para asegurarte que eso no sea un problema, cambia el nombre de tu archivo .htaccess (a algo como .htaccess_OFF) para deshabilitarlo temporalmente. Luego, instala el certificado. Una vez instalado, puedes cambiar el nombre del archivo a .htaccess de vuelta.</p>
+<p>Si deshabilitar tu .htaccess afecta tu sitio, a tal punto que se pueda dañar, agrega la siguiente regla que debería permitir que la instalación se procese:</p>
+<div class="preboxcontainer">
+<pre class="prebox">RewriteRule ^.well-known/(.*)$ - [L]
+</pre>
+</div>
+</div>
+<h2>Adding the certificate</h2>
+<div class="solvvy-solution">
+<ol>
+<li>Ve a la página&nbsp;<a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.secure&amp;" target="_blank" rel="noopener">SSL/TLS Certificates</a> page. Aparecerá una lista de tus dominios.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2019-01_panel_ssl_add_button.png" /></dd>
+</dl>
+</li>
+<li>Haz clic en el botón <strong>Add</strong> a la derecha del dominio al que deseas agregar el certificado SSL.<br />
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2019-01_panel_ssl_add.png" /></dd>
+</dl>
+</li>
+<li>En la página siguiente, haz clic en el botón <strong>Select this Certificate</strong>.
+<dl>
+<dd><em>Aparece un mensaje de éxito confirmando el certificado que se ha comprado</em></dd>
+</dl>
+<dl></dl>
+</li>
+</ol>
+</div>
+<h2>Probar si el certificado SSL está funcionando</h2>
+<div class="solvvy-solution">
+<p>El certificado ya está instalado en tu dominio. Visita la URL segura de tu sitio web en:</p>
+<ol>
+<ol>
+<ul>
+<li><strong>https://</strong>example.com</li>
+</ul>
+</ol>
+</ol>
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/Install_Comodo_Cert_08.png" alt="Install_Comodo_Cert_08.png" /></dd>
+</dl>
+<p>Puedes ver que la barra del navegador muestra un icono de candado que confirma que la conexión es segura.</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Si acabas de instalar el certificado, es posible que debas esperar algunas horas para que se actualice en línea.</p>
+</div>
+</div>
+</div>
+<h2>Forzar tu sitio a cargar HTTPS por defecto</h2>
+<div class="solvvy-solution">
+<p>Incluso después de haber agregado el certificado SSL a tu sitio, los visitantes no podrán usarlo a menos que escriban manualmente 'https' antes de tu nombre de dominio. Esto va en contra del propósito de agregarlo en primer lugar, ya que el certificado está destinado a proteger todo el tráfico de tu sitio web.</p>
+<p>Hay varias maneras de solucionar este problema. Visita el siguiente artículo para obtener instrucciones sobre cómo crear un archivo de configuración para redirigir todo el tráfico de visitantes a la versión segura de tu URL (https).</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/115003505112-C%C3%B3mo-forzar-a-su-sitio-a-redireccionar-a-https-SSL-" target="_self">Cómo forzar tu sitio a redireccionar a https (SSL)</a></li>
+</ul>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>La redirección a la versión HTTPS de tu URL solo funciona para el mismo dominio. Esto significa que solo puede redirigir desde <strong>http</strong>://example.com a <strong>https</strong>://example.com.</p>
+<p>NO es posible redirigir a un dominio diferente. Por ejemplo: <strong>http://example1.com</strong> a <strong>https://example2.com</strong> no funcionaría con un certificado 'Let's Encrypt'</p>
+</div>
+</div>
+</div>
+<h2>Solución de problemas</h2>
+<div class="solvvy-solution">
+<p>Después de instalar tu certificado, es posible que tu navegador aún muestre una advertencia insegura cuando visites la versión HTTPS de tu URL. Hay algunas razones por las que esto puede ocurrir. Visita el siguiente artículo para obtener más instrucciones sobre cómo resolver este problema.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215364618-Resolving-insecure-site-and-mixed-content-warnings" target="_self">¿Por qué mi navegador dice que mi sitio es inseguro?</a></li>
+</ul>
+</div>
+<h2>Ver también</h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="/hc/en-us/articles/216539558-Let-s-Encrypt-SSL-certificate-overview" target="_self">Generalidades de los certificados SSL 'Let's Encrypt'</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216041537-SSL-certificates-overview" target="_self">Generalidades de los Certificados SSL</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/215747758-Forzar-tu-sitio-a-cargar-de-forma-segura-con-un-archivo-htaccess" target="_self">Forzar tu sitio a cargar de forma segura con un archivo .htaccess</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216456087-Creating-redirects-with-Nginx" target="_self">Forzar tu sitio web de Nginx a cargar de forma segura</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/218428687--C%C3%B3mo-uso-un-certificado-SSL-con-WordPress-" target="_self">¿Cómo uso un certificado SSL con WordPress?</a></li>
+</ul>
+</div>

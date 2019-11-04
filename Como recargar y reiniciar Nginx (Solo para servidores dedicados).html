@@ -1,0 +1,57 @@
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Este artículo contiene información/ejemplos usando usuarios root/sudo/admin. Si requieres de acceso sudo/admin, debes actualizar a un servidor Dedicado.</p>
+</div>
+</div>
+<h2>Recargando</h2>
+<div class="solvvy-solution">
+<p>Cada vez que hagas un cambio a un archivo de configuración, debes recargar Nginx. Puedes hacerlo iniciando sesión en tu servidor vía&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/216041267-Generalidades-de-SSH" target="_self">SSH</a>&nbsp;con tu&nbsp;<a href="/hc/en-us/articles/215945467-How-do-I-add-users-to-a-Dedicated-server-" target="_self">usuario admin</a>.&nbsp;Luego, corre el siguiente comando:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">sudo /etc/init.d/nginx reload</span>
+</pre>
+</div>
+<ul>
+<li>Recargar mantiene el servidor corriendo mientras relee cualquier actualización en el archivo de configuración.</li>
+<li>Recargar es más seguro que reiniciar pues si un error de sintaxis es encontrado en el archivo de configuración no procederá con la recarga y tu servidor seguirá corriendo.</li>
+<li>Si hay un error de sintaxis y tu reinicias, es posible que el servidor no reinicie correctamente.</li>
+</ul>
+</div>
+<h2><span id="Reiniciando">Reiniciando</span></h2>
+<div class="solvvy-solution">
+<p>Puedes reiniciar Nginx con los siguientes comandos después de iniciar sesión en tu servidor vía&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/216041267-Generalidades-de-SSH" target="_self">SSH</a>&nbsp;con tu&nbsp;<a href="/hc/en-us/articles/215945467-How-do-I-add-users-to-a-Dedicated-server-" target="_self">usuario admin</a>:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">sudo /etc/init.d/nginx stop</span>
+<span class="server">[server]$ </span><span class="command">sudo /etc/init.d/nginx start</span>
+</pre>
+</div>
+<p>También puedes reiniciarlo en tu panel de DreamHost. Navega hasta la página&nbsp;<a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=vps.dashboard&amp;" target="_blank" rel="noopener">VPS</a>, y da click en el botón Reiniciar en la parte derecha de tu servidor.</p>
+</div>
+<h2>Actualizar tu archivo phprc</h2>
+<div class="solvvy-solution">
+<p>Si has creado un&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/214200688-php-ini-overview" target="_self">archivo phprc</a>&nbsp;y ves que el archivo&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/214895287-Ver-la-versión-y-la-configuración-de-PHP-de-tu-sitio">phpinfo.php</a>&nbsp;no ha sido actualizado, tienes tres opciones:</p>
+<h3>Actualizar la configuración de tu sitio en tu panel</h3>
+<p>Puedes guardar nuevamente la&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/214200748#actualizando-el-archivo-phprc-en-el-panel" target="_self">configuración de tu sitio en el panel</a>&nbsp;para actualizar tu archivo phprc.</p>
+<h3>Recargar Nginx (Únicamente para servidores dedicados)</h3>
+<p>Si estás en un&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/215279658-Dedicated-server-overview" target="_self">servidor Dedicado</a> con un&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/215945467-How-do-I-add-users-to-a-Dedicated-server-" target="_self">usuario admin</a>,&nbsp;puedes recargar Nginx <a href="https://help.dreamhost.com/hc/es/articles/216454967#Reiniciando" target="_self">usando los pasos que están más arriba</a>.&nbsp;Si recargando no actualiza los cambios, trata reiniciando y matando todos los procesos de PHP como muestra abajo.</p>
+<h3>Reiniciar Nginx y matar los procesos de PHP (Únicamente para servidores Dedicados)</h3>
+<p>Si estás en un&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/215279658-Dedicated-server-overview" target="_self">servidor Dedicado</a>&nbsp;con un&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/215945467-How-do-I-add-users-to-a-Dedicated-server-" target="_self">usuario admin</a>,&nbsp;puedes reiniciar Nginx y matar todos los procesos de PHP que se están corriendo. Corre el siguiente comando en tu&nbsp;<a href="/hc/en-us/articles/215945467-How-do-I-add-users-to-a-Dedicated-server-" target="_self">usuario admin Dedicado</a>:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">sudo /etc/init.d/nginx stop</span>
+<span class="server">[server]$ </span><span class="command">pkill -9 php</span>
+<span class="server">[server]$ </span><span class="command">sudo /etc/init.d/nginx start</span></pre>
+</div>
+</div>
+<h2>Ver también</h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216431827-Nginx-overview" target="_self">Generalidades de Nginx</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/216041267-Generalidades-de-SSH" target="_self">Generalidades de SSH</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215833158-PHP-with-Nginx-at-DreamHost" target="_self">PHP con Nginx en DreamHost</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214880148-How-to-change-your-web-server-to-Nginx" target="_self">Habilitar Nginx en el panel de DreamHost</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216455077-Nginx-configuration-file-locations" target="_self">Ubicaciones del archivo de configuración de Nginx</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215837528-Password-protecting-directories-with-Nginx" target="_self">Contraseña para protección de directorios con Nginx</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216456087-Creating-redirects-with-Nginx" target="_self">Crear redirecciones con Nginx</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216456127-Blocking-IPs-with-Nginx" target="_self">Bloquear IPs con Nginx</a></li>
+</ul>
+</div>

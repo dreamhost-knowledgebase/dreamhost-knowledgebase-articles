@@ -1,0 +1,53 @@
+<h2>Generalidades</h2>
+<div class="solvvy-solution">
+<p>Hay varias formas de redireccionar una URL. Esto es útil para aquellos que buscan redirigir las solicitudes de su dominio principal a otro directorio bajo ese dominio. Por ejemplo, como dirigir las solicitudes de example.com a example.com/blog. Esto se puede hacer usando un archivo&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/215747748--Como-puedo-redireccionar-y-sobreescribir-mis-URL-con-un-archivo-htaccess-">.htaccess file</a>.&nbsp;Sin embargo, también es posible redireccionar usando PHP.</p>
+<p>Este artículo te brinda un ejemplo rápido de cómo crear una redirección utilizando PHP.</p>
+</div>
+<h2>¿Funciona la redirección con https (certificado SSL)?</h2>
+<div class="solvvy-solution">
+<p>No. La redirección solo funciona para las URL 'http'. Si habilitas un certificado SSL en 'example.com' y visitas 'https://example.com', serás redirigido a la página con el mensaje 'Sitio no encontrado'. Esto también se aplica a las redirecciones&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/215455377--C%C3%B3mo-redirecciono-mi-dominio-" target="_self">creadas en el panel de DreamHost</a>.</p>
+</div>
+<h2>Creando una redirección simple en PHP</h2>
+<div class="solvvy-solution">
+<ol>
+<li>Crea un archivo llamado index.php. Puedes hacer esto usando un cliente FTP como Filezilla o usando&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/216041267-Generalidades-de-SSH" target="_self">SSH</a>.&nbsp;Visita los siguientes artículos para obtener instrucciones sobre cómo crearlo (lo cual depende si estás utilizando un cliente FTP o SSH):
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/115000098272-Crear-y-editar-un-archivo-v%C3%ADa-FTP" target="_self">Crear y editar un archivo vía FTP</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/115006413028-Crear-y-editar-un-archivo-via-SSH" target="_self">Crear y editar un archivo vía SSH</a></li>
+</ul>
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-06_panel_domains_php_redirect_01.png" alt="" /></dd>
+</dl>
+</li>
+<li>Asegúrate de que el archivo está en el directorio del dominio. Este directorio es el que se especificas al añadir el dominio a tu panel. También puedes confirmar al navegar a&nbsp;<a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;" target="_blank" rel="noopener">Manage Domains</a>&nbsp;y hacer clic en el botón Editar a la derecha del dominio.
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>En el ejemplo anterior, el dominio es websitehelp.support. Tu dominio se muestra en cambio al ver tu página de configuración.</p>
+</div>
+</div>
+</li>
+<li>En este archivo index.php, agrega la siguiente línea de código:<br />
+<div class="preboxcontainer">
+<pre class="prebox">&lt;?php header("Location: http://www.example.com/blog");&nbsp;?&gt;</pre>
+</div>
+</li>
+</ol>
+<p>Recuerda cambiar la URL de muestra a la URL que deseas que el sitio redireccione.</p>
+<p>Luego, tendrás una redirección simple y rápida que puedes usar para redirigir sin problemas una solicitud HTTP a cualquier URL.</p>
+</div>
+<h2>Ver también</h2>
+<div class="solvvy-hidden">
+<h3>Enlaces internos</h3>
+<ul>
+<li><a style="background-color: #ffffff;" href="https://help.dreamhost.com/hc/es/articles/215747748--Como-puedo-redireccionar-y-sobreescribir-mis-URL-con-un-archivo-htaccess-" target="_self">¿Cómo puedo redirigir y reescribir mis URL con un archivo .htaccess?</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/216041267-Generalidades-de-SSH" target="_self">Generalidades de SSH</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/115000098272-Crear-y-editar-un-archivo-v%C3%ADa-FTP" target="_self">Crear y editar un archivo vía FTP</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/115006413028-Crear-y-editar-un-archivo-via-SSH" target="_self">Crear y editar un archivo vía SSH</a></li>
+</ul>
+<h3>Enlaces externos</h3>
+<ul>
+<li><a href="http://www.w3schools.com/php/func_http_header.asp">PHP header() at w3shools.com</a></li>
+<li><a href="http://php.net/manual/en/function.header.php">PHP Manual</a></li>
+</ul>
+</div>

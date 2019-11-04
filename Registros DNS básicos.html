@@ -1,0 +1,179 @@
+<h2>Generalidades</h2>
+<div class="solvvy-solution">
+<p>Este artículo describe los diversos tipos de registros que se configuran para un dominio y para qué sirven. Estos registros se pueden configurar a través de la página&nbsp;<a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;" target="_blank" rel="noopener">Manage Domains</a>&nbsp;haciendo clic en el enlace 'DNS' debajo del nombre de dominio.</p>
+<p><em>Ver también:&nbsp;<a class="new" title="W:List of DNS record types (page does not exist)" href="https://en.wikipedia.org/wiki/List_of_DNS_record_types" target="_self">Lista de tipos de registros DNS en Wikipedia</a></em></p>
+<dl>
+<dt><strong>A</strong></dt>
+<dd>Este es el registro "Dirección" (registro A) para reenviar el nombre de host a una dirección IPv4.<br />
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/215414867--C%C3%B3mo-agrego-registros-DNS-personalizados-" target="_self">Registro A</a></li>
+</ul>
+</dd>
+</dl>
+<dl>
+<dt><strong>AAAA</strong></dt>
+<dd>Este es el registro de dirección IPv6. Puedes usar esto para reenviar la asignación del nombre de host a una dirección IPv6.<br />
+<ul>
+<li><a href="/hc/en-us/articles/216510458-IPv6">IPv6</a></li>
+</ul>
+</dd>
+</dl>
+<dl>
+<dt><strong>CNAME</strong></dt>
+<dd>El "registro de nombre canónico" o registro CNAME apunta un nombre de dominio a otro nombre de dominio.<br />
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/215414867--C%C3%B3mo-agrego-registros-DNS-personalizados-">CNAME record</a></li>
+</ul>
+</dd>
+</dl>
+<dl>
+<dt><strong>MX</strong></dt>
+<dd>También conocidos como registros de "intercambio de correo", muestran el registro de host al que apunta el dominio para el alojamiento de correo.<br />
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/215032408--Qu%C3%A9-es-un-registro-MX-" target="_self">Registro MX</a></li>
+</ul>
+</dd>
+</dl>
+<dl>
+<dt><strong>NS</strong></dt>
+<dd>Los "nameservers" delegan un dominio o subdominio a un servidor DNS.<br />
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/216385467-Generalidades-de-los-Nameservers">Nameservers</a></li>
+</ul>
+</dd>
+</dl>
+<dl>
+<dt><strong>PTR</strong></dt>
+<dd>También llamado "registro de puntero". Esto se utiliza para la asignación inversa de una dirección IP a un nombre de host. DreamHost actualmente solo admite registros DNS inversos cuando se agrega una IP única a un dominio.</dd>
+</dl>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Nota: Ten en cuenta que una dirección IP única no se puede utilizar para resolver problemas de bloqueo de correo en alojamiento de correo electrónico compartido.</p>
+</div>
+</div>
+<dl>
+<dd>Puedes leer más sobre sobre la dirección IP única aquí:<br />
+<ul>
+<li><a href="/hc/en-us/articles/216109647-Unique-IP-overview" target="_self">Dirección IP Única</a></li>
+</ul>
+</dd>
+</dl>
+<dl>
+<dt><strong>SPF</strong></dt>
+<dd><a href="https://en.wikipedia.org/wiki/Sender_Policy_Framework">Sender Policy Framework</a>&nbsp;(SPF) Los registros del Marco de políticas del remitente especifican qué servidores de correo pueden enviar correos electrónicos desde tu dominio.<br />
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216107737-SPF-overview" target="_self">Registro SPF</a></li>
+</ul>
+</dd>
+</dl>
+<dl>
+<dt><strong>SRV</strong></dt>
+<dd>Los registros del "localizador de servicios" anuncian un servicio específico que ofrece un servidor.<br />
+<ul>
+<li><a href="/hc/en-us/articles/215414867#SRV_record" target="_self">Registro SRV</a></li>
+</ul>
+</dd>
+</dl>
+<dl>
+<dt><strong>TXT</strong></dt>
+<dd>Los registros de texto son cadenas de texto de forma libre. Se pueden usar para cosas como los registros de&nbsp;<a href="/hc/en-us/articles/216375348-Google-site-verification" target="_self">Verificación de Google</a>&nbsp;y la firma de DKIM para servicios de correo.&nbsp;Para obtener más información sobre DKIM, consulta el siguiente artículo:</dd>
+<dd>
+<ul>
+<li><a href="/hc/en-us/articles/215029758-What-are-DKIM-records-">DKIM</a></li>
+</ul>
+</dd>
+</dl>
+<dl>
+<dd></dd>
+<dd></dd>
+</dl>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Puedes encontrar más información sobre las direcciones IP y los dos tipos que se utilizan en el siguiente artículo:</p>
+<ul>
+<li><a href="/hc/en-us/articles/217294917-IP-Address" target="_self">Dirección IP</a></li>
+</ul>
+</div>
+</div>
+</div>
+<h2>Detalles adicionales</h2>
+<div class="solvvy-solution">
+<p>A continuación se presentan algunos detalles adicionales sobre diferentes registros DNS o terminología:</p>
+<h3>Búsqueda de registros A de DNS</h3>
+<dl>Al buscar un registro A, puedes obtener un registro CNAME en respuesta, por ejemplo:</dl>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">dig www.cloudflare.com</span>
+<span class="cmdoutput">www.cloudflare.com. 260 IN CNAME
+www.cloudflare.com.cdn.cloudflare.net.
+www.cloudflare.com.cdn.cloudflare.net. 260 IN A 198.41.215.163
+www.cloudflare.com.cdn.cloudflare.net. 260 IN A 198.41.214.163</span></pre>
+</div>
+<ul>
+<li>Puedes buscar el registro A de ese registro CNAME. Se te presentará otro registro CNAME o un registro A.</li>
+</ul>
+<h3>Nombre de dominio completamente cualificado</h3>
+<p>Un FQDN es un dominio único que no se puede confundir con otro. Por ejemplo, si tu sitio era example.com, puedes tener varios FQDNs.</p>
+<ul>
+<li>www.example.com</li>
+</ul>
+<p>Revisa el siguiente artículo para obtener más detalles:</p>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Fully_qualified_domain_name">Fully qualified domain name</a></li>
+</ul>
+<h3>Archivo de zona</h3>
+<p>Un archivo de zona (Zone file) es un registro de texto que contiene la asignación de tu dominio y subdominios a sus correspondientes direcciones IP. Revisa el siguiente artículo para más detalles:</p>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Zone_file">Zone file</a></li>
+</ul>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>DreamHost no ofrece un servicio para exportar el archivo de zona de tu dominio. Si necesitas una lista de los registros del dominio, debes copiar tus registros DNS de tu panel.</p>
+</div>
+</div>
+<h3>Registro SOA</h3>
+<p>El registro de Inicio de Autoridad es el primer registro de recursos en un archivo de Zona DNS. El registro SOA especifica la siguiente información autorizada sobre un dominio específico:</p>
+<ul>
+<li>Nameserver primario de donde se creó el registro SOA.</li>
+<li>Correo electrónico del administrador del archivo de zona. (Se utiliza un punto en lugar del símbolo @).</li>
+<li>El número de serie del dominio. Este es el número de revisión del archivo de zona.</li>
+<li>Temporizadores:</li>
+<ul>
+<li>Tiempo de actualización</li>
+<li>Tiempo de reintento</li>
+<li>Tiempo de expiración</li>
+<li>TTL Mínimo</li>
+</ul>
+</ul>
+<p>Corre el siguiente comando vía&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/216041267-Generalidades-de-SSH">SSH</a>&nbsp;para ver un registro SOA. Este ejemplo muestra los resultados de dreamhost.com:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">nslookup -type=soa dreamhost.com</span>
+<span class="cmdoutput">
+      Server:    64.90.63.202
+      Address:   64.90.63.202#53
+	  
+	  Non-authoritative answer:
+	  dreamhost.com
+	  origin = ns1.dreamhost.com
+	  mail addr = hostmaster.dreamhost.com
+	  serial = 2015091000
+	  refresh = 14534
+	  retry = 1800
+	  expire = 1814400
+	  minimum = 14400</span></pre>
+</div>
+</div>
+<h2>Ver también</h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/215413857-Generalidades-de-los-DNS-de-DreamHost" target="_self">Generalidades sobre los DNS en DreamHost</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/215414867--C%C3%B3mo-agrego-registros-DNS-personalizados-" target="_self">¿Cómo agregar registros DNS personalizados?</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/214694378--A-qu%C3%A9-registros-DNS-apunto-mi-sitio-" target="_self">¿A cuáles registros DNS de DreamHost apunto mi sitio?</a></li>
+<li><a href="/hc/en-us/articles/215840248-DNS-propagation-overview" target="_self">Generalidades sobre Dirección de IP única</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/216385467-Generalidades-de-los-Nameservers" target="_self">Generalidades de Nameservers</a></li>
+<li><a href="/hc/en-us/articles/216109647-Unique-IP-overview" target="_self">Generalidades de Unique IP</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/sections/115000048972-Viewing-site-before-changing-DNS" target="_self">Ver tu sitio antes de cambiar los DNS</a></li>
+</ul>
+</div>

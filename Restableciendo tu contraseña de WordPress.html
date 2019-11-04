@@ -1,0 +1,166 @@
+<h2>Generalidades</h2>
+<div class="solvvy-solution">
+<p>WordPress proporciona varias formas de restablecer tu contraseña de usuario. Este artículo te guiará a través de los siguientes métodos, que van desde lo simple hasta lo más avanzado:</p>
+<ul>
+<li><a href="#reset_password_in_panel" target="_self">Cambiando tu contraseña en el panel de WordPress</a></li>
+<li><a href="#password_link" target="_self">Usando el enlace 'Perdiste tu contraseña'</a></li>
+<li><a href="#phpmyadmin" target="_self">Accediendo a la base de datos 'phpMyAdmin'</a></li>
+<li><a href="#wpcli" target="_self">Usando la línea de comando 'wp-cli'</a></li>
+</ul>
+</div>
+<h2>Para los sitios DreamPress</h2>
+<div class="solvvy-solution">
+<p>Si tu sitio se está ejecutando en DreamPress y restableces la contraseña como se muestra a continuación, es posible que no funcione cuando intentes iniciar sesión. Lo más probable es que esto se deba a caché que aún guarda la contraseña antigua.</p>
+<p>Para solucionarlo, simplemente inicia sesión en tu servidor a través de SSH y ejecuta el siguiente comando:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp cache flush<br /></span></pre>
+</div>
+</div>
+<h2>Restableciendo tu contraseña en el panel de WordPress</h2>
+<div class="solvvy-solution">
+<p>Esta opción solo funciona si actualmente tienes acceso a tu panel de Wordpress. Es decir, que conoces tu contraseña actual y has iniciado sesión para luego cambiar dicha contraseña por una nueva.</p>
+<ol>
+<li>Inicia sesión en tu panel de WordPress (example.com/wp-login.php).
+<dl>
+<dd><img class="solvvy-hidden" src="https://kbimages.dreamhosters.com/images/es/es-wordpress-users-all-users.png" alt="" /></dd>
+</dl>
+</li>
+<li>En el lado izquierdo, haz click en 'Usuarios &gt; Todos los usuarios'.</li>
+<li>De el listado de los usuarios actuales, haz click en el usuario al que deseas cambiarle la contraseña.</li>
+<li>En la página de editar usuario, desplázate hacia abajo a la sección titulada 'Gestión de la cuenta'.<br />
+<dl>
+<dd><img class="solvvy-hidden" src="https://kbimages.dreamhosters.com/images/es/es-wordpress-new-password-button.png" alt="" /></dd>
+</dl>
+</li>
+<li>Haz click en el botón <strong>Generar contraseña</strong>.<br />
+<dl>
+<dd><img class="solvvy-hidden" src="https://kbimages.dreamhosters.com/images/es/es-wordpress-change-password.png" alt="" /></dd>
+</dl>
+</li>
+<li>Se va a generar una contraseña muy larga. Si quieres usar esta contraseña, haz click en el botón <strong>Actualizar perfil</strong> (Update Profile). Si por el contrario, quieres usar otra contraseña, ingresa la que tu quieras usar y luego presiona el botón <strong>Actualizar perfil</strong>.</li>
+</ol>
+</div>
+<h2>Usar el enlace 'Olvidaste tu contraseña'</h2>
+<div class="solvvy-solution">
+<p>Si sabes cual es tu usuario de WordPress, o la dirección de correo electrónico asociada al usuario, puedes restablecer la contraseña en la página de inicio de sesión.</p>
+<ol>
+<li>Ve a la página de inicio de sesión, la dirección debe ser: 'example.com/wp-login.php'.
+<dl>
+<dd><img class="img-border solvvy-hidden" src="https://kbimages.dreamhosters.com/images/es/es-wordpress-lost-password-link.png" alt="" /></dd>
+</dl>
+</li>
+<li>Haz click en el enlace '¿Olvidaste tu contraseña?' debajo del cuadro de inicio de sesión.<br />
+<dl>
+<dd><img class="img-border solvvy-hidden" src="https://kbimages.dreamhosters.com/images/es/es-wordpress-password-reset.png" alt="" /></dd>
+</dl>
+</li>
+<li>En la siguiente página, ingresa tu usuario de WordPress o la dirección de correo electrónico asociada a la cuenta.</li>
+<li>Haz click en <strong>Obtener una contraseña nueva</strong>. Vas a recibir un correo electrónico que incluye un enlace para restablecer tu contraseña.<br />
+<dl>
+<dd><img class="img-border solvvy-hidden" src="https://kbimages.dreamhosters.com/images/es/es-wordpress-password-save.png" alt="" /></dd>
+</dl>
+</li>
+<li>Al hacer click en el enlace te llevará de vuelta a la página de inicio de sesión con una contraseña generada automáticamente. Haz click en <strong>Restaurar contrasenña</strong>.<br />
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Copia esta contraseña a un archivo de texto como Bloc de Notas (Windows) o TextEdit (Mac). Si sólo haces click en 'Restablecer Contraseña, serás dirigido nuevamente a la página de inicio de sesión, pero el campo de usuario/contraseña puede que estén en blanco. Si lo has copiado en un archivo de texto, fácilmente puedes pegarlo nuevamente en la la nueva página de inicio de sesión.</p>
+</div>
+</div>
+</li>
+<li>Una vez hayas logrado iniciar sesión, puedes&nbsp;<a href="#reset_password_in_panel" target="_self">restablecer tu contraseña en el panel de WordPress</a>&nbsp;como te mostramos en el procedimiento anterior.</li>
+</ol>
+</div>
+<h2>Restablecer la contraseña en phpMyAdmin</h2>
+<div class="solvvy-solution">
+<p>Si tienes acceso al panel de DreamHost, puedes encontrar las&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/221610868-Encuentra-tus-credenciales-para-acceder-a-la-base-de-datos" target="_self">credenciales para phpMyAdmin</a> y acceder a tu base de datos.</p>
+<ol>
+<li>Ingresa a tu&nbsp;<a href="https://panel.dreamhost.com" target="_self">panel de DreamHost</a>.</li>
+<li>Navega a la página de&nbsp;<a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=advanced.mysql" target="_blank" rel="noopener">MySQL Databases</a>. En esta página puedes encontrar todo lo que necesitas para acceder a la base de datos. Revisa el siguiente artículo para tener todos los detalles sobre cómo encontrar esta información e ingresar a phpMyAdmin:
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/221610868-Encuentra-tus-credenciales-para-acceder-a-la-base-de-datos" target="_self">Encuentra tus credenciales para ingresar a tu base de datos</a></li>
+</ul>
+<dl>
+<dd><img class="img-border solvvy-hidden" src="https://kbimages.dreamhosters.com/images/2018-03_wordpress_resetting_password_07.png" alt="" /></dd>
+</dl>
+</li>
+<li>En el lado izquierdo, haz click en el nombre de tu sabe de datos.<br />
+<dl>
+<dd><img class="img-border solvvy-hidden" src="https://kbimages.dreamhosters.com/images/2018-03_wordpress_resetting_password_08.png" alt="" /></dd>
+</dl>
+</li>
+<li>Haz click en la tabla 'wp_usuarios' (wp_users).</li>
+<li>Verás la lista de usuarios. Haz click en el enlace 'Editar' del lado derecho del usuario al que le vas a signar una contraseña nueva.<br />
+<dl>
+<dd><img class="img-border solvvy-hidden" src="https://kbimages.dreamhosters.com/images/2018-03_wordpress_resetting_password_09.png" alt="" /></dd>
+</dl>
+</li>
+<li>Se abrirá una página con los datos del usuario.<br />
+<dl>
+<dd><img class="img-border solvvy-hidden" src="https://kbimages.dreamhosters.com/images/2018-03_wordpress_resetting_password_10.png" alt="" /></dd>
+</dl>
+</li>
+<li>A la derecha de 'contraseña_usuario' (user_pass) verás un cuadro con una serie de números y letras. Borra todo lo que está dentro de ese cuadro.<br />
+<dl>
+<dd><img class="img-border solvvy-hidden" src="https://kbimages.dreamhosters.com/images/2018-03_wordpress_resetting_password_11.png" alt="" /></dd>
+</dl>
+</li>
+<li>Ingresa tu nueva contraseña.<br />
+<dl>
+<dd><img class="img-border solvvy-hidden" src="https://kbimages.dreamhosters.com/images/2018-03_wordpress_resetting_password_12.png" alt="" /></dd>
+</dl>
+</li>
+<li>De la lista que se despliega hacia abajo, junto user_pass, selecciona 'MD5'.<br />
+<dl>
+<dd><img class="img-border solvvy-hidden" src="https://kbimages.dreamhosters.com/images/2018-03_wordpress_resetting_password_13.png" alt="" /></dd>
+</dl>
+</li>
+<li>Finalmente, haz click en el botón <strong>Go</strong>. Ya puedes proceder a iniciar sesión con tu nueva contraseña.</li>
+</ol>
+</div>
+<h2><span id="wpcli">Usar wp-cli</span></h2>
+<div class="solvvy-solution">
+<p>wp-cli es una herramienta en la línea de comando que puedes usar en tu servidor de DreamHost para administrar tu sitio WordPress. Para más detalles, dale un vistazo al siguiente artículo:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214693248-WordPress-wp-cli-overview" target="_self">Generalidades de WordPress wp-cli</a></li>
+</ul>
+<ol>
+<li>Asegúrate de que el nombre de usuario de tu sitio de WordPress en el servidor sea un usuario de Shell. Vea el siguiente artículo para confirmar.<br />
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/216385837-C%C3%B3mo-crear-un-usuario-con-acceso-Shell-SSH-" target="_self">Cómo crear un usuario con acceso Shell (SSH)</a></li>
+</ul>
+</li>
+<li>Accede a tu servidor por&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/216041267-Generalidades-de-SSH" target="_self">SSH</a>.</li>
+<li>Navega al directorio de WordPress. Lo más probable es que puedas usar el siguiente comando. Asegúrate de cambiar el nombre “ejemplo.com” por le nombre de tu dominio.<br />
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd example.com</span></pre>
+</div>
+Si tu sitio está en un subdirectorio, agrega el subdirectorio al nombre del sitio (ejemplo.com/blog)</li>
+<li>Ya estás en el directorio de WordPress. Desde aquí puedes ejecutar comandos wp-cli. Ejecuta wp user list para ver la lista de usuarios actuales. Ten en cuenta el número a la izquierda del nombre de usuario.<br />
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp user list</span>
++----+-------------+---------------+------------------+---------------------+---------------+
+| ID | user_login  | display_name  | user_email       | user_registered     | roles         |
++----+-------------+---------------+------------------+---------------------+---------------+
+| 1  | myusername  | myusername    | user@example.com | 2018-03-17 11:14:28 | administrator |
++----+-------------+---------------+------------------+---------------------+---------------+</pre>
+</div>
+</li>
+<li>Para actualizar el usuario, ejecuta el siguiente comando. Únicamente necesitas actualizar los valores de el número del usuario y la contraseña.<br />
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp user update 1 --user_pass=MyNewPassword$123</span>
+<span class="green">Success:</span> Updated user 1</pre>
+</div>
+</li>
+<li>Inmediatamente después recibirás un correo electrónico notificandote sobre el cambio que acabas de hacer.</li>
+<li>Ya puedes iniciar sesión en WordPress usando tu contraseña nueva.</li>
+</ol>
+</div>
+<h2>Ver también</h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/215525287-Generalidades-sobre-WordPress" target="_self">Generalidades de WordPress</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/360001310966-Cómo-iniciar-sesión-en-tu-sitio-WordPress" target="_self">Cómo ingresar a tu sitio WordPress</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/categories/202198418-WordPress" target="_self">Artículos de ayuda sobre WordPress</a></li>
+</ul>
+</div>

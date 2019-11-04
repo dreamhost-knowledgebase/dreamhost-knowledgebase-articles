@@ -1,0 +1,95 @@
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Para correr los siguientes comandos, tú debes iniciar sesión en tu servidor vía SSH con tu usuario Shell.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/216041267-Generalidades-de-SSH" target="_self">Generalidades de SSH</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/216385837-C%C3%B3mo-crear-un-usuario-con-acceso-Shell-SSH-" target="_self">Cómo crear un usuario con acceso Shell (SSH)</a></li>
+</ul>
+</div>
+</div>
+<h2>Instalar pip3</h2>
+<div class="solvvy-solution">
+<p>pip3 no está instalado por defecto. Solo está disponible si has instalado una versión personalizada de pip3. Cuando instalas una versión personalizada, pip3 está instalada con ella.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/115000702772-Instalar-una-versi%C3%B3n-personalizada-de-Python-3" target="_self">Instalar una versión personalizada de Python 3</a></li>
+</ul>
+</div>
+<h2>Usar pip3</h2>
+<div class="solvvy-solution">
+<p>Una vez instalado, corre lo siguiente para activar el ambiente local de Python.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">. ~/.bash_profile</span></pre>
+</div>
+<p>Ahora puedes acceder a pip3. Confirmalo corriendo lo siguiente:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">pip3 --version</span>
+<span class="cmdoutput">pip 18.1 from /home/username/my_project/lib/python3.6/site-packages/pip (python 3.6)</span></pre>
+</div>
+</div>
+<h2>Actualizar pip3</h2>
+<div class="solvvy-solution">
+<p>Hasta este punto es una buena idea actualizar pip3.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command"> python3 -m pip install --upgrade pip</span>
+Collecting pip
+  Downloading https://files.pythonhosted.org/packages/c2/d7/90f34cb0d83a6c5631cf71dfe64cc1054598c843a92b400e55675cc2ac37/pip-18.1-py2.py3-none-any.whl (1.3MB)
+    100% |████████████████████████████████| 1.3MB 613kB/s
+Installing collected packages: pip
+  Found existing installation: pip 9.0.1
+    Uninstalling pip-9.0.1:
+      Successfully uninstalled pip-9.0.1
+Successfully installed pip-18.1<br />
+<span class="server">[server]$ </span><span class="command"> pip3 --version</span>
+pip 18.1 from /home/username/opt/python-3.6.2/lib/python3.6/site-packages/pip (python 3.6)</pre>
+</div>
+</div>
+<h2>Instalar módulos personalizados dentro del ambiente virtual</h2>
+<div class="solvvy-solution">
+<p>Cuando trabajas con proyectos Python, es siempre buena idea crear un ambiente virtual. Esto te permite crear un ambiente aislado, separado del la versión de Python del sistema. Cualquier cambio que hagas en este ambiente virtual solo afecta el proyecto, nada más. De esta manera, es muy seguro probar tus proyectos pues pueden ser eliminados y recreados muy fácilmente. Vé el siguiente artículo para más detalles.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115000695551-Installing-and-using-virtualenv-with-Python-3" target="_self">Instalar y usar virtualenv con Python 3</a></li>
+</ul>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Instalar un virtualenv (ambiente virtual) es importante si quieres correr “pip”. Normalmente, pip intenta instalarse en la carpeta del sistema por defecto de Python. Cuando creas un virtualenv, pip se instala localmente dentro de tu usuario, entonces tu podrás instalar cualquier cosa sin errores.</p>
+</div>
+</div>
+<p>Para usar pip3 para instalar fácilmente módulos personalizados:</p>
+<ol>
+<li>Instala una&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/115000702772-Instalar-una-versi%C3%B3n-personalizada-de-Python-3" target="_self">versión personalizada de Python3</a>&nbsp;y crear un <a href="/hc/en-us/articles/115000695551-Installing-and-using-Python-s-virtualenv-using-Python-3" target="_self">ambiente virtual</a>.</li>
+<li>Corre el siguiente comando para activar este nuevo ambiente virtual (cambia el directorio donde lo instalaste):<br />
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">source my_project/bin/activate</span></pre>
+</div>
+<em>El nombre del ambiente virtual actual aparece a la izquierda del intento. Por ejemplo:</em><br />
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">(my_project) [server]$ </span></pre>
+</div>
+</li>
+<li>Usa pip3 para instalar un módulo:<br />
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">pip3 install &lt;module&gt;</span></pre>
+</div>
+<em>Tu puedes “python-openstackclient” si vas a trabajar con usar&nbsp;<a href="https://www.openstack.org/">openstack</a>. Por ejemplo:</em>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">pip3 install python-openstackclient</span></pre>
+</div>
+</li>
+</ol>
+<p>Vé los siguientes link para más ejemplos de módulos:</p>
+<ul>
+<li><a href="https://docs.python.org/3/installing/" target="_self">Instalar Módulos Python</a></li>
+<li><a href="https://pypi.python.org" target="_self">Buscar paquetes</a></li>
+</ul>
+</div>
+<h2>Ver también</h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="/hc/en-us/articles/216137717-Python-overview" target="_self">Generalidades de Python</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/115000702772-Instalar-una-versi%C3%B3n-personalizada-de-Python-3" target="_self">Instalar una versión personalizada de Python 3</a></li>
+<li><a href="/hc/en-us/articles/216128557-Guidelines-for-setting-up-a-Python-file-at-DreamHost" target="_self">Guías para configurar un archivo Python en DreamHost</a></li>
+<li><a href="/hc/en-us/articles/115000695551-Installing-and-using-Python-s-virtualenv-using-Python-3" target="_self">Instalar y usar un virtualenv usando Python 3</a></li>
+</ul>
+</div>

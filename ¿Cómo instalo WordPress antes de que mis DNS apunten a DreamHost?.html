@@ -1,0 +1,134 @@
+<h2>Generalidades</h2>
+<div class="solvvy-solution">
+<p>Es posible configurar tu sitio de WordPress en DreamHost antes de apuntar tus DNS a DreamHost. Esto requiere que crees un subdominio dreamhosters.com.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/360002284771--Que-es-un-subdominio-dreamhosters-com-" target="_self">¿Qué es un subdominio dreamhosters.com?</a></li>
+</ul>
+<p>Por ejemplo, si tu sitio se llama example.com, puede agregar un nuevo dominio en tu panel llamado example.dreamhosters.com. Este nuevo sitio se utiliza para acceder a tu sitio oficial antes de que apuntes tus DNS.</p>
+</div>
+<h2>Sube tu sitio de WordPress a tu sitio DreamHost</h2>
+<div class="solvvy-solution">
+<p>Este paso hace una copia de tu sitio actual de WordPress (en otra compañía) en DreamHost.</p>
+<ol>
+<li>Abre la página&nbsp;<a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;" target="_blank" rel="noopener">Manage Domains</a>.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-09_panel_domains_fully_hosted.png" alt="01 DNS viewing site.fw.png" /></dd>
+</dl>
+</li>
+<li>Asegúrate de que tu dominio está&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/215416227-C%C3%B3mo-agrego-un-dominio-">Fully Hosted</a>.&nbsp;De ser así, el panel mostrará tu tipo de servidor. La captura de pantalla que está arriba muestra un sitio en un servidor compartido (Shared), así como otro sitio en un servidor privado (VPS).</li>
+<li>Carga todo el contenido del sitio web de tu antigua empresa de alojamiento en tu sitio en DreamHost (example.com). Revisa los siguientes artículos que explican cómo cargar los archivos, la base de datos y el correo electrónico de tu sitio web.<br />
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/115000675027-Generalidades-sobre-FTP-y-credenciales" target="_self">Generalidades sobre FTP y credenciales</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215039938-How-do-I-migrate-my-database-to-DreamHost-" target="_self">¿Cómo migrar mi base de datos a DreamHost?</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215730827-How-do-I-import-my-old-host-s-email-to-my-DreamHost-mail-server-" target="_self">¿Cómo importo el correo electrónico de mi host anterior a mi servidor de correo DreamHost?</a></li>
+</ul>
+</li>
+</ol>
+</div>
+<h2>Agregar un subdominio dreamhosters.com</h2>
+<div class="solvvy-solution">
+<p>Este paso crea el subdominio dreamhosters.com. Esto es lo que usarás para ver tu sitio en DreamHost.</p>
+<ol>
+<li>Navega a la página&nbsp;<a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;" target="_blank" rel="noopener">Manage Domains</a>.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-06_panel_add_hosting_to_a_domain_button.png" alt="01 Adding Domain Subdomain.fw.png" /></dd>
+</dl>
+</li>
+<li>Haz click en el botón <strong>Add Hosting to a Domain / Sub-Domain</strong> que se encuentra en la parte superior derecha.e.
+<dl>
+<dd><em>Se abre la página Manage Domains, donde puedes realizar varios cambios en tu configuración:</em></dd>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-08_panel_mirroring_02.png" alt="03 DNS viewing site.fw.png" /></dd>
+</dl>
+</li>
+<li>Desliza hasta la sección titulada Mirrored y llena los dos espacios::
+<ul>
+<li><strong>Create the mirror at:</strong> Escribe la dirección de dreamhosters.com que deseas utilizar. En este caso, debes escribir "example.dreamhosters.com".</li>
+<li><strong>Mirror this site:</strong> Selecciona el nombre de tu dominio principal para ser reflejado.</li>
+</ul>
+</li>
+<li>Haz clic en el botón <strong>Mirror this domain</strong> para completar la configuración del dominio reflejado.</li>
+</ol>
+</div>
+<h2>Crear un nombre de host de base de datos</h2>
+<div class="solvvy-solution">
+<p>Este paso permite que tu subdominio dreamhosters.com vea la información de la base de datos de tu sitio en DreamHost, de lo contrario tu sitio apuntaría a la empresa de alojamiento actual.</p>
+<ol>
+<li>Después, crea un nombre de host en el panel para este nuevo subdominio dreamhosters.com en la página&nbsp;<a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=advanced.mysql" target="_blank" rel="noopener">MySQL Databases</a>.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-09_panel_database_add_hostname.png" alt="Wordpress Add new Hostname.png" /></dd>
+</dl>
+</li>
+<li>Haz clic en el botón <strong>Add New Hostname</strong> para crear el nombre de host. Debe ser nombrado algo como mysql.example.dreamhosters.com.<br />
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-09_panel_database_add_hostname_02.png" alt="Wordpress Add new Hostname.png" /></dd>
+</dl>
+</li>
+<li>Haz clic en el botón <strong>Create this MySQL hostname now!</strong> para guardar.</li>
+</ol>
+</div>
+<h2>Editar tus archivos de WordPress</h2>
+<div class="solvvy-solution">
+<p>Este paso asegura que tu subdominio dreamhosters.com apunte a tu base de datos DreamHost.</p>
+<ol>
+<li>Usando FTP, sube el contenido de tu sitio web principal a tu servidor DreamHost. Visita el artículo FTP para obtener más detalles sobre cómo cargar:<br />
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/115000675027-Generalidades-sobre-FTP-y-credenciales">FTP</a></li>
+</ul>
+</li>
+<li>Una vez subido, edita tu archivo wp-config.php. Verás la siguiente línea dentro del archivo:<br />
+<div class="preboxcontainer">
+<pre class="prebox">define('DB_HOST', 'mysql.example.com');</pre>
+</div>
+<ul>
+<li><em>Esto hará que tu sitio no cargue, ya que intentará conectarse a una base de datos externa.</em></li>
+</ul>
+</li>
+<li>Cambia el nombre de host a la URL de tu subdominio dreamhosters.com:<br />
+<div class="preboxcontainer">
+<pre class="prebox">define('DB_HOST', 'mysql.example.dreamhosters.com');</pre>
+</div>
+</li>
+</ol>
+</div>
+<h2>Sube y edita tu base de datos</h2>
+<div class="solvvy-solution">
+<p>Este paso actualiza los enlaces de tu base de datos para que puedas ver el sitio en tu subdominio dreamhosters.com.</p>
+<ol>
+<li>Carga tu base de datos a tu cuenta DreamHost en tu panel en&nbsp;<a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=advanced.mysql" target="_blank" rel="noopener">MySQL Databases</a>.&nbsp;Visita el siguiente artículo para obtener más información sobre cómo importar tu base de datos:
+<ul>
+<li><a href="/hc/en-us/articles/215039938-How-do-I-migrate-my-database-to-DreamHost-" target="_self">Migrar MySQL</a></li>
+</ul>
+</li>
+<li>Una vez cargado, debes actualizar las URL de HOME y SITE URL en tu base de datos. Accede a la interfaz de&nbsp;<a href="/hc/en-us/articles/214395638-phpMyAdmin-overview">phpMyAdmin</a>&nbsp;en la misma página de MySQL Database.
+<ul>
+<li>Debes utilizar el nombre de host mysql.example.dreamhosters.com que acabas de crear para iniciar sesión en tu base de datos.</li>
+</ul>
+</li>
+<li>Cuando accedas, haz clic en el nombre de tu base de datos en la izquierda.<br />
+<dl>
+<dd><em>Cuando haces clic en la base de datos, se abre una lista de las tablas de tu base de datos:</em></dd>
+<dd><img src="https://kbimages.dreamhosters.com/images/Wordpress_database_tables.png" alt="Wordpress database tables.png" /></dd>
+</dl>
+</li>
+<li>Haz clic en la tabla llamada wp_options. Puedes notar que tienes un prefijo de tabla diferente. En este ejemplo, el prefijo de la tabla es&nbsp;<strong>wp_bnkih8_</strong>.</li>
+<li>Haz clic en la pestaña <strong>Browse</strong> en la parte superior izquierda.<br />
+<dl>
+<dd><em>Cuando haces clic en dicha pestaña, los campos 'siteurl' y 'home' aparecen.</em></dd>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/Wordpress_HOMESITE_URL.png" alt="Wordpress HOMESITE URL.png" /></dd>
+</dl>
+</li>
+<li>Edita estos campos y cámbialos a tu nueva URL de dreamhosters.com.</li>
+</ol>
+<p>Ahora puedes visitar el sitio duplicado example.dreamhosters.com que creaste para ver el contenido del sitio principal que has cargado en el servidor DreamHost.</p>
+</div>
+<h2>Ver también</h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/215525287-Generalidades-sobre-WordPress" target="_self">Generalidades sobre WordPress</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/360001310966-C%C3%B3mo-iniciar-sesi%C3%B3n-en-tu-sitio-WordPress" target="_self">¿Cómo acceder a tu sitio de WordPress?</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/214693178-C%C3%B3mo-migrar-manualmente-WordPress-a-DreamHost" target="_self">¿Cómo migrar WordPress manualmente a DreamHost?</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/215412347-Actualizar-tus-DNS-después-de-que-tu-sitio-de-WordPress-se-haya-migrado-a-DreamHost" target="_self">Actualiza tus DNS después de que tu sitio de WordPress se haya migrado a DreamHost</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/215525277-C%C3%B3mo-instalar-WordPress-usando-el-Instalador-de-un-clic" target="_self">¿Cómo instalar WordPress usando el Instalador de un clic?</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/360002284771--Que-es-un-subdominio-dreamhosters-com-" target="_self">¿Qué es un subdominio dreamhosters.com?</a></li>
+</ul>
+</div>

@@ -1,0 +1,110 @@
+<h2>Generalidades</h2>
+<div class="solvvy-solution">
+<p>Puedes hacer que DreamHost configure automáticamente un cron job desde el panel, en la página&nbsp;<a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=advanced.cron&amp;" target="_blank" rel="noopener">Cron Jobs</a>.</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Al crear el cron job, debes asignarlo a un&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/216385837-C%C3%B3mo-crear-un-usuario-con-acceso-Shell-SSH-" target="_self">usuario shell</a>&nbsp;en tu panel. Solo los usuarios de shell pueden ejecutar cron job.</p>
+<p>Los Cron job se pueden crear en cualquier plan de alojamiento.</p>
+</div>
+</div>
+</div>
+<h2>Crear un cron job en el panel:</h2>
+<div class="solvvy-solution">
+<ol>
+<li>Navega a la página&nbsp;<a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=advanced.cron&amp;" target="_blank" rel="noopener">Cron Jobs</a>.
+<dl>
+<dd><em>La página 'Cron Jobs' aparece:</em></dd>
+</dl>
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-09_panel_cron_add_01.png" /></dd>
+</dl>
+</li>
+<li>Haz click en el botón <strong>Add New Cron</strong> Job.<br />
+<dl>
+<dd><em>Se abre la página 'Creating New Cron Job' :</em></dd>
+</dl>
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-09_panel_cron_add_02.png" /></dd>
+</dl>
+</li>
+<li>Para crear el cron, completa los siguientes campos:<br />
+<ul>
+<li><strong>Usuario</strong>: en el menú desplegable, elija un&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/216385837-C%C3%B3mo-crear-un-usuario-con-acceso-Shell-SSH-" target="_self">usuario shell</a>&nbsp;existente en el que desea que se ejecute el trabajo cron.</li>
+<li><strong>Título</strong>: asigne al cron un nombre que recordará.</li>
+<li><strong>Salida de correo electrónico a</strong>: ingresa una dirección de correo electrónico a la que te gustaría recibir la salida cron. También puedes dejar esto en blanco para no recibir correos electrónicos.</li>
+<li><strong>Comando para ejecutar</strong>: ingrese el comando para ejecutar.<br />
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>El comando que ingresas generalmente debe primero especificar la ruta al programa que te gustaría usar para ejecutar el trabajo cron. Consulta las '<a href="#paths" target="_self">Rutas a programas comunes</a>'&nbsp;a continuación para ver ejemplos. Por ejemplo, supongamos que tiene un archivo PHP llamado script.php en su directorio de dominios:</p>
+<ul>
+<li>/home/usuario/example.com/script.php</li>
+</ul>
+<p>Para ejecutar este comando, debes incluir en ruta, la versión elegida de PHP seguida de un espacio, seguido de la ruta al archivo:</p>
+<ul>
+<li>/usr/local/php71/bin/php /home/usuario/example.com/script.php</li>
+</ul>
+</div>
+</div>
+</li>
+<li><strong>Usar bloqueo</strong>: habilítalo si deseas evitar que el trabajo se ejecute más de una vez al tiempo.</li>
+<li><strong>Cuándo ejecutarlo</strong>: en el menú desplegable, elija con qué frecuencia desea que se ejecute este trabajo.<br />
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>El tiempo que elijas debe ser PDT / PST ya que esta es la zona horaria en la que está configurado tu servidor web. Para determinar la hora correcta, puedes iniciar sesión en tu servidor a través de&nbsp;<a href="https://help.dreamhost.com/hc/es/articles/216041267-Generalidades-de-SSH">SSH</a> y ejecutar la fecha del comando, o puedes consultar un&nbsp;<a href="https://www.worldtimezone.com/" target="_self">sitio web</a>&nbsp;que enumere esta información.</p>
+<p><strong>Minutos personalizados</strong></p>
+<p>Actualmente solo es posible agregar 12 minutos diferentes en una hora. Puedes organizarlos como desees, pero el cron no puede ejecutarse más de 12 veces en una sola hora.</p>
+</div>
+</div>
+</li>
+</ul>
+</li>
+</ol>
+</div>
+<h2>Rutas a programas comunes</h2>
+<div class="solvvy-hidden">
+<p>A continuación se muestran las rutas a los programas comunes en el servidor. Esta es la ruta que agregarías antes del archivo que deseas ejecutar.</p>
+<table class="wikitable"><colgroup> <col width="38%" /> <col width="62%" /> </colgroup>
+<tbody>
+<tr>
+<th bgcolor="#F2F2F2">Program</th>
+<th bgcolor="#F2F2F2">Path</th>
+</tr>
+<tr>
+<td>bash</td>
+<td>/bin/bash</td>
+</tr>
+<tr>
+<td>java</td>
+<td>/usr/bin/java</td>
+</tr>
+<tr>
+<td>perl</td>
+<td>/usr/bin/perl</td>
+</tr>
+<tr>
+<td>php</td>
+<td>/usr/bin/php<br /> /usr/local/php71/bin/php<br /> /usr/local/php72/bin/php<br /> /usr/local/php73/bin/php</td>
+</tr>
+<tr>
+<td>python</td>
+<td>/usr/bin/python<br /> /usr/bin/python3</td>
+</tr>
+<tr>
+<td>ruby</td>
+<td>/usr/bin/ruby</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2>Ver también</h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="https://help.dreamhost.com/hc/es/articles/216041267-Generalidades-de-SSH" target="_self">Generalidades sobre SSH</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215088608-Crontab-overview" target="_self">Generalidades crontab</a></li>
+<li><a href="https://help.dreamhost.com/hc/es/articles/215767047-Crear-un-Cron-Job-personalizado" target="_self">Crear un Cron Job personalizado</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215767107-Execution-environment-of-a-cron-job" target="_self">Entorno de ejecución de un cron job</a></li>
+</ul>
+</div>

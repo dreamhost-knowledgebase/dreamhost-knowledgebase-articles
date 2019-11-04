@@ -1,0 +1,98 @@
+<h2>Generalidades</h2>
+<div class="solvvy-solution">
+<p>Para iniciar sesión, necesitarás tu Usuario y la dirección IP de la instancia.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/228377408-How-to-find-the-default-user-of-an-image" target="_self">Cómo encontrar el usuario predeterminado de una imagen</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115001754711-Locating-the-IP-Address-of-your-instance" target="_self">Localizar una dirección IP de tu instancia</a></li>
+</ul>
+</div>
+<h2>Usar Mac &amp; Linux</h2>
+<div class="solvvy-solution">
+<p>Primero, crea una llave de emparejamiento. Puedes crearlas dentro del panel de DreamCompute, o en tu computador local:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115001736611-Creating-a-new-Key-pair-in-the-DreamCompute-dashboard" target="_self">Crear una nueva llave de emparejamiento en el panel de DreamCompute</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115001736671-Creating-a-new-Key-pair-in-Mac-OS-X-or-Linux" target="_self">Crear una nueva llave de emparejamiento en Mac OS X o Linux</a></li>
+</ul>
+</div>
+<h2>Si creaste una llave de emparejamiento en el panel de DreamCompute</h2>
+<div class="solvvy-solution">
+<p>Si has creado una llave de emparejamiento en el panel, un archivo .a fue automáticamente descargado a tu computador. Mueve ese archivo a tu directorio ~/.ssh/.</p>
+<p>Por ejemplo, digamos que has llamado a tu llave 'dashboardkey' cuando la creaste en el panel. Una llave llamada dashboardkey.pem fué descargada.</p>
+<ol>
+<li>Muevela de tu directorio /Descargas a ~/.ssh.<br />
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">macbook$ </span><span class="command">mv ~/Downloads/dashboardkey.pem ~/.ssh</span></pre>
+</div>
+</li>
+<li>Cambia los permisos a 600:<br />
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">macbook$ </span><span class="command">chmod 600 ~/.ssh/dashboardkey.pem</span></pre>
+</div>
+</li>
+<li>Ahora puedes iniciar sesión mientras específicas el nombre del archivo:<br />
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">macbook$ </span><span class="command">ssh -i ~/.ssh/dashboardkey.pem USER@IP_ADDRESS</span></pre>
+</div>
+</li>
+</ol>
+</div>
+<h2>Si la has creado en tu computador local</h2>
+<div class="solvvy-solution">
+<p>Si has creado la llave de emparejamiento en tu computador local, ahora tienes una llave pública y privada en el directorio ~/.ssh. Por ejemplo:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">macbook$ </span><span class="command">ls -la ~/.ssh</span>
+id_rsa
+id_rsa.pub</pre>
+</div>
+<p>Puedes ahora iniciar sesión corriendo lo siguiente (asegúrate de cambiarla a tu IP como se muestra):</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">macbook$ </span><span class="command">ssh USER@IP_ADDRESS</span></pre>
+</div>
+<h3>¿Que pasa si no he creado la llave de emparejamiento id_rsa?</h3>
+<p>Cuando estás creando la llave, puedes llamarla como tu quieras. Por ejemplo, sigamos que la has llamado 'dhc_key' <a href="https://help.dreamhost.com/hc/en-us/articles/115001736671-Creating-a-new-Key-pair-in-Mac-OS-X-or-Linux" target="_self">en el paso #1</a> corriendo lo siguiente:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">ssh-keygen -t rsa</span></pre>
+</div>
+<dl>
+<dd><em>Esto crea una llave de emparejamiento pública/privada del tipo (-t) rsa.</em></dd>
+</dl>
+<div class="preboxcontainer">
+<pre class="prebox">Generating a public/private rsa key pair.
+Enter the file in which you wish to save they key 
+(i.e., /home/username/.ssh/id_rsa):<span class="command">/home/username/.ssh/dhc_key/</span>
+</pre>
+</div>
+<p>Debes ahora especificar el nombre de la llave cuando estés iniciando sesión. Por ejemplo:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">ssh -i ~/.ssh/dhc_key USER@IP_ADDRESS</span></pre>
+</div>
+</div>
+<h2>Usar un archivo ~.ssh/config para simplificar el inicio de sesión</h2>
+<div class="solvvy-solution">
+<p>Puedes también crear un archivo 'config' para simplificar el proceso de inicio de sesión. Por ejemplo, puedes simplificarlo por algo como <strong>ssh dhc</strong>.</p>
+<ol>
+<li>Crear un archivo config en tu directorio ~/.ssh.</li>
+<li>Editar el archivo para agregar lo siguiente:<br />
+<ul>
+<li>Host: Este es el nombre atajo para tu conexión</li>
+<li>HostName: Esta es la dirección IP de tu instancia de DreamCompute</li>
+<li>User: Este es el usuario de tu instancia de DreamCompute</li>
+<li>IdentityFile: Esto es necesario si tu llave privada es llamada diferente de id_rsa</li>
+</ul>
+</li>
+<li>He aquí un ejemplo completo de como el archivo ~/.ssh/config se vería. Este ejemplo asume que la llave privada fué descargada del panel como un archivo .pem y el usuario es 'ubuntu'.<br />
+<div class="preboxcontainer">
+<pre class="prebox">Host dhc
+
+HostName 208.113.167.187
+User ubuntu
+IdentityFile ~/.ssh/dashboardkey.pem</pre>
+</div>
+</li>
+<li>Ahora puedes iniciar sesión en tu instancia de servidor con el siguiente comando.<br />
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">ssh dhc</span></pre>
+</div>
+</li>
+</ol>
+</div>
