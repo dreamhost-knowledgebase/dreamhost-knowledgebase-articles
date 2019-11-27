@@ -4,7 +4,11 @@
 <div class="preboxcontainer">
 <pre class="prebox">Your PHP installation appears to be missing the MySQL extension which is required by WordPress.</pre>
 </div>
-<p>This is most often caused by a PHP version customization in your .htaccess or phprc files.</p>
+<p>This is caused when the PHP code in your site is not compatible with the version of PHP your site is currently using. More specifically, the issue is with the outdated MySQL extension which was removed as of PHP 7.0.</p>
+<ul>
+<li><a href="https://www.php.net/manual/en/intro.mysql.php">https://www.php.net/manual/en/intro.mysql.php</a></li>
+</ul>
+<p>If you're using any version of PHP above 7.0 and you're seeing this error, it's due to old code that needs to be updated.&nbsp;You will need to upgrade the core WordPress files to the current version, as well as any plugins your site is using.</p>
 </div>
 <h2>Check which version of PHP you're site is using</h2>
 <div class="solvvy-solution">
@@ -16,22 +20,23 @@
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/214898997-What-version-of-PHP-is-my-site-using-">What version of PHP is my site using?</a></li>
 </ul>
-<p>If there is a mismatch, there is a potential customization somewhere causing the versions to be different.</p>
 </div>
-<h2>Check for customizations</h2>
+<h2>Updating your code</h2>
 <div class="solvvy-solution">
-<h3>Check your .htaccess file for PHP customizations</h3>
-<p>First, check the <a href="https://help.dreamhost.com/hc/en-us/articles/216456227--htaccess-overview">.htaccess</a> file in your website's main directory. It will most likely be located here:</p>
+<p>If your website has been upgraded to a version of PHP over 7.0 and you're seeing this error, it means you must update your WordPress core version and plugins to use the newer MySQLi or PDO_MySQL extensions instead.</p>
 <ul>
-<li>/home/username/example.com/.htaccess</li>
+<li><a href="https://www.php.net/manual/en/mysql.requirements.php">https://www.php.net/manual/en/mysql.requirements.php</a></li>
 </ul>
-<p>Open that file in an <a href="https://help.dreamhost.com/hc/en-us/articles/115000098272-Creating-and-editing-a-file-via-FTP">FTP</a> client or <a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">SSH</a>. Check to make sure there are no lines referencing a different version of PHP.</p>
-<h3>Check your phprc file for PHP customizations</h3>
-<p>After confirming which version of PHP you're site is using above, check your <a href="https://help.dreamhost.com/hc/en-us/articles/214200688-php-ini-overview">phprc file</a>. It will be located here:</p>
+<h3>Updating WordPress</h3>
+<p>If you've installed WordPress as a One-Click Install, you can manually upgrade it in your panel, or set is to auto-update.</p>
 <ul>
-<li>/home/username/.php/php#.#/phprc</li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215915977-How-to-upgrade-a-One-Click-Install" target="_self">How to upgrade a One-Click Install</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215300747-How-to-set-your-One-Click-WordPress-installation-to-automatically-update" target="_self">How to set your One-Click WordPress installation to automatically update</a></li>
 </ul>
-<p>Make sure to adjust the php#.# to the version of PHP your site is using. Check your phprc file using an <a href="https://help.dreamhost.com/hc/en-us/articles/115000098272-Creating-and-editing-a-file-via-FTP">FTP</a> client or <a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">SSH</a> to ensure there are no customizations that could potentially cause an issue.</p>
+<p>And you can update your plugins in your dashboard.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215300817#Updating_plugins" target="_self">Updating WordPress plugins</a></li>
+</ul>
 </div>
 <h2>For Dedicated servers</h2>
 <div class="solvvy-solution">
