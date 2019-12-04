@@ -10,15 +10,15 @@
 <ul>
 <li>Make sure that you haven't created your repository called "svn" or inside of a directory called "svn".</li>
 <li>Make sure you don't have .htaccess rules above the subversion directory that are causing any kind of re-write (like WordPress). This includes having DreamHost automatically add 'www.' to your URL. View the <a href="/hc/en-us/articles/215457387-How-do-I-add-or-remove-www-from-my-domain-">Removing the "www" from your domain</a> article for further details.</li>
-<li>If you're running WordPress and want to have your SVN repository excluded from the WP redirection, simply add these rules to your .htaccess:</li>
+<li>If you're running WordPress and want to have your SVN repository excluded from the WP redirection, <a href="https://help.dreamhost.com/hc/en-us/articles/115000098272-Creating-and-editing-a-file-via-FTP" target="_self">edit your .htaccess file</a> and adjust the rules in bold below:</li>
 </ul>
 <div class="preboxcontainer">
-<pre class="prebox"> # BEGIN WordPress
+<pre class="prebox"> # BEGIN WordPress<br /> # The directives (lines) between `BEGIN WordPress` and `END WordPress` are<br /> # dynamically generated, and should only be modified via WordPress filters.<br /> # Any changes to the directives between these markers will be overwritten.
  &lt;IfModule mod_rewrite.c&gt;
  RewriteEngine On
  RewriteBase /
- RewriteCond %{THE_REQUEST} SVNRepo
- RewriteRule . - [L]
+<span class="command"> RewriteCond %{THE_REQUEST} SVNRepo
+ RewriteRule . - [L]</span>
  RewriteCond %{REQUEST_FILENAME} !-f
  RewriteCond %{REQUEST_FILENAME} !-d
  RewriteRule . /index.php [L]
@@ -30,6 +30,7 @@
 <div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
 <p>Make sure to change the end of line #5 to the subversion directory name in your WordPress directory.</p>
+<p>Adjust line #6 as shown above.</p>
 </div>
 </div>
 </div>
