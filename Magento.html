@@ -43,7 +43,7 @@ extension=intl.so</pre>
 <li><a href="/hc/en-us/articles/221691727-Creating-a-MySQL-database">Creating a database</a></li>
 </ul>
 </li>
-<li>Set your domain to use PHP 7.1 or higher. View the following article for further information:
+<li>Set your domain to use PHP 7.2 or higher. View the following article for further information:
 <ul>
 <li><a href="/hc/en-us/articles/214895317-How-do-I-change-the-PHP-version-of-my-site-">Changing the PHP version</a></li>
 </ul>
@@ -54,7 +54,7 @@ extension=intl.so</pre>
 <div class="solvvy-solution">
 <ol>
 <li>Upload the Magento file you downloaded to your web server via <a href="https://help.dreamhost.com/hc/en-us/articles/115000675027-FTP-overview-and-credentials">FTP</a>.</li>
-<li>Log into your server via <a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a>, then <a href="https://help.dreamhost.com/hc/en-us/articles/115002768331-UNIX-commands-Decompressing-files">decompress the file on the server</a>.</li>
+<li>Log into your server via <a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a>, then&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/115002768331-UNIX-commands-Decompressing-files">decompress the file on the server</a>.</li>
 <li>Confirm the Magento files are in your domain’s web directory.</li>
 <li>When you first visit your domain, you'll see it's throwing a 500 error. This is because of the site's .htaccess file. You must now edit that file to remove certain lines.</li>
 </ol>
@@ -107,11 +107,11 @@ extension=intl.so</pre>
 <h2><span id="Troubleshooting">Troubleshooting</span></h2>
 <div class="solvvy-solution">
 <h3>The site does not load after editing the .htaccess file</h3>
-<p>It's possible that after editing your .htaccess file, visiting your site displays a 500 error. Check your site's <a href="https://help.dreamhost.com/hc/en-us/articles/216512197-Viewing-your-access-and-error-logs-via-SFTP">error.log file</a> and you may see the following:</p>
+<p>It's possible that after editing your .htaccess file, visiting your site displays a 500 error.&nbsp;Check your site's <a href="https://help.dreamhost.com/hc/en-us/articles/216512197-Viewing-your-access-and-error-logs-via-SFTP">error.log file</a> and you may see the following:</p>
 <div class="preboxcontainer">
 <pre class="prebox">mod_fcgid: stderr: PHP Parse error: syntax error, unexpected '?', expecting variable (T_VARIABLE) in /home/username/example.com/vendor/magento/framework/Filesystem/Directory/Write.php on line 35</pre>
 </div>
-<p>This is due to the version of Magento not being compatible with the version of PHP you're using. If you're using Magento version 2.3.0, make sure you're only using PHP 7.1 or 7.2. That will resolve this error message.</p>
+<p>This is due to the version of Magento not being compatible with the version of PHP you're using. If you're using Magento version 2.3.0, make sure you're only using PHP 7.2 or 7.3. That will resolve this error message.</p>
 <h3><span id="I_can.27t_find_the_installation_wizard">I can't find the installation wizard</span></h3>
 <p>If you’re unable to load the Magento installation wizard, you may have the installation file in another location other than the domain’s root web directory. Check to make sure the installation file is not in a subdirectory, and also make sure all files, folders, and subfolders have the correct permission.</p>
 <h3><span id="Links_don.27t_redirect_correctly">Links don't redirect correctly</span></h3>
@@ -119,12 +119,12 @@ extension=intl.so</pre>
 <div class="preboxcontainer">
 <pre class="prebox">Options +SymLinksIfOwnerMatch
 RewriteEngine On
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond&nbsp;%{REQUEST_FILENAME}&nbsp;!-f
+RewriteCond&nbsp;%{REQUEST_FILENAME}&nbsp;!-d
 RewriteRule . /index.php [L]
 </pre>
 </div>
-<h3> Login error 'Your current session has been expired'</h3>
+<h3>&nbsp;Login error&nbsp;'Your current session has been expired'</h3>
 <p>When entering your Magento user/password, you may see the following error:</p>
 <p><strong>Your current session has been expired.</strong></p>
 <p>The following steps will resolve this:</p>
@@ -141,7 +141,7 @@ It will look like this:
 <dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-08_magento_phpmyadmin_command.png" /></dd>
 </dl>
 </li>
-<li>Click the <strong>Go</strong> button to run it.</li>
+<li>Click the&nbsp;<strong>Go</strong> button to run it.</li>
 <li>Log into your server via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH</a>. Make sure you're in your website's directory.</li>
 <li>Run the following commands:
 <div class="preboxcontainer">
@@ -179,7 +179,7 @@ It will look like this:
 <pre class="prebox">/usr/local/php71/bin/php /home/username/example.com/bin/magento setup:cron:run
   &gt;&gt; /home/username/example.com/var/log/setup.cron.log</pre>
 </div>
-<p>This will correctly configure the cron jobs Magento needs. However, you should now manually run them so Magento knows they exist. Run the following three commands to forcefully update the cron  jobs in Magento:</p>
+<p>This will correctly configure the cron jobs Magento needs. However, you should now manually run them so Magento knows they exist. Run the following three commands to forcefully update the cron&nbsp; jobs in Magento:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">/usr/local/php71/bin/php /home/username/example.com/bin/magento cron:run | grep
   -v "Ran jobs by schedule" &gt;&gt; /home/username/example.com/var/log/magento.cron.log</span></pre>
@@ -192,7 +192,7 @@ It will look like this:
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">/usr/local/php71/bin/php /home/username/example.com/bin/magento setup:cron:run
   &gt;&gt; /home/username/example.com/var/log/setup.cron.log</span></pre>
 </div>
-<p>Click the <strong>Try Again</strong> button in Magento. This time, the cron error will no longer show.</p>
+<p>Click the&nbsp;<strong>Try Again</strong> button in Magento. This time, the cron error will no longer show.</p>
 <h3>Check Component Dependency</h3>
 <p>Make sure you have set the memory_limit in your phprc file to 2000M. Additionally, update the following .user.ini file with the same value:</p>
 <div class="preboxcontainer">
