@@ -67,144 +67,18 @@ AddDefaultCharset ISO-8859-1
 <li><a href="https://developers.google.com/webmasters/mobile-sites/mobile-seo/dynamic-serving#the-vary-http-header">The Vary HTTP Header</a></li>
 </ul>
 </div>
-<h2>Security</h2>
-<div class="solvvy-solution">
-<h3>Content-Security-Policy</h3>
-<p>The Content-Security-Policy header helps reduce XSS risks. View the following page for further details:</p>
+<h2>Security headers</h2>
+<div class="solvvy-solution">There are several headers dedicated to securing your website. View the following article for examples of security headers.
 <ul>
-<li><a href="https://content-security-policy.com/">https://content-security-policy.com/</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360036486952-Security-headers" target="_self">Security headers</a>&nbsp;</li>
 </ul>
-<h3><span id="hsts">Strict-Transport-Security (HSTS)</span></h3>
-<p>Tells browsers to ONLY interact with the site using HTTPS and never HTTP. View the following pages for further details.</p>
-<ul>
-<li><a href="https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security">https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security</a></li>
-<li><a href="https://www.owasp.org/index.php/HTTP_Strict_Transport_Security_Cheat_Sheet">https://www.owasp.org/index.php/HTTP_Strict_Transport_Security_Cheat_Sheet</a></li>
-</ul>
-<p>You can enable this in your .htaccess file with the following code:</p>
-<div class="preboxcontainer">
-<pre class="prebox">Header add Strict-Transport-Security "max-age=31536000;includeSubDomains;"</pre>
-</div>
-<p>You can then test if it's active by running the following curl command:</p>
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">curl -I https://example.com</span>
-HTTP/1.1 200 OK
-Date: Tue, 05 Jun 2018 20:05:52 GMT
-Server: Apache
-Last-Modified: Tue, 05 Jun 2018 16:26:52 GMT
-ETag: "2f9-56de78493cbc8"
-Accept-Ranges: bytes
-Content-Length: 761
-<span class="green">Strict-Transport-Security: max-age=31415926;includeSubDomains;</span>
-Content-Type: text/html
-</pre>
-</div>
-<p>You should see the 'Strict-Transport-Security' header in the response.</p>
-<h3>hsts preload and Cloudflare</h3>
-<p>Chrome offers you the option to add your domain to their HSTS preload list.</p>
-<ul>
-<li><a href="https://hstspreload.org">https://hstspreload.org</a></li>
-</ul>
-<p>If you have enabled Cloudflare in the DreamHost panel, it forces you to add the 'www' subdomain as shown in this articles.</p>
-<ul>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/215457387-How-do-I-add-or-remove-www-from-my-domain-" target="_self">How do I add or remove www from my domain?</a></li>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/216477717-How-to-enable-Cloudflare-on-your-domain" target="_self">How to enable Cloudflare on your domain</a></li>
-</ul>
-<p>Adding the 'www' subdomain in the panel will cause the HSTS preload check to fail with the following message.</p>
-<div class="preboxcontainer">
-<pre class="prebox">`http://example.com` (HTTP) should immediately redirect to `https://example.com`<br />(HTTPS) before adding the www subdomain. Right now, the first redirect is to <br />`http://www.example.com/`. The extra redirect is required to ensure that any <br />browser which supports HSTS will record the HSTS entry for the top level domain,<br />not just the subdomain.</pre>
-</div>
-<p>If you wish to use Cloudflare and add your domain to the HSTS preload list, you must purchase a Cloudflare account directly from Cloudflare. This will allow you the option to remove the 'www' subdomain.</p>
 </div>
 <h2>Enabling CORS</h2>
 <div class="solvvy-solution">
-<p><a href="https://en.wikipedia.org/wiki/Cross-origin_resource_sharing">Cross Origin Resource Sharing</a> (CORS) allows restricted resources on a website&nbsp;to be requested from another domain outside the domain from which it was originally served. View the following pages for further details.</p>
+<p>View the following article for information on how to configure CORS headers.</p>
 <ul>
-<li><a href="https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security">https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security</a></li>
-<li><a href="https://www.owasp.org/index.php/HTTP_Strict_Transport_Security_Cheat_Sheet">https://www.owasp.org/index.php/HTTP_Strict_Transport_Security_Cheat_Sheet</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360037198972-CORS-headers" target="_self">CORS headers</a></li>
 </ul>
-<p>Adding the following to your .htaccess file will enable CORS.</p>
-<div class="alert alert-note">
-<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
-<div class="alert-content">
-<p>Make sure to specify the 'Content-Type'. View the following two links for examples:</p>
-<ul>
-<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Headers" target="_self">Access-Control-Allow-Headers</a></li>
-<li><a href="https://auth0.com/blog/cors-tutorial-a-guide-to-cross-origin-resource-sharing/" target="_self">CORS Tutorial: A Guide to Cross-Origin Resource Sharing</a></li>
-</ul>
-</div>
-</div>
-<div class="preboxcontainer">
-<pre class="prebox">Header add Access-Control-Allow-Origin: "*"
-Header add Access-Control-Allow-Methods: "GET,POST,OPTIONS,DELETE,PUT"
-Header add Access-Control-Allow-Headers: "Content-Type"
-</pre>
-</div>
-<p>You can then test if it's active on a site such as this:</p>
-<ul>
-<li><a href="https://gf.dev/http-headers-test" target="_self">gf.dev/http-headers-test</a></li>
-</ul>
-<p>You can also use curl to test. Just substitute example.com with your website.</p>
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">curl -H "Origin: http://example.com" \
-  -H "Access-Control-Request-Method: POST" \
-  -H "Access-Control-Request-Headers: X-Requested-With" \
-  -X OPTIONS --verbose \
-  https://www.googleapis.com/discovery/v1/apis?fields=</span></pre>
-</div>
-</div>
-<h2>X-Frame-Options</h2>
-<div class="solvvy-solution">
-<p>This header helps to protect your visitors against clickjacking attacks. You should add this header on pages that shouldn't be allowed to render a page within a frame.</p>
-<div class="preboxcontainer">
-<pre class="prebox"># X-Frame-Options
-&lt;IfModule mod_headers.c&gt;
-Header always append X-Frame-Options SAMEORIGIN
-&lt;/IfModule&gt;</pre>
-</div>
-</div>
-<h2>Cross-site Scripting protection (XSS)</h2>
-<div class="solvvy-solution">
-<p>This header helps to protect your visitors against Cross-site Scripting attacks. View the following article for further details:</p>
-<ul>
-<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection">developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection</a></li>
-</ul>
-<div class="preboxcontainer">
-<pre class="prebox"># X-XSS-Protection
-&lt;IfModule mod_headers.c&gt;
-Header set X-XSS-Protection "1; mode=block"
-&lt;/IfModule&gt;</pre>
-</div>
-</div>
-<h2>X-Content-Type-Options</h2>
-<div class="solvvy-solution">
-<p>This header blocks content sniffing that could transform non-executable MIME types into executable MIME types.&nbsp;View the following article for further details:</p>
-<ul>
-<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options">developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options</a></li>
-</ul>
-</div>
-<div class="solvvy-solution">
-<div class="preboxcontainer">
-<pre class="prebox">#X-Content-Type-Options
-&lt;IfModule mod_headers.c&gt;
-  Header set X-Content-Type-Options nosniff
-&lt;/IfModule&gt;</pre>
-</div>
-</div>
-<h2>Content-Security-Policy</h2>
-<div class="solvvy-solution">
-<p>This header specifies approved sources of content the browser is allowed to load. The example below tells the browser to only load content originating from the specified website over HTTPS.</p>
-<p>If you're going to force the HTTPS rule, make sure you're already added an SSL certificate and are forcing all connections to use it.</p>
-<ul>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/215089118-Adding-an-SSL-certificate-overview" target="_self">Adding an SSL certificate overview</a></li>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/115003505112-How-to-force-your-site-to-redirect-to-https-SSL-" target="_self">How to force your site to redirect to https (SSL)</a></li>
-</ul>
-<p>View the following article for further details:</p>
-<ul>
-<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP">developer.mozilla.org/en-US/docs/Web/HTTP/CSP</a></li>
-</ul>
-<div class="preboxcontainer">
-<pre class="prebox">Header set Content-Security-Policy "default-src https://example.com:443"</pre>
-</div>
 </div>
 <h2><span id="See_also">See also</span></h2>
 <div class="solvvy-hidden">

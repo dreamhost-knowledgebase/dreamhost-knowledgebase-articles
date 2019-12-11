@@ -1,0 +1,82 @@
+<h2>Overview</h2>
+<div class="solvvy-solution">
+<p><a href="https://en.wikipedia.org/wiki/Cross-origin_resource_sharing">Cross Origin Resource Sharing</a> (CORS) allows restricted resources on a website&nbsp;to be requested from another domain outside the domain from which it was originally served.</p>
+<p>This example explains how this works:</p>
+<ul>
+<li>Site A adds CORS headers to allow site B access to a resource on site A, such as a font.</li>
+<li>Site B can then access that resource due to the CORS header.</li>
+</ul>
+<p>Without the CORS header, Site B would not be able to access the resource on Site A.&nbsp;View the following pages for further details.</p>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Cross-origin_resource_sharing" target="_self">en.wikipedia.org/wiki/Cross-origin_resource_sharing</a></li>
+<li><a href="https://www.owasp.org/index.php/HTTP_Strict_Transport_Security_Cheat_Sheet" target="_self">owasp.org/index.php/HTTP_Strict_Transport_Security_Cheat_Sheet</a></li>
+</ul>
+</div>
+<h2>Only certain requests use CORS</h2>
+<div class="solvvy-solution">
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS" target="_self">The following requests</a> use CORS.</p>
+<ul>
+<li>Invocations of the&nbsp;<a title="Use XMLHttpRequest (XHR) objects to interact with servers. You can retrieve data from a URL without having to do a full page refresh. This enables a Web page to update just part of a page without disrupting what the user is doing." href="https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest"><code>XMLHttpRequest</code></a>&nbsp;or&nbsp;<a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API">Fetch</a>&nbsp;APIs.</li>
+<li><a href="https://www.w3.org/TR/css-fonts-3/#font-fetching-requirements" target="_self">Web Fonts</a> (for cross-domain font usage in&nbsp;<code>@font-face</code>&nbsp;within CSS).</li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Tutorial/Using_textures_in_WebGL">WebGL textures</a>.</li>
+<li>Images/video frames drawn to a canvas using&nbsp;<a title="The CanvasRenderingContext2D.drawImage() method of the Canvas 2D API provides different ways to draw an image onto the canvas." href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage"><code>drawImage()</code></a>.</li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Shapes/Shapes_From_Images">CSS Shapes from images.</a></li>
+</ul>
+<h3>What does this mean?</h3>
+<p>This means that requests to files such as index.html will not use CORS. However, a request to a font or CSS file will use CORS.</p>
+</div>
+<h2>Adding CORS headers</h2>
+<div class="solvvy-solution">
+<p>The following links explain CORS headers in more detail.</p>
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Headers" target="_self">Access-Control-Allow-Headers</a></li>
+<li><a href="https://auth0.com/blog/cors-tutorial-a-guide-to-cross-origin-resource-sharing/" target="_self">CORS Tutorial: A Guide to Cross-Origin Resource Sharing</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin" target="_self">developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Methods" target="_self">developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Methods</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Headers" target="_self">developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Headers</a></li>
+</ul>
+<p>The following are two simple examples of how to add CORS headers to your site</p>
+<p><strong>Wildcard values</strong></p>
+<p>This example uses wildcards for each CORS header:</p>
+<div class="preboxcontainer">
+<pre class="prebox">Header add Access-Control-Allow-Origin: "*"
+Header add Access-Control-Allow-Methods: "*"
+Header add Access-Control-Allow-Headers: "*"
+</pre>
+</div>
+<p><strong>Specific values</strong></p>
+<p>This example uses specific values for each CORS header:</p>
+<div class="preboxcontainer">
+<pre class="prebox">Header add Access-Control-Allow-Origin: "https://example.com"
+Header add Access-Control-Allow-Methods: "GET,POST,OPTIONS,DELETE,PUT"
+Header add Access-Control-Allow-Headers: "Upgrade-Insecure-Requests"</pre>
+</div>
+</div>
+<h2>Testing CORS headers</h2>
+<div class="solvvy-solution">
+<p>You can run the <span class="code">curl</span> command (<a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview" target="_self">via SSH</a>) to verify your CORS headers are functioning.</p>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Make sure the URL you enter is to a specific asset on your site. The example below is checking the site's style.css file.</p>
+<p>If you just check the index.html page, CORS headers will not be returned.</p>
+</div>
+</div>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">curl -I https://example.com/style.css</span>
+HTTP/1.1 200 OK
+Date: Tue, 10 Dec 2019 20:06:59 GMT
+Server: Apache
+Upgrade: h2
+Connection: Upgrade
+Last-Modified: Wed, 04 Dec 2019 21:53:08 GMT
+ETag: "2d-598e7d69349fd"
+Accept-Ranges: bytes
+Content-Length: 45
+<span class="green">Access-Control-Allow-Origin: https://example.com
+Access-Control-Allow-Methods: DELETE,PUT,OPTIONS,DELETE,PUT
+Access-Control-Allow-Headers: Upgrade-Insecure-Requests</span>
+Content-Type: text/css
+</pre>
+</div>
+</div>
