@@ -1,21 +1,66 @@
 <h2>Overview</h2>
 <div class="solvvy-solution">
-<p>When you enable G Suite, your mail DNS records need to be pointed to Google. How this happens is based on where your DNS is currently hosted.</p>
+<p>When you enable G Suite, your mail DNS records must point to Google. How this happens is based on where your DNS is currently hosted, per the following:</p>
 <ul>
-<li>If your DNS is hosted at DreamHost</li>
-<li>If your DNS is not hosted at DreamHost</li>
+<li><a href="#dh-dns" target="_self">If your DNS is hosted at DreamHost but you've signed up for G Suite at Google</a></li>
+<li><a href="#dreamhost-dns" target="_self">If your DNS is hosted at DreamHost and you've signed up for G Suite in the panel</a></li>
+<li><a href="#external-dns" target="_self">If your DNS is NOT hosted at DreamHost but you've signed up for G Suite in the panel</a></li>
 </ul>
 </div>
-<h2>If your DNS is hosted at DreamHost</h2>
+<h2><span id="dh-dns">If your DNS is hosted at DreamHost but you've signed up for G Suite at Google</span></h2>
 <div class="solvvy-solution">
-<p>If your <a href="https://help.dreamhost.com/hc/en-us/articles/216385467-Nameservers-overview" target="_self">nameservers</a> are currently pointed to DreamHost, your site's DNS is hosted at DreamHost. In this case, DreamHost sets up your MX records, verifies the domain with a token in a TXT record, and updates your site's SPF record. For example, the following DNS records are adjusted.</p>
+<p>If your <a href="https://help.dreamhost.com/hc/en-us/articles/216385467-Nameservers-overview" target="_self">nameservers</a> are currently pointed to DreamHost, your site's DNS is hosted at DreamHost. If you purchased a G Suite account at Google, you must then update your site's MX records in the DreamHost panel to point to Google.</p>
 <h3>MX records</h3>
+<p>When setting up your domain with G Suite, Google's panel will guide you through the configuration of your MX records. Within the G Suite panel, the following MX records display:</p>
 <div class="preboxcontainer">
-<pre class="prebox">ALT1.ASPMX.L.GOOGLE.com
-ALT2.ASPMX.L.GOOGLE.com
-ALT3.ASPMX.L.GOOGLE.com
-ALT4.ASPMX.L.GOOGLE.com
-ASPMX.L.GOOGLE.com</pre>
+<pre class="prebox">1 ASPMX.L.GOOGLE.com
+5 ALT1.ASPMX.L.GOOGLE.com
+5 ALT2.ASPMX.L.GOOGLE.com
+10 ALT3.ASPMX.L.GOOGLE.com
+10 ALT4.ASPMX.L.GOOGLE.com</pre>
+</div>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>You must enter these records into your DreamHost panel as shown below. Make sure to enter the priority before the record name.</p>
+<p>You can copy and paste each record from the list above.</p>
+</div>
+</div>
+<p><strong>Updating your MX records</strong></p>
+<ol>
+<li>Navigate to the&nbsp;<a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=mail.mx&amp;" target="_blank" rel="noopener">Custom MX</a>&nbsp;page.</li>
+<li>To the right of your domain, click the&nbsp;<strong>Edit</strong>&nbsp;button.</li>
+<li>Enter Google's MX records at the bottom of this page.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-06_panel_google_mx_records.png" alt="Google mx records" /></dd>
+</dl>
+</li>
+</ol>
+<p>Once saved, it will take about 6 hours to update online. Your email will then be hosted with Google.</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>The <a href="https://support.google.com/a/answer/48090#TTL" target="_self">TTL</a> is the number of seconds before subsequent changes to the MX record go into effect. Once the MX records are configured correctly, it is recommended you change the TTL value from 3600 to 86400, which tells servers across the Internet to check every 24 hours (instead of every hour) for updates to the MX record.</p>
+</div>
+</div>
+<h3>SPF record</h3>
+<p>You must also update your SPF record to point to Google using the following record:</p>
+<div class="preboxcontainer">
+<pre class="prebox">v=spf1 include:_spf.google.com ~all</pre>
+</div>
+<p>View the following article for instructions on how to create an SPF record in your panel:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216106197-How-do-I-add-an-SPF-record-" target="_self">How do I add an SPF record?</a></li>
+</ul>
+<h2><span id="dreamhost-dns">If your DNS is hosted at DreamHost and you've signed up for G Suite in the panel</span></h2>
+<div class="solvvy-solution">
+<p>If your <a href="https://help.dreamhost.com/hc/en-us/articles/216385467-Nameservers-overview" target="_self">nameservers</a> are currently pointed to DreamHost, your site's DNS is hosted at DreamHost. In this case, DreamHost sets up your MX records, verifies the domain with a token in a TXT record, and then updates your site's SPF record. For example, the following DNS records are automatically adjusted:</p>
+<h3>MX records</h3>
+<pre class="prebox">1 ASPMX.L.GOOGLE.com
+5 ALT1.ASPMX.L.GOOGLE.com
+5 ALT2.ASPMX.L.GOOGLE.com
+10 ALT3.ASPMX.L.GOOGLE.com
+10 ALT4.ASPMX.L.GOOGLE.com</pre>
 </div>
 <h3>SPF record</h3>
 <div class="preboxcontainer">
@@ -26,20 +71,25 @@ ASPMX.L.GOOGLE.com</pre>
 <h3>TXT verification</h3>
 <p>DreamHost uses the method of creating a TXT record with a verification string. This verification string is added automatically when you sign up for G Suite in your DreamHost panel.&nbsp;To view this record, navigate to the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.manage" target="_blank" rel="noopener">Manage Domains</a> page in your panel. Click the 'DNS' link under your domain to view the record.</p>
 </div>
-<h2>If your DNS is not pointed to DreamHost</h2>
+<h2><span id="external-dns">If your DNS is not hosted at DreamHost but you've signed up for G Suite in the panel</span></h2>
 <div class="solvvy-solution">
-<p>If your <a href="https://help.dreamhost.com/hc/en-us/articles/216385467-Nameservers-overview" target="_self">nameservers</a> are pointed to another company, DreamHost sends you an email with information on how to update your DNS records at that company. Here are a few links that may be of help for some popular hosts.</p>
+<p>If your <a href="https://help.dreamhost.com/hc/en-us/articles/216385467-Nameservers-overview" target="_self">nameservers</a> are pointed to another company, DreamHost sends you an email with information on how to update your DNS records at that company. Here are a few links that may be of help for some popular hosts:</p>
 <ul>
 <li style="font-weight: 400;"><span style="font-weight: 400;">GoDaddy</span><span style="font-weight: 400;"> — </span><a href="https://www.godaddy.com/help/change-my-ip-address-20134"><span style="font-weight: 400;">Change my IP address</span></a></li>
 <li style="font-weight: 400;"><span style="font-weight: 400;">Shopify — </span><a href="https://help.shopify.com/en/manual/domains/managing-domains/advanced-settings"><span style="font-weight: 400;">View or edit the DNS for a domain</span></a></li>
 <li style="font-weight: 400;"><span style="font-weight: 400;">Squarespace </span><span style="font-weight: 400;">— </span><a href="https://support.squarespace.com/hc/en-us/articles/360002101888#toc-mx-records"><span style="font-weight: 400;">Option 2 to add custom records manually</span></a></li>
 <li><span style="font-weight: 400;">Wix </span><span style="font-weight: 400;">— </span><a href="https://support.wix.com/en/article/adding-or-updating-mx-records-in-your-wix-account"><span style="font-weight: 400;">Adding MX records</span></a></li>
 </ul>
-<p>View the following link for information on what MX records you need to update at your current host.</p>
+<h3>MX records</h3>
+<p>When setting up your domain with G Suite, Google's panel will guide you through the configuration of your MX records. Within the G Suite panel, the following MX records will display:</p>
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-06_google_gsuite_mx_records.png" alt="Google mx records" /></dd>
+</dl>
+<p>View the following link for information on what MX records you need to update at your current host:</p>
 <ul>
 <li><a href="https://support.google.com/a/answer/174125"><span style="font-weight: 400;">https://support.google.com/a/answer/174125</span></a></li>
 </ul>
-<p>Your hosting company may use different labels for the name and value fields. You may also be required to add the trailing period at the end of the server name. Make sure you follow the specific instructions for your domain host when entering these values.</p>
+<p>Your hosting company may use different labels for the name and value fields. You may also be required to add the trailing period at the end of the server name. Make sure you follow the specific instructions for your domain host when entering the following values:</p>
 <table class="wikitable"><colgroup> <col width="15%" /> <col width="15%" /> <col width="15%" /> <col width="15%" /> <col width="30%" /> </colgroup>
 <tbody>
 <tr>
@@ -89,13 +139,18 @@ ASPMX.L.GOOGLE.com</pre>
 <div class="alert alert-note">
 <div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
-<p>The <a href="https://support.google.com/a/answer/48090#TTL" target="_self">TTL</a> is the number of seconds before subsequent changes to the MX record go into effect. Once the MX records are configured correctly, it is recommended you change the TTL value from 3600 to 86400, which tells servers across the Internet to check every 24 hours for updates to the MX record instead of every hour.</p>
+<p>The <a href="https://support.google.com/a/answer/48090#TTL" target="_self">TTL</a> is the number of seconds before subsequent changes to the MX record go into effect. Once the MX records are configured correctly, it is recommended you change the TTL value from 3600 to 86400, which tells servers across the Internet to check every 24 hours (instead of every hour) for updates to the MX record.</p>
 </div>
+</div>
+<h3>SPF record</h3>
+<p>You must also update your SPF record at your site's hosting company to point to Google using the following record:</p>
+<div class="preboxcontainer">
+<pre class="prebox">v=spf1 include:_spf.google.com ~all</pre>
 </div>
 <h3><span style="font-weight: 400;">Domain verification with an MX record</span></h3>
-<p><span style="font-weight: 400;">You can also verify your domain for G Suite with an MX record. The G Suite Setup Wizard provides a unique MX record, with a priority of 15, for verification. This record is only available from the Setup Wizard that is encountered right after you sign up for G Suite.</span></p>
+<p><span style="font-weight: 400;">You can also verify your domain for G Suite with an MX record. The G Suite Setup Wizard provides a unique MX record, with a priority of 15, for verification. This record is only available from the Setup Wizard that appears right after you sign up for G Suite.</span></p>
 <h3><span style="font-weight: 400;">Optional CNAME records</span></h3>
-<p><span style="font-weight: 400;">You may also <a href="https://help.dreamhost.com/hc/en-us/articles/215414867#CNAME_record" target="_self">create the following CNAME records</a> if you need them.</span></p>
+<p><span style="font-weight: 400;">You may also <a href="https://help.dreamhost.com/hc/en-us/articles/215414867#CNAME_record" target="_self">create the following CNAME records</a> if you need them:</span></p>
 <table class="wikitable"><colgroup> <col width="20%" /> <col width="20%" /> <col width="20%" /> <col width="20%" /> </colgroup>
 <tbody>
 <tr>
