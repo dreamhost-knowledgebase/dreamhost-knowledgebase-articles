@@ -49,13 +49,13 @@
 </ul>
 </div>
 </div>
-<p>The following instructions assume you've created a virtual environment titled 'my_project' using the links above.</p>
+<p>The following instructions assume you've created a virtual environment named 'venv' using the links above.</p>
 <ol>
 <li>Run the following commands in order to create your Django project within this environment:
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">cd $HOME/example.com</span>
-<span class="server">[server]$ </span><span class="command">source $HOME/example.com/my_project/bin/activate</span>
-<span class="server">(my_project) [server]$ </span><span class="command">python my_project/bin/django-admin.py startproject &lt;projectname&gt;</span></pre>
+<span class="server">[server]$ </span><span class="command">source $HOME/example.com/venv/bin/activate</span>
+<span class="server">(venv) [server]$ </span><span class="command">python venv/bin/django-admin.py startproject &lt;projectname&gt;</span></pre>
 </div>
 <ul>
 <li>Replace 'example.com' with your domain name.</li>
@@ -78,8 +78,8 @@ cwd = os.getcwd()
 sys.path.append(cwd)
 sys.path.append(cwd + '/<span class="command">djangoprojectname</span>')  #You must add your project here
 
-sys.path.insert(0,cwd+'/<span class="command">my_project/</span>bin')
-sys.path.insert(0,cwd+'/<span class="command">my_project</span>/lib/python2.7/site-packages')
+sys.path.insert(0,cwd+'/venv<span class="command">/</span>bin')
+sys.path.insert(0,cwd+'/venv/lib/python2.7/site-packages')
 
 os.environ['DJANGO_SETTINGS_MODULE'] = "<span class="command">djangoprojectname</span>.settings"
 from django.core.wsgi import get_wsgi_application
@@ -93,8 +93,8 @@ application = get_wsgi_application()
 <ul>
 <li>The path to your local python version in line #2. Run <strong>which python</strong> to confirm:
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">(my_project) [server]$ </span><span class="command">which python</span>
-<span class="cmdoutput">/home/username/example.com/my_project/bin/python</span></pre>
+<pre class="prebox"><span class="server">(venv) [server]$ </span><span class="command">which python</span>
+<span class="cmdoutput">/home/username/example.com/venv/bin/python</span></pre>
 </div>
 </li>
 <li>Your virtualenv project name on lines 11 and 12</li>
@@ -118,8 +118,8 @@ application = get_wsgi_application()
 </li>
 <li>In your /home/username/example.com/public directory, make sure to create this /static directory.
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">(my_project) [server]$ </span><span class="command">cd $HOME/example.com/public</span>
-<span class="server">(my_project) [server]$ </span><span class="command">mkdir static</span></pre>
+<pre class="prebox"><span class="server">(venv) [server]$ </span><span class="command">cd $HOME/example.com/public</span>
+<span class="server">(venv) [server]$ </span><span class="command">mkdir static</span></pre>
 </div>
 <ul>
 <li>This will be the location where Django will put all of your static files – you shouldn't put stuff here manually as it gets overwritten. View the following link for further details:</li>
@@ -130,8 +130,8 @@ application = get_wsgi_application()
 </li>
 <li>Run the collectstatic command to set up the static items for the admin interface:
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">(my_project) [server]$ </span><span class="command">cd $HOME/example.com/projectname/</span>
-<span class="server">(my_project) [server]$ </span><span class="command">python manage.py collectstatic</span></pre>
+<pre class="prebox"><span class="server">(venv) [server]$ </span><span class="command">cd $HOME/example.com/projectname/</span>
+<span class="server">(venv) [server]$ </span><span class="command">python manage.py collectstatic</span></pre>
 </div>
 </li>
 <li>Set up your database as required within the settings.py file. The section of the settings.py file originally looks like this:
@@ -172,18 +172,18 @@ Update it to include your domain name.
 </li>
 <li>Make sure you're in your project directory:
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">(my_project) [server]$ </span><span class="command">cd ~/example.com/&lt;projectname&gt;</span></pre>
+<pre class="prebox"><span class="server">(venv) [server]$ </span><span class="command">cd ~/example.com/&lt;projectname&gt;</span></pre>
 </div>
 </li>
 <li>Once configured, run migrate in your project directory:
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">(my_project) [server]$ </span><span class="command">python manage.py migrate</span>
+<pre class="prebox"><span class="server">(venv) [server]$ </span><span class="command">python manage.py migrate</span>
 Operations to perform:<br /> Apply all migrations: admin, auth, contenttypes, sessions<br />Running migrations:<br /> Applying contenttypes.0001_initial... OK<br /> Applying auth.0001_initial... OK<br /> Applying admin.0001_initial... OK<br /> Applying admin.0002_logentry_remove_auto_add... OK<br /> Applying contenttypes.0002_remove_content_type_name... OK<br /> Applying auth.0002_alter_permission_name_max_length... OK<br /> Applying auth.0003_alter_user_email_max_length... OK<br /> Applying auth.0004_alter_user_username_opts... OK<br /> Applying auth.0005_alter_user_last_login_null... OK<br /> Applying auth.0006_require_contenttypes_0002... OK<br /> Applying auth.0007_alter_validators_add_error_messages... OK<br /> Applying auth.0008_alter_user_username_max_length... OK<br /> Applying sessions.0001_initial... OK</pre>
 </div>
 </li>
 <li>Create a superuser:
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">(my_project) [server]$ </span><span class="command">python manage.py createsuperuser</span>
+<pre class="prebox"><span class="server">(venv) [server]$ </span><span class="command">python manage.py createsuperuser</span>
 <span class="cmdoutput">Username (leave blank to use 'username'): my_django_user
 Email address: email@example.com
 Password:
@@ -193,19 +193,19 @@ Superuser created successfully.</span></pre>
 </li>
 <li>Navigate to your /home/username/example.com directory.
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">(my_project) [server]$ </span><span class="command">cd /home/username/example.com</span></pre>
+<pre class="prebox"><span class="server">(venv) [server]$ </span><span class="command">cd /home/username/example.com</span></pre>
 </div>
 </li>
 <li>Add a /tmp/restart.txt file:
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">(my_project) [server]$ </span><span class="command">mkdir tmp</span>
-<span class="server">(my_project) [server]$ </span><span class="command">cd tmp</span>
-<span class="server">(my_project) [server]$ </span><span class="command">touch restart.txt</span></pre>
+<pre class="prebox"><span class="server">(venv) [server]$ </span><span class="command">mkdir tmp</span>
+<span class="server">(venv) [server]$ </span><span class="command">cd tmp</span>
+<span class="server">(venv) [server]$ </span><span class="command">touch restart.txt</span></pre>
 </div>
 </li>
 <li>Whenever you make a change to your configuration, make sure to run the following in your site's directory to notify Passenger of the change:
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">(my_project) [server]$ </span><span class="command">touch tmp/restart.txt</span></pre>
+<pre class="prebox"><span class="server">(venv) [server]$ </span><span class="command">touch tmp/restart.txt</span></pre>
 </div>
 </li>
 </ol>
