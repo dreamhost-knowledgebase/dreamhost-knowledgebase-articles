@@ -12,23 +12,44 @@
 <h2>How does the redirect work?</h2>
 <div class="solvvy-solution">
 <p>Any page you visit on your current site (the one being redirected) is forwarded to the page on the redirected site. For example, let's say you're redirecting <strong>example.com</strong> to <strong>dreamhost.com</strong>. If you visit <strong>example.com/contact.html</strong>, the URL changes to <strong>dreamhost.com/contact.html</strong>.</p>
-<h3>Does redirecting work for the www and non-www version of the site?</h3>
+<h2>Does redirecting work for the www and non-www version of the site?</h2>
 <p>Yes. If you set up a redirect on <strong>example.com</strong>, it also will work for <strong>www.example.com</strong>.</p>
-<h3><span id="redirect_to_https">Does redirecting work with https (SSL certificate)?</span></h3>
+<h2><span id="redirect_to_https">Does redirecting work with https (SSL certificate)?</span></h2>
+<p>The following describes a few different ways this could be configured.</p>
+<h3>Redirecting to the secure version of a different site</h3>
+<p>You can only redirect to another site that's already configured with an SSL certificate. For example:</p>
+<p><strong>http://example.com </strong>to<strong> https://dreamhostexample.com</strong></p>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>This type of redirect will only work if you visit the NON-secure version of the original site. For example:</p>
+<p><strong>http://example.com </strong>to<strong> https://dreamhostexample.com</strong></p>
+<p>This will not work for the secure version of the original site. For example:</p>
+<p><strong>http<strong>s</strong>://example.com </strong>to<strong> https://dreamhostexample.com</strong></p>
+<p>This is because the redirect functions on the HTTP service for the domain, not the HTTPS service. If you need both HTTP and HTTPS redirects to function, you must set the domain to <a href="https://help.dreamhost.com/hc/en-us/articles/215416227-How-do-I-add-a-domain-" target="_self">FULLY HOSTED</a>. You can then use an .htaccess file to redirect as you need.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215747748-How-can-I-redirect-and-rewrite-my-URLs-with-an-htaccess-file-" target="_self">How can I redirect and rewrite my URLs with an .htaccess file?</a></li>
+</ul>
+</div>
+</div>
+<h3>Redirecting to the secure version of the same site</h3>
 <div class="alert alert-important">
 <div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
 <p>It's not possible to use the panel's Redirect option (described below) with an SSL certificate as this removes hosting from the domain. The only option is to create a <a href="/hc/en-us/articles/215747748#Redirecting_a_URL" target="_self">custom file</a> to redirect your site to https.</p>
 </div>
 </div>
-<p>You can only redirect to another site that's already configured with an SSL certificate. For example:</p>
-<p><strong>http://example.com </strong>to<strong> https://dreamhostexample.com</strong></p>
 <p>You should never use the panel redirect tool to redirect to your own site as it will not function correctly. For example:</p>
 <p><strong>http://example.com </strong>to<strong> https://example.com</strong></p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
 <p>If you are looking for instructions on how to redirect your own website to its HTTPS URL, view the following article instead:</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/115003505112-How-to-force-your-site-to-redirect-to-https-SSL-">Force your site to redirect to https</a></li>
 </ul>
+</div>
+</div>
 </div>
 <h2><span id="Redirecting_a_new_domain_or_subdomain">Redirecting a new domain or subdomain</span></h2>
 <div class="solvvy-solution">

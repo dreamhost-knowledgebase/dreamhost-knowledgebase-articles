@@ -1,0 +1,73 @@
+<h2>Overview</h2>
+<div class="solvvy-solution">
+<p>Depending on how your site is constructed, it may be necessary to redirect requests for the primary URL to a subdirectory. For example, requests to example.com could go to example.com/blog. This is most often necessary with One-Click Installs.</p>
+<p>Visit the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.installer&amp;" target="_blank" rel="noopener">One-Click Installs</a> page to view available options.</p>
+<p>When installing a One-Click Install:</p>
+<ul>
+<li>The target directory must be completely empty to succeed.</li>
+<li>For example, if you want to put the installation in the directory /example.com, this directory must be empty and contain no files.</li>
+<li>Another solution is to install the software into an empty subdirectory such as example.com/blog; then, you could create rules in an .htaccess file to automatically redirect requests for example.com to example.com/blog.</li>
+</ul>
+</div>
+<h2>Creating an .htaccess file on your DreamHost web server</h2>
+<div class="solvvy-solution">
+<p>View the following article for instructions on how to create an .htaccess file on your web server:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216456227#Creating_an_.htaccess_file">Creating an .htaccess file on your DreamHost web server</a></li>
+</ul>
+<p>If the file already exists, view the following articles for instructions on how to update it (depending on if you're using an FTP client or SSH):</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115000098272-Creating-and-editing-a-file-via-FTP">Creating and editing a file via FTP</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Creating and editing a file via SSH</a></li>
+</ul>
+</div>
+<h2>What to change in the examples below?</h2>
+<div class="solvvy-solution">
+<p>The examples below can be entered into your .htaccess file exactly as shown.</p>
+<p>Only if the example contains a URL in bold should you change that to your actual URL. For example, if you see the domain 'example.com', change this to your own domain name.</p>
+</div>
+<h2><span id="Redirect_requests_with_.htaccess">Redirect requests with .htaccess</span></h2>
+<div class="solvvy-solution">
+<h3><span id="Redirect_.22ALL.22_requests_to_a_domain_to_a_subdirectory">Redirect "ALL" requests to a domain to a subdirectory</span></h3>
+<p>You can redirect all requests to a subdirectory by adding an .htaccess file to the root of your domain’s directory:</p>
+<ol>
+<li>Visit the FTP page for instructions on how to upload.</li>
+<li>Once connected, upload (or create) a text file named .htaccess (with no extension).</li>
+<li>Make sure it’s uploaded to your domain’s directory such as example.com.</li>
+<li>Add the following content to this .htaccess file:</li>
+</ol>
+<div class="preboxcontainer">
+<pre class="prebox">RewriteEngine on
+RewriteBase /
+<br># Rewrites all URLS without blog in them
+RewriteCond %{REQUEST_URI} !^/blog/
+
+# Rewrites all URLS [Replace "example" with the actual domain, without the TLD (.com, .net, .biz, etc)]
+RewriteCond %{HTTP_HOST} ^(www\.)?<span class="command">example</span>\.
+
+# Rewrite all those to insert /folder
+RewriteRule ^(.*)$ /<span class="command">blog/</span>$1 [L]
+</pre>
+</div>
+<p>This example redirects all requests for a website automatically to a subdirectory named /blog. If you need to redirect to another directory, just change the two references of /blog to your subdirectory.</p>
+<h3><span id="Redirect_.22ONLY.22_the_domain.27s_root_URL_to_a_subdirectory">Redirect "ONLY" the domain's root URL to a subdirectory</span></h3>
+<p>The following example provides an alternative method of transparently redirecting. It works with any subdomain (including root/naked domains) and only transparently redirects a root request, while allowing directly requested subdirectories like example.com/other to be accessed.</p>
+<div class="preboxcontainer">
+<pre class="prebox">RewriteEngine on
+RewriteCond %{HTTP_HOST} <span class="command">example\.com</span> [NC]
+RewriteCond %{REQUEST_URI} ^/$
+RewriteRule ^(.*)$ <span class="command">/blog/</span>$1 [L]
+</pre>
+</div>
+</div>
+<h2><span id="Redirecting_in_WordPress">Redirecting in WordPress</span></h2>
+<div class="solvvy-solution">
+<p>The redirect feature is included in WordPress. Visit their codex page for instructions on <a href="http://codex.wordpress.org/Giving_WordPress_Its_Own_Directory">Giving WordPress Its Own Directory</a>.</p>
+</div>
+<h2><span id="See_also">See also</span></h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216456227--htaccess-overview">.htaccess overview</a></li>
+</ul>
+</div>
