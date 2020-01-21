@@ -26,36 +26,6 @@ MAILTO="user@example.com"
 <p>When the 'Use locking' option is selected, the command(s) you want executed are filtered through a unique invocation of the setlock command.</p>
 <p>View the <a href="https://manpages.ubuntu.com/manpages/cosmic/en/man8/setlock.8.html">setlock</a> man page for further information. The use of setlock results in error messages if your cron job is invoked before the last iteration of the job releases your unique lockfile. This can happen if your script takes more time to run than the time between job executions.</p>
 </div>
-<h2><span id="Troubleshooting">Troubleshooting</span></h2>
-<div class="solvvy-solution">
-<ul>
-<li>When testing your new cron job, set the 'When to run' time frame to run every 10 minutes. Also, make sure to set an email address for reporting the results. This gives you important information about what may be going wrong if the command line is not running the cron job as desired. When everything is running properly you can then adjust the 'When to run' value to anything you like.</li>
-</ul>
-<ul>
-<li>If you're planning to use external software with a cron job, make sure you have set 'write' and other permissions for the files in your remote folders. If you get an error message about "permission denied" it means your permissions are not set properly. Also specifying the full path of the file you’re writing to can prevent issues with the cron environment running from a different directory.</li>
-</ul>
-<h3>Could not open input file</h3>
-<p>You may be emailed this when the cron job fails to run.</p>
-<p>First, make sure the username you've assigned to run the command in your panel has access to the file. Also make sure the file permissions allow the user to run it.</p>
-<p>If your permissions are correct, check the subject of the email that was sent to you. It will start like this:</p>
-<p><strong>Cron &lt;username@server&gt;</strong></p>
-<p>Make a note of this 'username', then check the Cron Job you created in the panel. These should be the same username. If the username is different than what you see in the panel, <a href="https://help.dreamhost.com/hc/en-us/articles/218084068-Contacting-support-overview">contact support</a>. They will be able to run a configuration on the old username to fix this.</p>
-</div>
-<h2><span id="Dedicated_server_troubleshooting">Dedicated server troubleshooting</span></h2>
-<div class="solvvy-solution">
-<p>It's rare that the cron service on a server may stop running. If you’re using a Dedicated server, you can verify that cron is running by running this shell command:</p>
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">ps aux | grep cron</span></pre>
-</div>
-<p>You can also check the system log for entries labeled 'CRON'.</p>
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">sudo grep CRON /var/log/syslog</span></pre>
-</div>
-<p>There is usually at least one CRON line per minute in the /var/log/syslog file. If you don’t see any recent entries then you may want to restart the cron service. To restart cron run this command under your Dedicated server's <a href="https://help.dreamhost.com/hc/en-us/articles/214694298#Dedicated_server_Admin_users">admin user</a>:</p>
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">sudo service cron restart</span></pre>
-</div>
-</div>
 <h2><span id="See_also">See also</span></h2>
 <div class="solvvy-hidden">
 <h3>Internal&nbsp;links</h3>
@@ -64,6 +34,7 @@ MAILTO="user@example.com"
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215767047-Creating-a-custom-Cron-Job">Creating a custom Cron Job</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215767107-Execution-environment-of-a-cron-job">Execution environment of a cron job </a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215088668-How-do-I-create-a-cron-job-">How do I create a cron job?</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360038608892-Cronjob-troubleshooting" target="_self">Cron job troubleshooting</a></li>
 </ul>
 <h3>External&nbsp;links</h3>
 <ul>

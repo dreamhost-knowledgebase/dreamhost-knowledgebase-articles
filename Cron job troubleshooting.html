@@ -1,0 +1,56 @@
+<h2>Overview</h2>
+<div class="solvvy-solution">
+<p>This article covers a few common issues and troubleshooting steps you can take to fix your cron jobs.</p>
+</div>
+<h2>Troubleshooting steps</h2>
+<div class="solvvy-solution">
+<h3>Setting an email address</h3>
+<p>When testing your new cron job, make sure to set an email address for reporting the results. This gives you important information about what may be going wrong if the command line is not running the cron job as desired.</p>
+<h3>Setting the correct file permissions</h3>
+<p>If you're planning to use external software with a cron job, make sure you have set 'write' and other permissions for the files in your remote folders. If you get an error message about "permission denied" it means your permissions are not set properly. Also specifying the full path of the file you’re writing to can prevent issues with the cron environment running from a different directory.</p>
+</div>
+<h3>Using full file paths</h3>
+<p>The server's crontab needs to know exactly where to read and write files. For example, if you manually run the following file named 'file.sh', it will create a new file named 'output.txt' in the directory you run the command in.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">sh file.sh &gt; output.txt</span></pre>
+</div>
+<p>However, a cron job would not be able to locate either of these files. Instead, your cron job would need to specify the full paths like this:</p>
+<div class="preboxcontainer">
+<pre class="prebox">0 12 * * * sh /home/username/example.com/file.sh &gt; /home/username/example.com/output.txt</pre>
+</div>
+<h2>Error messages</h2>
+<div class="solvvy-solution">
+<h3>Could not open input file</h3>
+<p>You may be emailed this when the cron job fails to run. Check the subject of the email that was sent to you. It will start like this:</p>
+<p><strong>Cron &lt;username@server&gt;</strong></p>
+<p>Make a note of this 'username', then check the Cron Job you created in the panel. These should be the same username. If the username is different than what you see in the panel, make sure to adjust your cron job to the correct username.</p>
+<p>Also,&nbsp;make sure the file permissions are set so the user may run it. This usually means 644 permissions for a file and 755 for a directory.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360029138491-Unix-permissions-overview" target="_self">Unix permissions overview</a></li>
+</ul>
+<h3>No such file or directory</h3>
+<p>Check your file paths. Try adding the full file path to the file you're attempting to run as well as the full file path to any file's you're writing to. For example, instead of:</p>
+<div class="preboxcontainer">
+<pre class="prebox">cat file.txt</pre>
+</div>
+<p>Change to:</p>
+<div class="preboxcontainer">
+<pre class="prebox">cat /home/username/example.com/file.txt</pre>
+</div>
+</div>
+<h2><span id="Dedicated_server_troubleshooting">Dedicated server troubleshooting</span></h2>
+<div class="solvvy-solution">
+<p>It's rare that the cron service on a server may stop running. However, if you’re using a Dedicated server, you can verify the cron is running by running this shell command:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">ps aux | grep cron</span></pre>
+</div>
+<p>You can also check the system log for entries labeled 'CRON' after <a href="https://help.dreamhost.com/hc/en-us/articles/215945467-How-do-I-add-users-to-a-Dedicated-server-" target="_self">changing to your admin user</a>&nbsp;and running the following commands.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">sudo su -</span>
+<span class="server">[root]# </span><span class="command">sudo grep CRON /var/log/syslog</span></pre>
+</div>
+<p>If you don’t see any recent CRON entries then you may want to restart the cron service. To restart cron run this command under your Dedicated server's <a href="https://help.dreamhost.com/hc/en-us/articles/214694298#Dedicated_server_Admin_users">admin user</a>:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[root]# </span><span class="command">sudo service cron restart</span></pre>
+</div>
+</div>
