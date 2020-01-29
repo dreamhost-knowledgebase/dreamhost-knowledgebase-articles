@@ -1,14 +1,14 @@
 <h2>Overview</h2>
 <div class="solvvy-solution">
-<p>Python3 is only available on servers running Ubuntu 18 (Bionic). If your server is still running Ubuntu 14 (Trusty), you can install it manually using a <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">Shell user</a>. Visit the following link for information on how to confirm the version your server is running.</p>
+<p>Python3 is only available on servers running Ubuntu 18 (Bionic). If your server is still running Ubuntu 14 (Trusty), you can install it manually using a <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">Shell user</a>, however, it's recommended that you always install a custom version if you're going to be installing packages as this isolates the environment from the server.</p>
+<p>Visit the following link for information on how to confirm the version your server is running.</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/360022178852#version" target="_self">Checking the version of Ubuntu</a></li>
 </ul>
-<p>To install a custom Python version, you must download the version from <a href="https://www.python.org/">python.org</a>.</p>
-<p>The following describes how to install Python 3.6.2 and 3.7.1 under your <a href="https://help.dreamhost.com/hc/en-us/articles/214694298-What-are-the-different-types-of-DreamHost-users-">website user</a>.</p>
+<p>The following describes how to install Python on an Ubuntu 14 (Trusty) and Ubuntu 18 (Bionic) server under your <a href="https://help.dreamhost.com/hc/en-us/articles/214694298-What-are-the-different-types-of-DreamHost-users-">website user</a>.</p>
 <ul>
-<li><a href="#3.6.2">Installing Python 3.6.2</a></li>
-<li><a href="#3.7.1" target="_self">Installing Python 3.7.1+</a></li>
+<li><a href="#ubuntu-18" target="_self">Installing Python 3 on an Ubuntu 18 server</a></li>
+<li><a href="#ubuntu-14" target="_self">Installing Python 3 on an Ubuntu 14 server</a></li>
 </ul>
 <div class="alert alert-note">
 <div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
@@ -22,21 +22,22 @@
 </div>
 </div>
 </div>
-<h2><span id="3.6.2">Installing Python 3.6.2</span></h2>
+<h2><span id="ubuntu-18">Installing Python 3 on an Ubuntu 18 server</span></h2>
 <div class="solvvy-solution">
 <ol>
+<li>Choose the version you wish to install from&nbsp;<a href="https://www.python.org/">python.org</a>.</li>
 <li>Log into your server via <a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a>, and then run the following commands one at a time:
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~</span>
 <span class="server">[server]$ </span><span class="command">mkdir tmp</span>
 <span class="server">[server]$ </span><span class="command">cd tmp</span>
-<span class="server">[server]$ </span><span class="command">wget https://www.python.org/ftp/python/3.6.2/Python-3.6.2.tgz</span>
-<span class="server">[server]$ </span><span class="command">tar zxvf Python-3.6.2.tgz</span> <br /><span class="server">[server]$ </span><span class="command">cd Python-3.6.2</span> <br /><span class="server">[server]$ </span><span class="command">./configure --prefix=$HOME/opt/python-3.6.2</span>
+<span class="server">[server]$ </span><span class="command">wget https://www.python.org/ftp/python/3.8.1/Python-3.8.1.tgz</span>
+<span class="server">[server]$ </span><span class="command">tar zxvf Python-3.8.1.tgz</span> <br /><span class="server">[server]$ </span><span class="command">cd Python-3.8.1</span> <br /><span class="server">[server]$ </span><span class="command">./configure --prefix=$HOME/opt/python-3.8.1</span>
 <span class="server">[server]$ </span><span class="command">make</span>
 <span class="server">[server]$ </span><span class="command">make install</span></pre>
 </div>
 <ul>
-<li>These commands install your local version of python to /home/&lt;username&gt;/opt/python-3.6.2.</li>
+<li>These commands install your local version of python to /home/&lt;username&gt;/opt/python-3.8.1.</li>
 </ul>
 </li>
 <li>Navigate back to your user's home directory:
@@ -46,7 +47,7 @@
 </li>
 <li>View the&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">creating and editing a file via SSH</a>&nbsp;article for instructions on how to edit your existing .bash_profile. To use the new version of Python over the system default, enter the following line to your .bash_profile:
 <div class="preboxcontainer">
-<pre class="prebox">export PATH=$HOME/opt/python-3.6.2/bin:$PATH</pre>
+<pre class="prebox">export PATH=$HOME/opt/python-3.8.1/bin:$PATH</pre>
 </div>
 </li>
 <li>Save and close the file, and then return to your shell. Run the following command to update this file:
@@ -57,12 +58,12 @@
 <li>Check which version of Python you're now using by entering the following command:
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">which python3</span>
-<span class="cmdoutput">/home/username/opt/python-3.6.2/bin/python3</span></pre>
+<span class="cmdoutput">/home/username/opt/python-3.8.1/bin/python3</span></pre>
 </div>
 <p>You can also check the version:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">python3 --version</span>
-<span class="cmdoutput">Python 3.6.2</span></pre>
+<span class="cmdoutput">Python 3.8.1</span></pre>
 </div>
 <div class="alert alert-note">
 <div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
@@ -73,15 +74,15 @@
 </li>
 </ol>
 </div>
-<h2><span id="3.7.1">Installing Python 3.7.1+</span></h2>
+<h2><span id="ubuntu-14">Installing Python 3.8.1+ on an Ubuntu 14 server</span></h2>
 <div class="solvvy-solution">
 <div class="alert alert-note">
 <div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
-<p>These instructions have been tested up to version 3.8.0.</p>
+<p>These instructions have been tested up to version 3.8.1.</p>
 </div>
 </div>
-<h3>Important note about version 3.7.1 on Trusty servers</h3>
+<h3>Important note about version 3.7.1+ on Trusty servers</h3>
 <p>If your server is running Ubuntu 14 (Trusty) and you wish to install Version 3.7.1+ of Python, you will need to install a custom version of OpenSSL. This is because newer Python versions require OpenSSL (1.0.2 or newer) which the older Ubuntu servers do not provide. As such, you'll need to also install OpenSSL locally, then configure Python to use this local version of OpenSSL.&nbsp;View the following link for details:</p>
 <ul>
 <li><a href="https://docs.python.org/3/library/ssl.html">https://docs.python.org/3/library/ssl.html</a></li>
@@ -98,7 +99,7 @@
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">cat /etc/issue</span>
 Ubuntu 14.04.5 LTS \n \l</pre>
 </div>
-<p>If your server is running version 18 (Bionic), you do not need to install OpenSSL.</p>
+<p>If your server is running version 18 (Bionic), you do not need to install OpenSSL and you can follow the directions above instead.</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">cat /etc/issue</span>
 Ubuntu 18.04.1 LTS \n \l</pre>
@@ -112,13 +113,14 @@ Ubuntu 18.04.1 LTS \n \l</pre>
 </ul>
 <h3><span id="3.6.2">Installing</span></h3>
 <ol>
+<li>Choose the version you wish to install from&nbsp;<a href="https://www.python.org/">python.org</a>.</li>
 <li>Log into your server via <a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a>, and then run the following commands one at a time:
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~</span>
 <span class="server">[server]$ </span><span class="command">mkdir tmp</span>
 <span class="server">[server]$ </span><span class="command">cd tmp</span>
-<span class="server">[server]$ </span><span class="command">wget https://www.python.org/ftp/python/3.7.1/Python-3.7.1.tgz</span>
-<span class="server">[server]$ </span><span class="command">tar zxvf Python-3.7.1.tgz</span> <br /><span class="server">[server]$ </span><span class="command">cd Python-3.7.1</span></pre>
+<span class="server">[server]$ </span><span class="command">wget https://www.python.org/ftp/python/3.8.1/Python-3.8.1.tgz</span>
+<span class="server">[server]$ </span><span class="command">tar zxvf Python-3.8.1.tgz</span> <br /><span class="server">[server]$ </span><span class="command">cd Python-3.8.1</span></pre>
 </div>
 </li>
 <li>Change into the 'Modules' directory.
@@ -139,15 +141,15 @@ Ubuntu 18.04.1 LTS \n \l</pre>
         -L$(SSL)/lib -lssl -lcrypto</pre>
 </div>
 </li>
-<li>Change back to the Python-3.7.1 directory. You can now configure and install Python.<br />
+<li>Change back to the Python-3.8.1 directory. You can now configure and install Python.<br />
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ..</span>
-<span class="server">[server]$ </span><span class="command">./configure --prefix=$HOME/opt/python-3.7.1</span>
+<span class="server">[server]$ </span><span class="command">./configure --prefix=$HOME/opt/python-3.8.1</span>
 <span class="server">[server]$ </span><span class="command">make</span>
 <span class="server">[server]$ </span><span class="command">make install</span></pre>
 </div>
 <ul>
-<li>These commands install your local version of python to /home/&lt;username&gt;/opt/python-3.7.1.</li>
+<li>These commands install your local version of python to /home/&lt;username&gt;/opt/python-3.8.1.</li>
 </ul>
 <div class="alert alert-important">
 <div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
@@ -164,7 +166,7 @@ Ubuntu 18.04.1 LTS \n \l</pre>
 </li>
 <li>View the&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">creating and editing a file via SSH</a>&nbsp;article for instructions on how to edit your existing .bash_profile. To use the new version of Python over the system default, enter the following line to your .bash_profile:
 <div class="preboxcontainer">
-<pre class="prebox">export PATH=$HOME/opt/python-3.7.1/bin:$PATH</pre>
+<pre class="prebox">export PATH=$HOME/opt/python-3.8.1/bin:$PATH</pre>
 </div>
 </li>
 <li>Save and close the file, and then return to your shell. Run the following command to update this file:
@@ -175,12 +177,12 @@ Ubuntu 18.04.1 LTS \n \l</pre>
 <li>Check which version of Python you're now using by entering the following command:
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">which python3</span>
-<span class="cmdoutput">/home/username/opt/python-3.7.1/bin/python3</span></pre>
+<span class="cmdoutput">/home/username/opt/python-3.8.1/bin/python3</span></pre>
 </div>
 <p>You can also check the version:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">python3 --version</span>
-<span class="cmdoutput">Python 3.7.1</span></pre>
+<span class="cmdoutput">Python 3.8.1</span></pre>
 </div>
 <div class="alert alert-note">
 <div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
@@ -194,7 +196,7 @@ Ubuntu 18.04.1 LTS \n \l</pre>
 <h2>Troubleshooting</h2>
 <h3>pip3 error</h3>
 <div class="solvvy-solution">
-<p>It's possible you'll see the following error after installing version 3.7.1 when running pip.</p>
+<p>It's possible you'll see the following error after installing version 3.8.1 when running pip.</p>
 <div class="preboxcontainer">
 <pre class="prebox">pip is configured with locations that require TLS/SSL, however the ssl module in Python is not available.</pre>
 </div>
