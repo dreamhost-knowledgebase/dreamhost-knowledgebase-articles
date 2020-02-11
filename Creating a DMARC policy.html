@@ -20,8 +20,8 @@
 <h3>Strict and relaxed alignment</h3>
 <p>The alignment in your policy can be set as strict or relaxed.</p>
 <ul>
-<li><strong>Strict alignment</strong> — the domains must be identical</li>
-<li><strong>Relaxed alignment</strong> — the top-level "Organizational Domain" must match</li>
+<li><strong>Strict alignment</strong>&nbsp;— the domains must be identical</li>
+<li><strong>Relaxed alignment</strong>&nbsp;— the top-level "Organizational Domain" must match</li>
 </ul>
 <p>The 'Organizational Domain' is your domain name followed by its suffix. For example:</p>
 <ul>
@@ -34,7 +34,7 @@
 <div class="solvvy-solution">
 <p>The sender's DMARC policy contains information on how to handle emails that fail authentication. Two types of reports can be created:</p>
 <ul>
-<li><strong>Aggregate reports</strong> — sent as XML format once a day, consisting of aggregate data of all DMARC failures</li>
+<li><strong>Aggregate reports</strong>&nbsp;— sent as XML format once a day, consisting of aggregate data of all DMARC failures</li>
 <li><strong>Forensic reports</strong> (aka Failure reports) — generated immediately and consist of individual emails that failed</li>
 </ul>
 </div>
@@ -44,13 +44,13 @@
 <li>Configure an <a href="https://help.dreamhost.com/hc/en-us/articles/216107737-SPF-overview">SPF</a> and/or <a href="https://help.dreamhost.com/hc/en-us/articles/215029758-What-are-DKIM-records-">DKIM</a> record on your domain.</li>
 <li>Send an email to yourself (or another address you own). Once received, view its headers. Verify domain alignment by identifying the domain listed as the sending address. It may be located in the following places:
 <ul>
-<li>The Envelope From domain —  <strong>From: admin@example.com</strong></li>
+<li>The Envelope From domain&nbsp;— &nbsp;<strong>From: admin@example.com</strong></li>
 <li>The Return-Path Return-Path — <strong>&lt;admin@example.com&gt;</strong></li>
-<li>The d=domain in the DKIM-Signature — DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; <strong>d=example.com</strong>;</li>
+<li>The d=domain in the DKIM-Signature&nbsp;—&nbsp;DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; <strong>d=example.com</strong>;</li>
 </ul>
 The domains mentioned in all of these areas must be identical, otherwise DMARC will fail alignment.</li>
 <li>
-<p><a href="https://help.dreamhost.com/hc/en-us/articles/215029918-How-do-I-add-an-email-address-">Create two separate email addresses</a> to receive DMARC daily aggregate and forensic reports. It’s recommended you create two email addresses since you may receive a large amount of reports. For example:</p>
+<p><a href="https://help.dreamhost.com/hc/en-us/articles/215029918-How-do-I-add-an-email-address-">Create two separate email addresses</a> to receive DMARC daily aggregate and forensic reports.&nbsp;It’s recommended you create two email addresses since you may receive a large amount of reports. For example:</p>
 <ul>
 <li>dmarc_agg@example.com</li>
 <li>dmarc_forensic@example.com</li>
@@ -65,9 +65,9 @@ The domains mentioned in all of these areas must be identical, otherwise DMARC w
 <dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/dmarc-record.png" /></dd>
 </dl>
 <ul>
-<li><strong>Name</strong> — _dmarc</li>
-<li><strong>Type</strong> — TXT</li>
-<li><strong>Value</strong> — Below is a basic configuration that handles the majority of your DMARC needs. Just make sure to adjust the email addresses to the addresses you created above to receive incoming reports.
+<li><strong>Name</strong>&nbsp;— _dmarc</li>
+<li><strong>Type</strong>&nbsp;— TXT</li>
+<li><strong>Value</strong>&nbsp;— Below is a basic configuration that handles the majority of your DMARC needs. Just make sure to adjust the email addresses to the addresses you created above to receive incoming reports.
 <div class="preboxcontainer">
 <pre class="prebox">v=DMARC1; p=none; fo=1; rua=mailto:dmarc_agg@example.com;ruf=mailto:dmarc_forensic@example.com;pct=100</pre>
 </div>
@@ -103,7 +103,7 @@ View the section below for further details on the different options you can use.
 </tr>
 <tr>
 <td>p=reject</td>
-<td>If an email fails DMARC authentication, the recipient should reject the email  during the SMTP transaction.</td>
+<td>If an email fails DMARC authentication, the recipient should reject the email&nbsp; during the SMTP transaction.</td>
 </tr>
 </tbody>
 </table>
@@ -194,7 +194,7 @@ View the section below for further details on the different options you can use.
 <td>sp</td>
 <td>Sets a reporting policy for the subdomain, different form the primary domain. For example:<br />
 <div class="preboxcontainer">
-<pre class="prebox">v=DMARC1; p=none; <span class="command">sp=quarantine;</span>fo=1; rua=mailto:dmarc_agg@example.com;ruf=mailto:dmarc_forensic@example.com;pct=100&lt;</pre>
+<pre class="prebox">v=DMARC1; p=none; <span class="code-highlight">sp=quarantine;</span>fo=1; rua=mailto:dmarc_agg@example.com;ruf=mailto:dmarc_forensic@example.com;pct=100&lt;</pre>
 </div>
 </td>
 </tr>

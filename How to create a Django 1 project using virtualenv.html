@@ -70,18 +70,18 @@
 <li>In order for Passenger to pick up your project, create a passenger_wsgi.py file within your site's top level directory (/home/username/example.com). Add the following:
 <div class="preboxcontainer">
 <pre class="prebox">import sys, os
-INTERP = "<span class="command">/home/&lt;username&gt;/local/bin/python</span>"
+INTERP = "<span class="code-highlight">/home/&lt;username&gt;/local/bin/python</span>"
 #INTERP is present twice so that the new python interpreter<br />#knows the actual executable path 
 if sys.executable != INTERP: os.execl(INTERP, INTERP, *sys.argv)
 
 cwd = os.getcwd()
 sys.path.append(cwd)
-sys.path.append(cwd + '/<span class="command">djangoprojectname</span>')  #You must add your project here
+sys.path.append(cwd + '/<span class="code-highlight">djangoprojectname</span>')  #You must add your project here
 
-sys.path.insert(0,cwd+'/venv<span class="command">/</span>bin')
-sys.path.insert(0,cwd+'/venv/lib/python2.7/site-packages')
+sys.path.insert(0,cwd+'/<span class="code-highlight">venv/bin</span>')
+sys.path.insert(0,cwd+'/<span class="code-highlight">venv/lib/python2.7/site-packages</span>')
 
-os.environ['DJANGO_SETTINGS_MODULE'] = "<span class="command">djangoprojectname</span>.settings"
+os.environ['DJANGO_SETTINGS_MODULE'] = "<span class="code-highlight">djangoprojectname</span>.settings"
 from django.core.wsgi import get_wsgi_application
 application = get_wsgi_application()
 </pre>
