@@ -30,18 +30,18 @@
 <p>By entering the lines below into an <a href="/hc/en-us/articles/216456227--htaccess-overview">.htaccess file</a>, you can prevent hotlinking to your website:</p>
 <div class="preboxcontainer">
 <pre class="prebox">RewriteEngine On
-RewriteCond %{HTTP_REFERER} !^$
-RewriteCond %{HTTP_REFERER} !^http://(www\.)?<span class="command">example.com</span>/.*$ [NC] 
-RewriteRule \.(gif|jpg)$ http://<span class="command">www.example.com/hotlink.gif</span> [R,L]
+RewriteCond&nbsp;%{HTTP_REFERER}&nbsp;!^$
+RewriteCond&nbsp;%{HTTP_REFERER}&nbsp;!^http://(www\.)?<span class="code-highlight">example.com</span>/.*$ [NC] 
+RewriteRule \.(gif|jpg)$ http://<span class="code-highlight">www.example.com/hotlink.gif</span> [R,L]
 </pre>
 </div>
 <p>In the example above, change 'example.com' to your website URL. This causes any hotlinked image to fail to load. You can change the last line to point to any image you like. This image should explain that hot linking is disabled on your server.</p>
 <p>Here is another example:</p>
 <div class="preboxcontainer">
 <pre class="prebox">RewriteEngine on
-RewriteCond %{HTTP_REFERER} !^http://<span class="command">example.com</span>.*$ [NC] 
-RewriteCond %{HTTP_REFERER} !^http://<span class="command">www.example.com</span>.*$ [NC] 
-RewriteRule .*\.(gif|jpg|jpeg|bmp)$ http://<span class="command">www.example.com/stophotlinking.jpg</span> [R,NC] 
+RewriteCond&nbsp;%{HTTP_REFERER}&nbsp;!^http://<span class="code-highlight">example.com</span>.*$ [NC] 
+RewriteCond&nbsp;%{HTTP_REFERER}&nbsp;!^http://<span class="code-highlight">www.example.com</span>.*$ [NC] 
+RewriteRule .*\.(gif|jpg|jpeg|bmp)$ http://<span class="code-highlight">www.example.com/stophotlinking.jpg</span> [R,NC] 
 </pre>
 </div>
 <p>You can change the last line to point to any image you like. This image should explain that hot linking is disabled on your server.</p>
@@ -52,7 +52,7 @@ RewriteRule .*\.(gif|jpg|jpeg|bmp)$ http://<span class="command">www.example.com
 <p>The following code fails to load a hotlinked file, but no error is thrown. So, if the site example.com contains a hotlinked image to your site, it would fail to load on their site:</p>
 <div class="preboxcontainer">
 <pre class="prebox">RewriteEngine On
-RewriteCond %{HTTP_REFERER} ^http://(www\.)?<span class="command">example\.com</span>(/.*)*$ [NC,OR]
+RewriteCond&nbsp;%{HTTP_REFERER} ^http://(www\.)?<span class="code-highlight">example\.com</span>(/.*)*$ [NC,OR]
 RewriteRule \.(jpeg|JPEG|jpe|JPE|jpg|JPG|gif|GIF|png|PNG|mng|MNG)$ - [F]
 </pre>
 </div>
@@ -63,14 +63,14 @@ RewriteRule \.(jpeg|JPEG|jpe|JPE|jpg|JPG|gif|GIF|png|PNG|mng|MNG)$ - [F]
 <p>The following code only allows specific sites to load content. For example, the site example.com has all of the content. The following code allows <strong>only</strong> example.com and dreamhost.com to load the content. All other sites attempting to request any resource fail to load the resource, but no errors are thrown:</p>
 <div class="preboxcontainer">
 <pre class="prebox">RewriteEngine On
-RewriteCond %{HTTP_REFERER} !^http://<span class="command">(www\.)?dreamhost\.com</span>(/.*)*$ [NC]
-RewriteCond %{HTTP_REFERER} !^http://<span class="command">(www\.)?example\.com</span>(/.*)*$ [NC]
-RewriteCond %{HTTP_REFERER} !^$
+RewriteCond&nbsp;%{HTTP_REFERER}&nbsp;!^http://<span class="code-highlight">(www\.)?dreamhost\.com</span>(/.*)*$ [NC]
+RewriteCond&nbsp;%{HTTP_REFERER}&nbsp;!^http://<span class="code-highlight">(www\.)?example\.com</span>(/.*)*$ [NC]
+RewriteCond&nbsp;%{HTTP_REFERER}&nbsp;!^$
 RewriteRule \.(jpeg|gif|png)$ - [F]
 </pre>
 </div>
-<p>In addition, since a user agent may not always specify an HTTP_REFERER value, the RewriteCond %{HTTP_REFERER} !^$ line allows the request to go through if the HTTP_REFERER value consists of a blank string.</p>
-<p>For further examples on how to block traffic by IP or domain, please view the <a href="/hc/en-us/articles/216363167-How-do-I-deny-access-to-my-site-with-an-htaccess-file-">Denying access</a> article.</p>
+<p>In addition, since a user agent may not always specify an HTTP_REFERER value, the RewriteCond&nbsp;%{HTTP_REFERER}&nbsp;!^$ line allows the request to go through if the HTTP_REFERER value consists of a blank string.</p>
+<p>For further examples on how to block traffic by IP or domain, please view the <a href="/hc/en-us/articles/216363167-How-do-I-deny-access-to-my-site-with-an-htaccess-file-">Denying access</a>&nbsp;article.</p>
 </div>
 <h2><span id="See_also">See also</span></h2>
 <div class="solvvy-hidden">

@@ -16,8 +16,8 @@
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/218672058-Configuring-DNS-for-your-domains">Configuring DNS for your domains</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/115001754711-Locating-the-IP-Address-of-your-instance">Locating the IP address of your instance</a></li>
 </ul>
-<h2>Step 3 — Install Apache or LAMP on the instance</h2>
-<p>Log into your instance using the <a href="https://help.dreamhost.com/hc/en-us/articles/216201547-Connect-to-your-instance-with-SSH-keys-overview">Key Pair</a> and the <a href="https://help.dreamhost.com/hc/en-us/articles/228377408-How-to-find-the-default-user-of-an-image">default user assigned to it</a>. Install Apache based on what image you choose to create the instance from. Below shows how to do this on Ubuntu.</p>
+<h2>Step 3&nbsp;— Install Apache or LAMP on the instance</h2>
+<p>Log into your instance using the&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/216201547-Connect-to-your-instance-with-SSH-keys-overview">Key Pair</a>&nbsp;and the&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/228377408-How-to-find-the-default-user-of-an-image">default user assigned to it</a>. Install Apache based on what image you choose to create the instance from. Below shows how to do this on Ubuntu.</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215879457-How-to-Configure-Apache-on-DreamCompute-Running-Debian-or-Ubuntu">How to Configure Apache on DreamCompute Running Debian or Ubuntu</a></li>
 </ul>
@@ -31,25 +31,25 @@
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/360000274451-Creating-a-new-user-on-an-instance">Creating a new user on an instance</a></li>
 </ul>
 <div class="alert alert-note">
-<div class="alert-icon"><img height="60" src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
 <p>The remaining commands in this article assume you're logged in as the new user you just created.</p>
 </div>
 </div>
-<div id="add-ssh-access"> </div>
+<div id="add-ssh-access">&nbsp;</div>
 <h2>Step 5 — Add SSH access</h2>
 <p>Depending on the permissions your user may need, you may want to enable SSH for the user. This allows the user to log into the server via SSH, as opposed to security keys.</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/360000281572-Adding-SSH-access-to-your-users">Adding SSH access to your users</a></li>
 </ul>
-<div id="add-your-domain"> </div>
-<h2>Step 6 — Add your domain</h2>
+<div id="add-your-domain">&nbsp;</div>
+<h2>Step 6&nbsp;— Add your domain</h2>
 <p>Make a folder for the website under your new username.</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo mkdir /home/username/example.com</span>
 </pre>
 </div>
-<p>Configure VirtualHosts so your instance knows how to handle the domain. To do this, you need to make a .conf file.</p>
+<p>Configure VirtualHosts so your instance knows how to handle the domain.&nbsp;To do this, you need to make a .conf file.</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo touch /etc/apache2/sites-available/example.com.conf</span>
 </pre>
@@ -63,17 +63,17 @@
 <p>Then put the following inside it. Make sure to change any 'example.com' URLs to your actual site and the DocumentRoot to the location of the website under your username.</p>
 <div class="preboxcontainer">
 <pre class="prebox">&lt;VirtualHost *:80&gt;
-    ServerName <span class="command">example.com</span>
-    ServerAlias www.<span class="command">example.com</span>
-    ServerAdmin admin@<span class="command">example.com</span>
-    DocumentRoot /home/<span class="command">username/example.com</span>
-    &lt;Directory /home/<span class="command">username/example.com</span>&gt;
+    ServerName <span class="code-highlight">example.com</span>
+    ServerAlias www.<span class="code-highlight">example.com</span>
+    ServerAdmin admin@<span class="code-highlight">example.com</span>
+    DocumentRoot /home/<span class="code-highlight">username/example.com</span>
+    &lt;Directory /home/<span class="code-highlight">username/example.com</span>&gt;
             AllowOverride all
             Require all granted
     &lt;/Directory&gt;
 
-    ErrorLog ${APACHE_LOG_DIR}/<span class="command">example.com</span>-error.log
-    CustomLog ${APACHE_LOG_DIR}/<span class="command">example.com</span>-access.log combined
+    ErrorLog ${APACHE_LOG_DIR}/<span class="code-highlight">example.com</span>-error.log
+    CustomLog ${APACHE_LOG_DIR}/<span class="code-highlight">example.com</span>-access.log combined
 &lt;/VirtualHost&gt;
 </pre>
 </div>
@@ -89,7 +89,7 @@ To activate the new configuration, you need to run:
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo service apache2 reload</span></pre>
 </div>
-<h2>Step 7 — Enable userdir</h2>
+<h2>Step 7&nbsp;— Enable userdir</h2>
 <p>Run the following under your default user:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo a2enmod userdir</span>
@@ -118,12 +118,12 @@ To activate the new configuration, you need to run:
 <pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo service apache2 reload</span></pre>
 </div>
 <p>If you view your site now, you'll see it resolving on the DreamCompute instance.</p>
-<h2>Step 8 — Adding a Let's Encrypt certificate</h2>
-<p>If you now add a <a href="https://help.dreamhost.com/hc/en-us/articles/222168828-Setting-up-Let-s-Encrypt-on-DreamCompute-with-Apache">'Let Encrypt' certificate</a> it will be installed on your domain without further configuration. The configuration file will also show under:</p>
+<h2>Step 8&nbsp;— Adding a Let's Encrypt certificate</h2>
+<p>If you now add a <a href="https://help.dreamhost.com/hc/en-us/articles/222168828-Setting-up-Let-s-Encrypt-on-DreamCompute-with-Apache">'Let Encrypt' certificate</a>&nbsp;it will be installed on your domain without further configuration. The configuration file will also show under:</p>
 <div class="preboxcontainer">
 <pre class="prebox">/etc/apache2/sites-available/</pre>
 </div>
-<p>If you visit your site now, you should see it resolving from your user's /home directory.<span style="font-family: monospace, monospace; font-size: 1em;"> </span></p>
+<p>If you visit your site now, you should see it resolving from your user's /home directory.<span style="font-family: monospace, monospace; font-size: 1em;">&nbsp;</span></p>
 </div>
 <h2>Editing site files with an FTP client</h2>
 <div class="solvvy-solution">
