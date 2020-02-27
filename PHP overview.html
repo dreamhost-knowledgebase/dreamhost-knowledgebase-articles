@@ -2,7 +2,7 @@
 <div class="solvvy-solution">
 <p>PHP, (or PHP: Hypertext Preprocessor), is a general-purpose server-side scripting language. It can be embedded within, or used to manipulate, HTML pages.</p>
 </div>
-<h2><strong><span id="An_example_of_PHP">An example of PHP</span></strong></h2>
+<h2><span id="An_example_of_PHP">An example of PHP</span></h2>
 <div class="solvvy-solution">
 <p>A file with the following text that is saved with a file extension of <strong>.php</strong>, outputs "Hello, world!" when opened with a web browser:</p>
 <div class="preboxcontainer">
@@ -11,24 +11,42 @@ echo "Hello, world!";
 ?&gt;</pre>
 </div>
 </div>
-<h2><strong><span id="PHP_on_DreamHost">PHP on DreamHost</span></strong></h2>
+<h2><span id="PHP_on_DreamHost">PHP on</span><span id="PHP_on_DreamHost"> Dre</span><span id="PHP_on_DreamHost">amHost</span></h2>
 <div class="solvvy-solution">
-<h3><strong><span id="General_requirements_for_using_PHP_at_DreamHost">General requirements for using PHP at DreamHost</span></strong></h3>
+<h3><span id="General_requirements_for_using_PHP_at_DreamHost">General requirements for using PHP at DreamHost</span></h3>
 <p>DreamHost currently allows the following PHP configurations:</p>
 <ul>
 <li>User-installed PHP running as a <a href="/hc/en-us/articles/217297307-CGI-overview">CGI</a> application</li>
-<li>PHP 5 running as a <a href="/hc/en-us/articles/217297307-CGI-overview">CGI</a> or <a href="/hc/en-us/articles/217298967-FastCGI-overview">FastCGI</a> application</li>
-<li>PHP 5 running as an <a href="/hc/en-us/articles/217214317-Apache-HTTP-Server">Apache</a> module (on DreamHost PS only)</li>
+<li>PHP 7 running as a <a href="/hc/en-us/articles/217297307-CGI-overview">CGI</a> or <a href="/hc/en-us/articles/217298967-FastCGI-overview">FastCGI</a> application</li>
+<li>PHP 7 running as an <a href="/hc/en-us/articles/217214317-Apache-HTTP-Server">Apache</a> module (on DreamHost PS only)</li>
 </ul>
 <p>DreamHost does not support mod_php on shared servers. For more information about mod_php, you can read more about on <a href="http://blog.dreamhosters.com/2006/04/11/end-of-php-as-an-apache-module/#comment-174">the DreamHost blog</a>.</p>
 </div>
-<h2><strong><span id="Advanced_topics">Advanced topics</span></strong></h2>
+<h2>Default PHP version in the panel</h2>
 <div class="solvvy-solution">
-<h3><strong><span id="Changing_the_output_buffer_cache">Changing the output buffer cache</span></strong></h3>
+<p>When you add a new domain in your panel, PHP 7.3 is selected by default.</p>
+<p>This version of PHP may throw the following error on your site.</p>
+<ul>
+<li><strong>JIT compilation failed: no more memory errors</strong></li>
+</ul>
+<p>This is a bug with PCRE which you can read about here:</p>
+<ul>
+<li><a class="external-link" title="Follow link" href="https://bugs.php.net/bug.php?id=77260" rel="nofollow">https://bugs.php.net/bug.php?id=77260</a></li>
+<li><a class="external-link" title="Follow link" href="https://bugs.php.net/bug.php?id=78630" rel="nofollow">https://bugs.php.net/bug.php?id=78630</a></li>
+</ul>
+<p>To work around this bug, DreamHost automatically adds the following lines to your site's phprc file.</p>
+<div class="preboxcontainer">
+<pre class="prebox">pcre.jit = 0</pre>
+</div>
+<p>This setting accommodates the majority of all PHP websites. However, if you specifically need this enabled, you can adjust the setting to the value of <strong>1</strong> in your <a href="https://help.dreamhost.com/hc/en-us/articles/214894037-How-do-I-create-a-phprc-file-via-FTP-" target="_self">phprc file</a>.</p>
+</div>
+<h2><span id="Advanced_topics">Advanced topics</span></h2>
+<div class="solvvy-solution">
+<h3><span id="Changing_the_output_buffer_cache">Changing the output buffer ca</span><span id="Changing_the_output_buffer_cache">che</span></h3>
 <p>If you are using PHP FastCGI, the PHP functions flush(), ob_flush(), and ob_implicit_flush() will not function as expected. By default, output is buffered at a higher level than PHP (specifically, by the Apache module mod_deflate which is similar in form/function to mod_gzip).</p>
 <p>If you need unbuffered output, you must either use CGI (instead of FastCGI) or contact support to request that mod_deflate is disabled for your site.</p>
 </div>
-<h2><strong><span id="See_also">See also</span></strong></h2>
+<h2><span id="See_also">See also</span></h2>
 <div class="solvvy-hidden">
 <h3>PHP category links</h3>
 <ul>
