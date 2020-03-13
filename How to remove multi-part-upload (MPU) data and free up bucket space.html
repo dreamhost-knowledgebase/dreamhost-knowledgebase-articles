@@ -9,7 +9,11 @@
 <p>There should now be a file named .boto in your user's home directory which stores your DreamObjects keys.</p>
 <div id="using-the-clean-up-script">
 <h2>Step 2 — Create the&nbsp;clean-up script</h2>
-<p>This script&nbsp;iterates over all buckets checking for <strong><em>MPU data</em></strong>. If any are found, it displays the file name, the date it was uploaded, its size, and then prompts you if it should be deleted.</p>
+<p>Create a file titled&nbsp;<strong>mpu.py&nbsp;</strong>via&nbsp;SSH. The following article explains how to do this.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Creating and editing a file via SSH</a></li>
+</ul>
+<p>You can then add the code below to this file. This script&nbsp;iterates over all buckets checking for <strong><em>MPU data</em></strong>. If any are found, it displays the file name, the date it was uploaded, its size, and then prompts you if it should be deleted.</p>
 <div class="alert alert-important">
 <div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
@@ -61,7 +65,7 @@ for b in c.get_all_buckets():
 <p>If path-style format is required (for example if your bucket was accidentally created with uppercase characters), you need to add `<strong>calling_format=boto.s3.connection.OrdinaryCallingFormat()</strong>` to the boto.connect_s3 call.</p>
 <p>For example:</p>
 <div class="preboxcontainer">
-<pre class="prebox">c = boto.connect_s3(accesskey, secretkey, host='objects-us-east-1.dream.io', calling_format=boto.s3.connection.OrdinaryCallingFormat())</pre>
+<pre class="prebox">c = boto.connect_s3(host='objects-us-east-1.dream.io', calling_format=boto.s3.connection.OrdinaryCallingFormat())</pre>
 </div>
 </div>
 </div>
@@ -72,6 +76,11 @@ for b in c.get_all_buckets():
 Bucket: workbackup
 Total: 0.00GB
 No changes made to bucket.</pre>
+</div>
+<h2>Step 3 — Run the file</h2>
+<p>While still logged into your server via SSH, run the file by using the following command.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">python mpy.py</span></pre>
 </div>
 <!--DreamObjects Button-->
 <div class="dream-sign-up">
