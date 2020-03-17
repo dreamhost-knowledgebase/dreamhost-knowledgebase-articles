@@ -31,10 +31,10 @@
 <div class="preboxcontainer">
 <pre class="prebox">#!/usr/bin/python
 
-import boto
+import boto<br />from boto.s3.connection import OrdinaryCallingFormat
 
 # Connect to DreamObjects
-c = boto.connect_s3(host='objects-us-east-1.dream.io')
+c = boto.connect_s3(host='objects-us-east-1.dream.io', calling_format=boto.s3.connection.OrdinaryCallingFormat())
 
 # Iterate over all buckets
 for b in c.get_all_buckets():
@@ -59,15 +59,6 @@ for b in c.get_all_buckets():
     else:
         print 'No changes made to bucket.'</pre>
 </div>
-<div class="alert alert-note">
-<div class="alert-icon"><img src="https://objects-us-east-1.dream.io/kbimages/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
-<div class="alert-content">
-<p>If path-style format is required (for example if your bucket was accidentally created with uppercase characters), you need to add `<strong>calling_format=boto.s3.connection.OrdinaryCallingFormat()</strong>` to the boto.connect_s3 call.</p>
-<p>For example:</p>
-<div class="preboxcontainer">
-<pre class="prebox">c = boto.connect_s3(host='objects-us-east-1.dream.io', calling_format=boto.s3.connection.OrdinaryCallingFormat())</pre>
-</div>
-</div>
 </div>
 <h3>Clean-up script example output</h3>
 <div class="preboxcontainer">
@@ -86,5 +77,4 @@ No changes made to bucket.</pre>
 <div class="dream-sign-up">
 <h2>Start Storing Your Data Today!</h2>
 <a href="https://www.dreamhost.com/cloud/storage/">Sign Up for DreamObjects</a></div>
-</div>
 </div>
