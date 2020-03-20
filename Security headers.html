@@ -82,20 +82,26 @@ Content-Length: 761
 Content-Type: text/html
 </pre>
 </div>
-<h3>hsts preload and Cloudflare</h3>
+<h3>hsts preload and the 'www' subdomain</h3>
 <p>Chrome offers you the option to add your domain to their HSTS preload list.</p>
 <ul>
 <li><a href="https://hstspreload.org">https://hstspreload.org</a></li>
 </ul>
+<p>This test will fail if your site is forcing the 'www' subdomain in the panel.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215457387-How-do-I-add-or-remove-www-from-my-domain-" target="_self">How do I add or remove www from my domain?</a></li>
+</ul>
+<p>To past the test, this option must be set to 'Leave it alone'.</p>
+<p>Adding the 'www' subdomain in the panel will cause the HSTS preload check to fail with the following message.</p>
+<div class="preboxcontainer">
+<pre class="prebox">`http://example.com` (HTTP) should immediately redirect to `https://example.com`<br />(HTTPS) before adding the www subdomain. Right now, the first redirect is to <br />`http://www.example.com/`. The extra redirect is required to ensure that any <br />browser which supports HSTS will record the HSTS entry for the top level domain,<br />not just the subdomain.</pre>
+</div>
+<p><strong>Cloudflare</strong></p>
 <p>If you have enabled Cloudflare in the DreamHost panel, it forces you to add the 'www' subdomain as shown in these articles.</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215457387-How-do-I-add-or-remove-www-from-my-domain-" target="_self">How do I add or remove www from my domain?</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216477717-How-to-enable-Cloudflare-on-your-domain" target="_self">How to enable Cloudflare on your domain</a></li>
 </ul>
-<p>Adding the 'www' subdomain in the panel will cause the HSTS preload check to fail with the following message.</p>
-<div class="preboxcontainer">
-<pre class="prebox">`http://example.com` (HTTP) should immediately redirect to `https://example.com`<br />(HTTPS) before adding the www subdomain. Right now, the first redirect is to <br />`http://www.example.com/`. The extra redirect is required to ensure that any <br />browser which supports HSTS will record the HSTS entry for the top level domain,<br />not just the subdomain.</pre>
-</div>
 <p>If you wish to use Cloudflare and add your domain to the HSTS preload list, you must purchase a Cloudflare account directly from Cloudflare. This will allow you the option to remove the 'www' subdomain.</p>
 </div>
 <h2><span id="x-frame-options">X-Frame-Options</span></h2>
