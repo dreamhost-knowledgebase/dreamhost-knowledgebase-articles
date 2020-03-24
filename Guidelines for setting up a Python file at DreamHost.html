@@ -1,39 +1,70 @@
-<h2>Overview</h2><div class="solvvy-solution">
+<h2>Overview</h2>
+<div class="solvvy-solution">
 <p>When creating a Python script at DreamHost, there are certain rules that must be followed to ensure the file functions properly.</p>
-</div><h2>File extensions</h2><div class="solvvy-solution">
+</div>
+<h2>File extensions</h2>
+<div class="solvvy-solution">
 <p>All Python CGI scripts on DreamHost must end with the following extensions:</p>
 <ul>
 <li><code>.py</code></li>
 <li><code>.cgi</code></li>
 <li><code>.fcgi</code></li>
 </ul>
-</div><h2>First line of the Python file</h2><div class="solvvy-solution">
+</div>
+<h2>First line of the Python file</h2>
+<div class="solvvy-solution">
 <p>The very first line of the file must be any of the following:</p>
 <ul>
 <li><code>#!/usr/bin/python</code></li>
 <li><code>#!/usr/bin/python2.x</code></li>
 <li><code>#!/usr/bin/env python2.x</code></li>
 </ul>
-</div><h2>File permissions</h2><div class="solvvy-solution">
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>If you've installed a <a href="https://help.dreamhost.com/hc/en-us/articles/115000218612-Installing-a-custom-version-of-Python-2" target="_self">custom version of Python</a>, the first line in your file should point to that location instead. For example, after installing a custom version of Python, run <span class="code">which python</span>. The output will look like this.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">which python</span>
+/home/username/opt/python-2.7.17/bin/python</pre>
+</div>
+<p>The first line of your file should then look like this.</p>
+<ul>
+<li><code>#!/home/username/opt/python-2.7.17/bin/python</code></li>
+</ul>
+</div>
+</div>
+</div>
+<h2>File permissions</h2>
+<div class="solvvy-solution">
 <p>The file's permissions must be set to 755. You can change this by running the following command via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH</a>.</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">chmod 755</span></pre>
 </div>
-</div><h2>Line endings</h2><div class="solvvy-solution">
+</div>
+<h2>Line endings</h2>
+<div class="solvvy-solution">
 <p>Make sure to use <a href="https://en.wikipedia.org/wiki/Newline#Representations">UNIX style newlines</a>, not Windows.</p>
-</div><h2>Viewing output</h2><div class="solvvy-solution">
+</div>
+<h2>Viewing output</h2>
+<div class="solvvy-solution">
 <p>If you want to view printed output from your Python code, you must <a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">add this as the first line</a> of output:</p>
 <div class="preboxcontainer">
 <pre class="prebox">print "Content-type: text/html\n\n"</pre>
 </div>
-</div><h2>Apache execution</h2><div class="solvvy-solution">
+</div>
+<h2>Apache execution</h2>
+<div class="solvvy-solution">
 <p>If you don't want .py files to be executed by Apache <a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">add the following</a> to your <a href="/hc/en-us/articles/216456227--htaccess-overview">.htaccess</a> file:</p>
 <div class="preboxcontainer">
 <pre class="prebox">RemoveHandler .py</pre>
 </div>
-</div><h2>Unix group</h2><div class="solvvy-solution">
+</div>
+<h2>Unix group</h2>
+<div class="solvvy-solution">
 <p>At DreamHost, all Python CGI scripts AND their immediate parent directory must have their Unix user and Unix group left set to your domain's Unix user AND that user's DEFAULT Unix group (otherwise you will get an internal server error <a href="http://svn.apache.org/viewvc/httpd/httpd/trunk/support/suexec.c?annotate=758944#l541">from Apache's suexec</a>).</p>
-</div><h2>See also</h2><div class="solvvy-hidden">
+</div>
+<h2>See also</h2>
+<div class="solvvy-hidden">
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216137717-Python-overview">Python overview</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
@@ -45,4 +76,5 @@
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/115000695551-Installing-and-using-virtualenv-using-Python-3">Installing and using virtualenv with Python 3</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216137637-Pyenv-simple-Python-version-management">Pyenv: simple Python version management</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215503458-Python-setuptools">Python setuptools</a></li>
-</ul></div>
+</ul>
+</div>
