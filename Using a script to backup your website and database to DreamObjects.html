@@ -100,10 +100,10 @@ find $HOME/backup/* -type d -exec rm -rf {} \; 2&gt; /dev/null</pre>
 </div>
 <h2>Step 3 — Install aws-cli</h2>
 <div class="solvvy-solution">
-<p>aws-cli is a command line client that allows you to manage your DreamObjects data. To install, you'll need to create a Python virtual environment. In that, you can install aws-cli.</p>
-<p>View the following article for instructions on how to install and configure aws-cli for your bucket.</p>
+<p>aws-cli is a command line client that allows you to manage your DreamObjects data. Most servers at DreamHost have installed this by default, so there is nothing for you to install. However, if your server is running an older version of Ubuntu 14, you will need to install this manually.&nbsp;</p>
+<p>View the following article for instructions on how to check if you need to install this.</p>
 <ul>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/216335908-Installing-and-configuring-AWS-CLI">Installing and configuring AWS CLI</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216335908#do-i-need-to-install-aws" target="_self">Do I need to manually install AWS?</a></li>
 </ul>
 </div>
 <h2>Step 4 —&nbsp;Running the file</h2>
@@ -123,11 +123,17 @@ find $HOME/backup/* -type d -exec rm -rf {} \; 2&gt; /dev/null</pre>
 </div>
 <div class="preboxcontainer">
 <pre class="prebox">#!/bin/bash
-source ~/my-user-bucket/bin/activate
 sh ~/backup/example.com-backup.sh</pre>
 </div>
 <p>View the <a href="https://help.dreamhost.com/hc/en-us/articles/215088668-How-do-I-create-a-cron-job-">How do I create a cron job?</a>&nbsp;article to create your cron job. In the text box, enter the following command (change the username to your Shell user).</p>
 <p><strong>/bin/bash /home/username/websitebackup.sh</strong></p>
+</div>
+<h3>If you installed AWS in a virtualenv</h3>
+<p>If your server is running Ubuntu 14, you must create a virtualenv and install AWS manually as detailed in step #3 above. If so, add the <span class="code">source</span> line to your cron job to activate your virtualenv.</p>
+<div class="preboxcontainer">
+<pre class="prebox">#!/bin/bash
+source ~/my-user-bucket/bin/activate
+sh ~/backup/example.com-backup.sh</pre>
 </div>
 <h2><span id="See_also">See also</span></h2>
 <div class="solvvy-hidden">
