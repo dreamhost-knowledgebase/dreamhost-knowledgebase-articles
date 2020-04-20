@@ -50,6 +50,11 @@
 </pre>
 </div>
 </li>
+<li><strong>If installing NVM as a user on a Grsecurity-enabled Shared or Dedicated machine</strong>, make sure the script isn't blocked by running the following as your user:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">setfattr -n user.pax.flags -v "mr" $NVM_DIR/nvm.sh</span></pre>
+</div>
+</li>
 <li>View the&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">creating and editing a file via SSH</a>&nbsp;article for instructions on how to edit your existing .bash_profile. In this file, add the following line.
 <div class="preboxcontainer">
 <pre class="prebox">source ~/.bashrc</pre>
@@ -81,6 +86,27 @@
 <li>Install any version of Node.js you wish:
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">nvm install 10.16.3</span></pre>
+</div>
+</li>
+<li><strong>If installing Nodejs as a user on a Grsecurity-enabled Shared or Dedicated machine</strong>, there may be an error that looks like this:
+<div class="preboxcontainer">
+<pre class="prebox">#
+# Fatal error in , line 0
+# Check failed: reservation_.SetPermissions(protect_start, protect_size, permission).
+#
+#
+#
+#FailureMessage Object: 0x3dfe93bb400</pre>
+</div>
+If so, you'll need to update the security controls on each newly downloaded binary file before it will work. Run the following command as your user after each new version you download:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">setfattr -n user.pax.flags -v "mr" $(find $NVM_DIR -type f -iname "node" -o -iname "npm" -o -iname "npx")</span></pre>
+</div>
+This will need to be done each time a new version is installed.</li>
+<li>Set your current version of node to another version:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">nvm use v10.16.3</span>
+Now using node v10.16.3 (npm v6.14.4)</pre>
 </div>
 </li>
 <li>Check which version of Node.js is running by entering the following:
