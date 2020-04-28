@@ -1,31 +1,49 @@
-<h2>Overview</h2><div class="solvvy-solution">
+<div class="alert alert-tip">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-tip-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>If you find yourself in a situation that requires changes to your site, and your developer isn't available to help, DreamHost's skilled support team may be able to assist you for a small fee. You can find more information about supported services and associated costs in the <a href="/hc/en-us/articles/360042256912-Professional-Services-overview">DreamHost Professional Services</a> article.</p>
+</div>
+</div>
+<h2>Overview</h2>
+<div class="solvvy-solution">
 <p>JavaScript can add a lot of interactivity and interesting remote content to a site — However, if used liberally, it can also cause pages to load slower. There are a few things you can do to speed up your JavaScript commands.</p>
-</div><h2>Use an online tool to analyze your site</h2><div class="solvvy-solution">
+</div>
+<h2>Use an online tool to analyze your site</h2>
+<div class="solvvy-solution">
 <p>First, use an online tool to analyze your website. You'll receive a breakdown of what may be causing your site to load slower than expected and it will give you insights to troubleshoot further.</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216560958#Website_loading_tools">Website loading tools</a></li>
 </ul>
-</div><h2>JavaScript Render-Blocking</h2><div class="solvvy-solution">
+</div>
+<h2>JavaScript Render-Blocking</h2>
+<div class="solvvy-solution">
 <p>JavaScript is rendered as the browser reads the webpage (top-down). When a JavaScript file is encountered, the browser stops rendering the page until the JavaScript file has been fully read. This is called '<a href="https://developers.google.com/speed/docs/insights/BlockingJS">JavaScript Render-Blocking</a>' and could cause a delay as the page loads.</p>
-</div><h2><span id="Remote_JavaScript">Remote JavaScript</span></h2><div class="solvvy-solution">
+</div>
+<h2><span id="Remote_JavaScript">Remote JavaScript</span></h2>
+<div class="solvvy-solution">
 <p>Instead of inserting remote JavaScript towards the top of your page — as plenty of instructions for insertion suggest — it is completely acceptable to add it right before the <strong>&lt;/body&gt;</strong> tag in your theme. Due to the way page load order is handled in the browser, this will allow your content to start rendering and display before having to wait for remote files (which would load first if were they in the header).</p>
 <p>There are also plugins available that do this for you you can search for at the <a href="https://wordpress.org/plugins/" target="_self">plugin repository</a>.</p>
-</div><h2><span id="Local_JavaScript">Local JavaScript</span></h2><div class="solvvy-solution">
+</div>
+<h2><span id="Local_JavaScript">Local JavaScript</span></h2>
+<div class="solvvy-solution">
 <p>Pushing local JavaScript to the bottom of the page will also give the appearance of speeding up load time, so you might want to throw a little edit on your theme to migrate any local JavaScript from <strong>header.php</strong> to <strong>footer.php</strong>.</p>
-</div><h2>Compression</h2><div class="solvvy-solution">
-<p>Also, while mod_deflate should compress JavaScript, you can cut a little bit of overhead off by pre-caching the compression. All you need to do is save gzipped copies of your theme's JavaScript in the same directory as your current files. Again, you'll need to <a class="new" href="/hc/en-us/articles/216041267" title="SSH (page does not exist)">SSH</a> in to your web server to do this.</p>
+</div>
+<h2>Compression</h2>
+<div class="solvvy-solution">
+<p>Also, while mod_deflate should compress JavaScript, you can cut a little bit of overhead off by pre-caching the compression. All you need to do is save gzipped copies of your theme's JavaScript in the same directory as your current files. Again, you'll need to <a class="new" title="SSH (page does not exist)" href="/hc/en-us/articles/216041267">SSH</a> in to your web server to do this.</p>
 <p>The location of JavaScript varies from theme to theme, but the theme itself can always be found in the "wp-content/themes/" directory. Once you have found the JavaScript for your site, simply run:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">gzip javascript.js</span></pre>
 </div>
 <p>So long as you replace "javascript.js" with the actual filename you wish to compress and repeat the process for all of your files, a compressed version of your .js files will be created. The benefit to this is that once it's done, you don't have to do anything else.</p>
 <div class="alert alert-note">
-<div class="alert-icon"><img alt="" height="60" src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
 <p>Some themes attempt to compress JavaScript and CSS by adding a ".php" to the end of the file name. This actually processes the file through PHP unnecessarily and can cause a significant amount of overhead. If you notice your theme doing this, please modify your theme and use the gzip method discussed above.</p>
 </div>
 </div>
-</div><h2>See also</h2>
+</div>
+<h2>See also</h2>
 <div class="solvvy-hidden">
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/360001310966-How-to-log-into-your-WordPress-site">How to log into your WordPress site</a></li>
