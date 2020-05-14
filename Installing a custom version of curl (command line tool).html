@@ -1,0 +1,71 @@
+<h2>Overview</h2>
+<div class="solvvy-solution">
+<p>curl is installed on all DreamHost servers by default, however, you may want to install a newer version depending on your needs. This article walks you through how to install a custom version of curl (command line tool).</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>These instructions explain how to install the curl command line tool. This is different from cURL. You can read more about that here:</p>
+<ul>
+<li><a href="https://daniel.haxx.se/docs/curl-vs-libcurl.html">daniel.haxx.se/docs/curl-vs-libcurl.html</a></li>
+</ul>
+</div>
+</div>
+</div>
+<h2>Installing curl</h2>
+<div class="solvvy-solution">
+<ol>
+<li>Log into your server <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview" target="_self">via SSH</a>.</li>
+<li>Make sure you're in your user's home directory.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~</span></pre>
+</div>
+</li>
+<li>Locate the version you wish to install here:
+<ul>
+<li><a href="https://curl.haxx.se/download" target="_self">curl.haxx.se/download</a></li>
+</ul>
+<p>Right click a .zip link and copy its URL. You can then run the following <span class="code">wget</span> command to download the .zip file.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wget https://curl.haxx.se/download/curl-7.70.0.zip</span></pre>
+</div>
+</li>
+<li>Unzip the file.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">unzip curl-7.70.0.zip</span></pre>
+</div>
+</li>
+<li>Navigate into this new directory.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd curl-7.70.0</span></pre>
+</div>
+</li>
+<li>Run the following to install:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">./configure --prefix=$HOME/curl</span>
+<span class="server">[server]$ </span><span class="command">make</span>
+<span class="server">[server]$ </span><span class="command">make install</span></pre>
+</div>
+</li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH" target="_self">Add this line</a> to your .bash_profile:
+<div class="preboxcontainer">
+<pre class="prebox">export PATH=$HOME/curl/bin:$PATH</pre>
+</div>
+</li>
+<li>Source your .bash_profile to activate your new configuration.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">. ~/.bash_profile</span></pre>
+</div>
+</li>
+<li>Check the location and version of curl:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">which curl</span>
+/home/user/curl/bin/curl
+<span class="server">[server]$ </span><span class="command">curl --version</span>
+curl 7.70.0 (x86_64-pc-linux-gnu) libcurl/7.70.0 OpenSSL/1.1.1 zlib/1.2.11
+Release-Date: 2020-04-29
+Protocols: dict file ftp ftps gopher http https imap imaps ldap ldaps pop3 pop3s rtsp smb smbs smtp smtps telnet tftp
+Features: AsynchDNS HTTPS-proxy IPv6 Largefile libz NTLM NTLM_WB SSL TLS-SRP UnixSockets</pre>
+</div>
+</li>
+</ol>
+</div>

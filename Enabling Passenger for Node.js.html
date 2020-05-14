@@ -1,0 +1,74 @@
+<h2>Overview</h2>
+<div class="solvvy-solution">
+<p><a href="/hc/en-us/articles/217185397-Node-js-overview">Node.js</a> is a JavaScript runtime environment used to develop server tools and applications. It uses JavaScript, traditionally a front end programming language on the server side.</p>
+<p>This article describes how to enable Node.js to work with Passenger using the DreamHost panel.</p>
+</div>
+<h2>What servers can Node.js be installed onto?</h2>
+<div class="solvvy-solution">
+<p>Node.js can be installed onto Shared, VPS, and Dedicated servers.</p>
+</div>
+<h2>Can Node.js be used without enabling in the panel?</h2>
+<div class="solvvy-solution">
+<p>Yes. You can create a Node.js app and deploy it manually. However, this can be a lot of work depending on the complexity of your application. Deploying your Node.js app with Passenger is <a href="https://github.com/phusion/passenger/wiki/Phusion-Passenger%3A-Node.js-tutorial#understanding_passenger">much easier and recommended</a>.</p>
+<p>If you chose to not use Passenger, you would need to find a way to manually deploy your application.</p>
+</div>
+<h2>What does the panel checkbox do?</h2>
+<div class="solvvy-solution">
+<p>When you enable the checkbox feature in the panel, Passenger knows your website is set up to run a Node.js app and automatically deploys it using Passenger on ports 80 and 443. However, this will only function under these two circumstances:</p>
+<ul>
+<li>The file to load the application is named <strong>app.js</strong> and is in your site's app directory</li>
+<li>Your <a href="https://help.dreamhost.com/hc/en-us/articles/360043107192-Troubleshooting-Node-js" target="_self">.htaccess file has been updated to point to your local version of Node.js</a></li>
+</ul>
+<p>Passenger then loads the app.js file automatically when visiting your URL. You do not have to bind a port # to the URL or manually start the server in this case. Your configuration would look like this:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><strong>app directory: </strong>example.com/app.js
+<strong>web directory: </strong>example.com/public</pre>
+</div>
+</div>
+<h2><span id="Enabling_Node.js_in_the_panel">Enabling Passenger for Node.js in the panel</span></h2>
+<div class="solvvy-solution">
+<p>To enable Passenger for Node.js:</p>
+<ol>
+<li>Navigate to the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;" target="_blank" rel="noopener">Manage Domains</a> page.</li>
+<li>Click the 'Edit' link to the right of your domain under the 'Web Hosting' column.<br />
+<dl>
+<dd><em>The 'Manage Domains' settings page opens:</em></dd>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-07_panel_enable_rvm_01.png" /></dd>
+</dl>
+</li>
+<li>Scroll down to the 'Web Options' section and check the '<a href="/hc/en-us/articles/215769578-Passenger-overview">Passenger</a> (Ruby/NodeJS/Python apps only):' check box.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/01_Passenger.png" /></dd>
+</dl>
+</li>
+<li>Checking this displays a pop-up warning.
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>If you already have a /public directory in the current 'Web directory, clicking OK will only switch the 'Web directory' to this new /public folder. Nothing in it is removed.</p>
+<p>If you do not already have a /public directory, the panel creates it for you with a coming soon page. The files in your current 'Web directory' remain untouched.</p>
+</div>
+</div>
+</li>
+<li>Click&nbsp;<strong>OK</strong>.</li>
+<li>Your 'Web directory' field automatically adds a /public folder to the end.&nbsp;The NodeJS check box also appears:
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-08_panel_nodejs_enable.png" /></dd>
+</dl>
+</li>
+<li>Check the 'NodeJS:' check box to allow Node.js to use Passenger on your domain.</li>
+</ol>
+</div>
+<h2><span id="See_also">See also</span></h2>
+<div class="solvvy-hidden">
+<h3>Internal links</h3>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/217185397-Node-js-overview">Node.js overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215769578-Passenger-overview">Passenger overview</a></li>
+</ul>
+<h3>External links</h3>
+<ul>
+<li><a class="new" title="W:Node.js (page does not exist)" href="https://en.wikipedia.org/wiki/Node.js">Wikipedia article on Node.js</a></li>
+<li><a href="https://nodejs.org/">nodejs.org</a></li>
+</ul>
+</div>

@@ -1,11 +1,9 @@
 <h2>Installing Node.js and npm</h2>
-<div class="solvvy-solution">
-<p>To ensure compatibility with Node.js packages, it's always recommended that you install a custom version of Node.js under your username, rather than using the default server version. Use the following article to install a custom version of Node.js:</p>
+<p>Node.js is not installed by default on newer DreamHost servers. You must manually install a custom version under your server's username.&nbsp;View the following article for instructions on how to install a custom version of Node.js.</p>
 <ul>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/217185397-Node-js-overview" target="_self">Node.js overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360029083351-Installing-a-custom-version-of-NVM-and-Node-js" target="_self">Installing a custom version of NVM and Node.js</a></li>
 </ul>
 <p>Once installed, npm is also installed and you'll be able to run the commands below.</p>
-</div>
 <h2>Local package installation</h2>
 <div class="solvvy-solution">
 <p>It's only recommended that you install packages locally for each individual project.</p>
@@ -78,6 +76,50 @@ console.log(output);</span>
 <span class="cmdoutput">/home/username/.nvm/versions/node/v12.14.0/lib
 └── npm@6.13.4</span></pre>
 </div>
+</div>
+<h2>Updating packages</h2>
+<div class="solvvy-solution">
+<h3>Updating local packages</h3>
+<p>Navigate to your site's application directory where the local /node_modules folder resides.</p>
+<p>First, check which packages need to be updated:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">npm outdated</span></pre>
+</div>
+<p>You can update a single package with:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">npm update -S &lt;package_name&gt;</span></pre>
+</div>
+<p>You can update all local packages with:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">npm update -S</span></pre>
+</div>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>It's a good idea to use the -S flag. This saves the new version as the minimum required dependency in your site's package.json file. If you do not use the -S flag, the package will update, but the package.json file for your site will not be updated.</p>
+<ul>
+<li><a href="https://docs.npmjs.com/cli/update">https://docs.npmjs.com/cli/update</a></li>
+</ul>
+</div>
+</div>
+<h3>Updating global packages</h3>
+<p>First, check which packages need to be updated:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">npm outdated -g --depth=0</span></pre>
+</div>
+<p>You can update a single package with:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">npm outdated -g &lt;package_name&gt;</span></pre>
+</div>
+<p>You can update all global packages with:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">npm update -g</span></pre>
+</div>
+<h3>Using a package to update packages</h3>
+<p>There are several packages that can help to update your site's packages. For example:</p>
+<ul>
+<li><a href="https://www.npmjs.com/package/npm-check-updates">https://www.npmjs.com/package/npm-check-updates</a></li>
+</ul>
 </div>
 <h2>See also</h2>
 <div class="solvvy-hidden">
