@@ -28,24 +28,25 @@
 </div>
 <h2>Configuring PHP to send SMTP mail</h2>
 <div class="solvvy-solution">
-<p>The following example can be used to send SMTP mail using the PEAR Mail package.</p>
+<p>The following example can be used to send SMTP mail using the PEAR Mail package. Create a file named mail.php with the following code.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115000098272-Creating-and-editing-a-file-via-FTP">Creating and editing files via FTP</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Creating and editing a file via SSH</a></li>
+</ul>
 <div class="alert alert-note">
 <div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
 <p>You only need to update the fields which are highlighted.</p>
 </div>
 </div>
-<h3>Finding your mail hostname</h3>
-<p>Make sure to use your <a href="https://help.dreamhost.com/hc/en-us/articles/214918038#Server_names">mail server name</a> for the mail hostname. This would either be imap.dreamhost.com or pop.dreamhost.com, depending on the connection type you prefer. The example below uses the hostname of 'imap.dreamhost.com'.</p>
 <div class="preboxcontainer">
 <pre class="prebox">&lt;?php
 
 error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED ^ E_STRICT);
 
-set_include_path("." . PATH_SEPARATOR . ($UserDir = dirname($_SERVER['DOCUMENT_ROOT'])) . "/pear/php" . PATH_SEPARATOR . get_include_path());
 require_once "Mail.php";
 
-$host = "ssl://<span class="code-highlight">smtp.dreamhost.com</span>";
+$host = "ssl://smtp.dreamhost.com";
 $username = "<span class="code-highlight">youremail@example.com</span>";
 $password = "<span class="code-highlight">your email password</span>";
 $port = "465";
