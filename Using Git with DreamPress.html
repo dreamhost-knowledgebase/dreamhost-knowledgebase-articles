@@ -49,7 +49,7 @@
 <h3>Step 1&nbsp;— Install Git onto your computer</h3>
 <p>Git must be installed on your computer so you can run git commands. There is a great <a href="https://git-scm.com/book/en/v2/Getting-Started-Installing-Git">article in the online Git documentation</a> that explains how to do that for Windows, Mac OS, and Linux. Note that Git is now installed on Mac OS by default if you are at the latest release. You can check to see if it's installed with this command in the terminal app:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[computer]$ </span><span class="command">git --version</span></pre>
+<pre class="prebox"><span class="server">[mycomputer]$ </span><span class="command">git --version</span></pre>
 </div>
 <h3>Step 2&nbsp;— Create a shell user in the DreamHost panel</h3>
 <p>Set up a <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access">shell user</a> in the DreamHost panel if you haven’t done so already. You can also change the current DreamPress user from SFTP to Shell on the <a class="panel-link" href="https://panel.dreamhost.com/?tree=users.dashboard" target="_blank" rel="noopener">Manage Users</a> page. Once you have done that, write down your shell username, password, and server. For DreamPress, your username and server look something like this:</p>
@@ -77,7 +77,7 @@
 <h3>Step 5&nbsp;— Log into your server</h3>
 <p>Log into your server using <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH</a>. This takes you directly into your shell user root. Using the sample shell user and server, it looks like:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">ssh wp_ab1cde@wp_123456.dreamhostps.com</span></pre>
+<pre class="prebox"><span class="server">[mycomputer]$ </span><span class="command">ssh wp_ab1cde@wp_123456.dreamhostps.com</span></pre>
 </div>
 <p>The first time you do this, you must accept your server as a valid host. This information is&nbsp;saved in a known host file on your computer.</p>
 <h3>Step 6&nbsp;— Set up your server Git repo</h3>
@@ -146,12 +146,12 @@ GIT_WORK_TREE=/home/shell-username/example.com/wp-content/themes/child-theme-dir
 <ol>
 <li>Make sure you're in your child theme directory:
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd $HOME/example.com/wp-content/themes/child-theme-directory</span></pre>
+<pre class="prebox"><span class="server">[mycomputer]$ </span><span class="command">cd $HOME/example.com/wp-content/themes/child-theme-directory</span></pre>
 </div>
 </li>
 <li>Run the following to initialize it:
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">git init</span></pre>
+<pre class="prebox"><span class="server">[mycomputer]$ </span><span class="command">git init</span></pre>
 </div>
 </li>
 </ol>
@@ -165,16 +165,16 @@ GIT_WORK_TREE=/home/shell-username/example.com/wp-content/themes/child-theme-dir
 <ol>
 <li>Make sure you're in child theme directory:
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">git remote add myserver ssh://username@server.example.com/~/git/projectname</span></pre>
+<pre class="prebox"><span class="server">[mycomputer]$ </span><span class="command">git remote add myserver ssh://username@server.example.com/~/git/projectname</span></pre>
 </div>
 <p><em>You can use any servername you like instead of "myserver". Using the example username and server, the command is:</em></p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">git remote add myserver ssh://wp_ab1cde@wp_123456.dreamhostps.com/~/git/projectname</span></pre>
+<pre class="prebox"><span class="server">[mycomputer]$ </span><span class="command">git remote add myserver ssh://wp_ab1cde@wp_123456.dreamhostps.com/~/git/projectname</span></pre>
 </div>
 </li>
 <li>Run the following to see if it was correctly added:
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">git remote -v</span></pre>
+<pre class="prebox"><span class="server">[mycomputer]$ </span><span class="command">git remote -v</span></pre>
 </div>
 </li>
 </ol>
@@ -183,17 +183,17 @@ GIT_WORK_TREE=/home/shell-username/example.com/wp-content/themes/child-theme-dir
 <ol>
 <li>Add your changes to your local git index:
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">git add .</span></pre>
+<pre class="prebox"><span class="server">[mycomputer]$ </span><span class="command">git add .</span></pre>
 </div>
 </li>
 <li>Commit these changes, which records the changes to the repository. Include a brief message in the commit command, which is a quick note to remind you of what you're committing. For example, it could be "first commit of child theme":
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">git commit -m "message about the commit"</span></pre>
+<pre class="prebox"><span class="server">[mycomputer]$ </span><span class="command">git commit -m "message about the commit"</span></pre>
 </div>
 </li>
 <li>Check the status of your git repository by running the following. You can check it at any time:
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">git status</span></pre>
+<pre class="prebox"><span class="server">[mycomputer]$ </span><span class="command">git status</span></pre>
 </div>
 </li>
 </ol>
@@ -202,14 +202,14 @@ GIT_WORK_TREE=/home/shell-username/example.com/wp-content/themes/child-theme-dir
 <ol>
 <li>In the child theme directory, run the following command only once:
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">git push myserver +master:refs/heads/master</span>
-<span class="server">[server]$ </span><span class="command">git push --set-upstream myserver master</span>
+<pre class="prebox"><span class="server">[mycomputer]$ </span><span class="command">git push myserver +master:refs/heads/master</span>
+<span class="server">[mycomputer]$ </span><span class="command">git push --set-upstream myserver master</span>
 <span class="cmdoutput">Branch master set up to track remote branch master from myserver</span></pre>
 </div>
 </li>
 <li>Whenever you create a new snapshot in your local git repo, push it to your server simply with this command:
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">git push myserver</span></pre>
+<pre class="prebox"><span class="server">[mycomputer]$ </span><span class="command">git push myserver</span></pre>
 </div>
 </li>
 </ol>
