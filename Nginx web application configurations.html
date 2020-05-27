@@ -1,17 +1,17 @@
-<h2>Overview</h2><div class="solvvy-solution">
-<div class="alert alert-warning">
-<div class="alert-icon"><img alt="" height="60" src="https://kbimages.dreamhosters.com/images/dh-kb-warning-icon.svg" width="60"/></div>
-<div class="alert-content">
-<p>POSSIBLE OUTDATED INFORMATION!<br/> DreamHost does not directly support any of the features described on this page and is not responsible for keeping this content updated or accurate. Use at your own risk!</p>
-</div>
+<h2>Overview</h2>
+<div class="solvvy-solution">
+<div class="alert-warning">
+<p>POSSIBLE OUTDATED INFORMATION!<br /> DreamHost does not directly support any of the features described on this page and is not responsible for keeping this content updated or accurate. Use at your own risk!</p>
 </div>
 <p>Many web applications such as WordPress and MediaWiki are originally configured to work with Apache. Since .htaccess files are not supported with Nginx, there are some adjustments you can make to get your applications running properly. In all the examples below, make sure to follow these steps.</p>
-</div><h2>Configuration steps</h2><div class="solvvy-solution">
+</div>
+<h2>Configuration steps</h2>
+<div class="solvvy-solution">
 <ol>
 <li>View the <a href="/hc/en-us/articles/216455077-Nginx-configuration-file-locations">Local configuration files</a> section to create your local <span class="code">/nginx/example.com</span> directory.</li>
 <li>Create your .conf file in this <span class="code">/nginx/example.com</span> directory.
 <div class="alert alert-note">
-<div class="alert-icon"><img alt="" height="60" src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
 <p>The .conf file can be named anything. It just needs to end in .conf.</p>
 </div>
@@ -24,7 +24,9 @@
 <ul>
 <li><a href="http://wiki.nginx.org/Configuration">Nginx configuration examples</a></li>
 </ul>
-</div><h2>WordPress</h2><div class="solvvy-solution">
+</div>
+<h2>WordPress</h2>
+<div class="solvvy-solution">
 <p>Create a <code>wordpress.conf</code> file in your <code>/home/username/nginx/example.com/</code> directory.</p>
 <p>This is where you'll put all your Nginx config rules.</p>
 <p>If you are going to share this WordPress configuration across multiple sites, create a default file. Then, create symlinks for each of your sites. For example:</p>
@@ -35,7 +37,7 @@
 </pre>
 </div>
 </li>
-<li>In this /default-wp directory, create <span class="code">wordpress.conf</span> file. View the '<a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Creating and editing a file via SSH</a>' article for instructions on creating the file.
+<li>In this /default-wp directory, create <span class="code">wordpress.conf</span> file.&nbsp;View the '<a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Creating and editing a file via SSH</a>' article for instructions on creating the file.
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">nano /home/YOURUSER/nginx/default-wp/wordpress.conf</span></pre>
 </div>
@@ -49,7 +51,9 @@
 </div>
 </li>
 </ol>
-</div><h2>Permalinks</h2><div class="solvvy-solution">
+</div>
+<h2>Permalinks</h2>
+<div class="solvvy-solution">
 <p>The most basic set of WordPress rules that get you up and running immediately are these:</p>
 <div class="preboxcontainer">
 <pre class="prebox">#######################
@@ -86,12 +90,16 @@ if (!-e $request_filename) {
 </pre>
 </div>
 <p>This provides basic functionality for Multisite.</p>
-</div><h2>W3 Total Cache</h2><div class="solvvy-solution">
+</div>
+<h2>W3 Total Cache</h2>
+<div class="solvvy-solution">
 <p>The W3 Total Cache plugin for WordPress automatically recognizes that it's running under Nginx and creates a default Nginx configuration file which you can copy into your <span class="code">/nginx/&lt;domain name&gt;/</span> directory.</p>
 <dl>
 <dd></dd>
 </dl>
-</div><h2>WP Super Cache</h2><div class="solvvy-solution">
+</div>
+<h2>WP Super Cache</h2>
+<div class="solvvy-solution">
 <p>If you're using the WP Super Cache plugin, then use the following in place of the permalink rules above:</p>
 <div class="preboxcontainer">
 <pre class="prebox">#######################
@@ -134,20 +142,24 @@ if (!-e $request_filename) {
 }
 </pre>
 </div>
-</div><h2>FeedBurner</h2><div class="solvvy-solution">
+</div>
+<h2>FeedBurner</h2>
+<div class="solvvy-solution">
 <p>If you have your blog's RSS feed setup using <a href="http://feedburner.google.com/">FeedBurner</a>, then add the following lines <strong>above</strong> the permalink or supercache lines mentioned previously:</p>
 <div class="preboxcontainer">
 <pre class="prebox">#######################
 # FeedBurner
 
-if ($http_user_agent !~ FeedBurner) {
+if ($http_user_agent&nbsp;!~ FeedBurner) {
   rewrite ^/comment/feed/ http://feeds.feedburner.com/your-comment-feed last;
   rewrite ^/feed/ http://feeds.feedburner.com/your-feed last;
 }
 </pre>
 </div>
 <p>You must replace the "your-comment-feed" and "your-feed" bits with the appropriate FeedBurner URLs you get when you add your feeds to its system.</p>
-</div><h2>Drupal</h2><div class="solvvy-solution">
+</div>
+<h2>Drupal</h2>
+<div class="solvvy-solution">
 <p>Before you set up Drupal, create a <span class="code">drupal.conf</span> file (the name doesn't really matter, but generally you want to at least give it a .conf extension) in the following location:</p>
 <div class="preboxcontainer">
 <pre class="prebox">/home/YOURUSER/nginx/example.com/</pre>
@@ -157,7 +169,9 @@ if ($http_user_agent !~ FeedBurner) {
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">nano /home/YOURUSER/nginx/example.com/drupal.conf</span></pre>
 </div>
 <p>This is where you'll put all your nginx config rules.</p>
-</div><h2>Top Level Domain Install</h2><div class="solvvy-solution">
+</div>
+<h2>Top Level Domain Install</h2>
+<div class="solvvy-solution">
 <p>If your Drupal is installed at the top level of your domain (i.e., <a href="http://www.example.com/">http://www.example.com/</a> is your Drupal install), then add these rules:</p>
 <div class="preboxcontainer">
 <pre class="prebox">#######################
@@ -167,7 +181,9 @@ if (!-e $request_filename) {
 rewrite ^/(.*)$ /index.php?q=$1 last;
 }</pre>
 </div>
-</div><h2>Subdirectory Install</h2><div class="solvvy-solution">
+</div>
+<h2>Subdirectory Install</h2>
+<div class="solvvy-solution">
 <p>If your Drupal is installed in a subdirectory (i.e., <a href="http://www.example.com/drupal/">http://www.example.com/drupal/</a> is your Drupal install), then add these rules:</p>
 <div class="preboxcontainer">
 <pre class="prebox">#######################
@@ -180,11 +196,17 @@ rewrite ^/(.*)$ /index.php?q=$1 last;
 }</pre>
 </div>
 <p>Replace occurrences of "drupal" in the above with whatever your subdirectory is named.</p>
-</div><h2>Enable Clean URLs</h2><div class="solvvy-solution">
+</div>
+<h2>Enable Clean URLs</h2>
+<div class="solvvy-solution">
 <p>If you haven't already, you must log into your Drupal admin user and go to the Administer -&gt; Site Configuration -&gt; Clean URLs area and turn Clean URLs on. If you have trouble finding it, then try browsing to http://www.example.com/index.php?q=admin/settings/clean-urls. If you get an error message saying Clean URLs aren't supported, make sure you remembered to reload your nginx configuration as discussed earlier in the article.</p>
-</div><h2>Gotchas</h2><div class="solvvy-solution">
+</div>
+<h2>Gotchas</h2>
+<div class="solvvy-solution">
 <p>Unfortunately, this configuration currently causes site searches that contain spaces to break. With Apache, when you search for "some thing" that gets converted to "search/node/some+thing". When this is processed by nginx the "+" gets encoded so you end up with "search/node/some%20thing". Thus, your search ends up looking for the string "some+thing" rather than "some thing". There are currently no known workarounds that were forthcoming.</p>
-</div><h2>MediaWiki</h2><div class="solvvy-solution">
+</div>
+<h2>MediaWiki</h2>
+<div class="solvvy-solution">
 <p><a href="https://www.mediawiki.org/wiki/MediaWiki">MediaWiki</a> is a popular wiki software developed by the founders of Wikipedia which continues to use and maintain the software today. It is available for free and is an open-source project. The following describes a successful move from MediaWiki 1.17.0 site (using Clean URLs) on Apache to Nginx. First, create an <span class="code">mediawiki.conf</span> file in the appropriate directory:</p>
 <div class="preboxcontainer">
 <pre class="prebox">/home/YOURUSER/nginx/example.com/mediawiki.conf</pre>
@@ -213,12 +235,17 @@ if ($request_uri ~* ^/(stats|failed_auth\.html).*$)
 	break;
 }</pre>
 </div>
-</div><h2>phpBB</h2><div class="solvvy-solution">
+</div>
+<h2>phpBB</h2>
+<div class="solvvy-solution">
 <h3>Increase FastCGI Timeout</h3>
 <p>Put this in a .conf file as described above:</p>
 <div class="preboxcontainer">
 <pre class="prebox">fastcgi_read_timeout 120;</pre>
 </div>
 <p>Source: <a href="https://www.phpbb.com/community/viewtopic.php?f=46&amp;t=1778165#p10746575">https://www.phpbb.com/community/viewtopic.php?f=46&amp;t=1778165#p10746575</a></p>
-</div><h2>Sending Mass Email Settings</h2><div class="solvvy-solution">
-<p>If you want to send mass emails with SMTP authentication, you must use POP-BEFORE-SMTP as the "Authentication method for SMTP".</p></div>
+</div>
+<h2>Sending Mass Email Settings</h2>
+<div class="solvvy-solution">
+<p>If you want to send mass emails with SMTP authentication, you must use POP-BEFORE-SMTP as the "Authentication method for SMTP".</p>
+</div>
