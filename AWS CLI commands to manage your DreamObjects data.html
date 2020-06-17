@@ -52,6 +52,14 @@ Total Objects: 4
 <span class="cmdoutput">delete: s3://my-bucket/file.txt</span>
 </pre>
 </div>
+<h3>Deleting all files and directories in a bucket</h3>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">aws --endpoint-url https://objects-us-east-1.dream.io s3 rm s3://my-bucket/ --recursive</span>
+<span class="cmdoutput">delete: s3://my-bucket/file1.txt
+delete: s3://my-bucket/file2.txt
+delete: s3://my-bucket/subdir1/file3.txt</span>
+</pre>
+</div>
 <h3>Deleting an empty bucket</h3>
 <div class="highlight-console">
 <div class="highlight">
@@ -67,6 +75,15 @@ Total Objects: 4
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">aws --endpoint-url https://objects-us-east-1.dream.io s3 cp file.txt s3://my-bucket/file.txt</span>
 <span class="cmdoutput">upload: ./file.txt to s3://my-bucket/file.txt</span>
+</pre>
+</div>
+<h3>Uploading a directory into a bucket</h3>
+<p>This uploads all contents of a directory to your DHO bucket. Subdirectories will only be uploaded if they are not empty.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">aws --endpoint-url https://objects-us-east-1.dream.io s3 sync /home/username/directory s3://my-bucket/directory</span>
+<span class="cmdoutput">upload: directory/file1.txt to s3://my-bucket/directory/file1.txt
+upload: directory/file2.txt to s3://my-bucket/directory/file2.txt
+upload: directory/subdir1/file3.txt to s3://my-bucket/directory/subdir1/file3.txt</span>
 </pre>
 </div>
 </div>
