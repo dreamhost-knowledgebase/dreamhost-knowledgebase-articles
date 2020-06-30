@@ -1,20 +1,23 @@
-<h2>Overview</h2><div class="solvvy-solution">
+<h2>Overview</h2>
+<div class="solvvy-solution">
 <p>DreamCompute, like other OpenStack clouds, has multiple kinds of storage available to use. This article works with 'Volume' storage which is recommended for storing critical and important data. For more info on the types of storage, please visit the article on <a class="reference external" href="217701757-What-s-the-difference-between-ephemeral-and-volume-boot-disks">differences between ephemeral and volume storage</a>.</p>
-</div><h2>What is Volume storage?</h2><div class="solvvy-solution">
+</div>
+<h2>What is Volume storage?</h2>
+<div class="solvvy-solution">
 <p>Volumes can be thought of like a hot-swap hard disk, in that you can pull it out of one system (detach it), plug it into another system (attach it) and the data will remain on it as it is reused.</p>
 <p>There are several ways to do the initial steps of creating and attach the volume, so please select the method you wish to use:</p>
 <ul>
 <li><a class="reference external" href="#create-and-attach-a-volume-via-dashboard">DreamCompute Dashboard</a></li>
 <li><a class="reference external" href="#create-and-attach-a-volume-via-openstack-cli">Command Line via OpenStack CLI</a></li>
 </ul>
-<div id="create-and-attach-a-volume-via-dashboard">
-</div><h2>Create and attach a Volume using the dashboard</h2><div class="solvvy-solution">
+<h2>Create and attach a Volume using the dashboard</h2>
+<div class="solvvy-solution">
 <h3>Checking your storage capacity</h3>
 <p>The first step is to make sure you have sufficient volume storage to add a new volume. Check the DreamCompute dashboard <a class="reference external" href="https://iad2.dreamcompute.com/project/">project overview</a> page. On that page, view the 'Volume Storage' pie chart.</p>
 <dl>
-<dd><img alt="how-to-create-and-mount-volumes-on-dreamcompute_01" src="https://kbimages.dreamhosters.com/images/how-to-create-and-mount-volumes-on-dreamcompute_01.png"/></dd>
+<dd><img src="https://kbimages.dreamhosters.com/images/how-to-create-and-mount-volumes-on-dreamcompute_01.png" alt="how-to-create-and-mount-volumes-on-dreamcompute_01" /></dd>
 </dl>
-<p>If you need additional storage, more can be added in the DreamHost <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=cloud.compute&amp;" rel="noopener" target="_blank">control panel</a>.</p>
+<p>If you need additional storage, more can be added in the DreamHost <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=cloud.compute&amp;" target="_blank" rel="noopener">control panel</a>.</p>
 <h3>Creating a Volume</h3>
 <ol>
 <li>Navigate to the DreamCompute dashboard <a class="reference external" href="https://iad2.dreamcompute.com/project/volumes/?tab=volumes_and_snapshots__volumes_tab">volumes</a> page.</li>
@@ -24,15 +27,15 @@
 <h3>Using your Volume</h3>
 <ol>
 <li>To use your volume, it needs to be attached to a running instance. If you have no instances, create one first.</li>
-<li>Navigate to the DreamCompute dashboard <a class="reference external" href="https://iad2.dreamcompute.com/project/volumes/?tab=volumes_and_snapshots__volumes_tab" style="background-color: #ffffff;">volumes</a> page.</li>
+<li>Navigate to the DreamCompute dashboard&nbsp;<a class="reference external" style="background-color: #ffffff;" href="https://iad2.dreamcompute.com/project/volumes/?tab=volumes_and_snapshots__volumes_tab">volumes</a> page.</li>
 <li>Click the drop-down menu and select <strong>Manage Attachments</strong>:
 <dl>
-<dd><img alt="how-to-create-and-mount-volumes-on-dreamcompute_02" class="img-border" src="https://kbimages.dreamhosters.com/images/how-to-create-and-mount-volumes-on-dreamcompute_02.png"/></dd>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/how-to-create-and-mount-volumes-on-dreamcompute_02.png" alt="how-to-create-and-mount-volumes-on-dreamcompute_02" /></dd>
 </dl>
 </li>
 <li>The new window will show no attachments at this time. It also displays a dropdown with list of your instances. Click on the list and select your instance name, then click <strong>Attach Volume</strong>.
 <dl>
-<dd><img alt="how-to-create-and-mount-volumes-on-dreamcompute_03" class="img-border" src="https://kbimages.dreamhosters.com/images/how-to-create-and-mount-volumes-on-dreamcompute_03.png"/></dd>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/how-to-create-and-mount-volumes-on-dreamcompute_03.png" alt="how-to-create-and-mount-volumes-on-dreamcompute_03" /></dd>
 </dl>
 </li>
 </ol>
@@ -41,13 +44,13 @@
 <li><a href="#create-a-file-system">Creating A File System</a></li>
 </ul>
 </div>
-<div id="create-and-attach-a-volume-via-openstack-cli">
-</div><h2>Create and attach a Volume using the OpenStack CLI</h2><div class="solvvy-solution">
+<h2>Create and attach a Volume using the OpenStack CLI</h2>
+<div class="solvvy-solution">
 <p>The first step is to make sure you have sufficient volume storage to add a new volume. Check the DreamCompute dashboard <a class="reference external" href="https://iad2.dreamcompute.com/project/">project overview</a> page. On that page, view the 'Volume Storage' pie chart.</p>
 <dl>
-<dd><img alt="how-to-create-and-mount-volumes-on-dreamcompute_01" src="https://kbimages.dreamhosters.com/images/how-to-create-and-mount-volumes-on-dreamcompute_01.png"/></dd>
+<dd><img src="https://kbimages.dreamhosters.com/images/how-to-create-and-mount-volumes-on-dreamcompute_01.png" alt="how-to-create-and-mount-volumes-on-dreamcompute_01" /></dd>
 </dl>
-<p>If you need additional storage, more can be added in the DreamHost <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=cloud.compute&amp;" rel="noopener" target="_blank">control panel</a>.</p>
+<p>If you need additional storage, more can be added in the DreamHost <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=cloud.compute&amp;" target="_blank" rel="noopener">control panel</a>.</p>
 <h3>Creating a Volume</h3>
 <p>To create the new volume, run this command:</p>
 <div class="preboxcontainer">
@@ -78,24 +81,19 @@ In this example the instance is called 'VOLUME_NAME' and there is only one 'avai
 </li>
 </ol>
 <div class="alert alert-important">
-<div class="alert-icon"><img height="60" src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
 <p>The device name listed may not always be accurate, so double-check before using a new device.</p>
 </div>
 </div>
-<div id="create-a-file-system">
-</div><h2>Create a file system</h2><div class="solvvy-solution">
+<div id="create-a-file-system">&nbsp;</div>
+<h2>Create a file system</h2>
+<div class="solvvy-solution">
 <p>The new drive now needs a file system so it can store data. There are many choices when it comes to file systems, but for this example, a safe default of ext4 is used.</p>
 <p>Now connect to your instance with the default username for your image.</p>
-<div class="alert alert-important">
-<div class="alert-icon"><img height="60" src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60"/></div>
-<div class="alert-content">
-<p>Instances created before October 5th, 2016 will continue to have 'dhc-user' as the default user, except for CoreOS, which will have 'core' as the default user. To find your default user, visit the following article:</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/228377408-How-to-find-the-default-user-of-an-image">How to find the default user of an image</a></li>
 </ul>
-</div>
-</div>
 <p>First, find the device name for the new volume. You can see what devices are available by checking for /dev/vd* device files:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">ls /dev/vd*</span>
@@ -111,7 +109,7 @@ I/O size (minimum/optimal): 512 bytes / 512 bytes</pre>
 </div>
 <p>This matches the 1GB size of the volume created. Next, create a file system on the drive by running the mkfs command.</p>
 <div class="alert alert-important">
-<div class="alert-icon"><img height="60" src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
 <p>This command is destructive! If run on the wrong device, it will erase it so please be sure you have it correct!</p>
 </div>
@@ -131,8 +129,9 @@ Writing superblocks and filesystem accounting information: done</pre>
 </div>
 <p>The file system is now created.</p>
 </div>
-<div id="mount-the-file-system">
-</div><h2>Mount the File System</h2><div class="solvvy-solution">
+<div id="mount-the-file-system">&nbsp;</div>
+<h2>Mount the File System</h2>
+<div class="solvvy-solution">
 <p>As mentioned before, the device for the drive can change should udev or other changes happen, and such an error can prevent your instance from booting up properly. To avoid this, boot via UUID. You can find the drives UUID by running the blkid command:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">sudo blkid /dev/vdb</span>
@@ -160,4 +159,5 @@ Filesystem      Size  Used Avail Use% Mounted on
 <p>Checking specifically for the /dev/vdb device at the front.</p>
 <p>That's it. When you reboot your instance, your volume will be re-mounted and ready for use.</p>
 </div>
-</div></div>
+</div>
+</div>
