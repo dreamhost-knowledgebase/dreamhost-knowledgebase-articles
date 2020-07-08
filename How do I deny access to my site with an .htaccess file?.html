@@ -9,12 +9,12 @@
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/115000098272-Creating-and-editing-a-file-via-FTP">Creating and editing a file via FTP</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Creating and editing a file via SSH</a></li>
 </ul>
-<p>Once the file has been created, you can add the code examples below to it. </p>
+<p>Once the file has been created, you can add the code examples below to it.&nbsp;</p>
 </div>
 <h2><span id="Deny_access_to_files">Deny access to files</span></h2>
 <div class="solvvy-solution">
 <h3><span id="Denying_access_to_specific_file_extensions">Denying access to specific file extensions</span></h3>
-<p>The following code forces any file ending in .inc to throw a 404 Forbidden error when visited:</p>
+<p>The following code forces any file ending in .inc to throw a 403 Forbidden error when visited:</p>
 <div class="preboxcontainer">
 <pre class="prebox">&lt;Files ~ "\.inc$"&gt;  
 Order Allow,Deny
@@ -46,7 +46,7 @@ Deny from All
 <div class="preboxcontainer">
 <pre class="prebox">RewriteEngine On
 # If the hour is 16 (4 PM)
-RewriteCond %{TIME_HOUR} ^16$
+RewriteCond&nbsp;%{TIME_HOUR} ^16$
 # Then deny all access
 RewriteRule ^.*$ - [F,L]
 </pre>
@@ -56,7 +56,7 @@ RewriteRule ^.*$ - [F,L]
 <pre class="prebox">RewriteEngine On
 # Multiple hour blocks
 # If the hour is 4 PM or 5 PM or 8 AM
-RewriteCond %{TIME_HOUR} ^16|17|08$
+RewriteCond&nbsp;%{TIME_HOUR} ^16|17|08$
 # Then deny all access
 RewriteRule ^.*$ - [F,L]</pre>
 </div>
@@ -114,14 +114,14 @@ Deny from env=bad_referer
 <p>This example throws a 500 Internal Server Error for anyone linking from example.com:</p>
 <div class="preboxcontainer">
 <pre class="prebox">RewriteEngine on
-RewriteCond %{HTTP_REFERER} example\.com [NC,OR]
+RewriteCond&nbsp;%{HTTP_REFERER} example\.com [NC,OR]
 RewriteRule .* - [F]
 </pre>
 </div>
 <p>The following example redirects any visitor connecting from example.com to google.com:</p>
 <div class="preboxcontainer">
 <pre class="prebox">RewriteEngine On
-RewriteCond %{HTTP_REFERER} ^http://example.com/
+RewriteCond&nbsp;%{HTTP_REFERER} ^http://example.com/
 RewriteRule /* http://www.google.com [R,L]
 </pre>
 </div>
