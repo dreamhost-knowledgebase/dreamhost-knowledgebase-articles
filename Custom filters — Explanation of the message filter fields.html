@@ -142,21 +142,36 @@
 <td style="text-align: center;">
 <p><strong>Forward it to email address</strong></p>
 </td>
-<td>What it says. The email address to forward the email to can be any address, hosted at DreamHost or anywhere else.</td>
+<td>The email address to forward to. This can be any address.</td>
 <td style="text-align: center;">N/A</td>
 </tr>
 <tr>
 <td style="text-align: center;">
 <p><strong>Forward to shell account</strong></p>
 </td>
-<td>Forward the email to the Maildir of a shell user. This is the same as forwarding to an email address and specifying shell_user@server_name.dreamhost.com.</td>
-<td style="text-align: center;">N/A</td>
+<td>
+<p>Forward the email to the /Maildir directory of a shell user. This is the same as forwarding to shell_user@server_name.dreamhost.com. You can control what happens to the email received by the shell user by creating a <strong>.forward.postfix</strong> file in your user's home directory.</p>
+<p><strong>Permissions</strong></p>
+<p>The .forward.postfix file can have 644 permissions.</p>
+<p>The file you want to run must have 755 permissions.</p>
+</td>
+<td class="wysiwyg-text-align-left" style="text-align: center;">
+<p>These examples show what to put into the .forward.postfix file in order to run a file when the email is received.</p>
+<p>To run a bash script:&nbsp;</p>
+<div class="preboxcontainer">
+<pre class="prebox">"| /home/username/myscript.sh"</pre>
+</div>
+<p>To run a PHP file script:</p>
+<div class="preboxcontainer">
+<pre class="prebox">"| /usr/local/php72/bin/php /home/username/myscript.php"</pre>
+</div>
+</td>
 </tr>
 <tr>
 <td style="text-align: center;">
 <p><strong>Delete it</strong></p>
 </td>
-<td>What it says. The email is not put in the Trash folder and is completely erased.</td>
+<td>The email is not put in the Trash folder and is completely erased.</td>
 <td style="text-align: center;">N/A</td>
 </tr>
 </tbody>
@@ -197,7 +212,7 @@
 <li><strong>forward and stop</strong> – ends the filter chain before it reaches the end, so no message would be placed in your inbox.</li>
 </ul>
 </div>
-<h2><span id="Using_message_filters_with_the_Junk_Mail_filters">Using message filters with Vade spam filters</span></h2>
+<h2><span id="Using_message_filters_with_the_Junk_Mail_filters">Using message filters with Vade spam&nbsp;filters</span></h2>
 <div class="solvvy-solution">
 <p>You can still use the message filters even if the domain is set up with Vade spam filters. Mail is filtered through the spam machines first, then gets routed to the regular incoming mail machines where your filters are then applied.</p>
 </div>
