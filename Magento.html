@@ -61,12 +61,16 @@ memory_limit = 756M</pre>
 <li>Upload the Magento file you downloaded to your web server via <a href="https://help.dreamhost.com/hc/en-us/articles/115000675027-FTP-overview-and-credentials">FTP</a>.</li>
 <li>Log into your server via <a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a>, then&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/115002768331-UNIX-commands-Decompressing-files">decompress the file on the server</a>.</li>
 <li>Confirm the Magento files are in your domain’s web directory.</li>
-<li>When you first visit your domain, you'll see it's throwing a 500 error. This is because of the site's .htaccess file. You must now edit that file to remove certain lines.</li>
+<li>From your site's web directory, run the following command to start the installation process:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">bin/magento setup:install --db-host=mysql.example.com --db-name=example_magento --db-user=magentodb --db-password=example123 --base-url=http://example.com/ --backend-frontname=example_admin --admin-firstname=Admin --admin-lastname=Example --admin-email=magento@example.com --admin-user=admin --admin-password=example123</span></pre>
+</div>
+Be sure to replace all of the example text in that command with your actual database and site information.</li>
 </ol>
 </div>
 <h2>Editing your .htaccess files</h2>
 <div class="solvvy-solution">
-<p>Your .htaccess files have several lines mentioning <strong>IfVersion</strong>. This requires 'mod_version' to be installed on the server. Since DreamHost servers do not have this module installed, you must manually remove those lines from the .htaccess files. They are located in the following two locations:</p>
+<p>Your .htaccess files have several lines mentioning <strong>IfVersion</strong>. This requires 'mod_version' to be installed on the server. DreamHost servers running Bionic (Ubuntu 18.04) or Stretch (Debian 9) have this module installed, and do not require any further edits. If your web server has not yet been upgraded to either version, you must manually remove those lines from the .htaccess files. They are located in the following two locations:</p>
 <p>example.com/.htaccess</p>
 <p>example.com/pub/.htaccess</p>
 <div class="alert alert-note">
@@ -78,36 +82,6 @@ memory_limit = 756M</pre>
 </ul>
 </div>
 </div>
-<ol>
-<li>Open your .htaccess file via <a href="https://help.dreamhost.com/hc/en-us/articles/115000098272-Creating-and-editing-a-file-via-FTP">FTP</a> or <a href="https://help.dreamhost.com/hc/en-us/articles/214200668-How-do-I-create-a-phprc-file-via-SSH-">SSH</a>.</li>
-<li>Here is an example of a block you'll see.
-<div class="preboxcontainer">
-<pre class="prebox">&lt;Files composer.json&gt;
-  &lt;IfVersion &lt; 2.4&gt;
-    order allow,deny
-    deny from all
-  &lt;/IfVersion&gt;
-  &lt;IfVersion &gt;= 2.4&gt;
-    Require all denied
-  &lt;/IfVersion&gt;
-&lt;/Files&gt;</pre>
-</div>
-</li>
-<li>Edit each block of code to remove the 2.4 text and &lt;IfVersion&gt; block. So, the above example would turn into this:
-<div class="preboxcontainer">
-<pre class="prebox">&lt;Files composer.json&gt;
-  order allow,deny
-  deny from all
-&lt;/Files&gt;</pre>
-</div>
-</li>
-<li>Repeat for every block that starts with &lt;IfVersion&gt;.</li>
-<li>Save the file and visit your site. It should now load the Magento installation wizard.</li>
-</ol>
-<p>The rest of the installation wizard is a site-level configuration and can be referenced in this page:</p>
-<ul>
-<li><a href="http://devdocs.magento.com/guides/m1x/install/installing_install.html#install-magento" rel="nofollow">Magento devdocs – Installing Magento CE or EE</a></li>
-</ul>
 </div>
 <h2><span id="Troubleshooting">Troubleshooting</span></h2>
 <div class="solvvy-solution">
