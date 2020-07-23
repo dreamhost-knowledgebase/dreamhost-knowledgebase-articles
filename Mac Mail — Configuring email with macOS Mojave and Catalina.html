@@ -1,0 +1,125 @@
+<h2>Overview</h2>
+<div class="solvvy-solution">
+<p>The following describes how to set up email using Mac Mail version 12.4 (macOS Mojave) and 13.0 (macOS Catalina).</p>
+</div>
+<h2><span id="Step_one:_Verifying_the_email_user_exists_in_your_web_panel">Step 1 — Verifying the email user exists in your web panel</span></h2>
+<div class="solvvy-solution">
+<p>Make sure your email user is already set up in the DreamHost panel by going to <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=mail.addresses&amp;" target="_blank" rel="noopener">Manage Email</a>.</p>
+<dl>
+<dd><em>You will see your mail user listed on the page:</em></dd>
+</dl>
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-08_panel_email_address_01.png" /></dd>
+</dl>
+</div>
+<h2><span id="Step_two:_Finding_your_email_server">Step 2 — Finding your email server</span></h2>
+<div class="solvvy-solution">
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>In the past, it was possible to use mail.example.com to connect (where example.com is your actual domain name). Due to how modern mail clients handle security, this is now NOT recommended as it may throw connection errors. Please ensure you are only using your mail server name when connecting.</p>
+</div>
+</div>
+<p>It will be one of the following depending on if you're connecting using IMAP or POP:</p>
+<p><strong>IMAP hostname</strong>: imap.dreamhost.com</p>
+<p><strong>POP hostname</strong>: pop.dreamhost.com</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>When you set up the first email address under a domain (that is configured to be hosted with DreamHost), the DreamHost system automatically creates the necessary hostnames and MX records that are required to process email for that domain. Please also note that if this is your first address on a domain, it may take up to 6hrs for those emails to function.</p>
+</div>
+</div>
+</div>
+<h2><span id="Step_three:_Setting_up_a_new_account_in_Mail">Step 3 — Setting up a new account in Mail</span></h2>
+<div class="solvvy-solution">
+<dl>
+<dd><img src="https://kbimages.dreamhosters.com/images/MacMail_ElCapitan_001.png" alt="MacMail_ElCapitan_001.png" width="383" height="129" /></dd>
+</dl>
+<ol>
+<li>Open the Apple Mail application by clicking the Mail icon on the bottom dock. You can also click the magnifying glass on the top right and type the word 'Mail' into the search bar.
+<dl>
+<dd><img src="https://kbimages.dreamhosters.com/images/2018-07_macmail_high-sierra_config_01_50.png" alt="high-sierra-config" /></dd>
+</dl>
+</li>
+<li>If you need to add an additional account, click 'Mail &gt; Add Account...'.</li>
+<li>The mail app opens and asks you to select an account provider.<br />
+<dl>
+<dd><em>The 'Choose a mail account provider...' page opens:</em></dd>
+</dl>
+<dl>
+<dd><img src="https://kbimages.dreamhosters.com/images/mojave-mail_01.png" alt="Mojave Mail" width="501" height="407" /></dd>
+</dl>
+</li>
+<li>Select the <strong>Other Mail Account…</strong> option and click the <strong>Continue</strong> button.
+<dl>
+<dd><em>This example uses the email address "admin@dreamhostexample.com":</em></dd>
+</dl>
+<dl>
+<dd><img src="https://kbimages.dreamhosters.com/images/mojave-mail_02.png" alt="Mojave Mail" width="487" height="292" /></dd>
+</dl>
+</li>
+<li>Enter the following:
+<ul>
+<li><strong>Name:</strong> This is how you'd like your name displayed when sending email.</li>
+<li><strong>Email Address:</strong> This field must contain the full email address.</li>
+<li><strong>Password:</strong> This is the password you set up for the email when creating it in your panel.</li>
+</ul>
+</li>
+<li>Click the <strong>Sign In</strong>&nbsp;button when finished.
+<dl>
+<dd><img src="https://kbimages.dreamhosters.com/images/mojave-mail_03.png" alt="Mojave Mail" width="494" height="354" /></dd>
+</dl>
+<dl>
+<dd><em>You should receive notification reading the name or password cannot be identified. This is normal due to <a href="https://help.dreamhost.com/hc/en-us/articles/215306748-Certificate-domain-mismatch-error-when-connecting-to-a-DreamHost-mail-server">DreamHost's mail server configuration</a>.</em></dd>
+</dl>
+</li>
+<li>To fix the error, make sure the following three fields are configured:
+<ul>
+<li><strong>Account Type:</strong> Choose IMAP or POP</li>
+<li><strong>Incoming Mail Server:</strong>&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/214918038#Server_names">Your mail server name</a>. This is either imap.dreamhost.com or pop.dreamhost.com.</li>
+<li><strong>Outgoing Mail Server:</strong>&nbsp;This is smtp.dreamhost.com.</li>
+</ul>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>In this example, IMAP is used as the connection as this is the preferred protocol. But, if you wish you can also use POP to connect.</p>
+</div>
+</div>
+</li>
+<li>Click the <strong>Sign In</strong>&nbsp;button to proceed.
+<dl>
+<dd><img src="https://kbimages.dreamhosters.com/images/mojave-mail_04.png" alt="Mojave Mail" width="526" height="245" /></dd>
+</dl>
+</li>
+<li>Choose which apps you'd like to associate with this account and click <strong>Done</strong>.</li>
+</ol>
+<p>Your new email address is now set up and ready to use. You can send a test message to confirm it's working properly.</p>
+</div>
+<h2>Updating your incoming port to a secure port</h2>
+<div class="solvvy-solution">
+<p>When you follow the directions above, Mac Mail automatically sets up an insecure incoming port. To adjust this to a secure port, view the following instructions:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/222597488#mojave" target="_self">Editing Incoming/Outgoing settings in Mojave</a></li>
+</ul>
+</div>
+<h2>Troubleshooting certificate mismatch errors</h2>
+<div class="solvvy-solution">
+<p>View the following article for instructions on how to resolve any SSL certificate mismatch errors:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215306748#Trusting_the_certificate">Trusting the certificate in Mac Mail or iPhone</a></li>
+</ul>
+</div>
+<h2>See also</h2>
+<div class="solvvy-hidden">
+<h3>Internal links</h3>
+<ul>
+<li><a href="/hc/en-us/articles/214918038-Email-client-configuration-overview">Email client configuration overview</a></li>
+<li><a href="/hc/en-us/articles/215612887-Email-client-protocols-and-port-numbers">Email client protocols and port numbers</a></li>
+<li><a href="/hc/en-us/articles/216385987" target="_self">Mac Mail — Configuring email with Mac OS X Yosemite</a></li>
+<li><a href="/hc/en-us/articles/222597488" target="_self">Mac Mail — How to make changes to an existing Mail account</a></li>
+</ul>
+<h3>External links</h3>
+<ul>
+<li><a href="https://support.apple.com/mail" target="_self">http://www.apple.com/support/mac-apps/mail/</a> – Apple Mail Support</li>
+</ul>
+</div>
