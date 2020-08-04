@@ -31,7 +31,7 @@
 | visibility       | private                                              |
 +------------------+------------------------------------------------------+</pre>
 </div>
-<p>In this command, <span class="code">ubuntu-17.04-server-amd64.iso</span> is the ISO image file, and <span class="code">ubuntu-17.04-server-amd64-iso</span> is the name of the new image.</p>
+<p>In this command, <span class="text-object">ubuntu-17.04-server-amd64.iso</span> is the ISO image file, and <span class="text-object">ubuntu-17.04-server-amd64-iso</span> is the name of the new image.</p>
 </div>
 <h2>Boot an instance from the ISO-based, OpenStack image</h2>
 <div class="solvvy-solution">
@@ -73,7 +73,7 @@
 | user_id                              | USER_ID                          |
 +--------------------------------------+----------------------------------+</pre>
 </div>
-<p><span class="code">ubuntu-17.04-server-amd64-iso</span> is the OpenStack image created from the ISO file in the previous step and <span class="code">NETWORK_UUID</span> is a valid network id.</p>
+<p><span class="text-object">ubuntu-17.04-server-amd64-iso</span> is the OpenStack image created from the ISO file in the previous step and <span class="text-object">NETWORK_UUID</span> is a valid network id.</p>
 <p>After the instance is successfully launched, create a blank volume to temporarily store the configured operating system.</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack volume create --size 20 VOLUME_NAME</span>
@@ -106,7 +106,7 @@
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server add volume INSTANCE_ID VOLUME_ID --device /dev/vda</span></pre>
 </div>
 <p>Connect to the instance using the console and install the operating system (just as if you were using an ISO image on a regular computer). When the installation is finished and the system is rebooted, the instance will try to install the operating system again. This is expected as that's what the instance was instructed to do (remember, this instance is just being used to prepare the image).</p>
-<p>If problems with image creation are encountered, please check OpenStack's <a class="reference external" href="http://docs.openstack.org/image-guide/create-images-manually.html">Virtual Machine Image Guide</a> for reference.</p>
+<p>If problems with image creation are encountered, please check OpenStack's&nbsp;<a class="reference external" href="http://docs.openstack.org/image-guide/create-images-manually.html">Virtual Machine Image Guide</a> for reference.</p>
 <p>The next step is to isolate the volume attached to the temporary instance so that it can be uploaded to the Glance image service. To do this, delete the server with the following command:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server delete INSTANCE_ID</span></pre>
@@ -115,7 +115,7 @@
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack image create --volume VOLUME_ID ubuntu-17.04-server-amd64</span></pre>
 </div>
-<p><span class="code">ubuntu-17.04-server-amd64</span> can now be used to launch functional instances based on the operating system that was just installed/configured! Example:</p>
+<p><span class="text-object">ubuntu-17.04-server-amd64</span> can now be used to launch functional instances based on the operating system that was just installed/configured! Example:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server create \
     --image ubuntu-17.04-server-amd64 \
@@ -154,7 +154,7 @@
 +--------------------------------------+--------------------------------------+</pre>
 </div>
 <p>Alternatively the volume can simply be used as the boot source for a new instance. The "upload to Glance" concept is just in case using the same operating system/configuration on multiple instances is desired.</p>
-<p>If you choose not to upload the volume, make sure to run the <span class="code">openstack volume set --bootable VOLUME_ID</span> command so the volume can be used as the source of a new instance.</p>
+<p>If you choose not to upload the volume, make sure to run the <span class="code">openstack volume set --bootable VOLUME_ID</span>&nbsp;command so the volume can be used as the source of a new instance.</p>
 </div>
 <div class="dream-sign-up">
 <h2>Deploy Your Apps On Cloud Servers Today</h2>
