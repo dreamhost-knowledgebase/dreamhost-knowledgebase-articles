@@ -13,19 +13,19 @@
 <h3>Compiling from source</h3>
 <p>As an alternative to building packages, it's possible to build nginx from source. Doing so allows you to run the latest version available from the nginx development team and allows for additional security configurations. Building from source requires a few steps. First, you'll need to make sure you have the necessary operating system packages for compiling from source.</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo apt-get update &amp;&amp; sudo apt-get install automake gcc \
+<pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">sudo apt-get update &amp;&amp; sudo apt-get install automake gcc \
                libpcre3-dev zlib1g-dev make -y</span>
 </pre>
 </div>
 <p>Next you will need the source archive and its signature, both of which you can download from the official nginx site. This example will use version 1.12.2, the current stable branch as of this writing:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">wget -q https://nginx.org/download/nginx-1.12.2.tar.gz{,.asc}</span>
+<pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">wget -q https://nginx.org/download/nginx-1.12.2.tar.gz{,.asc}</span>
 </pre>
 </div>
 </div>
 <p>You'll also want to grab the developer's signing key and verify the contents of your download. First, you'll need the signing key, which can be downloaded from nginx.org:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">curl -sS https://nginx.org/keys/mdounin.key | gpg --import</span>
+<pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">curl -sS https://nginx.org/keys/mdounin.key | gpg --import</span>
 gpg: directory `/home/ubuntu/.gnupg' created
 gpg: new configuration file `/home/ubuntu/.gnupg/gpg.conf' created
 gpg: WARNING: options in `/home/ubuntu/.gnupg/gpg.conf' are not yet active during this run
@@ -40,7 +40,7 @@ gpg: no ultimately trusted keys found
 </div>
 <p>Now verify the signature:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">gpg --trusted-key 0x520A9993A1C052F8 --verify nginx-1.12.2.tar.gz{.asc,}</span>
+<pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">gpg --trusted-key 0x520A9993A1C052F8 --verify nginx-1.12.2.tar.gz{.asc,}</span>
 gpg: Signature made Tue 17 Oct 2017 01:18:21 PM UTC using RSA key ID A1C052F8
 gpg: key A1C052F8 marked as ultimately trusted
 gpg: checking the trustdb
@@ -51,16 +51,16 @@ gpg: Good signature from "Maxim Dounin &lt;mdounin@mdounin.ru&gt;"
 </div>
 <p>From here, unpack the tarball, compile nginx, and install it:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">tar -zxf nginx-1.12.2.tar.gz</span>
-<span class="server">[user@server]$ </span><span class="command">cd nginx-1.12.2/</span>
-<span class="server">[user@server]$ </span><span class="command">./configure &amp;&amp; make &amp;&amp; sudo make install</span>
+<pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">tar -zxf nginx-1.12.2.tar.gz</span>
+<span class="server">[user@instance]$ </span><span class="command">cd nginx-1.12.2/</span>
+<span class="server">[user@instance]$ </span><span class="command">./configure &amp;&amp; make &amp;&amp; sudo make install</span>
 </pre>
 </div>
 <div id="removing-unnecessary-modules">
 <h3>Removing unnecessary modules</h3>
 <p>By default, nginx compiles with a number of modules that extend its functionality. These allow nginx to be extended to perform a number of functions but it's unlikely that every module will be used on any given server. It's recommended to remove unused modules to reduce the size of the compiled binary, and reduce the attack surface nginx presents to the world (for example, a vulnerability found in the uwsgi proxy would not be exploitable against a server that does not leverage the uswgi module). Removing modules can be done at compile-time via the configure script. For example:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">./configure --without-http_uwsgi_module</span>
+<pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">./configure --without-http_uwsgi_module</span>
 </pre>
 </div>
 </div>
@@ -91,7 +91,7 @@ gpg: Good signature from "Maxim Dounin &lt;mdounin@mdounin.ru&gt;"
 <h3>Hide upstream proxy headers</h3>
 <p>In the same vein, when nginx is used to proxy requests from an upstream server (such as a PHP-FPM instance), it can be beneficial to hide certain headers sent in the upstream response (for example, the version of PHP running). For example, consider the following response from an nginx server running a PHP application:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">curl -I http://example.com</span>
+<pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">curl -I http://example.com</span>
 HTTP/1.1 200 OK
 Server: nginx
 Content-Type: text/html; charset=UTF-8
@@ -108,7 +108,7 @@ X-Powered-By: PHP/5.3.3
 </div>
 <p>Resending the request to the same server would now have this result:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">curl -I http://example.com</span>
+<pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">curl -I http://example.com</span>
 HTTP/1.1 200 OK
 Server: nginx
 Content-Type: text/html; charset=UTF-8
@@ -198,7 +198,7 @@ ssl_session_timeout 5m;
 <h3>Use custom Diffie-Hellman parameters</h3>
 <p>The Logjam attack, published in 2015, showed that it was possible for attackers (such as nation-state actors) to break the Diffie-Hellman key exchange, used to implement forward secrecy (essentially, another layer on top of existing encrypted messages). Mitigating this attack is possible in nginx by computing a unique set of Diffie-Hellman parameters and configuring nginx to use this value:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">openssl dhparam 2048 &gt; /path/to/dhparam</span>
+<pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">openssl dhparam 2048 &gt; /path/to/dhparam</span>
 </pre>
 </div>
 <p>From here you only need to tell nginx to use the custom values you generated above:</p>

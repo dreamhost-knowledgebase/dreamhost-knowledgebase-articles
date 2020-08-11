@@ -38,7 +38,7 @@
 </div>
 <div id="add-ssh-access">&nbsp;</div>
 <h2>Step 5 — Add SSH access</h2>
-<p>Depending on the permissions your user may need, you may want to enable SSH for the user. This allows the user to log into the server via SSH, as opposed to security keys.</p>
+<p>Depending on the permissions your user may need, you may want to enable SSH for the user. This allows the user to log into the instance via SSH, as opposed to security keys.</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/360000281572-Adding-SSH-access-to-your-users">Adding SSH access to your users</a></li>
 </ul>
@@ -46,18 +46,18 @@
 <h2>Step 6&nbsp;— Add your domain</h2>
 <p>Make a folder for the website under your new username.</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo mkdir /home/username/example.com</span>
+<pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">sudo mkdir /home/username/example.com</span>
 </pre>
 </div>
 <p>Configure VirtualHosts so your instance knows how to handle the domain.&nbsp;To do this, you need to make a .conf file.</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo touch /etc/apache2/sites-available/example.com.conf</span>
+<pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">sudo touch /etc/apache2/sites-available/example.com.conf</span>
 </pre>
 </div>
 <p>It is recommended that you name the file after your domain, so that you can always know what .conf file is for what domain.</p>
 <p>Edit that file:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo vim /etc/apache2/sites-available/example.com.conf</span>
+<pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">sudo vim /etc/apache2/sites-available/example.com.conf</span>
 </pre>
 </div>
 <p>Then put the following inside it. Make sure to change any 'example.com' URLs to your actual site and the DocumentRoot to the location of the website under your username.</p>
@@ -79,7 +79,7 @@
 </div>
 <p>Once the VirtualHost is added, the site will need to be enabled with a command called a2ensite.</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo a2ensite example.com</span>
+<pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">sudo a2ensite example.com</span>
 Enabling site example.com.
 To activate the new configuration, you need to run:
   service apache2 reload
@@ -87,21 +87,21 @@ To activate the new configuration, you need to run:
 </div>
 <p>Finally reload your Apache service so it reads the changes.</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo service apache2 reload</span></pre>
+<pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">sudo service apache2 reload</span></pre>
 </div>
 <h2>Step 7&nbsp;— Enable userdir</h2>
 <p>Run the following under your default user:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo a2enmod userdir</span>
-<span class="server">[user@server]$ </span><span class="command">sudo service apache2 restart</span></pre>
+<pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">sudo a2enmod userdir</span>
+<span class="server">[user@instance]$ </span><span class="command">sudo service apache2 restart</span></pre>
 </div>
 <p>This enables the userdir module. You can now view it in the following directory:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">ls -la /etc/apache2/mods-enabled</span></pre>
+<pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">ls -la /etc/apache2/mods-enabled</span></pre>
 </div>
 <p>Edit the following file:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo vim /etc/apache2/mods-enabled/userdir.conf</span></pre>
+<pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">sudo vim /etc/apache2/mods-enabled/userdir.conf</span></pre>
 </div>
 <p>In that file you'll see these lines:</p>
 <div class="preboxcontainer">
@@ -115,7 +115,7 @@ To activate the new configuration, you need to run:
 </div>
 <p>Save the file and restart Apache.</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo service apache2 reload</span></pre>
+<pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">sudo service apache2 reload</span></pre>
 </div>
 <p>If you view your site now, you'll see it resolving on the DreamCompute instance.</p>
 <h2>Step 8&nbsp;— Adding a Let's Encrypt certificate</h2>
@@ -127,8 +127,8 @@ To activate the new configuration, you need to run:
 </div>
 <h2>Editing site files with an FTP client</h2>
 <div class="solvvy-solution">
-<p>When site permissions are set to user:user, your FTP client can update files normally. However, depending on your website's functionality, it may need to communicate directly with the Apache server.</p>
-<p>For example, if you have a CMS site such as WordPress, you should keep file permissions set as user:www-data to allow WordPress to communicate with the server. View the following article for further details on how to configure a WordPress website:</p>
+<p>When site permissions are set to user:user, your FTP client can update files normally. However, depending on your website's functionality, it may need to communicate directly with Apache.</p>
+<p>For example, if you have a CMS site such as WordPress, you should keep file permissions set as user:www-data to allow WordPress to communicate with the instance. View the following article for further details on how to configure a WordPress website:</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/220973627-Setting-up-WordPress-on-DreamCompute">Setting up WordPress on DreamCompute</a></li>
 </ul>

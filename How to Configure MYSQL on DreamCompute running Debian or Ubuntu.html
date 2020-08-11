@@ -8,8 +8,8 @@
 <p>Debian and Ubuntu sometimes offer multiple versions of MySQL in case your needs require an older version, however it is usually best to go with the default version if there are no specific requirements needed.</p>
 <p>To install the default version of MySQL on your system, run the following commands:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">user@server:$ </span><span class="command">sudo apt-get update</span>
-<span class="server">user@server:$ </span><span class="command">sudo apt-get install -y mysql-server</span></pre>
+<pre class="prebox"><span class="server">[user@instance]:$ </span><span class="command">sudo apt-get update</span>
+<span class="server">[user@instance]:$ </span><span class="command">sudo apt-get install -y mysql-server</span></pre>
 </div>
 <p>Before the installation completes, a dialog will pop up asking you to specify a MySQL server root password.</p>
 <dl>
@@ -20,7 +20,7 @@
 <div class="solvvy-solution">
 <p>You can check which packages were just install by running the following command:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">user@server:$ </span><span class="command">dpkg -l | grep mysql</span>
+<pre class="prebox"><span class="server">[user@instance]:$ </span><span class="command">dpkg -l | grep mysql</span>
 
 ii  mysql-client-5.7        5.7.21-0ubuntu0.16.04.1   amd64   MySQL database client binaries
 ii  mysql-client-core-5.7   5.7.21-0ubuntu0.16.04.1   amd64   MySQL database core client binaries
@@ -34,7 +34,7 @@ ii  mysql-server-core-5.7   5.7.21-0ubuntu0.16.04.1   amd64   MySQL database ser
 <div class="solvvy-solution">
 <p>The configuration files are stored in the /etc/mysql directory.</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">user@server:$ </span><span class="command">ls -1 /etc/mysql</span>
+<pre class="prebox"><span class="server">[user@instance]:$ </span><span class="command">ls -1 /etc/mysql</span>
 /conf.d
 debian.cnf
 debian-start
@@ -56,20 +56,20 @@ mysql.cnf
 <pre class="prebox">bind-address   = 2607:f298:6050:8a28:f816:3eff:fe62:c9c3</pre>
 </div>
 <h4><strong>max_allowed_packet</strong></h4>
-<p>This value is the largest size allowed for a single packet, which normally is only relevant for restoring backups. If a backup was created on a server with a high setting for this value, it may have difficulty restoring on another machine with a lower setting. The default is 16M.</p>
+<p>This value is the largest size allowed for a single packet, which normally is only relevant for restoring backups. If a backup was created on an instance with a high setting for this value, it may have difficulty restoring on another machine with a lower setting. The default is 16M.</p>
 </div>
 <h2>Restarting the mysql service</h2>
 <div class="solvvy-solution">
 <p>If any changes are made to your mysql configuration, you must restart MySQL for it to read the them. This can be done by running the following:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">user@server:$ </span><span class="command">sudo service mysql restart</span></pre>
+<pre class="prebox"><span class="server">[user@instance]:$ </span><span class="command">sudo service mysql restart</span></pre>
 </div>
 </div>
 <h2>Connecting to the mysql shell</h2>
 <div class="solvvy-solution">
 <p>If you need to set up new databases or configure new users, you must log into your MySQL Shell. Run any of the following command to log in.</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">user@server:$ </span><span class="command">mysql -u root -p</span></pre>
+<pre class="prebox"><span class="server">[user@instance]:$ </span><span class="command">mysql -u root -p</span></pre>
 </div>
 <p>The prompt will change to the following:</p>
 <div class="preboxcontainer">
@@ -81,7 +81,7 @@ mysql.cnf
 <div class="solvvy-solution">
 <p>After MySQL has been installed, it's a good idea to secure its settings. Run the following command to open an interactive settings dialog:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">user@server:$ </span><span class="command">mysql_secure_installation</span>
+<pre class="prebox"><span class="server">[user@instance]:$ </span><span class="command">mysql_secure_installation</span>
 
 Securing the MySQL server deployment.
 Enter password for user root:</pre>

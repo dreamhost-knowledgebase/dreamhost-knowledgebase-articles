@@ -42,28 +42,28 @@
 <li>Create two new "copy machine" instances (one each in the source and destination clusters), using the smallest available flavor. This guide uses Ubuntu 14.04, but the commands should be similar on any Ubuntu system. It is also recommended that you make the instances ephemeral, since they will not be needed after the migration is complete.</li>
 <li>For simplicity, the two temporary instances will be connected using passwords instead of SSH keys, but you can do this any way you prefer. To set up the instances for password authentication, turn it on with the following commands.
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo -i</span>
-<span class="server">[root@server]# </span><span class="command">sed -i -e 's/PasswordAuthentication no/PasswordAuthentication yes/' \
+<pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">sudo -i</span>
+<span class="server">[root@instance]# </span><span class="command">sed -i -e 's/PasswordAuthentication no/PasswordAuthentication yes/' \
                /etc/ssh/sshd_config</span>
-<span class="server">[root@server]# </span><span class="command">sed -i -e 's/PermitRootLogin without-password/PermitRootLogin yes/' \
+<span class="server">[root@instance]# </span><span class="command">sed -i -e 's/PermitRootLogin without-password/PermitRootLogin yes/' \
                /etc/ssh/sshd_config</span>
-<span class="server">[root@server]# </span><span class="command">service ssh restart</span>
-<span class="server">[root@server]# </span><span class="command">passwd root</span></pre>
+<span class="server">[root@instance]# </span><span class="command">service ssh restart</span>
+<span class="server">[root@instance]# </span><span class="command">passwd root</span></pre>
 </div>
 </li>
 <li>Create a volume in the destination cluster that is the same size (or larger than) the source volume.</li>
 <li>Attach the source volume to the temporary instance in the source cluster. Attach the destination volume to the temporary instance in the destination cluster. There is no need to mount either of them.</li>
 <li>Determine the drive letter of the volumes on both instances. Generally /dev/vda will be the boot drive of your instance, so it will be /dev/vdb or /dev/vdc. One way to check for it is with the fdisk command:
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[root@server]# </span><span class="command">fdisk -l /dev/vdb | grep Disk</span>
-<span class="server">[root@server]# </span><span class="command">fdisk -l /dev/vdc | grep Disk</span>
+<pre class="prebox"><span class="server">[root@instance]# </span><span class="command">fdisk -l /dev/vdb | grep Disk</span>
+<span class="server">[root@instance]# </span><span class="command">fdisk -l /dev/vdc | grep Disk</span>
 </pre>
 </div>
 </li>
 <li>The one that matches the size of the volume is the one to use. They may have different drive letters on each instance, so take note of that.</li>
 <li>Now the data can be copied using <span class="code">dd</span> and SSH. To keep things simple, log into the instance on the destination cluster using its IPv6 address. Next, in the following command, replace IPV6-OF-SOURCE-INSTANCE with the IPv6 address of the source instance, the first /dev/vdX with the drive letter of the source volume, and the second /dev/vdX with the drive letter of the destination volume.
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[root@destserver]# </span><span class="command">ssh root@IPV6-OF-SOURCE-INSTANCE \
+<pre class="prebox"><span class="server">[root@destinstance]# </span><span class="command">ssh root@IPV6-OF-SOURCE-INSTANCE \
                    "dd if=/dev/vdX | gzip -1 -" | gunzip - | dd of=/dev/vdX</span>
 </pre>
 </div>

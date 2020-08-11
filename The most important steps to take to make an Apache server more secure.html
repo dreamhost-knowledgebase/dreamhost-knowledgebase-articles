@@ -21,7 +21,7 @@
 <p>In security, the principle of least privilege states that an entity should be given no more permission than necessary to accomplish its goals within a given system. In the context of your web server, this means locking down Apache to run only with the permissions necessary to run. A first step in this process is to configure Apache to run as an unprivileged system user (e.g., not root). This is done by setting the APACHE_RUN_USER and APACHE_RUN_GROUP variables in the <strong>/etc/apache2/envvars</strong> file:</p>
 <p>Edit the file and change the following lines:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo vim /etc/apache2/envvars</span>
+<pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">sudo vim /etc/apache2/envvars</span>
 # Since there is no sane way to get the parsed apache2 config in scripts, some
 # settings are defined via environment variables and then used in apache2ctl,
 # /etc/init.d/apache2, /etc/logrotate.d/apache2, etc.
@@ -34,11 +34,11 @@
 <h3>Disable ServerTokens</h3>
 <p>The HTTP spec recommends (but not requires) that web servers identify themselves via the <cite>Server</cite> header. Historically, web servers have included their version information as part of this header. Disclosing the version of Apache running can be undesirable, particularly in environments sensitive to information disclosure. Configure Apache not to display its version in <cite>Server</cite> header by editing the following file:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo vim /etc/apache2/conf-available/security.conf</span></pre>
+<pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">sudo vim /etc/apache2/conf-available/security.conf</span></pre>
 </div>
 <p>In that file you'll see several '<a href="https://httpd.apache.org/docs/2.4/mod/core.html#servertokens">ServerTokens</a>'. Make sure they are all commented out and only 'ProductOnly' appears.</p>
 <div class="preboxcontainer">
-<pre class="prebox"># ServerTokens 
+<pre class="prebox">#ServerTokens 
 #ServerTokens Minimal
 #ServerTokens OS
 #ServerTokens Full
@@ -46,13 +46,13 @@ ServerTokens ProductOnly;</pre>
 </div>
 <p>Restart Apache to update the changes.</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo service apache2 reload</span></pre>
+<pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">sudo service apache2 reload</span></pre>
 </div>
 <div id="disable-htaccess-files">
 <h3>Disable .htaccess files</h3>
 <p><cite>.htaccess</cite> files are a powerful feature that allow Apache to have its configuration extended outside its main config file. While this may be convenient, it does present a security risk, as Apache will read any .htaccess file in its path — even ones placed by an attacker that could compromise the server. It may be desirable to lock down the Apache configuration by disabling .htaccess files entirely. This can be done by editing the <a href="https://httpd.apache.org/docs/2.4/mod/core.html"><cite>AllowOverride</cite> directive</a> in the <strong>/etc/apache2/apache2.conf file:</strong></p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo vim /etc/apache2/apache2.conf</span>
+<pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">sudo vim /etc/apache2/apache2.conf</span>
 AllowOverride None</pre>
 </div>
 <p>Additionally, fine-grained control of which Apache directives can be used within .htaccess files can also be controlled by <cite>AllowOverride</cite>:</p>
@@ -107,8 +107,8 @@ AllowOverride None</pre>
 <p>If you've installed a 'Let's Encrypt' certificate as shown above, you already had the option to force all traffic over SSL. If you're not using a 'Let's Encrypt' certificate, you can also do this by adding the following to your site's configuration file located at /etc/apache2/sites-available/example.com.conf.</p>
 <p>First, make sure the Headers module is active.</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo a2enmod headers</span>
-<span class="server">[user@server]$ </span><span class="command">sudo service apache2 restart</span></pre>
+<pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">sudo a2enmod headers</span>
+<span class="server">[user@instance]$ </span><span class="command">sudo service apache2 restart</span></pre>
 </div>
 <p>You can then add the following to your site's .conf file.</p>
 <div class="preboxcontainer">

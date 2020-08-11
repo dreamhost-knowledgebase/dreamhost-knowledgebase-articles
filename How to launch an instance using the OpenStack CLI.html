@@ -1,12 +1,12 @@
 <h2>Overview</h2>
 <div class="solvvy-solution">
-<p>Virtual machines that run inside the cloud are called instances. Before you can launch an instance, gather the following parameters:</p>
+<p>Virtual machines that run inside the cloud are called instances.&nbsp;Before you can launch an instance, gather the following parameters:</p>
 <ul class="simple">
 <li><strong>Instance source</strong> — Can be an image, snapshot, or block storage volume that contains an image or snapshot.</li>
 <li><strong>Instance name</strong> — The name for your instance.</li>
-<li><strong>Flavor</strong> — The flavor for your instance defines the vCPU and RAM memory limits for an instance.</li>
-<li><strong>User data</strong> (not required) — Any user data files. A user data file is a special key in the metadata service that holds a file that cloud-aware applications in the guest instance can access. For example, one application that uses user data is the <a class="reference external" href="https://help.ubuntu.com/community/CloudInit">cloud-init</a> system, which is an open-source package from Ubuntu that is available on various Linux distributions and that handles early initialization of a cloud instance.</li>
-<li><strong>Access and security credentials</strong> — This includes one or both of the following credentials:
+<li><strong>Flavor</strong>&nbsp;— The flavor for your instance defines the vCPU and RAM memory limits for an instance.</li>
+<li><strong>User data</strong>&nbsp;(not required) — Any user data files. A user data file is a special key in the metadata service that holds a file that cloud-aware applications in the guest instance can access. For example, one application that uses user data is the <a class="reference external" href="https://help.ubuntu.com/community/CloudInit">cloud-init</a> system, which is an open-source package from Ubuntu that is available on various Linux distributions and that handles early initialization of a cloud instance.</li>
+<li><strong>Access and security credentials</strong>&nbsp;— This includes one or both of the following credentials:
 <ul style="list-style-type: square;">
 <li><strong>key pair</strong> — These are SSH credentials that are injected into images when they are launched. For the key pair to be successfully injected, the image must contain the <code class="docutils literal"><span class="pre">cloud-init</span></code> package. Create at least one key pair for each project. If you already have generated a key pair with an external tool, you can import it into DreamCompute. You can use the key pair for multiple instances that belong to that project.</li>
 <li><strong>Security group</strong> — Defines which incoming and outgoing network traffic is forwarded to and from the instances. Security groups hold a set of firewall policies, known as <em>security group rules</em>.</li>
@@ -85,30 +85,30 @@
 <div class="solvvy-solution">
 <p>After you've gathered the required parameters, you can now <a href="https://docs.openstack.org/python-openstackclient/pike/cli/command-objects/server.html#server-create">create an instance</a>. At this point, you should have the following credentials:</p>
 <ul>
-<li><strong>flavor</strong> — 300</li>
-<li><strong>image</strong> — afa49adf-2831-4a00-9c57-afe1624d5557</li>
-<li><strong>keypair</strong> — myKey</li>
-<li><strong>security group</strong> — 29acef25-b59f-43a0-babf-6a5bb5cc7bed</li>
-<li><strong>servername</strong> — You can name it anything you like, but in this example myNewServer will be used.
+<li><strong>flavor</strong>&nbsp;— 300</li>
+<li><strong>image</strong>&nbsp;— afa49adf-2831-4a00-9c57-afe1624d5557</li>
+<li><strong>keypair</strong>&nbsp;— myKey</li>
+<li><strong>security group</strong>&nbsp;— 29acef25-b59f-43a0-babf-6a5bb5cc7bed</li>
+<li><strong>servername</strong> — You can name it anything you like, but in this example myNewInstance will be used.
 <div class="alert alert-important">
-<div class="alert-icon"><img height="60" src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
 <p>If you boot an instance with an INSTANCE_NAME greater than 63 characters, Compute truncates it automatically when turning it into a host name to ensure the correct functionality of dnsmasq.</p>
 </div>
 </div>
 </li>
 </ul>
-<h3>Run the following to create your server.</h3>
+<h3>Run the following to create your instance.</h3>
 <p>This example splits up the command into separate lines.</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server create --flavor 300 \
                         --image afa49adf-2831-4a00-9c57-afe1624d5557 \
                         --key-name myKey \
                         --security-group 29abef85-b89f-43a0-babf-6a5bb5cc7bed \
-                        myNewServer</span></pre>
+                        myNewInstance</span></pre>
 </div>
 <div class="alert alert-important">
-<div class="alert-icon"><img height="60" src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
 <p>The backslash character \ is used when entering a long command. When you enter the \, the terminal command continues to the next line until you finish entering it.</p>
 <p>You could also remove the \ character and put every parameter into a single line. For example:</p>
@@ -117,7 +117,7 @@
 </div>
 </div>
 </div>
-<p>If the server was correctly created, you'll see an output like this:</p>
+<p>If the instance was correctly created, you'll see an output like this:</p>
 <div class="preboxcontainer">
 <pre class="prebox">+-----------------------------+-------------------------------------------------+
 | Field                       | Value                                           |
@@ -140,7 +140,7 @@
 | id                          | 76b3adb3-1f5a-4276-8b82-abdf21352946            |
 | image                       | CentOS-6 (afa49adf-2831-4a00-9c57-afe1624d5557) |
 | key_name                    | myKey                                           |
-| name                        | myNewServer                                     |
+| name                        | myNewInstance                                   |
 | progress                    | 0                                               |
 | project_id                  | e52ece2a560548cf950ba86297300079                |
 | properties                  |                                                 |
@@ -151,8 +151,8 @@
 | volumes_attached            |                                                 |
 +-----------------------------+-------------------------------------------------+</pre>
 </div>
-<p>A status of <strong>BUILD </strong>indicates that the instance has started, but is not yet online. A status of <strong>ACTIVE </strong>indicates that the instance is active. Copy the administrative password value from the <code class="docutils literal"><span class="pre">adminPass</span></code> field. You can use this password later to log in to your server.</p>
-<p>You'll also be able to see the new server instance in your <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=cloud.compute&amp;" rel="noopener" target="_blank">DreamCompute panel</a>.</p>
+<p>A status of <strong>BUILD&nbsp;</strong>indicates that the instance has started, but is not yet online.&nbsp;A status of <strong>ACTIVE&nbsp;</strong>indicates that the instance is active.&nbsp;Copy the administrative password value from the <code class="docutils literal"><span class="pre">adminPass</span></code> field. You can use this password later to log in to your instance.</p>
+<p>You'll also be able to see the new instance in your <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=cloud.compute&amp;" target="_blank" rel="noopener">DreamCompute panel</a>.</p>
 <p>For more options, use the following command or view OpenStack's documentation below.</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack help server create</span>
@@ -162,7 +162,7 @@
 <li><a href="https://docs.openstack.org/python-openstackclient/pike/cli/command-objects/server.html#server-create">https://docs.openstack.org/python-openstackclient/pike/cli/command-objects/server.html#server-create</a></li>
 </ul>
 <div class="alert alert-important">
-<div class="alert-icon"><img height="60" src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
 <p>You can also place arbitrary local files into the instance file system at creation time by using the <strong>--file &lt;dest-filename=source-filename&gt;</strong> parameter. You can store up to five files.</p>
 <p>For example, if you have a special authorized keys file named <strong>special_authorized_keysfile</strong> that you want to put on the instance rather than using the regular SSH key injection, you can add the <strong>–file</strong> option as shown in the following example.</p>
@@ -174,19 +174,19 @@
 </div>
 <h2>Check if the instance is online</h2>
 <div class="solvvy-solution">
-<p>Use the <span class="code">list</span> command to view a list of all servers:</p>
+<p>Use the <span class="code">list</span> command to view a list of all instances:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server list</span>
 +--------------------------------------+--------------+--------+----------------------------------------------------+
 | ID                                   | Name         | Status | Networks               | Image    | Flavor         |
 +--------------------------------------+--------------+--------+------------------------+----------+----------------+
-| 76b3adb3-1f5a-4276-8b82-abdf21352946 | myNewServer  | ACTIVE | public=xxx.xxx.xxx.xxx | CentOS-6 | gp1.lightspeed |
+| 76b3adb3-1f5a-4276-8b82-abdf21352946 | myNewInstance| ACTIVE | public=xxx.xxx.xxx.xxx | CentOS-6 | gp1.lightspeed |
 | 246e50b8-29fa-4310-b972-a71cd0df43bf | Ubuntu14     | ACTIVE | public=xxx.xxx.xxx.xxx |          | gp1.subsonic   |
 +--------------------------------------+--------------+--------+------------------------+----------+----------------+</pre>
 </div>
 <p>The list shows the ID, Name, Status, IP addresses, Image, and Flavor for all instances in the project.</p>
 <div class="alert alert-important">
-<div class="alert-icon"><img height="60" src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
 <p>If you do not provide a key pair, you will be unable to access the instance.</p>
 </div>

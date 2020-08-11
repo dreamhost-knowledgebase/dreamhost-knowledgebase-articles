@@ -16,7 +16,7 @@
 <h3>SSH keys</h3>
 <p>Each cluster manages its SSH Keys separately, so if you have your keys already set up in the source cluster, you must set up the same keys (or new ones) in the destination cluster. You can grab the public key of any key pair in your project from the (<a href="https://iad2.dreamcompute.com/project/key_pairs/">'Project' &gt; 'Compute' &gt; 'Key Pairs'</a>) page of the DreamCompute dashboard.</p>
 <dl>
-<dd><img alt="" class="img-border" src="https://kbimages.dreamhosters.com/images/migrate-instances-between-clusters_01.png"/></dd>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/migrate-instances-between-clusters_01.png" alt="" /></dd>
 </dl>
 <dl>
 <dd>To get to that page, just click on the key pair name.</dd>
@@ -31,7 +31,7 @@
 <div class="solvvy-solution">
 <p>For this type of move, it is necessary to delete the instance so that it leaves behind a volume to migrate.</p>
 <div class="alert alert-important">
-<div class="alert-icon"><img height="60" src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
 <p>This method requires that you did not select "Yes" for the "Delete Volume on Instance Delete" option when you created your instance. If you did, please skip to the last section for <a class="reference external" href="#migrating-an-ephemeral-instance-using-the-openstack-cli">instructions on migrating running instances</a>. If you continue, you may permanently destroy and lose your data.</p>
 </div>
@@ -54,15 +54,15 @@
 <li>Create a temporary "copy machine" by launching a new instance using the smallest available flavor. This guide uses Ubuntu 14.04, but the commands should be similar on any Ubuntu system. It is also recommended that you make the instance ephemeral since it will not be needed after the migration is complete.</li>
 <li>Install the needed software to access the Glance image service on this new instance:
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo -i</span>
-<span class="server">[root@server]# </span><span class="command">apt-get install python-dev python-pip</span>
-<span class="server">[root@server]# </span><span class="command">pip install python-openstackclient</span>
+<pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">sudo -i</span>
+<span class="server">[root@instance]# </span><span class="command">apt-get install python-dev python-pip</span>
+<span class="server">[root@instance]# </span><span class="command">pip install python-openstackclient</span>
 </pre>
 </div>
 </li>
 <li>Run <span class="code">openstack help</span> and check for any other modules that it says are missing. Install them with:
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[root@server]# </span><span class="command">pip install MODULENAME</span>
+<pre class="prebox"><span class="server">[root@instance]# </span><span class="command">pip install MODULENAME</span>
 </pre>
 </div>
 </li>
@@ -73,14 +73,14 @@
 </li>
 <li>After downloading the file, either upload it to your instance or copy/paste its contents into a file on the instance. In the example below, the contents have been saved into a file named 'dreamcompute-CLUSTER.sh', but you can name it anything you like. Once you finish, execute the file:
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[root@server]# </span><span class="command">. dreamcompute-CLUSTER.sh</span>
+<pre class="prebox"><span class="server">[root@instance]# </span><span class="command">. dreamcompute-CLUSTER.sh</span>
 </pre>
 </div>
 </li>
 <li>Enter your DreamCompute password at the "Please enter your OpenStack Password" prompt. This is the same password you use to log into the DreamCompute dashboard.</li>
 <li>Now that your shell session has the necessary authentication credentials to connect to the DESTINATION cluster, run the following command to see the OpenStack images currently in the DESTINATION cluster:
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[root@server]# </span><span class="command">openstack image list</span>
+<pre class="prebox"><span class="server">[root@instance]# </span><span class="command">openstack image list</span>
 </pre>
 </div>
 </li>
@@ -89,15 +89,15 @@
 <li>
 <p>Determine the drive letter of the new volume. Generally /dev/vda will be the boot drive of your instance, so it may be /dev/vdb or /dev/vdc. One way to check for it is with the fdisk command:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[root@server]# </span><span class="command">fdisk -l /dev/vdb | grep Disk</span>
-<span class="server">[root@server]# </span><span class="command">fdisk -l /dev/vdc | grep Disk</span>
+<pre class="prebox"><span class="server">[root@instance]# </span><span class="command">fdisk -l /dev/vdb | grep Disk</span>
+<span class="server">[root@instance]# </span><span class="command">fdisk -l /dev/vdc | grep Disk</span>
 </pre>
 </div>
 <p>The one that matches the size of the new volume is the one to use. Make note of the drive letter (the /dev/vdX part).</p>
 </li>
 <li>Use <span class="code">dd</span> to pipe the data directly into the glance image service. Don't forget to change the drive letter in the example below to the one you found above. You can also change any text in all CAPS to suit your taste.
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[root@server]# </span><span class="command">dd if=/dev/vdX | openstack image create \
+<pre class="prebox"><span class="server">[root@instance]# </span><span class="command">dd if=/dev/vdX | openstack image create \
 <span class="command">               --private --container-format bare \</span>
 <span class="command">               --disk-format raw "INSTANCENAME"</span>
 </span></pre>
@@ -114,15 +114,15 @@
 <li>Shut down as many services on the instance as possible (such as database servers, http servers, and so on), ideally leaving only default system tools and sshd running.</li>
 <li>Install the needed software to access the glance imaging service on the instance:
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo -i</span>
-<span class="server">[root@server]# </span><span class="command">apt-get install python-dev python-pip</span>
-<span class="server">[root@server]# </span><span class="command">pip install python-openstackclient</span>
+<pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">sudo -i</span>
+<span class="server">[root@instance]# </span><span class="command">apt-get install python-dev python-pip</span>
+<span class="server">[root@instance]# </span><span class="command">pip install python-openstackclient</span>
 </pre>
 </div>
 </li>
 <li>Run <span class="code">openstack help</span> and check for any other modules that it says are missing. Install them with:
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[root@server]# </span><span class="command">pip install MODULENAME</span>
+<pre class="prebox"><span class="server">[root@instance]# </span><span class="command">pip install MODULENAME</span>
 </pre>
 </div>
 </li>
@@ -133,21 +133,21 @@
 </li>
 <li>After downloading the file, either upload it to your instance or copy/paste its contents into a file on the instance. In the example below, the contents have been saved into a file named 'dreamcompute-CLUSTER.sh', but you can name it anything you like. Once you finish, execute the file:
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[root@server]# </span><span class="command">. dreamcompute-CLUSTER.sh</span>
+<pre class="prebox"><span class="server">[root@instance]# </span><span class="command">. dreamcompute-CLUSTER.sh</span>
 </pre>
 </div>
 </li>
 <li>Enter your DreamCompute password at the "Please enter your OpenStack Password" prompt. This is the same password you use to log into the DreamCompute dashboard.</li>
 <li>Now that your shell session has the necessary authentication credentials to connect to the DESTINATION cluster, run the following command to see the OpenStack images currently in the DESTINATION cluster:
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[root@server]# </span><span class="command">openstack image list</span>
+<pre class="prebox"><span class="server">[root@instance]# </span><span class="command">openstack image list</span>
 </pre>
 </div>
 </li>
 <li>Determine the drive letter by examining the output of <span class="code">df -h</span> for the root (/) filesystem. Generally this is /dev/vda1.</li>
 <li>Use <span class="code">dd</span> to pipe the data from the disk directly into the glance image service. Change any text in all CAPS to suit your taste.
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[root@server]# </span><span class="command">dd if=/dev/vda | openstack image create \
+<pre class="prebox"><span class="server">[root@instance]# </span><span class="command">dd if=/dev/vda | openstack image create \
 <span class="command">               --private --container-format bare \</span>
 <span class="command">               --disk-format raw "INSTANCENAME"</span>
 </span></pre>

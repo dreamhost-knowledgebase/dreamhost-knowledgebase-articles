@@ -21,22 +21,22 @@
 </div>
 <h2>Enable mod_rewrite and ssl</h2>
 <div class="solvvy-solution">
-<p>Before continuing, make sure that mod_rewrite and ssl are enabled on your server. You can confirm by running the following commands:</p>
+<p>Before continuing, make sure that mod_rewrite and ssl are enabled on your instance. You can confirm by running the following commands:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">ls -1 /etc/apache2/mods-enabled | grep rewrite</span>
-<span class="server">[server]$ </span><span class="command">ls -1 /etc/apache2/mods-enabled | grep ssl</span></pre>
+<pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">ls -1 /etc/apache2/mods-enabled | grep rewrite</span>
+<span class="server">[user@instance]$ </span><span class="command">ls -1 /etc/apache2/mods-enabled | grep ssl</span></pre>
 </div>
 <p>If nothing displays, enable it with the following commands:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">sudo a2enmod rewrite</span>
-<span class="server">[server]$ </span><span class="command">sudo a2enmod ssl</span>
-<span class="server">[server]$ </span><span class="command">sudo service apache2 reload</span></pre>
+<pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">sudo a2enmod rewrite</span>
+<span class="server">[user@instance]$ </span><span class="command">sudo a2enmod ssl</span>
+<span class="server">[user@instance]$ </span><span class="command">sudo service apache2 reload</span></pre>
 </div>
 <p>Check again and you'll see rewrite and ssl are listed.</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">ls -1 /etc/apache2/mods-enabled | grep rewrite</span>
+<pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">ls -1 /etc/apache2/mods-enabled | grep rewrite</span>
 rewrite.load
-<span class="server">[server]$ </span><span class="command">ls -1 /etc/apache2/mods-enabled | grep ssl</span>
+<span class="server">[user@instance]$ </span><span class="command">ls -1 /etc/apache2/mods-enabled | grep ssl</span>
 ssl.conf<br />ssl.load</pre>
 </div>
 </div>
@@ -53,10 +53,10 @@ ssl.conf<br />ssl.load</pre>
 </div>
 </div>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">sudo -s</span>
-<span class="server">root@[server]# </span><span class="command">cd /opt</span>
-<span class="server">root@[server]# </span><span class="command">git clone git://github.com/certbot/certbot</span>
-<span class="server">root@[server]# </span><span class="command">/opt/certbot/certbot-auto --manual -d "example.com" -d "*.example.com" --server https://acme-v02.api.letsencrypt.org/directory certonly</span></pre>
+<pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">sudo -s</span>
+<span class="server">[root@instance]# </span><span class="command">cd /opt</span>
+<span class="server">[root@instance]# </span><span class="command">git clone git://github.com/certbot/certbot</span>
+<span class="server">[root@instance]# </span><span class="command">/opt/certbot/certbot-auto --manual -d "example.com" -d "*.example.com" --server https://acme-v02.api.letsencrypt.org/directory certonly</span></pre>
 </div>
 </li>
 <li>When prompted, enter 'y' to continue the installation.</li>
@@ -108,9 +108,9 @@ Enter the following:
 <li><strong>Value: </strong>— Tzx6GaeSJHe14C6t_M9wTBDe0s1stDMuq2Y15GLFZPE</li>
 </ul>
 Click the <strong>Add Record Now</strong> button to save.</li>
-<li>A green 'Success!' message displays, notifying you that the record has been created. The server now requires a few minutes to update this record. Wait at least 15 minutes before proceeding, or open another terminal and run the following command to confirm the record has updated.
+<li>A green 'Success!' message displays, notifying you that the record has been created. The instance now requires a few minutes to update this record. Wait at least 15 minutes before proceeding, or open another terminal and run the following command to confirm the record has updated.
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">user@server$ </span><span class="command">dig _acme-challenge.example.com +short txt</span></pre>
+<pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">dig _acme-challenge.example.com +short txt</span></pre>
 </div>
 </li>
 <li>Back in your terminal prompt, run the command again. This time, you'll are instructed to create a customized file for 'Let's Encrypt'. You'll see the following:
@@ -128,12 +128,12 @@ Press Enter to Continue</pre>
 </li>
 <li>Do not click the 'Enter' key yet. Open up a second terminal. In that new terminal, run the following command to create these directories:
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">user@server$ </span><span class="command">sudo mkdir -p /var/www/example.com/.well-known/acme-challenge</span></pre>
+<pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">sudo mkdir -p /var/www/example.com/.well-known/acme-challenge</span></pre>
 </div>
 </li>
 <li>Next, create the file using 'nano'.
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">user@server$ </span><span class="command">sudo nano /var/www/example.com/.well-known/acme-challenge/EQdd0CuoMENyxMP20TU9QSuX0VGeqSY7vYPPHMeM5_s</span></pre>
+<pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">sudo nano /var/www/example.com/.well-known/acme-challenge/EQdd0CuoMENyxMP20TU9QSuX0VGeqSY7vYPPHMeM5_s</span></pre>
 </div>
 </li>
 <li>Add the code mentioned above to it, then save the file.</li>
@@ -170,7 +170,7 @@ IMPORTANT NOTES:
 <div class="solvvy-solution">
 <p>Navigate to your /site-available directory.</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">root@[server]# </span><span class="command">cd /etc/apache2/sites-available</span></pre>
+<pre class="prebox"><span class="server">[root@instance]# </span><span class="command">cd /etc/apache2/sites-available</span></pre>
 </div>
 <p>In this directory is a file named 'example.com.conf' which you already created when setting up the domain. Edit this file and add the following highlighted code. Make sure to change 'example.com' to your actual domain name.</p>
 <div class="preboxcontainer">
@@ -196,7 +196,7 @@ IMPORTANT NOTES:
 <p>These new lines will redirect the http version of your site to https.</p>
 <p>Next, create a new .conf file for your Let's Encrypt certificate. The name will be <strong>example.com-le-ssl.conf</strong>. Make sure to change 'example.com' to your actual domain name.</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">root@[server]# </span><span class="command">sudo vim example.com-le-ssl.conf</span></pre>
+<pre class="prebox"><span class="server">[root@instance]# </span><span class="command">sudo vim example.com-le-ssl.conf</span></pre>
 </div>
 <p>In this file add the following code.</p>
 <div class="alert alert-important">
@@ -229,12 +229,12 @@ IMPORTANT NOTES:
 </div>
 <p>Make sure to enable this new file.</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo a2ensite example.com-le-ssl</span>
+<pre class="prebox"><span class="server">[root@instance]$ </span><span class="command">sudo a2ensite example.com-le-ssl</span>
 Enabling site example.com-le-ssl</pre>
 </div>
 <p>Finally reload your Apache service so it reads the changes.</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo service apache2 reload</span></pre>
+<pre class="prebox"><span class="server">[root@instance]$ </span><span class="command">sudo service apache2 reload</span></pre>
 </div>
 </div>
 <h2>Configure your subdomains to use this certificate</h2>
@@ -267,12 +267,12 @@ Enabling site example.com-le-ssl</pre>
 <p>Make sure you enable both of your subdomain's config files:</p>
 <p>Make sure to enable this new file and default-ssl</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@server]$ </span><span class="command">sudo a2ensite sub1.example.com.conf</span>
-<span class="server">[user@server]$ </span><span class="command">sudo a2ensite sub1.example.com-le-ssl</span>
+<pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">sudo a2ensite sub1.example.com.conf</span>
+<span class="server">[user@instance]$ </span><span class="command">sudo a2ensite sub1.example.com-le-ssl</span>
 Enabling site example.com-le-ssl</pre>
 </div>
 <p>Finally, reload Apache so it knows about the new configurations.</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">sudo service apache2 reload</span></pre>
+<pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">sudo service apache2 reload</span></pre>
 </div>
 </div>

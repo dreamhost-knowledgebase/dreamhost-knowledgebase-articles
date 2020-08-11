@@ -10,14 +10,14 @@
 <div class="solvvy-solution">
 <p>First, install the necessary packages and libraries used to build source projects, as well as libraries used specifically by libmodsecurity:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[root@server]# </span><span class="command">apt-get update &amp;&amp; apt-get install -y automake bison build-essential \
+<pre class="prebox"><span class="server">[root@instance]# </span><span class="command">apt-get update &amp;&amp; apt-get install -y automake bison build-essential \
                g++ gcc libbison-dev libcurl4-openssl-dev libfl-dev libgeoip-dev \
                liblmdb-dev libpcre3-dev libtool libxml2-dev libyajl-dev make \
                pkg-config zlib1g-dev</span></pre>
 </div>
 <p>Next, download and unpack the most recent source of libmodsecurity. This is available from the ModSecurity GitHub project, on the <cite>libmodsecurity</cite> branch:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[root@server]# </span><span class="command">git clone --depth 1 -b v3/master --single-branch https://github.com/SpiderLabs/ModSecurity</span>
+<pre class="prebox"><span class="server">[root@instance]# </span><span class="command">git clone --depth 1 -b v3/master --single-branch https://github.com/SpiderLabs/ModSecurity</span>
 Cloning into 'ModSecurity'...
 remote: Counting objects: 750, done.
 remote: Compressing objects: 100% (721/721), done.
@@ -29,13 +29,13 @@ Checking connectivity... done.
 </div>
 <p>Initialize and update the git submodules that libmodsecurity requires:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[root@server]# </span><span class="command">cd ModSecurity/</span>
-<span class="server">[root@server]# </span><span class="command">git submodule init</span>
-<span class="server">[root@server]# </span><span class="command">git submodule update</span></pre>
+<pre class="prebox"><span class="server">[root@instance]# </span><span class="command">cd ModSecurity/</span>
+<span class="server">[root@instance]# </span><span class="command">git submodule init</span>
+<span class="server">[root@instance]# </span><span class="command">git submodule update</span></pre>
 </div>
 <p>Finally, configure, build, and install the libmodsecurity library:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[root@server]# </span><span class="command">./build.sh &amp;&amp; ./configure &amp;&amp; make &amp;&amp; make install</span>
+<pre class="prebox"><span class="server">[root@instance]# </span><span class="command">./build.sh &amp;&amp; ./configure &amp;&amp; make &amp;&amp; make install</span>
 </pre>
 </div>
 </div>
@@ -44,7 +44,7 @@ Checking connectivity... done.
 <p>Now that libmodsecurity has been installed and is available to be used by third-party programs, nginx can be compiled with the ModSecurity-nginx connector to load libmodsecurity and process requests.</p>
 <p>First, grab the source for the nginx module wraps around libmodsecurity:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[root@server]# </span><span class="command">cd /root &amp;&amp; git clone --depth 1 https://github.com/SpiderLabs/ModSecurity-nginx.git</span>
+<pre class="prebox"><span class="server">[root@instance]# </span><span class="command">cd /root &amp;&amp; git clone --depth 1 https://github.com/SpiderLabs/ModSecurity-nginx.git</span>
 Cloning into 'ModSecurity-nginx'...
 remote: Counting objects: 30, done.
 remote: Compressing objects: 100% (30/30), done.
@@ -55,11 +55,11 @@ Checking connectivity... done.
 </div>
 <p>Next, grab the nginx source and verify it. Start by downloading the source and its signature from nginx.org:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[root@server]# </span><span class="command">wget -q https://nginx.org/download/nginx-1.12.2.tar.gz{.asc,}</span></pre>
+<pre class="prebox"><span class="server">[root@instance]# </span><span class="command">wget -q https://nginx.org/download/nginx-1.12.2.tar.gz{.asc,}</span></pre>
 </div>
 <p>To verify the contents of the download, grab the developer's signing key from nginx.org:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[root@server]# </span><span class="command">curl -sS https://nginx.org/keys/mdounin.key | gpg --import</span>
+<pre class="prebox"><span class="server">[root@instance]# </span><span class="command">curl -sS https://nginx.org/keys/mdounin.key | gpg --import</span>
 gpg: directory `/home/ubuntu/.gnupg' created
 gpg: new configuration file `/home/ubuntu/.gnupg/gpg.conf' created
 gpg: WARNING: options in `/home/ubuntu/.gnupg/gpg.conf' are not yet active during this run
@@ -73,7 +73,7 @@ gpg: no ultimately trusted keys found</pre>
 </div>
 <p>Now verify the signature:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[root@server]# </span><span class="command">gpg --trusted-key 0x520A9993A1C052F8 --verify nginx-1.12.2.tar.gz{.asc,}</span>
+<pre class="prebox"><span class="server">[root@instance]# </span><span class="command">gpg --trusted-key 0x520A9993A1C052F8 --verify nginx-1.12.2.tar.gz{.asc,}</span>
 gpg: Signature made Tue 17 Oct 2017 01:18:21 PM UTC using RSA key ID A1C052F8
 gpg: key A1C052F8 marked as ultimately trusted
 gpg: checking the trustdb
@@ -84,14 +84,14 @@ gpg: Good signature from "Maxim Dounin &lt;mdounin@mdounin.ru&gt;"
 </div>
 <p>From here, configure nginx with the <cite>--add-module=</cite> option, pointing to the ModSecurity-nginx module that was previously downloaded:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[root@server]# </span><span class="command">tar -zxf nginx-1.12.2.tar.gz
-<span class="server">[root@server]# </span><span class="command">cd</span> nginx-1.12.2/
-<span class="server">[root@server]# </span><span class="command">./configure --add-module=/root/ModSecurity-nginx</span>
+<pre class="prebox"><span class="server">[root@instance]# </span><span class="command">tar -zxf nginx-1.12.2.tar.gz
+<span class="server">[root@instance]# </span><span class="command">cd</span> nginx-1.12.2/
+<span class="server">[root@instance]# </span><span class="command">./configure --add-module=/root/ModSecurity-nginx</span>
 </span></pre>
 </div>
 <p>Finally, build and install nginx:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[root@server]# </span><span class="command">make &amp;&amp; make install</span>
+<pre class="prebox"><span class="server">[root@instance]# </span><span class="command">make &amp;&amp; make install</span>
 </pre>
 </div>
 </div>
@@ -110,7 +110,7 @@ modsecurity_rules '
 </div>
 <p>These directives can be added inside the <cite>http</cite> block, or one or more <cite>server</cite> or <cite>location</cite> blocks. Once this is added, reload nginx. This rule can now be tested by sending a regular request to nginx and examining the output:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[root@server]# </span><span class="command">curl -D - -s -o /dev/null localhost/</span>
+<pre class="prebox"><span class="server">[root@instance]# </span><span class="command">curl -D - -s -o /dev/null localhost/</span>
 HTTP/1.1 200 OK
 Server: nginx/1.10.1
 Date: Wed, 13 Jul 2016 18:06:15 GMT
@@ -124,7 +124,7 @@ Accept-Ranges: bytes
 </div>
 <p>The single rule added via the <cite>modsecurity_rules</cite> directive will deny requests that have the word <cite>test</cite> inside a GET or POST argument. This can be seen by changing the curl test:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[root@server]# </span><span class="command">curl -D - -s -o /dev/null localhost/?a=test</span>
+<pre class="prebox"><span class="server">[root@instance]# </span><span class="command">curl -D - -s -o /dev/null localhost/?a=test</span>
 HTTP/1.1 403 Forbidden
 Server: nginx/1.10.1
 Date: Wed, 13 Jul 2016 18:06:19 GMT

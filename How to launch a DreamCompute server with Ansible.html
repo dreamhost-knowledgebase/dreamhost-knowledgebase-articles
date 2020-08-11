@@ -1,6 +1,6 @@
 <h2>Overview</h2>
 <div class="solvvy-solution">
-<p>Ansible is a configuration management tool with built in OpenStack support. Using Ansible, you can deploy and manage servers on DreamCompute. This tutorial explains how to install Ansible and use it to launch a server on DreamCompute.</p>
+<p>Ansible is a configuration management tool with built in OpenStack support. Using Ansible, you can deploy and manage instances on DreamCompute. This tutorial explains how to install Ansible and use it to launch an instance on DreamCompute.</p>
 </div>
 <h2>Setup</h2>
 <div class="solvvy-solution">
@@ -9,12 +9,12 @@
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">sudo apt-get install -y ansible python2.7 python-virtualenv python-pip</span></pre>
 </div>
 <div class="alert alert-note">
-<div class="alert-icon"><img height="60" src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
 <p>If you are not using Ubuntu 16.04, you can read <a class="reference external" href="http://docs.ansible.com/ansible/intro_installation.html#latest-releases-via-pip">http://docs.ansible.com/ansible/intro_installation.html#latest-releases-via-pip</a> to figure out how to install ansible on your system</p>
 </div>
 </div>
-<p>Ansible depends on '<a href="https://pypi.python.org/pypi/shade">shade</a>' which is a Python client library for interacting with OpenStack. Create a virtual environment and use pip to install 'shade'.</p>
+<p>Ansible depends on '<a href="https://pypi.python.org/pypi/shade">shade</a>' which is a&nbsp;Python client library for interacting with OpenStack. Create a virtual environment and use pip to install 'shade'.</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">virtualenv venv -p /usr/bin/python</span>
 <span class="server">[user@localhost]$ </span><span class="command">source venv/bin/activate</span>
@@ -27,11 +27,11 @@
 <div class="solvvy-solution">
 <p><a href="http://docs.ansible.com/ansible/latest/playbooks.html">Playbooks</a> are Ansible’s configuration, deployment, and orchestration language. At a basic level, playbooks can be used to manage configurations and deployments to remote machines. Playbooks are designed to be human-readable and are developed in a basic text language.</p>
 </div>
-<h2>Writing a Ansible Playbook to launch a server</h2>
+<h2>Writing a Ansible Playbook to launch an instance</h2>
 <div class="solvvy-solution">
 <p><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Create a file</a> named <strong>launch-server.yaml</strong> and enter the following lines into it.</p>
 <div class="alert alert-important">
-<div class="alert-icon"><img height="60" src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
 <p>The following examples add on to the example before. You only need to update the code in green text each time.</p>
 <p>Make sure to indent as described below. Incorrect spacing will cause the file to fail to run.</p>
@@ -44,7 +44,7 @@
 <span class="green">- hosts: localhost</span></pre>
 </div>
 </li>
-<li>Since 'shade' has been installed in the virtualenv, you must tell ansible to use this virtualenv. Move to the next line, indent 2 spaces, then add these lines.
+<li>Since 'shade' has been installed in the virtualenv, you must tell ansible to use this virtualenv.&nbsp;Move to the next line, indent 2 spaces, then add these lines.
 <div class="preboxcontainer">
 <pre class="prebox"># hosts the playbook runs on
 - hosts: localhost
@@ -64,7 +64,7 @@
   - name: launch an Ubuntu server</span></pre>
 </div>
 </li>
-<li>Use the '<a href="http://docs.ansible.com/ansible/latest/os_server_module.html">os_server</a>' module to create an OpenStack instance. Move to the next line, indent 2 spaces, then add this line.
+<li>Use the '<a href="http://docs.ansible.com/ansible/latest/os_server_module.html">os_server</a>' module to create an OpenStack instance.&nbsp;Move to the next line, indent 2 spaces, then add this line.
 <div class="preboxcontainer">
 <pre class="prebox"># hosts the playbook runs on
 - hosts: localhost
@@ -79,13 +79,13 @@
     <span class="green">os_server:</span></pre>
 </div>
 </li>
-<li>Add DreamCompute authentication so a server can be created. In the following example, substitute the following:
+<li>Add DreamCompute authentication so an instance can be created. In the following example, substitute the following:
 <ul>
 <li><strong>{username}</strong> — your DreamCompute dashboard username.</li>
 <li><strong>{password}</strong> — your DreamCompute dashboard password.</li>
 <li><strong>{project}</strong> — your DreamCompute project. This can be found in the dashboard on the top left.
 <dl>
-<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/dhc-dashboard-project.png"/></dd>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/dhc-dashboard-project.png" /></dd>
 </dl>
 </li>
 </ul>
@@ -111,7 +111,7 @@ Move to the next line, indent 2 spaces, then add these lines.
       project_name: {project}</span></pre>
 </div>
 </li>
-<li>Finally, define what the server should look like.
+<li>Finally, define what the instance should look like.
 <div class="preboxcontainer">
 <pre class="prebox"># hosts the playbook runs on
 - hosts: localhost
@@ -149,7 +149,7 @@ Move to the next line, indent 2 spaces, then add these lines.
 <tbody>
 <tr>
 <td><strong>state</strong></td>
-<td>The state of the server, possible values are:
+<td>The state of the instance, possible values are:
 <ul>
 <li>present</li>
 <li>absent</li>
@@ -158,11 +158,11 @@ Move to the next line, indent 2 spaces, then add these lines.
 </tr>
 <tr>
 <td><strong>name</strong></td>
-<td>The name of the server to create</td>
+<td>The name of the instance to create</td>
 </tr>
 <tr>
 <td><strong>image</strong></td>
-<td>The image to boot the server from, possible values are:
+<td>The image to boot the instance from, possible values are:
 <ul>
 <li>Name of an image: Ubuntu-16.04, CentOS-7, etc</li>
 <li>ID of an image: 12f6a911-00a2-42eb-8712-d930da2da81f</li>
@@ -172,11 +172,11 @@ Move to the next line, indent 2 spaces, then add these lines.
 </tr>
 <tr>
 <td><strong>key_name</strong></td>
-<td>The public key to add to the server once it is created. This can be <a href="https://help.dreamhost.com/hc/en-us/articles/115001736691-How-to-create-a-Key-pair-overview">any key you have added to DreamCompute</a>.</td>
+<td>The public key to add to the instance once it is created. This can be <a href="https://help.dreamhost.com/hc/en-us/articles/115001736691-How-to-create-a-Key-pair-overview">any key you have added to DreamCompute</a>.</td>
 </tr>
 <tr>
 <td><strong>flavor</strong></td>
-<td>This defines how much RAM and CPU your server will have. You can view all flavors when <a href="https://help.dreamhost.com/hc/en-us/articles/215912848-How-to-launch-an-instance-using-the-DreamCompute-dashboard">creating a server in the dashboard</a> or when running an <a href="https://help.dreamhost.com/hc/en-us/articles/216511617#List_Flavors">OpenStack command</a>. Some possible values are:
+<td>This defines how much RAM and CPU your instance will have. You can view all flavors when <a href="https://help.dreamhost.com/hc/en-us/articles/215912848-How-to-launch-an-instance-using-the-DreamCompute-dashboard" target="_self">creating an instance in the dashboard</a>&nbsp;or when running an <a href="https://help.dreamhost.com/hc/en-us/articles/216511617#List_Flavors">OpenStack command</a>. Some possible values are:
 <ul>
 <li>Name of a flavor: gp1.semisonic, gp1.supersonic, etc</li>
 <li>ID of a flavor: 50, 100, 200, etc</li>
@@ -185,7 +185,7 @@ Move to the next line, indent 2 spaces, then add these lines.
 </tr>
 <tr>
 <td><strong>network</strong></td>
-<td>The network to put your server on. In this case it is the “public” network, but if you have private networking enabled, it could be different
+<td>The network to put your instance on. In this case it is the “public” network, but if you have private networking enabled, it could be different
 <ul>
 <li>Name of a network: public</li>
 <li>ID of a network: e098d02f-bb35-4085-ae12-664aad3d9c52</li>
@@ -194,7 +194,7 @@ Move to the next line, indent 2 spaces, then add these lines.
 </tr>
 <tr>
 <td><strong>wait</strong></td>
-<td>Whether or not to wait for the server to create before continuing. Possible values are:
+<td>Whether or not to wait for the instance to create before continuing. Possible values are:
 <ul>
 <li>yes</li>
 <li>no</li>

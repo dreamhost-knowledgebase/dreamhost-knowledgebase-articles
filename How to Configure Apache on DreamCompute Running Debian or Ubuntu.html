@@ -2,7 +2,7 @@
 <div class="solvvy-solution">
 <p>Apache is the most widely used HTTP server on the internet and DreamHost uses it as the default HTTP server for all hosting products.</p>
 <div class="alert alert-note">
-<div class="alert-icon"><img height="60" src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
 <p>These instructions assume you have launched an instance running a Debian or Ubuntu. View the following article for instructions on how to launch an instance:</p>
 <ul>
@@ -11,7 +11,7 @@
 </div>
 </div>
 </div>
-<h2>Log into your server as the default user</h2>
+<h2>Log into your instance as the default user</h2>
 <div class="solvvy-solution">
 <p>Log into your new instance using the SSH Keys you assigned when creating it.</p>
 <ul>
@@ -26,15 +26,15 @@
 <div class="solvvy-solution">
 <p>Run the following commands:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">user@server:$ </span><span class="command">sudo apt-get update</span>
-<span class="server">user@server:$ </span><span class="command">sudo apt-get install -y apache2</span></pre>
+<pre class="prebox"><span class="server">[user@instance]:$ </span><span class="command">sudo apt-get update</span>
+<span class="server">[user@instance]:$ </span><span class="command">sudo apt-get install -y apache2</span></pre>
 </div>
-<p>When it completes, the apache HTTP server is installed and runs with its default configuration. If you visit the <a href="https://help.dreamhost.com/hc/en-us/articles/115001754711-Locating-the-IP-Address-of-your-instance">public IP address of your instance</a> in your browser, you will see the Apache default page.</p>
-<img src="https://kbimages.dreamhosters.com/images/Apache_default_page.png"/>
+<p>When it completes, the Apache HTTP server is installed and runs with its default configuration. If you visit the <a href="https://help.dreamhost.com/hc/en-us/articles/115001754711-Locating-the-IP-Address-of-your-instance">public IP address of your instance</a> in your browser, you will see the Apache default page.</p>
+<img src="https://kbimages.dreamhosters.com/images/Apache_default_page.png" />
 <h2>The /etc/apache2 directory</h2>
 <p>This directory contains all the configuration files for your Apache server. If you <a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">edit any of the files</a> you'll find that most include details on the file's general purpose at the top.</p>
 <h3>/etc/apache2/apache2.conf File</h3>
-<p>This is the main configuration file that ultimately controls how Apache functions. While it is possible to completely configure your sites and modules directly in this file, instead it is recommended to use smaller individual files for each of your sites and modules for simplicity. See the 'Adding a website to DreamCompute' article for further instructions on how to add site config files in the /etc/apache2/sites-available directory.</p>
+<p>This is the main configuration file that ultimately controls how Apache functions. While it is possible to completely configure your sites and modules directly in this file, instead it is recommended to use smaller individual files for each of your sites and modules for simplicity. See the 'Adding a website to DreamCompute' article for further instructions on how to add site config files in the&nbsp;/etc/apache2/sites-available directory.</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/115003441752-Adding-a-website-to-DreamCompute">Adding a website to DreamCompute</a></li>
 </ul>
@@ -68,14 +68,14 @@
 <h3>Check which MPM configuration is enabled</h3>
 <p>Run the following command:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">user@server:$ </span><span class="command">apache2ctl -M | grep mpm</span>
+<pre class="prebox"><span class="server">[user@instance]:$ </span><span class="command">apache2ctl -M | grep mpm</span>
  mpm_event_module (shared)</pre>
 </div>
 <p>This shows the event module is enabled. If you like, you could change that to mpm-prefork with the following commands.</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">user@server:$ </span><span class="command">sudo a2dismod mpm_event</span>
-<span class="server">user@server:$ </span><span class="command">sudo a2enmod mpm_prefork</span>
-<span class="server">user@server:$ </span><span class="command">sudo service apache2 restart</span></pre>
+<pre class="prebox"><span class="server">[user@instance]:$ </span><span class="command">sudo a2dismod mpm_event</span>
+<span class="server">[user@instance]:$ </span><span class="command">sudo a2enmod mpm_prefork</span>
+<span class="server">[user@instance]:$ </span><span class="command">sudo service apache2 restart</span></pre>
 </div>
 </div>
 <h2>Virtual Hosts</h2>
@@ -111,24 +111,24 @@ ErrorLog /var/log/apache/www.example.com-error.log
 </div>
 <h2>Add your site code</h2>
 <div class="solvvy-solution">
-<p>Now that the config file is created, you should add your site's code to the server. You'll add it in the following directory:</p>
+<p>Now that the config file is created, you should add your site's code to the instance. You'll add it in the following directory:</p>
 <div class="preboxcontainer">
 <pre class="prebox">/var/www/example.com/index.html</pre>
 </div>
 <div id="managing-virtual-host-files">
 <h3>Managing Virtual Host files</h3>
 <p>When you have your sites virtual host file set up, you can enable/disable it by entering the following commands:</p>
-<strong>sudo a2ensite — </strong>Provides a list of sites files that you can enable.
+<strong>sudo a2ensite&nbsp;—&nbsp;</strong>Provides a list of sites files that you can enable.
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">user@server:$ </span><span class="command">sudo a2ensite</span></pre>
+<pre class="prebox"><span class="server">[user@instance]:$ </span><span class="command">sudo a2ensite</span></pre>
 </div>
-<strong>sudo a2dissite — </strong>Provides a list of sites files you can disable.
+<strong>sudo a2dissite&nbsp;—&nbsp;</strong>Provides a list of sites files you can disable.
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">user@server:$ </span><span class="command">a2dissite</span></pre>
+<pre class="prebox"><span class="server">[user@instance]:$ </span><span class="command">a2dissite</span></pre>
 </div>
-<strong>sudo service apache2 reload — </strong>Reloads apache to make the change live after you enable or disable a site.
+<strong>sudo service apache2 reload&nbsp;—&nbsp;</strong>Reloads apache to make the change live after you enable or disable a site.
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">user@server:$ </span><span class="command">sudo service apache2 reload</span></pre>
+<pre class="prebox"><span class="server">[user@instance]:$ </span><span class="command">sudo service apache2 reload</span></pre>
 </div>
 <p>These commands create a symlink for your sites file from /etc/apache2/sites-enabled to its corresponding file in /etc/apache2/sites-available.</p>
 </div>
@@ -137,16 +137,16 @@ ErrorLog /var/log/apache/www.example.com-error.log
 <div class="solvvy-solution">
 <p>Modules can be enabled or disabled by the following commands:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">user@server:$ </span><span class="command">sudo a2enmod &lt;module-name&gt;</span>
-<span class="server">user@server:$ </span><span class="command">sudo a2dismod &lt;module-name&gt;</span></pre>
+<pre class="prebox"><span class="server">[user@instance]:$ </span><span class="command">sudo a2enmod &lt;module-name&gt;</span>
+<span class="server">[user@instance]:$ </span><span class="command">sudo a2dismod &lt;module-name&gt;</span></pre>
 </div>
 <p>If you do not specify a module name, the command displays a list of modules available to enable or disable.</p>
 <p>After you enable or disable a site, reload Apache to make the change live by using the following command:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">user@server:$ </span><span class="command">sudo service apache2 reload</span></pre>
+<pre class="prebox"><span class="server">[user@instance]:$ </span><span class="command">sudo service apache2 reload</span></pre>
 </div>
 </div>
-<div class="footer"> </div>
+<div class="footer">&nbsp;</div>
 <!--DreamCompute Button-->
 <div class="dream-sign-up">
 <h2>Deploy Your Apps On Cloud Servers Today</h2>
