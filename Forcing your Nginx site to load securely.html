@@ -1,0 +1,39 @@
+<h2><span id="Redirecting_non-secure_traffic_to_HTTPS">Overview</span></h2>
+<div class="solvvy-solution">
+<p>After you have&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/215089118-Adding-an-SSL-certificate-overview">added an SSL certificate</a>&nbsp;to your domain,&nbsp;DreamHost automatically redirects the URL visitors use to view your site from HTTP to HTTPS. The 'S' ensures that your connection is encrypted. For example:</p>
+<ul>
+<li><strong>https</strong>://example.com</li>
+</ul>
+<p>There's nothing on your end you must do in order to force your site to use the secure URL. However, in some special cases, it may be necessary for you to&nbsp;create your own custom configuration file to force the redirect from HTTP to HTTPS.</p>
+<div class="alert-warning">
+<p><strong>Adding custom code is only necessary if your website requires specific code to force the redirect</strong>. If so, you will need to first disable the automatic redirect in your panel.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360027022831-Disabling-the-automatic-redirect-to-HTTPS" target="_self">Disabling the automatic redirect to HTTPS</a></li>
+</ul>
+<p>Once disabled, you can then proceed with adding your custom redirect file.</p>
+</div>
+<h2><span id="Redirecting_non-secure_traffic_to_HTTPS">Redirecting non-secure traffic to HTTPS</span></h2>
+<p>To redirect a URL in a website running on an Nginx server, you must manually create a redirects.conf file. You will then add your redirect code to this file.&nbsp;View the following article for instructions on how to locate your Nginx configuration file location.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216455077-Nginx-configuration-file-locations">Nginx configuration file locations</a></li>
+</ul>
+<p>Once located, you can edit or create this file using an FTP client or SSH.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115000098272-Creating-and-editing-a-file-via-FTP">Creating and editing a file via FTP</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Creating and editing a file via SSH</a></li>
+</ul>
+<p>This redirect forces your site to load the HTTPS version of your site to ensure your visitor's connections are encrypted.&nbsp;Add the following code to your redirects.conf file.</p>
+<div class="preboxcontainer">
+<pre class="prebox">if ($server_port = 80) {
+	rewrite ^/(.*)$ https://example.com/$1 permanent;
+}
+</pre>
+</div>
+</div>
+<h2>See also</h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216431827-Nginx-overview">Nginx overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
+</ul>
+</div>
