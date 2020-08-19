@@ -16,13 +16,13 @@
 </div>
 </div>
 <ol>
-<li>Visit <a href="https://www.openssl.org/source/">https://www.openssl.org/source/</a>&nbsp;and locate the version you wish to download. Right click it and choose 'Copy link address'.</li>
-<li>Run 'wget' to download the file.
+<li>Visit <a href="https://www.openssl.org/source/">https://www.openssl.org/source/</a>&nbsp;and locate the version you wish to download. Right click it and choose <span class="text-object">Copy link address</span>.</li>
+<li>Run <span class="code">wget</span> to download the file.
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">wget https://www.openssl.org/source/openssl-1.1.1g.tar.gz</span></pre>
 </div>
 </li>
-<li>You should also confirm the file's integrity by downloading the SHA256 file on the same page next to it.
+<li>You should also confirm the file's integrity by downloading the <span class="text-object">SHA256</span> file on the same page next to it.
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">wget https://www.openssl.org/source/openssl-1.1.1g.tar.gz.sha256</span></pre>
 </div>
@@ -40,7 +40,7 @@ If they match, proceed with the next step.</li>
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">tar zxvf openssl-1.1.1g.tar.gz</span></pre>
 </div>
 </li>
-<li>Change into the new openssl directory
+<li>Change into the new <span class="text-object">openssl</span> directory
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">cd openssl-1.1.1g</span></pre>
 </div>
@@ -50,7 +50,7 @@ If they match, proceed with the next step.</li>
 <div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
 <p>This will configure it to be installed in a directory named 'openssl' under your user. Make sure to change 'username' to your <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access">Shell user</a>.</p>
-<p>You can install it anywhere you like, just make sure you&nbsp;<strong>DO NOT</strong> install it into a directory named 'openssl-1.1.1'. This directory was already created when you decompressed the .tar.gz file. If you configure it to install there, it will fail (since it already exists).</p>
+<p>You can install it anywhere you like, just make sure you&nbsp;<strong>DO NOT</strong> install it into a directory named <span class="text-object">openssl-1.1.1g</span>. This directory was already created when you decompressed the .tar.gz file. If you configure it to install there, it will fail (since it already exists).</p>
 <p>View the following OpenSSL page for information on configuration options:</p>
 <ul>
 <li><a href="https://wiki.openssl.org/index.php/Compilation_and_Installation#Configuration">Compilation and Installation</a></li>
@@ -58,7 +58,7 @@ If they match, proceed with the next step.</li>
 </div>
 </div>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">./config --prefix=/home/username/openssl --openssldir=/home/username/openssl no-ssl2</span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">./config --prefix=/home/<span class="code-highlight">username</span>/openssl --openssldir=/home/<span class="code-highlight">username</span>/openssl no-ssl2</span></pre>
 </div>
 <div class="alert alert-note">
 <div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
@@ -67,13 +67,13 @@ If they match, proceed with the next step.</li>
 </div>
 </div>
 </li>
-<li>Run make. Once that is finished, run make test:
+<li>Run <span class="code">make</span>. Once that is finished, run <span class="code">make test</span>:
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">make</span>
 <span class="server">[server]$ </span><span class="command">make test</span></pre>
 </div>
-At the end you should see 'All tests successful'.</li>
-<li>Run make install
+At the end you should see <span class="text-object">All tests successful</span>.</li>
+<li>Run <span class="code">make install</span>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">make install</span></pre>
 </div>
@@ -83,19 +83,19 @@ At the end you should see 'All tests successful'.</li>
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~</span></pre>
 </div>
 </li>
-<li>Add the following lines to your .bash_profile. View '<a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Creating and editing a file via SSH</a>' for instructions.
+<li>Add the following lines to your <span class="text-object">.bash_profile</span>. View <a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Creating and editing a file via SSH</a> for instructions.
 <div class="preboxcontainer">
 <pre class="prebox">export PATH=$HOME/openssl/bin:$PATH
-export LD_LIBRARY_PATH=$HOME/openssl/lib<br />export LC_ALL="en_US.UTF-8"<br />export LDFLAGS="-L/home/<span class="command">username</span>/openssl/lib -Wl,-rpath,/home/<span class="command">username</span>/openssl/lib"</pre>
+export LD_LIBRARY_PATH=$HOME/openssl/lib<br />export LC_ALL="en_US.UTF-8"<br />export LDFLAGS="-L/home/<span class="code-highlight">username</span>/openssl/lib -Wl,-rpath,/home/<span class="code-highlight">username</span>/openssl/lib"</pre>
 </div>
 <div class="alert alert-note">
 <div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
-<p>In the last line, make sure to change 'username' to your <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access">Shell user</a>.</p>
+<p>In the last line, make sure to change <span class="text-object">username</span> to your <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access">Shell user</a>.</p>
 </div>
 </div>
 </li>
-<li>Source the .bash_profile
+<li><span class="code">source</span> the <span class="text-object">.bash_profile</span>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">. ~/.bash_profile</span></pre>
 </div>

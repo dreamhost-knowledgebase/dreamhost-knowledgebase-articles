@@ -1,6 +1,9 @@
-<h2>Overview</h2><div class="solvvy-solution">
+<h2>Overview</h2>
+<div class="solvvy-solution">
 <p>FastCGI is a way to have CGI scripts execute time-consuming code (like opening a database) only once, rather than every time the script is loaded. In technical terms, FastCGI is a language independent, scalable, open extension to CGI that provides high performance without the limitations of server specific APIs.</p>
-</div><h2>Difference between FCGI and CGI</h2><div class="solvvy-solution">
+</div>
+<h2>Difference between FCGI and CGI</h2>
+<div class="solvvy-solution">
 <h3>CGI</h3>
 <p><a href="https://en.wikipedia.org/wiki/Common_Gateway_Interface">CGI</a> is a protocol for web servers to execute dynamic web programs.</p>
 <p>CGI creates new processes for each request which makes CGI programs simple to implement, but limits efficiency and scalability. At high loads, CGI process creation overhead becomes significant.</p>
@@ -10,7 +13,9 @@
 <h3>Differences</h3>
 <p>FCGI is an improved version of CGI that runs faster, however, since FCGI processes are always running, more memory is used by the server.</p>
 <p>In general, FCGI is recommended.</p>
-</div><h2><span id="Configuration_details">Configuration details</span></h2><div class="solvvy-solution">
+</div>
+<h2><span id="Configuration_details">Configuration details</span></h2>
+<div class="solvvy-solution">
 <p>This is the current FastCGI (mod_fastcgi) configuration at DreamHost:</p>
 <div class="preboxcontainer">
 <pre class="prebox">FastCgiConfig -autoUpdate -initial-env RAILS_ENV=production -idle-timeout 60 -startDelay 10 -maxClassProcesses 2 -killInterval 300
@@ -19,7 +24,9 @@
 <p>These settings are almost exactly the default configuration for FastCGI.</p>
 <p>On <a href="/hc/en-us/articles/215280058-Virtual-Private-Server-overview-VPS-">DreamHost private servers</a>, FastCGI is handled by mod_fcgid rather than mod_fastcgi.</p>
 <p>mod_fcgid is an Apache module providing a FastCGI interface. It's an alternative to mod_fastcgi that is specifically tuned for the dynamic FastCGI configuration used on DreamHost servers.</p>
-</div><h2><span id="Making_changes_to_your_scripts">Making changes to your scripts</span></h2><div class="solvvy-solution">
+</div>
+<h2><span id="Making_changes_to_your_scripts">Making changes to your scripts</span></h2>
+<div class="solvvy-solution">
 <h3><span id="Structure_of_a_FastCGI_script">Structure of a FastCGI script</span></h3>
 <p>FastCGI scripts have two sections:</p>
 <ol>
@@ -48,7 +55,9 @@ while ( FCGI::accept() &gt;= 0 ) {
 </pre>
 </div>
 <p>While you might think that you need to print the header only once, in fact the header must be included in the "run every time" section.</p>
-</div><h2><span id="No_exits">No exits</span></h2><div class="solvvy-solution">
+</div>
+<h2><span id="No_exits">No exits</span></h2>
+<div class="solvvy-solution">
 <p>If your script terminates by some command (such as <strong>exit;</strong> or <strong>last;</strong> in Perl), the script starts over from scratch the next time it's run, losing the benefits of running certain code only once. Additionally, if a script is terminated this way it may not run again for several minutes.</p>
 <p>The symptom is that the browser tries to load the page for a couple of minutes, finally giving up with "an error occurred while processing this directive". The error is even more frustrating because you (or your users) have to wait multiple minutes to get it.</p>
 <p>The solution is to use whatever flow control is available in your programming language to have the script finish by itself. Here's a before and after example in Perl with some pseudocode:</p>
@@ -107,12 +116,16 @@ while ( FCGI::accept() &gt;= 0 ) {
 </tr>
 </tbody>
 </table>
-</div><h2><span id="Using_.24ENV.7B.27QUERY_STRING.27.7D_instead_of_.40ARGV">Using $ENV{'QUERY_STRING'} instead of @ARGV</span></h2><div class="solvvy-solution">
+</div>
+<h2><span id="Using_.24ENV.7B.27QUERY_STRING.27.7D_instead_of_.40ARGV">Using $ENV{'QUERY_STRING'} instead of @ARGV</span></h2>
+<div class="solvvy-solution">
 <p>You cannot get the query string in FastCGI by using the @ARGV array. You must use <code>$ENV{'QUERY_STRING'}</code> instead.</p>
-</div><h2><span id="Errors_and_troubleshooting">Errors and troubleshooting</span></h2><div class="solvvy-solution">
+</div>
+<h2><span id="Errors_and_troubleshooting">Errors and troubleshooting</span></h2>
+<div class="solvvy-solution">
 <p>Bad scripts won't return an error immediately; you must wait a couple of minutes for the script to time out. If the script is on a web page, the page appears to hang – and even when the script times out, the actual error message might not be logged and you may only see a 500 error. This means that testing under FastCGI is rather impractical. Development should be done with standard CGI, or on your local computer. FastCGI should be added after the script has already been debugged.</p>
 <p>Also, while it's tempting to develop on a live server, it's dangerous and makes you a bad neighbor for shared hosting.</p>
-<p>To see immediately if a script will fail (won't check all cases because %ENV is different), test it from the command line:</p>
+<p>To see immediately if a script will fail (won't check all cases because&nbsp;%ENV is different), test it from the command line:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">perl ~/example.com/myscript.fcgi</span>
 </pre>
@@ -122,7 +135,7 @@ while ( FCGI::accept() &gt;= 0 ) {
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">perl -d ~/example.com/myscript.fcgi</span>
 </pre>
 </div>
-<p>If you've introduced an error into a script, fixing the error might not fix it immediately, because sometimes the server is still running an old version of the script from memory for various reasons. (The server is supposed to look at the modification date of the file so that it's always running the most recent version, but this is often not the case. When the server fails to do this, "touch"ing the file doesn't help, either.)</p>
+<p>If you've introduced an error into a script, fixing the error might not fix it immediately, because sometimes the server is still running an old version of the script from memory for various reasons. (The server is supposed to look at the modification date of the file so that it's always running the most recent version, but this is often not the case. When the server fails to do this, running <span class="code">touch</span> on the file doesn't help, either.)</p>
 <p>To make the server run the current version of the script, find the old process and kill it:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">killall -USR1 scriptname.fcgi     (replace scriptname.fcgi with the name of the process)</span>
@@ -138,7 +151,9 @@ while ( FCGI::accept() &gt;= 0 ) {
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">killall -9 ruby1.8</span>
 </pre>
 </div>
-</div><h2><span id="My_FastCGI_Isn.27t_working">My FastCGI Isn't working</span></h2><div class="solvvy-solution">
+</div>
+<h2><span id="My_FastCGI_Isn.27t_working">My FastCGI Isn't working</span></h2>
+<div class="solvvy-solution">
 <p>Make sure that the script you are trying to execute is set as executable:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">chmod +x myscript.fcgi</span>
@@ -166,9 +181,12 @@ while ( FCGI::accept() &gt;= 0 ) {
 </pre>
 </div>
 <p>Finally, try deleting all sessions in your <a href="/hc/en-us/articles/216735938--tmp-directory-overview">/tmp</a> folder (if you’re on a <a href="/hc/en-us/articles/215280058-Virtual-Private-Server-overview-VPS-">VPS</a> or <a href="/hc/en-us/articles/215279658-Dedicated-server-overview">Dedicated server</a>).</p>
-</div><h2><span id="See_also">See also</span></h2><div class="solvvy-hidden">
+</div>
+<h2><span id="See_also">See also</span></h2>
+<div class="solvvy-hidden">
 <ul>
 <li><a href="/hc/en-us/articles/216041267">SSH overview</a></li>
 <li><a href="/hc/en-us/articles/217297307">CGI overview</a></li>
 <li><a href="/hc/en-us/articles/214750888">UNIX commands</a></li>
-</ul></div>
+</ul>
+</div>
