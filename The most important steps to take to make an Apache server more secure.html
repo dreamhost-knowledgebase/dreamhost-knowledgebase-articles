@@ -50,12 +50,12 @@ ServerTokens ProductOnly;</pre>
 </div>
 <div id="disable-htaccess-files">
 <h3>Disable .htaccess files</h3>
-<p><cite>.htaccess</cite> files are a powerful feature that allow Apache to have its configuration extended outside its main config file. While this may be convenient, it does present a security risk, as Apache will read any .htaccess file in its path — even ones placed by an attacker that could compromise the server. It may be desirable to lock down the Apache configuration by disabling .htaccess files entirely. This can be done by editing the <a href="https://httpd.apache.org/docs/2.4/mod/core.html"><cite>AllowOverride</cite> directive</a> in the <strong>/etc/apache2/apache2.conf file:</strong></p>
+<p><cite>.htaccess</cite> files are a powerful feature that allow Apache to have its configuration extended outside its main config file. While this may be convenient, it does present a security risk, as Apache will read any .htaccess file in its path — even ones placed by an attacker that could compromise the server. It may be desirable to lock down the Apache configuration by disabling .htaccess files entirely. This can be done by editing the <span class="code"><a href="https://httpd.apache.org/docs/2.4/mod/core.html">AllowOverride</a></span> directive in the <strong>/etc/apache2/apache2.conf file:</strong></p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">sudo vim /etc/apache2/apache2.conf</span>
 AllowOverride None</pre>
 </div>
-<p>Additionally, fine-grained control of which Apache directives can be used within .htaccess files can also be controlled by <cite>AllowOverride</cite>:</p>
+<p>Additionally, fine-grained control of which Apache directives can be used within .htaccess files can also be controlled by <span class="code">AllowOverride</span>:</p>
 <div class="preboxcontainer">
 <pre class="prebox">AllowOverride AuthConfig Indexes</pre>
 </div>
@@ -75,7 +75,7 @@ AllowOverride None</pre>
     Require ip 192.168.0.0/24
 &lt;/Directory&gt;</pre>
 </div>
-<p>In this example, the use of the <em>Require&nbsp;</em>directive instructs Apache to allow access to the specified path if the requests come from any of the IP addresses listed, and to deny all other traffic.</p>
+<p>In this example, the use of the <span class="code">Require</span> directive instructs Apache to allow access to the specified path if the requests come from any of the IP addresses listed, and to deny all other traffic.</p>
 </div>
 <h3>Restrict Access by Password</h3>
 <p>Access to certain locations can also be set via password-based credentials, using the <cite>htpasswd</cite> utility. View the following article for further details:</p>
@@ -94,7 +94,7 @@ AllowOverride None</pre>
 </div>
 <p>In this example, Apache will close the connection if the client takes more than 10 seconds to send its HTTP headers, or if the client takes more than 20 seconds to send headers at a rate of 500 bytes per second.</p>
 <p>Apache will also close the connection if the client takes more than 20 seconds to send its request body, but will allow the request to continue as long as the client sends more than 500 bytes per second.</p>
-<p>This configuration allows clients with poor TCP connection quality (such as remote clients with high latency, or those on low-grade cellular or satellite networks) to send requests, while still protecting against known fingerprints of the Slowloris attack. <cite>RequestReadTimeout</cite> configurations can be complex, so it's recommended you review more information about this directive at the module <a class="reference external" href="https://httpd.apache.org/docs/2.4/mod/mod_reqtimeout.html">documentation page</a>.</p>
+<p>This configuration allows clients with poor TCP connection quality (such as remote clients with high latency, or those on low-grade cellular or satellite networks) to send requests, while still protecting against known fingerprints of the Slowloris attack. <span class="code">RequestReadTimeout</span> configurations can be complex, so it's recommended you review more information about this directive at the module <a class="reference external" href="https://httpd.apache.org/docs/2.4/mod/mod_reqtimeout.html">documentation page</a>.</p>
 </div>
 </div>
 <h2>Securing SSL/TLS</h2>
