@@ -10,24 +10,34 @@
 <div class="solvvy-solution">
 <p>In the simplest case, without any filters, here's what an rsync "push out to webhost" command looks like:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">rsync -e "/usr/bin/ssh"  --bwlimit=2000 -av local_directory username@server.dreamhost.com:remote_directory</span>
-</pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">rsync -e "/usr/bin/ssh"  --bwlimit=2000 -av <span class="code-highlight">username@server.dreamhost.com:remote_directory local_directory</span></span></pre>
 </div>
 <p><strong>Explanation of fields</strong></p>
 <ul>
 <li><strong>rsync</strong> - always start the full command with this.</li>
 <li><strong>-e</strong> - Specifies the remote shell program to use. This can always remain as /usr/bin/ssh.</li>
-<li><strong>bwlimit</strong> - Allows you to specify a maximum transfer rate in kb/sec.</li>
+<li><strong>bwlimit</strong> - (Optional) Allows you to specify a maximum transfer rate in kb/sec.</li>
 <li><strong>-av</strong> - Archive and Verbose mode.</li>
-<li><strong>local_directory</strong> - This is the local directory on your computer where you store the data to be uploaded.</li>
 <li><strong>username</strong> - This is your DreamHost <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access">shell username</a> assigned to your site.</li>
 <li><strong>server</strong> - This is the name of the server you're uploading content to. View the <a href="https://help.dreamhost.com/hc/en-us/articles/115000675027-FTP-overview-and-credentials">Finding your hostname</a> article for instructions on how to locate this name.</li>
-<li><strong>remote_directory</strong> - This is the directory on the server that you wish to upload content to.</li>
+<li><strong>remote_directory</strong> - This is the directory on the server that you wish to upload content to. For example, if you wanted to download all the contents of your /example.com directory, add the full file path on the server: <strong>/home/username/example.com/</strong>.
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>If you add a trailing forward slash to the end of the path, it will only download the contents of that directory, but not the directory name itself.</p>
+<p>If you do not add the trailing slash, the directory will be downloaded with everything inside of it.</p>
+</div>
+</div>
+</li>
+<li><strong>local_directory</strong> - This is the local directory on your computer where you store the data to be uploaded. For example: <strong>/home/username/documents/mybackups</strong></li>
 </ul>
 <div class="alert alert-note">
 <div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
-<p>To avoid any errors, it is recommended to use the full path for both local and remote directories.</p>
+<p>To avoid any errors, it is recommended to use the full path for both local and remote directories. Here is a full example (excluding the <span class="code">--bwlimit</span> flag.:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">rsync -e "/usr/bin/ssh" -av <span class="code-highlight">username@server.dreamhost.com:/home/username/example.com /home/username/documents/mybackups</span></span></pre>
+</div>
 </div>
 </div>
 <p>More information on the flags used above can be found here:</p>
