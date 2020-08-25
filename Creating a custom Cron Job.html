@@ -1,7 +1,7 @@
 <h2>Overview</h2>
 <div class="solvvy-solution">
 <p>This article shows how to manually create a custom cron job using your <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access">Shell user</a>. It involves logging into the server via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH</a> to run several commands.</p>
-<p>These instructions can also be used to edit an existing cron job you created in the panel, however for simplicity, it's recommended that if you created it in the panel, you continue to edit it from the panel.</p>
+<p>These instructions can also be used to edit an existing cron job you created in the panel, however for simplicity, it's recommended that if you created it in the panel, you continue to edit it from the panel. This is important since adding a cron job in the panel will overwrite your custom crontab file as mentioned below.</p>
 </div>
 <h2>Basic details</h2>
 <div class="solvvy-solution">
@@ -41,55 +41,60 @@
 <li>Once logged in, run the following command to open your crontab file.
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">crontab -e</span>
-no crontab for example_username - using an empty one
+It looks like you don't have a MAILTO line in your crontab file
+For performance reasons we ask that you specify an address where
+cronjob output will be delivered.  If you do not wish to receive
+cronjob output, simply press enter and cronjob output will not be
+mailed to you.
 
-Select an editor.  To change later, run 'select-editor'.
-  1. /bin/ed
-  2. /bin/elvis-tiny
-  3. /bin/nano        &lt;---- easiest
-  4. /usr/bin/emacs24
+For more information regarding this, please visit:
+https://help.dreamhost.com/hc/en-us/articles/215088608
+
+Where would you like cronjob output delivered? (leave blank to disable)
+: admin@example.com
+
+cronjob output will be emailed to admin@example.com
+confirm? (y/N): y
+</pre>
+</div>
+<p>After you add your email (or leave it blank), you must choose which text editor you'd like to use.</p>
+<div class="preboxcontainer">
+<pre class="prebox">Select an editor.  To change later, run 'select-editor'.
+  1. /usr/bin/joe
+  2. /usr/bin/jstar
+  3. /usr/bin/jpico
+  4. /usr/bin/jmacs
   5. /usr/bin/jed
-  6. /usr/bin/jmacs
-  7. /usr/bin/joe
-  8. /usr/bin/jpico
-  9. /usr/bin/jstar
-  10. /usr/bin/mcedit
-  11. /usr/bin/rjoe
-  12. /usr/bin/vim.basic
-  13. /usr/bin/vim.tiny
+  6. /bin/nano        &lt;---- easiest
+  7. /usr/bin/vim.basic
+  8. /usr/bin/rjoe
+  9. /usr/bin/mcedit
+  10. /usr/bin/vim.tiny
+  11. /bin/elvis-tiny
+  12. /usr/bin/emacs25
+  13. /bin/ed
 
-Choose 1-13 [3]: <span class="command">3</span>
+Choose 1-13 [3]: <span class="code-highlight">6</span>
 </pre>
 </div>
 </li>
-<li>You are then asked to choose an editor to view this file. #3 uses the program <span class="code">nano</span> which is the easiest option. View the '<a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Creating and editing a file via SSH</a>' article for instructions on how to use <span class="code">nano</span>.</li>
-<li>You are presented with this new crontab file:
+<li>You are then asked to choose an editor to view this file. #6 uses the program <span class="code">nano</span> which is the easiest option. View the <a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Creating and editing a file via SSH</a>&nbsp;article for instructions on how to use <span class="code">nano</span>.
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>The above options display if you're logged into a Shared server. If you are logged into a VPS (private server) running Debian, you will see the following list instead.</p>
 <div class="preboxcontainer">
-<pre class="prebox"># Edit this file to introduce tasks to be run by cron.
-#
-# Each task to run has to be defined through a single line
-# indicating with different fields when the task will be run
-# and what command to run for the task
-#
-# To define the time you can provide concrete values for
-# minute (m), hour (h), day of month (dom), month (mon),
-# and day of week (dow) or use '*' in these fields (for 'any').#
-# Notice that tasks will be started based on the cron's system
-# daemon's notion of time and timezones.
-#
-# Output of the crontab jobs (including errors) is sent through
-# email to the user the crontab file belongs to (unless redirected).
-#
-# For example, you can run a backup of all your user accounts
-# at 5 a.m every week with:
-# 0 5 * * 1 tar -zcf /var/backups/home.tgz /home/
-#
-# For more information see the manual pages of crontab(5) and cron(8)
-#
-# m h  dom mon dow   command</pre>
+<pre class="prebox">Select an editor.  To change later, run 'select-editor'.
+  1. /bin/ed
+  2. /bin/nano        &lt;---- easiest
+  3. /usr/bin/emacs24
+  4. /usr/bin/vim.basic
+  5. /usr/bin/vim.tiny</pre>
+</div>
+</div>
 </div>
 </li>
-<li>At the bottom, add the code for your cron job. This example runs a file named mail.php under the username of 'example_username'. This should be the same username you're currently logged in under. This example runs the cron job at 8:13 pm.
+<li>A blank crontab file opens.&nbsp;Add the code for your cron job. This example runs a file named mail.php under the username of 'example_username'. This should be the same SSH username you're currently logged in under. This example runs the cron job at 8:13 pm.
 <div class="preboxcontainer">
 <pre class="prebox"># Custom cron job
 MAILTO="user@example.com"
