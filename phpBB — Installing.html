@@ -1,0 +1,227 @@
+<h2>Overview</h2>
+<div class="solvvy-solution">
+<p>phpBB&nbsp;is a forum program that enables you to create a space on your website where members can talk about different subjects and ideas on any topic you choose.</p>
+<p>For more information, visit phpBB's official site:</p>
+<ul>
+<li><a href="http://www.phpbb.com/" rel="nofollow">phpbb.com</a></li>
+</ul>
+<p>DreamHost does not offer phpBB as a One-Click Install however you can install it manually using the following instructions in this article.</p>
+<ul>
+<li><a href="#step1" target="_self">Step 1 — Create a database</a></li>
+<li><a href="#step2" target="_self">Step 2 — Download the phpBB software</a> (<a href="#ftp" target="_self">FTP</a> or <a href="#ssh" target="_self">SSH</a>)</li>
+<li><a href="#step3" target="_self">Step 3 —&nbsp;Installing the software</a></li>
+<li><a href="#step4" target="_self">Step 4 — Remove the install directory</a></li>
+</ul>
+</div>
+<h2><span id="step1">Step 1 — Create a database</span></h2>
+<div class="solvvy-solution">
+<p>phpBB requires a database to store and process your forum data. View the following article to create a new database in your DreamHost panel.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/221691727-Creating-a-MySQL-database" target="_blank" rel="noopener">Creating a MySQL database</a></li>
+</ul>
+</div>
+<h2><span id="step2">Step 2 — Download the phpBB software</span></h2>
+<div class="solvvy-solution">
+<p>There are two options to add the phpBB software to your site.</p>
+<ul>
+<li><strong>FTP</strong>&nbsp;(easy) —&nbsp;You can download the software to your computer, then upload it to your site using an FTP client.</li>
+<li><strong>SSH</strong>&nbsp;(advanced) — You can also download the software directly to your site via SSH.</li>
+</ul>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60"></div>
+<div class="alert-content">
+<p>The following instructions download and install version 3.3.1.</p>
+</div>
+</div>
+<h3><span id="ftp">Downloading via FTP</span></h3>
+<ol>
+<li>Visit the following page to download the phpBB software.
+<ul>
+<li><a href="https://www.phpbb.com/downloads/" target="_blank" rel="noopener">phpBB Downloads</a></li>
+</ul>
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/phpBB_14.png" alt="phpbb download"></dd>
+</dl>
+</li>
+<li>On the Downloads page, you'll see several options. Click the button titled <strong>Download Latest</strong>. This downloads the file to your computer.</li>
+<li>Locate the file you just downloaded. It will be titled something like <strong>phpBB-3.3.1.zip</strong>.&nbsp;Most often you can find it in your <span class="text-object">/downloads</span> directory.</li>
+<li>In Windows, right-click the file and choose <span class="text-object">Extract All...</span> from the pop-up menu.</li>
+<li>A new window opens. In the new window, click the <strong>Extract</strong> button. All files are extracted to a new folder titled the same as the .zip file.</li>
+<li>Log into your server using <a href="https://help.dreamhost.com/hc/en-us/articles/215613657-How-do-I-upload-my-site-to-DreamHost-" target="_blank" rel="noopener">an FTP client</a>.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/phpBB_13.png" alt="phpbb download"></dd>
+</dl>
+</li>
+<li>In the left pane, navigate to the directory on your computer you extracted the .zip file.</li>
+<li>Click into this directory. You should see a list of files.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/zencart_07.png" alt="phpbb download"></dd>
+</dl>
+</li>
+<li>In the right pane, make sure you're in your website's directory. There should not be any files here other than a possible favicon.ico file.</li>
+<li>Highlight all files in the left pane and drag them into the right pane to upload them to your site.
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60"></div>
+<div class="alert-content">
+<p>This could take several minutes as there are many files to upload.</p>
+</div>
+</div>
+</li>
+</ol>
+<h3><span id="ssh">Downloading via SSH</span></h3>
+<ol>
+<li>Log into your server <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview" target="_blank" rel="noopener">via SSH</a>.</li>
+<li>Navigate into your user's home directory
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~</span></pre>
+</div>
+</li>
+<li>Visit the following page to download the phpBB software.
+<ul>
+<li><a href="https://www.phpbb.com/downloads/" target="_blank" rel="noopener">phpBB Downloads</a></li>
+</ul>
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/phpBB_14.png" alt="phpbb download"></dd>
+</dl>
+</li>
+<li>On the Downloads page, you'll see several options. Right-click the button titled <strong>Download Latest</strong>. From the pop-up menu, choose <span class="text-object">Copy link address</span>.</li>
+<li>In your website directory, run the following command to download phpBB.
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60"></div>
+<div class="alert-content">
+<p>Change the URL to the one you copied above.</p>
+</div>
+</div>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wget https://download.phpbb.com/pub/release/3.3/3.3.1/phpBB-3.3.1.zip</span></pre>
+</div>
+</li>
+<li>This downloads the software onto your server. Run the following command to unzip the file.
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60"></div>
+<div class="alert-content">
+<p>Change the zip file's name to the one you downloaded above.</p>
+</div>
+</div>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">unzip phpBB-3.3.1.zip</span></pre>
+</div>
+</li>
+<li>The files are extracted into a new directory titled <span class="text-object">phpBB3</span>.</li>
+<li>Navigate into this directory.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd phpBB3</span></pre>
+</div>
+</li>
+<li>Copy all contents into your website directory.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cp -r ./* /home/user/example.com</span></pre>
+</div>
+</li>
+<li>Check your website directory to confirm the files have been migrated.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">ls -la /home/user/example.com</span></pre>
+</div>
+</li>
+</ol>
+</div>
+<h2><span id="step3">Step 3 —&nbsp;Installing the software</span></h2>
+<div class="solvvy-solution">
+<p>Now that the files are in your website directory, you can complete the installation.</p>
+<ol>
+<li>Visit your website in a browser. You will see the phpBB homepage.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/phpBB_02.png" alt="phpbb download"></dd>
+</dl>
+</li>
+<li>Click the <span class="text-object">Install</span> tab, followed by the <strong>Install</strong> button to proceed.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/phpBB_03.png" alt="phpbb download"></dd>
+</dl>
+</li>
+<li>The first page asks you to create an administrator login. Fill out the fields and click the <strong>Submit</strong>&nbsp;button.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/phpBB_04.png" alt="phpbb download"></dd>
+</dl>
+</li>
+<li>Enter your <a href="https://help.dreamhost.com/hc/en-us/articles/221610868-Finding-your-database-login-credentials" target="_blank" rel="noopener">database credentials</a> on the next page, and click the <strong>Submit</strong>&nbsp;button.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/phpBB_05.png" alt="phpbb download"></dd>
+</dl>
+</li>
+<li>Edit your site's path and URL settings if you want to make any changes, and then click the <strong>Submit</strong> button.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/phpBB_06.png" alt="phpbb download"></dd>
+</dl>
+</li>
+<li>If you want to use SMTP Authentication for your site's emails, enter your <a href="https://help.dreamhost.com/hc/en-us/articles/214918038-Email-client-configuration-overview" target="_self">email credentials</a> here. When you are done, click <strong>Submit</strong>.
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60"></div>
+<div class="alert-content">
+<p>DreamHost recommends using SMTP Authentication, which allows you to use third-party mail services and helps to prevent your messages from being incorrectly-flagged by spam filters</p>
+</div>
+</div>
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/phpBB_07.png" alt="phpbb download"></dd>
+</dl>
+</li>
+<li>On the following page, fill out your forum's name and a short description, and then click <strong>Submit</strong>.
+<dl>
+<dd>This launches the phpBB installer.</dd>
+<dd></dd>
+</dl>
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/phpBB_08.png" alt="phpbb download"></dd>
+</dl>
+</li>
+<li>A confirmation message displays informing you that phpBB has been installed. Click the <span class="text-link">ACP</span> link to proceed.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/phpBB_09.png" alt="phpbb download"></dd>
+</dl>
+</li>
+<li>phpBB prompts you to enable or disable statistics and monetization before you proceed. Make your choices and click <strong>Submit</strong>.</li>
+</ol>
+You must now remove the <span class="text-object">install</span> directory as shown in the next step.</div>
+<h2><span id="step4">Step 4 — Remove the install directory</span></h2>
+<div class="solvvy-solution">
+<p>Before you can use phpBB you must first remove the <span class="text-object">install</span> directory on the server. Once again, you can either choose to use an FTP client or SSH.</p>
+<h3>Removing the <span class="text-object">install</span> directory via FTP</h3>
+<ol>
+<li>In your <a href="https://help.dreamhost.com/hc/en-us/articles/215613657-How-do-I-upload-my-site-to-DreamHost-" target="_blank" rel="noopener">FTP client</a>, navigate into your website's directory. If you previously uploaded the phpBB files, you are already in this directory.</li>
+<li>Right-click the directory titled <span class="text-object">install</span> and select <span class="text-object">Delete</span>.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/phpBB_11.png" alt="phpbb download"></dd>
+</dl>
+</li>
+<li>Delete the directory.</li>
+</ol>
+<h3>Removing the <span class="text-object">install</span> directory via SSH</h3>
+<ol>
+<li>Log into your server&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview" target="_self">via SSH</a>.</li>
+<li>Navigate into your website directory.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~/example.com</span></pre>
+</div>
+</li>
+<li>Delete the <span class="text-object">install</span> directory.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">rm -rf install</span></pre>
+</div>
+</li>
+</ol>
+<dl>
+<dd></dd>
+</dl>
+</div>
+<div class="solvvy-solution">&nbsp;</div>
+<h2><span id="see">See also</span></h2>
+<div class="solvvy-hidden">
+<h3>Internal links</h3>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/sections/203242327-Third-Party-Applications">Third-Party Applications</a></li>
+</ul>
+<h3>External links</h3>
+<ul>
+<li><a href="http://www.phpbb.com/" target="_self" rel="nofollow">phpbb.com</a></li>
+</ul>
+</div>

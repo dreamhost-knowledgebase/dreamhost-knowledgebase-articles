@@ -1,0 +1,107 @@
+<div class="document">
+<div class="documentwrapper">
+<div class="body">
+<div id="mediawiki" class="solvvy-hidden">
+<div class="table-of-content container">
+<ul class="simple">
+<li><a class="reference internal" href="#requirements">Check the requirements</a></li>
+<li><a class="reference internal" href="#release_notes">Read the release notes</a></li>
+<li><a class="reference internal" href="#backup">Back up existing files and the database</a></li>
+<li><a class="reference internal" href="#unpack">Unpack the new files</a></li>
+<li><a class="reference internal" href="#extensions">Upgrade extensions</a></li>
+<li><a class="reference internal" href="#database">Run the update script to check the database</a></li>
+<li><a class="reference internal" href="#test">Test the update</a></li>
+<li><a class="reference internal" href="#cleanup">Remove leftovers from old installations</a></li>
+<li><a class="reference internal" href="#see">See also</a></li>
+</ul>
+</div>
+</div>
+<h2><span id="upgrade">Overview</span></h2>
+<div class="solvvy-solution">
+<p>This article describes how to upgrade your MediaWiki installation. View the following guide at mediawiki.org for expanded upgrade instructions:</p>
+<ul>
+<li><a href="http://www.mediawiki.org/wiki/Manual:Upgrading" rel="nofollow">Upgrading</a></li>
+</ul>
+<p>You need to download the updated version of MediaWiki before you begin. You can find download links for the currently supported MediaWiki versions on the following page:</p>
+<ul>
+<li><a href="https://www.mediawiki.org/wiki/Download" rel="nofollow">Download</a></li>
+</ul>
+</div>
+<h2><span id="requirements">Check the requirements</span></h2>
+<div class="solvvy-solution">
+<p>You can find an up-to-date list of MediaWiki's requirements within its manual:</p>
+<ul>
+<li><a href="https://www.mediawiki.org/wiki/Manual:Installation_requirements" target="_self">Manual:Installation requirements</a></li>
+</ul>
+</div>
+<h2><span id="release_notes">Read the release notes</span></h2>
+<div class="solvvy-solution">
+<p>Release notes for MediaWiki are found in a RELEASE-NOTES-1.xx file in the main extracted folder. Additionally, you can find links to the release notes for all versions of MediaWiki on the following page:</p>
+<ul>
+<li><a href="https://www.mediawiki.org/wiki/release_notes" rel="nofollow">Release Notes</a></li>
+</ul>
+</div>
+<h2><span id="backup">Back up existing files and the database</span></h2>
+<div class="solvvy-solution">
+<p>Always make sure to first back up your database and website files before making any adjustments. This way, if something were to error you could quickly replace your files. View the following article for details:</p>
+<ul>
+<li><a href="/hc/en-us/articles/215089918-How-do-I-backup-my-entire-account-">How do I backup my entire account?</a></li>
+</ul>
+</div>
+<h2><span id="unpack">Unpack the new files </span></h2>
+<div class="solvvy-solution">
+<p>Once you've backed up your existing site data, upload the updated MediaWiki archive that you downloaded to your web server via <a href="https://help.dreamhost.com/hc/en-us/articles/115000675027-FTP-overview-and-credentials">FTP</a>. Then, log into your server via <a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a>, and&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/115002768331-UNIX-commands-Decompressing-files">decompress the file on the server</a>. You should now have a new MediaWiki folder for the current installation.</p>
+</div>
+<div class="solvvy-solution">
+<p>Once the archive is extracted, copy over the following files and folders from the old installation directory to the new one:</p>
+<ul>
+<li><span class="text-object">LocalSettings.php</span></li>
+<li>The <span class="text-object">images</span> folder. In older versions, this was called <span class="text-object">uploads</span>. If you've set a custom directory for images/uploads, copy that instead.</li>
+<li>Any extensions in the <span class="text-object">extensions</span> directory that you haven't already updated/reinstalled.</li>
+<li>Your custom logo. Versions before 1.24 will store your logo in <span class="text-object">skins/common/images/</span>, and newer versions use <span class="text-object">resources/assets/</span> or <span class="text-object">images/</span> Make sure to update <span class="text-object">LocalSettings.php</span> with the updated path.</li>
+<li>Custom skins, found in the <span class="text-object">skins</span> folder.</li>
+<li>Any custom modifications to the old files, which will need to be manually copied to the new versions of those files.</li>
+<li>Your <span class="text-object">.htaccess</span> file, if customized.</li>
+</ul>
+Once done, make this new folder the published folder on the web server, or rename the old installation directory and then rename the new one to match the old name.</div>
+<h2><span id="extensions">Upgrade extensions</span></h2>
+<div class="solvvy-solution">
+<p>If you have installed any extensions in the previous MediaWiki installation, you may need to upgrade them as well. Individual extension archives can be downloaded via the <a href="https://www.mediawiki.org/wiki/Special:ExtensionDistributor" target="_self">Download MediaWiki extension</a> page. Alternatively, you can upload <a href="https://www.mediawiki.org/wiki/MwExtUpgrader" target="_self">MwExtUpgrader</a> to your site to batch-upgrade extensions. Once uploaded, run the following command to upgrade your extensions:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">php mwExtUpgrader.phar</span></pre>
+</div>
+</div>
+<h2><span id="database">Run the update script to check the database</span></h2>
+<div class="solvvy-solution">
+<p>It may be necessary to run the <span class="text-object">/maintenance/update.php</span> script after upgrading. To do so, log into your site via <a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a>. Then run the following command:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">php ./maintenance/update.php</span></pre>
+</div>
+<p>This runs an update script that should fix any current errors on your site. If that doesn't work, specify the full path to a version of PHP. For example:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">/usr/local/php74/bin/php ./maintenance/update.php</span></pre>
+</div>
+</div>
+<h2><span id="test">Test the update</span></h2>
+<div class="solvvy-solution">
+<p>Ensure that the following site features are working:</p>
+<ul>
+<li>Viewing pages</li>
+<li>Editing pages</li>
+<li>Uploading a file</li>
+<li>Visit <strong>/Special:Version</strong> in your browser to confirm the MediaWiki version and installed extensions.</li>
+</ul>
+</div>
+<h2><span id="cleanup">Remove leftovers from old installations</span></h2>
+<div class="solvvy-solution">
+<p>Make sure that you delete or lock-down any old MediaWiki installation folders after the update is complete to ensure your site is secure.</p>
+</div>
+</div>
+<h2><span id="see">See also</span></h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/217292577-MediaWiki" target="_self">MediaWiki</a></li>
+</ul>
+</div>
+</div>
+</div>
