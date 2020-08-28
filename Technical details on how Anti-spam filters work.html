@@ -1,11 +1,14 @@
-<h2>MX Records</h2><div class="solvvy-solution">
+<h2>MX Records</h2>
+<div class="solvvy-solution">
 <p>Anti-spam filtering is enabled by changing the domain's MX records to route incoming emails to the filtering servers first before passing the message off to the MX machines for delivery. Domains using non-DreamHost nameservers will need to manually update their MX records to reflect the change.</p>
 <p>The filter records are:</p>
 <ul>
-<li>MX 0 vade-in1.mail.dreamhost.com</li>
-<li>MX 0 vade-in2.mail.dreamhost.com</li>
+<li>0 mx1.mailchannels.net</li>
+<li>0&nbsp;mx2.mailchannels.net</li>
 </ul>
-</div><h2>Special considerations for forwarding addresses</h2><div class="solvvy-solution">
+</div>
+<h2>Special considerations for forwarding addresses</h2>
+<div class="solvvy-solution">
 <p>There are certain things to remember with filtering in relation to forwarding email addresses. The details for the four combinations with this setup are outlined below:</p>
 <ul>
 <li>If the domain is being filtered, and the address is being forwarded to another DreamHost email address that is also filtered, email gets sorted based on the filter mail settings of the receiving mailbox address.</li>
@@ -48,73 +51,26 @@
 </tr>
 </tbody>
 </table>
-</div><h2>Headers related to filtering</h2><div class="solvvy-solution">
-<p>All emails that pass through the filtering servers have some extra headers added.</p>
-<p>Let's take another look at the following example:</p>
-<div class="preboxcontainer">
-<pre class="prebox">X-VR-STATUS  SPAM
-X-VR-SCORE  500
-X-VR-SPAMCAUSE  
-gggruggvucftvghtrhhoucdtuddrfeekledrvdeigdduudejucetufdoteggodetrfdotffvucfrrhhofhhil
-hgvmecuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedttdenucgohfhorhgsihguuggvnh
-ffohhmrghinhculdehtddtmdenucfjughrpeffkffuhffvtgesthdtredttddtjeenucfhrhhomhepffhrvgg
-rmhfjohhsthcujfhoshhtihhnghcuoegurhgvrghmhhhoshhtthgvshhtsehgmhgrihhlrdgtohhmqeenucff
-ohhmrghinhepqhhqlhgvthdrtghnpdgrhigujhgtmhgsrdgtohhmpdhonhgvlhhikhgvhihouhdrnhgvthenu
-cfkphepvddtledrkeehrddvudefrdeiieenucfrrghrrghmpehmohguvgepshhmthhppdhhvghlohepmhgrih
-hlqdhvkhdtqdhfieeirdhgohhoghhlvgdrtghomhdpihhnvghtpedvtdelrdekhedrvddufedrieeipdhmrgh
-ilhhfrhhomhepughrvggrmhhhohhsthhtvghsthesghhmrghilhdrtghomhdprhgtphhtthhopehtrghksehi
-nhhithhirghlugdruhhs
-</pre>
 </div>
-<p>Below are details on what each field in the filter details above means:</p>
-<h3>X-vr-status</h3>
-<div class="preboxcontainer">
-<pre class="prebox">X-VR-STATUS</pre>
-</div>
-<p>This field could show any of the following:</p>
+<h2>Filtering and what it does</h2>
+<div class="solvvy-solution">
+<p>There are three services currently set up to filter spam. Below is a description of each:</p>
 <dl>
-<dt><strong>Whitelisted</strong></dt>
-<dd>the user says always allow this email sender.</dd>
-<dt><strong>SPAM</strong></dt>
-<dd>indicates that the mail is SPAM and should be filtered into SPAM folder.</dd>
-<dt><strong>DCE</strong></dt>
-<dd>bad reputation marketing/Commercial Email should be filtered into SPAM folder.</dd>
-<dt><strong>PCE</strong></dt>
-<dd>professional marketing/Commercial emails filtered into Promotions.</dd>
-<dt><strong>MCE</strong></dt>
-<dd>miscellaneous/Small marketing/Commercial emails filtered into Promotions folder.</dd>
-<dt><strong>SN</strong></dt>
-<dd>social emails filtered into Social folder.</dd>
-<dt><strong>OK</strong></dt>
-<dd>everything is good.</dd>
-</dl>
-<h3>X-VR-SCORE</h3>
-<div class="preboxcontainer">
-<pre class="prebox">X-VR-SCORE  500</pre>
-</div>
-<dl>
-<dd>The score is a arbitrary number given by Vade. It is NOT an indicator that an email is SPAM or SN or any of the other statuses mentioned. It is only used in conjunction with the SPAM status to decide when an email should be rejected because it's considered as a scam or spear phishing.</dd>
-</dl>
-<h3>X-VR-SPAMCAUSE</h3>
-<div class="preboxcontainer">
-<pre class="prebox">X-VR-SPAMCAUSE  gggruggvucftvghtrhhoucdtuddrfeekledrvdeigdduudejucetufdoteggodetrfdotffvucfrrhhofhh
-….
-Thesghhmrghilhdrtghomhdprhgtphhtthhopehtrghksehinhhithhirghlugdruh</pre>
-</div>
-<dl>
-<dd>This is a hash of the spam cause only used by Vade.</dd>
-</dl>
-</div><h2>Filtering and what it does</h2><div class="solvvy-solution">
-<p>There are two services currently set up to filter spam. Below is a description of each:</p>
-<dl>
-<dt><strong>Vade Secure</strong></dt>
-<dd>This is the filter service that scans the incoming messages for spam and other categories such as social or promotional emails. Depending on multiple factors, the message will be tagged with a status (SPAM, SN, etc) to determine if the message should be delivered to the recipients inbox, or filtered into the Spam, Social or Promotions folder.  However, spam emails that are beyond a certain threshold will be rejected.</dd>
+<dt><strong>Vade Secure (soon to be removed)</strong></dt>
+<dd>This is the filter service that scans the incoming messages for spam and other categories such as social or promotional emails. Depending on multiple factors, the message will be tagged with a status (SPAM, SN, etc) to determine if the message should be delivered to the recipient's inbox, or filtered into the Spam folder. &nbsp;However, spam emails that are beyond a certain threshold will be rejected.</dd>
 <dt><strong>Procmail</strong></dt>
 <dd>This is the delivery agent for the mailbox which actually places the email into Spam, Social or Promotions folders when it detects the Vade Secure headers. This is also responsible for the user defined filters defined in the panel.</dd>
 </dl>
-</div><h2>See also</h2><div class="solvvy-hidden">
+<dl>
+<dt><strong>Mailchannels (enabled as of Sept 2020)</strong></dt>
+<dd>Mailchannels is a Cloud-based mail filter. It accepts and evaluates mail, adds a specific header for spam messages, then relays messages to MX servers.&nbsp;</dd>
+</dl>
+</div>
+<h2>See also</h2>
+<div class="solvvy-hidden">
 <ul>
 <li><a href="/hc/en-us/articles/214984738-Anti-spam-overview">Anti-spam overview</a></li>
 <li><a href="/hc/en-us/articles/215686667-Troubleshooting-Anti-spam-settings">Troubleshooting Anti-spam settings</a></li>
 <li><a href="/hc/en-us/articles/215686487-How-do-I-configure-my-Anti-spam-settings-">How do I configure my Anti-spam settings?</a></li>
-</ul></div>
+</ul>
+</div>
