@@ -16,7 +16,7 @@
 </div>
 </div>
 </div>
-<h2><span id="WP_Mail_SMTP">WP Mail SMTP</span></h2>
+<h2><span id="WP_Mail_SMTP">Configuring the WP Mail SMTP plugin</span></h2>
 <div class="solvvy-solution">
 <ol>
 <li>In the WordPress dashboard, click 'Plugins &gt; Add New' in the left pane.</li>
@@ -61,27 +61,51 @@
 <li>Click the <strong>Save Settings</strong> button.</li>
 </ol>
 <p>Your form will now send FROM the email you entered above, but you should add the code below to further secure your credentials.</p>
-<h3>Adding code to your wp-config.php file</h3>
-<p>The plugin states you should add the following code to your wp-config.php file to further secure your credentials.</p>
-<div class="preboxcontainer">
-<pre class="prebox">define( 'WPMS_ON', true );
-define( 'WPMS_SMTP_PASS', 'your_password' );</pre>
 </div>
-<p>To add these, edit your wp-config.php file with an FTP or SSH client.</p>
+<h2>Adding code to hide your password</h2>
+<div class="solvvy-solution">
+<p>The instructions above add your password to the WordPress dashboard and database in plain text. This means if any other WordPress admin has access to your dashboard, they will be able to view your password.</p>
+<p>The plugin recommends you add code to your wp-config.php file to secure your credentials. View the following page for further details.</p>
+<ul>
+<li><a href="https://wpmailsmtp.com/docs/how-to-secure-smtp-settings-by-using-constants/" target="_blank" rel="noopener">How to secure SMTP settings by using constants</a></li>
+</ul>
+<h3>Adding the constants to your wp-config.php file</h3>
+<ol>
+<li>Log into your server via <a href="https://help.dreamhost.com/hc/en-us/articles/115000675027-FTP-overview-and-credentials" target="_self">FTP</a> or <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview" target="_self">SSH</a>.</li>
+<li>Use one of the following articles to edit your wp-config.php file.
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/115000098272-Creating-and-editing-a-file-via-FTP">Creating and editing files via FTP</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Creating and editing a file via SSH</a></li>
 </ul>
-<p>Add these two lines just above this line in the file:</p>
+</li>
+<li>Scroll down in this file to the following line:
 <p><strong>/* That's all, stop editing! Happy blogging. */</strong></p>
+</li>
+<li>Add the following lines just above this line.
+<div class="preboxcontainer">
+<pre class="prebox">define( 'WPMS_ON', true ); 
+define( 'WPMS_SMTP_AUTH', true ); 
+define( 'WPMS_SMTP_PASS', '<span class="code-highlight">your_email_password</span>' );</pre>
+</div>
+</li>
+<li>The only part you need to change is <span class="text-object">your_email_password</span>.</li>
+<li>Save the file.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/wp-mail-smtp-password.png" alt="wp mail smtp password" /></dd>
+</dl>
+</li>
+<li>If you view the plugin page now, you'll see your password is not accessible.</li>
+</ol>
 </div>
 <h2>Testing the plugin</h2>
+<div class="solvvy-solution">
 <dl>
 <dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2019-03_wordpress_smtp-plugin_04.png" /></dd>
 </dl>
 <p>Scroll to the top and click the 'Email Test' tab. Click the <strong>Send Email</strong> button to test. You should see it was sent successfully.</p>
+</div>
 <h2>Alternative plugins</h2>
-<div class="solvvy-solution">
+<div class="solvvy-hidden">
 <p>There are several other SMTP plugins you can use to send email. After logging into your WordPress site, select 'Plugins &gt; Add New' in the left pane. You can then search for the term 'SMTP' to view other options.</p>
 <ul>
 <li><a href="https://codex.wordpress.org/Managing_Plugins">Managing Plugins</a></li>
