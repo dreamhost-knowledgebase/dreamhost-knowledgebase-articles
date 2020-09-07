@@ -68,12 +68,12 @@ try {
     $mail-&gt;SMTPAuth = true;                               // Enable SMTP authentication
     $mail-&gt;Username = '<span class="code-highlight">contact@example.com'</span>;             // SMTP username
     $mail-&gt;Password = '<span class="code-highlight">secret</span>';                           // SMTP password
-    $mail-&gt;SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
-    $mail-&gt;Port = 587;                                    // TCP port to connect to
+    $mail-&gt;SMTPSecure = 'ssl';                            // Enable SSL encryption, TLS also accepted with port 465
+    $mail-&gt;Port = 465;                                    // TCP port to connect to
 
     //Recipients
     $mail-&gt;setFrom('<span class="code-highlight">contact@example.com</span>', 'Mailer');          //This is the email your form sends From
-    $mail-&gt;addAddress('<span class="code-highlight">recipient@dreamhost.com</span>', '<span class="command">Joe User</span>'); // Add a recipient address
+    $mail-&gt;addAddress('<span class="code-highlight">recipient@dreamhost.com</span>', '<span class="code-highlight">Joe User</span>'); // Add a recipient address
     //$mail-&gt;addAddress('contact@example.com');               // Name is optional
     //$mail-&gt;addReplyTo('info@example.com', 'Information');
     //$mail-&gt;addCC('cc@example.com');
@@ -95,6 +95,13 @@ try {
     echo 'Message could not be sent.';
     echo 'Mailer Error: ' . $mail-&gt;ErrorInfo;
 }<br />?&gt;</pre>
+</div>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>It is recommended to use port 465 with SSL as shown above.</p>
+<p>You could optionally use port 587 with TLS.</p>
+</div>
 </div>
 </div>
 <h2>Allowing GMAIL to send from your mail application</h2>
