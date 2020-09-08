@@ -35,14 +35,23 @@ Keyboard-interactive authentication is disabled to avoid man-in-the-middle attac
 <div class="solvvy-solution">
 <p>There are three methods to remove this error. Please keep in mind that the modification to fix this needs to be performed on the client side, so if you are getting this connecting from home/work you must update that specific computer.</p>
 <h3><span id="Method_One_.E2.80.94_Generate_a_new_host_key_.28MAC_or_Linux.29">Method One — Generate a new host key (MAC or Linux)</span></h3>
-<p>Run the following command in your shell:</p>
+<p>If you have connected to a host in the past, the old host key is stored in your computer's <span class="text-object">/user/.ssh/known_hosts</span> file. If the key has been updated on the server, you must now delete the old key on your computer.</p>
+<p>Run the following command in your shell.</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Change HOSTNAME to the host you're connecting to, such as <strong>example.com</strong></p>
+</div>
+</div>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[local]$ </span><span class="command">ssh-keygen -R HOSTNAME</span>
+<pre class="prebox"><span class="server">[local]$ </span><span class="command">ssh-keygen -R <span class="code-highlight">HOSTNAME</span></span>
 </pre>
 </div>
+<p>The <span class="code">-R</span> option removes the old key related to a specific hostname.</p>
 <ul>
-<li>This method simply generates the new host key and connects you to your host/domain. This is probably the simplest method.</li>
+<li><a href="https://linux.die.net/man/1/ssh-keygen">https://linux.die.net/man/1/ssh-keygen</a></li>
 </ul>
+<p>You can now connect via SSH to store a new key.</p>
 <h3><span id="Method_Two_.E2.80.94_Deleting_your_known_hosts_file">Method Two — Deleting your known_hosts file</span></h3>
 <div class="alert alert-note">
 <div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
