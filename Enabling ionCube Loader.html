@@ -2,73 +2,40 @@
 <div class="solvvy-solution">
 <p>ionCube Loader is a PHP extension that works to decode PHP scripts previously encoded by the <a href="http://www.ioncube.com/sa_encoder.php">ionCube PHP Encoder</a> package.</p>
 <p>The following information is provided as a guide for installing the ionCube loader needed to run PHP files encoded with ionCube on DreamHost servers.</p>
-<p>In order to install ionCube Loader on a DreamHost account, please make sure your site is running on PHP 5.6 or above. View the following article for instructions on how to choose a version of PHP:</p>
-<ul>
-<li><a href="/hc/en-us/articles/214895317-How-do-I-change-the-PHP-version-of-my-site-">How do I change the PHP version of my site?</a></li>
-</ul>
 </div>
-<h2>ionCube loader and PHP 7.0</h2>
-<div class="solvvy-solution">
-<div class="alert alert-important">
-<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
-<div class="alert-content">
-<p>ionCube Loader will currently not function with sites running PHP 7.0 at DreamHost.</p>
-<p>PHP 7.0 has also been <a href="https://php.net/supported-versions.php" target="_self">EOL'd by php.net</a>. For security purposes, you should update your site to run on PHP 7.1, 7.2, or 7.3.</p>
-</div>
-</div>
-</div>
-<h2>ionCube loader and PHP 7.4</h2>
-<div class="solvvy-solution">
-<p>As of Feb 2020, the ioncube loader for PHP 7.4 has not been released. You can track updates here:</p>
-<ul>
-<li><a href="https://forum.ioncube.com/viewtopic.php?t=4542" target="_self">ionCube and PHP 7.4</a></li>
-</ul>
-</div>
-<h2><span id="Checking_the_version_of_PHP_your_site_uses">Checking the version of PHP your site uses</span></h2>
+<h2 class="subheader"><span id="step6">Step 1 —&nbsp;</span><span id="Checking_the_version_of_PHP_your_site_uses">Confirm the version of PHP your site uses</span></h2>
 <div class="solvvy-solution">
 <p>Even after you have set the PHP version in your panel, you should still check to confirm that version is the one running on your site. You can easily do this by creating a file named <a href="https://help.dreamhost.com/hc/en-us/articles/214895287-Viewing-your-site-s-PHP-version-and-settings">phpinfo.php</a> in your website’s directory with the following code:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="cmdoutput">&lt;?php <br />phpinfo(); <br />?&gt;</span></pre>
 </div>
 </div>
-<h2><span id="Checking_which_version_of_ionCube_loader_you_need">Checking which version of ionCube loader you need</span></h2>
 <div class="solvvy-solution">
-<ol>
-<li>Visit your phpinfo.php file in a browser.</li>
-<li>Check which version of the ionCube loader package for Linux you need to use by inspecting the first section of the output of the phpinfo.php file you just added.</li>
-<li>When you view that file in a browser, look at the ‘System’ section.
-<dl>
-<dd><em>For example, consider the following phpinfo() output:</em></dd>
-<dd>
-<div class="preboxcontainer">
-<pre class="prebox">System Linux wowbagger 3.2.61-grsec-modsign #1 SMP Tue Aug 12 09:58:26 UTC 2014 x86_64</pre>
+<p>Visit your <span class="text-object">phpinfo.php</span> file in a browser. Your PHP version displays at the top. You will need to use the specific ionCube file below for this version of PHP.</p>
 </div>
-</dd>
-</dl>
-<ul>
-<li>In this example, the "x86_64" following the time stamp information indicates you would need the "x86-64" version of the ionCube loader package.</li>
-</ul>
-</li>
-</ol>
-</div>
-<h2><span id="Downloading_ionCube_loader">Downloading ionCube loader</span></h2>
+<h2 class="subheader"><span id="step6">Step 2 —&nbsp;</span><span id="Downloading_ionCube_loader">Download the ionCube loader files</span></h2>
 <div class="solvvy-solution">
-<p>This guide assumes you're installing an "x86" version of the loader package, and that you are installing ionCube into /home/username/ioncube. Visit the <a href="http://www.ioncube.com/loaders.php">ionCube Loaders download page</a> for any other specific version you may need.</p>
+<p>You can download these files via FTP or SSH.</p>
 <h3><span id="Downloading_via_FTP">Downloading via FTP</span></h3>
 <ol>
-<li>Use one of the links below to download the Ioncube loader file that matches your PHP version.
-<ul>
-<li><a href="https://kbimages.dreamhosters.com/files/ioncube_loader_lin_5.6.so">ioncube_loader_lin_5.6.so</a></li>
-<li><a href="https://kbimages.dreamhosters.com/files/ioncube_loader_lin_7.1.so">ioncube_loader_lin_7.1.so</a></li>
-<li><a href="https://kbimages.dreamhosters.com/files/ioncube_loader_lin_7.2.so">ioncube_loader_lin_7.2.so</a></li>
-<li><a href="https://kbimages.dreamhosters.com/files/ioncube_loader_lin_7.3.so">ioncube_loader_lin_7.3.so</a></li>
-</ul>
+<li>Visit the <a href="https://www.ioncube.com/loaders.php" target="_self">download ionCube</a> page.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/ioncube_02.png" /></dd>
+</dl>
 </li>
+<li>Click the <span class="text-link">zip</span>&nbsp;link next to the Linux (64 bits) option.</li>
+<li>On your computer, navigate to the&nbsp;<strong>/downloads</strong> directory, or wherever you just downloaded the file.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/ioncube_03.png" /></dd>
+</dl>
+</li>
+<li>Extract the zip file. In Windows, right-click and choose <span class="text-object">Extract All...</span>. This extracts the files into a new folder named <span class="text-object">ioncube</span>.</li>
 <li>Connect to your domain via <a href="https://help.dreamhost.com/hc/en-us/articles/115000675027-FTP-overview-and-credentials">FTP</a>.</li>
-<li>Navigate to your user's directory under /home/&lt;username&gt;/. This is identifiable by looking for the /logs and /Maildir folders. View the <a href="https://help.dreamhost.com/hc/en-us/articles/214920778-Where-do-I-upload-my-files-once-connected-via-FTP-">FTP article</a> for details.</li>
-<li>In this same directory, <a href="https://help.dreamhost.com/hc/en-us/articles/115000098272-Creating-and-editing-a-file-via-FTP">create a new directory</a> named 'ioncube'.</li>
-<li>Navigate into this new /ioncube folder.</li>
-<li>Upload the .so file here.</li>
+<li>In the left pane (your computer), navigate to the directory you just extracted the files into.</li>
+<li>In the right pane (your server), navigate to your user's directory under <strong>/home/username</strong>. This is identifiable by looking for the <strong>/logs</strong> and <strong>/Maildir</strong> folders. View the <a href="https://help.dreamhost.com/hc/en-us/articles/214920778-Where-do-I-upload-my-files-once-connected-via-FTP-">FTP article</a> for details.</li>
+<li>In this same directory, <a href="https://help.dreamhost.com/hc/en-us/articles/115000098272-Creating-and-editing-a-file-via-FTP">create a new directory</a> named <span class="text-object">ioncube</span>.</li>
+<li>Navigate into this new <strong>/home/username/ioncube</strong> directory.</li>
+<li>Upload the <span class="text-object">ioncube_loader_lin_7.#.so</span> file from your computer into this directory.</li>
 </ol>
 <h3><span id="Downloading_via_SSH">Downloading via SSH</span></h3>
 <ol>
@@ -83,57 +50,50 @@
 <span class="server">[server]$ </span><span class="command">tar -zxvf ioncube_loaders_lin_x86-64.tar.gz -C $HOME</span>
 <span class="server">[server]$ </span><span class="command">rm ioncube_loaders_lin_x86-64.tar.gz</span></pre>
 </div>
-<p>You now have several files in your /home/username/ioncube directory and they appear as the following:</p>
+<p>You now have several files in your <strong>/home/username/ioncube</strong> directory and they appear as the following:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="cmdoutput">ioncube_loader_lin_7.2.so</span></pre>
+<pre class="prebox"><span class="cmdoutput">ioncube_loader_lin_7.4.so</span></pre>
 </div>
 </div>
-<h2>Installing ionCube loader</h2>
+<h2 class="subheader"><span id="step6">Step 3 —&nbsp;</span>Install ionCube loader</h2>
 <div class="solvvy-solution">
-<p>If you have configured your fully hosted domain with PHP 5.6 or above and FastCGI, the installation is very simple.</p>
+<p>These steps tell your site to use the ionCube file you just downloaded.</p>
 <ol>
-<li>Create a phprc file using an FTP client or SSH.
-<ul>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/115000675027-FTP-overview-and-credentials">FTP</a> - Visit the <a href="/hc/en-us/articles/214894037-How-do-I-create-a-phprc-file-via-FTP-">How to add a phprc file via FTP</a> article.</li>
-<li><a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a> - Visit the <a href="/hc/en-us/articles/214200668-How-do-I-create-a-phprc-file-via-SSH-">How to add a phprc file via SSH</a> article.</li>
-</ul>
-</li>
-<li>Once the 'phprc' file has been created, add the following directive to it. View the following articles for instructions on how to edit a file:
+<li>While logged into your server via FTP or SSH, navigate to the&nbsp;<strong>/home/username/.php/php7.#</strong>&nbsp;directory. Make sure to navigate into the same number directory as your PHP version above.</li>
+<li>Edit the&nbsp;<span class="text-object">phprc</span>&nbsp;file on your server to add the following line to it. View the following articles for instructions on how to edit a file:
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/115000098272-Creating-and-editing-a-file-via-FTP">Creating and editing a file via FTP</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Creating and editing a file via SSH</a></li>
 </ul>
 <div class="alert-warning">
-<p>This example uses PHP 7.2. Make sure to change the version number to the PHP version you're using. Also, make sure to replace 'username' with your actual <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access" target="_self">shell username</a>.</p>
+<p>This example uses PHP 7.4. Make sure to change the version number to the PHP version you're using. Also, make sure to replace <span class="text-object">username</span> with your actual <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access" target="_self">shell username</a>.</p>
 </div>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="cmdoutput">zend_extension = /home/username/ioncube/ioncube_loader_lin_7.2.so</span>
-</pre>
+<pre class="prebox">zend_extension = /home/<span class="code-highlight">username</span>/ioncube/ioncube_loader_lin_7.4.so</pre>
 </div>
 </li>
-<li>Confirm that the directive is on only one line, and the first line, in the phprc file.</li>
 <li>Save this file.</li>
 <li>Kill off all PHP processes to complete the installation:
 <ul>
 <li><a href="/hc/en-us/articles/214200748-My-phprc-file-isn-t-updating">If you don't see the changes made to your phprc file</a></li>
 </ul>
 </li>
-<li>To test it, copy the loader-wizard.php file from the /home/username/ioncube directory to a public place in your domain’s web directory.</li>
-<li>Load that file in a browser.</li>
-<li>Answer the questions about "shared hosting" and it should successfully report that ionCube is installed.</li>
-<li>Remove the loader-wizard.php file for security reasons.</li>
 </ol>
-<p>If you have problems, check the <a href="http://forum.ioncube.com/">ionCube Forum</a>.</p>
 </div>
-<h2>Confirming it's loaded</h2>
+<h2 class="subheader"><span id="step6">Step 4 —&nbsp;</span>Confirm it's loaded</h2>
+<div class="solvvy-solution">
 <p>You can now confirm if ionCube is loaded by viewing your <a href="https://help.dreamhost.com/hc/en-us/articles/214895287-Viewing-your-site-s-PHP-version-and-settings" target="_self">phpinfo.php file</a>. You will see the following:</p>
 <dl>
 <dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/ioncube.png" /></dd>
 </dl>
+</div>
 <h2><span id="Can_I_use_IonCube_Loader_with_DreamPress.3F">Can I use <strong class="selflink">IonCube Loader</strong> with DreamPress?</span></h2>
 <div class="solvvy-solution">
-<p>ionCube Loader is not supported with DreamPress. ionCube's website states that it's purpose is to "makes it easy to protect PHP source code from easy observation, theft and change by compiling to bytecode." Since the WordPress software is open source, there is never a reason to use ionCube Loader to hide your code.</p>
-<p>If you absolutely require ionCube, the only options are to downgrade to a <a href="/hc/en-us/articles/215280058-Virtual-Private-Server-overview-VPS-">VPS</a> or <a href="/hc/en-us/articles/215560437-What-types-of-hosting-plans-are-available-">Shared</a> hosting plan.</p>
+<p>ionCube Loader is not supported with DreamPress. ionCube's <a href="https://www.ioncube.com/php_encoder.php" target="_blank" rel="noopener">website states the following</a>:</p>
+<div class="text-blockquote">
+<p>The ionCube Encoder compiles sourcecode to bytecode, can obfuscate and encrypt compiled code if desired, and has features to protect decryption keys in various ways, including a unique approach of algorithmic non-stored keys we call Dynamic Keys.</p>
+</div>
+<p>Since the WordPress software is open source, there is never a reason to use ionCube Loader to hide your code. If you absolutely require ionCube with WordPress, the only options are to downgrade to a <a href="/hc/en-us/articles/215280058-Virtual-Private-Server-overview-VPS-">VPS</a> or <a href="/hc/en-us/articles/215560437-What-types-of-hosting-plans-are-available-">Shared</a> hosting plan.</p>
 </div>
 <h2><span id="See_also">See also</span></h2>
 <div class="solvvy-hidden">
