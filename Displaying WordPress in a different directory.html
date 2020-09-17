@@ -1,0 +1,106 @@
+<h2>Overview</h2>
+<div class="solvvy-solution">
+<p>WordPress is most often installed in the directory you wish to run the site in. For example:</p>
+<ul>
+<li><strong>example.com</strong></li>
+<li><strong>example.com/blog</strong></li>
+</ul>
+<p>In these examples, visiting the URL will load the WordPress site that's installed in that directory.</p>
+<p>You also have the option to install in a different directory, but have it display from another directory. WordPress describes this in their <a href="https://wordpress.org/support/article/giving-wordpress-its-own-directory" target="_self">Giving WordPress Its Own Directory</a> article:</p>
+<div class="text-blockquote">
+<p>Many people want WordPress to power their website’s root (e.g.&nbsp;<code>http://example.com</code>) but they don’t want all of the WordPress files cluttering up their root directory. WordPress allows you to install it into a subdirectory, but have your website served from the website root.</p>
+</div>
+<p>This article explains how to display WordPress from either the root director or subdirectory when it's been installed somewhere else.</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>The steps below show how to do this via SSH, but you would create the subdirectory and move the files the same way in an FTP client.</p>
+</div>
+</div>
+</div>
+<h2>Displaying WordPress in a subdirectory if it's installed in the root directory</h2>
+<div class="solvvy-solution">
+<p>This example assumes you've already installed WordPress into&nbsp;<strong>example.com</strong>, but want it to display at&nbsp;<strong>example.com/blog</strong>.</p>
+<ol>
+<li>Log into your site via <a href="https://help.dreamhost.com/hc/en-us/articles/115000675027-FTP-overview-and-credentials" target="_self">FTP</a> or <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview" target="_self">SSH</a>.</li>
+<li>Navigate into your website's directory.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~/example.com</span></pre>
+</div>
+</li>
+<li>Create the subdirectory.
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>This example creates a subdirectory named <span class="text-object">blog</span>.</p>
+</div>
+</div>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">mkdir blog</span></pre>
+</div>
+</li>
+<li>Move all of the files in the root directory (<strong>example.com</strong>) into the subdirectory (<strong>example.com/blog</strong>).
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">mv .htaccess license.txt readme.html *.php blog</span>
+<span class="server">[server]$ </span><span class="command">mv wp-* blog</span></pre>
+</div>
+</li>
+<li>Create an .htaccess file via <a href="https://help.dreamhost.com/hc/en-us/articles/115000098272-Creating-and-editing-a-file-via-FTP" target="_self">FTP</a> or <a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH" target="_self">SSH</a> in the root directory (<strong>example.com</strong>). Add the following contents to the file.
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>You only need to update the highlighted text which is your domain name and the subdirectory you created.</p>
+</div>
+</div>
+<div class="preboxcontainer">
+<pre class="prebox">&lt;IfModule mod_rewrite.c&gt;
+RewriteEngine on
+RewriteCond %{HTTP_HOST} ^(www.)?<span class="code-highlight">example.com</span>$
+RewriteCond %{REQUEST_URI} !^/<span class="code-highlight">blog</span>/
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ /<span class="code-highlight">blog</span>/$1
+RewriteCond %{HTTP_HOST} ^(www.)?<span class="code-highlight">example.com</span>$
+RewriteRule ^(/)?$ <span class="code-highlight">blog</span>/index.php [L] 
+&lt;/IfModule&gt;</pre>
+</div>
+</li>
+</ol>
+<p>If you visit&nbsp;<strong>example.com/blog</strong> now, you will see your WordPress site.</p>
+</div>
+<h2>Displaying WordPress in the root directory if it's installed in a subdirectory</h2>
+<div class="solvvy-solution">
+<p>These steps are the opposite of above. They assume you've installed WordPress in a subdirectory at&nbsp;<strong>example.com/blog</strong>, but want it to display when visiting&nbsp;<strong>example.com</strong>.</p>
+<ol>
+<li>Log into your site via <a href="https://help.dreamhost.com/hc/en-us/articles/115000675027-FTP-overview-and-credentials" target="_self">FTP</a> or <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview" target="_self">SSH</a>.</li>
+<li>Navigate into your website's subdirectory.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~/example.com/blog</span></pre>
+</div>
+</li>
+<li>Copy the <span class="text-object">index.php</span> and <span class="text-object">.htaccess</span> files into the root directory.&nbsp;<br />
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cp .htaccess index.php ..</span></pre>
+</div>
+</li>
+<li>Navigate into your root directory.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ..</span></pre>
+</div>
+</li>
+<li>Edit the <span class="text-object">index.php</span> file via&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/115000098272-Creating-and-editing-a-file-via-FTP" target="_self">FTP</a>&nbsp;or&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH" target="_self">SSH</a>&nbsp;. Add the subdirectory name just before <span class="text-object">/wp-blog-header.php</span>. For example:
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>You only need to update the highlighted text which is the subdirectory you created.</p>
+</div>
+</div>
+<div class="preboxcontainer">
+<pre class="prebox">/** Loads the WordPress Environment and Template */
+require __DIR__ . '<span class="code-highlight">/blog</span>/wp-blog-header.php';
+</pre>
+</div>
+</li>
+</ol>
+<p>If you visit&nbsp;<strong>example.com</strong> now, you will see your WordPress site.</p>
+</div>
