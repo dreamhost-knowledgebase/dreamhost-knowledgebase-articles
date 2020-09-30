@@ -1,12 +1,15 @@
-<h2>Overview</h2><div class="solvvy-solution">
+<h2>Overview</h2>
+<div class="solvvy-solution">
 <p>If you suspect that your website has been hacked, the best thing to do is to reinstall any software application (such as WordPress or Joomla). The steps below apply primarily to reinstalling WordPress, since that is the most commonly used (and therefore the most commonly hacked) software, but the general steps hold true for many CMS installs.</p>
 <div class="alert alert-tip">
-<div class="alert-icon"><img alt="" height="60" src="https://kbimages.dreamhosters.com/images/dh-kb-tip-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-tip-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
-<p>If you're not comfortable fixing your WordPress site on your own, you can request DreamHost's "Hacked Site Repair" professional malware removal <a href="/hc/en-us/articles/360001395451-TOS-for-DreamHost-s-Hacked-Site-Repair-service">service</a>. For a one-time fee of $199, DreamHost experts will access your account and make the necessary repairs to get you back online quickly. Please <a href="https://panel.dreamhost.com/?tree=support.msg">submit a ticket</a> from within your DreamHost Panel if you'd like to explore this option.</p>
+<p>If you're not comfortable fixing your WordPress site on your own, you can request a <a href="/hc/en-us/articles/360001395451-TOS-for-DreamHost-s-Hacked-Site-Repair-service">Hacked Site Repair</a> (DreamHost's professional malware removal service). For a one-time fee of $199, DreamHost experts will access your account and make the necessary repairs to get you back online quickly. Please <a href="https://panel.dreamhost.com/?tree=support.msg">Contact Support</a> if you'd like to explore this option.</p>
 </div>
 </div>
-</div><h2><span id="A_note_on_Base64">A note on Base64</span></h2><div class="solvvy-solution">
+</div>
+<h2><span id="A_note_on_Base64">A note on Base64</span></h2>
+<div class="solvvy-solution">
 <p>Base64 is usually bad. And yet there are legit use cases.</p>
 <p>Running <strong><span class="code">grep -R "base64_" /home/user/example.com/</span></strong> should only give you these results for core WordPress:</p>
 <div class="preboxcontainer">
@@ -26,7 +29,7 @@
 ./wp-includes/class-phpmailer.php:        	$encoded = base64_encode($str);
 ./wp-includes/class-phpmailer.php:        	$chunk = base64_encode($chunk);
 ./wp-includes/class-phpmailer.php:      	return base64_encode($signature);
-./wp-includes/class-phpmailer.php:    		$DKIMb64  = base64_encode(pack("H*", sha1($body))) ; // Base64 of packed binary SHA-1 hash of body
+./wp-includes/class-phpmailer.php:    		$DKIMb64  = base64_encode(pack("H*", sha1($body)))&nbsp;; // Base64 of packed binary SHA-1 hash of body
 ./wp-includes/SimplePie/Sanitize.php:		$data = base64_decode($data);
 ./wp-includes/SimplePie/File.php:		$out .= "Authorization: Basic " . base64_encode("$url_parts[user]:$url_parts[pass]") . "\r\n";
 ./wp-includes/class-http.php:			return 'Proxy-Authorization: Basic ' . base64_encode( $this-&gt;authentication() );
@@ -38,14 +41,20 @@
 </pre>
 </div>
 <p>That said, you will see it in plugins and (sadly) themes. Are these safe? It's difficult to say since there are thousands of plugins in the WordPress.org database alone. The best thing to do is delete the plugins and reinstall them. Same goes for themes.</p>
-</div><h2><span id="Splitting_up_your_website_users">Splitting up your website users</span></h2><div class="solvvy-solution">
+</div>
+<h2><span id="Splitting_up_your_website_users">Splitting up your website users</span></h2>
+<div class="solvvy-solution">
 <p>Splitting up your user accounts is also a good idea to isolate your sites. By assigning one domain per user, you ensure that if that user gets hacked, only that site is compromised. Also you make sure that if that site is hacked, it can't infect the others.</p>
 <p>DreamHost has <a href="/hc/en-us/articles/215562847-One-user-per-domain-policy">One User Per Domain Policy</a> which means each domain can only have one user assigned to it. View the article for further details on how to create a different user on your domain.</p>
-</div><h2><span id="One_more_scan">One more scan</span></h2><div class="solvvy-solution">
+</div>
+<h2><span id="One_more_scan">One more scan</span></h2>
+<div class="solvvy-solution">
 <p>Look 'one folder up' for an index.php and wp-config.php file. Sometimes if you install WordPress in subdirectory such as example.com/wp/ you'll run it out of example.com. When that happens, you'll have those two files in the example.com directory, and from time to time they get missed when you clean up.</p>
 <p>Look for funny named files: Any file named ljkdhsf92328kjhsdfsdf or mai1.php (that's mai-one, not mail) is probably suspect. Delete them.</p>
-<p>If you are still getting unwanted pop up ads from your site, please request a security scan by submitting a ticket. You can do so on the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=support.msg&amp;" target="_blank">Contact Support</a> page.</p>
-</div><h2><span id="See_also">See also</span></h2><div class="solvvy-hidden">
+<p>If you are still getting unwanted pop up ads from your site, please request a security scan by submitting a ticket. You can do so on the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=support.msg&amp;" target="_blank" rel="noopener">Contact Support</a> page.</p>
+</div>
+<h2><span id="See_also">See also</span></h2>
+<div class="solvvy-hidden">
 <h3>Internal links</h3>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/360001310966-How-to-log-into-your-WordPress-site">How to log into your WordPress site</a></li>
@@ -60,4 +69,5 @@
 <li><a href="http://codex.WordPress.org/FAQ_My_site_was_hacked">FAQ: My Site was hacked</a></li>
 <li><a href="http://codex.WordPress.org/Hardening_WordPress">Hardening WordPress</a></li>
 <li><a href="http://wp-cli.org/">Wp-cli</a></li>
-</ul></div>
+</ul>
+</div>
