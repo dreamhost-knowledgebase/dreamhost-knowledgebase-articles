@@ -28,6 +28,11 @@
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack image show IMAGE</span>
 </pre>
 </div>
+<p>Create a new image from an existing volume, which allows you to make copies of an exiting volume-based instance:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack image create --volume VOLUME</span>
+</pre>
+</div>
 </div>
 <h2>Compute</h2>
 <div class="solvvy-solution">
@@ -156,6 +161,33 @@
 <p>Attach volume to an instance after an instance is active and volume is available:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server add volume INSTANCE VOLUME</span>
+</pre>
+</div>
+</div>
+<h2>Block Storage backups</h2>
+<div class="solvvy-solution">
+<p>Used to create and manage volume backups.</p>
+<p>Create a new backup of an existing volume:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack volume backup create VOLUME</span>
+<span class="server">[user@localhost]$ </span><span class="command">openstack volume backup create --force VOLUME</span>
+<span class="server">[user@localhost]$ </span><span class="command">openstack volume backup create --force --incremental VOLUME</span>
+</pre>
+</div>
+<p>Delete a backup of a volume:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack volume backup delete VOLUME</span>
+<span class="server">[user@localhost]$ </span><span class="command">openstack volume backup delete --force VOLUME</span>
+</pre>
+</div>
+<p>List volume backups:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack volume backup list</span>
+</pre>
+</div>
+<p>Display volume backup details:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack volume backup show VOLUME</span>
 </pre>
 </div>
 </div>
