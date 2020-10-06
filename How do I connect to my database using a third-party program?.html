@@ -63,7 +63,7 @@
 </div>
 <h2><span id="if_ssh_tunnel">If you're using a third-party program via a secure SSH tunnel to connect</span></h2>
 <div class="solvvy-solution">
-<h3>Connecting using PuTTY v0.63</h3>
+<h3>Connecting using PuTTY</h3>
 <p>You can use PuTTy to access your MySQL database via a secure SSH tunnel. This method is preferred over less secure methods as it provides point-to-point encryption and does not expose your MySQL account to potential hacks from allowed networks.</p>
 <p>The following <strong>three</strong> steps set up a secure SSH tunnel:</p>
 <ul>
@@ -71,44 +71,71 @@
 <li>Step two: Launching PuTTy</li>
 <li>Step three: Using the third-party tool</li>
 </ul>
-<h3>Step 1 — Enabling SSH on your account</h3>
-<ol>
-<li>Go to your <a href="https://panel.dreamhost.com/">DreamHost Account Control Panel</a>.</li>
-<li>Edit the user you wish to grant SSH access.</li>
-<li>Under "User Type:", choose "Shell user".</li>
-<li>Make sure <strong>/bin/bash</strong> is your shell type.</li>
-<li>Click <strong>Save Changes</strong>.</li>
-</ol>
-<h3>Step 2 — Launching PuTTY</h3>
-<ol>
-<li><a href="http://www.chiark.greenend.org.uk/~sgtatham/putty/">Download</a> and launch <a href="/hc/en-us/articles/215464538-How-do-I-configure-PuTTY-">PuTTy</a>.</li>
-<li>In the category tree on the left, click <strong>Connection:SSH:Tunnels</strong> near the bottom.</li>
-<li>Enter <strong>3306</strong> in the source port.</li>
-<li>Enter your MySQL database address and port in the destination field (e.g., <strong>mysql.example.com:3306</strong>).</li>
-<li>Use all other defaults (<strong>local</strong>, <strong>auto</strong>) and click <strong>Add</strong>.</li>
-<li>Click <strong>Session</strong> in the category tree.</li>
-<li>Enter your shell account address in the <strong>Host Name</strong> field (e.g., <strong>psxxxxxx.dreamhostps.com</strong>).</li>
-<li>Ensure that port 22 and SSH are specified under prototcol.</li>
-<li>Give your session a name and click <strong>Save</strong>.</li>
-<li>Log into your shell account using your newly created session.</li>
-<li>Minimize the window.</li>
-</ol>
-<h3>Step 3 — Using a third-party tool</h3>
-<ol>
-<li>Open the third-party tool, such as <a href="http://wb.mysql.com/">MySQL WorkBench</a>.</li>
-<li>Enter <strong>localhost</strong> under <strong>Server Host</strong>.
-<div class="alert alert-note">
-<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
-<div class="alert-content">
-<p>Entering your actual address (e.g., mysql.example.com) does not work here. You must use <strong>localhost</strong>.</p>
+<h3>Step 1 — Enable SSH on your account</h3>
+<p>View the following article for instructions on allow SSH access to your website user.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access" target="_self">Creating a user with Shell (SSH) access&nbsp;</a></li>
+</ul>
+<h3>Step 2 — Configure Passwordless login</h3>
+<p>View the following article to enable Passwordless login in PuTTy. This step uploads the public key to your server and downloads the private key in OpenSSH format.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215464758-How-do-I-set-up-passwordless-login-in-PuTTY-" target="_self">How do I set up passwordless login in PuTTY?</a></li>
+</ul>
+<div class="alert-warning">
+<p>The private key you load into MySQL Workbench must be in <a href="https://help.dreamhost.com/hc/en-us/articles/215464758#mysql-workbench" target="_self">OpenSSH format</a> or you will not be able to connect.</p>
 </div>
-</div>
+<h3>Step 3 — Launch PuTTY</h3>
+<ol>
+<li><a href="http://www.chiark.greenend.org.uk/~sgtatham/putty/">Download</a> and launch <a href="/hc/en-us/articles/215464538-How-do-I-configure-PuTTY-">PuTTy</a>.
+<dl>
+<dd><img src="https://kbimages.dreamhosters.com/images/mysql-workbench_01.png" alt="putty configuration" /></dd>
+</dl>
 </li>
-<li>Enter <strong>3306</strong> as the port.</li>
-<li>Enter your <strong>db username</strong> and <strong>password</strong>.</li>
-<li>Click <strong>OK</strong>.</li>
+<li>In the category tree on the left, click <strong>Connection &gt; SSH &gt; Tunnels</strong>.</li>
+<li>Enter <strong>3306</strong> in the source port.</li>
+<li>Enter your MySQL database hostname and port in the destination field (e.g., <strong>mysql.example.com:3306</strong>).</li>
+<li>Leave the radio buttons for <strong>L</strong><strong>ocal </strong>and <strong>Au</strong><strong>to </strong>selected.
+<dl>
+<dd><img src="https://kbimages.dreamhosters.com/images/mysql-workbench_02.png" alt="putty configuration" /></dd>
+</dl>
+</li>
+<li>Click <strong>Session</strong> in the category tree.</li>
+<li>Enter your <a href="https://help.dreamhost.com/hc/en-us/articles/115000675027#Finding_your_FTP_server_hostname" target="_self">server URL</a> in the <strong>Host Name</strong> field (e.g., <strong>servername.dreamhost.com</strong> or <strong>psxxxxxx.dreamhostps.com</strong>).</li>
+<li>Set the port to 22.</li>
+<li>Set the <span class="text-object">Connection type</span> to SSH.</li>
+<li>Give your session a name under <span class="text-object">Saved Sessions</span>.</li>
+<li>Click <strong>Save</strong>.
+<dl>
+<dd><em>The new session name appears in the list.</em></dd>
+</dl>
+<dl>
+<dd><img src="https://kbimages.dreamhosters.com/images/mysql-workbench_03.png" alt="putty configuration" /></dd>
+</dl>
+</li>
+<li>Click the new session name to highlight.</li>
+<li>Click the <strong>Open</strong> button.
+<dl>
+<dd><em>Enter your shell user and password in the terminal prompt to log in.</em></dd>
+</dl>
+</li>
 </ol>
-<p>After you complete the step three, you should be able to connect to your MySQL database.</p>
+<h3>Step 4 — Use a third-party tool to log in</h3>
+<p>Open the third-party tool, such as <a href="http://wb.mysql.com/">MySQL WorkBench</a>.</p>
+<dl>
+<dd><img src="https://kbimages.dreamhosters.com/images/mysql-workbench_04.png" alt="putty configuration" /></dd>
+</dl>
+<p>Configure the following:</p>
+<ul>
+<li><strong>Connection Method</strong>: Choose Standard TCP/IP over SSH from the dropdown.</li>
+<li><strong>SSH Username</strong>: Enter the shell username you just enabled passwordless login for.</li>
+<li><strong>SSH Password</strong>: Do <strong>NOT</strong> enter your SSH user password.</li>
+<li><strong>SSH Key File</strong>: Upload the OpenSSH formatted private key you previously created when configuring passwordless login.</li>
+<li><strong>MySQL Hostname</strong>: The hostname you would use to log into your database (e.g., <strong>mysql.example.com</strong>). If your third-party application does not allow the URL, try&nbsp;<strong>localhost</strong> instead.</li>
+<li><strong>MySQL Server Port</strong>: Enter <strong>3306</strong> as the port.</li>
+<li><strong>Username</strong>: Enter your database username.</li>
+<li><strong>Password</strong>: Enter your database username's password.</li>
+<li>Click <strong>OK</strong> and you should be logged into your database.</li>
+</ul>
 <div class="alert alert-note">
 <div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
