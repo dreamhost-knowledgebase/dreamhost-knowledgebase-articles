@@ -1,0 +1,176 @@
+<div class="document">
+<div class="documentwrapper">
+<div class="body">
+<div id="ubuntu_bionic" class="solvvy-hidden">
+<div class="altTitle">Debian Buster</div>
+<div class="table-of-content container">
+<ul class="simple">
+<li><a class="reference internal" href="#prep">What to expect</a></li>
+<li><a class="reference internal" href="#admin_sudo">Legacy VPS with admin/sudo users</a></li>
+</ul>
+<ul class="simple">
+<li><a class="reference internal" href="#webserver">Web server</a></li>
+</ul>
+<span class="toc-sublink"><a href="#apache">Apache version</a></span> <span class="toc-sublink"><a href="#boto_s3cmd">Boto-rsync and S3cmd</a></span> <span class="toc-sublink"> <a href="#curl">curl</a> </span> <span class="toc-sublink"> <a href="#ffmpeg_libav">FFmpeg and Libav</a></span> <span class="toc-sublink"> <a href="#filterprovider">FilterProvider syntax</a></span> <span class="toc-sublink"> <a href="#java">Java version</a></span> <span class="toc-sublink"> <a href="#openssl">OpenSSL</a></span> <span class="toc-sublink"> <a href="#passenger">Passenger</a></span> <span class="toc-sublink"> <a href="#perl">Perl version</a> </span> <span class="toc-sublink"> <a href="#php-error-logs">PHP error logging</a> </span> <span class="toc-sublink"> <a href="#python">Python version</a> </span> <span class="toc-sublink"> <a href="#django">Python Django errors</a> </span> <span class="toc-sublink"> <a href="#virtualenv">Python virtualenv</a> </span> <span class="toc-sublink"> <a href="#ruby">Ruby version</a> </span> <span class="toc-sublink"> <a href="#ssh">SSH version</a> </span>
+<ul class="simple">
+<li><a class="reference internal" href="#nginx-php-versions">Nginx PHP versions</a></li>
+</ul>
+<ul class="simple">
+<li><a class="reference internal" href="#support">How can I find support?</a></li>
+</ul>
+</div>
+</div>
+<p>The following provides information to help you prepare your website for Debian Buster.</p>
+<h2>What is changing?</h2>
+<div class="solvvy-solution">
+<p>VPS servers on both Ubuntu Precise and Ubuntu Trusty are being upgraded to Debian 10 (aka Debian Buster). The following guide helps you prepare for any changes to your system.</p>
+</div>
+<h2><span id="prep">What to expect</span></h2>
+<div class="solvvy-solution">
+<p>DreamHost will contact you via email in advance of the upgrade.</p>
+<p>The time frame of an upgrade can vary from server to server, however the timing ensures that there are several highly trained engineers on hand should any major issues arise. The upgrade itself should take no longer than an hour to complete.</p>
+</div>
+<h2><span id="admin_sudo">Legacy VPS with admin/sudo users</span></h2>
+<div class="solvvy-solution">
+<p>Even though you'll still have admin/sudo access to make any changes to your VPS following the upgrade, the upgrade to Buster may not be compatible for your current needs. For example, the following changes may affect your current setup:</p>
+<ul>
+<li>The PHP version is upgrading to 7.3.</li>
+<li>Any changes made outside your <span class="text-object">/home</span> directory will <em>not</em> be retained. DreamHost recommends making note of any system changes you've made with your admin/sudo user, including backing up any data and/or configuration files stored outside of <span class="text-object">/home</span>.</li>
+<li>If you're using Ruby, Python, or run a site that relies heavily on specific server packages, DreamHost strongly recommends reading through this entire article for specific details about preparing for the upgrade.</li>
+</ul>
+<p>You can also consider the following options if you need to more control over your server environment after the upgrade to Buster:</p>
+<ul>
+<li>Since the PHP version on your server will be upgraded to 7.3, you can upgrade to a <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=dedicated.dashboard" target="_blank" rel="noopener">Dedicated Server</a>, which will still be able to use PHP 5.6 for the foreseeable future.</li>
+<li>If you rely on a highly customized setup and want full control over your software upgrades, DreamHost recommends <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=cloud.compute" target="_blank" rel="noopener">DreamCompute</a> as it provides a more elastic cloud computing solution, which is ideal for fully unmanaged environments.</li>
+<li>If you aren't sure or wish to discuss a viable solution further, feel free to <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=support.msg" target="_blank" rel="noopener">Contact Support</a>.</li>
+</ul>
+</div>
+<div class="solvvy-solution">&nbsp;</div>
+<h2><span id="webserver">Web server changes</span></h2>
+<div class="solvvy-solution">
+<div class="solvvy-solution" style="box-sizing: border-box; color: #333333; font-family: 'Proxima Nova', Arial, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: #ffffff; text-decoration-style: initial; text-decoration-color: initial;">
+<h3 style="box-sizing: border-box; padding: 0px; margin: 0px; font-family: Ubuntu, Arial, sans-serif; color: #000000; font-weight: 400; font-size: 20px;"><span id="apache" style="box-sizing: border-box;">Apache version change (from 2.2 to 2.4)</span></h3>
+<p style="box-sizing: border-box;">VPSes running Apache will be upgraded to version 2.4 (from 2.2). Although this should not cause any major issues to your hosting environment, you can view a list of changes in the following article:</p>
+<ul style="box-sizing: border-box; list-style: outside disc; margin: 4px 0px 14px 20px; padding: 0px 0px 0px 20px;">
+<li style="box-sizing: border-box;"><a style="box-sizing: border-box; background-color: transparent; color: #1a73e8; font-family: 'Proxima Nova', Arial, sans-serif; text-decoration: none;" href="https://httpd.apache.org/docs/2.4/upgrading.html">Upgrading to 2.4 from 2.2</a></li>
+</ul>
+<p style="box-sizing: border-box;"><strong style="box-sizing: border-box; font-weight: normal; font-family: 'Proxima Nova Bold', Arial, sans-serif; font-style: normal;">require valid-user</strong></p>
+<p style="box-sizing: border-box;">If you're using an .htaccess file to password protect your site, make sure you add this line to your .htaccess file:</p>
+<div class="preboxcontainer" style="box-sizing: border-box; max-width: 940px; background: #000000; border-radius: 10px; margin-bottom: 20px;">
+<pre class="prebox" style="box-sizing: border-box; overflow: auto; font-family: monospace, monospace; font-size: 1em; border-radius: 3px; padding: 10px 15px; border: 1px solid black; background: #000000; max-width: 940px; color: #d0d0d0; white-space: pre; overflow-wrap: normal; line-height: 20px;">require valid-user</pre>
+</div>
+<p style="box-sizing: border-box;">If you do not add this, your site will throw a 500 error and the following line will display in your site's error.log:</p>
+<div class="preboxcontainer" style="box-sizing: border-box; max-width: 940px; background: #000000; border-radius: 10px; margin-bottom: 20px;">
+<pre class="prebox" style="box-sizing: border-box; overflow: auto; font-family: monospace, monospace; font-size: 1em; border-radius: 3px; padding: 10px 15px; border: 1px solid black; background: #000000; max-width: 940px; color: #d0d0d0; white-space: pre; overflow-wrap: normal; line-height: 20px;">AH01627: AuthType configured with no corresponding authorization directives</pre>
+</div>
+<ul style="box-sizing: border-box; list-style: outside disc; margin: 4px 0px 14px 20px; padding: 0px 0px 0px 20px;">
+<li style="box-sizing: border-box;"><a style="box-sizing: border-box; background-color: transparent; color: #1a73e8; font-family: 'Proxima Nova', Arial, sans-serif; text-decoration: none;" href="https://httpd.apache.org/docs/2.4/howto/auth.html" target="_self">https://httpd.apache.org/docs/2.4/howto/auth.html</a></li>
+</ul>
+<p style="box-sizing: border-box;"><strong style="box-sizing: border-box; font-weight: normal; font-family: 'Proxima Nova Bold', Arial, sans-serif; font-style: normal;">'Coming soon' page displays even though it doesn't exist</strong></p>
+<p style="box-sizing: border-box;">You may see your site displaying a 'Coming Soon' page that does not exist on your web server. Add the following line to your site's .htaccess file to resolve this.</p>
+<div class="preboxcontainer" style="box-sizing: border-box; max-width: 940px; background: #000000; border-radius: 10px; margin-bottom: 20px;">
+<pre class="prebox" style="box-sizing: border-box; overflow: auto; font-family: monospace, monospace; font-size: 1em; border-radius: 3px; padding: 10px 15px; border: 1px solid black; background: #000000; max-width: 940px; color: #d0d0d0; white-space: pre; overflow-wrap: normal; line-height: 20px;">DirectoryIndex disabled</pre>
+</div>
+<p style="box-sizing: border-box;"><strong style="box-sizing: border-box; font-weight: normal; font-family: 'Proxima Nova Bold', Arial, sans-serif; font-style: normal;">WebDAV file listing hidden if index is present</strong></p>
+<p style="box-sizing: border-box;">On Apache 2.4, you must add the following text to the .htaccess file in order to access the directory of an index file using WebDAV (not a browser), since it won't show the file list in Windows Explorer:</p>
+<div class="preboxcontainer" style="box-sizing: border-box; max-width: 940px; background: #000000; border-radius: 10px; margin-bottom: 20px;">
+<pre class="prebox" style="box-sizing: border-box; overflow: auto; font-family: monospace, monospace; font-size: 1em; border-radius: 3px; padding: 10px 15px; border: 1px solid black; background: #000000; max-width: 940px; color: #d0d0d0; white-space: pre; overflow-wrap: normal; line-height: 20px;">DirectoryIndex disabled</pre>
+</div>
+</div>
+<h3><span id="boto_s3cmd">Boto-rsync</span></h3>
+<p>Because boto-rsync is outdated software and is no longer maintained, it is also removed from the latest version of Debian Buster. DreamHost recommends using S3cmd or AWS CLI instead. You can find out more about how to use S3cmd or AWS CLI in the following articles:</p>
+<ul>
+<li><a href="/hc/en-us/sections/360003569291-S3cmd">S3cmd</a></li>
+<li><a href="/hc/en-us/sections/360003559251-AWS-Command-Line-Interface">AWS Command Line Interface</a></li>
+</ul>
+<h3><span id="curl">curl version changed to 7.64.0<br /></span></h3>
+<p>The version of curl on Debian Buster is 7.64.0</p>
+</div>
+<h3><span id="ffmpeg_libav">FFmpeg and Libav</span></h3>
+<p>In Ubuntu 14 (Trusty), Libav replaced FFmpeg, and FFmpeg was removed from Trusty entirely. With the Debian Buster upgrade, this is reversed: FFmpeg is back, and Libav has been removed. Please make sure you update your file settings accordingly.</p>
+<h3><span id="java">Java version change (now Java 11.0.8)</span></h3>
+<p>Debian Buster includes a new version of Java version Java 11.0.8.</p>
+<p>This is the first major upgrade in quite some time, so it's definitely a good idea to make sure any Java dependencies you may have are compatible with version 8.</p>
+<p>For more information on the latest versions of Java, visit the following link:</p>
+<ul>
+<li><a href="https://www.oracle.com/java/technologies/javase/11-relnotes.html" target="_self">Java 11 Release Notes</a></li>
+</ul>
+<h3><span id="openssl">OpenSSL version change (1.1.1d)</span></h3>
+<p>Debian Buster includes version 1.1.1d of OpenSSL.</p>
+<h3><span id="perl">Perl version change (5.28.1)</span></h3>
+<p>Debian Buster includes a new version of Perl, 5.28.1.</p>
+<p>For more information on updating your version of Perl, visit the following article:</p>
+<ul>
+<li><a href="https://metacpan.org/pod/release/SHAY/perl-5.28.1-RC1/pod/perldelta.pod" target="_self">Change documentation for 5.28.1</a></li>
+</ul>
+<h3><span id="php-error-logs">PHP error logging</span></h3>
+<p>PHP errors are logged in your site's error.log file by default. You change which errors are reported and the location of where they are reported by updating your site's phprc file. View the following article for further details:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214894197-Where-can-I-view-PHP-errors-and-warnings-" target="_self">Where can I view PHP errors and warnings?</a></li>
+</ul>
+<h3><span id="python">Python version changes</span></h3>
+<p>The following Python versions are changing:</p>
+<ul>
+<li>Version upgrade to 3.7.3</li>
+</ul>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Since Debian Buster includes a new kernel and operating system, it no longer supports custom compiled versions of Python older than 2.7.15. If you are running an application that uses a version of Python that is older than 2.7.15, you must upgrade your code so it is compatible with at least 2.7.15 when applicable.</p>
+<p>If you need to use an older-than-2.7.15 version of Python, you can consider using DreamCompute to set up a customized environment that allows sudo access. For more information on DreamCompute, please see the following article:</p>
+<ul>
+<li><a href="234961387">Getting started with DreamCompute</a></li>
+</ul>
+</div>
+</div>
+<p>If you used a version older than 2.7.15 when creating your virtualenv, you may need to reinstall your virtualenv and all modules with a newer version:</p>
+<ul>
+<li><a href="/hc/en-us/articles/215489338-Installing-and-using-virtualenv-with-Python-2">Installing and using virtualenv with Python 2</a></li>
+<li><a href="/hc/en-us/articles/115000695551-Installing-and-using-virtualenv-with-Python-3">Installing and using virtualenv with Python 3</a></li>
+<li><a href="/hc/en-us/articles/215317948-How-to-install-Django-using-virtualenv">How to install Django using virtualenv</a></li>
+</ul>
+<p>For more information on the latest versions of Python, visit the following links:</p>
+<ul>
+<li><a href="https://docs.python.org/2/whatsnew/2.7.html">What's new in Python 2.7.15</a></li>
+<li><a href="https://docs.python.org/3.7/whatsnew/3.7.html" target="_self">What's new in Python 3.7</a></li>
+</ul>
+<h3><span id="django">Python Django errors</span></h3>
+<p>After the upgrade, you may see errors in your Django application. For example.</p>
+<div class="preboxcontainer">
+<pre class="prebox">django.core.exceptions.ImproperlyConfigured: Error loading MySQLdb module: libmysqlclient.so.18: cannot open shared object file: No such file or directory.
+Did you install mysqlclient or MySQL-python?</pre>
+</div>
+<h4>Solution</h4>
+<p>Delete your pip .cache directory.</p>
+<h3><span id="virtualenv">Python virtual environment</span></h3>
+<p>If your website is using a Python virtual environment and you notice any errors after the upgrade, reinstall your virtual environment and all modules. This helps to ensure everything is compatible with the new libraries on the server.</p>
+<p>Examples of errors you may see are Django, Passenger, or Python errors/warnings.</p>
+<h3><span id="ruby">Ruby version 2.5</span></h3>
+<p>The Ruby version on the server is 2.5.0. If you would like more control over this, DreamHost strongly recommends using <a href="/hc/en-us/articles/217185247-Ruby-Version-Manager-RVM-">RVM</a>.</p>
+<p>If you are using <a href="/hc/en-us/articles/115001070131-Using-Bundler-to-install-Ruby-gems">Bundler</a>, you only need to run:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">bundle exec gem pristine</span>
+</pre>
+</div>
+<p>Then, reload Passenger so that the changes take effect by running <span class="code">touch</span> on a <span class="text-object">restart.txt</span> file from your apps <span class="text-object">tmp</span> directory:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">touch  tmp/restart.txt</span>
+</pre>
+</div>
+<h3><span id="ssh">SSH version change to 7.9p1 (no dsa keys)</span></h3>
+<p>The version of SSH on Debian servers is 7.9p1. Please note that DSA keys are not available on this version.</p>
+<h2><span id="nginx-php-versions">Nginx PHP versions</span></h2>
+<div class="solvvy-solution">
+<p>The following PHP versions are available on <a href="https://help.dreamhost.com/hc/en-us/articles/216431827-Nginx-overview" target="_self">Nginx machines</a>:</p>
+<ul>
+<li>7.3</li>
+<li>7.4</li>
+</ul>
+</div>
+<h2><span id="support">How can I find support?</span></h2>
+<div class="solvvy-solution">
+<p>If you have any questions or concerns, please feel free to <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=support.msg&amp;" target="_blank" rel="noopener">contact support</a>.</p>
+</div>
+</div>
+</div>
+</div>
