@@ -97,7 +97,9 @@ ED25519 key fingerprint is <span class="green">SHA256:q3JfuvuldJy5u/ETWHW7HBQ3Zq
 <p>First, download the public key from the server.</p>
 <div class="alert alert-note">
 <div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
-<div class="alert-content">Depending on the version of OpenSSH you're using, only certain keys will be downloaded. Versions lower than 6.8 will default to MD5.</div>
+<div class="alert-content">
+<p>Depending on the version of OpenSSH you're using, only certain keys will be downloaded. Versions lower than 6.8 will default to MD5.</p>
+</div>
 </div>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">ssh-keyscan batroc.dreamhost.com &gt; batrockeys.pub</span></pre>
@@ -108,27 +110,49 @@ ED25519 key fingerprint is <span class="green">SHA256:q3JfuvuldJy5u/ETWHW7HBQ3Zq
 <span class="green">2048 a1:85:cc:7b:06:c9:14:f3:a8:38:7a:95:76:f1:17:eb</span> batroc.dreamhost.com (RSA)
 <span class="green">256 08:88:80:ff:e8:dd:4a:4f:6b:3a:64:cf:8c:84:f2:13</span> batroc.dreamhost.com (ECDSA)</pre>
 </div>
+<!--
 <h3>Generate a hash of a different key</h3>
-<p>As stated above, only certain keys will download based on the version of OpenSSH you're using. However, you can generate a hash of a different key if needed.</p>
-<h4><strong>Generate an RSA (SHA256) hash based on the RSA (MD5) key</strong></h4>
-<p>This assumes that when you run ssh-keyscan, only the MD5 keys are downloaded. Use 'cat' to view the keys:</p>
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">cat batrockeys.pub</span>
+  <p>
+    As stated above, only certain keys will download based on the version of
+    OpenSSH you're using. However, you can generate a hash of a different key
+    if needed.
+  </p>
+  
+  <h4>
+    <strong>Generate an RSA (SHA256) hash based on the RSA (MD5) key</strong>
+  </h4>
+  <p>
+    This assumes that when you run ssh-keyscan, only the MD5 keys are downloaded.
+    Use 'cat' to view the keys:
+  </p>
+  <div class="preboxcontainer">
+    <pre class="prebox"><span class="server">[server]$ </span><span class="command">cat batrockeys.pub</span>
 batroc.dreamhost.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDFc4bKkZW+0bb+UYtDZwH/IAT5V4ybLlJWJ4cp7Ny3c4767aQheZr5ifcAEc+itEqnGPWIQ/qxbKZnw6F5dBXggbx+KIZX7JXDfJqNkFuVz3mKsvKxu0qGw2/b40dRiUe0+cAxamR73YNpCeCZuo515lJCw4eVo3BJtnHetT/yF9xtdGPQm334yDHunEtUgKFzqyEDEolFtL5FZcPP137RgfMdp+BWQj8tOiodmcUlA1kEhkN63JRcSsSJhd1FFAA4PoiyvsPm+PGUCIFwzKW13SXEIi0GQ2J8Rl3YW7B/H1HXCDGfT75T1OhP3mGN3H8Es9ieq/1kKTyzscq6C30z
 batroc.dreamhost.com ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBDIXGPnE5gz3j8vzl8LeboCFAkcZ0L76ld5Y4knIghV+tTxOrUW2M3m6bN3qNJK9U8oJLiTafotQ/Js4JUTY8L8=</pre>
-</div>
-<p>You can see that there are two keys in this file. You must delete one of them (or more) so only a single key is left. Open the file and delete the second line so only one line for a single key is left.</p>
-<p>You can now run the following command to generate a SHA256 hash based on that single key.</p>
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">awk '{print $3}' batrockeys.pub | base64 -d | sha256sum -b | awk '{print $1}' | xxd -r -p | base64</span>
+  </div>
+  <p>
+    You can see that there are two keys in this file. You must delete one of
+    them (or more) so only a single key is left. Open the file and delete the
+    second line so only one line for a single key is left.
+  </p>
+  <p>
+    You can now run the following command to generate a SHA256 hash based on
+    that single key.
+  </p>
+  <div class="preboxcontainer">
+    <pre class="prebox"><span class="server">[server]$ </span><span class="command">awk '{print $3}' batrockeys.pub | base64 -d | sha256sum -b | awk '{print $1}' | xxd -r -p | base64</span>
 <span class="green">mYNdKXseiTyZVeIdXNqy8rJTfrKnBo2QG1XK9DdUSYc=</span></pre>
-</div>
-<p>As you can see, this prints out the RSA (SHA256) fingerprint. If you would have deleted the first key instead, the output would show the ECDSA (SHA256) fingerprint.</p>
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">awk '{print $3}' batrockeys.pub | base64 -d | sha256sum -b | awk '{print $1}' | xxd -r -p | base64</span>
+  </div>
+  <p>
+    As you can see, this prints out the RSA (SHA256) fingerprint. If you would
+    have deleted the first key instead, the output would show the ECDSA (SHA256)
+    fingerprint.
+  </p>
+  <div class="preboxcontainer">
+    <pre class="prebox"><span class="server">[server]$ </span><span class="command">awk '{print $3}' batrockeys.pub | base64 -d | sha256sum -b | awk '{print $1}' | xxd -r -p | base64</span>
 <span class="green">ijqWGQW20bkvOViujUO5PRknle09aDPUjh25u60T7eQ=</span></pre>
-</div>
-</div>
+  </div>
+--></div>
 <h2><span id="See_also">See also</span></h2>
 <div class="solvvy-hidden">
 <ul>
