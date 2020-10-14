@@ -1,19 +1,24 @@
+<h2>Overview</h2>
+<div class="solvvy-solution">
 <p>For larger file uploads, most S3 clients make use of the multi-part-upload (MPU) feature of the S3 protocol. This allows the client to break large files into smaller chunks, upload these smaller chunks, and re-try any chunks that failed without having to start over.</p>
-<p>Most S3 clients are good about cleaning up <em><strong>MPU data</strong></em> that it no longer needs, but if a connection drops or the client crashes, it could leave this data behind. The data is generally not used again, however it may silently use additional disk space on your account until it is removed. It is worthwhile to check for and remove this <strong><em>MPU data</em></strong> if disk storage costs appear larger than expected.</p>
-<p>Most S3 clients don’t have a <strong><em>MPU data</em></strong> purge feature, so in the following example, Python and the boto library is used to check for and clean up this data.</p>
+<p>Most S3 clients are good about cleaning up MPU data that it no longer needs, but if a connection drops or the client crashes, it could leave this data behind. The data is generally not used again, however it may silently use additional disk space on your account until it is removed. It is worthwhile to check for and remove this MPU data if disk storage costs appear larger than expected.</p>
+<p>Most S3 clients don’t have an MPU data purge feature, so in the following example, Python and the boto library is used to check for and clean up this data.</p>
+</div>
 <h2>Step 1&nbsp;— Create a .boto file to store your keys.</h2>
+<div class="solvvy-solution">
 <p>View the following article for instructions on how to create a .boto config file. This will be used to store your DreamObjects keys.</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/115000376631-Creating-a-boto-file-to-store-your-keys" target="_self">Creating a .boto file to store your keys</a></li>
 </ul>
 <p>There should now be a file named .boto in your user's home directory which stores your DreamObjects keys.</p>
-<div id="using-the-clean-up-script">
+</div>
 <h2>Step 2 — Create the&nbsp;clean-up script</h2>
+<div class="solvvy-solution">
 <p>Create a file titled&nbsp;<strong>mpu.py&nbsp;</strong>via&nbsp;SSH. The following article explains how to do this.</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Creating and editing a file via SSH</a></li>
 </ul>
-<p>You can then add the code below to this file. This script&nbsp;iterates over all buckets checking for <strong><em>MPU data</em></strong>. If any are found, it displays the file name, the date it was uploaded, its size, and then prompts you if it should be deleted.</p>
+<p>You can then add the code below to this file. This script&nbsp;iterates over all buckets checking for MPU data. If any are found, it displays the file name, the date it was uploaded, its size, and then prompts you if it should be deleted.</p>
 <div class="alert alert-important">
 <div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
@@ -68,8 +73,11 @@ Bucket: workbackup
 Total: 0.00GB
 No changes made to bucket.</pre>
 </div>
+</div>
 <h2>Step 3 — Run the file</h2>
+<div class="solvvy-solution">
 <p>While still logged into your server via SSH, run the file by using the following command.</p>
+</div>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">python mpy.py</span></pre>
 </div>
@@ -77,4 +85,3 @@ No changes made to bucket.</pre>
 <div class="dream-sign-up">
 <h2>Start Storing Your Data Today!</h2>
 <a href="https://www.dreamhost.com/cloud/storage/">Sign Up for DreamObjects</a></div>
-</div>
