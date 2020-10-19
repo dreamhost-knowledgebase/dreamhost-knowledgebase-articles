@@ -2,12 +2,14 @@
 <div class="documentwrapper">
 <div class="body">
 <div id="how-to-recover-access-to-a-volume-based-instance-when-ssh-keys-are-lost">
-<div id="introduction">
-</div><h2>Introduction</h2><div class="solvvy-solution">
+<div id="introduction">&nbsp;</div>
+<h2>Introduction</h2>
+<div class="solvvy-solution">
 <p>DreamCompute instances are created with a specified SSH key which is used for gaining initial access. This guide covers some basic steps to attempt to retrieve the data and gain access again if desired.</p>
 </div>
-<div id="things-to-keep-in-mind">
-</div><h2>Things to keep in mind</h2><div class="solvvy-solution">
+<div id="things-to-keep-in-mind">&nbsp;</div>
+<h2>Things to keep in mind</h2>
+<div class="solvvy-solution">
 <ul>
 <li>
 <p class="first"><strong>IP addresses will change</strong></p>
@@ -15,35 +17,37 @@
 </li>
 <li>
 <p class="first"><strong>Know your instance type</strong></p>
-<p>One can generally find out if an instance used an ephemeral or volume boot disk by looking at the 'Instances' page in the DreamCompute dashboard. There you can see if the name of a custom image or an operating system is listed in the “Image Name” column. If one is listed, the instance is ephemeral. If one isn’t, it used a volume boot disk.</p>
+<p>One can generally find out if an instance used an ephemeral or volume boot disk by looking at the 'Instances' page in the DreamCompute dashboard. There you can see if the name of a custom image or an operating system is listed in the <span class="text-object">Image Name</span> column. If one is listed, the instance is ephemeral. If one isn’t, it used a volume boot disk.</p>
 </li>
 <li>
 <p class="first"><strong>Backup volume booted instance</strong></p>
-<p>When an instance is created, there is an option titled "Delete Volume on Instance Delete". Unfortunately it is difficult to check what that option was set to after creation. If "Yes" was selected, then the volume data will be permanently deleted when the instance is deleted.</p>
-To make a backup, navigate to the <a href="https://iad2.dreamcompute.com/project/instances/">'Compute &gt; Instances'</a> page. To the right of the instance click the <strong>Create Snapshot</strong> button. This snapshot uses volume storage quota, so additional storage may need to be added in the DreamHost panel for more room. Once this entire process is complete, the snapshot can be deleted and the quota lowered.</li>
+<p>When an instance is created, there is an option titled&nbsp;"Delete Volume on Instance Delete". Unfortunately it is difficult to check what that option was set to&nbsp;after creation. If&nbsp;"Yes" was selected, then the volume data will be permanently deleted when the instance is deleted.</p>
+To make a backup, navigate to the <a href="https://iad2.dreamcompute.com/project/instances/">'Compute &gt; Instances'</a> page. To the right of the instance click&nbsp;the <strong>Create Snapshot</strong>&nbsp;button. This snapshot uses volume storage quota, so additional storage may need to be added in the DreamHost panel for more room. Once this&nbsp;entire&nbsp;process is complete, the snapshot can be deleted and the quota lowered.</li>
 </ul>
 </div>
-<div id="regain-access-to-volume-based-instance">
-</div><h2>Regain access to volume-based instance</h2><div class="solvvy-solution">
+<div id="regain-access-to-volume-based-instance">&nbsp;</div>
+<h2>Regain access to volume-based instance</h2>
+<div class="solvvy-solution">
 <ol class="arabic simple">
-<li>Navigate to the <a class="reference external" href="https://iad2.dreamcompute.com/project/instances/">Instances page</a> of the DreamCompute dashboard.</li>
-<li>If you do not know whether or not "Delete Volume on Instance Delete" was set to "Yes" for your instance when it was created, make sure a snapshot has been created. A snapshot uses as much disk space as the volume, so if the volume is 80GB, confirm there is another 80GB free. You can ensure that there is sufficient volume storage on the <a href="https://iad2.dreamcompute.com/project/">Overview</a> page.</li>
+<li>Navigate to&nbsp;the&nbsp;<a class="reference external" href="https://iad2.dreamcompute.com/project/instances/">Instances page</a>&nbsp;of the DreamCompute dashboard.</li>
+<li>If&nbsp;you do not know whether or not "Delete Volume on Instance Delete" was set to "Yes"&nbsp;for your instance when it was created, make sure&nbsp;a snapshot has been created.&nbsp;A snapshot uses as much disk space as the volume, so if the volume is 80GB, confirm there is another 80GB free. You can ensure that there is sufficient volume storage on the&nbsp;<a href="https://iad2.dreamcompute.com/project/">Overview</a>&nbsp;page.</li>
 <li>Make note of the size of the instance, the name of the instance, the UUID and name of the volume, and any other features that should be retained in the new instance.</li>
-<li>Delete the instance (this will leave an available volume).</li>
-<li>Click the <strong>Launch Instance</strong> button to <a href="https://help.dreamhost.com/hc/en-us/articles/215912848-How-to-launch-an-instance-using-the-DreamCompute-dashboard">create a new instance</a>. On the "Source" tab, set "Select Boot Source" to "Volume" and click the up arrow symbol next to the newly available volume from the previous instance.</li>
-<li>On the 'Key Pair' tab, select the <a href="https://help.dreamhost.com/hc/en-us/articles/115001736691-How-to-create-a-Key-pair-overview">Key Pair to be injected for the default user</a>. If there are no valid keys available, you can use the <strong>Create Key Pair</strong> or <strong>Import Key Pair</strong> buttons to associate a new key pair with your project (and this instance).</li>
-<li>When you're finished customizing the instance, click the <strong>Launch</strong> button on the bottom right.</li>
-<li>Once the new instance has booted, attempt to log into it with the <a class="reference external" href="https://help.dreamhost.com/hc/en-us/articles/228377408-How-to-find-the-default-user-of-an-image">default username</a> and the new <a href="https://help.dreamhost.com/hc/en-us/articles/115001754711-Locating-the-IP-Address-of-your-instance">IP address</a>.</li>
+<li>Delete the&nbsp;instance (this will leave an available volume).</li>
+<li>Click the <strong>Launch Instance</strong> button to <a href="https://help.dreamhost.com/hc/en-us/articles/215912848-How-to-launch-an-instance-using-the-DreamCompute-dashboard">create a new instance</a>.&nbsp;On the "Source" tab, set "Select Boot Source" to "Volume" and click the up arrow symbol next to the newly available volume from the previous instance.</li>
+<li>On the 'Key Pair' tab, select the <a href="https://help.dreamhost.com/hc/en-us/articles/115001736691-How-to-create-a-Key-pair-overview">Key Pair to be injected for the default user</a>. If there are no valid keys available,&nbsp;you can use the <strong>Create Key Pair</strong> or <strong>Import Key Pair</strong> buttons to associate a new key pair with your project (and this instance).</li>
+<li>When you're finished customizing the instance, click&nbsp;the <strong>Launch</strong> button on the bottom right.</li>
+<li>Once the new instance has booted, attempt to log into it with the&nbsp;<a class="reference external" href="https://help.dreamhost.com/hc/en-us/articles/228377408-How-to-find-the-default-user-of-an-image">default username</a>&nbsp;and the new <a href="https://help.dreamhost.com/hc/en-us/articles/115001754711-Locating-the-IP-Address-of-your-instance">IP address</a>.</li>
 <li>If everything looks correct and access has been restored, you should delete the volume snapshot made in step #2 to recover volume storage quota.</li>
 </ol>
 </div>
 </div>
 </div>
 </div>
-<div class="clearer"> </div>
+<div class="clearer">&nbsp;</div>
 </div>
-<div class="footer"> </div>
+<div class="footer">&nbsp;</div>
 <!--DreamCompute Button-->
 <div class="dream-sign-up">
-<h2>Deploy Your Apps On Cloud Servers Today</h2><div class="solvvy-hidden">
-<a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a></div></div>
+<h2>Deploy Your Apps On Cloud Servers Today</h2>
+<div class="solvvy-hidden"><a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a></div>
+</div>
