@@ -22,10 +22,10 @@
 <p>The following are the basic actions that take place once a file is requested from a domain running Passenger and Ruby on Rails:</p>
 <ol>
 <li>When a request is made to a domain/subdomain, the <a href="/hc/en-us/articles/217214317-Apache-HTTP-Server">Apache HTTP Server</a> passes the request to Passenger.</li>
-<li>Passenger first looks for an appropriately-named HTML or <a href="/hc/en-us/articles/217297307-CGI-overview">CGI</a> file in the domain/subdomain's /public subdirectory.</li>
+<li>Passenger first looks for an appropriately-named HTML or <a href="/hc/en-us/articles/217297307-CGI-overview">CGI</a> file in the domain/subdomain's <span class="text-object">/public</span> subdirectory.</li>
 <li>If no matching file is found, the request is passed to Passenger's Rack interface.</li>
-<li>Note that this use of the /public subdirectory meshes precisely with the way that Ruby on Rails makes use of the same subdirectory.</li>
-<li>In order to generate a response, Rack looks for a file named <span class="text-object">config.ru</span> in the domain/subdomain's root directory (i.e., the parent of the domain's /public subdirectory).</li>
+<li>Note that this use of the <span class="text-object">/public</span> subdirectory meshes precisely with the way that Ruby on Rails makes use of the same subdirectory.</li>
+<li>In order to generate a response, Rack looks for a file named <span class="text-object">config.ru</span> in the domain/subdomain's root directory (i.e., the parent of the domain's <span class="text-object">/public</span> subdirectory).</li>
 <li>Rack requires that you place the appropriate Ruby code into "config.ru" to invoke your desired web framework or application to handle the request.</li>
 </ol>
 <p>Under normal circumstances, Ruby on Rails (RoR) will automatically create and initialize all of the files and directories needed to interface with Passenger/Rack. When running a RoR application, the only Rack-related files you are likely to modify are possibly adding <span class="code">GEM_PATH</span> information to "config.ru" and then <span class="code">touch</span> the restart.txt file to restart the application.</p>
