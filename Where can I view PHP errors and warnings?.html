@@ -9,21 +9,36 @@
 <p>When PHP changes are made on your site (usually from&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/214895317-How-do-I-change-the-PHP-version-of-my-site-">upgrading the PHP version</a>), you may find that PHP throws errors and warnings. In the past, these would display on your website and you could turn them off using a phprc file.</p>
 <p>DreamHost now disables all PHP warnings by default. This means you should never see them on your website when making changes to PHP.</p>
 </div>
-<ul>
-<li><a href="#Where_can_I_view_errors" target="_self">Where can I view PHP errors and warnings?</a></li>
+<ul><!--
+  <li>
+    <a href="#Where_can_I_view_errors" target="_self">Where can I view PHP errors and warnings?</a>
+  </li>
+  -->
 <li><a href="#Display_warnings" target="_self">How can I display the warnings on my site?</a></li>
 <li><a href="#Controlling_what_type_of_errors_display" target="_self">Controlling what type of errors display</a></li>
 <li><a href="#Custom_php_error_log" target="_self">Using a custom PHP error log</a></li>
 <li><a href="#Error_logging" target="_self">Configuring custom error logging</a></li>
 </ul>
-<h2><span id="Where_can_I_view_errors">Where can I view PHP errors and warnings?</span></h2>
+<!--
+<h2>
+  <span id="Where_can_I_view_errors">Where can I view PHP errors and warnings?</span>
+</h2>
 <div class="solvvy-solution">
-<p>Since these warnings have been turned off globally, you won't see them on your site. But you can still see all PHP errors and warnings in your <span class="text-object">error.log</span> file.</p>
-<ul>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/216512197-Viewing-your-access-and-error-logs-via-SFTP">Viewing your access and error logs via SFTP</a></li>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/216512217-Viewing-and-examining-your-error-log-via-SSH">Viewing and examining your error log via SSH</a></li>
-</ul>
+  <p>
+    Since these warnings have been turned off globally, you won't see them on
+    your site. But you can still see all PHP errors and warnings in your
+    <span class="text-object">error.log</span> file.
+  </p>
+  <ul>
+    <li>
+      <a href="https://help.dreamhost.com/hc/en-us/articles/216512197-Viewing-your-access-and-error-logs-via-SFTP">Viewing your access and error logs via SFTP</a>
+    </li>
+    <li>
+      <a href="https://help.dreamhost.com/hc/en-us/articles/216512217-Viewing-and-examining-your-error-log-via-SSH">Viewing and examining your error log via SSH</a>
+    </li>
+  </ul>
 </div>
+-->
 <h2><span id="Display_warnings">How can I display the warnings on my site?</span></h2>
 <div class="solvvy-solution">
 <p>To display the warnings on your site, you just need to <a href="https://help.dreamhost.com/hc/en-us/articles/214894037-How-do-I-create-a-phprc-file-via-FTP-">add the following line to your phprc file</a>:</p>
@@ -83,19 +98,39 @@ error_reporting(E_ALL);</pre>
 </div>
 <p>The only way to display errors is to edit your phprc file.</p>
 </div>
-<h2><span id="Custom_php_error_log">Using a custom PHP error log</span></h2>
+<!--
+<h2>
+  <span id="Custom_php_error_log">Using a custom PHP error log</span>
+</h2>
 <div class="solvvy-solution">
-<p>You can also create your own PHP error.log file to store these errors in a different location.</p>
-<div class="alert alert-note">
-<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
-<div class="alert-content">
-<p>Creating your own custom PHP error.log file will override the default location of your error.log file. When you create the file as shown below, you will no longer see future PHP errors/warnings in your error.log file. You will only see future PHP errors/warnings within your custom PHP error.log file.</p>
-<p>However, this only applies to PHP errors. Any other website errors such as Apache webserver errors will continue to show in your regular error.log file.</p>
+  <p>
+    You can also create your own PHP error.log file to store these errors in
+    a different location.
+  </p>
+  <div class="alert alert-note">
+    <div class="alert-icon">
+      <img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60">
+    </div>
+    <div class="alert-content">
+      <p>
+        Creating your own custom PHP error.log file will override the default
+        location of your error.log file. When you create the file as shown
+        below, you will no longer see future PHP errors/warnings in your
+        error.log file. You will only see future PHP errors/warnings within
+        your custom PHP error.log file.
+      </p>
+      <p>
+        However, this only applies to PHP errors. Any other website errors
+        such as Apache webserver errors will continue to show in your regular
+        error.log file.
+      </p>
+    </div>
+  </div>
 </div>
-</div>
-</div>
+-->
 <h2><span id="Error_logging">Configuring custom error logging</span></h2>
 <div class="solvvy-solution">
+<p>You can add code to your <span class="text-object">phprc</span> file on the server to log all PHP errors in a new file named <span class="text-object">php.log</span>.</p>
 <h3>Decide where the php.log file should go</h3>
 <p>You must first decide where you want your php.log file to be created. This can be in any directory you like as long as your user is able to write to that directory. The most simple location would be in your user's home directory. For example:</p>
 <div class="preboxcontainer">
