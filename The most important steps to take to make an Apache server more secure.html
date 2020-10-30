@@ -18,7 +18,7 @@
 <p>Apache is built to be stable and secure, but it will only be as secure as the user who configures it. Once Apache is built and installed, it’s important to configure the server to be as minimal as possible.</p>
 <div id="run-as-an-unprivileged-user">
 <h3>Run as an unprivileged user</h3>
-<p>In security, the principle of least privilege states that an entity should be given no more permission than necessary to accomplish its goals within a given system. In the context of your web server, this means locking down Apache to run only with the permissions necessary to run. A first step in this process is to configure Apache to run as an unprivileged system user (e.g., not root). This is done by setting the APACHE_RUN_USER and APACHE_RUN_GROUP variables in the <strong>/etc/apache2/envvars</strong> file:</p>
+<p>In security, the principle of least privilege states that an entity should be given no more permission than necessary to accomplish its goals within a given system. In the context of your web server, this means locking down Apache to run only with the permissions necessary to run. A first step in this process is to configure Apache to run as an unprivileged system user (e.g., not root). This is done by setting the APACHE_RUN_USER and APACHE_RUN_GROUP variables in the <span class="text-object">/etc/apache2/envvars</span> file:</p>
 <p>Edit the file and change the following lines:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">sudo vim /etc/apache2/envvars</span>
@@ -50,7 +50,7 @@ ServerTokens ProductOnly;</pre>
 </div>
 <div id="disable-htaccess-files">
 <h3>Disable .htaccess files</h3>
-<p><cite>.htaccess</cite> files are a powerful feature that allow Apache to have its configuration extended outside its main config file. While this may be convenient, it does present a security risk, as Apache will read any .htaccess file in its path — even ones placed by an attacker that could compromise the server. It may be desirable to lock down the Apache configuration by disabling .htaccess files entirely. This can be done by editing the <span class="code"><a href="https://httpd.apache.org/docs/2.4/mod/core.html">AllowOverride</a></span> directive in the <strong>/etc/apache2/apache2.conf file:</strong></p>
+<p><cite>.htaccess</cite> files are a powerful feature that allow Apache to have its configuration extended outside its main config file. While this may be convenient, it does present a security risk, as Apache will read any .htaccess file in its path — even ones placed by an attacker that could compromise the server. It may be desirable to lock down the Apache configuration by disabling .htaccess files entirely. This can be done by editing the <span class="code"><a href="https://httpd.apache.org/docs/2.4/mod/core.html">AllowOverride</a></span> directive in the <span class="text-object">/etc/apache2/apache2.conf file:</span></p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">sudo vim /etc/apache2/apache2.conf</span>
 AllowOverride None</pre>
@@ -66,7 +66,7 @@ AllowOverride None</pre>
 </div>
 <div id="restrict-access-by-ip">
 <h3>Restrict access by IP</h3>
-<p>Sensitive areas of websites, such as admin control panels, should have strict access controls placed on them. Apache makes it easy to whitelist IP access to certain locations of your website and deny traffic to all other IP addresses. You can add the following to your&nbsp;<strong>/etc/apache2/apache2.conf</strong> file.</p>
+<p>Sensitive areas of websites, such as admin control panels, should have strict access controls placed on them. Apache makes it easy to whitelist IP access to certain locations of your website and deny traffic to all other IP addresses. You can add the following to your&nbsp;<span class="text-object">/etc/apache2/apache2.conf</span> file.</p>
 <div class="preboxcontainer">
 <pre class="prebox">&lt;Directory /PATH/TO/WEBDIR/wp-admin&gt;
     # allow access from one IP and an additional IP range,
@@ -88,7 +88,7 @@ AllowOverride None</pre>
 <p>The default model in which Apache processes requests (called prefork mode), is subject to an attack known as a <a href="https://en.wikipedia.org/wiki/Slowloris_(computer_security)">Slowloris attack</a>. A Slowloris attack is a form of DoS (Denial of Service) attack in which the Apache server is forced to wait on requests from malicious clients taking a long time to send traffic, thus forcing legitimate requests to time out or be ignored entirely. Thankfully, modern Apache servers are capable of mitigating this threat with a few additional configuration directives.</p>
 <div id="enable-mod-reqtimeout">
 <h3>Enable mod_reqtimeout</h3>
-<p><cite>mod_reqtimeout</cite> is an Apache module designed to shut down connections from clients taking too long to send their request, such as is seen in a Slowloris attack. This module provides a directive that allows Apache to close the connection if it senses that the client is not sending data quickly enough. For example, add this to your&nbsp;<strong>/etc/apache2/apache2.conf&nbsp;</strong>file:</p>
+<p><cite>mod_reqtimeout</cite> is an Apache module designed to shut down connections from clients taking too long to send their request, such as is seen in a Slowloris attack. This module provides a directive that allows Apache to close the connection if it senses that the client is not sending data quickly enough. For example, add this to your&nbsp;<span class="text-object">/etc/apache2/apache2.conf&nbsp;</span>file:</p>
 <div class="preboxcontainer">
 <pre class="prebox">RequestReadTimeout header=10-20,MinRate=500 body=20,MinRate=500</pre>
 </div>
