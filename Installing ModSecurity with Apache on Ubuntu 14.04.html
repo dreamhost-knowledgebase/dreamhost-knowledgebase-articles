@@ -30,25 +30,25 @@
 <div class="solvvy-solution">
 <p>The recommended default config file provided for ModSecurity has very few actual protective rules configured, but is a good starting point. In this tutorial the OWASP Core Rule Set (CRS) is used to provide additional protection.</p>
 <h3>Enabling CRS Rulesets</h3>
-<p>The Ubuntu package for ModSecurity recommends a separate package containing the CRS rulesets, which can be used as an extra source of rules for WAF. Configure&nbsp;ModSecurity to read rule files from the&nbsp;<cite>activated_rules</cite>&nbsp;directory by adding&nbsp;the following directives to the&nbsp;<strong><cite>/etc/apache2/mods-enabled/security2.conf</cite></strong>&nbsp;file:</p>
+<p>The Ubuntu package for ModSecurity recommends a separate package containing the CRS rulesets, which can be used as an extra source of rules for WAF. Configure&nbsp;ModSecurity to read rule files from the&nbsp;<span class="text-object">activated_rules</span>&nbsp;directory by adding&nbsp;the following directives to the&nbsp;<span class="text-object">/etc/apache2/mods-enabled/security2.conf</span>&nbsp;file:</p>
 <div class="preboxcontainer">
 <pre class="prebox">IncludeOptional "/usr/share/modsecurity-crs/*.conf"
 IncludeOptional "/usr/share/modsecurity-crs/activated_rules/*.conf"</pre>
 </div>
-<p>This instructs ModSecurity to attempt to use any files ending in <cite>conf</cite> as configuration files. More information is available in the README file in the <cite>activated_rules</cite> directory.</p>
-<p>Once this is done, link the desired rulesets into the newly included locations. For example, to add rules designed to protect against SQL injection attacks, link in the <cite>sql_injection_attacks</cite> file:</p>
+<p>This instructs ModSecurity to attempt to use any files ending in <span class="text-object">conf</span> as configuration files. More information is available in the README file in the <span class="text-object">activated_rules</span> directory.</p>
+<p>Once this is done, link the desired rulesets into the newly included locations. For example, to add rules designed to protect against SQL injection attacks, link in the <span class="text-object">sql_injection_attacks</span> file:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[root@instance]# </span><span class="command">cd /usr/share/modsecurity-crs/</span>
 <span class="server">[root@instance]# </span><span class="command">ln -s ./base_rules/modsecurity_crs_41_sql_injection_attacks.conf \
 ./activated_rules/</span></pre>
 </div>
-<p>Of course, it’s possible to link only certain rulesets, or entire groups, depending on your needs. The CRS is also distributed with custom and experimental rulesets to detect and mitigate a wide variety of emerging threats. Rulesets for specific CMS/application installations, such as WordPress and Joomla, are also available in the <cite>slr_rules</cite> directory (though as a free WAF ruleset offering, these rulesets are not always current with the latest threats).</p>
+<p>Of course, it’s possible to link only certain rulesets, or entire groups, depending on your needs. The CRS is also distributed with custom and experimental rulesets to detect and mitigate a wide variety of emerging threats. Rulesets for specific CMS/application installations, such as WordPress and Joomla, are also available in the <span class="text-object">slr_rules</span> directory (though as a free WAF ruleset offering, these rulesets are not always current with the latest threats).</p>
 <p>Any time the ModSecurity configuration is adjusted, Apache must be reloaded in order for the rules to take effect:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[root@instance]# </span><span class="command">service apache2 reload</span></pre>
 </div>
 <h3>Activating ModSecurity</h3>
-<p>ModSecurity initially runs in <cite>DetectionOnly</cite> mode, in which the WAF examines HTTP(S) traffic, but does not actually block malicious requests. This must be adjusted in order for ModSecurity to deny attack traffic. In the file <strong><cite>/etc/modsecurity/modsecurity.conf</cite></strong>, find the directive <span class="code">SecRuleEngine</span>:</p>
+<p>ModSecurity initially runs in <cite>DetectionOnly</cite> mode, in which the WAF examines HTTP(S) traffic, but does not actually block malicious requests. This must be adjusted in order for ModSecurity to deny attack traffic. In the file <span class="text-object">/etc/modsecurity/modsecurity.conf</span>, find the directive <span class="code">SecRuleEngine</span>:</p>
 <div class="preboxcontainer">
 <pre class="prebox">SecRuleEngine DetectionOnly</pre>
 </div>
