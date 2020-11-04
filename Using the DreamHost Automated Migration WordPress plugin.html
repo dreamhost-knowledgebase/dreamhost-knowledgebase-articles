@@ -85,14 +85,8 @@
 <dd><em>The 'Migrate Your Sites to DreamHost' page opens:</em></dd>
 </dl>
 <dl>
-<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2020-04_wp-migration-plugin-token.png" alt="2020-04_wp-migration-plugin-token.png" /></dd>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2020-04_wp-migration-plugin-token-UPDATE.png" alt="2020-04_wp-migration-plugin-token.png" /></dd>
 </dl>
-<div class="alert alert-note">
-<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
-<div class="alert-content">
-<p>If you do not see the Migration Token option shown above, then an outdated version of the plugin is being used. Please update your plugin before proceeding or use <a class="reference internal" href="#sftp-user-server-address">these steps</a> to migrate using your SFTP credentials.</p>
-</div>
-</div>
 </li>
 <li>Enter the following:
 <ul>
@@ -101,7 +95,20 @@
 <li>Review and agree (by clicking the checkbox) to the Terms of Service and Privacy Policy if you agree and wish to continue.</li>
 </ul>
 </li>
-<li>Click the <strong>Migrate</strong> button when finished.</li>
+<li>Click the <strong>Migrate</strong> button when finished.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/wp-migration-plugin-migration-key.png" alt="2020-04_wp-migration-plugin-token.png" /></dd>
+</dl>
+</li>
+<li><strong>Migration Key</strong>: Enter your Migration token.</li>
+<li>The four options are optional and should only be filled out if needed.
+<ul>
+<li><strong>Source Website Password Protected</strong>: Is your source website password protected currently to simply view the homepage? - Generally, this is not password protected</li>
+<li><strong>Destination Website Password Protected</strong>: Is your destination website password protected currently to simply view the homepage? - Generally, this is not password protected</li>
+<li><strong>Advanced Options</strong>:&nbsp;This generally does not need to be filled out.</li>
+<li><strong>Add folders</strong>:&nbsp; This option allows you to select non-WordPress core-specific files, in the event you have a custom setup.</li>
+</ul>
+</li>
 <li>Bookmark the URL to check your migration's progress and close the browser tab or window while it is running.</li>
 </ol>
 <p>Most migrations take under an hour to complete, but if your site is larger than a couple GBs of data, it could take more than an hour. Once it completes, you will receive a notification email to the address you entered during the step above.</p>
@@ -124,48 +131,66 @@
 <li><strong>All other hosting plans</strong>: when you are ready to make your site live on DreamHost using your real domain name, follow <a href="/hc/en-us/articles/214693138-How-to-move-WordPress-to-a-different-domain-at-DreamHost">these instructions</a> to rename your domain.</li>
 </ul>
 </div>
-<h2>If you're using an older version of the DreamHost Automated Migration plugin, or wish to migrate using SFTP credentials instead</h2>
+<h2>Migrating with FTP, SFTP, or SSH credentials</h2>
 <div class="solvvy-solution">
-<p>The easiest way to migrate is to make sure you're using the latest plugin version on the WordPress site at your old host, which may require you to update the plugin in your WordPress dashboard. Older versions of the plugin do not have Migration Key support. However, it is possible to migrate your WordPress site with an older version of the plugin, using SFTP credentials instead.</p>
-<p>The following steps describe how to do that.</p>
-<h3><span id="sftp-user-server-address">Step 1 — Locate your DreamHost SFTP credentials</span></h3>
+<p>The following steps describe how to migrate your site using FTP, SFTP, or SSH credentials.</p>
+<h3><span id="sftp-user-server-address">Step 1 — Locate your DreamHost credentials</span></h3>
 <p>Locate the following information about your DreamHost account:</p>
 <ul>
-<li><strong>FTP/SFTP User</strong>: Navigate to the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.manage" target="_blank" rel="noopener">Manage Domains</a> page. Make a note of your user to the right of your domain (shown as 'User: name').</li>
+<li><strong>FTP/SFTP/SSH User</strong>: Navigate to the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.manage" target="_blank" rel="noopener">Manage Domains</a> page. Make a note of your user to the right of your domain (shown as 'User: name').</li>
 <li><strong>Host/Server Address</strong>: Click the user name to open the 'Editing User' page. Your server name is shown in parentheses next to your user name at the top (e.g., 'on servername'). Use the following server-address format depending on the type of hosting plan you have:&nbsp;</li>
 <ul>
 <li><strong>Shared Hosting plan</strong> — <span class="text-object">servername.dreamhost.com</span></li>
 <li><strong>DreamPress or VPS plan</strong> — <span class="text-object">servername.dreamhostps.com</span></li>
 <li><strong>Dedicated Server plan</strong> — <span class="text-object">servername.dreamservers.com</span></li>
 </ul>
-<li><strong>FTP or SFTP</strong>: Ensure that your user type is either <a href="/hc/en-us/articles/115000675027-FTP-overview-and-credentials">SFTP</a> or <a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a>. If it's FTP, switch the user type to SFTP or SSH (which also provides SFTP).</li>
-<li><strong>FTP/SFTP Password</strong>: Set a password for this user and click <strong>Save Changes</strong>. Keep this information ready to enter in the next step.</li>
+<li><strong>FTP, SFTP, or SSH</strong>: Make a note of the type of user assigned to your domain.</li>
+<li><strong>FTP/SFTP/SSH Password</strong>: Set a password for this user and click <strong>Save Changes</strong>. Keep this information ready to enter in the next step.</li>
 </ul>
-<h3>Step 2 — Enter your DreamHost SFTP credentials at your old host</h3>
+<h3>Step 2 — Enter your DreamHost credentials at your old host</h3>
 <ol>
 <li>Visit the DreamHost Automated Migration plugin’s page at your old host’s WordPress site.
 <dl>
 <dd><em>The 'Migrate Your Sites to DreamHost' settings page opens:</em></dd>
 </dl>
 <dl>
-<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2020-04_wp-migration-plugin-ftp.png" alt="2020-04_wp-migration-plugin-ftp.png" /></dd>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2020-04_wp-migration-plugin-token-UPDATE.png" alt="2020-04_wp-migration-plugin-ftp.png" /></dd>
+</dl>
+</li>
+<li>Enter an email address where you would like to receive notifications about migration status and completion.</li>
+<li>Check the box to agree to the terms of service.</li>
+<li>Click the <strong>Migrate</strong> button when finished.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/wp-migration-plugin-manual-details.png" alt="2020-04_wp-migration-plugin.png" width="586" height="186" /></dd>
+</dl>
+</li>
+<li>On the top right, click the link titled <span class="text-link">Manually Input Host Details</span>.
+<dl>
+<dd><em>The following page appears</em></dd>
+</dl>
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/wp-migration-plugin-credentials.png" alt="2020-04_wp-migration-plugin.png" width="497" height="788" /></dd>
 </dl>
 </li>
 <li>Enter the following:
 <ul>
-<li><strong>Email</strong> — An email address where you would like to receive notifications about migration status and completion.</li>
-<li><strong>Destination Site URL</strong> — The web address (Destination Site URL) for your site. Usually, this is the same address as your site on your current host. If you are using a DreamHost temporary subdomain (<span class="text-object">dream.press</span> or <span class="text-object">dreamhosters.com</span>) or if you will be changing your domain for your site, use that address instead. Make sure to enter 'https://' at the beginning of the web address if you plan to use an SSL certificate.</li>
-<li><strong>Type</strong> — Select sFTP. <em>Recommended</em></li>
-<li><strong>Host/Server Address</strong> — The server address. See <a class="reference internal" href="#sftp-user-server-address">above</a> for further details.</li>
-<li><strong>FTP/SFTP User</strong> — The user name. See <a class="reference internal" href="#sftp-user-server-address">above</a> for further details.</li>
-<li><strong>FTP/SFTP Password</strong> — The password. See <a class="reference internal" href="#sftp-user-server-address">above</a> for further details.</li>
-<li>Review and agree (by clicking the checkbox) to the Terms of Service and Privacy Policy if you agree and wish to continue.</li>
+<li><strong>Destination Site URL</strong> — The web address for your site. Usually, this is the same address as your site on your current host. If you are using a DreamHost temporary subdomain (dream.press or dreamhosters.com) or if you will be changing your domain for your site, use that address instead. Make sure to enter <span class="text-object">https://</span> at the beginning of the web address if you plan to use an SSL certificate.</li>
+<li><strong>Destination Server FTP IP</strong> — The server address. See above for further details.</li>
+<li><strong>FTP Type</strong> — Select FTP for FTP users. Select SFTP for SFTP/SSH users.</li>
+<li><strong>FTP Username</strong> — The user name. See above for further details.</li>
+<li><strong>FTP Password</strong> — The password. See above for further details.</li>
 </ul>
 </li>
-<li>Click the <strong>Migrate</strong> button when finished.</li>
+<li>The four options are optional and should only be filled out if needed.
+<ul>
+<li><strong>Source Website Password Protected</strong>: Is your source website password protected currently to simply view the homepage? - Generally, this is not password protected</li>
+<li><strong>Destination Website Password Protected</strong>: Is your destination website password protected currently to simply view the homepage? - Generally, this is not password protected</li>
+<li><strong>Advanced Options</strong>:&nbsp;This generally does not need to be filled out.</li>
+<li><strong>Add folders</strong>:&nbsp; This option allows you to select non-WordPress core-specific files, in the event you have a custom setup.</li>
+</ul>
+</li>
 <li>Bookmark the URL to check your migration's progress and close the browser tab or window while it is running.</li>
 </ol>
-<p>You can also migrate using SFTP credentials in an updated version of the DreamHost Automated Migration plugin. To do so, click the <span class="text-link">Manually Input Host Details</span> link, just below the Migration Token field.</p>
 </div>
 <h2><span id="faqs">FAQs</span></h2>
 <div class="solvvy-solution">
