@@ -19,12 +19,12 @@
 <p>Since recent FTP/SSH hacks are easiest to spot, start by eliminating this option. Log into your user via SSH and run the following commands.</p>
 <p>Shows you your login history for the current month:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">last -i | grep youruser</span>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">last -i | grep <span class="code-highlight">youruser</span></span>
 </pre>
 </div>
 <p>Shows you your login history for the prior month:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">last -if /var/log/wtmp.1 | grep youruser</span>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">last -if /var/log/wtmp.1 | grep <span class="code-highlight">youruser</span></span>
 </pre>
 </div>
 <div class="alert alert-note">
@@ -44,7 +44,7 @@ youruser pts/2        66.33.XXX.XXX    Tue May 20 13:06 - 13:22  (00:15)
 </div>
 <p>You can simplify this data to print out only IP addresses and counts by adding pipes to a few simple commands:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">last -if /var/log/wtmp.1 | grep youruser | awk '{print $3}' | sort | uniq -c</span>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">last -if /var/log/wtmp.1 | grep <span class="code-highlight">youruser</span> | awk '{print $3}' | sort | uniq -c</span>
 </pre>
 </div>
 <p>The output looks more like this:</p>
@@ -75,7 +75,7 @@ youruser pts/2        66.33.XXX.XXX    Tue May 20 13:06 - 13:22  (00:15)
 <h3><span id="Checking_all_of_your_logs">Checking all of your logs</span></h3>
 <p>If the original time can not be ascertained, the log files can be scanned en masse although it's more difficult to uncover the evidence of the intrusion. You can run the following command on your web server after you log in via SSH:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">gunzip -c ~/logs/example.com/http/access.log.* | gawk '{a[$7]++}END{for (i in a) {print a[i]"\t"i}}' | sort -n | more</span>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">gunzip -c ~/logs/<span class="code-highlight">example.com</span>/http/access.log.* | gawk '{a[$7]++}END{for (i in a) {print a[i]"\t"i}}' | sort -n | more</span>
 </pre>
 </div>
 <p>This returns a report of all requests to your site from all available logs sorted in ascending order. Since the majority of requests should (hopefully) be legitimate, it's easiest to start by looking at the top of the report — the least frequent requests — for evidence of the exploit:</p>

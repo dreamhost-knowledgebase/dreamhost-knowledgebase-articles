@@ -66,7 +66,7 @@
 <div class="solvvy-solution">
 <p>Sometimes running an optimization via phpMyAdmin tends to fail and the page eventually times out. This is possibly due to the database being too large for phpMyAdmin to handle. The alternative is to optimize via <a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a>. As a shell user, you can SSH into your domain and perform the following command which is the same function run on phpMyAdmin:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">mysql -u <em>username</em> -p<em>password</em> -h <em>hostname</em> <em>databasename</em> -e "show tables" | grep -v Tables_in | grep -v "+" | gawk '{print "optimize table " $1 ";"}' | mysql -u <em>username</em> -p<em>password</em> -h <em>hostname</em> <em>databasename</em> </span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">mysql -u <span class="code-highlight">username</span> -p<span class="code-highlight">password</span> -h <span class="code-highlight">hostname</span> <span class="code-highlight">databasename</span> -e "show tables" | grep -v Tables_in | grep -v "+" | gawk '{print "optimize table " $1 ";"}' | mysql -u <span class="code-highlight">username</span> -p<span class="code-highlight">password</span> -h <span class="code-highlight">hostname</span> <span class="code-highlight">databasename</span> </span></pre>
 </div>
 <p>Replace the <em>variables</em> in the above command with your actual database information:</p>
 <ul>
@@ -83,14 +83,14 @@
 <p>You can also cleanup overhead via a shell script and/or cron job using&nbsp;<a href="https://dev.mysql.com/doc/refman/5.7/en/mysqlcheck.html">mysqlcheck</a>&nbsp;which checks, repairs, and optimizes tables. It's a good idea to run a monthly&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/215088668-How-do-I-create-a-cron-job-">cron job</a>&nbsp;to do this for you. The cron job might look like this:</p>
 <div class="preboxcontainer">
 <pre class="prebox">#!/bin/sh
-/usr/bin/mysqlcheck -o -v -u USER -p PASSWORD -h MYSQL.EXAMPLE.COM DATABASENAME;
+/usr/bin/mysqlcheck -o -v -u <span class="code-highlight">USER</span> -p <span class="code-highlight">PASSWORD</span> -h <span class="code-highlight">MYSQL.EXAMPLE.COM DATABASENAME</span>;
 </pre>
 </div>
 <p>Replace the items in all-caps with the actual&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/221610868-Finding-your-database-login-credentials">credentials for your database</a>.</p>
 <h3><span id="Repairing_via_SSH">Repairing via SSH</span></h3>
 <p>You can also run a command to repair a table instead of optimizing it:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">mysql -u <em>username</em> -p<em>password</em> -h <em>hostname</em> <em>databasename</em> -e "show tables" | grep -v Tables_in | grep -v "+" | gawk '{print "repair table " $1 ";"}' | mysql -u <em>username</em> -p<em>password</em> -h <em>hostname</em> <em>databasename</em> </span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">mysql -u <span class="code-highlight">username</span> -p<span class="code-highlight">password</span> -h <span class="code-highlight">hostname</span> <span class="code-highlight">databasename</span> -e "show tables" | grep -v Tables_in | grep -v "+" | gawk '{print "repair table " $1 ";"}' | mysql -u <span class="code-highlight">username</span> -p<span class="code-highlight">password</span> -h <span class="code-highlight">hostname</span> <span class="code-highlight">databasename</span> </span></pre>
 </div>
 </div>
 <h2><span id="See_also">See also</span></h2>
