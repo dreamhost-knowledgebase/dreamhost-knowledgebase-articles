@@ -42,7 +42,7 @@
 <dd>Add the <span class="code">--local-infile</span> flag to your mysql connection statement, such as:</dd>
 </dl>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">mysql --local-infile -h HOSTNAME -u USERNAME -pPASSWORD DATABASENAME</span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">mysql --local-infile -h <span class="code-highlight">HOSTNAME</span> -u <span class="code-highlight">USERNAME</span> -p<span class="code-highlight">PASSWORD DATABASENAME</span></span></pre>
 </div>
 <dl>
 <dt>
@@ -51,17 +51,17 @@
 <dd>Add 2 extra params to mysql_connect, a <span class="code">false</span> for "new link" and then a client flag of <span class="code">128</span> or <span class="code">CLIENT_LOCAL_FILES</span>:</dd>
 </dl>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="cmdoutput">mysql_connect('HOSTNAME','USERNAME','PASSWORD', false, 128);</span></pre>
+<pre class="prebox"><span class="cmdoutput">mysql_connect('HOSTNAME','USERNAME','PASSWORD', <span class="green">false, 128</span>);</span></pre>
 </div>
 <dl>
 <dt>
 <h3>PHP mysqli_connect()</h3>
 </dt>
-<dd>Initialize mysqli first via <span class="code">mysqli_init</span>, and use <span class="code">mysqli_options()</span> to specify local infile as true before connecting to the mysql server:</dd>
+<dd>Initialize mysqli first via <span class="code">mysqli_init</span>, and use <span class="code">mysqli_options()</span> to specify local infile as <span class="code">true</span> before connecting to the mysql server:</dd>
 </dl>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="cmdoutput">$link = mysqli_init();
-mysqli_options($link, MYSQLI_OPT_LOCAL_INFILE, true);
+<span class="green">mysqli_options</span>($link, MYSQLI_OPT_LOCAL_INFILE, <span class="green">true</span>);
 mysqli_real_connect($link, 'HOSTNAME','USERNAME','PASSWORD','DATABASENAME');</span></pre>
 </div>
 <dl>
@@ -71,7 +71,7 @@ mysqli_real_connect($link, 'HOSTNAME','USERNAME','PASSWORD','DATABASENAME');</sp
 <dd>The <span class="code">mysql_local_infile</span> param can be added to your data source name variable, or directly in <span class="code">DBI-&gt;connect</span>:</dd>
 </dl>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="cmdoutput">$dbh = DBI-&gt;connect("DBI:mysql:database=DATABASENAME;host=HOSTNAME;mysql_local_infile=1", "USERNAME", "PASSWORD");</span></pre>
+<pre class="prebox"><span class="cmdoutput">$dbh = DBI-&gt;connect("DBI:mysql:database=DATABASENAME;host=HOSTNAME;<span class="green">mysql_local_infile=1</span>", "USERNAME", "PASSWORD");</span></pre>
 </div>
 </div>
 <h2>See also</h2>

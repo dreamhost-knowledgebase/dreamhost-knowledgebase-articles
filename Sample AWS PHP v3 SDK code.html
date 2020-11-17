@@ -32,8 +32,8 @@
 <div class="solvvy-solution">
 <p>Creates an S3 client object to interact with the DHO server:</p>
 <div class="preboxcontainer">
-<pre class="prebox">define('AWS_KEY', 'your_access_key');
-define('AWS_SECRET_KEY', 'your_secret_key');
+<pre class="prebox">define('AWS_KEY', '<span class="code-highlight">your_access_key</span>');
+define('AWS_SECRET_KEY', '<span class="code-highlight">your_secret_key</span>');
 define('HOST', 'https://objects-us-east-1.dream.io');
 define('REGION', 'us-east-1');
 
@@ -78,7 +78,7 @@ mahbuckat3   2011-04-21T18:07:18.000Z</pre>
 <h2><span id="create_bucket">Creating a Bucket</span></h2>
 <div class="solvvy-solution">
 <div class="preboxcontainer">
-<pre class="prebox">$BUCKET_NAME='my-new-bucket';
+<pre class="prebox">$BUCKET_NAME='<span class="code-highlight">my-new-bucket</span>';
 try {
     $result = $client-&gt;createBucket([
         'Bucket' =&gt; $BUCKET_NAME,
@@ -94,7 +94,7 @@ try {
 <div class="solvvy-solution">
 <div class="preboxcontainer">
 <pre class="prebox">$objects = $client-&gt;listObjectsV2([
-        'Bucket' =&gt; 'my-new-bucket',
+        'Bucket' =&gt; '<span class="code-highlight">my-new-bucket</span>',
 ]);
 foreach ($objects['Contents'] as $object){
     echo "{$object['Key']}\t{$object['LastModified']}\n";
@@ -109,7 +109,7 @@ myphoto2.jpg 262518  2011-08-08T21:38:01.000Z</pre>
 <h2><span id="delete_contents">Deleting the entire contents of a Bucket</span></h2>
 <div class="solvvy-solution">
 <div class="preboxcontainer">
-<pre class="prebox">$batch = Aws\S3\BatchDelete::fromListObjects($client, ['Bucket' =&gt; 'my-new-bucket']);
+<pre class="prebox">$batch = Aws\S3\BatchDelete::fromListObjects($client, ['Bucket' =&gt; '<span class="code-highlight">my-new-bucket</span>']);
 $batch-&gt;delete();</pre>
 </div>
 </div>
@@ -122,15 +122,15 @@ $batch-&gt;delete();</pre>
 </div>
 </div>
 <div class="preboxcontainer">
-<pre class="prebox">$client-&gt;deleteBucket(array('Bucket' =&gt; 'my-new-bucket'));</pre>
+<pre class="prebox">$client-&gt;deleteBucket(array('Bucket' =&gt; '<span class="code-highlight">my-new-bucket</span>'));</pre>
 </div>
 </div>
 <h2><span id="create_object">Creating an object</span></h2>
 <div class="solvvy-solution">
 <p>Uploads a file from the filesystem and sets it to 'private':</p>
 <div class="preboxcontainer">
-<pre class="prebox">$bucket = 'my-bucket-name';
-$file_Path = './hello.txt';
+<pre class="prebox">$bucket = '<span class="code-highlight">my-bucket-name</span>';
+$file_Path = './<span class="code-highlight">hello.txt</span>';
 $key = basename($file_Path);
 try{
     $result = $client-&gt;putObject([
@@ -149,13 +149,13 @@ try{
 <p>Changes the availability of the object <span class="text-object">hello.txt</span> to 'publicly readable', and object <span class="text-object">secret_plans.txt</span> to 'private'.</p>
 <div class="preboxcontainer">
 <pre class="prebox">$client-&gt;putObjectAcl(array(
-    'Bucket' =&gt; 'my-bucket-name',
-    'Key'    =&gt; 'hello.txt',
+    'Bucket' =&gt; '<span class="code-highlight">my-bucket-name</span>',
+    'Key'    =&gt; '<span class="code-highlight">hello.txt</span>',
     'ACL'    =&gt; 'public-read'
 ));
 $client-&gt;putObjectAcl(array(
-    'Bucket' =&gt; 'my-bucket-name',
-    'Key'    =&gt; 'secret_plans.txt',
+    'Bucket' =&gt; '<span class="code-highlight">my-bucket-name</span>',
+    'Key'    =&gt; '<span class="code-highlight">secret_plans.txt</span>',
     'ACL'    =&gt; 'private'
 ));</pre>
 </div>
@@ -174,8 +174,8 @@ $client-&gt;putObjectAcl(array(
 <p>Deletes the object <span class="text-object">goodbye.txt</span>:</p>
 <div class="preboxcontainer">
 <pre class="prebox">$client-&gt;deleteObject(array(
-    'Bucket' =&gt; 'my-bucket-name',
-    'Key'    =&gt; 'goodbye.txt',
+    'Bucket' =&gt; '<span class="code-highlight">my-bucket-name</span>',
+    'Key'    =&gt; '<span class="code-highlight">goodbye.txt</span>',
 ));</pre>
 </div>
 </div>
@@ -184,9 +184,9 @@ $client-&gt;putObjectAcl(array(
 <p>Downloads the object <span class="text-object">poetry.pdf</span> from ‘my-bucket-name’ and saves it in <span class="text-object">/home/larry/documents</span>:</p>
 <div class="preboxcontainer">
 <pre class="prebox">$client-&gt;getObject(array(
-    'Bucket' =&gt; 'my-bucket-name',
-    'Key'    =&gt; 'poetry.pdf',
-    'SaveAs' =&gt; '/home/larry/documents/poetry.pdf'
+    'Bucket' =&gt; '<span class="code-highlight">my-bucket-name</span>',
+    'Key'    =&gt; '<span class="code-highlight">poetry.pdf</span>',
+    'SaveAs' =&gt; '<span class="code-highlight">/home/larry/documents/poetry.pdf</span>'
 ));</pre>
 </div>
 </div>
@@ -194,12 +194,12 @@ $client-&gt;putObjectAcl(array(
 <div class="solvvy-solution">
 <p>Generates an unsigned download URL for <span class="text-object">hello.txt</span>. This works because <span class="text-object">hello.txt</span> was made public by setting the ACL above, which then generates a signed download URL for <span class="text-object">secret_plans.txt</span> that works for 1 hour. Signed download URLs work for the time period even if the object is private (when the time period is up, the URL stops working):</p>
 <div class="preboxcontainer">
-<pre class="prebox">$plain_url = $client-&gt;getObjectUrl('my-bucket-name', 'hello.txt');
+<pre class="prebox">$plain_url = $client-&gt;getObjectUrl('<span class="code-highlight">my-bucket-name</span>', '<span class="code-highlight">hello.txt</span>');
 echo $plain_url . "\n";
 
 $cmd = $client-&gt;getCommand('GetObject', [
-        'Bucket' =&gt; 'my-bucket-name',
-        'Key'    =&gt; 'secret_plans.txt'
+        'Bucket' =&gt; '<span class="code-highlight">my-bucket-name</span>',
+        'Key'    =&gt; '<span class="code-highlight">secret_plans.txt</span>'
 ]);
 $signed_url = $client-&gt;createPresignedRequest($cmd, '+1 hour');
 echo $signed_url-&gt;getUri() . "\n";</pre>

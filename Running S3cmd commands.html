@@ -33,7 +33,7 @@ $ pip install python-dateutil
 <div class="solvvy-solution">
 <h4><strong>Making a bucket</strong></h4>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd mb s3://my-new-bucket</span>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd mb s3://<span class="code-highlight">my-new-bucket</span></span>
 Bucket 's3://my-new-bucket/' created</pre>
 </div>
 </div>
@@ -46,12 +46,12 @@ Bucket 's3://my-new-bucket/' created</pre>
 </div>
 <h4><strong>Listing the contents of a bucket</strong></h4>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd ls s3://my-bucket</span>
-                    DIR s3://my-bucket/backups/<br />2019-02-04 18:09 11 s3://my-bucket/file1.txt</pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd ls s3://<span class="code-highlight">my-bucket</span></span>
+DIR s3://my-bucket/backups/<br />2019-02-04 18:09 11 s3://my-bucket/file1.txt</pre>
 </div>
 <h4><strong>Listing the size of a bucket</strong></h4>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd du -H s3://my-bucket</span>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd du -H s3://<span class="code-highlight">my-bucket</span></span>
 40G      s3://my-bucket</pre>
 </div>
 </div>
@@ -59,7 +59,7 @@ Bucket 's3://my-new-bucket/' created</pre>
 <div class="solvvy-solution">
 <h4><strong>Uploading a file into a bucket</strong></h4>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd put testfile.txt s3://my-bucket</span>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd put <span class="code-highlight">testfile.txt</span> s3://<span class="code-highlight">my-bucket</span></span>
 file.txt -&gt; s3://my-bucket/file.txt  [1 of 1]
 127 of 127   100% in    0s  1522.87 B/s  done</pre>
 </div>
@@ -68,7 +68,7 @@ file.txt -&gt; s3://my-bucket/file.txt  [1 of 1]
 <div class="solvvy-solution">
 <h4><strong>Downloading a file from a bucket</strong></h4>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd get s3://my-bucket/file.txt</span>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd get s3://<span class="code-highlight">my-bucket/file.txt</span></span>
 s3://my-bucket/file.txt -&gt; ./file.txt  [1 of 1]
 127 of 127   100% in    0s     3.46 kB/s  done</pre>
 </div>
@@ -77,7 +77,7 @@ s3://my-bucket/file.txt -&gt; ./file.txt  [1 of 1]
 <div class="solvvy-solution">
 <h4><strong>Deleting a file in a bucket</strong></h4>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd del s3://my-bucket/file.txt</span>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd del s3://<span class="code-highlight">my-bucket/file.txt</span></span>
 File s3://my-bucket/file.txt deleted</pre>
 </div>
 <p><strong><span id="deleting-all-objects">Deleting all Objects in a bucket</span></strong></p>
@@ -90,23 +90,23 @@ File s3://my-bucket/file.txt deleted</pre>
 <div class="solvvy-solution">
 <h4><strong>Recursively making every object in a bucket public</strong></h4>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd setacl s3://my-bucket --acl-public --recursive</span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd setacl s3://<span class="code-highlight">my-bucket</span> --acl-public --recursive</span></pre>
 </div>
 <h4><strong>Recursively making every object in a bucket private</strong></h4>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd setacl s3://my-bucket --acl-private --recursive</span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd setacl s3://<span class="code-highlight">my-bucket</span> --acl-private --recursive</span></pre>
 </div>
 <h3>Directory Listing</h3>
 <p>Directory listing controls what data can be seen by visiting the top level of your bucket. If it's set to private, no data is shown. If it's public, the contents of the bucket are listed as shown below.</p>
 <h4><strong>Disabling Directory Listing in a bucket</strong></h4>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd setacl s3://my-bucket --acl-private</span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd setacl s3://<span class="code-highlight">my-bucket</span> --acl-private</span></pre>
 </div>
 <p>If you visit your bucket in a browser, only the following information will display.</p>
 <p><img class="img-border" src="https://kbimages.dreamhosters.com/images/dho-directory-listing-01.png" /></p>
 <h4><strong>Enabling Directory Listing in a bucket</strong></h4>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd setacl s3://my-bucket --acl-public</span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd setacl s3://<span class="code-highlight">my-bucket</span> --acl-public</span></pre>
 </div>
 <p>If you visit your bucket in a browser, the contents of the bucket display.</p>
 <p><img class="img-border" src="https://kbimages.dreamhosters.com/images/dho-directory-listing-02.png" /></p>

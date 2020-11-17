@@ -22,7 +22,7 @@ gpg_passphrase = <span class="code-highlight">yourpassword</span></pre>
 <h3>Encrypting data while uploading</h3>
 <p>To encrypt your data while uploading, use the <span class="code">-e</span> flag. In the following example, 'bucket-name' is the name of the bucket you're uploading content to. textfile.txt is the name of the single file you're uploading:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command"> s3cmd -e put testfile.txt s3://bucket-name</span>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command"> s3cmd -e put <span class="code-highlight">testfile.txt</span> s3://<span class="code-highlight">bucket-name</span></span>
 
 upload: '/tmp/tmpfile-zFGwbLHMVEINdHh3615n' -&gt; 's3://bucket-name/testfile.txt'  [1 of 1]
  63 of 63   100% in    0s   129.96 B/s  done</pre>
@@ -35,13 +35,13 @@ upload: '/tmp/tmpfile-zFGwbLHMVEINdHh3615n' -&gt; 's3://bucket-name/testfile.txt
 <h3>Decrypting a file</h3>
 <p>When you use s3cmd to download an encrypted file, it's automatically decrypted for you:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd get s3://bucket-name/encrypted-file.txt</span>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd get s3://<span class="code-highlight">bucket-name/encrypted-file.txt</span></span>
 download: 's3://bucket-name/encrypted-file.txt' -&gt; './encrypted-file.txt'  [1 of 1]
  70 of 70   100% in    0s   323.19 B/s  done</pre>
 </div>
 <p>If you read the contents of the file, you'll see it's no longer encrypted:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">cat encrypted-file.txt</span>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cat <span class="code-highlight">encrypted-file.txt</span></span>
 Testing a file</pre>
 </div>
 </div>
@@ -53,7 +53,7 @@ Testing a file</pre>
 <li>Visit <a href="https://www.epochconverter.com/">Epoch Converter</a>&nbsp;to convert your date to an Epoch Timestamp. It will look like a string of numbers. For example:&nbsp;1540232086</li>
 <li>Run the following command to sign the URL until this timestamp. (Make sure to change the bucket name and file name to your actual information.)
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd signurl s3://my_bucket/my_file.png 1540232086</span>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd signurl s3://<span class="code-highlight">my_bucket/my_file.png 1540232086</span></span>
 http://my-bucket.objects-us-east-1.dream.io/my_file.png?AWSAccessKeyId=DHDPTCQ3WFGHPSS5FAXG&amp;Expires=1540232086&amp;Signature=9nf8f9kG%2FqDa76rmET4R%2FpbtaGM%3D</pre>
 </div>
 </li>
@@ -61,7 +61,7 @@ http://my-bucket.objects-us-east-1.dream.io/my_file.png?AWSAccessKeyId=DHDPTCQ3W
 </ol>
 <p>You can also sign it for 1 week using this format:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd signurl s3://my_bucket/my_file.png $(echo "`date +%s` + 3600 * 24 * 7" | bc)</span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd signurl s3://<span class="code-highlight">my_bucket/my_file.png</span> $(echo "`date +%s` + 3600 * 24 * 7" | bc)</span></pre>
 </div>
 <div class="footer">&nbsp;</div>
 </div>

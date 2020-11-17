@@ -190,14 +190,12 @@
 <p>There are two different modes of accessing the buckets. The first (preferred) method identifies the bucket as the top-level directory in the URI:</p>
 <div class="preboxcontainer">
 <pre class="prebox">GET /mybucket HTTP/1.1
-                  Host: objects-us-east-1.dream.io
-                  </pre>
+Host: objects-us-east-1.dream.io</pre>
 </div>
 <p>The second method identifies the bucket via a virtual bucket hostname. For example:</p>
 <div class="preboxcontainer">
 <pre class="prebox">GET / HTTP/1.1
-                  Host: mybucket.objects-us-east-1.dream.io
-                  </pre>
+Host: mybucket.objects-us-east-1.dream.io</pre>
 </div>
 <div class="alert alert-important">
 <div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
@@ -384,13 +382,13 @@
 <p>Authenticating a request requires including an <a href="https://help.dreamhost.com/hc/en-us/articles/215986357-DreamObjects-Keys">Access Key</a> and a Hash-based Message Authentication Code (HMAC) in the request before it is sent to the RGW server. RGW uses an S3-compatible authentication approach:</p>
 <div class="preboxcontainer">
 <pre class="prebox">HTTP/1.1
-                      PUT /buckets/bucket/object.mpeg
-                      Host: objects-us-east-1.dream.io
-                      Date: Mon, 2 Jan 2012 00:01:01 +0000
-                      Content-Encoding: mpeg
-                      Content-Length: 9999999
+PUT /buckets/bucket/object.mpeg
+Host: objects-us-east-1.dream.io
+Date: Mon, 2 Jan 2012 00:01:01 +0000
+Content-Encoding: mpeg
+Content-Length: 9999999
                       
-                      Authorization: AWS {access-key}:{hash-of-header-and-secret}</pre>
+Authorization: AWS {access-key}:{hash-of-header-and-secret}</pre>
 </div>
 <p>In the foregoing example, replace <code class="docutils literal"><span class="pre">{access-key}</span></code> with the value for your access key ID followed by a colon (<code class="docutils literal"><span class="pre">:</span></code>). Replace <code class="docutils literal"><span class="pre">{hash-of-header-and-secret}</span></code> with a hash of the header string and the secret corresponding to the access key ID.</p>
 <p>To generate the hash of the header string and secret:</p>
@@ -465,9 +463,9 @@
 <h4>Syntax</h4>
 <div class="preboxcontainer">
 <pre class="prebox">GET / HTTP/1.1
-                        Host: objects-us-east-1.dream.io
+Host: objects-us-east-1.dream.io
                         
-                        Authorization: AWS {access-key}:{hash-of-header-and-secret}</pre>
+Authorization: AWS {access-key}:{hash-of-header-and-secret}</pre>
 </div>
 <div id="response-entities">&nbsp;</div>
 <h4>Response Entities</h4>
@@ -548,10 +546,10 @@
 <h4>Syntax</h4>
 <div class="preboxcontainer">
 <pre class="prebox">PUT /{bucket} HTTP/1.1
-                              Host: objects-us-east-1.dream.io
-                              x-amz-acl: public-read-write
+Host: objects-us-east-1.dream.io
+x-amz-acl: public-read-write
                               
-                              Authorization: AWS {access-key}:{hash-of-header-and-secret}</pre>
+Authorization: AWS {access-key}:{hash-of-header-and-secret}</pre>
 </div>
 <div id="parameters">&nbsp;</div>
 <h4>Parameters</h4>
@@ -601,9 +599,9 @@
 <h4>Syntax</h4>
 <div class="preboxcontainer">
 <pre class="prebox">DELETE /{bucket} HTTP/1.1
-                              Host: objects-us-east-1.dream.io
+Host: objects-us-east-1.dream.io
                               
-                              Authorization: AWS {access-key}:{hash-of-header-and-secret}</pre>
+Authorization: AWS {access-key}:{hash-of-header-and-secret}</pre>
 <div id="id3">&nbsp;</div>
 <h4>HTTP Response</h4>
 <table class="docutils" border="1"><colgroup> <col width="31%" /> <col width="31%" /> <col width="38%" /> </colgroup>
@@ -630,8 +628,7 @@
 <h4>Syntax</h4>
 <div class="preboxcontainer">
 <pre class="prebox">GET /{bucket}?max-keys=25 HTTP/1.1
-                              Host: objects-us-east-1.dream.io
-                              </pre>
+Host: objects-us-east-1.dream.io</pre>
 </div>
 <div id="id5">&nbsp;</div>
 <h4>Parameters</h4>
@@ -790,9 +787,9 @@
 <p>Add the <code class="docutils literal"><span class="pre">acl</span></code> subresource to the bucket request as shown below.</p>
 <div class="preboxcontainer">
 <pre class="prebox">GET /{bucket}?acl HTTP/1.1
-                              Host: objects-us-east-1.dream.io
+Host: objects-us-east-1.dream.io
                               
-                              Authorization: AWS {access-key}:{hash-of-header-and-secret}</pre>
+Authorization: AWS {access-key}:{hash-of-header-and-secret}</pre>
 </div>
 <div id="id8">&nbsp;</div>
 <h4>Response Entities</h4>
@@ -1139,7 +1136,7 @@
 <h4>Syntax</h4>
 <div class="preboxcontainer">
 <pre class="prebox">PUT /{dest-bucket}/{dest-object} HTTP/1.1
-                                                x-amz-copy-source: {source-bucket}/{source-object}</pre>
+x-amz-copy-source: {source-bucket}/{source-object}</pre>
 </div>
 <div id="id15">
 <h4>Request Headers</h4>

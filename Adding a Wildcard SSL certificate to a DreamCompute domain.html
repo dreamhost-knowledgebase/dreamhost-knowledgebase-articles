@@ -30,7 +30,7 @@
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">sudo a2enmod rewrite</span>
 <span class="server">[user@instance]$ </span><span class="command">sudo a2enmod ssl</span>
-<span class="server">[user@instance]$ </span><span class="command">sudo service apache2 reload</span></pre>
+<span class="server">[user@instance]$ </span><span class="command">sudo systemctl reload apache2</span></pre>
 </div>
 <p>Check again and you'll see rewrite and ssl are listed.</p>
 <div class="preboxcontainer">
@@ -45,7 +45,7 @@ ssl.conf<br />ssl.load</pre>
 <p>Run the following commands in order to create your Wildcard certificate.</p>
 <ol>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216201547-Connect-to-your-instance-with-SSH-keys-overview">Log into your instance</a>.</li>
-<li>Run the commands below to switch to your root user and install a Let's Encrypt certificate.
+<li>Run the commands below to install a Let's Encrypt certificate.
 <div class="alert alert-important">
 <div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
@@ -53,10 +53,7 @@ ssl.conf<br />ssl.load</pre>
 </div>
 </div>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">sudo -s</span>
-<span class="server">[root@instance]# </span><span class="command">cd /opt</span>
-<span class="server">[root@instance]# </span><span class="command">git clone git://github.com/certbot/certbot</span>
-<span class="server">[root@instance]# </span><span class="command">/opt/certbot/certbot-auto --manual -d "<span class="code-highlight">example.com</span>" -d "*.<span class="code-highlight">example.com</span>" --server https://acme-v02.api.letsencrypt.org/directory certonly</span></pre>
+<pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">sudo apt install certbot python3-certbot-apache -y<br /></span><span class="server">[user@instance]# </span><span class="command">sudo certbot --manual -d "<span class="code-highlight">example.com</span>" -d "*.<span class="code-highlight">example.com</span>" --server https://acme-v02.api.letsencrypt.org/directory certonly</span></pre>
 </div>
 </li>
 <li>When prompted, enter 'y' to continue the installation.</li>
@@ -223,7 +220,6 @@ IMPORTANT NOTES:
 
   SSLCertificateFile /etc/letsencrypt/live/<span class="code-highlight">example.com</span>/fullchain.pem
   SSLCertificateKeyFile /etc/letsencrypt/live/<span class="code-highlight">example.com</span>/privkey.pem
-  Include /opt/certbot/certbot-apache/certbot_apache/options-ssl-apache.conf
   &lt;/VirtualHost&gt;
 &lt;/IfModule&gt;</pre>
 </div>
@@ -232,9 +228,9 @@ IMPORTANT NOTES:
 <pre class="prebox"><span class="server">[root@instance]$ </span><span class="command">sudo a2ensite <span class="code-highlight">example.com</span>-le-ssl</span>
 Enabling site example.com-le-ssl</pre>
 </div>
-<p>Finally reload your Apache service so it reads the changes.</p>
+<p>Finally, reload your Apache service so it reads the changes.</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[root@instance]$ </span><span class="command">sudo service apache2 reload</span></pre>
+<pre class="prebox"><span class="server">[root@instance]$ </span><span class="command">sudo systemctl reload apache2</span></pre>
 </div>
 </div>
 <h2>Configure your subdomains to use this certificate</h2>
@@ -259,7 +255,6 @@ Enabling site example.com-le-ssl</pre>
     ServerAlias <span class="code-highlight">sub1.example.com</span><br />
     SSLCertificateFile /etc/letsencrypt/live/<span class="code-highlight">example.com</span>/fullchain.pem
     SSLCertificateKeyFile /etc/letsencrypt/live/<span class="code-highlight">example.com</span>/privkey.pem
-    Include /opt/certbot/certbot-apache/certbot_apache/options-ssl-apache.conf
   &lt;/VirtualHost&gt;
 &lt;/IfModule&gt;
 </pre>
@@ -273,6 +268,6 @@ Enabling site example.com-le-ssl</pre>
 </div>
 <p>Finally, reload Apache so it knows about the new configurations.</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">sudo service apache2 reload</span></pre>
+<pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">sudo systemctl reload apache2</span></pre>
 </div>
 </div>
