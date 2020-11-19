@@ -8,7 +8,7 @@
 <div class="solvvy-solution">
 <p>Because of the way suEXEC handles security, the directory in which your CGI script lives and the script itself must not be writable by anyone but the user. If it is writable, a "500 Internal Server Error" appears. The script must also be executable, and the easiest way to set permissions is with <span class="code">chmod</span>:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command"> chmod 755 script.cgi</span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command"> chmod 755 <span class="code-highlight">script.cgi</span></span></pre>
 </div>
 </div>
 <h2><span id="Apache_module_mod_env">Apache module mod_env</span></h2>
@@ -28,11 +28,11 @@ print $ENV{FOOBAR};</pre>
 </div>
 <p>In your first domain's directory, add an <a href="/hc/en-us/articles/216456227--htaccess-overview">.htaccess</a> with the directive:</p>
 <div class="preboxcontainer">
-<pre class="prebox">SetEnv FOOBAR foo</pre>
+<pre class="prebox">SetEnv FOOBAR <span class="code-highlight">foo</span></pre>
 </div>
 <p>and into your second domain's directory, add the following:</p>
 <div class="preboxcontainer">
-<pre class="prebox">SetEnv FOOBAR bar</pre>
+<pre class="prebox">SetEnv FOOBAR <span class="code-highlight">bar</span></pre>
 </div>
 <p>When you visit example.com/foobar.cgi in your browser, you'd expect it to print foo, and when you visit example2.com/foobar.cgi, you'd expect bar. Instead, default is printed both times.</p>
 <p>At first, you might assume mod_env is not installed or that the <span class="code">SetEnv</span> directive is not allowed from .htaccess. In fact, <span class="code">SetEnv</span> is working just fine. It is setting the environment variable; suEXEC just isn't passing it to your CGI script.</p>
@@ -43,7 +43,7 @@ print $ENV{FOOBAR};</pre>
 <h3><span id="Workaround_A:_Prepending_HTTP_to_variable_name">Workaround A: Prepending HTTP_ to variable name</span></h3>
 <p>The way DreamHost configures suEXEC, it allows any environment variable that begins with HTTP_ through. So, if you change your .htaccess to:</p>
 <div class="preboxcontainer">
-<pre class="prebox">SetEnv HTTP_FOOBAR foobar </pre>
+<pre class="prebox">SetEnv HTTP_FOOBAR <span class="code-highlight">foobar</span></pre>
 </div>
 <p>and use:</p>
 <div class="preboxcontainer">
@@ -59,7 +59,7 @@ print $ENV{FOOBAR};</pre>
 <pre class="prebox">#!/bin/sh
 
 export FOOBAR=foo
-exec /home/username/example.com$SCRIPT_URL
+exec /home/<span class="code-highlight">username/example.com</span>$SCRIPT_URL
 </pre>
 </div>
 <ul>
@@ -68,7 +68,7 @@ exec /home/username/example.com$SCRIPT_URL
 <dl>
 <dd>
 <div class="preboxcontainer">
-<pre class="prebox">exec /home/exampleuser/example.com/foobar.cgi</pre>
+<pre class="prebox">exec /home/<span class="code-highlight">exampleuser/example.com</span>/foobar.cgi</pre>
 </div>
 </dd>
 </dl>

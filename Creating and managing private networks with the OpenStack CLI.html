@@ -22,7 +22,7 @@
 <ol class="arabic">
 <li>Run the following command to create a private network. This command creates a new empty network named 'NETWORK' which can accept a subnet in the future.
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack network create NETWORK</span>
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack network create <span class="code-highlight">NETWORK</span></span>
 </pre>
 </div>
 </li>
@@ -34,7 +34,7 @@
 </div>
 </div>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack subnet create SUBNET --subnet-range 10.0.0.0/24 \
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack subnet create <span class="code-highlight">SUBNET</span> --subnet-range 10.0.0.0/24 \
 --network NETWORK --dns-nameserver 8.8.8.8 \
 --dns-nameserver 8.8.4.4 --no-dhcp</span>
 </pre>
@@ -42,20 +42,20 @@
 </li>
 <li>Run the following to create a new router named 'ROUTER' with a default configuration.
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack router create ROUTER</span>
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack router create <span class="code-highlight">ROUTER</span></span>
 </pre>
 </div>
 </li>
 <li>Run the following to create a router interface that associates the subnet you created with your router.
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack router add subnet ROUTER SUBNET</span>
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack router add subnet <span class="code-highlight">ROUTER SUBNET</span></span>
 </pre>
 </div>
 </li>
 <li>
 <p class="first">Finally, set the router gateway to the public network. This allows it to access the Internet.</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack router set --external-gateway public ROUTER</span>
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack router set --external-gateway public <span class="code-highlight">ROUTER</span></span>
 </pre>
 </div>
 </li>
@@ -78,8 +78,8 @@
 <li>Finally, create an instance. This command creates a semisonic size instance, using the default security group and the Ubuntu 16.04 operating system image. The remaining values are unique to your project and need to be specified. The <span class="code">LONG-NETWORK-UUID-HERE</span> is the ID given from <span class="code">openstack network list</span>, the <span class="code">KEYNAME</span> from <span class="code">openstack keypair list</span>, and the instance name can be whatever you want.
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server create --flavor gp1.semisonic \
---security-group default --image Ubuntu-16.04 \
---nic net-id=LONG-NETWORK-UUID-HERE --key-name KEYNAME INSTANCENAME</span>
+--security-group default --image <span class="code-highlight">Ubuntu-16.04</span> \
+--nic net-id=<span class="code-highlight">LONG-NETWORK-UUID-HERE</span> --key-name <span class="code-highlight">KEYNAME INSTANCENAME</span></span>
 </pre>
 </div>
 </li>

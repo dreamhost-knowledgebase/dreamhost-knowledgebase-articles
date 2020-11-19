@@ -99,23 +99,6 @@ RewriteRule . /index.php [L]
 <ul>
 <li><a href="/hc/en-us/articles/216456827-How-to-clear-your-browser-s-cache">Clear cache</a></li>
 </ul>
-<p>The same basic idea works for Textpattern. Here's a sample .htaccess for Textpattern.</p>
-<div class="preboxcontainer">
-<pre class="prebox">&lt;IfModule mod_rewrite.c&gt;
-RewriteEngine On
-# DreamHost stats
-RewriteBase /
-RewriteCond&nbsp;%{REQUEST_URI} ^/(stats|failed_auth\.html).*$ [NC]
-RewriteRule . - [L]
-
-# Textpattern
-RewriteCond&nbsp;%{REQUEST_FILENAME} -f [OR]
-RewriteCond&nbsp;%{REQUEST_FILENAME} -d
-RewriteRule ^(.+) - [PT,L]
-RewriteRule . /index.php
-&lt;/IfModule&gt;
-</pre>
-</div>
 <p>To get your stats working in Ruby on Rails or Joomla, add the following to the top of the .htaccess file (located in the <span class="text-object">/public</span> directory of your Rails app or root directory of your Joomla web site):</p>
 <div class="preboxcontainer">
 <pre class="prebox">&lt;IfModule mod_rewrite.c&gt;
