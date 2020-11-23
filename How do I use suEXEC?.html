@@ -14,7 +14,7 @@
 <h2><span id="Apache_module_mod_env">Apache module mod_env</span></h2>
 <div class="solvvy-solution">
 <p>Because suEXEC cleans the environment by wiping out all the environment variables except those deemed safe by the server's configuration, the directives provided by <a href="http://httpd.apache.org/docs/2.2/mod/mod_env.html">mod_env</a> such as <span class="code">SetEnv</span>, <span class="code">PassEnv</span>, and <span class="code">SetEnvIf</span> don't work as expected.</p>
-<p>Say you have foobar.cgi installed at both /home/username/example.com and /home/username/example2.com:</p>
+<p>Say you have foobar.cgi installed at both <span class="text-object">/home/username/example.com</span> and <span class="text-object">/home/username/example2.com</span>:</p>
 <div class="preboxcontainer">
 <pre class="prebox">#!/usr/bin/perl
 
@@ -34,7 +34,7 @@ print $ENV{FOOBAR};</pre>
 <div class="preboxcontainer">
 <pre class="prebox">SetEnv FOOBAR <span class="code-highlight">bar</span></pre>
 </div>
-<p>When you visit example.com/foobar.cgi in your browser, you'd expect it to print foo, and when you visit example2.com/foobar.cgi, you'd expect bar. Instead, default is printed both times.</p>
+<p>When you visit <strong>example.com/foobar.cgi</strong> in your browser, you'd expect it to print foo, and when you visit <strong>example2.com/foobar.cgi</strong>, you'd expect bar. Instead, default is printed both times.</p>
 <p>At first, you might assume mod_env is not installed or that the <span class="code">SetEnv</span> directive is not allowed from .htaccess. In fact, <span class="code">SetEnv</span> is working just fine. It is setting the environment variable; suEXEC just isn't passing it to your CGI script.</p>
 <p>On the one hand, if you're developing your own application, you can just keep this in mind while developing it and not design your application to use non-standard environmental variables. If, on the other hand, you are using a third-party application and modifying the source code would be prohibitively difficult and/or time-consuming (or if you just need to have those custom environment variables in the application you're developing yourself), there are a few workarounds which are described in the next section.</p>
 </div>
@@ -86,9 +86,9 @@ RewriteRule ^application/.*\.cgi /wrapper.cgi
 <li>If you're only setting an environment variable for one (or a few) CGI scripts, you can specify the script in the RewriteRule (e.g., <span class="code">RewriteRule ^script.cgi /wrapper.cgi</span>). Just add additional RewriteRules for additional scripts.</li>
 <li>As you can imagine, simply continuing to add RewriteRules past a few scripts becomes unwieldy. Instead, it's best to match all files ending with a specific file extension. By matching only files ending with .cgi, .pl, .py, .rb, and so on, static files such as HTML documents and images are unaffected.</li>
 <li>If your wrapper script is in the same directory as the scripts you wish to wrap and you're matching by pattern (this doesn't matter if you are matching a specific file name), your wrapper must have a different file extension than your scripts. For example, if your wrapper ends in .cgi, you might want to use .pl (<span class="code">RewriteRule .*\.pl wrapper.cgi</span>) or .py (<span class="code">RewriteRule .*\.py wrapper.cgi</span>) for your scripts.</li>
-<li>wrapper.cgi can call a script outside your domain's directory. This is actually what you probably want to do, as the wrapper in both /home/exampleuser/example.com/ and /home/exampleuser/example2.com can refer to the same script(s) in /home/shared.</li>
+<li>wrapper.cgi can call a script outside your domain's directory. This is actually what you probably want to do, as the wrapper in both <span class="text-object">/home/exampleuser/example.com/</span> and <span class="text-object">/home/exampleuser/example2.com</span> can refer to the same script(s) in /home/shared.</li>
 </ul>
-<p>Workaround C is convoluted but is suitable for a far wider range of cases than either Workaround A or Workaround B. Unlike Workaround A, you can set an environmental variable for hundreds (or thousands) of files by editing just two files (wrapper.cgi and .htaccess. And, when you set an environmental variable for a third-party application, you don't have to modify any files when you upgrade the application. You can have multiple wrapper scripts, so unlike Workaround B, the context (or environment) can actually alter the behavior of the script(s). Simply copy wrapper.cgi and .htaccess from example.com to example2.com, edit wrapper.cgi, and then change <span class="code">export FOOBAR=foo</span> to <span class="code">export FOOBAR=bar</span>, and you're done.</p>
+<p>Workaround C is convoluted but is suitable for a far wider range of cases than either Workaround A or Workaround B. Unlike Workaround A, you can set an environmental variable for hundreds (or thousands) of files by editing just two files (wrapper.cgi and .htaccess. And, when you set an environmental variable for a third-party application, you don't have to modify any files when you upgrade the application. You can have multiple wrapper scripts, so unlike Workaround B, the context (or environment) can actually alter the behavior of the script(s). Simply copy wrapper.cgi and .htaccess from <strong>example.com</strong> to <strong>example2.com</strong>, edit wrapper.cgi, and then change <span class="code">export FOOBAR=foo</span> to <span class="code">export FOOBAR=bar</span>, and you're done.</p>
 </div>
 <h2><span id="See_also">See also</span></h2>
 <div class="solvvy-hidden">
