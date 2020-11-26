@@ -39,7 +39,7 @@
 <p>As Passenger loads your <code>passenger_wsgi.py</code> into a special wrapper (currently <code>/dh/passenger/lib/phusion_passenger/wsgi/request_handler.py</code>, although this may change), you cannot directly select which Python interpreter is used to run your application. However, you can switch interpreters at runtime by adding the following code to the beginning of your <code>passenger_wsgi.py</code>:</p>
 <div class="preboxcontainer">
 <pre class="prebox">import sys, os
-INTERP = "<u>/home/&lt;username&gt;/local/bin/python</u>"
+INTERP = "<u>/home/<span class="code-highlight">username</span>/local/bin/python</u>"
 #INTERP is present twice so that the new Python interpreter knows the actual executable path
 if sys.executable&nbsp;!= INTERP: os.execl(INTERP, INTERP, *sys.argv)
 </pre>
@@ -51,7 +51,7 @@ if sys.executable&nbsp;!= INTERP: os.execl(INTERP, INTERP, *sys.argv)
 <p>If you're using a Pyramid-framework supported site, the following should work for your <code>passenger_wsgi.py</code>, assuming you've setup the Python virtual environment at <code>INTERP</code>:</p>
 <div class="preboxcontainer">
 <pre class="prebox">import sys, os
-INTERP = "/home/&lt;username&gt;/local/bin/python"
+INTERP = "/home/<span class="code-highlight">username</span>/local/bin/python"
 #INTERP is present twice so that the new Python interpreter knows the actual executable path
 if sys.executable&nbsp;!= INTERP: os.execl(INTERP, INTERP, *sys.argv)
 
@@ -114,7 +114,7 @@ def _get_log():
 log = _get_log()
 print &gt;&gt;log, "Running&nbsp;%s"&nbsp;% (sys.executable)
 
-INTERP = "/home/&lt;username&gt;/local/bin/python"
+INTERP = "/home/<span class="code-highlight">username</span>/local/bin/python"
 if sys.executable&nbsp;!= INTERP: 
     print &gt;&gt;log, "Detected wrong interpreter location, swapping to&nbsp;%s"&nbsp;% (INTERP)
     #swapping interpreters will not flush any files
