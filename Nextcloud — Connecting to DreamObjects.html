@@ -1,0 +1,131 @@
+<h2>Overview</h2>
+<div class="solvvy-solution">
+<p>The <span class="text-object">External Storage Support</span> application allows you to use an external storage service (such as <a href="https://help.dreamhost.com/hc/en-us/articles/214823108-What-is-DreamObjects-" target="_self">DreamObjects</a>) to store the files of your Nextcloud installation instead of storing the files on your web server. This also is recommended to stay in accordance with <a href="https://help.dreamhost.com/hc/en-us/articles/216541678-Unlimited-disk-space-and-bandwidth" target="_self">DreamHost's storage policies</a>.</p>
+<p>This guide describes how to connect Nextcloud to <a href="https://help.dreamhost.com/hc/en-us/articles/214823108-What-is-DreamObjects-" target="_self">DreamObjects</a> cloud storage service.</p>
+</div>
+<h2 class="subheader">Step 1 — Install Nextcloud</h2>
+<div class="solvvy-solution">
+<p>Before you can begin using Nextcloud with DreamObjects, you must install Nextcloud on your DreamHost server by following this step-by-step guide.</p>
+<ul class="simple">
+<li><a class="reference external" href="https://help.dreamhost.com/hc/en-us/articles/360028862652-Nextcloud-Installing" target="_self" rel="undefined">Nextcloud — Installing</a></li>
+</ul>
+</div>
+<h2 class="subheader">Step 2 — Create a DreamObjects bucket and user</h2>
+<div class="solvvy-solution">
+<p>You also must enable DreamObjects on your DreamHost account. View the following articles to set up DreamObjects and create a bucket and key pair.</p>
+<ul class="simple">
+<li><a class="reference external" href="https://help.dreamhost.com/hc/en-us/articles/215986327-What-are-Users-in-DreamObjects-and-How-Do-You-Use-Them-">Creating a DreamObjects User</a></li>
+<li><a class="reference external" href="https://help.dreamhost.com/hc/en-us/articles/215986357-DreamObjects-Keys">Creating DreamObjects Keys</a></li>
+</ul>
+</div>
+<h2 class="subheader">Step 3 —&nbsp;Connecting to DreamObjects</h2>
+<div class="solvvy-solution">
+<ol>
+<li>Log into your Nextcloud site. If you followed the installation guide above, this would be located at <strong>example.com/nextcloud</strong>.
+<dl>
+<dd><img class="img-border" src="http://kbimages.dreamhosters.com/images/nextcloud_external-storage_01.png" alt="nextcloud external storage"></dd>
+</dl>
+</li>
+<li>Click your user icon on the top right. Select <span class="text-object">+ Apps</span> from the dropdown menu.
+<dl>
+<dd><img class="img-border" src="http://kbimages.dreamhosters.com/images/nextcloud_external-storage_02.png" alt="nextcloud external storage"></dd>
+</dl>
+</li>
+<li>Scroll down the list to locate <span class="text-object">External storage support</span>.</li>
+<li>Click the <strong>Enable</strong> button to the right.
+<dl>
+<dd><img class="img-border" src="http://kbimages.dreamhosters.com/images/nextcloud_external-storage_03.png" alt="nextcloud external storage"></dd>
+</dl>
+</li>
+<li>Click your user icon on the top right. Select <span class="text-object">Settings</span>&nbsp;from the dropdown menu.
+<dl>
+<dd><img class="img-border" src="http://kbimages.dreamhosters.com/images/nextcloud_external-storage_04.png" alt="nextcloud external storage"></dd>
+</dl>
+</li>
+<li>Select <span class="text-object">External storages</span> in the menu on the left.
+<dl>
+<dd><img class="img-border" src="http://kbimages.dreamhosters.com/images/nextcloud_external-storage_05.png" alt="nextcloud external storage"></dd>
+</dl>
+</li>
+<li>Select <span class="text-object">Amazon S3</span> from the <span class="text-object">External storage</span> dropdown.
+<dl>
+<dd><img class="img-border" src="http://kbimages.dreamhosters.com/images/nextcloud_external-storage_06.png" alt="nextcloud external storage"></dd>
+</dl>
+<dl>
+<dd>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60"></div>
+<div class="alert-content">
+<p>Ignore the "smbclient" warning. This is used to connect to Windows and is not needed for this configuration.</p>
+</div>
+</div>
+</dd>
+</dl>
+</li>
+<li><strong>Folder name</strong>: Enter the name for your Nextcloud folder. This will be the folder name in which you store your data and can be named anything you'd like.</li>
+<li><strong>External storage</strong>: Already set to <span class="text-object">Amazon S3</span>.</li>
+<li><strong>Authentication</strong>: Set to <span class="text-object">Access key</span>.</li>
+<li><strong>Configuration</strong>:
+<ul>
+<li><strong>Bucket name</strong>&nbsp;— The name of your DreamObjects bucket.
+<dl>
+<dd>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" alt="" width="60" height=""></div>
+<div class="alert-content">
+<p>Your bucket name cannot contain an underscore as Nextcloud will fail to connect.</p>
+</div>
+</div>
+</dd>
+</dl>
+</li>
+<li><strong>Hostname</strong>&nbsp;— objects-us-east-1.dream.io</li>
+<li><strong>Port</strong>&nbsp;— Leave blank.</li>
+<li><strong>Region</strong>&nbsp;— us-east-1</li>
+<li><strong>Enable SSL</strong>&nbsp;— Check this box.</li>
+<li><strong>Enable Path Style</strong>&nbsp;— Check this box.</li>
+<li><strong>Access key</strong>&nbsp;— Your DreamObjects&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/215986357-DreamObjects-Keys">Access key</a>.</li>
+<li><strong>Secret key</strong>&nbsp;— Your DreamObjects&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/215986357-DreamObjects-Keys">Secret key</a>.</li>
+</ul>
+</li>
+<li><strong>Available for</strong>: If you have multiple users of your Nextcloud installation, you can limit who has access to the folder by typing <span class="code">users</span>&nbsp;or&nbsp;<span class="code">groups</span>&nbsp;in the <span class="text-object">Available for</span> box to the right of the configuration information.</li>
+<li>Click the check mark to the right. If you've entered everything correctly, a green circle appears to the left of your folder name.</li>
+</ol>
+</div>
+<h2>Viewing your external storage files</h2>
+<div class="solvvy-solution">
+<p>Now that you have linked Nextcloud to DreamObjects, you can view the files you have <a href="https://help.dreamhost.com/hc/en-us/articles/215261938-How-to-upload-files-into-DreamObjects" target="_self">uploaded to your DreamObjects bucket</a>.</p>
+<ol>
+<li>Log into your Nextcloud site.
+<dl>
+<dd><img class="img-border" src="http://kbimages.dreamhosters.com/images/nextcloud_external-storage_07.png" alt="nextcloud external storage"></dd>
+</dl>
+</li>
+<li>Click <span class="text-object">Files</span> in the top menu.
+<dl>
+<dd><em>A list of folders and files display. In this list you'll see the name of the folder you created above to store the external storage. In this example it's named <span class="text-object">MyNextcloudFolder</span>.</em></dd>
+</dl>
+<dl>
+<dd><img class="img-border" src="http://kbimages.dreamhosters.com/images/nextcloud_external-storage_08.png" alt="nextcloud external storage"></dd>
+</dl>
+</li>
+<li>Click <span class="text-object">MyNextcloudFolder</span>. In this folder you will see everything you have uploaded to your DreamObjects bucket.</li>
+</ol>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60"></div>
+<div class="alert-content">
+<p>Any objects you <a href="https://help.dreamhost.com/hc/en-us/articles/215261938-How-to-upload-files-into-DreamObjects" target="_self">upload to your DreamObjects bucket</a> will automatically load in your Nextcloud folder.</p>
+</div>
+</div>
+</div>
+<h2>See also</h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a class="reference external" href="https://help.dreamhost.com/hc/en-us/articles/360028862652-Nextcloud-Installing" target="_self" rel="undefined">Nextcloud — Installing</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216541678-Unlimited-disk-space-and-bandwidth">Unlimited disk space and bandwidth</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214823108-What-is-DreamObjects-">What is DreamObjects?</a></li>
+<li><a class="reference external" href="https://help.dreamhost.com/hc/en-us/articles/215986327-What-are-Users-in-DreamObjects-and-How-Do-You-Use-Them-">Creating a DreamObjects User</a></li>
+<li><a class="reference external" href="https://help.dreamhost.com/hc/en-us/articles/215986357-DreamObjects-Keys">Creating DreamObjects Keys</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215261938-How-to-upload-files-into-DreamObjects" target="_self">How to upload files into DreamObjects</a></li>
+</ul>
+</div>
