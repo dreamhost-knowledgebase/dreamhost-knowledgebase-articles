@@ -1,0 +1,152 @@
+<h2>Overview</h2>
+<div class="solvvy-solution">
+<p>You will see the terms <span class="text-object">/home</span> directory, <span class="text-object">user's home directory</span>, and <span class="text-object">website directory</span> used very often when reading articles on where to upload and manage your website files. These terms can be confusing since they all point to a different location on the server.</p>
+<p>This article explains what these directories are and how to confirm you are in the correct location on the server when managing your website.</p>
+</div>
+<h2>Terminology</h2>
+<div class="solvvy-solution">
+<p>The following terms are explained in this article:</p>
+<table class="wikitable"><colgroup> <col width="34%" /> <col width="66%" /> </colgroup>
+<tbody>
+<tr>
+<th bgcolor="#F2F2F2">Term</th>
+<th bgcolor="#F2F2F2">Explanation</th>
+</tr>
+<tr>
+<td><a href="#user" target="_self" rel="undefined">User</a></td>
+<td>A user/username is the name assigned to a domain on the server.</td>
+</tr>
+<tr>
+<td><a href="#the-servers-home-directory" target="_self" rel="undefined">The server's /home directory</a></td>
+<td>Directory where all users are located</td>
+</tr>
+<tr>
+<td><a href="#user-directories" target="_self">User directories</a></td>
+<td>Multiple user directories in the <span class="text-object">/home</span> directory</td>
+</tr>
+<tr>
+<td><a href="#the-users-home-directory" target="_self">The user's home directory</a></td>
+<td>A single user's directory</td>
+</tr>
+<tr>
+<td><a href="#the-website-directory" target="_self">The website directory</a></td>
+<td>Website directory under a single username</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2><span id="user">User</span></h2>
+<div class="solvvy-solution">
+<p>A website user is the username assigned to your domain name on the server. This is the username used to log into your server with an <a href="https://help.dreamhost.com/hc/en-us/articles/115000675027-FTP-overview-and-credentials" target="_self">SFTP</a> or <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview" target="_self">SSH</a> client to manage your website. Multiple websites can be created under a single username. View the following articles for further information about users at DreamHost.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360020340732-Adding-a-user-to-a-server">Adding a user to a server</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360020605511-Changing-the-user-assigned-to-a-domain">Changing the user assigned to a domain</a></li>
+</ul>
+</div>
+<h2><span id="the-servers-home-directory">The server's /home directory</span></h2>
+<div class="solvvy-solution">
+<p>The <span class="text-object">/home</span> directory is the directory on the server where <strong>ALL</strong> users are located. This is referenced as <span class="text-object">/home</span>. On the server it would simply look like this:</p>
+<div class="preboxcontainer">
+<pre class="prebox">/home</pre>
+</div>
+<ul>
+<li>No user at DreamHost has access to this directory.</li>
+<li>This directory only contains various username directories.</li>
+<li>These user directories contain websites.&nbsp;</li>
+</ul>
+</div>
+<h2><span id="user-directories">User directories</span></h2>
+<div class="solvvy-solution">
+<p>The <span class="text-object">/home</span> directory on the server contains many different usernames. Each username is its own separate directory in the <span class="text-object">/home</span> directory.</p>
+<h3>Shared servers</h3>
+<p>If you are on a <a href="https://help.dreamhost.com/hc/en-us/articles/360022117051-Adding-a-Starter-Shared-hosting-plan" target="_self">Shared web server</a>, the usernames you have created along with any other users on that server are located in this <span class="text-object">/home</span> directory. For example:</p>
+<div class="preboxcontainer">
+<pre class="prebox">/home
+    /youruser1
+    /youruser2<br />    /youruser3
+    /otheruser1
+    /otheruser2
+    /otheruser3</pre>
+</div>
+<h3>VPS or Dedicated servers</h3>
+<p>If you are on a <a href="https://help.dreamhost.com/hc/en-us/articles/215280058-Virtual-Private-Server-VPS-overview-" target="_self">VPS</a> or <a href="https://help.dreamhost.com/hc/en-us/articles/215279658-Dedicated-server-overview" target="_self">Dedicated</a> server, only your personal usernames are located in the <span class="text-object">/home</span> directory. For example:</p>
+<div class="preboxcontainer">
+<pre class="prebox">/home
+    /youruser1
+    /youruser2
+    /youruser3</pre>
+</div>
+</div>
+<h2><span id="the-users-home-directory">The user's home directory</span></h2>
+<div class="solvvy-solution">
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>This is the directory referenced throughout this knowledge base when the term <span class="text-object">user's home directory</span> is mentioned.</p>
+</div>
+</div>
+<p>The user's home directory is specific to a single user on the server. It is one of many users listed in the <span class="text-object">/home</span> directory on the server. For example:</p>
+<div class="preboxcontainer">
+<pre class="prebox">/home/youruser1</pre>
+</div>
+<p>Only your user has access to this specific user directory. No one else can access it. This is where all of your website and user configuration files reside.</p>
+<p>If you have logged into your server via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview" target="_self">SSH</a>, you can run the <span class="code">pwd</span> command to view which directory you're currently in. This is how it would appear if you're already in your user's home directory.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">pwd</span>
+<span class="cmdoutput">/home/username</span></pre>
+</div>
+<h3>What is this directory used for?</h3>
+<p>This directory is most often used to manage your user's configuration files (such as the <span class="text-object">.bash_profile</span>) and view your <a href="https://help.dreamhost.com/hc/en-us/sections/203242117-Logs" target="_self">access and error logs</a>. If you need to manage your website files, you must navigate into your website directory instead.</p>
+<p>Here is how it would look in an SFTP client like Filezilla:</p>
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/users-home-directory.png" alt="user's home directory" /></dd>
+</dl>
+<h3>Default files in the user's home directory</h3>
+<p>These are the default files you'll see in the user's home directory.</p>
+<div class="preboxcontainer">
+<pre class="prebox">/home/youruser1/
+               .alias
+               .bash_profile
+               .bashrc
+               .cshrc
+               /Maildir
+               /logs
+               /example.com</pre>
+</div>
+</div>
+<h2><span id="the-website-directory">The website directory</span></h2>
+<div class="solvvy-solution">
+<p>The website directory is where your actual website files are located. For example:</p>
+<div class="preboxcontainer">
+<pre class="prebox">/home/youruser1/example.com</pre>
+</div>
+<p>If you have logged into your server via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview" target="_self">SSH</a>, you can run the <span class="code">pwd</span> command to view which directory you're currently in. This is how it would appear if you're already in your website directory.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">pwd</span>
+<span class="cmdoutput">/home/username/example.com</span></pre>
+</div>
+<p>Here is how it would look in an SFTP client like Filezilla. You will see all of your website files listed.</p>
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/10_Filezilla_windows.fw.png" alt="filezilla" /></dd>
+</dl>
+<h3>Assigning a user to a domain</h3>
+<p>When you add hosting to a website in the panel, a username is assigned to it. The following articles explain the different ways to add a user to a domain and server.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215416227-How-do-I-add-a-domain-">How do I add a domain?</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360020605511-Changing-the-user-assigned-to-a-domain">Changing the user assigned to a domain</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360020340732-Adding-a-user-to-a-server">Adding a user to a server</a></li>
+</ul>
+<h3>One user per domain policy</h3>
+<p>A website can only belong to a single username, but a single user can have multiple websites under it. The following article explains this in more detail.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215562847-One-user-per-domain-policy">One user per domain policy</a></li>
+</ul>
+</div>
+<h2>Summary</h2>
+<div class="solvvy-solution">
+<p>When you need to manage your website, you will either be in your user's home directory or website directory.</p>
+<h3>User's home directory</h3>
+<p>In this directory you would configure settings for the user as it applies to all websites under it. For example, editing your <span class="text-object">.bash_profile</span> or <a href="https://help.dreamhost.com/hc/en-us/sections/203272338-Custom-Configurations" target="_self">customizing your PHP settings</a> in a <a href="https://help.dreamhost.com/hc/en-us/articles/214894037-How-do-I-create-a-phprc-file-via-FTP-" target="_self">phprc file</a>.</p>
+<h3>Website directory</h3>
+<p>This is the directory where you would edit a specific website's files.</p>
+</div>
