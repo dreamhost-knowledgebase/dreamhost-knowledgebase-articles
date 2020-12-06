@@ -91,7 +91,7 @@ gpg: Good signature from "Maxim Dounin &lt;mdounin@mdounin.ru&gt;"
 <h3>Hide upstream proxy headers</h3>
 <p>In the same vein, when nginx is used to proxy requests from an upstream server (such as a PHP-FPM instance), it can be beneficial to hide certain headers sent in the upstream response (for example, the version of PHP running). For example, consider the following response from an nginx server running a PHP application:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">curl -I http://example.com</span>
+<pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">curl -I <span class="code-highlight">http://example.com</span></span>
 HTTP/1.1 200 OK
 Server: nginx
 Content-Type: text/html; charset=UTF-8
@@ -108,7 +108,7 @@ X-Powered-By: PHP/5.3.3
 </div>
 <p>Resending the request to the same server would now have this result:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">curl -I http://example.com</span>
+<pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">curl -I <span class="code-highlight">http://example.com</span></span>
 HTTP/1.1 200 OK
 Server: nginx
 Content-Type: text/html; charset=UTF-8
@@ -129,12 +129,12 @@ Vary: Accept-Encoding
 <h3>Restrict access by IP</h3>
 <p>Sensitive areas of websites, such as admin control panels, should have strict access controls placed on them. nginx makes it easy to whitelist IP access to certain locations of your website and deny traffic to all other IP addresses:</p>
 <div class="preboxcontainer">
-<pre class="prebox">location /wp-admin {
+<pre class="prebox">location <span class="code-highlight">/wp-admin</span> {
 
     # allow access from one IP and an additional IP range,
     # and block everything else
-    allow 1.2.3.4;
-    allow 192.168.0.0/24;
+    allow <span class="code-highlight">1.2.3.4</span>;
+    allow <span class="code-highlight">192.168.0.0/24</span>;
     deny all;
 }
 </pre>
@@ -144,7 +144,7 @@ Vary: Accept-Encoding
 <h3>Restrict access by password</h3>
 <p>Access to certain locations can also be set via password-based credentials, using the same format that Apache's .htaccess and .htpasswd files use:</p>
 <div class="preboxcontainer">
-<pre class="prebox">location /wp-admin {
+<pre class="prebox">location <span class="code-highlight">/wp-admin</span> {
     auth_basic "Admin Area";
     auth_basic_user_file /path/to/.htpasswd;
 }
@@ -153,9 +153,9 @@ Vary: Accept-Encoding
 </div>
 <p>Where the contents of <cite>.htpasswd</cite> looks something like:</p>
 <div class="preboxcontainer">
-<pre class="prebox">user1:password1
-user2:password2
-user3:password3
+<pre class="prebox">user1:<span class="code-highlight">password1</span>
+user2:<span class="code-highlight">password2</span>
+user3:<span class="code-highlight">password3</span>
 </pre>
 </div>
 </div>
