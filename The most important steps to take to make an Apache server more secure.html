@@ -18,7 +18,7 @@
 <p>Apache is built to be stable and secure, but it will only be as secure as the user who configures it. Once Apache is built and installed, it’s important to configure the server to be as minimal as possible.</p>
 <div id="run-as-an-unprivileged-user">
 <h3>Run as an unprivileged user</h3>
-<p>In security, the principle of least privilege states that an entity should be given no more permission than necessary to accomplish its goals within a given system. In the context of your web server, this means locking down Apache to run only with the permissions necessary to run. A first step in this process is to configure Apache to run as an unprivileged system user (e.g., not root). This is done by setting the APACHE_RUN_USER and APACHE_RUN_GROUP variables in the <span class="text-object">/etc/apache2/envvars</span> file:</p>
+<p>In security, the principle of least privilege states that an entity should be given no more permission than necessary to accomplish its goals within a given system. In the context of your web server, this means locking down Apache to run only with the permissions necessary to run. A first step in this process is to configure Apache to run as an unprivileged system user (e.g., not root). This is done by setting the <span class="code">APACHE_RUN_USER</span> and <span class="code">APACHE_RUN_GROUP</span> variables in the <span class="text-object">/etc/apache2/envvars</span> file:</p>
 <p>Edit the file and change the following lines:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">sudo vim /etc/apache2/envvars</span>
@@ -29,14 +29,14 @@
 <span class="code-highlight">export APACHE_RUN_GROUP=apache</span>
 </pre>
 </div>
-<p>Apache servers distributed as a common OS package may also use a user and group name such as <cite>www-data</cite> or <cite>nobody</cite>. Regardless of the choice of user’s name, make sure that the user/group selection has as few rights as necessary to run properly.</p>
+<p>Apache servers distributed as a common OS package may also use a user and group name such as <span class="text-object">www-data</span> or <span class="text-object">nobody</span>. Regardless of the choice of user’s name, make sure that the <span class="text-object">user/group</span> selection has as few rights as necessary to run properly.</p>
 </div>
 <h3>Disable ServerTokens</h3>
-<p>The HTTP spec recommends (but not requires) that web servers identify themselves via the <cite>Server</cite> header. Historically, web servers have included their version information as part of this header. Disclosing the version of Apache running can be undesirable, particularly in environments sensitive to information disclosure. Configure Apache not to display its version in <cite>Server</cite> header by editing the following file:</p>
+<p>The HTTP spec recommends (but not requires) that web servers identify themselves via the <span class="code">Server</span> header. Historically, web servers have included their version information as part of this header. Disclosing the version of Apache running can be undesirable, particularly in environments sensitive to information disclosure. Configure Apache not to display its version in <span class="code">Server</span> header by editing the following file:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">sudo vim /etc/apache2/conf-available/security.conf</span></pre>
 </div>
-<p>In that file you'll see several '<a href="https://httpd.apache.org/docs/2.4/mod/core.html#servertokens">ServerTokens</a>'. Make sure they are all commented out and only 'ProductOnly' appears.</p>
+<p>In that file you'll see several <a href="https://httpd.apache.org/docs/2.4/mod/core.html#servertokens">ServerTokens</a>. Make sure they are all commented out and only <span class="code">ProductOnly</span> appears.</p>
 <div class="preboxcontainer">
 <pre class="prebox">#ServerTokens 
 #ServerTokens Minimal
@@ -50,7 +50,7 @@ ServerTokens ProductOnly;</pre>
 </div>
 <div id="disable-htaccess-files">
 <h3>Disable .htaccess files</h3>
-<p><cite>.htaccess</cite> files are a powerful feature that allow Apache to have its configuration extended outside its main config file. While this may be convenient, it does present a security risk, as Apache will read any .htaccess file in its path — even ones placed by an attacker that could compromise the server. It may be desirable to lock down the Apache configuration by disabling .htaccess files entirely. This can be done by editing the <span class="code"><a href="https://httpd.apache.org/docs/2.4/mod/core.html">AllowOverride</a></span> directive in the <span class="text-object">/etc/apache2/apache2.conf file:</span></p>
+<p>.htaccess files are a powerful feature that allow Apache to have its configuration extended outside its main config file. While this may be convenient, it does present a security risk, as Apache will read any .htaccess file in its path — even ones placed by an attacker that could compromise the server. It may be desirable to lock down the Apache configuration by disabling .htaccess files entirely. This can be done by editing the <span class="code"><a href="https://httpd.apache.org/docs/2.4/mod/core.html">AllowOverride</a></span> directive in the <span class="text-object">/etc/apache2/apache2.conf file:</span></p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">sudo vim /etc/apache2/apache2.conf</span>
 AllowOverride None</pre>
@@ -59,7 +59,7 @@ AllowOverride None</pre>
 <div class="preboxcontainer">
 <pre class="prebox">AllowOverride AuthConfig Indexes</pre>
 </div>
-<p>In the example above, all directives that are neither in the group AuthConfig nor Indexes cause an internal server error. View the following site for further details:</p>
+<p>In the example above, all directives that are neither in the group <span class="code">AuthConfig</span> nor Indexes cause an internal server error. View the following site for further details:</p>
 <ul>
 <li><a href="https://httpd.apache.org/docs/2.4/mod/core.html">https://httpd.apache.org/docs/2.4/mod/core.htm</a>l</li>
 </ul>
@@ -78,7 +78,7 @@ AllowOverride None</pre>
 <p>In this example, the use of the <span class="code">Require</span> directive instructs Apache to allow access to the specified path if the requests come from any of the IP addresses listed, and to deny all other traffic.</p>
 </div>
 <h3>Restrict Access by Password</h3>
-<p>Access to certain locations can also be set via password-based credentials, using the <cite>htpasswd</cite> utility. View the following article for further details:</p>
+<p>Access to certain locations can also be set via password-based credentials, using the <span class="code">htpasswd</span> utility. View the following article for further details:</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216363187-Password-protecting-your-site-with-an-htaccess-file">Password protecting your site with an .htaccess file</a></li>
 </ul>
@@ -88,7 +88,7 @@ AllowOverride None</pre>
 <p>The default model in which Apache processes requests (called prefork mode), is subject to an attack known as a <a href="https://en.wikipedia.org/wiki/Slowloris_(computer_security)">Slowloris attack</a>. A Slowloris attack is a form of DoS (Denial of Service) attack in which the Apache server is forced to wait on requests from malicious clients taking a long time to send traffic, thus forcing legitimate requests to time out or be ignored entirely. Thankfully, modern Apache servers are capable of mitigating this threat with a few additional configuration directives.</p>
 <div id="enable-mod-reqtimeout">
 <h3>Enable mod_reqtimeout</h3>
-<p><cite>mod_reqtimeout</cite> is an Apache module designed to shut down connections from clients taking too long to send their request, such as is seen in a Slowloris attack. This module provides a directive that allows Apache to close the connection if it senses that the client is not sending data quickly enough. For example, add this to your&nbsp;<span class="text-object">/etc/apache2/apache2.conf&nbsp;</span>file:</p>
+<p><span class="code">mod_reqtimeout</span> is an Apache module designed to shut down connections from clients taking too long to send their request, such as is seen in a Slowloris attack. This module provides a directive that allows Apache to close the connection if it senses that the client is not sending data quickly enough. For example, add this to your&nbsp;<span class="text-object">/etc/apache2/apache2.conf&nbsp;</span>file:</p>
 <div class="preboxcontainer">
 <pre class="prebox">RequestReadTimeout header=10-20,MinRate=500 body=20,MinRate=500</pre>
 </div>
@@ -99,18 +99,18 @@ AllowOverride None</pre>
 </div>
 <h2>Securing SSL/TLS</h2>
 <div class="solvvy-solution">
-<p>Make sure all sites on your server have an SSL certificate installed. You can install a free 'Let's Encrypt' certificate using the following instructions:</p>
+<p>Make sure all sites on your server have an SSL certificate installed. You can install a free Let's Encrypt certificate using the following instructions:</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/222168828-Setting-up-Let-s-Encrypt-on-DreamCompute-with-Apache">Setting up Let’s Encrypt on DreamCompute with Apache</a></li>
 </ul>
 <h3>Force all connections over TLS</h3>
-<p>If you've installed a 'Let's Encrypt' certificate as shown above, you already had the option to force all traffic over SSL. If you're not using a 'Let's Encrypt' certificate, you can also do this by adding the following to your site's configuration file located at <span class="text-object">/etc/apache2/sites-available/example.com.conf</span>.</p>
-<p>First, make sure the Headers module is active.</p>
+<p>If you've installed a Let's Encrypt certificate as shown above, you already had the option to force all traffic over SSL. If you're not using a Let's Encrypt certificate, you can also do this by adding the following to your site's configuration file located at <span class="text-object">/etc/apache2/sites-available/example.com.conf</span>.</p>
+<p>First, make sure the <span class="code">headers</span> module is active.</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">sudo a2enmod headers</span>
 <span class="server">[user@instance]$ </span><span class="command">sudo service apache2 restart</span></pre>
 </div>
-<p>You can then add the following to your site's .conf file.</p>
+<p>You can then add the following to your site's <span class="text-object">.conf</span> file.</p>
 <div class="preboxcontainer">
 <pre class="prebox">&lt;IfModule mod_headers.c&gt;
 Header always set Strict-Transport-Security "max-age=15768000; includeSubDomains; preload"
