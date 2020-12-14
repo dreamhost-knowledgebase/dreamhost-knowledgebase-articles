@@ -58,7 +58,7 @@
 </li>
 <li>Run the following <span class="code"><a href="https://help.dreamhost.com/hc/en-us/articles/217213327-Wget">wget</a></span> command to download the <span class="text-object">go-pear.phar</span> file to your user's directory:
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">wget http://pear.php.net/go-pear.phar</span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wget https://pear.php.net/go-pear.phar</span></pre>
 </div>
 </li>
 <li>Run the file by entering this command in the same directory:
@@ -90,53 +90,43 @@ accept these locations.
 </pre>
 </div>
 </li>
-<li>You should change the location of the tmp directories. Type <strong>2</strong>&nbsp;and click 'Enter'.
+<li>You should change the location of the tmp directories. Type <strong>2</strong>&nbsp;and press <span class="code">Enter</span>.
 <div class="preboxcontainer">
 <pre class="prebox">(Use $prefix as a shortcut for '/home/exampleuser/pear', etc.)
 Temporary directory for processing [/tmp/pear/install] : <span class="code-highlight">/home/exampleuser/pear/tmp/pear/install</span></pre>
 </div>
 Change the <span class="text-object">exampleuser</span> to your actual Shell username in the command above.</li>
-<li>Click 'Enter' to save and proceed.</li>
-<li>The list appears again. This type type <strong>3</strong> and click 'Enter'.
+<li>Press <span class="code">Enter</span> to save and proceed.</li>
+<li>The list appears again. This type type <strong>3</strong> and press <span class="code">Enter</span>.
 <div class="preboxcontainer">
 <pre class="prebox">(Use $prefix as a shortcut for '/home/exampleuser/pear', etc.)
 Temporary directory for downloads [/tmp/pear/install] : <span class="code-highlight">/home/exampleuser/pear/tmp/pear/install</span></pre>
 </div>
-Change the 'exampleuser' to your actual Shell username in the command above.</li>
-<li>Click 'Enter' to save and proceed.</li>
-<li>Click 'Enter' again to proceed.
-<dl>
-<dd><em>The install will continue to run, but then stops at this question:</em></dd>
-</dl>
+Change the <span class="text-object">exampleuser</span> to your actual Shell username in the command above.</li>
+<li>Click <span class="code">Enter</span> to save and proceed.</li>
+<li>Click <span class="code">Enter</span> again to proceed.
 <div class="preboxcontainer">
-<pre class="prebox">WARNING! The include_path defined in the currently used php.ini does not
-contain the PEAR PHP directory you just specified:
-&lt;/home/exampleuser/pear/share/pear&gt;
-If the specified directory is also not in the include_path used by
-your scripts, you will have problems getting any PEAR packages working.
+<pre class="prebox">The 'pear' command is now at your service at /home/exampleuser/pear/bin/pear
 
-Would you like to alter php.ini &lt;/etc/php72/php.ini&gt;? [Y/n] : <span class="code-highlight">n</span>
-</pre>
+** The 'pear' command is not currently in your PATH, so you need to
+** use '/home/exampleuser/pear/bin/pear' until you have added
+** '/home/exampleuser/pear/bin' to your PATH environment variable.
+
+Run it without parameters to see the available actions, try 'pear list'
+to see what packages are installed, or 'pear help' for help.
+
+For more information about PEAR, see:
+
+  http://pear.php.net/faq.php
+  http://pear.php.net/manual/
+
+Thanks for using go-pear!</pre>
 </div>
-</li>
-<li>Enter the letter ‘<strong>n</strong>’ and then click <strong>Enter</strong> to proceed with the install. You will be able to set the include path in the next few steps.
 <dl>
-<dd><em>You’ll finally see this last section of the install script:</em></dd>
+<dd><em>The <span class="code">include_path</span> will be set in the following steps.</em></dd>
 </dl>
-<div class="preboxcontainer">
-<pre class="prebox">I will add a workaround for this in the 'pear' command to make sure the installer works, 
-but please look over your php.ini or Apache configuration to make sure /home/exampleuser/pear/share/pear 
-is in your include_path.
-
-Current include path           : .:/usr/local/lib/php:/usr/local/php5/lib/pear
-Configured directory           : /home/exampleuser/pear/share/pear
-Currently used php.ini (guess) : /etc/php72/php.ini
-Press Enter to continue:
-</pre>
-</div>
 </li>
-<li>Click <strong>Enter</strong> again on your keyboard. The include path will be set in the following steps.</li>
-<li>View the&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">creating and editing a file via SSH</a>&nbsp;article for instructions on how to edit your existing .bash_profile.&nbsp;You’ll see these lines already in that file:
+<li>View the&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">creating and editing a file via SSH</a>&nbsp;article for instructions on how to edit your existing <span class="text-object">.bash_profile</span>.&nbsp;You’ll see these lines already in that file:
 <div class="preboxcontainer">
 <pre class="prebox"><span class="cmdoutput"># ~/.bash_profile: executed by bash(1) for login shells. <br /> <br />umask 002 <br />PS1='[\h]$ '</span></pre>
 </div>
@@ -154,14 +144,14 @@ export PATH=${HOME}/pear/bin:/usr/local/php72/bin:${PATH}</span></pre>
 </div>
 </li>
 </ol>
-<p>You've now installed PEAR – but for your environment to know where to find this installation, you must set up the include_path within your phprc file.</p>
+<p>You've now installed PEAR – but for your environment to know where to find this installation, you must set up the <span class="code">include_path</span> within your phprc file.</p>
 </div>
 <h2><span id="Setting_the_include_path_in_your_phprc_file">Setting the include_path in your phprc file</span></h2>
 <div class="solvvy-solution">
 <div class="alert alert-note">
 <div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
-<p>If you do not set up this include_path correctly, you may find your installation does not work as intended.</p>
+<p>If you do not set up this <span class="code">include_path</span> correctly, you may find your installation does not work as intended.</p>
 </div>
 </div>
 <ol>
@@ -176,10 +166,10 @@ If the file already exists, view the following article for instructions on how t
 </li>
 <li>Update the phprc file with the following command:
 <div class="preboxcontainer">
-<pre class="prebox">include_path = ".:/home/username/pear/share/pear"</pre>
+<pre class="prebox">include_path = ".:/home/exampleuser/pear/share/pear"</pre>
 </div>
 <ul>
-<li>Change 'username' to your actual Shell username that the domain is under.</li>
+<li>Change <span class="text-object">exampleuser</span> to your actual Shell username that the domain is under.</li>
 </ul>
 </li>
 <li>Navigate back to your user's directory.
@@ -187,7 +177,7 @@ If the file already exists, view the following article for instructions on how t
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~</span></pre>
 </div>
 </li>
-<li>Once there, run 'pear list' to see if you get a response:
+<li>Once there, run <span class="code">pear list</span> to see if you get a response:
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">pear list</span>
 
@@ -209,13 +199,11 @@ XML_Util         1.2.3   stable
 <p>When you installed PEAR above, you manually set the location of the tmp directories. You should also update the location of the cache directory to this temp location.</p>
 <p>Run the following to view the current <span class="text-object">/tmp</span> directories:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">pear config-show | grep tmp</span>
-<span class="cmdoutput">PEAR Installer cache directory cache_dir        /tmp/pear/cache
-PEAR Installer download        download_dir     <span class="code-highlight">/home/exampleuser/pear/tmp/pear/install</span>
-PEAR Installer temp directory  temp_dir         <span class="code-highlight">/home/exampleuser/pear/tmp/pear/install</span></span>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">pear config-show | grep cache_dir</span>
+<span class="cmdoutput">PEAR Installer cache directory cache_dir        /tmp/pear/cache</span>
 </pre>
 </div>
-<p>Run the following to update the cache <span class="text-object">tmp</span> directory Change 'username' to the shell user you're currently running the command under.</p>
+<p>Run the following to update the cache <span class="text-object">tmp</span> directory. Change <span class="text-object">exampleuser</span> to the shell user you're currently running the command under.</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">pear config-set cache_dir /home/<span class="code-highlight">exampleuser</span>/pear/tmp/</span>
 <span class="cmdoutput">config-set succeeded</span>
@@ -224,7 +212,7 @@ PEAR Installer temp directory  temp_dir         <span class="code-highlight">/ho
 </div>
 <h2>Installing packages</h2>
 <div class="solvvy-solution">
-<p>You are now able to install any packages you like using the 'pear' command. For example, run the following to install the mail package:</p>
+<p>You are now able to install any packages you like using the <span class="code">pear</span> command. For example, run the following to install the mail package:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">pear install --alldeps Mail</span></pre>
 </div>
