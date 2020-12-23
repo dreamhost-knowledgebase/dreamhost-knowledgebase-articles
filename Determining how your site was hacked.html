@@ -19,12 +19,12 @@
 <p>Since recent FTP/SSH hacks are easiest to spot, start by eliminating this option. Log into your user via SSH and run the following commands.</p>
 <p>Shows you your login history for the current month:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">last -i | grep <span class="code-highlight">youruser</span></span>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">last -i | grep username</span>
 </pre>
 </div>
 <p>Shows you your login history for the prior month:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">last -if /var/log/wtmp.1 | grep <span class="code-highlight">youruser</span></span>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">last -if /var/log/wtmp.1 | grep username</span>
 </pre>
 </div>
 <div class="alert alert-note">
@@ -35,16 +35,16 @@
 </div>
 <p>The output looks something like this:</p>
 <div class="preboxcontainer">
-<pre class="prebox">youruser pts/4        99.139.XXX.XXX   Wed May 28 06:10 - 07:11  (01:00)    
-youruser pts/5        66.33.XXX.XXX    Sun May 25 09:31 - 12:14  (02:42)    
-youruser ftpd30715    66.33.XXX.XXX    Wed May 21 14:16 - 14:16  (00:00)    
-youruser pts/2        66.33.XXX.XXX    Tue May 20 13:22 - 14:18  (00:56)    
-youruser pts/2        66.33.XXX.XXX    Tue May 20 13:06 - 13:22  (00:15)    
+<pre class="prebox"><span class="command">username </span>pts/4        99.139.XXX.XXX   Wed May 28 06:10 - 07:11  (01:00)    
+<span class="command">username </span>pts/5        66.33.XXX.XXX    Sun May 25 09:31 - 12:14  (02:42)    
+<span class="command">username </span>ftpd30715    66.33.XXX.XXX    Wed May 21 14:16 - 14:16  (00:00)    
+<span class="command">username </span>pts/2        66.33.XXX.XXX    Tue May 20 13:22 - 14:18  (00:56)    
+<span class="command">username </span>pts/2        66.33.XXX.XXX    Tue May 20 13:06 - 13:22  (00:15)    
 </pre>
 </div>
 <p>You can simplify this data to print out only IP addresses and counts by adding pipes to a few simple commands:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">last -if /var/log/wtmp.1 | grep <span class="code-highlight">youruser</span> | awk '{print $3}' | sort | uniq -c</span>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">last -if /var/log/wtmp.1 | grep username | awk '{print $3}' | sort | uniq -c</span>
 </pre>
 </div>
 <p>The output looks more like this:</p>

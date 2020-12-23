@@ -33,20 +33,20 @@
 <div class="alert-content">
 <p>Change the following when you run the command:</p>
 <ul>
-<li>youruser&nbsp;— change to your <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH username</a></li>
+<li>username&nbsp;— change to your <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH username</a></li>
 <li>php&nbsp;— change to the process type you're looking for</li>
 </ul>
 </div>
 </div>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">lsof -u <span class="code-highlight">youruser</span> | grep php | grep /home</span>
-<span class="cmdoutput">php72.cgi 14963 youruser  cwd       DIR   8,17      4096 15115680565 /home/youruser/example.com/</span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">lsof -u <span class="code-highlight">username</span> | grep php | grep /home</span>
+<span class="cmdoutput">php72.cgi 14963 username  cwd       DIR   8,17      4096 15115680565 /home/username/example.com/</span></pre>
 </div>
 <p>Ignore any errors you see in the response. What you’re looking for is the list of open files for your PHP processes. You can then look closer into those files to see what the issue may be.</p>
 <h3>Troubleshooting the 'lsof' command</h3>
 <p>One problem with running 'lsof' is that there may be no useful output to work with when you run it once.&nbsp;The following example uses the <span class="code">watch</span> command to run the <span class="code">lsof</span> command every two seconds while outputting the results to a file named <span class="text-object">results.txt</span>.</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command"> watch "lsof -u <span class="code-highlight">youruser</span> | grep php | grep /home | tee -a results.txt"</span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command"> watch "lsof -u <span class="code-highlight">username</span> | grep php | grep /home | tee -a results.txt"</span></pre>
 </div>
 <p>You can see the live output in your terminal as this runs. When you're finished, click <span class="code">Ctrl + C</span> to stop it. You can then view the full output in the results.txt file by running the following command:</p>
 <div class="preboxcontainer">

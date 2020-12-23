@@ -35,6 +35,10 @@
 </div>
 <h2>Manually creating a custom cron job</h2>
 <div class="solvvy-solution">
+<p>The following section is also available as an instructional video:</p>
+<dl>
+<dd><iframe src="https://www.youtube.com/embed/bFVzC_l4NAI" width="560" height="315" frameborder="0" allowfullscreen=""></iframe></dd>
+</dl>
 <p>The instructions below explain how to add a custom cron job under your Shell user. These instructions assume you have NOT added a cron job in the panel yet, so the crontab file is blank.</p>
 <ol>
 <li>Log into your server via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH</a> using the Shell user you wish to create the cron job under.</li>
@@ -94,11 +98,11 @@ Choose 1-13 [3]: <span class="code-highlight">6</span>
 </div>
 </div>
 </li>
-<li>A blank crontab file opens.&nbsp;Add the code for your cron job. This example runs a file named <span class="text-object">mail.php</span> under the username of 'example_username'. This should be the same SSH username you're currently logged in under. This example runs the cron job at 8:13 pm.
+<li>A blank crontab file opens.&nbsp;Add the code for your cron job. This example runs a file named <span class="text-object">mail.php</span> under the username of 'username'. This should be the same SSH username you're currently logged in under. This example runs the cron job at 8:13 pm.
 <div class="preboxcontainer">
 <pre class="prebox"># Custom cron job
 MAILTO="user@example.com"
-13 20 * * * php  /home/example_username/mail.php</pre>
+13 20 * * * php  /home/username/mail.php</pre>
 </div>
 <div class="alert alert-note">
 <div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
@@ -250,37 +254,37 @@ MAILTO="user@example.com"
 <td style="width: 93px;"><code>@yearly (or @annually)</code></td>
 <td style="width: 201px;">Run once a year at midnight on January 1</td>
 <td style="width: 83px;"><code>0 0 1 1 *</code></td>
-<td style="width: 396.233px;">@yearly php /home/example_username/mail.php</td>
+<td style="width: 396.233px;">@yearly php /home/username/mail.php</td>
 </tr>
 <tr>
 <td style="width: 93px;"><code>@monthly</code></td>
 <td style="width: 201px;">Run once a month at midnight on the first day of the month</td>
 <td style="width: 83px;"><code>0 0 1 * * </code></td>
-<td style="width: 396.233px;">@monthly php /home/example_username/mail.php</td>
+<td style="width: 396.233px;">@monthly php /home/username/mail.php</td>
 </tr>
 <tr>
 <td style="width: 93px;"><code>@weekly</code></td>
 <td style="width: 201px;">Run once a week at midnight on Sunday morning</td>
 <td style="width: 83px;"><code>0 0 * * 0 </code></td>
-<td style="width: 396.233px;">@weekly php /home/example_username/mail.php</td>
+<td style="width: 396.233px;">@weekly php /home/username/mail.php</td>
 </tr>
 <tr>
 <td style="width: 93px;"><code>@daily (or @midnight)</code></td>
 <td style="width: 201px;">Run once a day at midnight</td>
 <td style="width: 83px;"><code>0 0 * * *</code></td>
-<td style="width: 396.233px;">@daily php /home/example_username/mail.php</td>
+<td style="width: 396.233px;">@daily php /home/username/mail.php</td>
 </tr>
 <tr>
 <td style="width: 93px;"><code>@hourly</code></td>
 <td style="width: 201px;">Run once an hour at the beginning of the hour</td>
 <td style="width: 83px;"><code>0 * * * *</code></td>
-<td style="width: 396.233px;">@hourly php /home/example_username/mail.php</td>
+<td style="width: 396.233px;">@hourly php /home/username/mail.php</td>
 </tr>
 <tr>
 <td style="width: 93px;"><code>@reboot</code></td>
 <td style="width: 201px;">Run at startup (of the cron daemon)</td>
 <td style="width: 83px;"><code>@reboot</code></td>
-<td style="width: 396.233px;">@reboot php /home/example_username/mail.php</td>
+<td style="width: 396.233px;">@reboot php /home/username/mail.php</td>
 </tr>
 </tbody>
 </table>
@@ -325,7 +329,7 @@ MAILTO="user@example.com"
 </div>
 <p><strong>Example 5</strong>: This runs a local script (i.e. hosted at DreamHost) every 15 minutes.</p>
 <div class="preboxcontainer">
-<pre class="prebox">*/15 * * * * /usr/local/php74/bin/php /home/example_username/myscript.php
+<pre class="prebox">*/15 * * * * /usr/local/php74/bin/php /home/username/myscript.php
 </pre>
 </div>
 <p><strong>Example 6</strong>: This runs an external script (i.e. hosted elsewhere) every 30 minutes using <span class="code">curl</span>.</p>
@@ -337,7 +341,7 @@ MAILTO="user@example.com"
 <p>View <a href="http://unix.stackexchange.com/a/70971">http://unix.stackexchange.com/a/70971</a> for more information.</p>
 <p><strong>Example 7</strong>: This runs a local script (i.e. hosted at DreamHost) every 10 minutes.</p>
 <div class="preboxcontainer">
-<pre class="prebox">*/10 * * * * /usr/local/php74/bin/php /home/example_username/myscript.php
+<pre class="prebox">*/10 * * * * /usr/local/php74/bin/php /home/username/myscript.php
 </pre>
 </div>
 <p><strong>Example 8</strong>: This uses <span class="code">wget</span> to download a file to a directory named <span class="text-object">/cronfolder</span>.</p>
@@ -350,7 +354,7 @@ MAILTO="user@example.com"
 <div class="solvvy-solution">
 <p>If you are logged in as a <a href="https://help.dreamhost.com/hc/en-us/articles/215945467-How-do-I-add-users-to-a-Dedicated-server-">Dedicated server admin user</a>, you can edit the crontab file directly. It is stored here:</p>
 <div class="preboxcontainer">
-<pre class="prebox">/var/spool/cron/crontabs/youruser
+<pre class="prebox">/var/spool/cron/crontabs/username
 </pre>
 </div>
 <p>You’ll need to use <span class="code">sudo</span> on your Dedicated server (or start an interactive session as the root user with <span class="code">sudo -i</span>) to access that file.</p>
@@ -363,7 +367,7 @@ MAILTO="user@example.com"
 </div>
 <p>Example (opening the file with the 'vi' text editor):</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">sudo vi /var/spool/cron/crontabs/youruser</span>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">sudo vi /var/spool/cron/crontabs/username</span>
 </pre>
 </div>
 </div>

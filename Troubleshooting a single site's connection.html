@@ -122,31 +122,31 @@
 </ol>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">ls -la</span>
-<span class="cmdoutput">drwxr-x--x   16 youruser pg123456    4096 2009-12-10 04:25 ./
+<span class="cmdoutput">drwxr-x--x   16 username pg123456    4096 2009-12-10 04:25 ./
 ...</span>
 </pre>
 </div>
 <p>The first line should look like the above. Notice the <a href="https://help.dreamhost.com/hc/en-us/articles/214751018-UNIX-commands-Changing-permissions">permission string</a> that reads "drwxr-x--x". The first letter stands for "directory", then there are three sets of three permissions. The first set are the owner permissions, which are set to read/write/execute. The second set are the group permissions which are set to read/execute. The third set are "other" permissions (or what all other users have), which is set to execute only. If you have Enhanced Security enabled for your user it would look like this instead:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">ls -la</span>
-<span class="cmdoutput">drwxr-x---   16 youruser  adm    4096 2009-12-10 04:25 ./
+<span class="cmdoutput">drwxr-x---   16 username adm    4096 2009-12-10 04:25 ./
 ...</span>
 </pre>
 </div>
 <p>The above are correct permission settings. If instead they look like this:</p>
 <div class="preboxcontainer">
-<pre class="prebox">drw-r-----   16 youruser pg123456    4096 2009-12-10 04:25 ./
+<pre class="prebox">drw-r-----   16 <span class="cmdoutput">username </span>pg123456    4096 2009-12-10 04:25 ./
 </pre>
 </div>
 <p>or this:</p>
 <div class="preboxcontainer">
-<pre class="prebox">d---------   16 youruser pg123456    4096 2009-12-10 04:25 ./
+<pre class="prebox">d---------   16 <span class="cmdoutput">username </span>pg123456    4096 2009-12-10 04:25 ./
 </pre>
 </div>
 <p>Then that means your user has been disabled and you should contact DreamHost. If this is the case you'll likely see errors like this when attempting to log in and won't be able to get the directory listing as described above:</p>
 <div class="preboxcontainer">
-<pre class="prebox">Could not chdir to home directory /home/youruser: Permission denied
--bash: /home/youruser/.bash_profile: Permission denied
+<pre class="prebox">Could not chdir to home directory /home/username: Permission denied
+-bash: /home/username/.bash_profile: Permission denied
 </pre>
 </div>
 <p>If you see this, <a href="/hc/en-us/articles/218084068-Contacting-support-overview">contact DreamHost support</a> for assistance.</p>
