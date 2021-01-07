@@ -1,0 +1,88 @@
+<h2>Overview</h2>
+<div class="solvvy-solution">
+<p>The instructions in this article reinstall the core WordPress files into your existing WordPress site. These steps assume your original WordPress files are still in your current website directory.</p>
+<h3>What do these steps do?</h3>
+<p>The following methods only reinstall the core WordPress files. This means your themes, plugins, database, and <span class="text-object">wp-content</span> folder are not affected.</p>
+<ul>
+<li><a href="#option1">Option 1 — Reinstalling in the WordPress dashboard</a></li>
+<li><a href="#option2">Option 2 — Reinstalling using FTP</a></li>
+<li><a href="#option3">Option 3 — Reinstalling using wp-cli</a></li>
+</ul>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>If you need to install a new copy of WordPress on an empty website, view the following articles instead.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215525277-How-to-install-WordPress-using-the-One-Click-Installer">How to install WordPress using the One-Click Installer</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360024826351-Installing-WordPress-using-wp-cli-and-SSH">Installing WordPress using wp-cli and SSH</a></li>
+</ul>
+</div>
+</div>
+</div>
+<h2>Should I reinstall WordPress?</h2>
+<div class="solvvy-solution">
+<p>You should first exhaust all other troubleshooting options before reinstalling WordPress. The following articles provide solutions to the most common problems.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/sections/203242657-Troubleshooting" target="_self">Troubleshooting WordPress</a></li>
+</ul>
+<p><a href="https://help.dreamhost.com/hc/en-us/articles/215722447-Contacting-DreamHost-via-email" target="_self">Contact support</a> if you're still unsure if you should reinstall WordPress.</p>
+<h2>Back up your data</h2>
+<p>You should always back up your data before making any changes to your site. View the following article for instructions on how to back up your web site files and database:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215768237-How-can-I-manually-backup-my-data-" target="_self">Manual backup techniques</a></li>
+</ul>
+</div>
+<h2><span id="option1">Option 1 — Reinstalling in the WordPress dashboard</span></h2>
+<div class="solvvy-solution">
+<p>You can reinstall your core files in the WordPress dashboard if you are still able to log in.</p>
+<ol>
+<li>Log into your WordPress site at <strong>example.com/wp-login.php</strong>.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/reinstalling-wordpress_01.png" /></dd>
+</dl>
+</li>
+<li>Navigate to the <span class="text-object">Dashboard &gt; Updates page</span>.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/reinstalling-wordpress_02.png" /></dd>
+</dl>
+</li>
+<li>On the next page, click the <strong>Re-install Now</strong> button.</li>
+</ol>
+</div>
+<h2><span id="option2">Option 2 — Reinstalling using FTP</span></h2>
+<div class="solvvy-solution">
+<p>If you don't have access to your WordPress dashboard, you can upload and overwrite the files using an FTP client.</p>
+<ol>
+<li>Visit&nbsp;<a href="https://wordpress.org/download/" target="_self" rel="undefined">https://wordpress.org/download</a> to download the WordPress .zip file to your computer.</li>
+<li>Unzip the file on your computer. This unpacks all WordPress files and directories.</li>
+<li>Within these files, delete the <span class="text-object">wp-content</span> directory</li>
+<li>Log into your site <a href="https://help.dreamhost.com/hc/en-us/articles/115000675027-FTP-overview-and-credentials" target="_self">using an FTP client</a>.</li>
+<li>Upload all files and directories you just downloaded into your current site. When prompted, choose to overwrite the files on the server.</li>
+</ol>
+</div>
+<h2><span id="option3">Option 3 — Reinstalling using wp-cli</span></h2>
+<div class="solvvy-solution">
+<p><a href="https://help.dreamhost.com/hc/en-us/articles/214693248-WordPress-wp-cli-overview" target="_self">wp-cli</a> is a command-line tool you can use to manage your WordPress site. The following example uses the <span class="code">--skip-content</span> option to download WordPress without the default themes and plugins. You can read more about this command <a href="https://developer.wordpress.org/cli/commands/core/download/" target="_blank" rel="noopener">here</a>.</p>
+<ol>
+<li>Log into your site via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview" target="_self">SSH</a>.</li>
+<li>Navigate into your <a href="https://help.dreamhost.com/hc/en-us/articles/360001219231#the-website-directory" target="_self">website&nbsp;directory</a>. Make sure to change <span class="text-object">username</span> to your <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access" target="_self">Shell user</a>.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd /home/<span class="code-highlight">username</span>/example.com</span></pre>
+</div>
+</li>
+<li>Run the following command to download your core files.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp core download --skip-content --force
+</span></pre>
+</div>
+</li>
+</ol>
+</div>
+<h2>See also</h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215525277-How-to-install-WordPress-using-the-One-Click-Installer">How to install WordPress using the One-Click Installer</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214828548-How-do-I-install-WordPress-before-my-DNS-is-pointed-to-DreamHost-">How do I install WordPress before my DNS is pointed to DreamHost?</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360024826351-Installing-WordPress-using-wp-cli-and-SSH">Installing WordPress using wp-cli and SSH</a></li>
+</ul>
+</div>
