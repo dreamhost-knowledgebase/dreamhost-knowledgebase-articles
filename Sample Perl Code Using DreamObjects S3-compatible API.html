@@ -1,7 +1,7 @@
 <div class="document">
 <div class="documentwrapper">
 <div class="body">
-<div class="solvvy-hidden" id="sample-perl-code-using-dreamobjects-s3-compatible-api">
+<div id="sample-perl-code-using-dreamobjects-s3-compatible-api" class="solvvy-hidden">
 <div class="table-of-content container">
 <ul class="simple">
 <li><a class="reference internal" href="#s3-perl-creating-a-connection">Creating a Connection</a></li>
@@ -35,7 +35,7 @@ my $conn = Amazon::S3-&gt;new({
         retry                 =&gt; 1,
 });</pre>
 </div>
-<div id="listing-owned-buckets"> </div>
+<div id="listing-owned-buckets">&nbsp;</div>
 <span id="s3-perl-listing-owned-buckets"></span>
 <h2>Listing Owned Buckets</h2>
 <div class="solvvy-solution">
@@ -53,7 +53,7 @@ mahbuckat2   2011-04-21T18:05:48.000Z
 mahbuckat3   2011-04-21T18:07:18.000Z</pre>
 </div>
 </div>
-<div id="creating-a-bucket"> </div>
+<div id="creating-a-bucket">&nbsp;</div>
 <span id="s3-perl-creating-a-bucket"></span>
 <h2>Creating a Bucket</h2>
 <div class="solvvy-solution">
@@ -62,7 +62,7 @@ mahbuckat3   2011-04-21T18:07:18.000Z</pre>
 <pre class="prebox">my $bucket = $conn-&gt;add_bucket({ bucket =&gt; 'my-new-bucket' });</pre>
 </div>
 </div>
-<div id="listing-a-bucket-s-content"> </div>
+<div id="listing-a-bucket-s-content">&nbsp;</div>
 <span id="s3-perl-listing-a-buckets-content"></span>
 <h2>Listing a Bucket’s Content</h2>
 <div class="solvvy-solution">
@@ -79,12 +79,12 @@ foreach my $key (@keys) {
 myphoto2.jpg 262518  2011-08-08T21:38:01.000Z</pre>
 </div>
 </div>
-<div id="deleting-a-bucket"> </div>
+<div id="deleting-a-bucket">&nbsp;</div>
 <span id="s3-perl-deleting-a-bucket"></span>
 <h2>Deleting a Bucket</h2>
 <div class="solvvy-solution">
 <div class="alert alert-important">
-<div class="alert-icon"><img height="60" src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
 <p>The Bucket must be empty, otherwise it won’t work.</p>
 </div>
@@ -93,18 +93,18 @@ myphoto2.jpg 262518  2011-08-08T21:38:01.000Z</pre>
 <pre class="prebox">$conn-&gt;delete_bucket($bucket);</pre>
 </div>
 </div>
-<div id="forced-delete-for-non-empty-buckets"> </div>
+<div id="forced-delete-for-non-empty-buckets">&nbsp;</div>
 <span id="s3-perl-forced-delete-for-non-empty-buckets"></span>
 <h2>Forced Delete for Non-empty Buckets</h2>
 <div class="solvvy-solution">
 <div class="alert alert-important">
-<div class="alert-icon"><img height="60" src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
 <p>not available in the <a href="http://search.cpan.org/~tima/Amazon-S3-0.441/lib/Amazon/S3.pm">Amazon::S3</a> perl module</p>
 </div>
 </div>
 </div>
-<div id="creating-an-object"> </div>
+<div id="creating-an-object">&nbsp;</div>
 <span id="s3-perl-creating-an-object"></span>
 <h2>Creating an Object</h2>
 <div class="solvvy-solution">
@@ -116,11 +116,11 @@ myphoto2.jpg 262518  2011-08-08T21:38:01.000Z</pre>
 );</pre>
 </div>
 </div>
-<div id="change-an-object-s-acl"> </div>
+<div id="change-an-object-s-acl">&nbsp;</div>
 <span id="s3-perl-change-an-objects-acl"></span>
 <h2>Change an Object’s ACL</h2>
 <div class="solvvy-solution">
-<p>Make the object <code class="docutils literal"><span class="pre">hello.txt</span></code> publicly readable and <code class="docutils literal"><span class="pre">secret_plans.txt</span></code> to be private.</p>
+<p>Make the object <code class="docutils literal"><span class="pre">hello.txt</span></code>&nbsp;publicly readable and <code class="docutils literal"><span class="pre">secret_plans.txt</span></code> to be private.</p>
 <div class="preboxcontainer">
 <pre class="prebox">$bucket-&gt;set_acl({
         key       =&gt; 'hello.txt',
@@ -132,17 +132,17 @@ $bucket-&gt;set_acl({
 });</pre>
 </div>
 </div>
-<div id="download-an-object-to-a-file"> </div>
+<div id="download-an-object-to-a-file">&nbsp;</div>
 <span id="s3-perl-download-an-object"></span>
 <h2>Download an Object (to a file)</h2>
 <div class="solvvy-solution">
-<p>Download the object <code class="docutils literal"><span class="pre">perl_poetry.pdf</span></code> and save it in <code class="docutils literal"><span class="pre">/home/larry/documents/.</span></code></p>
+<p>Download the object <span class="text-object">perl_poetry.pdf</span> and save it in <span class="text-object">/home/username/documents/.</span> Make sure to change <span class="code">username</span> to your <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access" target="_self">Shell user</a>.</p>
 <div class="preboxcontainer">
 <pre class="prebox">$bucket-&gt;get_key_filename('perl_poetry.pdf', undef,
-        '/home/larry/documents/perl_poetry.pdf');</pre>
+        '/home/<span class="code-highlight">username</span>/documents/perl_poetry.pdf');</pre>
 </div>
 </div>
-<div id="delete-an-object"> </div>
+<div id="delete-an-object">&nbsp;</div>
 <span id="s3-perl-delete-an-object"></span>
 <h2>Delete an Object</h2>
 <div class="solvvy-solution">
@@ -151,15 +151,15 @@ $bucket-&gt;set_acl({
 <pre class="prebox">$bucket-&gt;delete_key('goodbye.txt');</pre>
 </div>
 </div>
-<div id="generate-object-download-urls-signed-and-unsigned"> </div>
+<div id="generate-object-download-urls-signed-and-unsigned">&nbsp;</div>
 <span id="s3-perl-generate-object-download-urls"></span>
 <h2>Generate Object Download URLs (signed and unsigned)</h2>
 <div class="solvvy-solution">
-<p>This generates an unsigned download URL for <code class="docutils literal"><span class="pre">hello.txt</span></code>. This works because <code class="docutils literal"><span class="pre">hello.txt</span></code> was made public by setting the ACL above. Then this generates a signed download URL for <code class="docutils literal"><span class="pre">secret_plans.txt</span></code> that will work for 1 hour. Signed download URLs will work for the time period even if the object is private (when the time period is up, the URL will stop working).</p>
+<p>This generates an unsigned download URL for <code class="docutils literal"><span class="pre">hello.txt</span></code>. This works because <code class="docutils literal"><span class="pre">hello.txt</span></code>&nbsp;was made public by setting the ACL above. Then this generates a signed download URL for <code class="docutils literal"><span class="pre">secret_plans.txt</span></code> that will work for 1 hour. Signed download URLs will work for the time period even if the object is private (when the time period is up, the URL will stop working).</p>
 <div class="alert alert-important">
-<div class="alert-icon"><img height="60" src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60"/></div>
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
-<p>The <a class="reference external" href="http://search.cpan.org/~tima/Amazon-S3-0.441/lib/Amazon/S3.pm">Amazon::S3</a> module does not have a way to generate download URLs, so these examples use another module instead. Unfortunately, most modules for generating these URLs assume that you are using Amazon. For this reason, a more obscure module, <a class="reference external" href="http://search.cpan.org/~mike/Muck-0.02/">Muck::FS::S3</a> is used. This should be the same as Amazon’s sample S3 perl module, but this sample module is not in CPAN. So, you can either use CPAN to install <a class="reference external" href="http://search.cpan.org/~mike/Muck-0.02/">Muck::FS::S3</a>, or install Amazon’s sample S3 module manually. If you go the manual route, you can remove <code class="docutils literal"><span class="pre">Muck::FS::</span></code> from the example below.</p>
+<p>The <a class="reference external" href="http://search.cpan.org/~tima/Amazon-S3-0.441/lib/Amazon/S3.pm">Amazon::S3</a> module does not have a way to generate download URLs, so these examples use another module instead. Unfortunately, most modules for generating these URLs assume that you are using Amazon. For this reason, a more obscure module, <a class="reference external" href="http://search.cpan.org/~mike/Muck-0.02/">Muck::FS::S3</a>&nbsp;is used.&nbsp;This should be the same as Amazon’s sample S3 perl module, but this sample module is not in CPAN. So, you can either use CPAN to install <a class="reference external" href="http://search.cpan.org/~mike/Muck-0.02/">Muck::FS::S3</a>, or install Amazon’s sample S3 module manually. If you go the manual route, you can remove <code class="docutils literal"><span class="pre">Muck::FS::</span></code> from the example below.</p>
 </div>
 </div>
 <div class="preboxcontainer">
@@ -185,8 +185,8 @@ http://objects-us-east-1.dream.io:80/my-bucket-name/secret_plans.txt?Signature=X
 </pre>
 </div>
 </div>
-<div class="clearer"> </div>
-<div class="footer"> </div>
+<div class="clearer">&nbsp;</div>
+<div class="footer">&nbsp;</div>
 <!--DreamObjects Button-->
 <div class="dream-sign-up">
 <h2>Start Storing Your Data Today!</h2>
