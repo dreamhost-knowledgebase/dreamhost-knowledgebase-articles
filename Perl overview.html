@@ -26,7 +26,7 @@
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/360022178852#perl" target="_self">Ubuntu versions</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/360040638531-How-do-I-prepare-my-VPS-site-for-Debian-Stretch-#perl" target="_self">Debian Stretch version</a></li>
 </ul>
-<p>As with <a href="/hc/en-us/articles/216137717-Python-overview">Python</a> and <a href="/hc/en-us/articles/214202188-PHP-overview">PHP</a>, you can build another version in your home directory if necessary. However, most Perl programs should work fine with the installed version.</p>
+<p>As with <a href="/hc/en-us/articles/216137717-Python-overview">Python</a> and <a href="/hc/en-us/articles/214202188-PHP-overview">PHP</a>, you can build another version in your <a href="https://help.dreamhost.com/hc/en-us/articles/360001219231-Where-is-the-home-directory-#the-users-home-directory" target="_self">user's home directory</a> if necessary. However, most Perl programs should work fine with the installed version.</p>
 <h3>Installing a custom Perl version</h3>
 <p>You can also install a custom version of Perl under your username. View the following article for instructions:</p>
 <ul>
@@ -47,16 +47,16 @@
 </div>
 </div>
 <h3>Installing custom modules</h3>
-<p>You can install your own modules in your home directory directly. Follow these <a href="/hc/en-us/articles/217716877-CPAN">DreamHost specific instructions</a> for installing CPAN modules.</p>
+<p>You can install your own modules in your <a href="https://help.dreamhost.com/hc/en-us/articles/360001219231-Where-is-the-home-directory-#the-users-home-directory" target="_self">user's home directory</a>. Follow these <a href="/hc/en-us/articles/217716877-CPAN">DreamHost specific instructions</a> for installing CPAN modules.</p>
 <h3>Perl FastCGI</h3>
 <p>The perl FCGI module is installed by default on DreamHost servers.</p>
-<p>To test if FastCGI is configured and working properly, try this simple 'Hello World' program. Paste this text into a file with the ending .fcgi.</p>
+<p>To test if FastCGI is configured and working properly, try this simple 'Hello World' program. Paste this text into a file with the ending .fcgi. Make sure to change <span class="code">username</span> to your <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access" target="_self">Shell user</a>.</p>
 <div class="preboxcontainer">
 <pre class="prebox">#!/usr/bin/perl
 
-use lib qw( /home/myhome/lib/perl/5.8.4 );
+use lib qw( /home/<span class="code-highlight">username</span>/lib/perl/5.8.4 );
 use FCGI;
-use Socket qw(&nbsp;:crlf ); # server agnostic line endings in $CRLF
+use Socket qw( :crlf ); # server agnostic line endings in $CRLF
 
 my $counter = 0;
 while ( FCGI::accept() &gt;= 0 ) {
