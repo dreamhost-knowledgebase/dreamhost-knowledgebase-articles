@@ -11,12 +11,18 @@
 <p>The following commands require <a href="/hc/en-us/articles/216041267-SSH-overview">SSH access</a> using an <a href="https://help.dreamhost.com/hc/en-us/articles/215945467-How-do-I-add-users-to-a-Dedicated-server-">Admin user</a>. You must switch to the root user using <span class="code">sudo -s</span> or <span class="code">sudo -i</span> before you can run the commands below.</p>
 </div>
 </div>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>In the following examples, <span class="code">username</span> would be your <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access" target="_self">Shell user</a> and <strong>example.com</strong> your website.</p>
+</div>
+</div>
 </div>
 <h2>Restoring backups</h2>
 <div class="solvvy-solution">
 <p>The backups for Dedicated servers are accessible from the <span class="text-object">/mnt/backup</span> directory of the server.</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd /mnt/backup/home/<span class="code-highlight">USERNAME</span></span>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd /mnt/backup/home/<span class="code-highlight">username</span></span>
 </pre>
 </div>
 <ol>
@@ -24,7 +30,7 @@
 <li>Create a new empty website folder. In this example, a blank folder named <span class="text-object">example.com</span> is used.</li>
 <li>Run <span class="code">rsync</span> to copy the files to this new blank folder:
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">rsync -av /mnt/backup/home/<span class="code-highlight">USERNAME/example.com</span>/ /home/<span class="code-highlight">USERNAME/example.com</span>/</span>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">rsync -av /mnt/backup/home/<span class="code-highlight">username/example.com</span>/ /home/<span class="code-highlight">username/example.com</span>/</span>
 </pre>
 </div>
 </li>
@@ -42,7 +48,7 @@ zfs-auto-snap_daily-2016-03-14-16h18  zfs-auto-snap_daily-2016-03-17-16h18  zfs-
 </div>
 <p>To restore something from a snapshot, rename the directory of the website you wish to restore as mentioned above, create a new blank directory, then run <span class="code">rsync</span>:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">rsync -av /mnt/backup/.zfs/snapshot/<span class="code-highlight">SNAPSHOTDIR</span>/home/<span class="code-highlight">USERNAME/example.com</span>/   /home/<span class="code-highlight">USERNAME/example.com</span>/</span>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">rsync -av /mnt/backup/.zfs/snapshot/<span class="code-highlight">SNAPSHOTDIR</span>/home/<span class="code-highlight">username/example.com</span>/   /home/<span class="code-highlight">username/example.com</span>/</span>
 </pre>
 </div>
 </div>
