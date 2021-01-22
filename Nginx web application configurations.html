@@ -4,6 +4,12 @@
 <p>POSSIBLE OUTDATED INFORMATION!<br />DreamHost does not directly support any of the features described on this page and is not responsible for keeping this content updated or accurate. Use at your own risk!</p>
 </div>
 <p>Many web applications such as WordPress and MediaWiki are originally configured to work with Apache. Since .htaccess files are not supported with Nginx, there are some adjustments you can make to get your applications running properly. In all the examples below, make sure to follow these steps.</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>In the following examples, <span class="code">username</span> would be your <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access" target="_self">Shell user</a> and <strong>example.com</strong> your website.</p>
+</div>
+</div>
 </div>
 <h2>Configuration steps</h2>
 <div class="solvvy-solution">
@@ -39,11 +45,11 @@
 </li>
 <li>In this <span class="text-object">/default-wp</span> directory, create <span class="text-object">wordpress.conf</span> file.&nbsp;View the '<a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Creating and editing a file via SSH</a>' article for instructions on creating the file.
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">nano /home/<span class="code-highlight">YOURUSER</span>/nginx/default-wp/wordpress.conf</span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">nano /home/<span class="code-highlight">username</span>/nginx/default-wp/wordpress.conf</span></pre>
 </div>
 </li>
 <li>Save and close the file to return to your shell.</li>
-<li>Create symlinks from this directory, to each of your sites' config directories:
+<li>Create symlinks from this directory to each of your sites' config directories:
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">ln -s /home/<span class="code-highlight">username</span>/nginx/default-wp/ /home/<span class="code-highlight">username</span>/nginx/<span class="code-highlight">example.com</span></span>
 <span class="server">[server]$ </span><span class="command">ln -s /home/<span class="code-highlight">username</span>/nginx/default-wp/ /home/<span class="code-highlight">username</span>/nginx/<span class="code-highlight">example2.com</span></span>
@@ -162,11 +168,11 @@ if ($http_user_agent&nbsp;!~ FeedBurner) {
 <div class="solvvy-solution">
 <p>Before you set up Drupal, create a <span class="text-object">drupal.conf</span> file (the name doesn't really matter, but generally you want to at least give it a .conf extension) in the following location:</p>
 <div class="preboxcontainer">
-<pre class="prebox">/home/<span class="code-highlight">YOURUSER</span>/nginx/<span class="code-highlight">example.com</span>/</pre>
+<pre class="prebox">/home/<span class="code-highlight">username</span>/nginx/<span class="code-highlight">example.com</span>/</pre>
 </div>
 <p>View the '<a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Creating and editing a file via SSH</a>' article for instructions on creating the file.</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">nano /home/<span class="code-highlight">YOURUSER</span>/nginx/<span class="code-highlight">example.com</span>/drupal.conf</span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">nano /home/<span class="code-highlight">username</span>/nginx/<span class="code-highlight">example.com</span>/drupal.conf</span></pre>
 </div>
 <p>This is where you'll put all your nginx config rules.</p>
 </div>
@@ -209,7 +215,7 @@ rewrite ^/(.*)$ /index.php?q=$1 last;
 <div class="solvvy-solution">
 <p><a href="https://www.mediawiki.org/wiki/MediaWiki">MediaWiki</a> is a popular wiki software developed by the founders of Wikipedia which continues to use and maintain the software today. It is available for free and is an open-source project. The following describes a successful move from MediaWiki 1.17.0 site (using Clean URLs) on Apache to Nginx. First, create an <span class="text-object">mediawiki.conf</span> file in the appropriate directory:</p>
 <div class="preboxcontainer">
-<pre class="prebox">/home/<span class="code-highlight">YOURUSER</span>/nginx/<span class="code-highlight">example.com</span>/mediawiki.conf</pre>
+<pre class="prebox">/home/<span class="code-highlight">username</span>/nginx/<span class="code-highlight">example.com</span>/mediawiki.conf</pre>
 </div>
 <p>In that file add the following contents:</p>
 <div class="preboxcontainer">
@@ -226,7 +232,7 @@ location ~* ^.+\.(js|css|png|jpg|jpeg|gif|ico)$ {
         access_log off;
     }
 location /dumps {
-        root /home/<span class="code-highlight">YOURUSER/example.com</span>/local;
+        root /home/<span class="code-highlight">username/example.com</span>/local;
         autoindex on;
     }
 ### Dreamhost analog stats

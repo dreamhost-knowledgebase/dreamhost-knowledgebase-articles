@@ -38,9 +38,15 @@
 </div>
 <h2>Step 2 — Creating the backup script</h2>
 <div class="solvvy-solution">
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>In the following examples, <span class="code">username</span> would be your <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access" target="_self">Shell user</a> and <strong>example.com</strong> your website.</p>
+</div>
+</div>
 <ol>
 <li>Log into your server via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH</a>.</li>
-<li>Create a new directory named <span class="text-object">backup</span> in your user's home directory.
+<li>Create a new directory named <span class="text-object">backup</span> in your <a href="https://help.dreamhost.com/hc/en-us/articles/360001219231-Where-is-the-home-directory-#the-users-home-directory" target="_self">user's home directory</a>.
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">mkdir ~/backup</span></pre>
 </div>
@@ -52,7 +58,7 @@
 </li>
 <li>In the script below, you must fill in the first six variables that are highlighted:
 <ul>
-<li><strong>domains</strong> — The script uses this field to create a directory under <span class="text-object">$HOME/backups/</span>. This is the directory that will store your database and website files, so make sure it's named the same as your domain name.</li>
+<li><strong>domains</strong> — The script uses this field to create a directory under <span class="text-object">/home/username/backup/</span>. This is the directory that will store your database and website files, so make sure it's named the same as your domain name.</li>
 <li><strong>sqldbs</strong>&nbsp;— The name of your <a href="https://help.dreamhost.com/hc/en-us/articles/221610868-Finding-your-database-login-credentials">database</a>.</li>
 <li><strong>opath</strong>&nbsp;— The directory you want to back up to.</li>
 <li><strong>mysqlhost</strong>&nbsp;— Your MySQL database <a href="https://help.dreamhost.com/hc/en-us/articles/221610868-Finding-your-database-login-credentials">hostname</a>.</li>
@@ -60,7 +66,7 @@
 <li><strong>password</strong>&nbsp;— Your MySQL <a href="https://help.dreamhost.com/hc/en-us/articles/221610868-Finding-your-database-login-credentials">password</a>.</li>
 <li><strong>webdir&nbsp;</strong>— This is the path to your web directory. Change the domain name to your site.</li>
 <li><strong>bucket-name</strong>&nbsp;— The name of the DreamObjects bucket you're backing up to.</li>
-<li><strong>example.com-backup.sh</strong>&nbsp;— This is the name of your backup file in your <span class="text-object">$HOME/backup</span> directory.</li>
+<li><strong>example.com-backup.sh</strong> — This is the name of your backup file in your <span class="text-object">/home/username/backup</span> directory.</li>
 </ul>
 </li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Add the following code to this file</a>. Make sure to update any code that's highlighted.

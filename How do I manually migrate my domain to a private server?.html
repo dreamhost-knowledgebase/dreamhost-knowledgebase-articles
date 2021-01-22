@@ -25,14 +25,20 @@
 <li>Upload the website files for your domain to the private server into the domain’s directory.</li>
 </ol>
 <h3><span id="Manually_migrating_files_via_rsync">Manually migrating files via rsync</span></h3>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>In the following examples, <span class="code">shareduser</span> and <span class="code">vpsuser</span> would be your <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access" target="_self">Shell users</a> and <strong>example.com</strong> your website.</p>
+</div>
+</div>
 <ol>
 <li>Create a new user on the private server. Visit the <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access">Creating a user with Shell (SSH) access</a> article for details on how to create this user.</li>
 <li>Find the full path to your new private server and its new user.
 <ul>
-<li>For example, if your private server is named ps9123456 and the new user you created is named user2, the path to the private server is:</li>
+<li>For example, if your private server is named ps9123456 and the new user you created is named vpsuser, the path to the private server is:</li>
 </ul>
 <dl>
-<dd><strong>user2@ps9123456.dreamhostps.com:/home/user2</strong></dd>
+<dd><strong>vpsuser@ps9123456.dreamhostps.com:/home/vpsuser</strong></dd>
 </dl>
 <dl>
 <dd><em>With this information, you are ready to run the following <span class="code">rsync</span> command.</em></dd>
@@ -41,7 +47,7 @@
 <li>Log into your shared server via <a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a>.</li>
 <li>Run the following command to copy your data from your shared user to your new private server user. Be sure to change <span class="text-object">/example.com</span> to your actual domain’s web directory:
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">rsync -e ssh -av /home/<span class="code-highlight">shareduser/example.com user2</span>@ps9123456.dreamhostps.com:/home/<span class="code-highlight">user2</span>/</span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">rsync -e ssh -av /home/<span class="code-highlight">shareduser</span>/<span class="code-highlight">example.com</span> <span class="code-highlight">vpsuser</span>@ps9123456.dreamhostps.com:/home/<span class="code-highlight">vpsuser</span>/</span></pre>
 </div>
 <em>After you run the command, you are prompted for the private server user's password.</em></li>
 <li>Click Enter to continue with the <span class="code">rsync</span>.</li>
