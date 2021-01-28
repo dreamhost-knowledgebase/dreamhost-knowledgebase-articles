@@ -1,6 +1,6 @@
 <h2>Overview</h2>
 <div class="solvvy-solution">
-<p>nginx is a high performance web server designed for serving high-performance, scalable applications in an efficient, responsive manner. It can be used to serve static content, load balance HTTP requests, and reverse proxy FCGI/PSGI/USWGI and arbitrary TCP connections. Given this, it's important to be able to securely configure and deploy nginx installations to provide a secure web frontend for your application and minimize attack surfaces.</p>
+<p>nginx is a high performance web server designed for serving high-performance, scalable applications in an efficient, responsive manner. It can be used to serve static content, load balance <span class="text-object">HTTP</span> requests, and reverse proxy FCGI/PSGI/USWGI and arbitrary TCP connections. Given this, it's important to be able to securely configure and deploy nginx installations to provide a secure web frontend for your application and minimize attack surfaces.</p>
 </div>
 <h2>Securing the binary</h2>
 <div class="solvvy-solution">
@@ -82,7 +82,7 @@ gpg: Good signature from "Maxim Dounin &lt;mdounin@mdounin.ru&gt;"
 </div>
 </div>
 <h3>Disable Server Tokens</h3>
-<p>The HTTP spec recommends (but does not require) that web servers identify themselves via the <span class="code">Server</span> header. Historically, web servers have included their version information as part of this header. Disclosing the version of nginx running can be undesirable, particularly in environments sensitive to information disclosure. nginx can be configured to not display its version in the <cite>Server</cite> header by editing the nginx.conf file with the following:</p>
+<p>The <span class="text-object">HTTP</span> spec recommends (but does not require) that web servers identify themselves via the <span class="code">Server</span> header. Historically, web servers have included their version information as part of this header. Disclosing the version of nginx running can be undesirable, particularly in environments sensitive to information disclosure. nginx can be configured to not display its version in the <cite>Server</cite> header by editing the nginx.conf file with the following:</p>
 <div class="preboxcontainer">
 <pre class="prebox">server_tokens off;
 </pre>
@@ -162,7 +162,7 @@ user3:<span class="code-highlight">password3</span>
 <h2>Securing SSL/TLS</h2>
 <div class="solvvy-solution">
 <p>nginx excels at serving SSL/TLS traffic. Configuring your web server to provide securing SSL/TLS configurations for clients is essential to maintaining a secure connection.</p>
-<p>As a note, it's strongly recommended that encrypted traffic use only newer TLS protocols, instead of legacy SSL. Both versions of SSL widely available today (SSLv2 and SSLv3) have severe security flaws, and should never be used in production environments. Historically, the directives associated with SSL/TLS configuration in nginx are prefixed with <cite>ssl</cite>. However to promote the use of modern security protocols, this tutorial uses the term 'TLS' when referencing encrypted (HTTPS) traffic, and 'ssl' when applicable to specific nginx configuration directives.</p>
+<p>As a note, it's strongly recommended that encrypted traffic use only newer TLS protocols, instead of legacy SSL. Both versions of SSL widely available today (SSLv2 and SSLv3) have severe security flaws, and should never be used in production environments. Historically, the directives associated with SSL/TLS configuration in nginx are prefixed with <cite>ssl</cite>. However to promote the use of modern security protocols, this tutorial uses the term <span class="text-object">TLS</span> when referencing encrypted (<span class="text-object">HTTPS</span>) traffic, and <span class="text-object">ssl</span> when applicable to specific nginx configuration directives.</p>
 <h3>Turn TLS On</h3>
 <p>In order to serve encrypted traffic, SSL/TLS needs to be enabled for your server. Fortunately, encrypted connections can be enabled/disabled on a per-server basis in nginx:</p>
 <div class="preboxcontainer">
@@ -218,7 +218,7 @@ ssl_session_timeout 5m;
 </pre>
 </div>
 </div>
-<p>You can also configure nginx to send a 301 redirect for plaintext HTTP requests to the TLS version of your site:</p>
+<p>You can also configure nginx to send a 301 redirect for plaintext <span class="text-object">HTTP</span> requests to the <span class="text-object">TLS</span> version of your site:</p>
 <div class="preboxcontainer">
 <pre class="prebox">server {
     listen 80;
@@ -240,7 +240,7 @@ server {
 <p>Beyond the basics of installing a secure nginx binary, locking down access to sensitive areas of your site, and properly serving TLS connections, there are some additional steps that can be taken for the extra security-conscious user.</p>
 <div id="install-a-waf">
 <h3>Install a WAF</h3>
-<p>A WAF (web application firewall) is a piece of software designed to inspect HTTP/HTTPS traffic, deny malicious requests, and generally act as an additional layer of security in your web stack. A properly configured WAF can protect your site from SQLi, XSS, CSRF, and DDoS attacks, as well as provide brute force attack mitigation and zero-day threat patching. There are a few open-source WAF options available for nginx:</p>
+<p>A WAF (web application firewall) is a piece of software designed to inspect <span class="text-object">HTTP/HTTPS</span> traffic, deny malicious requests, and generally act as an additional layer of security in your web stack. A properly configured WAF can protect your site from SQLi, XSS, CSRF, and DDoS attacks, as well as provide brute force attack mitigation and zero-day threat patching. There are a few open-source WAF options available for nginx:</p>
 <h3>ModSecurity</h3>
 <p>ModSecurity, originally written as a WAF for Apache servers, is the de-facto standard for open-source WAF solutions. Recent work on the project has shifted focus toward nginx support; for more information and details on installation and configuration, see the project's homepage and GitHub page here:</p>
 <ul>
