@@ -1,0 +1,682 @@
+<div class="alert alert-tip">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-tip-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>If you find yourself in a situation that requires changes to your site, and your developer isn't available to help, DreamHost's skilled support team may be able to assist you for a small fee. You can find more information about supported services and associated costs in the <a href="/hc/en-us/articles/360042256912-Professional-Services-overview">DreamHost Professional Services</a> article.</p>
+</div>
+</div>
+<h2>Overview</h2>
+<div class="solvvy-solution">
+<p>You can add custom DNS records for a fully hosted domain as well as a domain set to DNS only. It all depends on what records you are creating and why you need them.</p>
+<p>Generally speaking, if you want your site hosted on DreamHost's servers, keep your site as Fully Hosted.&nbsp;However, if you want your site to point away from DreamHost by creating A or CNAME records, the first step is to remove the hosting service already applied to your domain at DreamHost.</p>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>The instructions to change the records below will only work if your <a href="https://help.dreamhost.com/hc/en-us/articles/216385467-Nameservers-overview" target="_self">nameservers</a> are pointed to DreamHost.</p>
+</div>
+</div>
+<ul>
+<li><a href="#A_record">A record</a></li>
+<li><a href="#AAAA_record">AAAA record</a></li>
+<li><a href="#CNAME_record">CNAME record</a></li>
+<li><a href="#MX_record">MX record</a></li>
+<li><a href="#TXT_record">TXT record</a></li>
+<li><a href="#SRV_record">SRV record</a></li>
+<li><a href="#Nameservers">Nameservers</a></li>
+<li><a href="#Unique_IP" target="_self">Unique IPv4 or IPv6 records</a></li>
+<li><a href="#Additional_details">Additional details</a></li>
+</ul>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>You do not need to add the @ symbol when creating custom DNS records. This symbol is added automatically when the <span class="text-object">Name</span> field is left blank.</p>
+</div>
+</div>
+</div>
+<h2>Setting your domain to DNS only</h2>
+<div class="solvvy-solution">
+<p>View the following article for instructions on how to set your domain to 'DNS Only'.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115000760591-Setting-your-domain-to-DNS-Only-">Setting your domain to 'DNS Only'</a></li>
+</ul>
+<p>This is necessary if your <a href="https://help.dreamhost.com/hc/en-us/articles/215416227-How-do-I-add-a-domain-">site is&nbsp;currently hosted</a> at DreamHost and you want to point your DNS to another hosting company using A or CNAME records.</p>
+</div>
+<h2><span id="A_record">A record</span></h2>
+<div class="solvvy-solution">
+<p>A records are <a href="https://help.dreamhost.com/hc/en-us/articles/217294917-IP-Address">IP addresses</a>. They can be added to point your website to a different hosting company, or different subdomains of your site to external services.</p>
+<h3>Pointing a subdomain to a specific IP address</h3>
+<ol>
+<li>Navigate to the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.dashboard#!/grid-view" target="_blank" rel="noopener">Websites</a> page.</li>
+<li>Open the <span class="panel-page">Manage</span> page for your site.
+<ul>
+<li>If you're in <a href="https://help.dreamhost.com/hc/en-us/articles/360001294366#grid_or_list" target="_self">Grid view</a>, hover over your website and click the <strong>Manage</strong> button.</li>
+<li>If you're in <a href="https://help.dreamhost.com/hc/en-us/articles/360001294366#grid_or_list" target="_self">List view</a>, click the&nbsp;<strong>Manage</strong> button to the right of your website.</li>
+</ul>
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-dns-tab.png" alt="DNS tab" width="245" height="73" /></dd>
+</dl>
+</li>
+<li>Click the <span class="text-link">DNS</span> tab.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-button-add-record.png" alt="Add Record button" width="139" height="43" /></dd>
+</dl>
+</li>
+<li>Click the&nbsp;<strong>Add Record</strong> button.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-dns-a-record-add_01.png" alt="Add A Record" width="640" height="102" /></dd>
+</dl>
+</li>
+<li>Hover over the <span class="text-section">A Record</span> section and click the <span class="text-link">ADD</span> link.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-dns-a-record-add_02.png" alt="Add A Record" width="526" height="233" /></dd>
+</dl>
+<ul>
+<li><strong>Host</strong>: This is either the root domain or a subdomain (blog, store, etc).
+<ul>
+<li><span class="text-object">Root A record</span>: If you want to create an A record for the root domain to point away from DreamHost, you must first set the domain to <a href="https://help.dreamhost.com/hc/en-us/articles/115000760591-Setting-your-domain-to-DNS-Only-" target="_self">DNS Only</a>. You can then leave this field blank.</li>
+<li><span class="text-object">Subdomain A record</span>: For a subdomain (blog, dev, shop, etc), enter the subdomain name in this field.</li>
+</ul>
+</li>
+<li><strong>Points to</strong>: Enter the IP address the subdomain will point to.</li>
+</ul>
+</li>
+<li>Click the <strong>Add Record</strong>&nbsp;button to save.</li>
+</ol>
+<p>After clicking the <strong>Add Record</strong> button, the propagation for the new record begins. This can take up to 6 hours before the new record updates online.</p>
+</div>
+<h2><span id="AAAA_record">AAAA record</span></h2>
+<div class="solvvy-solution">
+<p>AAAA records are <a href="https://help.dreamhost.com/hc/en-us/articles/216510458-IPv6" target="_self">IPv6 addresses</a>. They can be added to point your website to a different hosting company, or different subdomains of your site to external services.</p>
+<h3>Pointing a subdomain to a specific IPv6 address</h3>
+<ol>
+<li>Navigate to the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.dashboard#!/grid-view" target="_blank" rel="noopener">Websites</a> page.</li>
+<li>Open the <span class="panel-page">Manage</span> page for your site.
+<ul>
+<li>If you're in <a href="https://help.dreamhost.com/hc/en-us/articles/360001294366#grid_or_list" target="_self">Grid view</a>, hover over your website and click the <strong>Manage</strong> button.</li>
+<li>If you're in <a href="https://help.dreamhost.com/hc/en-us/articles/360001294366#grid_or_list" target="_self">List view</a>, click the&nbsp;<strong>Manage</strong> button to the right of your website.</li>
+</ul>
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-dns-tab.png" alt="DNS tab" width="245" height="73" /></dd>
+</dl>
+</li>
+<li>Click the <span class="text-link">DNS</span> tab.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-button-add-record.png" alt="Add Record button" width="139" height="43" /></dd>
+</dl>
+</li>
+<li>Click the&nbsp;<strong>Add Record</strong> button.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-dns-aaaa-record-add_01.png" alt="Add AAAA Record" width="640" height="102" /></dd>
+</dl>
+</li>
+<li>Hover over the <span class="text-section">AAAA Record</span> section and click the <span class="text-link">ADD</span> link.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-dns-aaaa-record-add_02.png" alt="Add AAAA Record" width="572" height="247" /></dd>
+</dl>
+<ul>
+<li><strong>Host</strong>: This is either the root domain or a subdomain
+<ul>
+<li><span class="text-object">Root AAAA record</span>: If you want to create an AAAA record for the root domain to point away from DreamHost, you must first set the domain to <a href="https://help.dreamhost.com/hc/en-us/articles/115000760591-Setting-your-domain-to-DNS-Only-" target="_self">DNS Only</a>. You can then leave this field blank.</li>
+<li><span class="text-object">Subdomain AAAA record</span>: For a subdomain (blog, dev, shop, etc), enter the subdomain name in this field.</li>
+</ul>
+</li>
+<li><strong>Points to</strong>: Enter the IPv6 address the subdomain will point to. For example:
+<div class="preboxcontainer">
+<pre class="prebox">2607:f298:5:104f::765:5be</pre>
+</div>
+</li>
+</ul>
+</li>
+<li>Click the <strong>Add Record</strong>&nbsp;button to save.</li>
+</ol>
+<p>After clicking the <strong>Add Record</strong> button, the propagation for the new record begins. This can take up to 6 hours before the new record updates online.</p>
+</div>
+<h2><span id="CNAME_record">CNAME record</span></h2>
+<div class="solvvy-solution">
+<p>Along with custom A records, you can point your hosting away from DreamHost with a CNAME record. This record is created to point one domain to another as opposed to pointing one domain to an IP address like the custom A record.</p>
+<p>Please keep in mind that a CNAME record can only be created on a subdomain. This means the root record (<strong>example.com</strong>) cannot be a CNAME record and must always be an A record.</p>
+<ol>
+<li>Navigate to the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.dashboard#!/grid-view" target="_blank" rel="noopener">Websites</a> page.</li>
+<li>Open the <span class="panel-page">Manage</span> page for your site.
+<ul>
+<li>If you're in <a href="https://help.dreamhost.com/hc/en-us/articles/360001294366#grid_or_list" target="_self">Grid view</a>, hover over your website and click the <strong>Manage</strong> button.</li>
+<li>If you're in <a href="https://help.dreamhost.com/hc/en-us/articles/360001294366#grid_or_list" target="_self">List view</a>, click the&nbsp;<strong>Manage</strong> button to the right of your website.</li>
+</ul>
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-dns-tab.png" alt="DNS tab" width="245" height="73" /></dd>
+</dl>
+</li>
+<li>Click the <span class="text-link">DNS</span> tab.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-button-add-record.png" alt="Add Record button" width="139" height="43" /></dd>
+</dl>
+</li>
+<li>Click the&nbsp;<strong>Add Record</strong> button.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-dns-cname-record-add_01.png" alt="Add A Record" width="640" height="102" /></dd>
+</dl>
+</li>
+<li>Hover over the <span class="text-section">CNAME Record</span> section and click the <span class="text-link">ADD</span> link.<br />
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-dns-cname-record-add_02.png" alt="Add A Record" width="603" height="267" /></dd>
+</dl>
+</li>
+<li>Enter the following:
+<div class="alert-warning">
+<p>CNAME records cannot start with an underscore.</p>
+</div>
+<ul>
+<li><strong>Host</strong>: This field can be anything. But very often it’s just <span class="text-object">www</span>. Adding <span class="text-object">www</span> points the <span class="text-object">www</span> subdomain away from DreamHost.</li>
+<li><strong>Points to</strong>: Enter the location you’d like this record to point to.</li>
+</ul>
+</li>
+<li>Click the <strong>Add Record</strong>&nbsp;button to save.</li>
+</ol>
+<p>After clicking the <strong>Add Record</strong> button, the propagation for the new record begins. This can take up to 6 hours before the new record updates online.</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>It's possible you may see the following error when adding a CNAME:</p>
+<p><strong>You already have a record for this name. You can't have a CNAME and any other record on the same name.</strong></p>
+<p>This usually means that you're trying to add a CNAME for <span class="text-object">www</span>, but since that record already exists in your DNS settings, you're not able to add a second one. If you need to add a CNAME for the www subdomain, you must set your domain to DNS Only first.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115000760591-Setting-your-domain-to-DNS-Only-">Setting your domain to DNS Only</a></li>
+</ul>
+<p>If you're attempting to add a CNAME for something else, <a href="https://help.dreamhost.com/hc/en-us/articles/215413857-DreamHost-DNS-overview">review your DNS records</a> to see if the record you're adding already exists.</p>
+</div>
+</div>
+</div>
+<h2><span id="MX_record">MX record</span></h2>
+<div class="solvvy-solution">
+<p><a href="https://help.dreamhost.com/hc/en-us/articles/215032408-What-is-an-MX-record-" target="_self">MX records</a> are DNS records that are necessary for delivering email to your address. If your site is using DreamHost's <a href="https://help.dreamhost.com/hc/en-us/articles/216385467-Nameservers-overview">nameservers</a> and you add MX records, your email will stop being delivered to DreamHost and start being delivered to the new company's mail service.</p>
+<div class="alert-warning">
+<p>Only add MX records if you want to host your email at a different company.</p>
+</div>
+<ol>
+<li>Navigate to the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.dashboard#!/grid-view" target="_blank" rel="noopener">Websites</a> page.</li>
+<li>Open the <span class="panel-page">Manage</span> page for your site.
+<ul>
+<li>If you're in <a href="https://help.dreamhost.com/hc/en-us/articles/360001294366#grid_or_list" target="_self">Grid view</a>, hover over your website and click the <strong>Manage</strong> button.</li>
+<li>If you're in <a href="https://help.dreamhost.com/hc/en-us/articles/360001294366#grid_or_list" target="_self">List view</a>, click the&nbsp;<strong>Manage</strong> button to the right of your website.</li>
+</ul>
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-dns-tab.png" alt="DNS tab" width="245" height="73" /></dd>
+</dl>
+</li>
+<li>Click the <span class="text-link">DNS</span> tab.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-button-add-record.png" alt="Add Record button" width="139" height="43" /></dd>
+</dl>
+</li>
+<li>Click the&nbsp;<strong>Add Record</strong> button.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-dns-mx-record-add_01.png" alt="Add MX Record" width="640" height="102" /></dd>
+</dl>
+</li>
+<li>Hover over the <span class="text-section">MX&nbsp;Record</span> section and click the <span class="text-link">ADD</span> link.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-dns-mx-record-add_02.png" alt="Add MX Record" width="463" height="464" /></dd>
+</dl>
+<ul>
+<li><strong>Host</strong>: This field is usually left blank. Only add something here if your new mail provider requires a host which is often a subdomain, such as&nbsp;<span class="text-object">www</span>&nbsp;or&nbsp;<span class="text-object">mail</span>.</li>
+<li><strong>Points to</strong>: Enter the MX record to point to.</li>
+<li><strong>Priority</strong>: Enter the priority number of this MX record. When adding multiple MX records, this value controls which MX record is used first.</li>
+</ul>
+</li>
+<li>Only check the box titled <span class="text-object">I will still check my email at DreamHost</span> if you are using a <a href="https://help.dreamhost.com/hc/en-us/articles/216445687-What-is-a-Mail-Service-Provider-" target="_self">Mail Service Provider</a>.</li>
+<li>Click the <strong>Add Record </strong>button to save.</li>
+</ol>
+<p>After clicking the <strong>Add Record</strong> button, the propagation for the new record begins. This can take up to 6 hours before the new record updates online.</p>
+</div>
+<h2><span id="TXT_record">TXT record</span></h2>
+<div class="solvvy-solution">
+<p>TXT (Text) records allow you to associate text with a specific host. A common example is adding a <a href="https://help.dreamhost.com/hc/en-us/articles/216375348-Google-site-verification" target="_self">Google site verification</a> record, or adding a <a href="https://help.dreamhost.com/hc/en-us/articles/360022808632-Creating-a-DMARC-policy" target="_self">DMARC</a> email record to your site.</p>
+<ol>
+<li>Navigate to the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.dashboard#!/grid-view" target="_blank" rel="noopener">Websites</a> page.</li>
+<li>Open the <span class="panel-page">Manage</span> page for your site.
+<ul>
+<li>If you're in <a href="https://help.dreamhost.com/hc/en-us/articles/360001294366#grid_or_list" target="_self">Grid view</a>, hover over your website and click the <strong>Manage</strong> button.</li>
+<li>If you're in <a href="https://help.dreamhost.com/hc/en-us/articles/360001294366#grid_or_list" target="_self">List view</a>, click the&nbsp;<strong>Manage</strong> button to the right of your website.</li>
+</ul>
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-dns-tab.png" alt="DNS tab" width="245" height="73" /></dd>
+</dl>
+</li>
+<li>Click the <span class="text-link">DNS</span> tab.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-button-add-record.png" alt="Add Record button" width="139" height="43" /></dd>
+</dl>
+</li>
+<li>Click the&nbsp;<strong>Add Record</strong> button.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-dns-txt-record-add_01.png" alt="Add A Record" width="640" height="102" /></dd>
+</dl>
+</li>
+<li>Hover over the <span class="text-section">TXT Record</span> section and click the <span class="text-link">ADD</span> link.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-dns-txt-record-add_02.png" alt="Add A Record" width="539" height="243" /></dd>
+</dl>
+</li>
+<li>Enter the following:
+<ul>
+<li><strong>Host</strong>: This field can be anything. Very often it’s left blank.</li>
+<li><strong>TXT Value *</strong>: Enter the text value of this record to point to.</li>
+</ul>
+</li>
+<li>Click the <strong>Add Record</strong>&nbsp;button to save.</li>
+</ol>
+<p>After clicking the <strong>Add Record</strong> button, the propagation for the new record begins. This can take up to 6 hours before the new record updates online.</p>
+</div>
+<!--
+<h2>
+  <span id="PTR_record">PTR record</span>
+</h2>
+<div class="solvvy-solution">
+  <p>
+    PTR records are
+    <a href="https://help.dreamhost.com/hc/en-us/articles/217294917-IP-Address">IP addresses</a>
+    used to reverse map an IP address to a hostname. This can be thought of as
+    the opposite of an A record where an IP address points to the domain name,
+    instead of the domain pointing to an IP address.
+  </p>
+  <div class="alert alert-important">
+    <div class="alert-icon">
+      <img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60">
+    </div>
+    <div class="alert-content">
+      <p>
+        A PTR record added to a domain cannot be used to resolve mail blocking
+        issues at DreamHost. This is because the PTR record is only used
+        for the domain (on the web server). DreamHost email is configured
+        on a shared mail server (not a web server), so the email IP address
+        is not associated with the IP of the website.
+      </p>
+    </div>
+  </div>
+  <ol>
+    <li>
+      Navigate to the
+      <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.dashboard#!/grid-view" target="_blank" rel="noopener">Websites</a>
+      page.
+    </li>
+    <li>
+      Open the <span class="panel-page">Manage</span> page for your site.
+      <ul>
+        <li>
+          If you're in
+          <a href="https://help.dreamhost.com/hc/en-us/articles/360001294366#grid_or_list" target="_self">Grid view</a>,
+          hover over your website and click the <strong>Manage</strong>
+          button.
+        </li>
+        <li>
+          If you're in
+          <a href="https://help.dreamhost.com/hc/en-us/articles/360001294366#grid_or_list" target="_self">List view</a>,
+          click the&nbsp;<strong>Manage</strong> button to the right of
+          your website.
+        </li>
+      </ul>
+      <dl>
+        <dd>
+          <img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-dns-tab.png" alt="DNS tab" width="245" height="73">
+        </dd>
+      </dl>
+    </li>
+    <li>
+      Click the <span class="text-link">DNS</span> tab.
+      <dl>
+        <dd>
+          <img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-button-add-record.png" alt="Add Record button" width="139" height="43">
+        </dd>
+      </dl>
+    </li>
+    <li>
+      Click the&nbsp;<strong>Add Record</strong> button.
+      <dl>
+        <dd>
+          <img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-dns-ptr-record-add_01.png" alt="Add PTR Record" width="640" height="102">
+        </dd>
+      </dl>
+    </li>
+    <li>
+      Hover over the <span class="text-section">PTR Record</span> section and
+      click the <span class="text-link">ADD</span> link.
+      <dl>
+        <dd>
+          <img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-dns-ptr-record-add_02.png" alt="Add PTR Record" width="555" height="254">
+        </dd>
+      </dl>
+      <ul>
+        <li>
+          <strong>IP address</strong>: The IPv4 or IPv6 address that will
+          point to your domain.
+        </li>
+        <li>
+          <strong>Points to</strong>: Leave this blank for the main domain
+          name. You could also add a subdomain here to point to instead.
+        </li>
+      </ul>
+    </li>
+    <li>
+      Click the <strong>Add Record </strong>button to save.
+    </li>
+  </ol>
+  <p>
+    After clicking the <strong>Add Record</strong> button, the propagation for
+    the new record begins. This can take up to 6 hours before the new record
+    updates online.
+  </p>
+</div>
+-->
+<h2><span id="SRV_record">SRV record</span></h2>
+<div class="solvvy-solution">
+<p>SRV (service) records are used to identify computers that host a specific service and then establish a connection between that service and the website.</p>
+<p>Certain programs and applications may require the set up of these types of records to make those services active. A common example are the following two Microsoft SRV records. More information can be found at the following link:</p>
+<ul>
+<li><a href="https://support.office.com/en-us/article/Create-DNS-records-at-any-DNS-hosting-provider-for-Office-365-7b7b075d-79f9-4e37-8a9e-fb60c1d95166#BKMK_add_SRV">Microsoft's two SRV records</a></li>
+</ul>
+<table border="1">
+<tbody>
+<tr>
+<th bgcolor="#F2F2F2">Type</th>
+<th bgcolor="#F2F2F2">Name</th>
+<th bgcolor="#F2F2F2">Target</th>
+<th bgcolor="#F2F2F2">Protocol</th>
+<th bgcolor="#F2F2F2">Service</th>
+<th bgcolor="#F2F2F2">Priority</th>
+<th bgcolor="#F2F2F2">Weight</th>
+<th bgcolor="#F2F2F2">Port</th>
+<th bgcolor="#F2F2F2">TTL</th>
+</tr>
+<tr>
+<td>SRV</td>
+<td>@</td>
+<td>sipdir.online.lync.com</td>
+<td>_tls</td>
+<td>_sip</td>
+<td>100</td>
+<td>1</td>
+<td>443</td>
+<td>1 hour</td>
+</tr>
+<tr>
+<td>SRV</td>
+<td>@</td>
+<td>sipfed.online.lync.com</td>
+<td>_tcp</td>
+<td>_sipfederationtls</td>
+<td>100</td>
+<td>1</td>
+<td>5061</td>
+<td>1 hour</td>
+</tr>
+</tbody>
+</table>
+<h4>&nbsp;</h4>
+<h4><strong>Format</strong></h4>
+<p>Your standard SRV record is in this type of format:</p>
+<div class="preboxcontainer">
+<pre class="prebox">_service._protocol.name. TTL class SRV priority weight port target.</pre>
+</div>
+<h4><strong>Adding</strong></h4>
+<ol>
+<li>Navigate to the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.dashboard#!/grid-view" target="_blank" rel="noopener">Websites</a> page.</li>
+<li>Open the <span class="panel-page">Manage</span> page for your site.
+<ul>
+<li>If you're in <a href="https://help.dreamhost.com/hc/en-us/articles/360001294366#grid_or_list" target="_self">Grid view</a>, hover over your website and click the <strong>Manage</strong> button.</li>
+<li>If you're in <a href="https://help.dreamhost.com/hc/en-us/articles/360001294366#grid_or_list" target="_self">List view</a>, click the&nbsp;<strong>Manage</strong> button to the right of your website.</li>
+</ul>
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-dns-tab.png" alt="DNS tab" width="245" height="73" /></dd>
+</dl>
+</li>
+<li>Click the <span class="text-link">DNS</span> tab.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-button-add-record.png" alt="Add Record button" width="139" height="43" /></dd>
+</dl>
+</li>
+<li>Click the&nbsp;<strong>Add Record</strong> button.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-dns-srv-record-add_01.png" alt="Add SRV Record" width="640" height="102" /></dd>
+</dl>
+</li>
+<li>Hover over the <span class="text-section">SRV Record</span> section and click the <span class="text-link">ADD</span> link.
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>The example below shows how to add the following record.</p>
+<div class="preboxcontainer">
+<pre class="prebox">_sipfederationtls._tcp	SRV	100 1 5061 sipfed.online.lync.com.</pre>
+</div>
+<p>Repeat the following steps to add any additional SRV records required.</p>
+</div>
+</div>
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-dns-srv-record-add_02.png" alt="Add SRV Record" width="519" height="429" /></dd>
+</dl>
+</li>
+<li>Enter the following:
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>When entering an SRV record in your panel, ignore the TTL, class, and SRV fields.</p>
+</div>
+</div>
+<ul>
+<li><strong>Name</strong>: This is most often left blank.</li>
+<li><strong>Service/Sip</strong>: sipfederationtls. <span class="red">Do not add the underscore before this value, or the period at the end.</span></li>
+<li><strong>Protocol</strong>:&nbsp;tcp. <span class="red">Do not add the underscore before this value.</span></li>
+<li><strong>Priority</strong>: 100</li>
+<li><strong>Weight</strong>: 1</li>
+<li><strong>Port</strong>: 5061</li>
+<li><strong>Target</strong>: sipfed.online.lync.com</li>
+</ul>
+</li>
+<li>Click the <strong>Add Record</strong>&nbsp;button.</li>
+</ol>
+<p>After clicking the <strong>Add Record</strong> button, the propagation for the new record begins. This can take up to 6 hours before the new record updates online.</p>
+</div>
+<!--
+<h2>
+  <span id="NAPTR_record">NAPTR record</span>
+</h2>
+<div class="solvvy-solution">
+  <p>
+    Name Authority Pointer (NAPTR) records are most often used for Internet telephony.
+    These records support the use of regular expressions. Here is an example
+    NAPTR record:
+  </p>
+  <div class="preboxcontainer">
+    <pre class="prebox">$ORIGIN 4.3.2.1.5.5.5.0.0.8.1.e164.arpa.
+IN NAPTR 100 10 "U" "E2U+sip" "!^.*$!sip:customer-service@example.com!" .
+IN NAPTR 102 10 "U" "E2U+email" "!^.*$!mailto:information@example.com!" .</pre>
+  </div>
+  <p>
+    View the following link for detailed information about this type of record.
+  </p>
+  <ul>
+    <li>
+      <a href="https://tools.ietf.org/html/rfc2915">https://tools.ietf.org/html/rfc2915</a>
+    </li>
+  </ul>
+  <h4>
+    <strong>Adding</strong>
+  </h4>
+  <ol>
+    <li>
+      Navigate to the
+      <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.dashboard#!/grid-view" target="_blank" rel="noopener">Websites</a>
+      page.
+    </li>
+    <li>
+      Open the <span class="panel-page">Manage</span> page for your site.
+      <ul>
+        <li>
+          If you're in
+          <a href="https://help.dreamhost.com/hc/en-us/articles/360001294366#grid_or_list" target="_self">Grid view</a>,
+          hover over your website and click the <strong>Manage</strong>
+          button.
+        </li>
+        <li>
+          If you're in
+          <a href="https://help.dreamhost.com/hc/en-us/articles/360001294366#grid_or_list" target="_self">List view</a>,
+          click the&nbsp;<strong>Manage</strong> button to the right of
+          your website.
+        </li>
+      </ul>
+      <dl>
+        <dd>
+          <img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-dns-tab.png" alt="DNS tab" width="245" height="73">
+        </dd>
+      </dl>
+    </li>
+    <li>
+      Click the <span class="text-link">DNS</span> tab.
+      <dl>
+        <dd>
+          <img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-button-add-record.png" alt="Add Record button" width="139" height="43">
+        </dd>
+      </dl>
+    </li>
+    <li>
+      Click the&nbsp;<strong>Add Record</strong> button.
+      <dl>
+        <dd>
+          <img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-dns-naptr-record-add_01.png" alt="Add NAPTR Record" width="640" height="102">
+        </dd>
+      </dl>
+    </li>
+    <li>
+      Hover over the <span class="text-section">NAPTR Record</span> section
+      and click the <span class="text-link">ADD</span> link.
+      <dl>
+        <dd>
+          <img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-dns-naptr-record-add_02.png" alt="Add NAPTR Record" width="520" height="426">
+        </dd>
+      </dl>
+      <ul>
+        <li>
+          <strong>Host</strong>: Enter the hostname to enable this record
+          for, or leave blank.
+        </li>
+        <li>
+          <strong>Order</strong>: A number (from 0 - 65535) that specifies
+          the order in which multiple NAPTR records are processed. Lower
+          values are processed before higher values.
+        </li>
+        <li>
+          <strong>Preference</strong>:&nbsp; A number (from 0 - 65535)
+          that specifies the order in which multiple NAPTR records,
+          <span class="wysiwyg-underline">with equal Order values</span>,
+          are processed. Lower values are processed before higher values.
+        </li>
+        <li>
+          <strong>Flags</strong>: A lowercase string containing flags to
+          control aspects of the rewriting and interpretation of the fields
+          in the record. At this time only four flags,
+          <span class="code">s</span>, <span class="code">a</span>,
+          <span class="code">u</span>, and <span class="code">p</span>,
+          are defined.
+        </li>
+        <li>
+          <strong>Service</strong>: Specifies the service(s) available
+          down this rewrite path. It may also specify the particular protocol
+          that is used to talk with a service.
+        </li>
+        <li>
+          <strong>Regex</strong>: A string containing a substitution expression
+          that is applied to the original string held by the client in
+          order to construct the next domain name to lookup.
+        </li>
+        <li>
+          <strong>Replacement</strong>:&nbsp; The next fully qualified
+          domain name to query for NAPTR records depending on the values
+          found in the flags field. This field is only used if the regular
+          expression field is empty. If the Regex field contains a value,
+          this field is not used.
+        </li>
+      </ul>
+    </li>
+    <li>
+      Click the <strong>Add Record</strong>&nbsp;button to save.
+    </li>
+  </ol>
+  <p>
+    After clicking the <strong>Add Record</strong> button, the propagation for
+    the new record begins. This can take up to 6 hours before the new record
+    updates online.
+  </p>
+</div>
+-->
+<h2><span id="Nameservers">Nameservers</span></h2>
+<div class="solvvy-solution">
+<ol>
+<li>Navigate to the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.dashboard#!/grid-view" target="_blank" rel="noopener">Websites</a> page.</li>
+<li>Open the <span class="panel-page">Manage</span> page for your site.
+<ul>
+<li>If you're in <a href="https://help.dreamhost.com/hc/en-us/articles/360001294366#grid_or_list" target="_self">Grid view</a>, hover over your website and click the <strong>Manage</strong> button.</li>
+<li>If you're in <a href="https://help.dreamhost.com/hc/en-us/articles/360001294366#grid_or_list" target="_self">List view</a>, click the&nbsp;<strong>Manage</strong> button to the right of your website.</li>
+</ul>
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-dns-tab.png" alt="DNS tab" width="245" height="73" /></dd>
+</dl>
+</li>
+<li>Click the <span class="text-link">DNS</span> tab.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-button-add-record.png" alt="Add Record button" width="139" height="43" /></dd>
+</dl>
+</li>
+<li>Click the&nbsp;<strong>Add Record</strong> button.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-dns-ns-record-add_01.png" alt="Add NS Record" width="640" height="102" /></dd>
+</dl>
+</li>
+<li>Hover over the <span class="text-section">NS Record</span> section and click the <span class="text-link">ADD</span> link.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-dns-ns-record-add_02.png" alt="Add NS Record" width="508" height="235" /></dd>
+</dl>
+<ul>
+<li><strong>Host</strong>: Enter the subdomain of this specific nameserver. Most often, this is just <span class="text-object">ns1</span>, <span class="text-object">ns2</span>, or <span class="text-object">ns3</span>.</li>
+<li><strong>Points to</strong>: Enter the URL the nameserver will resolve to. This is the domain of the company you're pointing to. For example, DreamHost's first nameserver is <span class="text-object">ns1.dreamhost.com</span>. So you would just enter dreamhost.com in this field. You must ask your new hosting provider for this information.</li>
+</ul>
+</li>
+<li>Click the <strong>Add Record</strong>&nbsp;button to save.</li>
+</ol>
+<p>After clicking the <strong>Add Record</strong> button, the propagation for the new record begins. This can take up to 6 hours before the new record updates online.</p>
+</div>
+<h2><span id="Unique_IP">Unique IPv4 or IPv6 addresses</span></h2>
+<div class="solvvy-solution">
+<p>You can also add a Unique DreamHost IPv4 or IPv6 record to your domain. View the following articles for further details.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216109647-Unique-IP-overview" target="_self">Unique IP overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216109627-How-do-I-add-or-remove-a-Unique-IP" target="_self">How do I add or remove a Unique IP</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216510458-IPv6" target="_self">IPv6</a></li>
+</ul>
+</div>
+<h2><span id="Additional_details">Additional details</span></h2>
+<div class="solvvy-solution">
+<ul>
+<li>As with all changes to DNS, these records need time to update online. You may find that it may take a few hours for things to start functioning. You can Flush the DNS to see if this speeds up the propagation process, but there are no guarantees this will help. You can read instructions on flushing the DNS here:</li>
+<ul>
+<li><a href="/hc/en-us/articles/215680477-Flush-DNS-overview">Flush DNS</a></li>
+</ul>
+</ul>
+<ul>
+<li>DNS changes can take up to 6 hours to resolve. If your nameservers are pointing to DreamHost and the services set up for the record created are not active within this time, you may contact support for assistance at <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=support.msg&amp;" target="_blank" rel="noopener">Contact Support</a>.</li>
+</ul>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>DreamHost support is able to point you to where you can create custom records as well as check to see if the record is properly applied to your domain. However, support cannot assist with setting up these custom records or whether the record created is correct or not.</p>
+</div>
+</div>
+</div>
+<h2>See also</h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="/hc/en-us/articles/214694348-Basic-DNS-records">Basic DNS records</a></li>
+<li><a href="/hc/en-us/articles/215413857-DreamHost-DNS-overview">DreamHost DNS overview</a></li>
+<li><a href="/hc/en-us/articles/215840248-DNS-propagation-overview">DNS propagation overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214694378-What-DreamHost-DNS-records-do-I-point-my-site-to-">What DreamHost DNS records do I point my site to?</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360001074423-Editing-or-deleting-custom-DNS-records">Editing or deleting custom DNS records</a></li>
+<li><a href="/hc/en-us/articles/214750688-Transferring-website-hosting-to-another-company">Transferring website hosting to another company</a></li>
+</ul>
+</div>

@@ -1,0 +1,40 @@
+<h2>Overview</h2>
+<div class="solvvy-solution">
+<p>There are several different ways to install WordPress. For example:</p>
+<ul>
+<li>Downloading the files directly from <a href="https://wordpress.org/download/#download-install" target="_self">WordPress.org</a> and uploading them to your site</li>
+<li>Using <a href="https://help.dreamhost.com/hc/en-us/articles/360024826351-Installing-WordPress-using-wp-cli-and-SSH" target="_self">wp-cli via SSH</a> to install directly onto the server</li>
+<li>Using the <a href="https://help.dreamhost.com/hc/en-us/articles/215525277-How-to-install-WordPress-using-the-One-Click-Installer" target="_self">One-Click Install</a> service in the DreamHost panel</li>
+</ul>
+<p>The One-Click Install service in the panel is the easiest option, however, it's important you ensure that WordPress has not already been manually installed into your site's directory using a different installation method. If a WordPress install already exists, the One-Click Install will proceed, but all old files will be appended with a timestamp.</p>
+<p>For example, normal WordPress files will look like this:</p>
+<ul>
+<li><span class="text-object">index.php</span></li>
+<li><span class="text-object">wp-login.php</span></li>
+<li><span class="text-object">wp-settings.php</span></li>
+</ul>
+<p>If these files already exist and you run the One-Click Install, the newly installed files from the One-Click Install will have a timestamp added. For example:</p>
+<ul>
+<li><span class="text-object">index.php.1555975213</span></li>
+<li><span class="text-object">wp-login.php.1555975213</span></li>
+<li><span class="text-object">wp-settings.php.1555975213</span></li>
+</ul>
+<p>The following steps explain how to remove these duplicated files.</p>
+</div>
+<h2>Removing the duplicated install files</h2>
+<div class="solvvy-solution">
+<ol>
+<li>Log into your server via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview" target="_self">SSH</a>.</li>
+<li>Navigate into your <a href="https://help.dreamhost.com/hc/en-us/articles/360001219231#the-website-directory" target="_self">website's directory</a>. Change <strong>example.com</strong> to your website.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~/<span class="code-highlight">example.com</span></span></pre>
+</div>
+</li>
+<li>Run the following command to delete these duplicated files. Just change the timestamp number.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">find . -name "*<span class="code-highlight">.1555975213</span>" -type f -delete</span></pre>
+</div>
+</li>
+<li>Run <span class="code">ls -la</span> and you'll see all of the duplicated files have been removed.</li>
+</ol>
+</div>
