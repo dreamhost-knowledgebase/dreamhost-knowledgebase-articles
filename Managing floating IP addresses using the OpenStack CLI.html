@@ -14,13 +14,13 @@
 <li>Disassociate a floating IP address from one of your instances.</li>
 <li>Release a floating IP address from your project (this automatically deletes any associations that address has).</li>
 </ul>
-<p>Use the <span class="code"><a href="https://docs.openstack.org/python-openstackclient/pike/cli/command-objects/ip-floating.html">openstack ip floating</a></span>&nbsp;commands to manage floating IP addresses.</p>
+<p>Use the <span class="code"><a href="https://docs.openstack.org/ocata/user-guide/cli-manage-ip-addresses.html" target="_self" rel="undefined">openstack floating ip</a></span>&nbsp;commands to manage floating IP addresses.</p>
 </div>
 <h2>List floating IP address information</h2>
 <div class="solvvy-solution">
 <p>To list all pools that provide floating IP addresses, run:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack ip floating pool list</span>
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack floating ip pool list</span>
 +--------+
 | Name   |
 +--------+
@@ -30,7 +30,7 @@
 </div>
 <p>To list all floating IP addresses that are allocated to your project, run:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack ip floating list</span>
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack floating ip list</span>
 +-----------------------+---------------------+------------------+-----------------------+
 | ID                    | Floating IP Address | Fixed IP Address | Port                  |
 +-----------------------+---------------------+------------------+-----------------------+
@@ -48,7 +48,7 @@
 <ol>
 <li>Run the following command to allocate a floating IP address to your project. The command outputs the allocated IP address:
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack ip floating create public</span>
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack floating ip create public</span>
 +-------------+------------------------+
 | Field       | Value                  |
 +-------------+------------------------+
@@ -81,12 +81,12 @@
 </li>
 <li>Associate an IP address with an instance in the project, as follows:
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack ip floating add <span class="code-highlight">FLOATING_IP_ADDRESS INSTANCE_ID</span></span>
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack floating ip add <span class="code-highlight">FLOATING_IP_ADDRESS INSTANCE_ID</span></span>
 </pre>
 </div>
 <p>For example:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack ip floating add 172.24.4.225 71e499c1-7b9d-42b9...</span>
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack floating ip add <span class="code-highlight">172.24.4.225 71e499c1-7b9d-42b9...</span></span>
 </pre>
 </div>
 </li>
@@ -108,12 +108,12 @@
 <div class="solvvy-solution">
 <p>To disassociate a floating IP address from an instance:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack ip floating remove <span class="code-highlight">FLOATING_IP_ADDRESS INSTANCE_NAME_OR_ID</span></span>
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack floating ip remove <span class="code-highlight">FLOATING_IP_ADDRESS INSTANCE_NAME_OR_ID</span></span>
 </pre>
 </div>
 <p>To remove a floating IP address from your project:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack ip floating delete <span class="code-highlight">FLOATING_IP_ADDRESS</span></span>
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack floating ip delete <span class="code-highlight">FLOATING_IP_ADDRESS</span></span>
 </pre>
 </div>
 <p>The IP address is returned to the pool of IP addresses that is available for all projects. If the IP address is still associated with a running instance, it is automatically disassociated from that instance.</p>

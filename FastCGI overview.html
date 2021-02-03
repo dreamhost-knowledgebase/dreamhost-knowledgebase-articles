@@ -127,12 +127,12 @@ while ( FCGI::accept() &gt;= 0 ) {
 <p>Also, while it's tempting to develop on a live server, it's dangerous and makes you a bad neighbor for shared hosting.</p>
 <p>To see immediately if a script will fail (won't check all cases because&nbsp;%ENV is different), test it from the command line:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">perl ~/example.com/myscript.fcgi</span>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">perl ~/<span class="code-highlight">example.com/myscript.fcgi</span></span>
 </pre>
 </div>
 <p>or, for deeper checking if you can use the debugger:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">perl -d ~/example.com/myscript.fcgi</span>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">perl -d ~/<span class="code-highlight">example.com/myscript.fcgi</span></span>
 </pre>
 </div>
 <p>If you've introduced an error into a script, fixing the error might not fix it immediately, because sometimes the server is still running an old version of the script from memory for various reasons. (The server is supposed to look at the modification date of the file so that it's always running the most recent version, but this is often not the case. When the server fails to do this, running <span class="code">touch</span> on the file doesn't help, either.)</p>
@@ -166,8 +166,8 @@ while ( FCGI::accept() &gt;= 0 ) {
 </div>
 <p>Make sure you check your file and directory permissions. The directory containing the fcgi, and the fcgi itself, must be owned by your default Unix group and be group-writable:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">chgrp -R `groups | awk '{print $1}'` ~/example.com/</span>
-<span class="server">[server]$ </span><span class="command">chmod -R g+w ~/example.com/</span>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">chgrp -R `groups | awk '{print $1}'` ~/<span class="code-highlight">example.com/</span></span>
+<span class="server">[server]$ </span><span class="command">chmod -R g+w ~/<span class="code-highlight">example.com/</span></span>
 </pre>
 </div>
 <p>Also, check to see if you have a similar directive:</p>
