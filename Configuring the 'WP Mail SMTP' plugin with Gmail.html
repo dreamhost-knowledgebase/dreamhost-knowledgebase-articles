@@ -53,11 +53,49 @@
 <li>Click the <strong>Save Settings</strong> button.</li>
 </ol>
 <p>You must now configure your settings within your Google account.</p>
+</div>
 <h2>Allowing GMAIL to send from your mail application</h2>
+<div class="solvvy-solution">
 <p>You now must allow Google to send email from your WordPress site. You can do this by enabling OAuth2 authentication in your Google account.</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/360029702631-Enabling-the-OAuth-2-API-to-use-with-your-WordPress-Mail-SMTP-plugin" target="_self">Enable OAuth2 authentication</a></li>
 </ul>
+</div>
+<h2 class="subheader">Adding code to hide your credentials</h2>
+<div class="solvvy-solution">
+<p>The instructions above add your Google credentials to the WordPress dashboard. To further secure your credentials, the plugin recommends you add code to your wp-config.php file instead. View the following page for further details.</p>
+<ul>
+<li><a href="https://wpmailsmtp.com/docs/how-to-secure-smtp-settings-by-using-constants/#google" target="_blank" rel="noopener">How to secure SMTP settings by using constants</a></li>
+</ul>
+<h3>Adding the constants to your wp-config.php file</h3>
+<ol>
+<li>Log into your server via&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/115000675027-FTP-overview-and-credentials" target="_self">FTP</a>&nbsp;or&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview" target="_self">SSH</a>.</li>
+<li>Use one of the following articles to edit your wp-config.php file.
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115000098272-Creating-and-editing-a-file-via-FTP">Creating and editing files via FTP</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Creating and editing a file via SSH</a></li>
+</ul>
+</li>
+<li>Scroll down in this file to the following line:
+<p><strong>/* That's all, stop editing! Happy blogging. */</strong></p>
+</li>
+<li>Add the following lines just above this line.
+<div class="preboxcontainer">
+<pre class="prebox">define( 'WPMS_ON', true );
+define( 'WPMS_GMAIL_CLIENT_ID', '<span class="code-highlight">********************.apps.googleusercontent.com</span>');
+define( 'WPMS_GMAIL_CLIENT_SECRET', '<span class="code-highlight">**********************</span>');
+define( 'WPMS_MAILER', 'gmail' );
+</pre>
+</div>
+</li>
+<li>The only parts you need to change are&nbsp;<span class="code">WPMS_GMAIL_CLIENT_ID</span> and <span class="code">WPMS_GMAIL_CLIENT_SECRET</span>.</li>
+<li>Save the file.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/wp-smtp-gmail_credentials.png" alt="wp mail smtp password" height="" /></dd>
+</dl>
+</li>
+<li>If you view the plugin page now, you'll see your credentials are not accessible.</li>
+</ol>
 </div>
 <h2>See also</h2>
 <div class="solvvy-hidden">

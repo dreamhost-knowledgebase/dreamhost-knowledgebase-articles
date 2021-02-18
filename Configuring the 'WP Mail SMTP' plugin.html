@@ -71,8 +71,7 @@
 </div>
 <h2>Adding code to hide your password</h2>
 <div class="solvvy-solution">
-<p>The instructions above add your password to the WordPress dashboard and database in plain text. This means if any other WordPress admin has access to your dashboard, they will be able to view your password.</p>
-<p>The plugin recommends you add code to your wp-config.php file to secure your credentials. View the following page for further details.</p>
+<p>The instructions above add your password to the WordPress dashboard. To further secure your credentials, the plugin recommends you add code to your wp-config.php file instead. View the following page for further details.</p>
 <ul>
 <li><a href="https://wpmailsmtp.com/docs/how-to-secure-smtp-settings-by-using-constants/" target="_blank" rel="noopener">How to secure SMTP settings by using constants</a></li>
 </ul>
@@ -90,18 +89,24 @@
 </li>
 <li>Add the following lines just above this line.
 <div class="preboxcontainer">
-<pre class="prebox">define( 'WPMS_ON', true ); 
+<pre class="prebox">define( 'WPMS_ON', true );
+define( 'WPMS_SMTP_HOST', 'smtp.dreamhost.com' ); 
+define( 'WPMS_SMTP_PORT', 587 ); 
+define( 'WPMS_SSL', 'tls' ); 
 define( 'WPMS_SMTP_AUTH', true ); 
-define( 'WPMS_SMTP_PASS', '<span class="code-highlight">your_email_password</span>' );</pre>
+define( 'WPMS_SMTP_USER', '<span class="code-highlight">email@example.com</span>' );
+define( 'WPMS_SMTP_PASS', '<span class="code-highlight">********</span>' );
+define( 'WPMS_SMTP_AUTOTLS', true );
+define( 'WPMS_MAILER', 'smtp' );</pre>
 </div>
 </li>
-<li>The only part you need to change is <span class="text-object">your_email_password</span>.</li>
+<li>The only parts you need to change are <span class="code">WPMS_SMTP_USER</span> and <span class="code">WPMS_SMTP_PASS</span>.</li>
 <li>Save the file.
 <dl>
 <dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/wp-mail-smtp-password.png" alt="wp mail smtp password" /></dd>
 </dl>
 </li>
-<li>If you view the plugin page now, you'll see your password is not accessible.</li>
+<li>If you view the plugin page now, you'll see your credentials are not accessible.</li>
 </ol>
 </div>
 <h2>Testing the plugin</h2>
