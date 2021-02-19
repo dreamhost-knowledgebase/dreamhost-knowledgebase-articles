@@ -17,10 +17,25 @@
 <ul>
 <li><a href="#A_record">A record</a></li>
 <li><a href="#AAAA_record">AAAA record</a></li>
+<!--
+     <li>
+      <a href="#ALIAS_record">ALIAS record</a>
+    </li>
+    -->
 <li><a href="#CNAME_record">CNAME record</a></li>
 <li><a href="#MX_record">MX record</a></li>
 <li><a href="#TXT_record">TXT record</a></li>
+<!--
+      <li>
+      <a href="#NAPTR_record">NAPTR record</a>
+    </li>
+    -->
 <li><a href="#SRV_record">SRV record</a></li>
+<!--
+    <li>
+      <a href="#CAA_record">CAA record</a>
+    </li>
+    -->
 <li><a href="#Nameservers">Nameservers</a></li>
 <li><a href="#Unique_IP" target="_self">Unique IPv4 or IPv6 records</a></li>
 <li><a href="#Additional_details">Additional details</a></li>
@@ -138,7 +153,7 @@
   <p>
     An&nbsp;<a href="https://support.dnsimple.com/articles/alias-record/" target="_self">ALIAS record</a>
     is a virtual DNS record similar to a CNAME, but with the ability to add it
-    to the root domain name (which is not possible with a CNAME). I can also
+    to the root domain name (which is not possible with a CNAME). It can also
     be added to a subdomain record that already exists where a CNAME must be
     unique.
   </p>
@@ -507,114 +522,7 @@
   </p>
 </div>
 -->
-<h2><span id="SRV_record">SRV record</span></h2>
-<div class="solvvy-solution">
-<p>SRV (service) records are used to identify computers that host a specific service and then establish a connection between that service and the website.</p>
-<p>Certain programs and applications may require the set up of these types of records to make those services active. A common example are the following two Microsoft SRV records. More information can be found at the following link:</p>
-<ul>
-<li><a href="https://support.office.com/en-us/article/Create-DNS-records-at-any-DNS-hosting-provider-for-Office-365-7b7b075d-79f9-4e37-8a9e-fb60c1d95166#BKMK_add_SRV">Microsoft's two SRV records</a></li>
-</ul>
-<table border="1">
-<tbody>
-<tr>
-<th bgcolor="#F2F2F2">Type</th>
-<th bgcolor="#F2F2F2">Name</th>
-<th bgcolor="#F2F2F2">Target</th>
-<th bgcolor="#F2F2F2">Protocol</th>
-<th bgcolor="#F2F2F2">Service</th>
-<th bgcolor="#F2F2F2">Priority</th>
-<th bgcolor="#F2F2F2">Weight</th>
-<th bgcolor="#F2F2F2">Port</th>
-<th bgcolor="#F2F2F2">TTL</th>
-</tr>
-<tr>
-<td>SRV</td>
-<td>@</td>
-<td>sipdir.online.lync.com</td>
-<td>_tls</td>
-<td>_sip</td>
-<td>100</td>
-<td>1</td>
-<td>443</td>
-<td>1 hour</td>
-</tr>
-<tr>
-<td>SRV</td>
-<td>@</td>
-<td>sipfed.online.lync.com</td>
-<td>_tcp</td>
-<td>_sipfederationtls</td>
-<td>100</td>
-<td>1</td>
-<td>5061</td>
-<td>1 hour</td>
-</tr>
-</tbody>
-</table>
-<h4>&nbsp;</h4>
-<h4><strong>Format</strong></h4>
-<p>Your standard SRV record is in this type of format:</p>
-<div class="preboxcontainer">
-<pre class="prebox">_service._protocol.name. TTL class SRV priority weight port target.</pre>
-</div>
-<h4><strong>Adding</strong></h4>
-<ol>
-<li>Navigate to the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.dashboard#!/grid-view" target="_blank" rel="noopener">Websites</a> page.</li>
-<li>Open the <span class="panel-page">Manage</span> page for your site.
-<ul>
-<li>If you're in <a href="https://help.dreamhost.com/hc/en-us/articles/360001294366#grid_or_list" target="_self">Grid view</a>, hover over your website and click the <strong>Manage</strong> button.</li>
-<li>If you're in <a href="https://help.dreamhost.com/hc/en-us/articles/360001294366#grid_or_list" target="_self">List view</a>, click the&nbsp;<strong>Manage</strong> button to the right of your website.</li>
-</ul>
-<dl>
-<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-dns-tab.png" alt="DNS tab" width="245" height="73" /></dd>
-</dl>
-</li>
-<li>Click the <span class="text-link">DNS</span> tab.
-<dl>
-<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-button-add-record.png" alt="Add Record button" width="139" height="43" /></dd>
-</dl>
-</li>
-<li>Click the&nbsp;<strong>Add Record</strong> button.
-<dl>
-<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-dns-srv-record-add-01.png" alt="Add SRV Record" width="640" height="102" /></dd>
-</dl>
-</li>
-<li>Hover over the <span class="text-section">SRV Record</span> section and click the <span class="text-link">ADD</span> link.
-<div class="alert alert-important">
-<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
-<div class="alert-content">
-<p>The example below shows how to add the following record.</p>
-<div class="preboxcontainer">
-<pre class="prebox">_sipfederationtls._tcp	SRV	100 1 5061 sipfed.online.lync.com.</pre>
-</div>
-<p>Repeat the following steps to add any additional SRV records required.</p>
-</div>
-</div>
-<dl>
-<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-dns-srv-record-add-02.png" alt="Add SRV Record" width="519" height="429" /></dd>
-</dl>
-</li>
-<li>Enter the following:
-<div class="alert alert-note">
-<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
-<div class="alert-content">
-<p>When entering an SRV record in your panel, ignore the TTL, class, and SRV fields.</p>
-</div>
-</div>
-<ul>
-<li><strong>Name</strong>: This is most often left blank.</li>
-<li><strong>Service/Sip</strong>: sipfederationtls. <span class="red">Do not add the underscore before this value, or the period at the end.</span></li>
-<li><strong>Protocol</strong>:&nbsp;tcp. <span class="red">Do not add the underscore before this value.</span></li>
-<li><strong>Priority</strong>: 100</li>
-<li><strong>Weight</strong>: 1</li>
-<li><strong>Port</strong>: 5061</li>
-<li><strong>Target</strong>: sipfed.online.lync.com</li>
-</ul>
-</li>
-<li>Click the <strong>Add Record</strong>&nbsp;button.</li>
-</ol>
-<p>After clicking the <strong>Add Record</strong> button, the propagation for the new record begins. This can take up to 6 hours before the new record updates online.</p>
-</div>
+<p>&nbsp;</p>
 <!--
 <h2>
   <span id="NAPTR_record">NAPTR record</span>
@@ -745,6 +653,281 @@ IN NAPTR 102 10 "U" "E2U+email" "!^.*$!mailto:information@example.com!" .</pre>
     the new record begins. This can take up to 6 hours before the new record
     updates online.
   </p>
+</div>
+-->
+<h2><span id="SRV_record">SRV record</span></h2>
+<div class="solvvy-solution">
+<p>SRV (service) records are used to identify computers that host a specific service and then establish a connection between that service and the website.</p>
+<p>Certain programs and applications may require the set up of these types of records to make those services active. A common example are the following two Microsoft SRV records. More information can be found at the following link:</p>
+<ul>
+<li><a href="https://support.office.com/en-us/article/Create-DNS-records-at-any-DNS-hosting-provider-for-Office-365-7b7b075d-79f9-4e37-8a9e-fb60c1d95166#BKMK_add_SRV">Microsoft's two SRV records</a></li>
+</ul>
+<table border="1">
+<tbody>
+<tr>
+<th bgcolor="#F2F2F2">Type</th>
+<th bgcolor="#F2F2F2">Name</th>
+<th bgcolor="#F2F2F2">Target</th>
+<th bgcolor="#F2F2F2">Protocol</th>
+<th bgcolor="#F2F2F2">Service</th>
+<th bgcolor="#F2F2F2">Priority</th>
+<th bgcolor="#F2F2F2">Weight</th>
+<th bgcolor="#F2F2F2">Port</th>
+<th bgcolor="#F2F2F2">TTL</th>
+</tr>
+<tr>
+<td>SRV</td>
+<td>@</td>
+<td>sipdir.online.lync.com</td>
+<td>_tls</td>
+<td>_sip</td>
+<td>100</td>
+<td>1</td>
+<td>443</td>
+<td>1 hour</td>
+</tr>
+<tr>
+<td>SRV</td>
+<td>@</td>
+<td>sipfed.online.lync.com</td>
+<td>_tcp</td>
+<td>_sipfederationtls</td>
+<td>100</td>
+<td>1</td>
+<td>5061</td>
+<td>1 hour</td>
+</tr>
+</tbody>
+</table>
+<h4>&nbsp;</h4>
+<h4><strong>Format</strong></h4>
+<p>Your standard SRV record is in this type of format:</p>
+<div class="preboxcontainer">
+<pre class="prebox">_service._protocol.name. TTL class SRV priority weight port target.</pre>
+</div>
+<h4><strong>Adding</strong></h4>
+<ol>
+<li>Navigate to the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.dashboard#!/grid-view" target="_blank" rel="noopener">Websites</a> page.</li>
+<li>Open the <span class="panel-page">Manage</span> page for your site.
+<ul>
+<li>If you're in <a href="https://help.dreamhost.com/hc/en-us/articles/360001294366#grid_or_list" target="_self">Grid view</a>, hover over your website and click the <strong>Manage</strong> button.</li>
+<li>If you're in <a href="https://help.dreamhost.com/hc/en-us/articles/360001294366#grid_or_list" target="_self">List view</a>, click the&nbsp;<strong>Manage</strong> button to the right of your website.</li>
+</ul>
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-dns-tab.png" alt="DNS tab" width="245" height="73" /></dd>
+</dl>
+</li>
+<li>Click the <span class="text-link">DNS</span> tab.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-button-add-record.png" alt="Add Record button" width="139" height="43" /></dd>
+</dl>
+</li>
+<li>Click the&nbsp;<strong>Add Record</strong> button.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-dns-srv-record-add-01.png" alt="Add SRV Record" width="640" height="102" /></dd>
+</dl>
+</li>
+<li>Hover over the <span class="text-section">SRV Record</span> section and click the <span class="text-link">ADD</span> link.
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>The example below shows how to add the following record.</p>
+<div class="preboxcontainer">
+<pre class="prebox">_sipfederationtls._tcp	SRV	100 1 5061 sipfed.online.lync.com.</pre>
+</div>
+<p>Repeat the following steps to add any additional SRV records required.</p>
+</div>
+</div>
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-dns-srv-record-add-02.png" alt="Add SRV Record" width="519" height="429" /></dd>
+</dl>
+</li>
+<li>Enter the following:
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>When entering an SRV record in your panel, ignore the TTL, class, and SRV fields.</p>
+</div>
+</div>
+<ul>
+<li><strong>Name</strong>: This is most often left blank.</li>
+<li><strong>Service/Sip</strong>: sipfederationtls. <span class="red">Do not add the underscore before this value, or the period at the end.</span></li>
+<li><strong>Protocol</strong>:&nbsp;tcp. <span class="red">Do not add the underscore before this value.</span></li>
+<li><strong>Priority</strong>: 100</li>
+<li><strong>Weight</strong>: 1</li>
+<li><strong>Port</strong>: 5061</li>
+<li><strong>Target</strong>: sipfed.online.lync.com</li>
+</ul>
+</li>
+<li>Click the <strong>Add Record</strong>&nbsp;button.</li>
+</ol>
+<p>After clicking the <strong>Add Record</strong> button, the propagation for the new record begins. This can take up to 6 hours before the new record updates online.</p>
+</div>
+<!--
+<h2>CAA records</h2>
+<div class="solvvy-solution">
+  <p>
+    A Certification Authority Authorization (<strong>CAA</strong>) record is
+    used to specify which
+    <a href="https://en.wikipedia.org/wiki/Certificate_authority" target="_blank" rel="noopener">certificate authorities</a>
+    (CA) are allowed to issue a certificate for a specific domain name.
+  </p>
+  <ul>
+    <li>
+      If a CAA record is present, only the CAs listed in the CAA record(s)
+      are allowed to issue certificates for the domain.
+    </li>
+    <li>
+      If no CAA record is present, any CA is allowed to issue a certificate
+      for the domain.
+    </li>
+  </ul>
+  <p>
+    These records also give the owner of the domain the ability to set notification
+    rules in case someone requests a certificate from an unauthorized certificate
+    authority.
+  </p>
+  <h3>Subdomains</h3>
+  <p>
+    Most often, a CAA record is added to the primary domain name (<strong>example.com</strong>).
+  </p>
+  <p>
+    A CAA record added to the primary domain (<strong>example.com</strong>) also
+    applies to all subdomains such as <strong>blog.example.com</strong>. However,
+    a CAA record added to any subdomain will take precedence over the CAA record
+    added to the primary domain name allowing you more control over the subdomain
+    record.
+  </p>
+  
+<h3>Adding a CAA record</h3>
+<ol>
+  <li>
+    Navigate to the&nbsp;<a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.dashboard#!/grid-view" target="_blank" rel="noopener">Websites</a>&nbsp;page.
+  </li>
+  <li>
+    Open the&nbsp;<span class="panel-page">Manage</span>&nbsp;page for your site.
+    <ul>
+      <li>
+        If you're in&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/360001294366#grid_or_list" target="_self">Grid view</a>,
+        hover over your website and click the&nbsp;<strong>Manage</strong>&nbsp;button.
+      </li>
+      <li>
+        If you're in&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/360001294366#grid_or_list" target="_self">List view</a>,
+        click the&nbsp;<strong>Manage</strong>&nbsp;button to the right of
+        your website.
+      </li>
+    </ul>
+    <dl>
+      <dd>
+        <img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-dns-tab.png" alt="DNS tab" width="245" height="">
+      </dd>
+    </dl>
+  </li>
+  <li>
+    Click the&nbsp;<span class="text-link">DNS</span>&nbsp;tab.
+    <dl>
+      <dd>
+        <img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-button-add-record.png" alt="Add Record button" width="139" height="">
+      </dd>
+    </dl>
+  </li>
+  <li>
+    Click the&nbsp;<strong>Add Record</strong>&nbsp;button.
+    <dl>
+      <dd>
+        <img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-dns-caa-record-add-01.png" alt="Add CAA Record" width="640" height="">
+      </dd>
+    </dl>
+  </li>
+  <li>
+    Hover over the <span class="text-section">CAA&nbsp;Record</span>&nbsp;section
+    and click the&nbsp;<span class="text-link">ADD</span>&nbsp;link.
+    <dl>
+      <dd>
+        <img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-dns-caa-record-add-02.png" alt="Add CAA Record" width="526" height="">
+      </dd>
+    </dl>
+    <div class="alert alert-important">
+      <div class="alert-icon">
+        <img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60">
+      </div>
+      <div class="alert-content">
+        <p>
+          Each CAA record created only applies to a single certificate
+          authority. This means you would need to create an additional
+          CAA record for each additional certificate authority that is
+          allowed to issue a certificate for this domain.
+        </p>
+      </div>
+    </div>
+    <ul>
+      <li>
+        <strong>flag</strong>: The value of <span class="code">1</span> is
+        used to represent the
+        <a href="https://tools.ietf.org/html/rfc6844#section-3" target="_self">critical flag</a>.
+        Setting this field to <span class="code">1</span> instructs certificate
+        authorities that they must understand the following property tag
+        before issuing a certificate.
+      </li>
+      <li>
+        <strong>tag</strong>: Choose from the following:
+        <ul>
+          <li>
+            <span class="text-object">Authorization Entry by Domain</span>
+            This sets the <span class="code">issue</span> property. The
+            domain name of the a single certificate authority (e.g.
+            <strong>sectigo.com</strong>) authorizied to issue certificates
+            for the domain.
+          </li>
+      
+          <li>
+            <span class="text-object">Report incident by IODEF report</span>
+            This sets the <span class="code">iodef</span> property. Specifies
+            a URL (<strong>https://example.com</strong>) or email address
+            (<strong>mailto:admin@example.com</strong>) a certificate
+            authority may report policy violations. Not all certificate
+            authorities support this tag, so there is no guarantee that
+            all certificate issuances will be reported.
+          </li>
+         
+        </ul>
+      </li>
+      <li>
+        <strong> value</strong>: The value associated with the chosen property
+        tag.
+      </li>
+    </ul>
+  </li>
+  <li>
+    Click the&nbsp;<strong>Add Record</strong>&nbsp;button to save.
+  </li>
+</ol>
+<p>
+  After clicking the&nbsp;<strong>Add Record</strong>&nbsp;button, the propagation
+  for the new record begins. This can take up to 6 hours before the new record
+  updates online.
+</p>
+<h3>Checking the CAA record via SSH</h3>
+<p>
+  The <span class="code">dig</span> command is often used to query DNS records.
+  Since the CAA record is a new type of record, you must also add
+  <span class="code">type257</span> when running the command. For example:
+</p>
+<div class="preboxcontainer">
+  <pre class="prebox"><span class="server">[server]$ </span><span class="command">dig example.com type257</span></pre>
+</div>
+<h3>Links</h3>
+  <ul>
+    <li>
+      <a class="external-link" title="Follow link" href="https://en.wikipedia.org/wiki/DNS_Certification_Authority_Authorization" target="_blank" rel="nofollow noopener">https://en.wikipedia.org/wiki/DNS_Certification_Authority_Authorization</a>
+    </li>
+    <li>
+      <a class="external-link" title="Follow link" href="https://support.dnsimple.com/articles/caa-record/" target="_blank" rel="nofollow noopener">https://support.dnsimple.com/articles/caa-record/</a>
+    </li>
+    <li>
+      <a class="external-link" title="Follow link" href="https://letsencrypt.org/docs/caa/" target="_blank" rel="nofollow noopener">https://letsencrypt.org/docs/caa/</a>
+    </li>
+  </ul>
 </div>
 -->
 <h2><span id="Nameservers">Nameservers</span></h2>

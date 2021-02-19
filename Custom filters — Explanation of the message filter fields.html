@@ -12,8 +12,63 @@
 </ul>
 </div>
 </div>
-<h2>List of fields to add to your custom filter</h2>
+</div>
+<h2>How 'execute and stop' functions</h2>
 <div class="solvvy-solution">
+<p>The 'execute and stop' rule only applies to a rule that performs a delivery action such as:</p>
+<ul>
+<li>Moving the email to a folder</li>
+<li>Forwarding the email</li>
+</ul>
+<p>If the rule is set to only add text to the HEADER or Subject, 'exectue and stop' will not apply. In this case, the filter will continue to the next rule until it runs a rule with a delivery action. The following examples explain this further.</p>
+<table style="border-collapse: collapse; width: 100%;" border="1">
+<tbody>
+<tr>
+<th style="width: 35%;">Rule</th>
+<th style="width: 30%;">Result</th>
+<th style="width: 35%;">Explanation</th>
+</tr>
+<tr>
+<td>
+<p>First, add <strong>FILTERED</strong> to the subject of emails with <strong>testing</strong> in the <strong>subject</strong> and then stop.</p>
+<p><br />Finally, move emails with <strong>example.com</strong> in the <strong>from</strong> to <em>filterfolder</em> and then stop.</p>
+</td>
+<td>
+<p>The text FILTERED is added to the subject, but the filter continues to the second rule.</p>
+<p>&nbsp;</p>
+<p>The email is then moved into the folder.</p>
+</td>
+<td>Since the first rule did not perform a delivery action, the filter continued on to the second rule which did.</td>
+</tr>
+<tr>
+<td>
+<p>First, add <strong>FILTERED</strong> to the subject of emails with <strong>testing</strong> in the <strong>subject</strong> and then stop.</p>
+<p><br />Then, move emails with <strong>example.com</strong> in the from to <em>filterfolder</em> and then stop.</p>
+<p><br />Finally, add the header <strong>Test-Header:&nbsp;FILTERED</strong> to emails with <strong>*example.com</strong> in the <strong>headers</strong> and then stop.</p>
+</td>
+<td>
+<p>The text FILTERED is added to the subject, but the filter continues to the second rule.</p>
+<p>&nbsp;</p>
+<p>The email is then moved into the folder.</p>
+<p>&nbsp;</p>
+<p>The final rule is not applied.</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+</td>
+<td>
+<p>Since the first rule did not perform a delivery action, the filter continued on to the second rule.</p>
+<p>&nbsp;</p>
+<p>Since the second rule performed a delivery action, the filter was executed and stopped.</p>
+<p>&nbsp;</p>
+<p>The final rule was not executed since the second rule performed the delivery action.</p>
+<p>&nbsp;</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2>List of fields to add to your custom filter</h2>
+<div class="solvvy-solution"><br />
 <table style="border-collapse: collapse; width: 100%;" border="1">
 <tbody>
 <tr>
@@ -90,9 +145,9 @@
 </tbody>
 </table>
 </div>
-<br />
+<p>&nbsp;</p>
 <h2><span id="Explanation_of_the_.E2.80.98Do_this.E2.80.99_action_option_fields">Explanation of the 'Do this' action option fields</span></h2>
-<div class="solvvy-solution">
+<div class="solvvy-solution"><br />
 <table style="border-collapse: collapse; width: 100%;" border="1">
 <tbody>
 <tr>
@@ -214,5 +269,4 @@
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/214984738-Anti-spam-overview">Anti-spam overview</a></li>
 <li><a href="https://regex101.com/">regex101.com</a>&nbsp;– Regular Expression tester you can use when creating custom message filters in your panel</li>
 </ul>
-</div>
 </div>
