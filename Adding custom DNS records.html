@@ -21,11 +21,7 @@
 <li><a href="#CNAME_record">CNAME record</a></li>
 <li><a href="#MX_record">MX record</a></li>
 <li><a href="#TXT_record">TXT record</a></li>
-<!--
-      <li>
-      <a href="#NAPTR_record">NAPTR record</a>
-    </li>
-    -->
+<li><a href="#NAPTR_record">NAPTR record</a></li>
 <li><a href="#SRV_record">SRV record</a></li>
 <li><a href="#CAA_record">CAA record</a></li>
 <li><a href="#Nameservers">Nameservers</a></li>
@@ -434,138 +430,58 @@
 </div>
 -->
 <p>&nbsp;</p>
-<!--
-<h2>
-  <span id="NAPTR_record">NAPTR record</span>
-</h2>
+<h2><span id="NAPTR_record">NAPTR record</span></h2>
 <div class="solvvy-solution">
-  <p>
-    Name Authority Pointer (NAPTR) records are most often used for Internet telephony.
-    These records support the use of regular expressions. Here is an example
-    NAPTR record:
-  </p>
-  <div class="preboxcontainer">
-    <pre class="prebox">$ORIGIN 4.3.2.1.5.5.5.0.0.8.1.e164.arpa.
+<p>Name Authority Pointer (NAPTR) records are most often used for Internet telephony. These records support the use of regular expressions. Here is an example NAPTR record:</p>
+<div class="preboxcontainer">
+<pre class="prebox">$ORIGIN 4.3.2.1.5.5.5.0.0.8.1.e164.arpa.
 IN NAPTR 100 10 "U" "E2U+sip" "!^.*$!sip:customer-service@example.com!" .
 IN NAPTR 102 10 "U" "E2U+email" "!^.*$!mailto:information@example.com!" .</pre>
-  </div>
-  <p>
-    View the following link for detailed information about this type of record.
-  </p>
-  <ul>
-    <li>
-      <a href="https://tools.ietf.org/html/rfc2915">https://tools.ietf.org/html/rfc2915</a>
-    </li>
-  </ul>
-  <h4>
-    <strong>Adding</strong>
-  </h4>
-  <ol>
-    <li>
-      Navigate to the
-      <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.dashboard#!/grid-view" target="_blank" rel="noopener">Websites</a>
-      page.
-    </li>
-    <li>
-      Open the <span class="panel-page">Manage</span> page for your site.
-      <ul>
-        <li>
-          If you're in
-          <a href="https://help.dreamhost.com/hc/en-us/articles/360001294366#grid_or_list" target="_self">Grid view</a>,
-          hover over your website and click the <strong>Manage</strong>
-          button.
-        </li>
-        <li>
-          If you're in
-          <a href="https://help.dreamhost.com/hc/en-us/articles/360001294366#grid_or_list" target="_self">List view</a>,
-          click the&nbsp;<strong>Manage</strong> button to the right of
-          your website.
-        </li>
-      </ul>
-      <dl>
-        <dd>
-          <img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-dns-tab.png" alt="DNS tab" width="245" height="73">
-        </dd>
-      </dl>
-    </li>
-    <li>
-      Click the <span class="text-link">DNS</span> tab.
-      <dl>
-        <dd>
-          <img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-button-add-record.png" alt="Add Record button" width="139" height="43">
-        </dd>
-      </dl>
-    </li>
-    <li>
-      Click the&nbsp;<strong>Add Record</strong> button.
-      <dl>
-        <dd>
-          <img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-dns-naptr-record-add-01.png" alt="Add NAPTR Record" width="640" height="102">
-        </dd>
-      </dl>
-    </li>
-    <li>
-      Hover over the <span class="text-section">NAPTR Record</span> section
-      and click the <span class="text-link">ADD</span> link.
-      <dl>
-        <dd>
-          <img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-dns-naptr-record-add-02.png" alt="Add NAPTR Record" width="520" height="426">
-        </dd>
-      </dl>
-      <ul>
-        <li>
-          <strong>Host</strong>: Enter the hostname to enable this record
-          for, or leave blank.
-        </li>
-        <li>
-          <strong>Order</strong>: A number (from 0 - 65535) that specifies
-          the order in which multiple NAPTR records are processed. Lower
-          values are processed before higher values.
-        </li>
-        <li>
-          <strong>Preference</strong>:&nbsp; A number (from 0 - 65535)
-          that specifies the order in which multiple NAPTR records,
-          <span class="wysiwyg-underline">with equal Order values</span>,
-          are processed. Lower values are processed before higher values.
-        </li>
-        <li>
-          <strong>Flags</strong>: A lowercase string containing flags to
-          control aspects of the rewriting and interpretation of the fields
-          in the record. At this time only four flags,
-          <span class="code">s</span>, <span class="code">a</span>,
-          <span class="code">u</span>, and <span class="code">p</span>,
-          are defined.
-        </li>
-        <li>
-          <strong>Service</strong>: Specifies the service(s) available
-          down this rewrite path. It may also specify the particular protocol
-          that is used to talk with a service.
-        </li>
-        <li>
-          <strong>Regex</strong>: A string containing a substitution expression
-          that is applied to the original string held by the client in
-          order to construct the next domain name to lookup.
-        </li>
-        <li>
-          <strong>Replacement</strong>:&nbsp; The next fully qualified
-          domain name to query for NAPTR records depending on the values
-          found in the flags field. This field is only used if the regular
-          expression field is empty. If the Regex field contains a value,
-          this field is not used.
-        </li>
-      </ul>
-    </li>
-    <li>
-      Click the <strong>Add Record</strong>&nbsp;button to save.
-    </li>
-  </ol>
-  <p>
-    After clicking the <strong>Add Record</strong> button, the propagation for
-    the new record begins. This can take up to 6 hours before the new record
-    updates online.
-  </p>
 </div>
--->
+<p>View the following link for detailed information about this type of record.</p>
+<ul>
+<li><a href="https://tools.ietf.org/html/rfc2915">https://tools.ietf.org/html/rfc2915</a></li>
+</ul>
+<h4><strong>Adding</strong></h4>
+<ol>
+<li>Navigate to the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.dashboard#!/grid-view" target="_blank" rel="noopener">Websites</a> page.</li>
+<li>Open the <span class="panel-page">Manage</span> page for your site.
+<ul>
+<li>If you're in <a href="https://help.dreamhost.com/hc/en-us/articles/360001294366#grid_or_list" target="_self">Grid view</a>, hover over your website and click the <strong>Manage</strong> button.</li>
+<li>If you're in <a href="https://help.dreamhost.com/hc/en-us/articles/360001294366#grid_or_list" target="_self">List view</a>, click the&nbsp;<strong>Manage</strong> button to the right of your website.</li>
+</ul>
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-dns-tab.png" alt="DNS tab" width="245" height="73" /></dd>
+</dl>
+</li>
+<li>Click the <span class="text-link">DNS</span> tab.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-button-add-record.png" alt="Add Record button" width="139" height="43" /></dd>
+</dl>
+</li>
+<li>Click the&nbsp;<strong>Add Record</strong> button.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-dns-naptr-record-add-01.png" alt="Add NAPTR Record" width="640" height="102" /></dd>
+</dl>
+</li>
+<li>Hover over the <span class="text-section">NAPTR Record</span> section and click the <span class="text-link">ADD</span> link.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-dns-naptr-record-add-02.png" alt="Add NAPTR Record" width="520" height="426" /></dd>
+</dl>
+<ul>
+<li><strong>Host</strong>: Enter the hostname to enable this record for, or leave blank.</li>
+<li><strong>Order</strong>: A number (from 0 - 65535) that specifies the order in which multiple NAPTR records are processed. Lower values are processed before higher values.</li>
+<li><strong>Preference</strong>:&nbsp; A number (from 0 - 65535) that specifies the order in which multiple NAPTR records, <span class="wysiwyg-underline">with equal Order values</span>, are processed. Lower values are processed before higher values.</li>
+<li><strong>Flags</strong>: A lowercase string containing flags to control aspects of the rewriting and interpretation of the fields in the record. At this time only four flags, <span class="code">s</span>, <span class="code">a</span>, <span class="code">u</span>, and <span class="code">p</span>, are defined.</li>
+<li><strong>Service</strong>: Specifies the service(s) available down this rewrite path. It may also specify the particular protocol that is used to talk with a service.</li>
+<li><strong>Regex</strong>: A string containing a substitution expression that is applied to the original string held by the client in order to construct the next domain name to lookup.</li>
+<li><strong>Replacement</strong>:&nbsp; The next fully qualified domain name to query for NAPTR records depending on the values found in the flags field. This field is only used if the regular expression field is empty. If the Regex field contains a value, this field is not used.</li>
+</ul>
+</li>
+<li>Click the <strong>Add Record</strong>&nbsp;button to save.</li>
+</ol>
+<p>After clicking the <strong>Add Record</strong> button, the propagation for the new record begins. This can take up to 6 hours before the new record updates online.</p>
+</div>
 <h2><span id="SRV_record">SRV record</span></h2>
 <div class="solvvy-solution">
 <p>SRV (service) records are used to identify computers that host a specific service and then establish a connection between that service and the website.</p>
