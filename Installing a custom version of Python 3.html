@@ -1,19 +1,10 @@
 <h2>Overview</h2>
 <div class="solvvy-solution">
-<p>Python3 is only available on servers running Ubuntu 18 (Bionic). If your server is still running Ubuntu 14 (Trusty), you can install it manually using a <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">Shell user</a>, however, it's recommended that you always install a custom version if you're going to be installing packages as this isolates the environment from the server.</p>
-<p>Visit the following link for information on how to confirm the version your server is running.</p>
-<ul>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/360022178852#version" target="_self">Checking the version of Ubuntu</a></li>
-</ul>
-<p>The following describes how to install Python on Ubuntu 14 (Trusty),&nbsp; Ubuntu 18 (Bionic), and Debian servers under your <a href="https://help.dreamhost.com/hc/en-us/articles/214694298-What-are-the-different-types-of-DreamHost-users-">website user</a>.</p>
-<ul>
-<li><a href="#ubuntu-18" target="_self">Installing Python 3 on Ubuntu 18 or Debian (VPS only)</a></li>
-<li><a href="#ubuntu-14" target="_self">Installing Python 3 on an Ubuntu 14 server</a></li>
-</ul>
+<p>Python3 is available on Shared, VPS, and Dedicated servers. If you wish to use a specific version, you can install it locally under your Shell user by following the steps in this article.</p>
 <div class="alert alert-note">
 <div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
-<p>To run the following commands, you must log into your server via SSH with your Shell user. View the following articles for more information:</p>
+<p>To run the following commands, you must log in to your server via SSH with your Shell user. View the following articles for more information:</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access">Creating a user with Shell (SSH) access</a></li>
@@ -22,7 +13,7 @@
 </div>
 </div>
 </div>
-<h2><span id="ubuntu-18">Installing Python 3 on Ubuntu 18 or Debian</span></h2>
+<h2><span id="ubuntu-18">Installing Python 3</span></h2>
 <div class="solvvy-solution">
 <ol>
 <li>Choose the version you wish to install from&nbsp;<a href="https://www.python.org/downloads/source/" target="_self">python.org</a>.</li>
@@ -31,13 +22,13 @@
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~</span>
 <span class="server">[server]$ </span><span class="command">mkdir tmp</span>
 <span class="server">[server]$ </span><span class="command">cd tmp</span>
-<span class="server">[server]$ </span><span class="command">wget https://www.python.org/ftp/python/3.8.1/Python-3.8.1.tgz</span>
-<span class="server">[server]$ </span><span class="command">tar zxvf Python-3.8.1.tgz</span> <br /><span class="server">[server]$ </span><span class="command">cd Python-3.8.1</span> <br /><span class="server">[server]$ </span><span class="command">./configure --prefix=$HOME/opt/python-3.8.1</span>
+<span class="server">[server]$ </span><span class="command">wget https://www.python.org/ftp/python/3.9.2/Python-3.9.2.tgz</span>
+<span class="server">[server]$ </span><span class="command">tar zxvf Python-3.9.2.tgz</span> <br /><span class="server">[server]$ </span><span class="command">cd Python-3.9.2</span> <br /><span class="server">[server]$ </span><span class="command">./configure --prefix=$HOME/opt/python-3.9.2</span>
 <span class="server">[server]$ </span><span class="command">make</span>
 <span class="server">[server]$ </span><span class="command">make install</span></pre>
 </div>
 <ul>
-<li>These commands install your local version of python to <span class="text-object">/home/username/opt/python-3.8.1</span>.</li>
+<li>These commands install your local version of python to <span class="text-object">/home/username/opt/python-3.9.2</span>.</li>
 </ul>
 </li>
 <li>Navigate back to your user's home directory:
@@ -47,7 +38,7 @@
 </li>
 <li>View the&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">creating and editing a file via SSH</a>&nbsp;article for instructions on how to edit your existing .bash_profile. To use the new version of Python over the system default, enter the following line to your .bash_profile:
 <div class="preboxcontainer">
-<pre class="prebox">export PATH=$HOME/opt/python-3.8.1/bin:$PATH</pre>
+<pre class="prebox">export PATH=$HOME/opt/python-3.9.2/bin:$PATH</pre>
 </div>
 </li>
 <li>Save and close the file, and then return to your shell. Run the following command to update this file:
@@ -58,12 +49,12 @@
 <li>Check which version of Python you're now using by entering the following command:
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">which python3</span>
-<span class="cmdoutput">/home/username/opt/python-3.8.1/bin/python3</span></pre>
+<span class="cmdoutput">/home/username/opt/python-3.9.2/bin/python3</span></pre>
 </div>
 <p>You can also check the version:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">python3 --version</span>
-<span class="cmdoutput">Python 3.8.1</span></pre>
+<span class="cmdoutput">Python 3.9.2</span></pre>
 </div>
 <div class="alert alert-note">
 <div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
@@ -74,151 +65,270 @@
 </li>
 </ol>
 </div>
-<h2><span id="ubuntu-14">Installing Python 3.7.1+ on an Ubuntu 14 server (old VPS machines)</span></h2>
+<!--
+<h2>
+  <span id="ubuntu-14">Installing Python 3.7.1+ on an Ubuntu 14 server (old VPS machines)</span>
+</h2>
 <div class="solvvy-solution">
-<div class="alert alert-note">
-<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
-<div class="alert-content">
-<p>These instructions have been tested up to version 3.8.1.</p>
-</div>
-</div>
-<div class="alert-warning">
-<p>If you are planning on creating a Django project with this custom version of Python, you will need to migrate to a server running Ubuntu 18 or Debian.&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/215722447-Contacting-DreamHost-via-email" target="_self">Contact DreamHost support</a>&nbsp;in order to migrate your site to a server running one of these operating systems.</p>
-</div>
-<h3>Important note about version 3.7.1+ on Trusty servers</h3>
-<p>If your server is running Ubuntu 14 (Trusty) and you wish to install Version 3.7.1+ of Python, you will need to install a custom version of OpenSSL. This is because newer Python versions require OpenSSL (1.0.2 or newer) which the older Ubuntu servers do not provide. As such, you'll need to also install OpenSSL locally, then configure Python to use this local version of OpenSSL.&nbsp;View the following link for details:</p>
-<ul>
-<li><a href="https://docs.python.org/3/library/ssl.html">https://docs.python.org/3/library/ssl.html</a></li>
-</ul>
-<p>This states the following:</p>
-<div class="text-blockquote">Changed in version 3.6: OpenSSL 0.9.8, 1.0.0 and 1.0.1 are deprecated and no longer supported. In the future, the ssl module will require at least OpenSSL 1.0.2 or 1.1.0</div>
-<div class="alert alert-important">
-<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
-<div class="alert-content">
-<p>This only applies if your server is running Ubuntu 14. You can tell by running the following command via SSH:</p>
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">cat /etc/issue</span>
+  <div class="alert alert-note">
+    <div class="alert-icon">
+      <img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60">
+    </div>
+    <div class="alert-content">
+      <p>These instructions have been tested up to version 3.8.1.</p>
+    </div>
+  </div>
+  <div class="alert-warning">
+    <p>
+      If you are planning on creating a Django project with this custom version
+      of Python, you will need to migrate to a server running Ubuntu 18 or
+      Debian.&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/215722447-Contacting-DreamHost-via-email" target="_self">Contact DreamHost support</a>&nbsp;in
+      order to migrate your site to a server running one of these operating
+      systems.
+    </p>
+  </div>
+  <h3>Important note about version 3.7.1+ on Trusty servers</h3>
+  <p>
+    If your server is running Ubuntu 14 (Trusty) and you wish to install Version
+    3.7.1+ of Python, you will need to install a custom version of OpenSSL. This
+    is because newer Python versions require OpenSSL (1.0.2 or newer) which the
+    older Ubuntu servers do not provide. As such, you'll need to also install
+    OpenSSL locally, then configure Python to use this local version of OpenSSL.&nbsp;View
+    the following link for details:
+  </p>
+  <ul>
+    <li>
+      <a href="https://docs.python.org/3/library/ssl.html">https://docs.python.org/3/library/ssl.html</a>
+    </li>
+  </ul>
+  <p>This states the following:</p>
+  <div class="text-blockquote">
+    Changed in version 3.6: OpenSSL 0.9.8, 1.0.0 and 1.0.1 are deprecated and
+    no longer supported. In the future, the ssl module will require at least
+    OpenSSL 1.0.2 or 1.1.0
+  </div>
+  <div class="alert alert-important">
+    <div class="alert-icon">
+      <img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60">
+    </div>
+    <div class="alert-content">
+      <p>
+        This only applies if your server is running Ubuntu 14. You can tell
+        by running the following command via SSH:
+      </p>
+      <div class="preboxcontainer">
+        <pre class="prebox"><span class="server">[server]$ </span><span class="command">cat /etc/issue</span>
 Ubuntu 14.04.5 LTS \n \l</pre>
-</div>
-<p>If your server is running version 18 (Bionic), you do not need to install OpenSSL and you can follow the directions above instead.</p>
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">cat /etc/issue</span>
+      </div>
+      <p>
+        If your server is running version 18 (Bionic), you do not need to
+        install OpenSSL and you can follow the directions above instead.
+      </p>
+      <div class="preboxcontainer">
+        <pre class="prebox"><span class="server">[server]$ </span><span class="command">cat /etc/issue</span>
 Ubuntu 18.04.1 LTS \n \l</pre>
-</div>
-</div>
-</div>
-<h3>Installing OpenSSL</h3>
-<p>If your server is running Ubuntu 14 (Trusty), view the following article for instructions on installing OpenSSL locally under your Shell user:</p>
-<ul>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/360001435926-Installing-OpenSSL-locally-under-your-username">Installing OpenSSL locally under your username</a></li>
-</ul>
-<h3><span id="3.6.2">Installing</span></h3>
-<ol>
-<li>Choose the version you wish to install from&nbsp;<a href="https://www.python.org/downloads/source/" target="_self">python.org</a>.</li>
-<li>Log into your server via <a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a>, and then run the following commands one at a time:
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~</span>
+      </div>
+    </div>
+  </div>
+  <h3>Installing OpenSSL</h3>
+  <p>
+    If your server is running Ubuntu 14 (Trusty), view the following article
+    for instructions on installing OpenSSL locally under your Shell user:
+  </p>
+  <ul>
+    <li>
+      <a href="https://help.dreamhost.com/hc/en-us/articles/360001435926-Installing-OpenSSL-locally-under-your-username">Installing OpenSSL locally under your username</a>
+    </li>
+  </ul>
+  <h3>
+    <span id="3.6.2">Installing</span>
+  </h3>
+  <ol>
+    <li>
+      Choose the version you wish to install from&nbsp;<a href="https://www.python.org/downloads/source/" target="_self">python.org</a>.
+    </li>
+    <li>
+      Log into your server via
+      <a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a>, and then
+      run the following commands one at a time:
+      <div class="preboxcontainer">
+        <pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~</span>
 <span class="server">[server]$ </span><span class="command">mkdir tmp</span>
 <span class="server">[server]$ </span><span class="command">cd tmp</span>
 <span class="server">[server]$ </span><span class="command">wget https://www.python.org/ftp/python/3.8.1/Python-3.8.1.tgz</span>
-<span class="server">[server]$ </span><span class="command">tar zxvf Python-3.8.1.tgz</span> <br /><span class="server">[server]$ </span><span class="command">cd Python-3.8.1</span></pre>
-</div>
-</li>
-<li>Change into the <span class="text-object">Modules</span> directory.
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd Modules</span></pre>
-</div>
-</li>
-<li>Edit the file titled <span class="text-object">Setup</span> (or Setup.dist). The section you're looking for is around line #211. View the <a href="https://help.dreamhost.com/hc/en-us/articles/115006413028#vim">Editing a file using vim</a>&nbsp;article for instructions.
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">vim +211 Setup</span></pre>
-</div>
-</li>
-<li>You'll need to edit line #211-214 by removing the # sign in front of those lines. You must also edit the first line to the path <a href="https://help.dreamhost.com/hc/en-us/articles/360001435926-Installing-OpenSSL-locally-under-your-username">where you installed OpenSSL locally under your user</a>. This assumes you followed the article and installed it in a directory named <span class="text-object">openssl</span>. Make sure to change <span class="text-object">username</span> to your <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access">Shell user</a>.
-<div class="preboxcontainer">
-<pre class="prebox">SSL=<span class="code-highlight">/home/username/openssl
+<span class="server">[server]$ </span><span class="command">tar zxvf Python-3.8.1.tgz</span> <br><span class="server">[server]$ </span><span class="command">cd Python-3.8.1</span></pre>
+      </div>
+    </li>
+    <li>
+      Change into the <span class="text-object">Modules</span> directory.
+      <div class="preboxcontainer">
+        <pre class="prebox"><span class="server">[server]$ </span><span class="command">cd Modules</span></pre>
+      </div>
+    </li>
+    <li>
+      Edit the file titled <span class="text-object">Setup</span> (or Setup.dist).
+      The section you're looking for is around line #211. View the
+      <a href="https://help.dreamhost.com/hc/en-us/articles/115006413028#vim">Editing a file using vim</a>&nbsp;article
+      for instructions.
+      <div class="preboxcontainer">
+        <pre class="prebox"><span class="server">[server]$ </span><span class="command">vim +211 Setup</span></pre>
+      </div>
+    </li>
+    <li>
+      You'll need to edit line #211-214 by removing the # sign in front of
+      those lines. You must also edit the first line to the path
+      <a href="https://help.dreamhost.com/hc/en-us/articles/360001435926-Installing-OpenSSL-locally-under-your-username">where you installed OpenSSL locally under your user</a>.
+      This assumes you followed the article and installed it in a directory
+      named <span class="text-object">openssl</span>. Make sure to change
+      <span class="text-object">username</span> to your
+      <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access">Shell user</a>.
+      <div class="preboxcontainer">
+        <pre class="prebox">SSL=<span class="code-highlight">/home/username/openssl
 </span>_ssl _ssl.c \
         -DUSE_SSL -I$(SSL)/include -I$(SSL)/include/openssl \
         -L$(SSL)/lib -lssl -lcrypto</pre>
-</div>
-</li>
-<li>Change back to the <span class="text-object">Python-3.8.1</span> directory. You can now configure and install Python.<br />
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ..</span>
+      </div>
+    </li>
+    <li>
+      Change back to the <span class="text-object">Python-3.8.1</span> directory.
+      You can now configure and install Python.<br>
+      <div class="preboxcontainer">
+        <pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ..</span>
 <span class="server">[server]$ </span><span class="command">./configure --prefix=$HOME/opt/python-3.8.1</span>
 <span class="server">[server]$ </span><span class="command">make</span>
 <span class="server">[server]$ </span><span class="command">make install</span></pre>
-</div>
-<ul>
-<li>These commands install your local version of python to <span class="text-object">/home/username/opt/python-3.8.1</span>.</li>
-</ul>
-<div class="alert alert-important">
-<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
-<div class="alert-content">
-<p>Some users may want to use the <span class="code">--enable-optimizations</span> option when configuring Python. This only functions on machines running Ubuntu 18 (Bionic). If your server is running Ubuntu 14 (Trusty), this will fail to install.</p>
-<p>Additionally, if you're on a Shared web server, this option will cause your user to hit memory limits. Before running on a Shared server, make sure to contact support so they may temporarily remove your memory limitation. This will allow you to complete the install using this option. The installation will also take over 1 hour to complete if this option has been enabled.</p>
-</div>
-</div>
-</li>
-<li>Navigate back to your user's home directory:
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~</span></pre>
-</div>
-</li>
-<li>View the&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">creating and editing a file via SSH</a>&nbsp;article for instructions on how to edit your existing .bash_profile. To use the new version of Python over the system default, enter the following line to your .bash_profile:
-<div class="preboxcontainer">
-<pre class="prebox">export PATH=$HOME/opt/python-3.8.1/bin:$PATH</pre>
-</div>
-</li>
-<li>Save and close the file, and then return to your shell. Run the following command to update this file:
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">. ~/.bash_profile</span></pre>
-</div>
-</li>
-<li>Check which version of Python you're now using by entering the following command:
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">which python3</span>
+      </div>
+      <ul>
+        <li>
+          These commands install your local version of python to
+          <span class="text-object">/home/username/opt/python-3.8.1</span>.
+        </li>
+      </ul>
+      <div class="alert alert-important">
+        <div class="alert-icon">
+          <img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60">
+        </div>
+        <div class="alert-content">
+          <p>
+            Some users may want to use the
+            <span class="code">--enable-optimizations</span> option when
+            configuring Python. This only functions on machines running
+            Ubuntu 18 (Bionic). If your server is running Ubuntu 14 (Trusty),
+            this will fail to install.
+          </p>
+          <p>
+            Additionally, if you're on a Shared web server, this option
+            will cause your user to hit memory limits. Before running
+            on a Shared server, make sure to contact support so they
+            may temporarily remove your memory limitation. This will
+            allow you to complete the install using this option. The
+            installation will also take over 1 hour to complete if this
+            option has been enabled.
+          </p>
+        </div>
+      </div>
+    </li>
+    <li>
+      Navigate back to your user's home directory:
+      <div class="preboxcontainer">
+        <pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~</span></pre>
+      </div>
+    </li>
+    <li>
+      View the&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">creating and editing a file via SSH</a>&nbsp;article
+      for instructions on how to edit your existing .bash_profile. To use the
+      new version of Python over the system default, enter the following line
+      to your .bash_profile:
+      <div class="preboxcontainer">
+        <pre class="prebox">export PATH=$HOME/opt/python-3.8.1/bin:$PATH</pre>
+      </div>
+    </li>
+    <li>
+      Save and close the file, and then return to your shell. Run the following
+      command to update this file:
+      <div class="preboxcontainer">
+        <pre class="prebox"><span class="server">[server]$ </span><span class="command">. ~/.bash_profile</span></pre>
+      </div>
+    </li>
+    <li>
+      Check which version of Python you're now using by entering the following
+      command:
+      <div class="preboxcontainer">
+        <pre class="prebox"><span class="server">[server]$ </span><span class="command">which python3</span>
 <span class="cmdoutput">/home/username/opt/python-3.8.1/bin/python3</span></pre>
-</div>
-<p>You can also check the version:</p>
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">python3 --version</span>
+      </div>
+      <p>You can also check the version:</p>
+      <div class="preboxcontainer">
+        <pre class="prebox"><span class="server">[server]$ </span><span class="command">python3 --version</span>
 <span class="cmdoutput">Python 3.8.1</span></pre>
-</div>
-<div class="alert alert-note">
-<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
-<div class="alert-content">
-<p>If there is no response then the newly downloaded copy is not being used. Most often this is due to the .bash_profile not being updated correctly. Try logging out and back in again. If necessary, repeat the steps above.</p>
-</div>
-</div>
-</li>
-</ol>
+      </div>
+      <div class="alert alert-note">
+        <div class="alert-icon">
+          <img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60">
+        </div>
+        <div class="alert-content">
+          <p>
+            If there is no response then the newly downloaded copy is
+            not being used. Most often this is due to the .bash_profile
+            not being updated correctly. Try logging out and back in
+            again. If necessary, repeat the steps above.
+          </p>
+        </div>
+      </div>
+    </li>
+  </ol>
 </div>
 <h2>Troubleshooting</h2>
 <h3>pip3 error</h3>
 <div class="solvvy-solution">
-<p>It's possible you'll see the following error after installing version 3.8.1 when running pip.</p>
-<div class="preboxcontainer">
-<pre class="prebox">pip is configured with locations that require TLS/SSL, however the ssl module in Python is not available.</pre>
-</div>
-<p>This means that the local version of OpenSSL you installed was not configured correctly before you configured Python. View the following article for instructions on how to install OpenSSL locally.</p>
-<ul>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/360001435926-Installing-OpenSSL-locally-under-your-username">Installing OpenSSL locally under your username</a></li>
-</ul>
-<p>Then follow the directions above to reinstall Python3.&nbsp;If you're still seeing the error, <a href="https://help.dreamhost.com/hc/en-us/articles/218084068-Contacting-support-overview" target="_self">contact support</a>.</p>
+  <p>
+    It's possible you'll see the following error after installing version 3.8.1
+    when running pip.
+  </p>
+  <div class="preboxcontainer">
+    <pre class="prebox">pip is configured with locations that require TLS/SSL, however the ssl module in Python is not available.</pre>
+  </div>
+  <p>
+    This means that the local version of OpenSSL you installed was not configured
+    correctly before you configured Python. View the following article for instructions
+    on how to install OpenSSL locally.
+  </p>
+  <ul>
+    <li>
+      <a href="https://help.dreamhost.com/hc/en-us/articles/360001435926-Installing-OpenSSL-locally-under-your-username">Installing OpenSSL locally under your username</a>
+    </li>
+  </ul>
+  <p>
+    Then follow the directions above to reinstall Python3.&nbsp;If you're still
+    seeing the error,
+    <a href="https://help.dreamhost.com/hc/en-us/articles/218084068-Contacting-support-overview" target="_self">contact support</a>.
+  </p>
 </div>
 <div class="solvvy-solution">
-<h3>libssl error when installing Python 3</h3>
-<p>You may see the following error when configuring Python 3.</p>
-<p><strong>checking for X509_VERIFY_PARAM_set1_host in libssl... no</strong></p>
-<p>If you run <span class="code">make</span> you'll see the following errors:</p>
-<p><strong>libssl is too old and does not support X509_VERIFY_PARAM_set1_host()</strong></p>
-<p><strong>Could not build the ssl module! Python requires an OpenSSL 1.0.2 or 1.1 compatible libssl with X509_VERIFY_PARAM_set1_host().</strong></p>
-<p>Adding the following line when <a href="https://help.dreamhost.com/hc/en-us/articles/360001435926-Installing-OpenSSL-locally-under-your-username" target="_self">installing a custom version of OpenSSL</a> to your .bash_profile resolves this.</p>
-<div class="preboxcontainer">
-<pre class="prebox">export LDFLAGS="-L/home/<span class="code-highlight">username</span>/openssl/lib -Wl,-rpath,/home/<span class="code-highlight">username</span>/openssl/lib"</pre>
+  <h3>libssl error when installing Python 3</h3>
+  <p>You may see the following error when configuring Python 3.</p>
+  <p>
+    <strong>checking for X509_VERIFY_PARAM_set1_host in libssl... no</strong>
+  </p>
+  <p>
+    If you run <span class="code">make</span> you'll see the following errors:
+  </p>
+  <p>
+    <strong>libssl is too old and does not support X509_VERIFY_PARAM_set1_host()</strong>
+  </p>
+  <p>
+    <strong>Could not build the ssl module! Python requires an OpenSSL 1.0.2 or 1.1 compatible libssl with X509_VERIFY_PARAM_set1_host().</strong>
+  </p>
+  <p>
+    Adding the following line when
+    <a href="https://help.dreamhost.com/hc/en-us/articles/360001435926-Installing-OpenSSL-locally-under-your-username" target="_self">installing a custom version of OpenSSL</a>
+    to your .bash_profile resolves this.
+  </p>
+  <div class="preboxcontainer">
+    <pre class="prebox">export LDFLAGS="-L/home/<span class="code-highlight">username</span>/openssl/lib -Wl,-rpath,/home/<span class="code-highlight">username</span>/openssl/lib"</pre>
+  </div>
 </div>
-</div>
+-->
 <h2>If you're using Django</h2>
 <div class="solvvy-solution">
 <p>If you're using Django, make sure to view the following articles:</p>
