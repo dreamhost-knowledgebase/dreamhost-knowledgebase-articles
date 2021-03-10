@@ -1,144 +1,192 @@
 <h2>Overview</h2>
 <div class="solvvy-solution">
-<p>WordPress Command Line Interface (or, <a href="http://wp-cli.org/">wp-cli </a>) is installed on all servers at DreamHost. This feature allows you to run WordPress commands from your <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">Shell terminal</a>. For example you can import a database, create a new user, update themes and plugins all using wp-cli.</p>
-<p>This article is a quick overview of this service. View the following articles for information on how to create a Shell user and log into your server to run these commands.</p>
+<p>WordPress Command Line Interface (<a href="http://wp-cli.org/">wp-cli </a>) is a command-line WordPress tool installed on all DreamHost servers. <span class="text-product">wp-cli</span> allows you to run WordPress commands from your <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">Shell terminal</a> to manage your WordPress site without the need to log in to the WordPress dashboard.</p>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>You will need to log in to your server via SSH to use <span class="text-product">wp-cli</span>. View the following articles for information on how to create a Shell user and log into your server.</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access">Creating a user with Shell (SSH) access</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
 </ul>
+<p>After you're logged in to your server, make sure you’re in your <a href="https://help.dreamhost.com/hc/en-us/articles/360001219231#the-website-directory" target="_self">website’s directory</a>. This is where you'll run all commands in this article.</p>
 </div>
-<h2><span id="Listing_available_commands">Listing available commands</span></h2>
+</div>
+</div>
+<h2>Command examples in this article</h2>
 <div class="solvvy-solution">
-<p>Log in to your server via <a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a>. Once logged in, make sure you’re in your WordPress site’s directory. In that directory run the following command to print a list of available options:</p>
+<h3>General</h3>
+<ul>
+<li><a href="#commands" target="_self" rel="undefined">View all wp-cli commands</a></li>
+<li><a href="#help" target="_self" rel="undefined">Using help to view command information</a></li>
+<li><a href="#version">wp-cli version</a></li>
+</ul>
+<h3>Top commands</h3>
+<ul>
+<li><a href="#plugins">Plugins</a></li>
+<li><a href="#themes">Themes</a></li>
+<li><a href="#updating">Updating WordPress</a></li>
+<li><a href="#users">Users</a></li>
+</ul>
+<h3>Troubleshooting</h3>
+<ul>
+<li><a href="#cache">Cache</a></li>
+<li><a href="#database">Database</a></li>
+<li><a href="#permalinks">Permalinks</a></li>
+</ul>
+<h3>Custom changes</h3>
+<ul>
+<li><a href="#home-siteurl" target="_self" rel="undefined">Updating the home and siteurl</a></li>
+<li><a href="#wxr">Importing and exporting a WXR file</a></li>
+<li><a href="#search-and-replace">Search and Replace</a></li>
+<li><a href="#wpconfig">wp-config.php</a></li>
+<li><a href="#updating-php-version">Updating the PHP version wp-cli uses</a></li>
+</ul>
+</div>
+<p>&nbsp;</p>
+<h2 class="header-section">General</h2>
+<p>These are a few general commands to get you started.</p>
+<h2><span id="commands">View all wp-cli commands</span></h2>
+<div class="solvvy-solution">
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">wp</span></pre>
 </div>
-<p>The following available commands display:</p>
-<div class="preboxcontainer">
-<pre class="prebox">SUBCOMMANDS
-
-  action-scheduler      Commands for Action Scheduler.
-  cache                 Adds, removes, fetches, and flushes the WP Object Cache object.
-  cap                   Adds, removes, and lists capabilities of a user role.
-  cli                   Reviews current WP-CLI info, checks for updates, or views defined aliases.
-  comment               Creates, updates, deletes, and moderates comments.
-  config                Generates and reads the wp-config.php file.
-  core                  Downloads, installs, updates, and manages a WordPress installation.
-  cron                  Tests, runs, and deletes WP-Cron events; manages WP-Cron schedules.
-  db                    Performs basic database operations using credentials stored in wp-config.php.
-  dh-find-check         Combines finding and checking whether the installation is still hosted.
-  doctor                Diagnose what ails WordPress.
-  embed                 Inspects oEmbed providers, clears embed cache, and more.
-  eval                  Executes arbitrary PHP code.
-  eval-file             Loads and executes a PHP file.
-  export                Exports WordPress content to a WXR file.
-  find                  Find WordPress installations on the filesystem.
-  help                  Gets help on WP-CLI, or on a specific command.
-  host-check            Checks hosting status for WordPress installation.
-  import                Imports content from a given WXR file.
-  language              Installs, activates, and manages language packs.
-  media                 Imports files as attachments, regenerates thumbnails, or lists registered image sizes.
-  menu                  Lists, creates, assigns, and deletes the active theme's navigation menus.
-  network               Perform network-wide operations.
-  option                Retrieves and sets site options, including plugin and WordPress settings.
-  package               Lists, installs, and removes WP-CLI packages.
-  php-compat            Scan WordPress, plugins and themes for PHP version compatibility.
-  php-compat-cache      Scan a WordPress.org theme or plugin for compatibilty and cache results.
-  plugin                Manages plugins, including installs, activations, and updates.
-  post                  Manages posts, content, and meta.
-  post-type             Retrieves details on the site's registered post types.
-  profile
-  rewrite               Lists or flushes the site's rewrite rules, updates the permalink structure.
-  role                  Manages user roles, including creating new roles and resetting to defaults.
-  scaffold              Generates code for post types, taxonomies, plugins, child themes, etc.
-  search-replace        Searches/replaces strings in the database.
-  server                Launches PHP's built-in web server for a specific WordPress installation.
-  shell                 Opens an interactive PHP console for running and testing PHP code.
-  sidebar               Lists registered sidebars.
-  site                  Creates, deletes, empties, moderates, and lists one or more sites on a multisite installation.
-  super-admin           Lists, adds, or removes super admin users on a multisite installation.
-  taxonomy              Retrieves information about registered taxonomies.
-  term                  Manages taxonomy terms and term meta, with create, delete, and list commands.
-  theme                 Manages themes, including installs, activations, and updates.
-  transient             Adds, gets, and deletes entries in the WordPress Transient Cache.
-  user                  Manages users, along with their roles, capabilities, and meta.
-  widget                Manages widgets, including adding and moving them within sidebars.</pre>
+<p>A list of all available commands displays.</p>
 </div>
-</div>
-<h2><span id="Finding_more_information_on_a_command">Finding more information on a command</span></h2>
+<h2>Using --help to view command <span id="help">information </span></h2>
 <div class="solvvy-solution">
-<p>To get more information on a specific command, run the <span class="code">--help</span> option. For example:</p>
+<p>To get more information on a specific command, run the <span class="code">--help</span> option.</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">wp plugin --help</span></pre>
 </div>
 <p>This prints a list of available subcommands. For example:</p>
 <div class="preboxcontainer">
 <pre class="prebox">SUBCOMMANDS
-
-  activate              Activates one or more plugins.
-  deactivate            Deactivates one or more plugins.
-  delete                Deletes plugin files without deactivating or uninstalling.
-  get                   Gets details about an installed plugin.
-  install               Installs one or more plugins.
-  is-active             Checks if a given plugin is active.
-  is-installed          Checks if a given plugin is installed.
-  list                  Gets a list of plugins.
-  path                  Gets the path to a plugin or to the plugin directory.
-  search                Searches the WordPress.org plugin directory.
-  status                Reveals the status of one or all plugins.
-  toggle                Toggles a plugin's activation state.
-  uninstall             Uninstalls one or more plugins.
-  update                Updates one or more plugins.
-  verify-checksums      Verifies plugin files against WordPress.org's checksums.
-</pre>
+  
+    activate              Activates one or more plugins.
+    deactivate            Deactivates one or more plugins.
+    delete                Deletes plugin files without deactivating or uninstalling.
+    get                   Gets details about an installed plugin.
+    install               Installs one or more plugins.
+    is-active             Checks if a given plugin is active.
+    is-installed          Checks if a given plugin is installed.
+    list                  Gets a list of plugins.
+    path                  Gets the path to a plugin or to the plugin directory.
+    search                Searches the WordPress.org plugin directory.
+    status                Reveals the status of one or all plugins.
+    toggle                Toggles a plugin's activation state.
+    uninstall             Uninstalls one or more plugins.
+    update                Updates one or more plugins.
+    verify-checksums      Verifies plugin files against WordPress.org's checksums.  </pre>
 </div>
-<p>You can then combine these with the main command to perform an action. Here is how you’d install a plugin named hello-dolly:</p>
+<p>You can then add one of these subcommands to the main command to perform an action. Here is how you’d install a plugin named <span class="text-object">hello-dolly</span>:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">wp plugin install <span class="code-highlight">hello-dolly</span></span>
-Installing Hello Dolly (1.6)
-Downloading install package from https://downloads.wordpress.org/plugin/hello-dolly.1.6.zip...
-Unpacking the package...
-Installing the plugin...
-Plugin installed successfully.
-</pre>
-</div>
-<p>If you now run <span class="code">wp plugin list</span>, all of your plugins appear:</p>
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp plugin list</span>
-+--------------------------------+----------+-----------+---------+
-| name                           | status   | update    | version |
-+--------------------------------+----------+-----------+---------+
-| akismet                        | inactive | available | 4.1.6   |
-| dreamhost-panel-login          | active   | none      | 1.0.0   |
-| google-analytics-for-wordpress | inactive | available | 7.12.2  |
-| hello                          | inactive | none      | 1.7.2   |
-| jetpack                        | inactive | available | 8.9.1   |
-| wpforms-lite                   | active   | available | 1.6.2.3 |
-| wp-super-cache                 | active   | none      | 1.7.1   |
-| advanced-cache.php             | dropin   | none      |         |
-+--------------------------------+----------+-----------+---------+
-</pre>
+  Installing Hello Dolly (1.6)
+  Downloading install package from https://downloads.wordpress.org/plugin/hello-dolly.1.6.zip...
+  Unpacking the package...
+  Installing the plugin...
+  Plugin installed successfully.  </pre>
 </div>
 </div>
-<h2><span id="Common_commands">Common commands</span></h2>
-<p>These popular commands are used most often when debugging:</p>
-<h2>Plugins</h2>
+<h2><span id="version">wp cli version</span></h2>
 <div class="solvvy-solution">
-<dl>
-<dd>
-<h3>Installing a plugin</h3>
+<table style="border-collapse: collapse; width: 100%;" border="1">
+<tbody>
+<tr>
+<th style="width: 40%;">Action</th>
+<th style="width: 60%;">Command</th>
+</tr>
+<tr>
+<td>
+<p><span class="wysiwyg-font-size-large">View the <span class="text-product">wp-cli</span> version</span></p>
+</td>
+<td>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp cli version</span></pre>
+</div>
+</td>
+</tr>
+<tr>
+<td>
+<p><span class="wysiwyg-font-size-large">Check for updates</span></p>
+</td>
+<td>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp cli check-update</span></pre>
+</div>
+</td>
+</tr>
+<tr>
+<td>
+<p><span class="wysiwyg-font-size-large">Update <span class="text-product">wp-cli</span></span></p>
+</td>
+<td>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp cli update</span></pre>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>&nbsp;</p>
+<h2 class="header-section">Top commands</h2>
+<p>These commands are the most commonly used.</p>
+<h2><span id="plugins">Plugins</span></h2>
+<div class="solvvy-solution">
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p><strong>Obtaining the correct name of the plugin</strong></p>
+<p>The name you use when entering the <span class="code">PLUGIN_NAME</span> must be the name from the plugin site's web page. For example, if you wanted to install <span class="text-object">W3 Total Cache</span> you'd visit this page:</p>
+<ul>
+<li><a href="https://wordpress.org/plugins/w3-total-cache/" target="_blank" rel="noopener">https://wordpress.org/plugins/w3-total-cache/</a></li>
+</ul>
+<p>You can see it ends with <span class="code">w3-total-cache</span>. This is the plugin name you would enter in the commands below.</p>
+</div>
+</div>
+<table style="border-collapse: collapse; width: 100%;" border="1">
+<tbody>
+<tr>
+<th style="width: 40%;">Action</th>
+<th style="width: 60%;">Command</th>
+</tr>
+<tr>
+<td>
+<p><span class="wysiwyg-font-size-large">View installed plugins</span></p>
+</td>
+<td>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp plugin list</span></pre>
+</div>
+</td>
+</tr>
+<tr>
+<td>
+<p><span class="wysiwyg-font-size-large">Install a plugin</span></p>
+</td>
+<td>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">wp plugin install <span class="code-highlight">PLUGIN_NAME</span></span></pre>
 </div>
-<h3>Activating a plugin</h3>
+</td>
+</tr>
+<tr>
+<td>
+<p><span class="wysiwyg-font-size-large">Activate a plugin</span></p>
+</td>
+<td>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">wp plugin activate <span class="code-highlight">PLUGIN_NAME</span></span></pre>
 </div>
-</dd>
-</dl>
-<dl>
-<dd>
-<h3><span id="Deactivating_a_plugin">Deactivating a plugin</span></h3>
+</td>
+</tr>
+<tr>
+<td>
+<p><span class="wysiwyg-font-size-large">Deactivate a plugin</span></p>
+</td>
+<td>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">wp plugin deactivate <span class="code-highlight">PLUGIN_NAME</span></span></pre>
 </div>
@@ -146,146 +194,397 @@ Plugin installed successfully.
 <dd><em><strong>-or-</strong></em></dd>
 </dl>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp plugin toggle <span class="code-highlight">NAME</span></span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp plugin toggle <span class="code-highlight">PLUGIN_NAME</span></span></pre>
 </div>
-<h3><span id="Deactivating_installed_plugins_on_multisite_network">Deactivating installed plugins on multisite network</span></h3>
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp plugin toggle <span class="code-highlight">NAME</span> --network</span></pre>
+</td>
+</tr>
+</tbody>
+</table>
 </div>
-</dd>
-</dl>
-</div>
-<h2>Themes</h2>
+<h2><span id="themes">Themes</span></h2>
 <div class="solvvy-solution">
-<dl>
-<dd>
-<h3>Installing a theme</h3>
+<table style="border-collapse: collapse; width: 100%;" border="1">
+<tbody>
+<tr>
+<th style="width: 40%;">Action</th>
+<th style="width: 60%;">Command</th>
+</tr>
+<tr>
+<td>
+<p><span class="wysiwyg-font-size-large">View installed themes</span></p>
+</td>
+<td>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp theme list</span></pre>
+</div>
+</td>
+</tr>
+<tr>
+<td>
+<p><span class="wysiwyg-font-size-large">Install a theme</span></p>
+</td>
+<td>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">wp theme install <span class="code-highlight">THEME_NAME</span></span></pre>
 </div>
-</dd>
-</dl>
-<dl>
-<dd>
-<h3>Activating a different theme</h3>
+</td>
+</tr>
+<tr>
+<td>
+<p><span class="wysiwyg-font-size-large">Activate a different theme</span></p>
+</td>
+<td>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">wp theme activate <span class="code-highlight">THEME_NAME</span></span></pre>
 </div>
-</dd>
-</dl>
+</td>
+</tr>
+<tr>
+<td>
+<p><span class="wysiwyg-font-size-large">Update a theme</span></p>
+</td>
+<td>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp theme update <span class="code-highlight">THEME_NAME</span></span></pre>
 </div>
-<h2><span id="users">Users</span></h2>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2><span id="updating">Updating WordPress</span></h2>
 <div class="solvvy-solution">
-<dl>
-<dd>
-<h3>Creating users</h3>
-<p>View a list of all current users:</p>
+<table style="border-collapse: collapse; width: 100%;" border="1">
+<tbody>
+<tr>
+<th style="width: 40%;">Action</th>
+<th style="width: 60%;">Command</th>
+</tr>
+<tr>
+<td><span class="wysiwyg-font-size-large">View the current WordPress version</span></td>
+<td>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp user list</span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp core version</span></pre>
 </div>
-<p>Create a new username while assigning its email and role:</p>
+</td>
+</tr>
+<tr>
+<td><span class="wysiwyg-font-size-large">Check for WordPress version updates</span></td>
+<td>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp user create <span class="code-highlight">newusername support@dreamhost.com</span> --role=<span class="code-highlight">administrator</span></span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp core check-update</span></pre>
 </div>
-<h3><span id="Changing_a_password">Changing a password</span></h3>
-<p>List all users to view their user ID#:</p>
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp user list</span></pre>
-</div>
-<p>Use that user ID# to update their password:</p>
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp user update <span class="code-highlight">3</span> --user_pass=<span class="code-highlight">123456</span></span></pre>
-</div>
-<h3>Deleting a user</h3>
-<p>View a list of all current users:</p>
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp user list</span></pre>
-</div>
-<p>Delete the user based on its name:</p>
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp user delete <span class="code-highlight">username</span></span>
---reassign parameter not passed. All associated posts will be deleted. Proceed? [y/n] <span class="command">y</span></pre>
-</div>
-</dd>
-</dl>
-</div>
-<h2><span id="Flushing_your_cache">Flushing your cache</span></h2>
-<div class="solvvy-solution">
-<dl>
-<dd>
-<p>Run this to flush your cache:</p>
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp cache flush</span></pre>
-</div>
-<dl>
-<dd></dd>
-</dl>
-</dd>
-</dl>
-</div>
-<h2>Updating</h2>
-<div class="solvvy-solution">
-<dl>
-<dd>
-<h3><span id="Re-updating_core_files">Re-updating core files</span></h3>
+</td>
+</tr>
+<tr>
+<td><span class="wysiwyg-font-size-large">Update WordPress to a newer version</span></td>
+<td>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">wp core update</span></pre>
 </div>
-<h3><span id="Forcing_the_DB_upgrade_to_run">Forcing the DB upgrade to run</span></h3>
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp core update-db</span></pre>
-</div>
-<h3>Forcefully downloading all core files</h3>
+</td>
+</tr>
+<tr>
+<td>
+<p><span class="wysiwyg-font-size-large">Force download all core files.</span>This forces the core WordPress files to be re-downloaded into your current directory and overwrite any core files that already exist.</p>
+</td>
+<td>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">wp core download --force</span></pre>
 </div>
-<h3>Updating the 'home' url</h3>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2><span id="users">Users</span></h2>
+<div class="solvvy-solution">
+<h3>Creating users</h3>
+<table style="border-collapse: collapse; width: 100%;" border="1">
+<tbody>
+<tr>
+<th style="width: 40%;">Action</th>
+<th style="width: 60%;">Command</th>
+</tr>
+<tr>
+<td><span class="wysiwyg-font-size-large">View a list of all current users</span></td>
+<td>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp option update home <span class="code-highlight">https://www.example.com</span></span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp user list</span></pre>
 </div>
-<h3>Updating the 'siteurl' url</h3>
+</td>
+</tr>
+<tr>
+<td>
+<p><span class="wysiwyg-font-size-large">Create a new username while assigning its email and <a href="https://wordpress.org/support/article/roles-and-capabilities/" target="_blank" rel="noopener">role</a>.</span>&nbsp;A new password is printed to the terminal after the user is created.</p>
+</td>
+<td>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp option update siteurl <span class="code-highlight">https://www.example.com</span></span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp user create <span class="code-highlight">newusername admin@example.com</span> --role=<span class="code-highlight">administrator</span></span></pre>
 </div>
-</dd>
-</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<h3><span id="Changing_a_password">Changing a password</span></h3>
+<table style="border-collapse: collapse; width: 100%;" border="1">
+<tbody>
+<tr>
+<th style="width: 40%;">Action</th>
+<th style="width: 60%;">Command</th>
+</tr>
+<tr>
+<td>Run <span class="code">wp user list</span> to obtain a user's ID#. Use that user ID# to update their password. This example is changing a user with an ID# of <span class="code">3</span>. You would then need to inform the user of their password change.</td>
+<td>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp user update <span class="code-highlight">3</span> --user_pass=<span class="code-highlight">NEW_PASSWORD</span></span></pre>
 </div>
-<h2>Updating the PHP version wp-cli uses</h2>
-<div class="solvvy-hidden">
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Deleting a user</h3>
+<table style="border-collapse: collapse; width: 100%;" border="1">
+<tbody>
+<tr>
+<th style="width: 40%;">Action</th>
+<th style="width: 60%;">Command</th>
+</tr>
+<tr>
+<td>Run <span class="code">wp user list</span> to obtain a the ID# of the user you wish to delete and the user you wish to reassign its posts. You'll need to to reassign any posts to another user so they are not permanently deleted. This example deletes a user with an ID# of <span class="code">13</span> and reassigns their posts to user <span class="code">7</span>.</td>
+<td>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp user delete <span class="code-highlight">13</span> --reassign=<span class="code-highlight">7</span></span></pre>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>&nbsp;</p>
+<h2 class="header-section">Troubleshooting</h2>
+<h2><span id="cache">Cache</span></h2>
+<div class="solvvy-solution">
+<table style="border-collapse: collapse; width: 100%;" border="1">
+<tbody>
+<tr>
+<th style="width: 40%;">Action</th>
+<th style="width: 60%;">Command</th>
+</tr>
+<tr>
+<td style="width: 40%;"><span class="wysiwyg-font-size-large">Flush your site's cache</span></td>
+<td style="width: 60%;">
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp cache flush</span></pre>
+</div>
+</td>
+</tr>
+<tr>
+<td style="width: 40%;"><span class="wysiwyg-font-size-large">Clear the <span class="text-product">wp-cli</span> cache</span></td>
+<td style="width: 60%;">
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp cli cache clear</span></pre>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2><span id="database">Database</span></h2>
+<div class="solvvy-solution">
+<table style="border-collapse: collapse; width: 100%;" border="1">
+<tbody>
+<tr>
+<th style="width: 40%;">Action</th>
+<th style="width: 60%;">Command</th>
+</tr>
+<tr>
+<td><span class="wysiwyg-font-size-large">Check the status of the database</span></td>
+<td>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp db check</span></pre>
+</div>
+</td>
+</tr>
+<tr>
+<td><span class="wysiwyg-font-size-large">Optimize the database</span></td>
+<td>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp db optimize</span></pre>
+</div>
+</td>
+</tr>
+<tr>
+<td><span class="wysiwyg-font-size-large">Repair the database</span></td>
+<td>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp db repair</span></pre>
+</div>
+</td>
+</tr>
+<tr>
+<td><span class="wysiwyg-font-size-large">Search for text in the database.</span><br />This searches for the word <span class="text-object">hello</span></td>
+<td>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp db search <span class="code-highlight">hello</span></span></pre>
+</div>
+</td>
+</tr>
+<tr>
+<td><span class="wysiwyg-font-size-large">Upgrade the database version</span></td>
+<td>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp core update-db</span></pre>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2><span id="permalinks">Permalinks</span></h2>
+<div class="solvvy-solution">
+<table style="border-collapse: collapse; width: 100%;" border="1">
+<tbody>
+<tr>
+<th style="width: 40%;">Action</th>
+<th style="width: 60%;">Command</th>
+</tr>
+<tr>
+<td><span class="wysiwyg-font-size-large">Flush permalinks. </span>This is the same as re-saving them in the dashboard.</td>
+<td>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command"> wp rewrite flush</span></pre>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>&nbsp;</p>
+<h2 class="header-section">Custom changes</h2>
+<h2><span id="home-siteurl">Updating the home and siteurl</span></h2>
+<div class="solvvy-solution">
+<table style="border-collapse: collapse; width: 100%;" border="1">
+<tbody>
+<tr>
+<th style="width: 40%;">Action</th>
+<th style="width: 60%;">Command</th>
+</tr>
+<tr>
+<td><span class="wysiwyg-font-size-large">View the home and siteurl</span></td>
+<td>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command"> wp option list | grep -E "^(siteurl|home)"</span></pre>
+</div>
+</td>
+</tr>
+<tr>
+<td><span class="wysiwyg-font-size-large">Update the <span class="text-object">home</span> url</span></td>
+<td>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp option update home <span class="code-highlight">https://example.com</span></span></pre>
+</div>
+</td>
+</tr>
+<tr>
+<td><span class="wysiwyg-font-size-large">Update the <span class="text-object">siteurl</span></span></td>
+<td>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp option update siteurl <span class="code-highlight">https://example.com</span></span></pre>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2><span id="wxr">Importing and exporting a WXR file</span></h2>
+<div class="solvvy-solution">
+<p>You can use the <span class="code">import</span> and <span class="code">export</span> commands to manage your site data with a <span class="text-object">WXR</span> file. View the following article for details.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360050852091-Importing-and-exporting-a-WXR-file-in-WordPress" target="_self">Importing and exporting a WXR file</a></li>
+</ul>
+</div>
+<h2><span id="search-and-replace">Search and Replace</span></h2>
+<div class="solvvy-solution">
+<p>Search and replace text in your database. Make sure to use the <span class="code">--dry-run</span> flag the first time to see what will change.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp search-replace <span class="code-highlight">http://example.com https://example.com/blog</span> --dry-run</span></pre>
+</div>
+<p>A list of fields that will be updated displays in your terminal. If you'd like to update all output displayed, run the command again without the <span class="code">--dry-run</span> flag.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp search-replace <span class="code-highlight">http://example.com https://example.com/blog</span></span></pre>
+</div>
+</div>
+<h2><span id="wpconfig">wp-config.php</span></h2>
+<div class="solvvy-solution">
+<table style="border-collapse: collapse; width: 100%;" border="1">
+<tbody>
+<tr>
+<th style="width: 40%;">Action</th>
+<th style="width: 60%;">Command</th>
+</tr>
+<tr>
+<td><span class="wysiwyg-font-size-large">View all settings in your <span class="text-object">wp-config.php</span> file</span></td>
+<td>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp config list</span></pre>
+</div>
+</td>
+</tr>
+<tr>
+<td><span class="wysiwyg-font-size-large">Update a setting in your <span class="text-object">wp-config.php</span> file.</span><br />This updates the <span class="code">DB_HOST</span> value.</td>
+<td>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp config set <span class="code-highlight">DB_HOST mysql.example.com</span></span></pre>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2><span id="updating-php-version">Updating the PHP version wp-cli uses</span></h2>
+<div class="solvvy-solution">
 <ol>
-<li>To change the version of PHP wp-cli uses, <a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH" target="_self">add the following line</a> to your .bash_profile. Change the version as needed.
+<li>View the current version of PHP and its location by running the following command:
 <div class="preboxcontainer">
-<pre class="prebox">export WP_CLI_PHP=/usr/local/php72/bin/php wp</pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp cli info</span>
+OS:     Linux 4.14.117-grsec-grsec+ #1 SMP Fri May 10 17:15:47 PDT 2019 x86_64
+Shell:  /bin/bash
+PHP binary:     /usr/bin/php
+PHP version:    7.2.34
+php.ini used:   /etc/php72/php.ini
+WP-CLI root dir:        /usr/local/wp
+WP-CLI vendor dir:      /usr/local/wp/vendor
+WP_CLI phar path:
+WP-CLI packages dir:
+WP-CLI global config:   /usr/local/wp/config.yml
+WP-CLI project config:
+WP-CLI version: 2.4.0</pre>
 </div>
 </li>
-<li>Next, <span class="code">source</span> the <span class="text-object">.bash_profile</span> by running this:
+<li>To change the version of PHP <span class="text-product">wp-cli</span> uses, <a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH" target="_self">add the following line</a> to your <span class="text-object">.bash_profile</span>. Change the version as needed. This example uses PHP 7.4.
+<div class="preboxcontainer">
+<pre class="prebox">export WP_CLI_PHP=/usr/local/php74/bin/php wp</pre>
+</div>
+</li>
+<li>Update the <span class="text-object">.bash_profile</span>:
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">. ~/.bash_profile</span></pre>
 </div>
 </li>
-<li>Finally, check to confirm wp-cli is using this new version by running <span class="code">wp --info</span>.
+<li>Finally, check to confirm <span class="text-product">wp-cli</span> is using this new version.
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp --info</span>
-
-OS:     Linux 4.14.117-grsec-grsec+ #1 SMP Fri May 10 17:15:47 PDT 2019 x86_64
-Shell:  /bin/bash
-PHP binary:     /usr/local/php72/bin/php
-PHP version:    7.2.13</pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp cli info</span>
+OS: Linux 4.14.117-grsec-grsec+ #1 SMP Fri May 10 17:15:47 PDT 2019 x86_64<br />Shell: /bin/bash<br />PHP binary: /usr/local/php74/bin/php<br />PHP version: 7.4.15<br />php.ini used: /etc/php74/php.ini<br />WP-CLI root dir: /usr/local/wp<br />WP-CLI vendor dir: /usr/local/wp/vendor<br />WP_CLI phar path:<br />WP-CLI packages dir:<br />WP-CLI global config: /usr/local/wp/config.yml<br />WP-CLI project config:<br />WP-CLI version: 2.4.0</pre>
 </div>
 </li>
 </ol>
-</div>
-<h2>Importing and exporting a WXR file</h2>
-<div class="solvvy-solution">
-<p>You can also use the <span class="code">import</span> and <span class="code">export</span> commands to manage your site data with a WXR file. View the following article for details.</p>
-<ul>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/360050852091-Importing-and-exporting-a-WXR-file-in-WordPress" target="_self">Importing and exporting a WXR file</a></li>
-</ul>
 </div>
 <h2><span id="See_also">See also</span></h2>
 <div class="solvvy-hidden">
 <ul>
 <li><a href="https://wp-cli.org/" target="_self" rel="undefined">wp-cli.org</a> – Official WP CLI website</li>
+<li><a href="https://developer.wordpress.org/cli/commands/" target="_self">wp-cli commands</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/360001310966-How-to-log-into-your-WordPress-site">How to log into your WordPress site</a></li>
 <li><a href="/hc/en-us/articles/215525287-WordPress-overview">WordPress overview</a></li>
 </ul>
