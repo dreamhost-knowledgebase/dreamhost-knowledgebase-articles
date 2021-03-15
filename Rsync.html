@@ -16,7 +16,7 @@
 <div class="solvvy-solution">
 <p>In the simplest case, without any filters, here's what an rsync "push out to webhost" command looks like:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">rsync -e "/usr/bin/ssh"  --bwlimit=2000 -av <span class="code-highlight">username@server.dreamhost.com:remote_directory local_directory</span></span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">rsync -e "/usr/bin/ssh"  --bwlimit=2000 -av <span class="code-highlight">local_directory </span><span class="code-highlight">username@server.dreamhost.com:remote_directory</span></span></pre>
 </div>
 <p><strong>Explanation of fields</strong></p>
 <ul>
@@ -24,6 +24,7 @@
 <li><strong>-e</strong> - Specifies the remote shell program to use. This can always remain as /usr/bin/ssh.</li>
 <li><strong>bwlimit</strong> - (Optional) Allows you to specify a maximum transfer rate in kb/sec.</li>
 <li><strong>-av</strong> - Archive and Verbose mode.</li>
+<li><strong>local_directory</strong> - This is the local directory on your computer where you store the data to be uploaded. For example: <span class="text-object">/home/username/documents/mybackups</span></li>
 <li><strong>username</strong> - This is your DreamHost <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access">shell username</a> assigned to your site.</li>
 <li><strong>server</strong> - This is the name of the server you're uploading content to. View the <a href="https://help.dreamhost.com/hc/en-us/articles/115000675027-FTP-overview-and-credentials">Finding your hostname</a> article for instructions on how to locate this name.</li>
 <li><strong>remote_directory</strong> - This is the directory on the server that you wish to upload content to. For example, if you wanted to download all the contents of your <span class="text-object">/example.com</span> directory, add the full file path on the server: <span class="text-object">/home/username/example.com/</span>.
@@ -35,14 +36,13 @@
 </div>
 </div>
 </li>
-<li><strong>local_directory</strong> - This is the local directory on your computer where you store the data to be uploaded. For example: <span class="text-object">/home/username/documents/mybackups</span></li>
 </ul>
 <div class="alert alert-note">
 <div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
 <p>To avoid any errors, it is recommended to use the full path for both local and remote directories. Here is a full example (excluding the <span class="code">--bwlimit</span> flag.:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">rsync -e "/usr/bin/ssh" -av <span class="code-highlight">username@server.dreamhost.com:/home/username/example.com /home/username/documents/mybackups</span></span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">rsync -e "/usr/bin/ssh" -av <span class="code-highlight">/home/username/documents/mybackups username@server.dreamhost.com:/home/username/example.com </span></span></pre>
 </div>
 </div>
 </div>
@@ -57,9 +57,9 @@
 </div>
 <h2><span id="Filter_example">Filter example</span></h2>
 <div class="solvvy-solution">
-<p>The easiest way to add a filter is to add them into the command line <span class="code">rsync</span>. RoR example, you could do the following to filter out .pyc files and /.git directories:</p>
+<p>The easiest way to add a filter is to add them into the command line <span class="code">rsync</span>. You could do the following to filter out .pyc files and /.git directories:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">rsync <strong>--filter '- *.pyc' --filter '- /.git' </strong> -e "/usr/bin/ssh" --bwlimit=2000 -av local_directory <span class="code-highlight">username@server.dreamhost.com:remote_directory</span></span>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">rsync <strong>--filter '- *.pyc' --filter '- /.git' </strong> -e "/usr/bin/ssh" --bwlimit=2000 -av <span class="code-highlight">local_directory username@server.dreamhost.com:remote_directory</span></span>
 </pre>
 </div>
 <p>View the following page for further details:</p>
