@@ -1,0 +1,99 @@
+<h2>Overview</h2>
+<div class="solvvy-solution">
+<div class="alert-warning">
+<p>The instructions in this article explain how to view all of your DreamObjects data within a web page. In order for the data to display, it must be publicly accessible.&nbsp;</p>
+<p><strong>Only follow the steps below if you are sure you want all of the data in a specific DreamObjects bucket to be accessible by anyone.</strong></p>
+<p>If you want only certain objects hidden, set them as PRIVATE.&nbsp;</p>
+<p>Please note that the PRIVATE object names will still be viewable in a browser, however, clicking on the object will display an <span class="code">AccessDenied</span> error.</p>
+</div>
+<p>Data uploaded to DreamObjects can only be viewed using an S3 compatible client or in the DreamHost panel.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/sections/115000059232-DreamObjects-clients" target="_self">DreamObjects clients</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215986337-What-are-Objects-in-DreamObjects-" target="_self">What are objects in DreamObjects?</a></li>
+</ul>
+<p>Both of these options use a 3rd party interface to view your data.</p>
+<p>You also have the option to view your data in a web page using the script below. This allows you to view a directory structured list of your data which you can click through to view.</p>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>The code example in this article was taken from a 3rd party script. &nbsp;View the following link for a full explanation of all fields and additional variables you can use.</p>
+<ul>
+<li><a href="https://github.com/rufuspollock/s3-bucket-listing#website-buckets">https://github.com/rufuspollock/s3-bucket-listing#website-buckets</a></li>
+</ul>
+</div>
+</div>
+</div>
+<h2>Two ways to use this script</h2>
+<div class="solvvy-solution">
+<p>You can use this script in one of two ways.</p>
+<ul>
+<li>Add the file to your DreamObjects bucket</li>
+<li>Add the file to your website</li>
+</ul>
+<p>The script functions the same either way. The only difference is that if you want to add the navigation script to your website, you must also enable CORS on your DreamObjects bucket as shown below.</p>
+<h2>Step 1 <span id="step1">—&nbsp;</span>Update your bucket and objects to PUBLIC permissions</h2>
+<p>In order for the script below to function, your bucket and all contents within it must be set to PUBLIC permissions.&nbsp;</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115000677011-DreamObjects-permissions" target="_self">DreamObjects permissions</a></li>
+</ul>
+<p>You can then use a tool like aws-cli to update all permissions on all objects by running a single command.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360022618112-Setting-permissions-using-AWS-CLI" target="_self">Setting permissions using AWS CLI</a></li>
+</ul>
+<h2>Step 2 <span id="step1">—&nbsp;</span>Create the script</h2>
+<ol>
+<li>Visit the following link to download the script to your computer.
+<ul>
+<li><a href="https://kbimages.dreamhosters.com/files/dholist.html">https://kbimages.dreamhosters.com/files/dholist.html</a></li>
+</ul>
+</li>
+<li>Open the file in a text editor of your choice.</li>
+<li>At the top of the script you will see the following code. You only need to change the text <span class="code">my-bucket</span> to the name of the bucket you wish to display.
+<div class="preboxcontainer">
+<pre class="prebox">&lt;script type="text/javascript"&gt;
+  var S3BL_IGNORE_PATH = true;
+  var BUCKET_URL = 'https://objects-us-east-1.dream.io/<span class="code-highlight">my-bucket</span>';
+  var S3B_ROOT_DIR = '';
+  var S3B_SORT = 'A2Z';
+&lt;/script&gt;</pre>
+</div>
+</li>
+<li>Save the file.</li>
+</ol>
+<h2>Step 3 <span id="step1">—&nbsp;</span>Upload the script</h2>
+<p>Choose one of the following locations to upload the script. You will then visit this URL to view the listing of your DreamObjects data.</p>
+<h3>Uploading the script to your DreamObjects bucket</h3>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Use this example if you want the directory listing to show when you visit a link in your DreamObjects bucket.</p>
+</div>
+</div>
+<ol>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215261938-How-to-upload-files-into-DreamObjects" target="_self">Upload the script</a> to the top level of your DreamObjects bucket.</li>
+<li>Make sure the file has PUBLIC permissions.</li>
+<li>Visit the file link. For example, if your bucket was named <span class="code">my-bucket</span> and the file you uploaded was <span class="text-object">dholist.html</span>, you would visit the following link.
+<ul>
+<li><strong>https://objects-us-east-1.dream.io/my-bucket/dholist.html</strong></li>
+</ul>
+</li>
+</ol>
+<p>A directory listing of your objects displays.</p>
+<h3>Uploading the script to your website</h3>
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Use this example if you want the directory listing to show when you visit a link in your website.</p>
+</div>
+</div>
+<p>There are a few extra steps required to run the file on your website. This is because the data is being pulled from DreamObjects, but your website does not have permission to display it. In order to give your website permission, you must enable CORS on your DreamObjects bucket.</p>
+<p>View the following file for instructions on how to enable CORS on your bucket.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216201557-Configuring-CORS-on-a-DreamObjects-bucket">Configuring (CORS) on a DreamObjects bucket</a></li>
+</ul>
+<p>The aws-cli version is recommended due to its simplicity.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216201557-#aws-cli" target="_self">Configuring CORS on a DreamObjects bucket using aws-cli</a></li>
+</ul>
+<p>You can then visit the file on your website (<strong>http://example.com/dholist.html</strong>) to view a directory listing of your DreamObjects data.</p>
+</div>

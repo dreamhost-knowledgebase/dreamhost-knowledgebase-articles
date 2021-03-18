@@ -1,0 +1,285 @@
+<h2>Overview</h2>
+<div class="solvvy-solution">
+<p>This article explains how to set up a Cross-Origin Resource Sharing (CORS) policy on a DreamObjects bucket. This allows you to use data stored in DreamObjects in your website.&nbsp;</p>
+<p><a href="https://en.wikipedia.org/wiki/Cross-origin_resource_sharing">Cross Origin Resource Sharing</a> (CORS) allows restricted resources from one source (a website or DreamObjects) to be requested from another domain outside the domain from which it was originally served.</p>
+<p>This example explains how this works:</p>
+<ul>
+<li>Site A adds CORS headers to allow site B access to a resource on site A, such as a font.</li>
+<li>Site B can then access that resource due to the CORS header.</li>
+</ul>
+<p>Without the CORS header, Site B would not be able to access the resource on Site A.</p>
+</div>
+<h2>DreamObjects CORS usage</h2>
+<div class="solvvy-solution">
+<p>DreamObjects buckets do not have a CORS policy by default. You must add one in order to use your DreamObjects data on your website.</p>
+<p>A CORS configuration on DreamObjects:</p>
+<ul class="simple">
+<li>includes what site a request is for as well as what type of request,</li>
+<li>is handled individually for each bucket, and</li>
+<li>uses the Amazon S3 syntax for CORS configuration.</li>
+</ul>
+</div>
+<h2>Rules for CORS policies</h2>
+<div class="solvvy-solution">
+<p>The following are the general rules for making a CORS configuration:</p>
+<ul class="simple">
+<li>A valid CORS configuration consists of 0 to 100 CORS rules.</li>
+<li>Each rule must include at least one origin.</li>
+<li>An origin may contain at most one wildcard <strong>*</strong></li>
+<li>Each rule must include at least one method.</li>
+<li>The supported methods are: GET, HEAD, PUT, POST, DELETE.</li>
+<li>Each rule may contain an identifying string of up to 255 characters.</li>
+<li>Each rule may specify zero or more allowed request headers (which the client may include in the request).</li>
+<li>Each rule may specify zero or more exposed response headers (which are sent back from the server to the client).</li>
+<li>Each rule may specify a cache validity time of zero or more seconds. If not included, the client should supply their own default.</li>
+</ul>
+</div>
+<h2>Deploying a CORS configuration</h2>
+<div class="solvvy-solution">
+<p>A CORS policy can be deployed using a client or a command-line tool. The code can either be in XML or JSON format.</p>
+<ul>
+<li>If you use a client, the CORS policy is added within the client software</li>
+<li>If you use a command-line tool, you must create a file with the CORS rules yourself. The command then uses this file to update the DreamObjects bucket's CORS policy.</li>
+</ul>
+<dl>
+<dd>
+<h3>Clients</h3>
+<p>Not all S3 clients support deploying CORS configurations. You would need to check the client's website to confirm if they support CORS. The following client is one example that supports CORS.</p>
+<ul>
+<li><a class="reference external" href="http://s3browser.com/s3-bucket-cors-configuration.php">S3 Browser: Bucket CORS Configuration</a></li>
+</ul>
+<h3>Command-line tools</h3>
+<p>You can also use command-line tools like <a href="#s3cmd" target="_self">s3cmd</a> and <a href="#aws-cli" target="_self">aws-cli</a> to update your CORS policy as shown below.</p>
+</dd>
+</dl>
+</div>
+<h2>Examples of CORS policies</h2>
+<div class="solvvy-solution">
+<h3>WebFont policy in (XML format)</h3>
+<p>If you need to host a WebFont on DreamObjects, you’ll want to include a policy such as the following example (assuming your site is <strong>www.example.com</strong> and also works at <strong>example.com</strong>):</p>
+<div class="preboxcontainer">
+<pre class="prebox">&lt;CORSConfiguration&gt;
+&lt;CORSRule&gt;
+    &lt;ID&gt;Allow WebFont for example.com&lt;/ID&gt;
+    &lt;AllowedOrigin&gt;<span class="code-highlight">https://www.example.com</span>&lt;/AllowedOrigin&gt;
+    &lt;AllowedOrigin&gt;<span class="code-highlight">http://www.example.com</span>&lt;/AllowedOrigin&gt;
+    &lt;AllowedOrigin&gt;<span class="code-highlight">https://example.com</span>&lt;/AllowedOrigin&gt;
+    &lt;AllowedOrigin&gt;<span class="code-highlight">http://example.com</span>&lt;/AllowedOrigin&gt;
+    &lt;AllowedMethod&gt;GET&lt;/AllowedMethod&gt;
+    &lt;AllowedMethod&gt;HEAD&lt;/AllowedMethod&gt;
+    &lt;AllowedHeader&gt;Content-*&lt;/AllowedHeader&gt;
+    &lt;AllowedHeader&gt;Host&lt;/AllowedHeader&gt;
+    &lt;ExposeHeader&gt;ETag&lt;/ExposeHeader&gt;
+    &lt;MaxAgeSeconds&gt;86400&lt;/MaxAgeSeconds&gt;
+&lt;/CORSRule&gt;
+&lt;/CORSConfiguration&gt;
+</pre>
+</div>
+<h3>Example AWS S3 JS policy (in XML format)</h3>
+<p>The following policy permits users of the AWS S3 JavaScript SDK, on both <strong>example.com</strong> and <strong>www.example.com</strong>, on both <span class="text-object">HTTP</span> and <span class="text-object">HTTPS</span>, to upload to DreamObjects, with both the PUT and POST methods:</p>
+<div class="preboxcontainer">
+<pre class="prebox">&lt;CORSConfiguration&gt;
+&lt;CORSRule&gt;
+    &lt;ID&gt;example.com: Allow PUT &amp; POST with AWS S3 JS SDK&lt;/ID&gt;
+    &lt;AllowedOrigin&gt;<span class="code-highlight">https://www.example.com</span>&lt;/AllowedOrigin&gt;
+    &lt;AllowedOrigin&gt;<span class="code-highlight">http://www.example.com</span>&lt;/AllowedOrigin&gt;
+    &lt;AllowedOrigin&gt;<span class="code-highlight">https://example.com</span>&lt;/AllowedOrigin&gt;
+    &lt;AllowedOrigin&gt;<span class="code-highlight">http://example.com</span>&lt;/AllowedOrigin&gt;
+    &lt;AllowedMethod&gt;PUT&lt;/AllowedMethod&gt;
+    &lt;AllowedMethod&gt;POST&lt;/AllowedMethod&gt;
+    &lt;AllowedHeader&gt;Origin&lt;/AllowedHeader&gt;
+    &lt;AllowedHeader&gt;Content-Length&lt;/AllowedHeader&gt;
+    &lt;AllowedHeader&gt;Content-Type&lt;/AllowedHeader&gt;
+    &lt;AllowedHeader&gt;Content-MD5&lt;/AllowedHeader&gt;
+    &lt;AllowedHeader&gt;X-Amz-User-Agent&lt;/AllowedHeader&gt;
+    &lt;AllowedHeader&gt;X-Amz-Date&lt;/AllowedHeader&gt;
+    &lt;AllowedHeader&gt;Authorization&lt;/AllowedHeader&gt;
+    &lt;ExposeHeader&gt;ETag&lt;/ExposeHeader&gt;
+    &lt;MaxAgeSeconds&gt;1800&lt;/MaxAgeSeconds&gt;
+&lt;/CORSRule&gt;
+&lt;CORSRule&gt;
+    &lt;ID&gt;example.com: Allow GET with AWS S3 JS SDK&lt;/ID&gt;
+    &lt;AllowedOrigin&gt;*&lt;/AllowedOrigin&gt;
+    &lt;AllowedMethod&gt;GET&lt;/AllowedMethod&gt;
+    &lt;AllowedMethod&gt;HEAD&lt;/AllowedMethod&gt;
+    &lt;AllowedHeader&gt;*&lt;/AllowedHeader&gt;
+    &lt;ExposeHeader&gt;ETag&lt;/ExposeHeader&gt;
+    &lt;MaxAgeSeconds&gt;1800&lt;/MaxAgeSeconds&gt;
+&lt;/CORSRule&gt;
+&lt;/CORSConfiguration&gt;
+</pre>
+</div>
+<h3>Example Wildcard policy (<em>INSECURE!</em>)</h3>
+<p>The following policy, while completely insecure, allows ALL methods from any origin. It does NOT however expose custom headers:</p>
+<div class="preboxcontainer">
+<pre class="prebox">&lt;CORSConfiguration&gt;
+&lt;CORSRule&gt;
+    &lt;ID&gt;Allow
+    everything&lt;/ID&gt;
+    &lt;AllowedOrigin&gt;*&lt;/AllowedOrigin&gt;
+    &lt;AllowedMethod&gt;GET&lt;/AllowedMethod&gt;
+    &lt;AllowedMethod&gt;HEAD&lt;/AllowedMethod&gt;
+    &lt;AllowedMethod&gt;PUT&lt;/AllowedMethod&gt;
+    &lt;AllowedMethod&gt;POST&lt;/AllowedMethod&gt;
+    &lt;AllowedMethod&gt;DELETE&lt;/AllowedMethod&gt;
+    &lt;AllowedHeader&gt;*&lt;/AllowedHeader&gt;
+    &lt;MaxAgeSeconds&gt;30&lt;/MaxAgeSeconds&gt;
+&lt;/CORSRule&gt;
+&lt;/CORSConfiguration&gt;
+</pre>
+</div>
+</div>
+<h2><span id="s3cmd">s3cmd — deploying a CORS policy</span></h2>
+<div class="solvvy-solution">
+<p><a href="https://help.dreamhost.com/hc/en-us/articles/215916627-Installing-S3cmd">S3cmd</a> a command-line tool you can use to manage your DreamObjects data. It is not installed by default on DreamHost servers, so you must install this manually.</p>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60"></div>
+<div class="alert-content">
+<p>Make sure you have a working <a class="reference external" href="https://help.dreamhost.com/hc/en-us/articles/215916627-Installing-S3cmd">installation of S3cmd</a> before proceeding.</p>
+<p>The example below creates a&nbsp;<span class="text-object">corsrules.xml</span>&nbsp;file in your user's home directory, but you can add it anywhere you like. You would just need to update the path to the file in the command if you change this location.</p>
+<p>Make sure to change <span class="code">my-bucket</span> to the name of your DreamObjects bucket.</p>
+<p>This example uses an XML file containing your CORS policy.</p>
+<p>You can run these commands on a Mac or Linux computer, or your DreamHost server after logging in via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview" target="_self">SSH</a>. These examples run the command on the server.</p>
+</div>
+</div>
+<ol>
+<li>Log in to your DreamHost server via&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview" target="_self">SSH</a>.</li>
+<li>Make sure you're in your <a href="https://help.dreamhost.com/hc/en-us/articles/360001219231#the-users-home-directory" target="_self">user's home directory</a>.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~</span></pre>
+</div>
+</li>
+<li>Run the following to view your bucket's current CORS policy.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd info s3://<span class="code-highlight">my-bucket</span></span>
+   Location:  us-east-1
+   Payer:     BucketOwner
+   Expiration Rule: none
+   Policy:    none
+   <span class="code-highlight">CORS:      none</span>
+   ACL:       *anon*: READ
+   ACL:       my_user: FULL_CONTROL
+   URL:       http://<span class="code-highlight">my-bucket</span>.objects-us-east-1.dream.io/</pre>
+</div>
+This output shows that no CORS policy has been added yet.</li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH" target="_self" rel="undefined">Create an XML file</a> named <span class="text-object">corsrules.xml</span>&nbsp;with the following content. Make sure to change the <span class="code">AllowedOrigin</span> value to your website name.
+<div class="preboxcontainer">
+<pre class="prebox">&lt;CORSConfiguration&gt;
+&lt;CORSRule&gt;
+    &lt;ID&gt;Alloweverything&lt;/ID&gt;
+    &lt;AllowedOrigin&gt;<span class="code-highlight">http://example.com</span>&lt;/AllowedOrigin&gt;<br>    &lt;AllowedOrigin&gt;<span class="code-highlight">https://example.com</span>&lt;/AllowedOrigin&gt;
+    &lt;AllowedMethod&gt;GET&lt;/AllowedMethod&gt;
+    &lt;AllowedHeader&gt;*&lt;/AllowedHeader&gt;
+    &lt;MaxAgeSeconds&gt;3000&lt;/MaxAgeSeconds&gt;
+&lt;/CORSRule&gt;
+&lt;/CORSConfiguration&gt;</pre>
+</div>
+</li>
+<li>Run the <span class="code">setcors</span> command. This uses the <span class="text-object">corsrules.xml</span> file to set the CORS policy.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd setcors <span class="code-highlight">corsrules.xml</span> s3://<span class="code-highlight">my-bucket</span></span></pre>
+</div>
+</li>
+<li>Run the <span class="code">info</span> command again to view your CORS configuration. You should see your new policy displayed.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd info s3://<span class="code-highlight">bucketname</span></span>
+   Location:  us-east-1
+   Payer:     BucketOwner
+   Expiration Rule: none
+   Policy:    none
+   <span class="code-highlight">CORS:      &lt;CORSConfiguration xmlns="http://s3.amazonaws.com/doc/2006-03-01/"&gt;&lt;CORSRule&gt;<br>              &lt;ID&gt;Alloweverything&lt;/ID&gt;&lt;AllowedMethod&gt;GET&lt;/AllowedMethod&gt;<br>              &lt;AllowedOrigin&gt;http://example.com&lt;/AllowedOrigin&gt;<br>              &lt;AllowedOrigin&gt;https://example.com&lt;/AllowedOrigin&gt;<br>              &lt;AllowedHeader&gt;*&lt;/AllowedHeader&gt;&lt;MaxAgeSeconds&gt;3000&lt;/MaxAgeSeconds&gt;<br>              &lt;/CORSRule&gt;&lt;/CORSConfiguration&gt;</span>
+   ACL:       *anon*: READ
+   ACL:       my_user: FULL_CONTROL
+   URL:       http://<span class="code-highlight">my-bucket</span>.objects-us-east-1.dream.io/</pre>
+</div>
+</li>
+</ol>
+<p>If necessary, you can run the following to delete your bucket's CORS policy.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">s3cmd delcors s3://<span class="code-highlight">my-bucket</span></span></pre>
+</div>
+</div>
+<h2><span id="aws-cli">AWS CLI — deploying a CORS policy</span></h2>
+<div class="solvvy-solution">
+<p><a href="https://help.dreamhost.com/hc/en-us/articles/216335908-Installing-and-configuring-AWS-CLI" target="_self">AWS CLI</a> is a command-line tool you can use to manage your DreamObjects data and is installed by default on DreamHost servers.</p>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60"></div>
+<div class="alert-content">
+<p><a href="https://help.dreamhost.com/hc/en-us/articles/216335908-Installing-and-configuring-AWS-CLI" target="_self">aws-cli</a> is installed by default on all DreamHost servers.</p>
+<p>The example below creates a <span class="text-object">cors.json</span> file in your user's home directory, but you can add it anywhere you like. You would just need to update the path to the file in the command if you change this location.</p>
+<p>Make sure to change <span class="code">my-bucket</span> to the name of your DreamObjects bucket.</p>
+<p>This example uses a JSON containing your CORS policy.</p>
+<p>You can run these commands on a Mac or Linux computer, or your DreamHost server after logging in via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview" target="_self">SSH</a>. These examples run the command on the server.</p>
+</div>
+</div>
+<ol>
+<li>Log in to your DreamHost server via&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview" target="_self">SSH</a>.</li>
+<li>Make sure you're in your <a href="https://help.dreamhost.com/hc/en-us/articles/360001219231#the-users-home-directory" target="_self">user's home directory</a>.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~</span></pre>
+</div>
+</li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH" target="_self">Create a JSON file</a> named <span class="text-object">cors.json</span> with the following content. Make sure to change the <span class="code">AllowedOrigins</span> value to your website name.
+<div class="preboxcontainer">
+<pre class="prebox">{
+  "CORSRules": [
+    {
+      "AllowedOrigins": ["<span class="code-highlight">http://example.com</span>"],<br>      "AllowedOrigins": ["<span class="code-highlight">https://example.com</span>"],
+      "AllowedHeaders": ["*"],
+      "AllowedMethods": ["GET"],
+      "MaxAgeSeconds": 3000,
+      "ExposeHeaders": []
+    }
+  ]
+}</pre>
+</div>
+</li>
+<li>Run the following command to view your current CORS configuration for your bucket.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">aws s3api get-bucket-cors --endpoint-url https://objects-us-east-1.dream.io --bucket <span class="code-highlight">my-bucket</span></span></pre>
+</div>
+If there is currently no CORS policy configured, you will see the following error.
+<div class="preboxcontainer">
+<pre class="prebox">An error occurred (NoSuchCORSConfiguration) when calling the GetBucketCors operation: Unknown</pre>
+</div>
+Ignore this and proceed with the following step.</li>
+<li>Run the <span class="code">put-bucket-cors</span> command. This uses the <span class="text-object">cors.json</span> file to set the CORS policy.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">aws s3api put-bucket-cors --endpoint-url https://objects-us-east-1.dream.io --bucket <span class="code-highlight">my-bucket</span> --cors-configuration file://<span class="code-highlight">cors.json</span></span></pre>
+</div>
+</li>
+<li>Run the command to view your CORS configuration again. You should see your new policy displayed.</li>
+</ol>
+<p>If necessary, you can run the following to delete your bucket's CORS policy.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">aws s3api delete-bucket-cors --endpoint-url https://objects-us-east-1.dream.io --bucket s3://<span class="code-highlight">my-bucket</span></span></pre>
+</div>
+</div>
+<h2>See also</h2>
+<div class="solvvy-hidden">
+<div id="background">
+<h3>Background</h3>
+<ul class="simple">
+<li><a class="reference external" href="https://hacks.mozilla.org/2009/07/cross-site-xmlhttprequest-with-cors/">Cross-site xmlhttprequest with CORS</a></li>
+<li><a class="reference external" href="https://en.wikipedia.org/wiki/Cross-origin_resource_sharing">Wikipedia: CORS</a></li>
+<li><a class="reference external" href="http://www.w3.org/TR/cors/">W3 CORS specification</a></li>
+<li><a class="reference external" href="https://en.wikipedia.org/wiki/Cross-origin_resource_sharing">Wikipedia: Same-origin policy</a></li>
+</ul>
+</div>
+<div id="api">
+<h3>API</h3>
+<ul class="simple">
+<li><a class="reference external" href="http://docs.aws.amazon.com/AmazonS3/latest/dev/cors.html">Working with Amazon S3 Objects &amp;lt;&amp;lt; Enabling Cross-Origin Resource Sharing</a></li>
+<li><a class="reference external" href="http://docs.aws.amazon.com/AmazonS3/latest/API/RESTBucketPUTcors.html">Amazon S3: REST API, Bucket PUT CORS</a></li>
+<li><a class="reference external" href="http://docs.aws.amazon.com/AmazonS3/latest/API/RESTBucketDELETEcors.html">Amazon S3: REST API, Bucket DELETE CORS</a></li>
+<li><a class="reference external" href="http://docs.aws.amazon.com/AmazonS3/latest/API/RESTBucketGETcors.html">Amazon S3: REST API, Bucket GET CORS</a></li>
+</ul>
+</div>
+</div>
+<div class="clearer">&nbsp;</div>
+<div class="footer">&nbsp;</div>
+<!--DreamObjects Button-->
+<div class="dream-sign-up">
+<h2>Start Storing Your Data Today!</h2>
+<div class="solvvy-hidden"><a href="https://www.dreamhost.com/cloud/storage/">Sign Up for DreamObjects</a></div>
+</div>
