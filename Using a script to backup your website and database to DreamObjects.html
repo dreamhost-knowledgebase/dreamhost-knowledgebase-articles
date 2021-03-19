@@ -104,23 +104,19 @@ find $HOME/backup/* -type d -exec rm -rf {} \; 2&gt; /dev/null</pre>
 </ol>
 <p>The above code backs up your database and website files to your DreamObjects bucket inside a folder named <span class="text-object">/backups</span>.</p>
 </div>
-<h2>Step 3 — Install aws-cli</h2>
+<h2>Step 3 —&nbsp;Running the file</h2>
 <div class="solvvy-solution">
-<p>aws-cli is a command line client that allows you to manage your DreamObjects data. Most servers at DreamHost have installed this by default, so there is nothing for you to install. However, if your server is running an older version of Ubuntu 14, you will need to install this manually.&nbsp;</p>
-<p>View the following article for instructions on how to check if you need to install this.</p>
-<ul>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/216335908#do-i-need-to-install-aws" target="_self">Do I need to manually install AWS?</a></li>
-</ul>
-</div>
-<h2>Step 4 —&nbsp;Running the file</h2>
-<div class="solvvy-solution">
-<h3>Running it manually</h3>
-<p>After activating your virtual environment, you can run the file manually with the following command:</p>
+<h3>Option 1 —&nbsp;Running it manually</h3>
+<p>Run the file manually with the following command:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">(my-user-bucket) </span><span class="command">sh ~/backup/example.com-backup.sh</span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">sh ~/backup/example.com-backup.sh</span></pre>
 </div>
-<h3>Running it with a cron job</h3>
-<p>You can also create a <a href="https://help.dreamhost.com/hc/en-us/articles/215088668-How-do-I-create-a-cron-job-">cron job</a> to run this automatically at specific times. To do this, create a new file named something like <span class="text-object">websitebackup.sh</span> with the following code.</p>
+<h3>Option 2 — Running it from a cron job</h3>
+<p>You can also create a <a href="https://help.dreamhost.com/hc/en-us/articles/215088668-How-do-I-create-a-cron-job-">cron job</a> to run this automatically at specific times. This would require you to create a file with the commands to run and then create the cron job in your panel.</p>
+<dl>
+<dd>
+<h3>Step 1 — Create a file to run the command</h3>
+<p>Create a new file named something like <span class="text-object">websitebackup.sh</span> with the following code.</p>
 <div class="alert alert-note">
 <div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
@@ -131,23 +127,13 @@ find $HOME/backup/* -type d -exec rm -rf {} \; 2&gt; /dev/null</pre>
 <pre class="prebox">#!/bin/bash
 sh ~/<span class="code-highlight">backup/example.com-backup.sh</span></pre>
 </div>
+<h3>Step 2 — Create the cron job in your panel</h3>
 <p>View the <a href="https://help.dreamhost.com/hc/en-us/articles/215088668-How-do-I-create-a-cron-job-">How do I create a cron job?</a>&nbsp;article to create your cron job. In the text box, enter the following command (change the username to your Shell user).</p>
 <div class="preboxcontainer">
 <pre class="prebox">/bin/bash /home/<span class="code-highlight">username/websitebackup.sh</span></pre>
 </div>
-</div>
-<h3>If you installed AWS in a virtualenv</h3>
-<p>If your server is running Ubuntu 14, you must create a virtualenv and install AWS manually as detailed in step #3 above. If so, add the <span class="code">source</span> line to your cron job to activate your virtualenv.</p>
-<div class="alert alert-note">
-<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
-<div class="alert-content">
-<p>Make sure to change <span class="text-object">my-user-bucket</span> to the name of your virtual environment</p>
-</div>
-</div>
-<div class="preboxcontainer">
-<pre class="prebox">#!/bin/bash
-source ~/<span class="code-highlight">my-user-bucket/bin/activate</span>
-sh ~/<span class="code-highlight">backup/example.com-backup.sh</span></pre>
+</dd>
+</dl>
 </div>
 <h2><span id="See_also">See also</span></h2>
 <div class="solvvy-hidden">

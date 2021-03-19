@@ -1,48 +1,49 @@
 <h2>Overview</h2>
 <div class="solvvy-solution">
-<p><a class="reference external" href="https://aws.amazon.com/cli/">AWS CLI</a> is a command-line tool for uploading, retrieving, and managing data in Amazon S3 and other Cloud Storage Service Providers that use the S3 protocol such as <a href="https://help.dreamhost.com/hc/en-us/articles/214823108-What-is-DreamObjects-">DreamObjects</a>. It's best suited for power users who are competent with the command line and is ideal for scripts that are automated and triggered from cron.</p>
+<p><a class="reference external" href="https://aws.amazon.com/cli/">AWS CLI</a> is a command-line tool for managing data in Amazon S3 and other Cloud Storage Service Providers that use the S3 protocol such as <a href="https://help.dreamhost.com/hc/en-us/articles/214823108-What-is-DreamObjects-">DreamObjects</a>. It's best suited for users who are competent with the command-line and is ideal for scripts that are automated and triggered from a cronjob.</p>
 <p>The following instructions help you install and configure AWS CLI to work with DreamObjects.</p>
 </div>
 <h2><span id="do-i-need-to-install-aws">Do I need to manually install AWS?</span></h2>
 <div class="solvvy-solution">
-<p>AWS is installed by default on most servers. However, it's possible you may still need to install this manually if your server is running Ubuntu 14.&nbsp;</p>
-<h3>Shared servers</h3>
-<p>AWS CLI is installed by default on all Shared servers. You can confirm if your site is on a Shared server on the <a class="panel-link" href="https://panel.dreamhost.com/?tree=domain.manage" target="_blank" rel="noopener">Manage Domains</a> page. To the right of your domain it will say 'Shared Hosting'. If so, you can proceed with <a href="#configure" target="_self">configuring AWS</a> below.</p>
-<h3>VPS and Dedicated servers</h3>
-<p>If you are running an older VPS or Dedicated server, it may be running Ubuntu 14. This link explains how you can confirm if your server is running Ubuntu 14.</p>
-<ul>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/360022178852-#version" target="_self">Checking the version of Ubuntu</a></li>
-</ul>
-<p>If so, proceed with the steps below. If you see your server is already running Ubuntu 18 or Debian, skip to <a href="#configure" target="_self">configuring AWS</a> below.</p>
+<p>AWS-CLI is installed on all servers. However, if you require a newer version, you would need to install this manually in a Python virtual environment.</p>
+<p>If so, proceed with the steps below. Otherwise, skip to <a style="background-color: #ffffff;" href="#configure" target="_self">configuring AWS</a> below.</p>
 </div>
-<h2>Install Python 2.7.15 or newer</h2>
+<h2>Installing a custom version of AWS CLI</h2>
 <div class="solvvy-solution">
-<p>Due to a kernel update with Ubuntu, you must install Python 2.7.15 or newer in order to create a virtualenv. View the following articles to install a more recent version of Python:</p>
-<ul>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/115000218612-Installing-a-custom-version-of-Python-2">Installing a custom version of Python 2</a></li>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/115000702772-Installing-a-custom-version-of-Python-3">Installing a custom version of Python 3</a></li>
-</ul>
-</div>
-<h2>Installing AWS CLI</h2>
-<div class="solvvy-solution">
-<h3>Mac and Linux computers</h3>
-<p>Mac and Linux machines can install aw-cli<strong>&nbsp;</strong>by running the <a href="https://help.dreamhost.com/hc/en-us/articles/115000221112-Using-pip-to-install-Python-2-modules">Python “pip” command</a>. The following shows how to install aws-cli on a DreamHost server, however steps are the same for Mac and Linux machines.</p>
+<h3><span style="font-size: 1.2em; font-weight: 600;">Mac and Linux computers</span></h3>
+<p>Mac and Linux machines can install aw-cli<strong>&nbsp;</strong>by running the <a href="https://help.dreamhost.com/hc/en-us/articles/115000221112-Using-pip-to-install-Python-2-modules">Python “pip” command</a>. The following shows how to install aws-cli on a DreamHost server, however the steps are the same for Mac and Linux machines.</p>
 <h3>DreamHost servers</h3>
-<p>To install the client on a DreamHost Shared, VPS, or Dedicated server requires the use of <a href="https://help.dreamhost.com/hc/en-us/articles/215489338-Installing-virtualenv-and-custom-modules-in-Python">Python's virtualenv</a>. Once the virtual environment is created and active, you can then use 'pip' to install the AWS CLI client locally.</p>
+<p>The following steps install a custom version of Python 3, create a virtualenv, and install aws-cli within that virtualenv.</p>
 <ol>
 <li>Log into your server via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH</a>.</li>
-<li>Install a custom version of Python as mentioned above.
+<li>Install a custom version of Python of your choice.
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/115000218612-Installing-a-custom-version-of-Python-2">Installing a custom version of Python 2</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/115000702772-Installing-a-custom-version-of-Python-3">Installing a custom version of Python 3</a></li>
 </ul>
+<dl>
+<dd>
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Due to a kernel update with Ubuntu, you must install Python 2.7.15 or newer in order to create a virtualenv.</p>
+</div>
+</div>
+</dd>
+</dl>
 </li>
 <li>Make sure you're in your <a href="https://help.dreamhost.com/hc/en-us/articles/360001219231-Where-is-the-home-directory-#the-users-home-directory" target="_self">user's home directory</a>.
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~</span></pre>
 </div>
 </li>
-<li>Create a virtual environment for a specific DreamObjects bucket. This virtual environment will store your DreamObjects bucket's credentials. This example names the virtual environment after your DreamObjects bucket name. The following command also assumes you've installed a custom version of Python as mentioned above. You can then specify the full path to your local install when creating the virtual environment. Make sure to change <span class="code">username</span> to your <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access" target="_self">Shell user</a>.
+<li>Run the following command to create a virtual environment for a specific DreamObjects bucket.
+<ul>
+<li>This virtual environment will store your DreamObjects bucket's credentials.</li>
+<li>This example names the virtual environment after your DreamObjects bucket name.</li>
+<li>The following command also assumes you've installed a custom version of Python as mentioned above. You can then specify the full path to your local install when creating the virtual environment.</li>
+<li>Make sure to change <span class="code">username</span> to your <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access" target="_self">Shell user</a> and <span class="code">my-bucket</span> to your DreamObjects bucket.</li>
+</ul>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">virtualenv -p /home/<span class="code-highlight">username</span>/opt/python-<span class="code-highlight">3.9.2</span>/bin/python <span class="code-highlight">my-bucket</span></span></pre>
 </div>
@@ -70,11 +71,20 @@
 </ol>
 <p>You can now proceed with configuring it to use your DreamObjects bucket.</p>
 </div>
+<h2>Configuring your user to automatically use the new virtual environment</h2>
+<div class="solvvy-solution">
+<p>When you activate the virtual environment as shown above, it is only activated during your current session. If you log out and log back in, it will no longer be active.</p>
+<p>To automatically activate your virtual environment when you log in, add the following line to your <span class="text-object">.bash_profile</span>.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="command">source ~/<span class="code-highlight">my-bucket</span>/bin/activate</span></pre>
+</div>
+<p>Just change <span class="code">my-bucket</span> to the name of the virtual environment you created.</p>
+</div>
 <h2><span id="configure">Configuring AWS CLI</span></h2>
 <div class="solvvy-solution">
 <p>Run the following command to input your <a href="https://help.dreamhost.com/hc/en-us/articles/215986357-DreamObjects-Keys">Access and Secret key</a> for your bucket. aws-cli stores them encrypted for you.</p>
-<p>Set the <span class="text-object">Default region</span> to <span class="text-object">us-east-1</span>.</p>
-<p>Do not enter anything for the <span class="text-object">Default output format</span>, then press <span class="code">Enter</span>.</p>
+<p>Set the <span class="code">Default region</span> to <span class="text-object">us-east-1</span>.</p>
+<p>Do not enter anything for the <span class="code">Default output format</span>, then press <span class="code">Enter</span>.</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">aws configure</span>
 <span class="cmdoutput">AWS Access Key ID: <span class="code-highlight">**********</span>
@@ -92,15 +102,6 @@ Default output format [None]:</span>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/360022654971-AWS-CLI-commands-to-manage-your-DreamObjects-data" target="_blank" rel="noopener">AWS CLI commands to manage your DreamObjects data</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/360022618112-Setting-permissions-using-AWS-CLI" target="_blank" rel="noopener">Setting permissions using AWS CLI</a></li>
 </ul>
-</div>
-<h2>Configuring your user to automatically use the new virtual environment</h2>
-<div class="solvvy-solution">
-<p>When you follow the commands above, the virtual environment is activated during your session. However, if you log out and log back in, it will no longer be active.</p>
-<p>To automatically activate your virtual environment when you log in, add the following to your .bash_profile.</p>
-<div class="preboxcontainer">
-<pre class="prebox"><span class="command">source ~/<span class="code-highlight">my-bucket</span>/bin/activate</span></pre>
-</div>
-<p>Just change 'my-bucket' to the name of the virtual environment you created.</p>
 </div>
 <div class="footer">&nbsp;</div>
 <!--DreamObjects Button-->
