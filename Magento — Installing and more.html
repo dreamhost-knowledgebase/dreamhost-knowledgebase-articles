@@ -15,7 +15,7 @@
 <div class="alert alert-note">
 <div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
-<p>Magento does not currently support PHP 7.4. You will need to <a href="https://help.dreamhost.com/hc/en-us/articles/214895317-How-do-I-change-the-PHP-version-of-my-site-" target="_self">set your domain to PHP 7.2 or 7.3</a> in order to complete the installation.</p>
+<p>Magento does not currently support PHP 7.4. You will need to <a href="https://help.dreamhost.com/hc/en-us/articles/214895317-How-do-I-change-the-PHP-version-of-my-site-" target="_self" rel="undefined">set your domain to PHP 7.3</a> in order to complete the installation.</p>
 </div>
 </div>
 </div>
@@ -48,7 +48,7 @@ memory_limit = 756M</pre>
 <li><a href="/hc/en-us/articles/221691727-Creating-a-MySQL-database">Creating a database</a></li>
 </ul>
 </li>
-<li>Set your domain to use PHP 7.2 or higher. View the following article for further information:
+<li>Set your domain to use PHP 7.3. View the following article for further information:
 <ul>
 <li><a href="/hc/en-us/articles/214895317-How-do-I-change-the-PHP-version-of-my-site-">Changing the PHP version</a></li>
 </ul>
@@ -92,7 +92,7 @@ Be sure to replace all of the example text in that command with your actual data
 <div class="preboxcontainer">
 <pre class="prebox">mod_fcgid: stderr: PHP Parse error: syntax error, unexpected '?', expecting variable (T_VARIABLE) in /home/username/example.com/vendor/magento/framework/Filesystem/Directory/Write.php on line 35</pre>
 </div>
-<p>This is due to the version of Magento not being compatible with the version of PHP you're using. If you're using Magento version 2.3.0, make sure you're using PHP 7.2 or higher. That will resolve this error message.</p>
+<p>This is due to the version of Magento not being compatible with the version of PHP you're using. If you're using Magento version 2.3.0, make sure you're using PHP 7.3. That will resolve this error message.</p>
 <h3><span id="I_can.27t_find_the_installation_wizard">I can't find the installation wizard</span></h3>
 <p>If you’re unable to load the Magento installation wizard, you may have the installation file in another location other than the domain’s root web directory. Check to make sure the installation file is not in a subdirectory, and also make sure all files, folders, and subfolders have the correct permission.</p>
 <h3><span id="Links_don.27t_redirect_correctly">Links don't redirect correctly</span></h3>
@@ -153,30 +153,30 @@ It will look like this:
 </div>
 <p><strong>Cron Job #1</strong></p>
 <div class="preboxcontainer">
-<pre class="prebox">/usr/local/php72/bin/php /home/username/example.com/bin/magento cron:run | grep
+<pre class="prebox">/usr/local/php73/bin/php /home/username/example.com/bin/magento cron:run | grep
   -v "Ran jobs by schedule" &gt;&gt; /home/username/example.com/var/log/magento.cron.log</pre>
 </div>
 <p><strong>Cron Job #2</strong></p>
 <div class="preboxcontainer">
-<pre class="prebox">/usr/local/php72/bin/php /home/username/example.com/update/cron.php &gt;&gt;
+<pre class="prebox">/usr/local/php73/bin/php /home/username/example.com/update/cron.php &gt;&gt;
   /home/username/example.com/var/log/update.cron.log</pre>
 </div>
 <p><strong>Cron Job #3</strong></p>
 <div class="preboxcontainer">
-<pre class="prebox">/usr/local/php72/bin/php /home/username/example.com/bin/magento setup:cron:run
+<pre class="prebox">/usr/local/php73/bin/php /home/username/example.com/bin/magento setup:cron:run
   &gt;&gt; /home/username/example.com/var/log/setup.cron.log</pre>
 </div>
 <p>This will correctly configure the cron jobs Magento needs. However, you should now manually run them so Magento knows they exist. Run the following three commands to forcefully update the cron&nbsp; jobs in Magento:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">/usr/local/php72/bin/php /home/username/example.com/bin/magento cron:run | grep
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">/usr/local/php73/bin/php /home/username/example.com/bin/magento cron:run | grep
   -v "Ran jobs by schedule" &gt;&gt; /home/username/example.com/var/log/magento.cron.log</span></pre>
 </div>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">/usr/local/php72/bin/php /home/username/example.com/update/cron.php &gt;&gt;
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">/usr/local/php73/bin/php /home/username/example.com/update/cron.php &gt;&gt;
   /home/username/example.com/var/log/update.cron.log</span></pre>
 </div>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">/usr/local/php72/bin/php /home/username/example.com/bin/magento setup:cron:run
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">/usr/local/php73/bin/php /home/username/example.com/bin/magento setup:cron:run
   &gt;&gt; /home/username/example.com/var/log/setup.cron.log</span></pre>
 </div>
 <p>Click the&nbsp;<strong>Try Again</strong> button in Magento. This time, the cron error will no longer show.</p>
@@ -197,7 +197,7 @@ It will look like this:
 <p><img class="img-border" src="https://kbimages.dreamhosters.com/images/magento-extension-install-failure_02.png" /></p>
 <p>If so, run the following command in your website directory.</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">/usr/local/php72/bin/php bin/magento config:set system/backup/functionality_enabled 1</span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">/usr/local/php73/bin/php bin/magento config:set system/backup/functionality_enabled 1</span></pre>
 </div>
 <p>Click the <strong>Try Again</strong> button and your backup will be created.</p>
 </div>
