@@ -1,82 +1,98 @@
 <h2>Overview</h2>
 <div class="solvvy-solution">
-<div class="alert alert-important">
-<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
-<div class="alert-content">
-<p>If your Ruby application won't start because of a missing gem, then you must install it locally using Bundler. For more information about using Bundler, please visit the following page:</p>
-<ul>
-<li><a href="/hc/en-us/articles/115001070131-Using-Bundler-to-install-Ruby-gems">Using Bundler to install Ruby gems</a></li>
-</ul>
+<p>Passenger is an open-source web and application server that greatly simplifies the deployment of Ruby, Python, and Node.js applications.</p>
+<p>At DreamHost, Passenger integrates with an Apache or Nginx web server. <a href="https://www.phusionpassenger.com/docs/tutorials/fundamental_concepts/ruby/" target="_blank" rel="noopener">Passenger's website</a> explains it the following way:</p>
+<div class="text-blockquote">
+<h4>Nginx and Apache</h4>
+<p>Nginx and Apache are web servers. They provide HTTP transaction handling and serve static files. However, they are not Ruby application servers and cannot run Ruby applications directly. That is why Nginx and Apache are used in combination with an application server, such as Passenger.</p>
+<p>Application servers make it possible for Ruby apps to speak HTTP. Ruby apps (and frameworks like Rails) can't do that by themselves. On the other hand, application servers typically aren't as good as Nginx and Apache at handling HTTP requests. The devil is in the details: Nginx and Apache are better at handling I/O security, HTTP concurrency management, connection timeouts, etc. That's why, in production environments, application servers are used in combination with Nginx or Apache.</p>
 </div>
 </div>
-<p>Passenger is an open source web and application server that greatly simplifies the deployment of Ruby applications, Python, and Node.js. Passenger is the preferred way to deploy and host Ruby on Rails applications across all DreamHost servers and is free on every DreamHost hosting plan.</p>
-<div class="alert alert-note">
-<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
-<div class="alert-content">
-<p>Since Ruby on Rails and Python apps can use a lot of memory, sites running such applications with Passenger should only be run on a <a href="https://help.dreamhost.com/hc/en-us/articles/215280058-Virtual-Private-Server-VPS-overview-">VPS</a> or <a href="https://help.dreamhost.com/hc/en-us/articles/215279658-Dedicated-server-overview">Dedicated</a> server. If you'd like to run a <a href="https://help.dreamhost.com/hc/en-us/articles/217185397-Node-js-overview">Node.js</a>, RoR, or Python app on Shared hosting, just be aware of your memory consumption so you <a href="https://help.dreamhost.com/hc/en-us/articles/216540488-Why-were-my-processes-killed-on-my-Shared-server-" target="_self">do not hit the server's memory limits</a>.&nbsp;</p>
-</div>
-</div>
-</div>
-<h2><span id="Basic_operation">Basic operation</span></h2>
+<h2>Memory limits</h2>
 <div class="solvvy-solution">
+<p>Shared servers will kill off a script if it's using too much memory.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216540488-Why-were-my-processes-killed-on-my-Shared-server-">Why were my processes killed on my Shared server?</a></li>
+</ul>
+<p>Since Ruby on Rails and Python apps can use a lot of memory, sites running such applications with Passenger should only be run on a <a href="https://help.dreamhost.com/hc/en-us/articles/215280058-Virtual-Private-Server-VPS-overview-">VPS</a> or <a href="https://help.dreamhost.com/hc/en-us/articles/215279658-Dedicated-server-overview">Dedicated</a> server.</p>
+</div>
+<h2>Ruby on Rails</h2>
+<div class="solvvy-solution">
+<p>Passenger is the preferred way to deploy and host Ruby on Rails applications across all DreamHost servers and is free on every DreamHost hosting plan.</p>
 <p>The following are the basic actions that take place once a file is requested from a domain running Passenger and Ruby on Rails:</p>
 <ol>
 <li>When a request is made to a domain/subdomain, the <a href="/hc/en-us/articles/217214317-Apache-HTTP-Server">Apache HTTP Server</a> passes the request to Passenger.</li>
-<li>Passenger first looks for an appropriately-named HTML or <a href="/hc/en-us/articles/217297307-CGI-overview">CGI</a> file in the domain/subdomain's <span class="text-object">/public</span> subdirectory.</li>
-<li>If no matching file is found, the request is passed to Passenger's Rack interface.</li>
-<li>Note that this use of the <span class="text-object">/public</span> subdirectory meshes precisely with the way that Ruby on Rails makes use of the same subdirectory.</li>
-<li>In order to generate a response, Rack looks for a file named <span class="text-object">config.ru</span> in the domain/subdomain's root directory (i.e., the parent of the domain's <span class="text-object">/public</span> subdirectory).</li>
-<li>Rack requires that you place the appropriate Ruby code into "config.ru" to invoke your desired web framework or application to handle the request.</li>
+<li>Passenger first looks for an appropriately-named HTML or <a href="/hc/en-us/articles/217297307-CGI-overview">CGI</a> file in the domain/subdomain's <span class="text-object">/public</span> subdirectory (<strong>example.com/public</strong>).</li>
+<li>If no matching file is found, the request is passed to Passenger's Rack interface.
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>This is the same way Ruby on Rails makes use of the <span class="text-object">/public</span> subdirectory.</p>
+</div>
+</div>
+</li>
+<li>Rack looks for a file named <span class="text-object">config.ru</span> in the domain/subdomain's root directory (<strong>example.com</strong>) in order to generate a response.
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Rack requires that you place the appropriate Ruby code into the <span class="text-object">config.ru</span> file to invoke your desired web framework/application in order to handle the request.</p>
+</div>
+</div>
+</li>
 </ol>
-<p>Under normal circumstances, Ruby on Rails (RoR) will automatically create and initialize all of the files and directories needed to interface with Passenger/Rack. When running a RoR application, the only Rack-related files you are likely to modify are possibly adding <span class="code">GEM_PATH</span> information to "config.ru" and then <span class="code">touch</span> the restart.txt file to restart the application.</p>
+<p>Under normal circumstances, Ruby on Rails (RoR) automatically creates and initializes all of the files and directories needed to interface with Passenger/Rack.</p>
+<p>When running a RoR application, the only Rack-related files you are likely to modify are the following:</p>
+<ul>
+<li>Possibly adding <span class="code">GEM_PATH</span> information to <span class="text-object">config.ru</span></li>
+<li>Running <span class="code">touch</span> on the <span class="text-object">restart.txt</span> file to restart the application. For example:
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">touch tmp/restart.txt</span></pre>
 </div>
+</li>
+</ul>
 </div>
-<h2><span id="Use_of_Passenger_vs._FastCGI">Use of Passenger vs. FastCGI</span></h2>
+<h2><span id="Use_of_Passenger_vs._FastCGI">Passenger vs. FastCGI</span></h2>
 <div class="solvvy-solution">
-<p>Passenger should only be enabled if you intend to run a Ruby on Rails (RoR) or other Ruby/Python-based program as the sole application for the entire domain or subdomain. Passenger directs all requests for the designated domain/subdomain to the associated Rack-compliant application. So it's best to leave Passenger disabled if you do not actually need it.</p>
-<p>In other words, you should only enable Passenger if you want to access your application via the following three URLs:</p>
-<dl>
-<dd>
+<p>Passenger should only be enabled if you intend to run a Ruby/Python/Node.js-based application as the sole application for the entire domain/subdomain.</p>
+<p>Passenger directs all requests for the designated domain/subdomain to the associated Rack-compliant application, so it's best to leave Passenger disabled if you do not need it.</p>
+<h3>When to enable Passenger</h3>
+<p>You should only enable Passenger if you want to access your application via the following three URLs:</p>
 <ul>
 <li><strong>myapp.example.com</strong></li>
 <li><strong>www.example.com</strong></li>
 <li><strong>www.myapp.example.com</strong></li>
 </ul>
-</dd>
-</dl>
-<p>If you want to access your application via <strong>www.example.com/path-to-myapp</strong> then use FastCGI instead of Passenger.</p>
+<p>If you want to access your application in a subdirectory (<strong>www.example.com/path-to-myapp</strong>), then use FastCGI instead of Passenger.</p>
 </div>
-<h2><span id="A_couple_of_technical_notes">A couple of technical notes</span></h2>
+<h2><span id="A_couple_of_technical_notes">Technical notes</span></h2>
 <div class="solvvy-solution">
-<ul>
-<li>Output to STDERR for processes run through the Rack interface is directed to the master Apache error log file rather than the domain/subdomain specific log file. You do not have direct access to the master log file. This limitation can make debugging initialization errors (in particular syntax errors and gem resolution issues) tricky. Passenger will often produce an error output webpage including a stack traceback. However, in some cases, it does not. If you have a persistent problem and Passenger is not producing sufficiently useful error output, you can try contacting the DreamHost support staff and ask them to examine the master log file for you. Once a framework (such as RoR) is up and running, its error output is typically handled by the framework's own error logging mechanism. For example, RoR records its error output in a file named <span class="text-object">log/production.log</span>.</li>
-</ul>
-<ul>
-<li>Passenger, on all shared DreamHost servers, uses Ruby 2.5.1. To use a different version of Ruby (and to otherwise gain full control of the operation of your system), you must use a <a href="/hc/en-us/articles/215280058-Virtual-Private-Server-overview-VPS-">VPS</a> and install <a href="/hc/en-us/articles/217185247-Ruby-Version-Manager-RVM-">RVM</a>.</li>
-</ul>
-<ul>
-<li>Activating Passenger on a domain will break the phpMyAdmin interface on any subdomain under the domain. To use phpMyAdmin and Passenger, you must have a non-Passenger-enabled domain with an active phpMyAdmin.</li>
-</ul>
-<ul>
-<li>In the interest of ease of use and 'Upload and Go' functionality, Passenger disables some mod_rewrite functionality. That means it will automatically override an existing 'dispatch.fcgi' setup you have in place. This is not a problem for your Rails application but it may have other side effects (such as breaking other mod_rewrite rules you have set up). If this causes a problem for your website, try using the FastCGI method.</li>
-</ul>
-<ul>
-<li>Passenger automatically launches applications and leaves them running as long as they are not idle. It also caches the code for Ruby on Rails itself to speed up application launching.</li>
-</ul>
-<ul>
-<li>You can use your local gem repository if you use the following in the <span class="text-object">config/environment.rb</span> file. Make sure to change <span class="text-object">username</span> to your <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access" target="_self">Shell user</a>.</li>
-</ul>
+<h3>Error logs</h3>
+<p>Output to STDERR for processes run through the Rack interface is automatically directed to the server's master error log file rather than the domain/subdomain specific log file.</p>
+<h4>Troubleshooting the error log</h4>
+<div class="alert-warning">
+<p>DreamHost customers do not have access to the master error log file.</p>
+</div>
+<p>This limitation can make debugging initialization errors (in particular syntax errors and gem resolution issues) tricky. Passenger will often produce an error output webpage including a stack traceback, but sometimes it does not.</p>
+<p><a href="https://help.dreamhost.com/hc/en-us/articles/215722447-Contacting-DreamHost-via-email" target="_self">Contact DreamHost support</a> if Passenger is not producing useful error output. Support will then examine the master log file for you.</p>
+<p>Once a framework (such as RoR) is up and running, its error output is typically handled by the framework's own error logging mechanism. For example, RoR records its error output in a file named <span class="text-object">log/production.log</span>.</p>
+<h3>Ruby version</h3>
+<p>DreamHost servers run a <a href="https://help.dreamhost.com/hc/en-us/articles/360003836911-Ruby-at-DreamHost" target="_self">default version of Ruby</a>. You can also install <a href="/hc/en-us/articles/217185247-Ruby-Version-Manager-RVM-">RVM</a> to use a different version of Ruby</p>
+<h3>phpMyAdmin</h3>
+<p>Activating Passenger on a domain (<strong>example.com</strong>) breaks the <a href="https://help.dreamhost.com/hc/en-us/articles/214395638-phpMyAdmin-overview" target="_self">phpMyAdmin</a> interface on any subdomain (<strong>blog.</strong><strong>example.com</strong>) under the domain.</p>
+<p>To use phpMyAdmin and Passenger, you must add a domain that is not running Passenger to your panel. You could add a free <a href="https://help.dreamhost.com/hc/en-us/articles/360002284771-What-is-a-dreamhosters-com-subdomain-" target="_self">dreamhosters.com</a> subdomain and use its <a href="https://help.dreamhost.com/hc/en-us/articles/221610868-Finding-your-database-login-credentials" target="_self">login credentials</a> for this purpose.</p>
+<h3>ModRewrite</h3>
+<p>Passenger disables some <a href="https://httpd.apache.org/docs/current/mod/mod_rewrite.html" target="_self">mod_rewrite</a> functionality. That means it will automatically override an existing <span class="text-object">dispatch.fcgi</span> configuration you have in place. This is not a problem for your Rails application but it may have other side effects (such as breaking other mod_rewrite rules you have set up). If this causes a problem for your website, try using the FastCGI method instead.</p>
+<h3>Gems</h3>
+<p>You can use your local gem repository if you use the following in the <span class="text-object">config/environment.rb</span> file. Make sure to change <span class="code">username</span> to your <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access" target="_self">Shell user</a> and the version of Ruby to the one your site is using.</p>
 <div class="preboxcontainer">
 <pre class="prebox">if ENV['RAILS_ENV'] == 'production'  # don't bother on dev
-  ENV['GEM_PATH'] = '/home/<span class="code-highlight">username</span>/.gems' #+ ':/usr/lib/ruby/gems/1.8'  # Need this or Passenger fails to start
+  ENV['GEM_PATH'] = '/home/<span class="code-highlight">username</span>/.gems' #+ ':<span class="code-highlight">/usr/lib/ruby/gems/2.5.0</span>'  # Need this or Passenger fails to start
 end
 
 require File.join(File.dirname(__FILE__), 'boot')
 </pre>
 </div>
-<p>The same path should be set in your shell's environment variables GEM_HOME and GEM_PATH so you can use the gem program to install/upgrade your own gems. You can reload the config file by running "touch tmp/restart.txt" in your base directory.</p>
+<p>The same path should be set in your shell's environment variables <span class="code">GEM_HOME</span> and <span class="code">GEM_PATH</span> so you can use the gem program to install/upgrade your own gems. You can reload the config file by running <span class="code">touch tmp/restart.txt</span> in your base directory.</p>
 </div>
 <h2><span id="Troubleshooting">Troubleshooting</span></h2>
 <div class="solvvy-solution">
@@ -89,7 +105,7 @@ require File.join(File.dirname(__FILE__), 'boot')
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216385637-How-do-I-enable-Passenger-on-my-domain-">How do I enable Passenger on my domain?</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215769548-Passenger-and-Python-WSGI">Passenger and Python WSGI</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216635268-Passenger-troubleshooting">Troubleshooting Passenger</a></li>
-<li><a href="https://www.phusionpassenger.com/documentation_and_support">Passenger documentation</a></li>
+<li><a href="https://www.phusionpassenger.com/docs/tutorials/what_is_passenger/" target="_self" rel="undefined">Passenger documentation</a></li>
 <li><a href="https://en.wikipedia.org/wiki/Phusion_Passenger">Passenger at Wikipedia</a></li>
 </ul>
 <h3>Ruby</h3>
