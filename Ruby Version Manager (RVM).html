@@ -72,7 +72,7 @@
 <li>Now check if RVM is installed and functioning:
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">rvm --version</span>
-rvm 1.29.10-next (master) by Michal Papis, Piotr Kuczynski, Wayne E. Seguin [https://rvm.io]</pre>
+rvm 1.29.12-next (master) by Michal Papis, Piotr Kuczynski, Wayne E. Seguin [https://rvm.io]</pre>
 </div>
 </li>
 </ol>
@@ -86,21 +86,44 @@ rvm 1.29.10-next (master) by Michal Papis, Piotr Kuczynski, Wayne E. Seguin [htt
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">rvm list known</span></pre>
 </div>
-</li>
-<li>Install the exact version of Ruby you require. This example installs version 2.7.1:
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>Several interpreters will be listed such as MRI, JRuby, Rubinius, etc. You should install a version under the MRI section. For example:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">rvm install 2.7.1</span></pre>
+<pre class="prebox"># MRI Rubies
+[ruby-]1.8.6[-p420]
+[ruby-]1.8.7[-head] # security released on head
+[ruby-]1.9.1[-p431]
+[ruby-]1.9.2[-p330]
+[ruby-]1.9.3[-p551]
+[ruby-]2.0.0[-p648]
+[ruby-]2.1[.10]
+[ruby-]2.2[.10]
+[ruby-]2.3[.8]
+[ruby-]2.4[.10]
+[ruby-]2.5[.9]
+[ruby-]2.6[.7]
+[ruby-]2.7[.3]
+[ruby-]3[.0.1]</pre>
+</div>
+</div>
+</div>
+</li>
+<li>Install the exact version of Ruby you require. This example installs version 3.0.1:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">rvm install 3.0.1</span></pre>
 </div>
 </li>
 <li>You can now tell your system to use this version by default:
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">rvm use 2.7.1 --default</span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">rvm use 3.0.1 --default</span></pre>
 </div>
 </li>
 <li>Check the version of Ruby to confirm it's been updated.
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">ruby -v</span>
-ruby 2.7.1p83 (2020-03-31 revision a0c7c23c9c) [x86_64-linux]</pre>
+ruby 3.0.1p64 (2021-04-05 revision 0fb782ee38) [x86_64-linux]</pre>
 </div>
 </li>
 </ol>
@@ -132,6 +155,7 @@ ruby 2.7.1p83 (2020-03-31 revision a0c7c23c9c) [x86_64-linux]</pre>
 <div class="alert alert-important">
 <div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
+<p><strong>Shared servers</strong></p>
 <p>DreamHost support is unable to assist with RVM installs on a Shared server. However, if you have installed RVM on Shared hosting, do not follow the 'How to enable RVM' article. Instead, add the following to an .htaccess file in your Ruby app:</p>
 <div class="preboxcontainer">
 <pre class="prebox">PassengerRuby /home/<span class="code-highlight">username</span>/.rvm/wrappers/<span class="code-highlight">ruby-2.7.1</span>/ruby</pre>
