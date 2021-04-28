@@ -60,6 +60,33 @@
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/115000675027-FTP-overview-and-credentials">FTP overview</a></li>
 </ul>
 </div>
+<h2>Backing up ALL databases under a single username</h2>
+<div class="solvvy-solution">
+<p>The following script backs up all databases under a single username. In the past it was possible to use the <span class="code">--all-databases</span> flag, but this no longer functions due to a MySQL upgrade. Make sure you <a href="https://help.dreamhost.com/hc/en-us/articles/221610868-Finding-your-database-login-credentials" target="_self">obtain the hostname, username, and password</a> before proceeding.</p>
+<ol>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH" target="_self">Create a file</a> on your Mac, Linux computer, or on your DreamHost server. Name it something like <span class="text-object">db-export.sh</span>.</li>
+<li>Add the following code to it. Make sure to update the <span class="code">host</span>, <span class="code">username</span>, and <span class="code">password</span> fields.
+<div class="preboxcontainer">
+<pre class="prebox">#!/bin/sh
+
+host="<span class="code-highlight">yourMySQLHostname</span>"
+username="<span class="code-highlight">username</span>"
+password="<span class="code-highlight">password</span>"
+
+for DB in $(mysql --host="$host" --user="$username" -p"$password" -e"show databases" --skip-column-names -s | grep -v information_schema); 
+do 
+  mysqldump --opt --host="$host" --user="$username" -p"$password" $DB &gt; ./$DB.sql; 
+done</pre>
+</div>
+</li>
+<li>Run the file.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">sh db-export.sh</span></pre>
+</div>
+</li>
+</ol>
+<p>All databases under this username are then downloaded to your current directory.</p>
+</div>
 <h2>Backing up your database in a cron job</h2>
 <div class="solvvy-solution">
 <p>If you want to back up your database in a <a href="https://help.dreamhost.com/hc/en-us/articles/215088668-How-do-I-create-a-cron-job-" target="_self">cron job</a>, you'll need to specify the password. For example, you could add this line to a Shell script to back up your database.</p>
