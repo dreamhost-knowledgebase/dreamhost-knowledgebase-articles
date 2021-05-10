@@ -31,8 +31,8 @@
 </div>
 <h2><span id="Application_not_restarting">Application not restarting</span></h2>
 <div class="solvvy-solution">
-<p>This generally isn't actually a problem. It's only perceived as a problem. In Passenger 2.1 the behavior of the restart mechanism changed. Now Passenger simply checks the modification timestamp on the restart.txt file. If it's more recent than the last time it checked, it restarts. The file is not removed. This was done so that restarting applications would work seamlessly on NFS shares.</p>
-<p>On lower traffic sites, you can usually still visually see the application restarting by "priming" a page (loading it a couple times in your browser), touching the restart.txt file and then loading that page again. It should take a noticeably longer time to load than it had the previous couple of times. This won't really work on live sites that are getting traffic though as it's entirely possible another person's request restarted the application by the time you test it yourself.</p>
+<p>This generally isn't actually a problem. It's only perceived as a problem. In Passenger 2.1 the behavior of the restart mechanism changed. Now Passenger simply checks the modification timestamp on the <span class="text-object">restart.txt</span> file. If it's more recent than the last time it checked, it restarts. The file is not removed. This was done so that restarting applications would work seamlessly on NFS shares.</p>
+<p>On lower traffic sites, you can usually still visually see the application restarting by "priming" a page (loading it a couple times in your browser), touching the <span class="text-object">restart.txt</span> file and then loading that page again. It should take a noticeably longer time to load than it had the previous couple of times. This won't really work on live sites that are getting traffic though as it's entirely possible another person's request restarted the application by the time you test it yourself.</p>
 </div>
 <h2><span id="Broken_pipe_error">Broken pipe error</span></h2>
 <div class="solvvy-solution">
@@ -43,11 +43,11 @@
 </div>
 <h2><span id="Production_log_is_not_written_to">Production log isn't written to</span></h2>
 <div class="solvvy-solution">
-<p>This is most often caused by a misconfigured database.yml file. If your database.yml file isn't configured correctly, Passenger dies before your application is loaded. As such, you get no helpful error messages from Passenger and your production.log file isn't touched.</p>
+<p>This is most often caused by a misconfigured <span class="text-object">database.yml</span> file. If your <span class="text-object">database.yml</span> file isn't configured correctly, Passenger dies before your application is loaded. As such, you get no helpful error messages from Passenger and your <span class="text-object">production.log</span> file isn't touched.</p>
 </div>
 <h2><span id="Missing_connection_settings">Missing connection settings</span></h2>
 <div class="solvvy-solution">
-<p>Some versions of Passenger really don't like it if your database.yml file doesn't at least include settings (they can be blank) for all environments. The symptom of this happening is your application endlessly loading with no output to the production.log file. So, make sure you leave the connection information for all environments in your database.yml file -- even if you're only using the production settings.</p>
+<p>Some versions of Passenger really don't like it if your <span class="text-object">database.yml</span> file doesn't at least include settings (they can be blank) for all environments. The symptom of this happening is your application endlessly loading with no output to the <span class="text-object">production.log</span> file. So, make sure you leave the connection information for all environments in your <span class="text-object">database.yml</span> file -- even if you're only using the production settings.</p>
 </div>
 <h2><span id="Using_a_socket_connection_rather_than_a_host">Using a socket connection rather than a host</span></h2>
 <div class="solvvy-solution">
@@ -80,7 +80,7 @@
 </div>
 <h2><span id="Misnaming_parameters">Misnaming parameters</span></h2>
 <div class="solvvy-solution">
-<p>Another common mistake is simply having a necessary parameter misnamed. This can happen easier than it sounds because when you generate a Rails application it defaults to generating a sqlite3 database.yml configuration file. You have to manually specify that you want a MySQL file (rails --database mysql &lt;projectname&gt;) or you'll have to change it manually. Since a lot of people don't realize this, they end up changing it after the fact and sqlite3 config files don't have username or host parameters. Here's what a default sqlite3 section looks like:</p>
+<p>Another common mistake is simply having a necessary parameter misnamed. This can happen easier than it sounds because when you generate a Rails application it defaults to generating a sqlite3 <span class="text-object">database.yml</span> configuration file. You have to manually specify that you want a MySQL file (rails --database mysql &lt;projectname&gt;) or you'll have to change it manually. Since a lot of people don't realize this, they end up changing it after the fact and sqlite3 config files don't have username or host parameters. Here's what a default sqlite3 section looks like:</p>
 <div class="preboxcontainer">
 <pre class="prebox">production:
   adapter: sqlite3
@@ -138,7 +138,7 @@
 </div>
 <h2><span id="error_friendly_pages">Enabling Passenger error-friendly pages</span></h2>
 <div class="solvvy-solution">
-<p>Passenger error-friendly pages help you troubleshoot upgrade issues. To enable, add the following to an .htaccess file within the application:</p>
+<p>Passenger error-friendly pages help you troubleshoot upgrade issues. To enable, add the following to an <span class="text-object">.htaccess</span> file within the application:</p>
 <div class="preboxcontainer">
 <pre class="prebox">PassengerFriendlyErrorPages on</pre>
 </div>
