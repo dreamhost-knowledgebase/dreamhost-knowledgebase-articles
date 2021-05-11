@@ -47,7 +47,7 @@
 </ul>
 </div>
 </div>
-<p>The following instructions assume you've created a virtual environment titled 'venv' using the links above.</p>
+<p>The following instructions assume you've created a virtual environment titled <span class="text-object">venv</span> using the links above.</p>
 <ol>
 <li>Run the following commands in order to create your Django project within this environment:
 <div class="preboxcontainer">
@@ -65,7 +65,7 @@
 </div>
 </div>
 </li>
-<li>In order for Passenger to pick up your project, create a passenger_wsgi.py file within your <a href="https://help.dreamhost.com/hc/en-us/articles/360001219231-Where-is-the-home-directory-#the-website-directory" target="_self">site's top level directory</a> (<span class="text-object">/home/username/example.com</span>). Add the following:
+<li>In order for Passenger to pick up your project, create a <span class="text-object">passenger_wsgi.py</span> file within your <a href="https://help.dreamhost.com/hc/en-us/articles/360001219231-Where-is-the-home-directory-#the-website-directory" target="_self">site's top level directory</a> (<span class="text-object">/home/username/example.com</span>). Add the following:
 <div class="preboxcontainer">
 <pre class="prebox">import sys, os
 INTERP = "<span class="code-highlight">/home/username/example.com/venv/bin/python3</span>"
@@ -87,7 +87,7 @@ application = get_wsgi_application()
 <div class="alert alert-note">
 <div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
-<p>Be sure to replace the following in the passenger_wsgi.py file:</p>
+<p>Be sure to replace the following in the <span class="text-object">passenger_wsgi.py</span> file:</p>
 <ul>
 <li>The path to your local python version in line #2. Run <span class="code">which python3</span> to confirm:
 <div class="preboxcontainer">
@@ -104,7 +104,7 @@ application = get_wsgi_application()
 </li>
 <li>Set up Django's static file settings in order to correctly serve images, CSS, and JavaScript as you will need this for the admin interface to work. For example:
 <ul>
-<li>Open the projects settings.py file found at <span class="text-object">example.com/projectname/projectname/settings.py</span>.&nbsp;Scroll to the bottom and you will find that the <span class="code">STATIC_URL</span> is probably configured to <span class="code">/static/</span>.</li>
+<li>Open the projects <span class="text-object">settings.py</span> file found at <span class="text-object">example.com/projectname/projectname/settings.py</span>.&nbsp;Scroll to the bottom and you will find that the <span class="code">STATIC_URL</span> is probably configured to <span class="code">/static/</span>.</li>
 <li>Add another line to set the location on the server of the actual static directory. Make sure to change <span class="text-object">username</span> to your <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access" target="_self">Shell user</a>.</li>
 </ul>
 <dl>
@@ -133,7 +133,7 @@ application = get_wsgi_application()
 <span class="server">(venv) [server]$ </span><span class="command">python3 manage.py collectstatic</span></pre>
 </div>
 </li>
-<li>Set up your database as required within the settings.py file. The section of the settings.py file originally looks like this:
+<li>Set up your database as required within the <span class="text-object">settings.py</span> file. The section of the <span class="text-object">settings.py</span> file originally looks like this:
 <div class="preboxcontainer">
 <pre class="prebox">DATABASES = {
     'default': {
@@ -160,7 +160,7 @@ application = get_wsgi_application()
 </div>
 </li>
 <li>The default is to use sqlite3, which may be suitable for the smallest of sites, but it's likely you'll want to set up a mysql database.</li>
-<li>Also in your settings.py file, update the <span class="code">ALLOWED_HOSTS</span> field with your domain name. At first, it appears like this:
+<li>Also in your <span class="text-object">settings.py</span> file, update the <span class="code">ALLOWED_HOSTS</span> field with your domain name. At first, it appears like this:
 <div class="preboxcontainer">
 <pre class="prebox">ALLOWED_HOSTS = []</pre>
 </div>
@@ -235,9 +235,9 @@ Superuser created successfully.</span></pre>
 </div>
 <h2>Troubleshooting</h2>
 <div class="solvvy-solution">
-<p>If you notice any errors after installing, check to see if you have an .htaccess file in your site's directories. It's possible the code in it could cause issues with your installation.</p>
+<p>If you notice any errors after installing, check to see if you have an <span class="text-object">.htaccess</span> file in your site's directories. It's possible the code in it could cause issues with your installation.</p>
 <h3>ModuleNotFoundError: No module named 'django'</h3>
-<p>If you see this error when visiting your site, check your passenger_wsgi.py file. Confirm the following line points to your custom version of Python. For example, it should be 3.6 or 3.7 if you installed one of those versions.</p>
+<p>If you see this error when visiting your site, check your <span class="text-object">passenger_wsgi.py</span> file. Confirm the following line points to your custom version of Python. For example, it should be 3.6 or 3.7 if you installed one of those versions.</p>
 <div class="preboxcontainer">
 <pre class="prebox">sys.path.insert(0,cwd+'/venv/lib/python3.7/site-packages')</pre>
 </div>
