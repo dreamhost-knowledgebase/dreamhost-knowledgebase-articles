@@ -1,0 +1,109 @@
+<h2>Overview</h2>
+<div class="solvvy-solution">
+<p><a href="https://en.wikipedia.org/wiki/List_of_HTTP_header_fields" target="_self">HTTP headers</a> are information passed between a web browser and a website when it's visited. These headers contain information you can use to add or confirm if a service is active on your website such as <a href="https://help.dreamhost.com/hc/en-us/articles/360037198972-CORS-headers" target="_self">CORS</a>, <a href="https://help.dreamhost.com/hc/en-us/articles/360036486952-Security-headers" target="_self">Security headers</a>, or <a href="https://help.dreamhost.com/hc/en-us/articles/215873788-How-to-check-if-Cloudflare-is-working" target="_self">Cloudflare</a>.</p>
+<p>This article explains the different ways you can view your website's HTTP Headers.</p>
+</div>
+<h2>Online tools</h2>
+<div class="solvvy-solution">
+<p>The easiest way to view your website's headers is to use a 3rd party website. Just visit the site and enter your website URL. You most often are looking for the <span class="text-object">Response</span> headers.</p>
+<ul>
+<li><a href="https://websniffer.cc/" target="_self" rel="undefined">websniffer.cc</a></li>
+<li><a href="https://securityheaders.com/" target="_self" rel="undefined">securityheaders.com</a></li>
+<li><a href="https://headers.cloxy.net/" target="_self" rel="undefined">headers.cloxy.net</a></li>
+<li><a href="https://www.w3.org/International/questions/qa-headers-charset.en" target="_self" rel="undefined">w3.org/International/questions/qa-headers-charset.en</a></li>
+</ul>
+</div>
+<h2>Browser tools</h2>
+<div class="solvvy-solution">
+<p>You can also use the tools built into your browser to view the headers. The steps are the same in Chrome, Firefox, and Safari as shown below.</p>
+<h3>Chrome, Firefox, and Safari</h3>
+<ol>
+<li>Open the Developer Tools menu in your browser.<br /><strong>Windows</strong>: Hold down <span class="code">CTRL + SHIFT</span> and press the letter <span class="code">i</span>. You could also right-click the page and select <span class="text-object">Inspect</span> from the menu.<br /><strong>Mac</strong>:&nbsp;Hold down <span class="code">Option (<img src="https://kbimages.dreamhosters.com/images/2x/icon-apple-option.png" alt="Apple Option" width="16" height="13" />)</span> + <span class="code">Command (<img src="https://kbimages.dreamhosters.com/images/2x/icon-apple-command.png" alt="Apple Option" width="16" />)</span>&nbsp;and press the letter <span class="code">i</span>. You could also right-click (<span class="code">Ctrl (<img src="https://kbimages.dreamhosters.com/images/2x/icon-apple-control.png" alt="Apple Control" width="16" />)</span>+ click) the page and select <span class="text-object">Inspect</span> from the menu.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/3rd-apple-network-tab.png" alt="Apple Network Tab" width="219" height="28" /></dd>
+</dl>
+</li>
+<li>Click the <span class="text-object">Network</span> tab in the Dev Tools menu.</li>
+<li>Reload the page you're currently on by clicking the refresh button in your browser, or by pressing <strong>F5</strong>. A list of all files loaded on the current page displays.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/3rd-apple-response-headers.png" alt="Apple Network Tab" width="456" height="322" /></dd>
+</dl>
+</li>
+<li>Click any file under the <span class="text-object">Name</span> column.</li>
+<li>Select the <span class="text-object">Headers</span> tab in the right pane.</li>
+<li>The HTTP Headers display in the right pane.
+<div class="alert alert-note">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>They are separated into <span class="text-object">Response Headers</span> and <span class="text-object">Request Headers</span>. You most often want to view the <span class="text-object">Response Headers</span>.</p>
+</div>
+</div>
+</li>
+</ol>
+</div>
+<h2>Command line</h2>
+<div class="solvvy-solution">
+<p>The final option is to run a command in a shell terminal. You will need access to a terminal in order to run the following commands.</p>
+<p><strong>Mac and Linux</strong></p>
+<p>Mac and Linux computers already have a Shell terminal built-in.</p>
+<p><strong>Windows</strong></p>
+<p>Windows users can download <a href="https://docs.microsoft.com/en-us/powershell/" target="_self">PowerShell</a>.</p>
+<p><strong>DreamHost server</strong></p>
+<p>You could also run the command by logging into your DreamHost server via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview" target="_self">SSH</a>.</p>
+<h3>Display the response headers of a website</h3>
+<p>Run the <span class="code">curl</span> command with the <span class="code">-I</span> flag to display the response headers of a website.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">curl -I <span class="code-highlight">https://example.com</span></span>
+HTTP/2 200
+accept-ranges: bytes
+age: 416502
+cache-control: max-age=604800
+content-type: text/html; charset=UTF-8
+date: Tue, 11 May 2021 15:05:33 GMT
+etag: "3147526947"
+expires: Tue, 18 May 2021 15:05:33 GMT
+last-modified: Thu, 17 Oct 2019 07:18:26 GMT
+server: ECS (sec/9795)
+x-cache: HIT
+content-length: 1256
+</pre>
+</div>
+<h3>Windows PowerShell</h3>
+<p>Download <a href="https://docs.microsoft.com/en-us/powershell/" target="_self">PowerShell</a> to your Windows computer. You can then run the following command to view a website's headers.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">PS C:\Users\username&gt; </span><span class="command">Invoke-WebRequest -Uri <span class="code-highlight">https://example.com</span> -UseBasicParsing | Select-Object -ExpandProperty Headers</span>
+
+Key            Value
+---            -----
+Age            357194
+Vary           Accept-Encoding
+X-Cache        HIT
+Content-Length 1256
+Cache-Control  max-age=604800
+Content-Type   text/html; charset=UTF-8
+Date           Mon, 10 May 2021 23:26:34 GMT
+Expires        Mon, 17 May 2021 23:26:34 GMT
+ETag           "3147526947+ident"
+Last-Modified  Thu, 17 Oct 2019 07:18:26 GMT
+Server         ECS (dcb/7EEA)</pre>
+</div>
+</div>
+<h2>Analysis of header output</h2>
+<div class="solvvy-solution">
+<p>The header information you retrieve can often be difficult to understand. View the following links for explanations of the different fields you may see.</p>
+<h3>Reference links</h3>
+<ul>
+<li><a href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html">https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html</a></li>
+<li><a href="https://en.wikipedia.org/wiki/List_of_HTTP_header_fields">https://en.wikipedia.org/wiki/List_of_HTTP_header_fields</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers">https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers</a></li>
+</ul>
+</div>
+<h2>See also</h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360036487692-HTTP-Headers-overview">HTTP Headers overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215747598-Setting-headers-with-an-htaccess-file">Setting headers with an .htaccess file</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360036486952-Security-headers">Security headers</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360037198972-CORS-headers">CORS headers</a></li>
+</ul>
+</div>
