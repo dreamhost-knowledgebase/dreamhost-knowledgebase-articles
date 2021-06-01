@@ -10,7 +10,19 @@
 <div class="solvvy-solution">
 <p>A common program for ssh on Windows is <a class="reference external" href="http://www.chiark.greenend.org.uk/~sgtatham/putty/?">PuTTY</a> or <a class="reference external" href="http://sourceforge.net/projects/putty-nd/">putty-nd</a>. If you followed the instructions to <a href="https://help.dreamhost.com/hc/en-us/articles/214843617#dashboard">create a Key Pair in the DreamCompute panel</a>, you have already downloaded a <span class="text-object">.pem</span> file.&nbsp;PuTTY requires that you use this <span class="text-object">.pem</span> file to convert your private key into a <span class="text-object">.ppk</span> file before it can be used to connect via ssh.</p>
 <ol>
-<li>Open up the <a href="https://help.dreamhost.com/hc/en-us/articles/216109837-PuTTY-binary-files">puttygen</a>&nbsp;program. If you don't have it, <a href="https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html">download it here</a>.
+<li>Open up the <a href="https://help.dreamhost.com/hc/en-us/articles/216109837-PuTTY-binary-files">puttygen</a>&nbsp;program. If you don't have it, <a href="https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html">download it here</a>.</li>
+<li>You must first set the PPK file version to 2. Click the <span class="text-object">Key</span> menu.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/3rd-puttygen-key-params-01.png" alt="puttgen key param" /></dd>
+</dl>
+</li>
+<li>From the dropdown select <span class="text-object">Parameters for saving key files...</span>.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/3rd-puttygen-key-params-02.png" alt="puttgen key param" /></dd>
+</dl>
+</li>
+<li>Next to <span class="text-object">PPK file version</span>, select the number <span class="text-object">2</span>.</li>
+<li>Click the <strong>OK</strong> button to save.&nbsp;
 <dl>
 <dd><img src="https://kbimages.dreamhosters.com/images/Connect_with_ssh_keys_01.png" alt="Connect_with_ssh_keys" /></dd>
 </dl>
@@ -22,7 +34,18 @@
 <dd><img src="https://kbimages.dreamhosters.com/images/Connect_with_ssh_keys_02.png" alt="Connect_with_ssh_keys" /></dd>
 </dl>
 </li>
-<li>When finished, click the <strong>Save private key</strong> button to save it into a <span class="text-object">.ppk</span> file.</li>
+<li>When finished, click the <strong>Save private key</strong> button to save it into a <span class="text-object">.ppk</span> file.
+<div class="alert alert-important">
+<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
+<div class="alert-content">
+<p>A pop-up displays with the following text:</p>
+<div class="text-blockquote">
+<p>Are you sure you want to save this key without a passphrase to protect it?</p>
+</div>
+<p>Click the <strong>Yes</strong> button to save without a password.</p>
+</div>
+</div>
+</li>
 <li>Open PuTTY and navigate to <span class="text-section">Connection &gt; SSH &gt; Auth</span>.
 <dl>
 <dd><img src="https://kbimages.dreamhosters.com/images/Connect_with_ssh_keys_03.png" alt="Connect_with_ssh_keys" /></dd>
@@ -48,4 +71,19 @@
 </li>
 <li>Enter your <a href="https://help.dreamhost.com/hc/en-us/articles/228377408-How-to-find-the-default-user-of-an-image">user</a> and press <span class="code">Enter</span>.&nbsp;You are now logged into the instance.</li>
 </ol>
+</div>
+<h2>Troubleshooting</h2>
+<div class="solvvy-solution">
+<p>You may see the following text in your terminal when attempting to connect.</p>
+<div class="preboxcontainer">
+<pre class="prebox">Unable to load key file "C:\Users\username\Documents\dhc-private-key.ppk" <br />(PuTTY key format too new)
+login as:</pre>
+</div>
+<p>If you enter the default username, you'll see this error.</p>
+<dl>
+<dd>
+<p><strong>No supported authentication methods available (server sent: publickey)</strong></p>
+</dd>
+</dl>
+<p>This error means your private key was saved as version 3. It must be saved as version 2 as shown in step #2 above.</p>
 </div>
