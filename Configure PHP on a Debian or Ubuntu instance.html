@@ -1,0 +1,83 @@
+<h2>Overview</h2>
+<div class="solvvy-solution">
+<p>PHP is a popular server-side scripting language used to build websites and other backend functionality. This article explains how to install PHP on a DreamCompute instance running Debian or Ubuntu with Apache.</p>
+<div class="prereqs">
+<p>View the <a href="https://help.dreamhost.com/hc/en-us/articles/234961387-Getting-started-with-DreamCompute" target="_self">Getting started</a> article and make sure you have completed the following steps before proceeding.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215912848-How-to-launch-an-instance-using-the-DreamCompute-dashboard" target="_self">Create an instance</a> running Debian or Ubuntu</li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216201547-Connect-to-your-instance-with-ssh-keys-overview" target="_self">Log into the instance</a> in a terminal</li>
+</ul>
+</div>
+</div>
+<h2>Step 1 — Add the repository</h2>
+<div class="solvvy-solution">
+<p>You must first run the following command to add a repository before installing PHP.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@instance]:$ </span><span class="command">sudo add-apt-repository ppa:ondrej/php</span></pre>
+</div>
+<h2>Step 2 — Update packages</h2>
+<p>Run the following to update your list of packages.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@instance]:$ </span><span class="command">sudo apt update</span></pre>
+</div>
+<h2>Step 3 — Install PHP</h2>
+<p>You have the choice to install PHP as a module or FPM.</p>
+<h3>Installing as a PHP module</h3>
+<p>Run the following commands to install and load PHP.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@instance]:$ </span><span class="command">sudo apt install php8.0 libapache2-mod-php8.0</span></pre>
+</div>
+<h3>Installing as FPM</h3>
+<p>Run the following commands to install, enable, and load PHP-FPM.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@instance]:$ </span><span class="command">sudo apt install php8.0-fpm libapache2-mod-fcgid</span></pre>
+</div>
+<h2>Step 4 — Confirm PHP is installed</h2>
+<p>Finally, run the following command to view the version you installed.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@instance]:$ </span><span class="command">php -v</span>
+PHP 8.0.5 (cli) (built: May  3 2021 11:30:57) ( NTS )
+Copyright (c) The PHP Group
+Zend Engine v4.0.5, Copyright (c) Zend Technologies
+    with Zend OPcache v8.0.5, Copyright (c), by Zend Technologies</pre>
+</div>
+</div>
+<h2>Install modules (extensions)</h2>
+<div class="solvvy-solution">
+<p>After PHP is installed, you can proceed with installing any modules (also called extensions) needed.</p>
+<h3>View available modules you can install</h3>
+<p>This command lists all modules available for you to install.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@instance]:$ </span><span class="command">sudo apt search php8.0-*</span></pre>
+</div>
+<h3>Install a module</h3>
+<p>After locating the correct name of a module, you can install it using the following command.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@instance]:$ </span><span class="command">sudo apt install <span class="code-highlight">php8.0-sqlite3</span></span></pre>
+</div>
+<p>You can also install several modules at once. This assumes the module names start with <span class="code">php8.0-</span>.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@instance]:$ </span><span class="command">sudo apt install <span class="code-highlight">php8.0-{mysql,imap,zip}</span></span></pre>
+</div>
+<h3>View modules currently loaded</h3>
+<p>The following command lists all modules currently loaded by PHP.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@instance]:$ </span><span class="command">php -m</span></pre>
+</div>
+</div>
+<h2>Configuration Files</h2>
+<div class="solvvy-solution">
+<p>There are a few configuration files for PHP that are used for the CLI and the Apache modules (or PHP-FPM) specifically. Change <span class="text-object">&lt;version&gt;</span> to your specific version of PHP.</p>
+<h3>/etc/php/cli/&lt;version&gt;/php.ini</h3>
+<p>The primary configuration file for PHP when executed from the CLI.&nbsp;</p>
+<h3>/etc/php/&lt;version&gt;/apache2/php.ini</h3>
+<p>The primary configuration file for PHP when run from the Apache module.</p>
+<h3>/etc/php/&lt;version&gt;/fpm/php.ini</h3>
+<p>The primary configuration file for PHP when run from as PHP-FPM.</p>
+</div>
+<div class="footer">&nbsp;</div>
+<p><!--DreamCompute Button--></p>
+<div class="dream-sign-up">
+<h2>Deploy Your Apps On Cloud Servers Today</h2>
+<div class="solvvy-hidden"><a href="http://www.dreamhost.com/cloud/computing">Sign Up for DreamCompute</a></div>
+</div>
