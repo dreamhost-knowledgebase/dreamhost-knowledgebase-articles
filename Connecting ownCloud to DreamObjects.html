@@ -122,12 +122,27 @@
 <div class="solvvy-solution">
 <p>If you plan to upload large files to DreamObjects using ownCloud, you’ll need to be aware of some limitations and make some configuration changes since uploading large files can be very memory intensive.</p>
 <p>DreamObjects’ objects are limited to 10TBs in size, but must be uploaded in 5GB chunks. ownCloud does not support multi-part file uploads so you are limited to 5GB file uploads via ownCloud.</p>
-<p>ownCloud uses an <span class="text-object">.user.ini</span> file located in the <span class="text-object">owncloud</span> folder on the server to set the following PHP parameters:</p>
+<h3>Customizing PHP settings</h3>
+<p>ownCloud uses <a href="https://doc.owncloud.com/server/admin_manual/installation/configuration_notes_and_tips.html" target="_self">different PHP configuration files</a> depending on where the PHP command is run.</p>
+<ul>
+<li><strong>phprc</strong> - The <a href="https://help.dreamhost.com/hc/en-us/articles/214200688-php-ini-overview" target="_self">phprc file</a> is the standard DreamHost file used to customize PHP settings. This file adjusts the PHP settings for Shell commands run on the server. This would include services like cron jobs. View the following articles for instructions on how to edit this file.
+<dl>
+<dd>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214894037-How-do-I-create-a-phprc-file-via-FTP-">How do I create a phprc file via FTP? (easier for beginners)</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214200668-How-do-I-create-a-phprc-file-via-SSH-">How do I create a phprc file via SSH? (for advanced users)</a></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><strong>.user.ini</strong> - The <span class="text-object">.user.ini</span> file is an ownCloud file that controls PHP settings used within your website dashboard. This would include uploading files and execution time limits when interacting with your website. This file is located in the <span class="text-object">owncloud</span> folder on the server and sets the following PHP parameters:
 <div class="preboxcontainer">
 <pre class="prebox">upload_max_filesize=513M<br />post_max_size=513M<br />memory_limit=512M<br />mbstring.func_overload=0<br />always_populate_raw_post_data=-1<br />default_charset='UTF-8'<br />output_buffering=0
 </pre>
 </div>
-<p>Make adjustments in this <span class="text-object">.user.ini</span> file to customize your PHP settings. View the following article if you find your new settings have not updated.</p>
+</li>
+</ul>
+<p>View the following article if you find your new settings have not updated.</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/214200748-My-phprc-file-isn-t-updating">My phprc file isn't updating</a></li>
 </ul>
