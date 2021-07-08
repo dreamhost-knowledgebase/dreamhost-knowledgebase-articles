@@ -3,14 +3,14 @@
 <div class="alert alert-important">
 <div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
 <div class="alert-content">
-<p>PHP 5.6, 7.0, and 7.1 have been removed from the DreamHost panel. Any sites previously set to these versions will continue to run them normally. However, it's highly recommended that you upgrade to PHP 7.2, 7.3, or 7.4 as older versions will soon be removed completely from all DreamHost servers.</p>
+<p>PHP versions below 7.3 have been removed from the DreamHost panel. It's highly recommended that you always upgrade to a recent version as older versions will soon be removed completely from all DreamHost servers.</p>
 </div>
 </div>
 <p>PHP 7 offers several improvements over earlier versions. You can read more about those here:</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/217253517-PHP-7-overview">PHP 7 overview</a></li>
 </ul>
-<p>A major issue with PHP 5.6 is that it consumes more memory than necessary and runs slower than newer versions. If your WordPress site is running on PHP 5.6, it's running slower than it would on PHP 7.</p>
+<p>A major issue with older versions is that they consume more memory than necessary and run slower than newer versions.</p>
 <p>The latest WordPress core software releases have been compatible with PHP 7 for a few years now.&nbsp;Upgrading to PHP 7 is a quick and easy way to get more performance for your WP site and server.</p>
 <h3>Potential software conflicts</h3>
 <p>If you haven’t been diligent about maintaining your WP software, plugins and theme versions and making sure they’re well supported by their developers, you may have code that’s incompatible with PHP 7.</p>
@@ -21,7 +21,7 @@
 <div class="alert alert-note">
 <div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
 <div class="alert-content">
-<p>While PHP versions 7.2 and 7.3 are still supported by PHP.net, the current version WordPress.org recommends is PHP 7.4. You may see a warning message in your WordPress dashboard asking you to upgrade PHP if it still uses versions 7.2 or 7.3. You can find steps to upgrade your WordPress site to PHP version 7.4 <a class="reference internal" href="#upgrading-to-php-7">below</a>.</p>
+<p>While <a href="https://www.php.net/supported-versions.php" target="_self">PHP 7.3 is still supported by PHP.net</a>, WordPress.org recommends at least PHP 7.4. You may see a warning message in your WordPress dashboard asking you to upgrade PHP if it still uses a version lower than 7.4. You can find steps to upgrade your WordPress version <a class="reference internal" href="#upgrading-to-php-7">below</a>.</p>
 </div>
 </div>
 <h3>DreamPress hosting plans</h3>
@@ -30,8 +30,8 @@
 <li>To the right of your domain, click the <strong>Manage</strong> button.</li>
 <li>At the top under your domain name, you should see the PHP version:
 <ul>
-<li>If you see PHP 7.2, 7.3, 7.4, or PHP-FPM, you are already on a supported version of PHP 7.</li>
-<li>If you see PHP 5.6, 7.0,&nbsp; or 7.1 or if you specifically requested a downgrade to PHP 5.6 on PHP-FPM, <a href="#upgrading-to-php-7" target="_self">you should upgrade to PHP 7.2, 7.3, or 7.4</a>.</li>
+<li>If you see PHP-FPM, you are already on a supported version of PHP 7.</li>
+<li>If you see an older version or if you specifically requested a downgrade on PHP-FPM, <a href="#upgrading-to-php-7" target="_self" rel="undefined">you should upgrade to PHP 7.4</a> or 8.0.</li>
 </ul>
 </li>
 </ol>
@@ -42,7 +42,7 @@
 <li>Click the <span class="text-link">Edit</span> link to the right of a domain.</li>
 <li>On the domain's settings page, look under the <span class="text-section">Web Options</span> section for the PHP version:
 <ul>
-<li>If it says PHP 5.6, 7.0,&nbsp; or 7.1, <a href="#upgrading-to-php-7" target="_self">you should upgrade to PHP 7.2, 7.3, or 7.4</a>.</li>
+<li><a href="#upgrading-to-php-7" target="_self" rel="undefined">You should upgrade to 7.4 or 8.0</a></li>
 </ul>
 </li>
 </ol>
@@ -54,7 +54,7 @@
 <p>If you encounter an issue with the latest version, you can try the next most recent version without much difference in performance or support.</p>
 <p>Each PHP version offers two options: FastCGI and CGI. Typically you should choose FastCGI as this offers faster performance for most sites. If your site’s PHP version is currently set to CGI, you may have at one point encountered performance issues with FastCGI which prompted the change to CGI. You are welcome to try either one to compare performance.</p>
 </div>
-<h2>Preparing your WordPress site for a PHP 7 upgrade</h2>
+<h2>Preparing your WordPress site for a PHP upgrade</h2>
 <div class="solvvy-solution">
 <p>Using the checklist below will help minimize the risk of issues when upgrading the PHP version, however, there is always a small chance of an error or issue after an upgrade due to the thousands of themes, plugins, and customizations available to WordPress.</p>
 <p>Remember that you can always try the upgrade and downgrade if there’s an issue. <span style="font-weight: 400;">These steps aren’t</span> required, but they are highly recommended for a PHP upgrade as well as for the regular maintenance and security of your site.</p>
@@ -65,11 +65,7 @@
 <li>Do you have any older themes or plugins that haven’t been updated by the developer in over a year, or any paid themes/plugins that have expired licensing for updates?</li>
 <li>Do you have any customizations written in PHP that you need a developer to review?</li>
 </ul>
-<p><strong>Tools to help make this research easier</strong></p>
-<ul>
-<li>Install the '<a href="https://wordpress.org/plugins/xgen-date-information/">xGEN Plugin Date Information</a>' plugin. This plugin displays the date the plugin was last updated on the plugins page in the dashboard. <span style="font-weight: 400;">If you have applied all available updates to your plugins, this date can help you identify plugins that have not received an update from its developer in over a year</span>.</li>
-<li>All One-Click installs in the panel are always set to <a href="https://help.dreamhost.com/hc/en-us/articles/215300747-How-to-set-your-One-Click-WordPress-installation-to-automatically-update" target="_self">update automatically</a> (unless you specifically turn it off).</li>
-</ul>
+<p>All One-Click installs in the panel are always set to <a href="https://help.dreamhost.com/hc/en-us/articles/215300747-How-to-set-your-One-Click-WordPress-installation-to-automatically-update" target="_self">update automatically</a> (unless you specifically turn it off).</p>
 <h3>Testing the upgrade using a staging site</h3>
 <p>A safe way to test the new PHP version is to create a staging website. This staging site will become a duplicate of your existing live website. You can then proceed to run tests on this staging site to see how it reacts. If nothing unusual happens, you can then proceed with upgrading your live website. View the following articles for information on how to create a staging website for WordPress:</p>
 <ul>
@@ -77,7 +73,7 @@
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/360003838631-Creating-a-staging-WordPress-site">Creating a staging WordPress site (Non-DreamPress sites)</a></li>
 </ul>
 </div>
-<h2><span id="upgrading-to-php-7">Upgrading to PHP 7</span></h2>
+<h2><span id="upgrading-to-php-7">Upgrading PHP</span></h2>
 <div class="solvvy-solution">
 <h3>DreamPress sites</h3>
 <p>DreamHost support can upgrade your site's PHP version for you. To request this,&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/215722447-Contacting-DreamHost-via-email">submit a support ticket</a>&nbsp;in your panel. Make sure to include your DreamPress site name and the version you'd like to be upgraded to.</p>
@@ -93,6 +89,6 @@
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/214202188-PHP-overview">PHP overview</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/214205508-Updating-PHP-overview-">Updating PHP overview</a></li>
 <li><a href="http://www.php.net/manual/en/migration70.new-features.php">PHP 7 new features</a></li>
-<li><a href="&quot;https://www.php.net/releases/">PHP releases</a></li>
+<li><a>PHP releases</a></li>
 </ul>
 </div>
