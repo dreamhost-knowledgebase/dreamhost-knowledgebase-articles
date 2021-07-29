@@ -1,0 +1,132 @@
+<h2>Overview</h2>
+<div class="solvvy-solution">
+<p>WordPress sites are composed of two main components: the website files and the database. The webserver files contain things like the images, the plugins and theme files, and the WordPress core files. The database contains things like the core, plugin and theme options, the post content, user content, and metatables. Online tools cannot access the database, and it's possible to have a high score on these tools white having poor database performance. The following article details several methods of optimizing a WordPress site's database.</p>
+<div class="notebox-important">
+<p>This article will be using <a href="/hc/en-us/articles/214693248-WordPress-wp-cli-overview">wp-cli</a>&nbsp;to optimize your database. You will need to log into your server via <a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a> and navigate to your WordPress site's directory to run these commands.</p>
+<p>Additionally, make sure to <a href="https://help.dreamhost.com/hc/en-us/articles/215039758-Database-backup-overview" target="_self">back up your database</a> before performing any destructive action.</p>
+</div>
+</div>
+<h2 id="options" class="header-section">The options table</h2>
+<div class="solvvy-solution">
+<p>The <span class="text-object">options</span> table contains important WordPress site data, such as the site URL, path, and saved settings. It also contains plugin and theme settings, along with transient (temporary) data. Over time, this table can become bloated by transient data with long expiration timers and leftover settings from uninstalled plugins.</p>
+<h2>Deleting transients</h2>
+<ol>
+<li>Delete any transients in the WordPress database with the following command:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp transient delete --all</span></pre>
+</div>
+</li>
+<li>Optimize the remaining tables in the database with the following command:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp db optimize</span></pre>
+</div>
+</li>
+</ol>
+<div class="notebox-note">
+<p>If you would like to automate these commands in the future, you can <a href="https://help.dreamhost.com/hc/en-us/articles/215088668-How-do-I-create-a-cron-job-" target="_self">create a cron job</a> using the DreamHost panel.</p>
+</div>
+<p>If your options table is 10MB or larger after optimization, consider using <a href="https://help.dreamhost.com/hc/en-us/articles/360048755671-Professional-Microservices" target="_self">DreamHost's WordPress database optimization service</a>, or reach out to another professional WordPress developer for more assistance.</p>
+<h2>Autoload</h2>
+<p>Autoload data is a set of data that is loaded with every request to the options table. Large amounts of autoload data can cause poor /wp-admin performance and may affect the public-facing site as well. Run the following command to find out how much autoload data your site has:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp db query "SELECT SUM(LENGTH(option_value)/1048576) as 'Autoload(MB)' FROM $(wp config get table_prefix)options WHERE autoload='yes' ;"</span></pre>
+</div>
+<p>Less than 600KB is good for most servers, but higher-performance servers such as DreamPress may be able to handle larger amounts of autoload data.</p>
+<p>If your autoload size is larger than expected, run the following command:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp db query "SELECT option_name, LENGTH(option_value)/1048576 AS "Size" FROM $(wp config get table_prefix)options WHERE autoload='yes' ORDER BY "Size" DESC LIMIT 25 ;"</span></pre>
+</div>
+<p>This will return the 25 largest rows in an options table that are being autoloaded. From here, you will need to examine the rows and determine what data is actually needed. Autoload data could be related to your theme or plugins, and you will need to research entries you don't recognize before deleting them. If you do find rows that can be safely removed, use the following command to do so:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp db query "DELETE FROM $(wp config get table_prefix)options WHERE option_name LIKE <span class="code-highlight">'%example_%'</span> ;"</span>
+  </pre>
+</div>
+<div class="notebox-important">
+<p>Remember to replace <span class="code">%example_%</span> with the prefix of the row you want to delete.</p>
+</div>
+<p>Once a row is are removed, run <span class="code">wp db optimize</span> again and test your site to ensure there are no adverse effects.</p>
+<h2>Indexing</h2>
+<p>Indexing helps the database server quickly find and return queries. You can check to see if your options table already has an index using the following command:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp db query "SHOW INDEX FROM $(wp config get table_prefix)options ;"</span></pre>
+</div>
+<p>Generally, you should add an index when your database is between 60% and 80% non-autoloaded data. You can compare these values using:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp db query "SELECT COUNT(CASE WHEN autoload = 'yes' THEN 1 END) FROM $(wp config get table_prefix)options ;" ; wp db query "SELECT COUNT(CASE WHEN autoload = 'no' THEN 1 END) FROM $(wp config get table_prefix)options ;"</span></pre>
+</div>
+<p>You can add an index to your options table using the following command:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp db query "CREATE INDEX autoload ON $(wp db config get table_prefix)options(autoload, option_name) ;"</span></pre>
+</div>
+<p>If you need to delete an index, use the following command:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp db query "DROP INDEX autoload ON $(wp db config get table_prefix)options ;"</span></pre>
+</div>
+</div>
+<h2 id="postmeta" class="header-section">The postmeta table</h2>
+<div class="solvvy-solution">
+<p>The <span class="text-object">postmeta</span> table contains miscellaneous metadata tied to a post on your site, such as that added by plugins and themes, or metadata for media library content. If your postmeta table is larger than your post table, more optimization may be needed. You will need to use two commands to search through the postmeta table, as the mate_key column uses a leading <span class="code">_</span> for hidden settings and no leading <span class="code">_</span> for user-accessible settings.</p>
+<p>Run the following commands:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp db query "SELECT SUBSTRING_INDEX(meta_key, '_', 1) AS "Meta",(SUM(LENGTH(meta_id)+LENGTH(post_id)+LENGTH(meta_key)+LENGTH(meta_value)))/1048567 AS "Size", COUNT(*) AS "Count" FROM $(wp config get table_prefix)postmeta WHERE meta_key NOT LIKE '\_%' GROUP BY "Meta" ORDER BY "Size" DESC ;"</span></pre>
+</div>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp db query "SELECT SUBSTRING_INDEX(meta_key, '_', 2) AS "Meta",(SUM(LENGTH(meta_id)+LENGTH(post_id)+LENGTH(meta_key)+LENGTH(meta_value)))/1048567 AS "Size", COUNT(*) AS "Count" FROM $(wp config get table_prefix)postmeta WHERE meta_key LIKE '\_%' GROUP BY "Meta" ORDER BY "Size" DESC ;"</span></pre>
+</div>
+<p>The first command will list all user-accessible settings, sorted in descending order by row size. The second does the same, but for hidden settings.</p>
+<p>Examine the results to determine what, if anything, can be removed. The following two commands may be useful:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp db query "SELECT MAX(t1.post_id) AS "post_id", MAX(t2.post_date) AS "Date", SUBSTRING_INDEX(t1.meta_key, '_', 1) AS "Meta", (SUM(LENGTH(meta_id)+LENGTH(post_id)+LENGTH(meta_key)+LENGTH(meta_value)))/1048567 AS "Size", COUNT(*) AS "Count" FROM $(wp config get table_prefix)postmeta AS t1 JOIN $(wp config get table_prefix)posts AS t2 ON t1.post_id = t2.ID WHERE meta_key NOT LIKE '\_%' GROUP BY "Meta" ORDER BY "Date" DESC ;"</span></pre>
+</div>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp db query "SELECT MAX(t1.post_id) AS "post_id", MAX(t2.post_date) AS "Date", SUBSTRING_INDEX(t1.meta_key, '_', 2) AS "Meta", (SUM(LENGTH(meta_id)+LENGTH(post_id)+LENGTH(meta_key)+LENGTH(meta_value)))/1048567 AS "Size", COUNT(*) AS "Count" FROM $(wp config get table_prefix)postmeta AS t1 JOIN $(wp config get table_prefix)posts AS t2 ON t1.post_id = t2.ID WHERE meta_key LIKE '\_%' GROUP BY "Meta" ORDER BY "Date" DESC ;"</span></pre>
+</div>
+<p>These will print two tables (one with a leading _ and one without) which display the meta_key string, the size it takes up in the database, the number of rows there are containing it and importantly, the date and post_id of the last time it was used. The meta_key value entries can be used to identify rows for plugins or themes that are no longer in use.</p>
+<p>If any unnecessary rows are found, run the following command to delete them:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp db query "DELETE FROM $(wp config get table_prefix)options WHERE option_name LIKE <span class="code-highlight">'%example_%'</span> ;"</span></pre>
+</div>
+<div class="notebox-important">
+<p>Remember to replace <span class="code">%example_%</span> with the prefix of the row you want to delete.</p>
+</div>
+<p>Additionally, there may be metadata in your postmeta table that is no longer associated with a post. Run the following command to find and remove metadata for deleted posts:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp db query "SELECT * FROM $(wp config get table_prefix)postmeta pm LEFT JOIN $(wp config get table_prefix)posts wp ON wp.ID = pm.post_id WHERE wp.ID IS NULL ; DELETE pm FROM $(wp config get table_prefix)postmeta pm LEFT JOIN $(wp config get table_prefix)posts wp ON wp.ID = pm.post_id WHERE wp.ID IS NULL ;"
+</span></pre>
+</div>
+</div>
+<h2 id="commentmeta" class="header-section">The commentmeta table</h2>
+<div class="solvvy-solution">
+<p>The <span class="text-object">commentmeta</span> table can become cluttered over time with metadata for deleted comments, such as those removed by a spam comment detection plugin.</p>
+<p>To list the rows being deleted before removing them completely, use the following command:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp db query "SELECT * FROM $(wp config get table_prefix)commentmeta WHERE comment_id NOT IN (SELECT comment_id FROM $(wp config get table_prefix)comments) ; DELETE FROM $(wp config get table_prefix)commentmeta WHERE comment_id NOT IN (SELECT comment_id FROM $(wp config get table_prefix)comments) ;"</span></pre>
+</div>
+<h2>Post revisions</h2>
+<p>WordPress post revisions are historical or autosaved versions of your site's posts. WordPress limits the revision count to 10 by default, but these can as your site's post count grows. Use the commands below to clean up revisions in your site's database.</p>
+<p>Run the following command to get a count of the total revisions on your site:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp post list --post_type='revision' --format=ids | wc -w</span></pre>
+</div>
+<p>Run the following command to delete any existing revisions:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp post delete $(wp post list --post_type='revision' --format=ids) --force --quiet</span></pre>
+</div>
+<p>Add the following directive to your <span class="text-object">wp-config.php</span> file to limit the maximum number of revisions:</p>
+<div class="preboxcontainer">
+<pre class="prebox">define('WP_POST_REVISIONS', 1);
+</pre>
+</div>
+<div class="notebox-important">
+<p>Make sure any additions to your <span class="text-object">wp-config.php</span> are done above the line that reads <span class="code">/* That's all, stop editing! Happy blogging. */</span>.</p>
+</div>
+</div>
+<h2><span id="See_also">See also</span></h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215036388-How-do-I-optimize-my-database-" target="_self">How do I optimize my database?</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215300867-General-WordPress-optimization-techniques" target="_self">General WordPress optimization techniques</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215099117-MySQL-overview">MySQL overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214395638-phpMyAdmin-overview">phpMyAdmin overview</a></li>
+</ul>
+</div>
