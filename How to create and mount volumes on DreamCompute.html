@@ -1,6 +1,6 @@
 <h2>Overview</h2>
 <div class="solvvy-solution">
-<p>DreamCompute, like other OpenStack clouds, has multiple kinds of storage available to use. This article works with 'Volume' storage which is recommended for storing critical and important data. For more info on the types of storage, please visit the article on <a class="reference external" href="217701757-What-s-the-difference-between-ephemeral-and-volume-boot-disks">differences between ephemeral and volume storage</a>.</p>
+<p>DreamCompute, like other OpenStack clouds, has multiple kinds of storage available to use. This article works with 'Volume' storage which is recommended for storing critical and important data. For more info on the types of storage, please visit the article on the <a class="reference external" href="217701757-What-s-the-difference-between-ephemeral-and-volume-boot-disks">differences between ephemeral and volume storage</a>.</p>
 </div>
 <h2>What is Volume storage?</h2>
 <div class="solvvy-solution">
@@ -8,7 +8,7 @@
 <p>There are several ways to do the initial steps of creating and attach the volume, so please select the method you wish to use:</p>
 <ul>
 <li><a class="reference external" href="#create-and-attach-a-volume-via-dashboard">DreamCompute Dashboard</a></li>
-<li><a class="reference external" href="#create-and-attach-a-volume-via-openstack-cli">Command Line via OpenStack CLI</a></li>
+<li><a class="reference external" href="#create-and-attach-a-volume-via-openstack-cli">Command-Line via OpenStack CLI</a></li>
 </ul>
 <h2>Create and attach a Volume using the dashboard</h2>
 <div class="solvvy-solution">
@@ -33,7 +33,7 @@
 <dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/how-to-create-and-mount-volumes-on-dreamcompute_02.png" alt="how-to-create-and-mount-volumes-on-dreamcompute_02" /></dd>
 </dl>
 </li>
-<li>The new window will show no attachments at this time. It also displays a dropdown with list of your instances. Click on the list and select your instance name, then click <strong>Attach Volume</strong>.
+<li>The new window will show no attachments at this time. It also displays a dropdown with a list of your instances. Click on the list and select your instance name, then click <strong>Attach Volume</strong>.
 <dl>
 <dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/how-to-create-and-mount-volumes-on-dreamcompute_03.png" alt="how-to-create-and-mount-volumes-on-dreamcompute_03" /></dd>
 </dl>
@@ -57,7 +57,7 @@
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack volume create --size SIZE_IN_GB VOLUME_NAME</span>
 </pre>
 </div>
-<p>The volume should now show up in the dashboard, and on the command line.</p>
+<p>The volume should now show up in the dashboard and on the command line.</p>
 <h3>Using the Volume</h3>
 <p>To use your volume, it now needs to be attached to a running instance.</p>
 <ol>
@@ -99,7 +99,7 @@ In this example the instance is called 'VOLUME_NAME' and there is only one 'avai
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">ls /dev/vd*</span>
 /dev/vda  /dev/vda1  /dev/vdb</pre>
 </div>
-<p>Generally /dev/vda will be the boot drive, and in this case /dev/vdb appears to be the new volume. You can double check the size matches with the command:</p>
+<p>Generally /dev/vda will be the boot drive, and in this case /dev/vdb appears to be the new volume. You can double-check the size matches with the command:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">sudo fdisk -l /dev/vdb</span>
 Disk /dev/vdb: 1 GiB, 1073741824 bytes, 2097152 sectors
@@ -141,7 +141,7 @@ Writing superblocks and filesystem accounting information: done</pre>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">sudo mkdir -p /mnt/backups</span></pre>
 </div>
-<p>With this info you can now modify /etc/fstab to have it auto mounted. <a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Edit it with your preferred editor</a>, and add a line towards the bottom like so:</p>
+<p>With this info, you can now modify /etc/fstab to have it auto mounted. <a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Edit it with your preferred editor</a>, and add a line towards the bottom like so:</p>
 <div class="preboxcontainer">
 <pre class="prebox">UUID=51751b87-a583-42b3-8d61-27ed586ba8da   /mnt/backups   ext4   defaults   0   2</pre>
 </div>
@@ -160,4 +160,24 @@ Filesystem      Size  Used Avail Use% Mounted on
 <p>That's it. When you reboot your instance, your volume will be re-mounted and ready for use.</p>
 </div>
 </div>
+</div>
+<h2>Deleting a Volume</h2>
+<div class="solvvy-solution">
+<p>If you need to delete a volume, you will need to detach it from an instance it's connected to first.</p>
+<ol>
+<li>Navigate to the DreamCompute dashboard&nbsp;<a href="https://iad2.dreamcompute.com/project/volumes/">volumes</a> page.</li>
+<li>Click the dropdown menu and select <strong>Manage Attachments</strong>:
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/how-to-create-and-mount-volumes-on-dreamcompute_02.png" alt="how-to-create-and-mount-volumes-on-dreamcompute_02" /></dd>
+</dl>
+</li>
+<li>Click the <strong>Detach Volume</strong> button to the right of your instance.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-dhc-deletevolume-01.png" alt="how-to-delete-volumes-on-dreamcompute_03" width="351" height="48" /></dd>
+</dl>
+</li>
+<li>Click the <strong>Detach Volume</strong> button on the window that appears to confirm the action.</li>
+<li>Click the dropdown menu and select <strong>Delete Volume</strong>.</li>
+<li>Click the <strong>Delete Volume</strong> button on the window that appears to confirm the action.</li>
+</ol>
 </div>
