@@ -1,9 +1,7 @@
-<div class="alert alert-tip">
-<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-tip-icon.svg" alt="" width="60" height="60" /></div>
-<div class="alert-content">
+<div class="notebox-tip">
 <p>If you find yourself in a situation that requires changes to your site, and your developer isn't available to help, DreamHost's skilled support team may be able to assist you for a small fee. You can find more information about supported services and associated costs in the <a href="/hc/en-us/articles/360042256912-Professional-Services-overview">DreamHost Professional Services</a> article.</p>
 </div>
-</div>
+
 <h2>Overview</h2>
 <div class="solvvy-solution">
 <p>This article explains how to import database content via SSH.</p>
@@ -16,13 +14,13 @@
 <div class="solvvy-solution">
 <p>This article assumes you already have a <a href="https://help.dreamhost.com/hc/en-us/articles/215039758-Database-backup-overview">backup of your MySQL database</a>. To import the backup file, you'll need your database credentials. View the following article to find your database credentials:</p>
 <ul>
-<li><a style="background-color: #ffffff;" href="/hc/en-us/articles/221610868-phpMyAdmin-Finding-your-login-credentials">Finding your database credentials</a></li>
+<li><a href="/hc/en-us/articles/221610868-phpMyAdmin-Finding-your-login-credentials" style="background-color: #ffffff;">Finding your database credentials</a></li>
 </ul>
 </div>
-<h2>Importing a backed up database .sql file via&nbsp;SSH</h2>
+<h2>Importing a backed up database .sql file via SSH</h2>
 <div class="solvvy-solution">
 <ol>
-<li>Review <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access">Creating a user with Shell (SSH) access</a>&nbsp;to change your <a href="https://help.dreamhost.com/hc/en-us/articles/115000675027-FTP-overview-and-credentials">FTP</a> or <a href="https://help.dreamhost.com/hc/en-us/articles/115000675027#FTP_security">SFTP</a> user into a SHELL user.</li>
+<li>Review <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access">Creating a user with Shell (SSH) access</a> to change your <a href="https://help.dreamhost.com/hc/en-us/articles/115000675027-FTP-overview-and-credentials">FTP</a> or <a href="https://help.dreamhost.com/hc/en-us/articles/115000675027#FTP_security">SFTP</a> user into a SHELL user.</li>
 <li>Upload your backed up database file with a <span class="text-object">.sql</span> extension to your web server. Review the FTP article for details.</li>
 <li>Make sure you’re in the same directory you uploaded the <span class="text-object">.sql</span> file into, then run the following command to import the <span class="text-object">.sql</span> database file.
 <div class="preboxcontainer">
@@ -42,28 +40,28 @@
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">mysqldump -h <span class="code-highlight">OLDHOSTNAME</span> -u <span class="code-highlight">OLDUSERNAME</span> -p<span class="code-highlight">OLDPASSWORD OLDDATABASENAME</span> | mysql -h <span class="code-highlight">DREAMHOSTHOSTNAME</span> -u <span class="code-highlight">DREAMHOSTUSER</span> -p<span class="code-highlight">DREAMHOSTPASSWORD DREAMHOSTDATABASE</span></span></pre>
 </div>
 <div class="alert alert-note">
-<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
+<div class="alert-icon"><img alt="" height="60" src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60"/></div>
 <div class="alert-content">
 <p>There is no space between <span class="code">-p</span> and the password.</p>
 </div>
 </div>
 <h3>Explanation of flags within the above import command</h3>
 <dl>
-<dt><span class="code">mysqldump</span>&nbsp;—&nbsp;writes a copy of a database to a single file.</dt>
-<dt><span class="code">|</span>&nbsp;—&nbsp;redirects its output to another "mysql" client</dt>
-<dt><span class="code">-h</span>&nbsp;—&nbsp;specifies the hostname</dt>
-<dt><span class="code">-u</span>&nbsp;—&nbsp;specifies the username associated with the SQL database (NOT your FTP or Shell username)</dt>
-<dt><span class="code">-p</span>&nbsp;—&nbsp;specifies is the SQL user's password</dt>
-<dt><span class="code">DREAMHOSTDATABASE</span>&nbsp;—&nbsp;specifies the name of the database</dt>
+<dt><span class="code">mysqldump</span> — writes a copy of a database to a single file.</dt>
+<dt><span class="code">|</span> — redirects its output to another "mysql" client</dt>
+<dt><span class="code">-h</span> — specifies the hostname</dt>
+<dt><span class="code">-u</span> — specifies the username associated with the SQL database (NOT your FTP or Shell username)</dt>
+<dt><span class="code">-p</span> — specifies is the SQL user's password</dt>
+<dt><span class="code">DREAMHOSTDATABASE</span> — specifies the name of the database</dt>
 </dl>
 <div class="alert alert-note">
-<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
+<div class="alert-icon"><img height="60" src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60"/></div>
 <div class="alert-content">
 <p>The destination database must <a href="https://help.dreamhost.com/hc/en-us/articles/221691727-Creating-a-MySQL-database">already exist</a>; if it doesn't, the command fails.</p>
 <p>If you are running this command from shell on your old host, you must grant remote access to your DreamHost database by making the remote server an “allowable host”.</p>
 <p>For more information, please visit the following article:</p>
 <ul>
-<li><a style="background-color: #ffffff;" href="/hc/en-us/articles/215575787-Managing-MySQL-users-allowable-hosts-and-privileges">Managing MySQL users, allowable hosts, and privileges</a></li>
+<li><a href="/hc/en-us/articles/215575787-Managing-MySQL-users-allowable-hosts-and-privileges" style="background-color: #ffffff;">Managing MySQL users, allowable hosts, and privileges</a></li>
 </ul>
 </div>
 </div>
@@ -72,7 +70,7 @@
 <div class="solvvy-hidden">
 <ul>
 <li><a href="/hc/en-us/articles/221610868-Finding-your-database-login-credentials">Finding your database login credentials</a></li>
-<li><a href="/hc/en-us/articles/214395768-phpMyAdmin-How-to-import-a-database-or-table" target="_self" rel="undefined">phpMyAdmin — How to import a database or table</a></li>
+<li><a href="/hc/en-us/articles/214395768-phpMyAdmin-How-to-import-a-database-or-table" rel="undefined" target="_self">phpMyAdmin — How to import a database or table</a></li>
 <li><a href="/hc/en-us/articles/215039938-How-do-I-migrate-my-database-to-DreamHost-">How do I migrate my database to DreamHost?</a></li>
 </ul>
 </div>
