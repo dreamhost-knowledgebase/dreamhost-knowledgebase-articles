@@ -11,11 +11,8 @@
 <p>Many people want WordPress to power their website’s root (e.g.&nbsp;<code>http://example.com</code>) but they don’t want all of the WordPress files cluttering up their root directory. WordPress allows you to install it into a subdirectory, but have your website served from the website root.</p>
 </div>
 <p>This article explains how to display WordPress from either the root director or subdirectory when it's been installed somewhere else.</p>
-<div class="alert alert-note">
-<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
-<div class="alert-content">
+<div class="notebox-note">
 <p>The steps below show how to do this via SSH, but you would create the subdirectory and move the files the same way in an FTP client.</p>
-</div>
 </div>
 </div>
 <h2>Displaying WordPress in a subdirectory if it's installed in the root directory</h2>
@@ -29,16 +26,15 @@
 </div>
 </li>
 <li>Create the subdirectory.
-<div class="alert alert-note">
-<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
-<div class="alert-content">
+<div class="notebox-note">
 <p>This example creates a subdirectory named <span class="text-object">blog</span>.</p>
 </div>
-</div>
+</li>
+</ol>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">mkdir blog</span></pre>
 </div>
-</li>
+<ul>
 <li>Move all of the files in the root directory (<strong>example.com</strong>) into the subdirectory (<strong>example.com/blog</strong>).
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">mv .htaccess license.txt readme.html *.php blog</span>
@@ -46,11 +42,8 @@
 </div>
 </li>
 <li>Create an <span class="text-object">.htaccess</span> file via <a href="https://help.dreamhost.com/hc/en-us/articles/115000098272-Creating-and-editing-a-file-via-FTP" target="_self">FTP</a> or <a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH" target="_self">SSH</a> in the root directory (<strong>example.com</strong>). Add the following contents to the file.
-<div class="alert alert-note">
-<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
-<div class="alert-content">
+<div class="notebox-note">
 <p>You only need to update the highlighted text which is your domain name and the subdirectory you created.</p>
-</div>
 </div>
 <div class="preboxcontainer">
 <pre class="prebox">&lt;IfModule mod_rewrite.c&gt;
@@ -65,7 +58,7 @@ RewriteRule ^(/)?$ <span class="code-highlight">blog</span>/index.php [L]
 &lt;/IfModule&gt;</pre>
 </div>
 </li>
-</ol>
+</ul>
 <p>If you visit&nbsp;<strong>example.com/blog</strong> now, you will see your WordPress site.</p>
 </div>
 <h2>Displaying WordPress in the root directory if it's installed in a subdirectory</h2>
@@ -96,20 +89,19 @@ RewriteRule ^(/)?$ <span class="code-highlight">blog</span>/index.php [L]
 </div>
 </li>
 <li>Edit the <span class="text-object">index.php</span> file via&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/115000098272-Creating-and-editing-a-file-via-FTP" target="_self">FTP</a>&nbsp;or&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH" target="_self">SSH</a>. Add the subdirectory name just before <span class="text-object">/wp-blog-header.php</span>. For example:
-<div class="alert alert-note">
-<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
-<div class="alert-content">
+<div class="notebox-note">
 <p>You only need to update the highlighted text which is the subdirectory you created.</p>
 </div>
-</div>
+</li>
+</ol>
 <div class="preboxcontainer">
 <pre class="prebox">/** Loads the WordPress Environment and Template */
 require __DIR__ . '<span class="code-highlight">/blog</span>/wp-blog-header.php';
 </pre>
 </div>
-</li>
+<ul>
 <li>If you have already configured <a href="https://wordpress.org/support/article/using-permalinks/">Permalinks</a>, navigate to the <span class="text-object">Settings &gt; Permalinks</span> page and re-save them.</li>
-</ol>
+</ul>
 <p>If you visit&nbsp;<strong>example.com</strong> now, you will see your WordPress site.</p>
 </div>
 <h2>See also</h2>

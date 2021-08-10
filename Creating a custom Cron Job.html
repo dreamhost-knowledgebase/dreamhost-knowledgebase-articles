@@ -2,11 +2,8 @@
 <div class="solvvy-solution">
 <p>This article shows how to manually create a custom cron job using your <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access">Shell user</a>. It involves logging into the server via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH</a> to run several commands.</p>
 <p>These instructions can also be used to edit an existing cron job you created in the panel, however for simplicity, it's recommended that if you created it in the panel, you continue to edit it from the panel. This is important since adding a cron job in the panel will overwrite your custom crontab file as mentioned below.</p>
-<div class="alert alert-note">
-<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
-<div class="alert-content">
+<div class="notebox-note">
 <p>In the following examples, <span class="code">username</span> would be your <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access" target="_self">Shell user</a> and <strong>example.com</strong> your website.</p>
-</div>
 </div>
 </div>
 <h2>Basic details</h2>
@@ -110,9 +107,7 @@ Choose 1-13 [3]: <span class="code-highlight">6</span>
 MAILTO="user@example.com"
 13 20 * * * php  /home/username/mail.php</pre>
 </div>
-<div class="alert alert-note">
-<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
-<div class="alert-content">
+<div class="notebox-note">
 <p>There are two parts to the command. The first part must specify the path to the program you'd like to use to run the cron job. For example let's say you have a PHP file named <span class="text-object">script.php</span> in your domains directory:</p>
 <ul>
 <li><span class="text-object">/home/username/example.com/script.php</span></li>
@@ -123,16 +118,16 @@ MAILTO="user@example.com"
 </ul>
 <p>You could also use the default version by using 'php' instead of the full path.</p>
 </div>
-</div>
 </li>
+</ol>
+<ul>
 <li>Save the file. You should see the following response:
 <div class="preboxcontainer">
 <pre class="prebox">crontab: installing new crontab</pre>
 </div>
 </li>
-</ol>
+</ul>
 <p>That's it. The cron job should now run every day at 8:13pm.</p>
-</div>
 <h2><span id="Manually_editing_crontab">Crontab commands</span></h2>
 <div class="solvvy-solution">
 <div id="mw-content-text" class="mw-content-ltr" dir="ltr" lang="en">
@@ -201,11 +196,8 @@ MAILTO="user@example.com"
 </tr>
 </tbody>
 </table>
-<div class="alert alert-note">
-<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
-<div class="alert-content">
+<div class="notebox-note">
 <p>For day of the week, both 0 and 7 are considered Sunday. The time is based on that of the server running cron.</p>
-</div>
 </div>
 <p>Another (graphical) way of looking at these fields.</p>
 <div class="preboxcontainer">
@@ -233,13 +225,12 @@ MAILTO="user@example.com"
 </ul>
 </li>
 <li>The asterisk ('*') operator (frequently known as a wildcard) specifies all possible values for a field. For example, an asterisk in the hour (second) field would be equivalent to 'every hour'.
-<div class="alert alert-note">
-<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
-<div class="alert-content">
+<div class="notebox-note">
 <p>If you set the cron job to run on a specific day of the week, the <span class="text-object">month</span> and <span class="text-object">day of month</span> fields will still appear as an asterisk (*). The day of the week value will override these values, so it will only run once per week on your selected day.</p>
 </div>
-</div>
 </li>
+</ul>
+<ul>
 <li>The slash ('/') operator can be used in conjunction with an asterisk to skip a given number of values. Example:
 <ul>
 <li>/3</li>
@@ -388,5 +379,6 @@ MAILTO="user@example.com"
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/214202238-Command-line-PHP-overview">Command line PHP overview</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/360038608892-Cronjob-troubleshooting" target="_self">Cron job troubleshooting</a></li>
 </ul>
+</div>
 </div>
 </div>

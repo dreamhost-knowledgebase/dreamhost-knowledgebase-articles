@@ -1,26 +1,19 @@
 <h2>Overview</h2>
 <div class="solvvy-solution">
 <p>This article covers a few common issues and troubleshooting steps you can take to fix your cron jobs.</p>
-<div class="alert alert-note">
-<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
-<div class="alert-content">
+<div class="notebox-note">
 <p>In the following examples, <span class="code">username</span> would be your <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access" target="_self">Shell user</a> and <strong>example.com</strong> your website.</p>
-</div>
 </div>
 </div>
 <h2>Troubleshooting steps</h2>
 <div class="solvvy-solution">
 <h3>Setting an email address</h3>
 <p>When testing your new cron job, make sure to set an email address for reporting the results. This gives you important information about what may be going wrong if the command line is not running the cron job as desired.</p>
-<div class="alert alert-note">
-<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
-<div class="alert-content">
+<div class="notebox-note">
 <p>You will only receive an email if the cron fails, or if the cron job itself creates output to view.</p>
-</div>
 </div>
 <h3>Setting the correct file permissions</h3>
 <p>If you're planning to use external software with a cron job, make sure you have set 'write' and other permissions for the files in your remote folders. If you get an error message about "permission denied" it means your permissions are not set properly. Also specifying the full path of the file you’re writing to can prevent issues with the cron environment running from a different directory.</p>
-</div>
 <h3>Using full file paths</h3>
 <p>The server's crontab needs to know exactly where to read and write files. For example, if you manually run the following file named <span class="text-object">file.sh</span>, it will create a new file named <span class="text-object">output.txt</span> in the directory you run the command in.</p>
 <div class="preboxcontainer">
@@ -29,6 +22,7 @@
 <p>However, a cron job would not be able to locate either of these files. Instead, your cron job would need to specify the full paths like this:</p>
 <div class="preboxcontainer">
 <pre class="prebox">0 12 * * * sh /home/<span class="code-highlight">username</span>/<span class="code-highlight">example.com</span>/file.sh &gt; /home/<span class="code-highlight">username</span>/<span class="code-highlight">example.com</span>/output.txt</pre>
+</div>
 </div>
 <h2>Error messages</h2>
 <div class="solvvy-solution">
