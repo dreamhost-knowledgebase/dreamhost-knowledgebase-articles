@@ -1,0 +1,183 @@
+<div class="notebox-tip">
+<p>If you need help optimizing your WordPress site, DreamHost's skilled support team may be able to assist you for a small fee. You can find more information about supported services and associated costs in the <a href="/hc/en-us/articles/360042256912-Professional-Services-overview">DreamHost Professional Services</a> article.</p>
+</div>
+<h2>Overview</h2>
+<div class="solvvy-solution">
+<p>Over time, you may notice that your WordPress site runs slower or doesn't run as well as it should. There are several reasons this can occur. The following article describes some advanced solutions to help optimize slow or inefficient WordPress websites, including:</p>
+<ul>
+<li><a href="#Checking_software_versions" target="_self">Checking software versions</a></li>
+<li><a href="#Configuring_plugins_and_themes" target="_self">Configuring plugins and themes</a></li>
+<li><a href="#Optimizing_images" target="_self">Optimizing images</a></li>
+<li><a href="#Minifying" target="_self">Minifying CSS/JS/HTML</a></li>
+<li><a href="#Caching" target="_self">Caching</a></li>
+<li><a href="#Wpcron" target="_self">WP-Cron</a></li>
+<li><a href="#Optimizing_databases" target="_self">Optimizing databases</a></li>
+<li><a href="#Controling_traffic" target="_self">Controlling traffic</a></li>
+<li><a href="#Using_a_cdn" target="_self">Using a CDN</a></li>
+<li><a href="#Additional_steps" target="_self">Additional steps</a></li>
+</ul>
+<p>It is recommended that you go through each of these steps when attempting to optimize a site.</p>
+</div>
+<h2><span id="Testing_site_performance">Testing the site’s performance</span></h2>
+<div class="solvvy-solution">
+<p>The first thing you should do when optimizing your site is to test it using an <a href="https://help.dreamhost.com/hc/en-us/articles/215836488-Troubleshooting-site-slowness#Testing_your_site_from_external_locations" target="_self">online testing tool</a>. These tools offer suggestions on ways to improve your site, but be aware that the ranking these sites use is effectively arbitrary. If you do decide to use a speed-testing tool, make sure you use the same one throughout testing.</p>
+<p>You can also use a plugin like Query Monitor to test performance within the WordPress dashboard. This is more involved than using an online testing tool, but these plugins can access the back end of the site to provide more specific information.</p>
+<p>Finally, you can troubleshoot using <a href="https://help.dreamhost.com/hc/en-us/articles/214693248-WordPress-wp-cli-overview" target="_self">wp-cli</a>. This allows you to debug and test directly on the server but requires more experience than other methods.</p>
+</div>
+<h2><span id="Checking_software_versions">Checking software versions</span></h2>
+<div class="solvvy-solution">
+<p>Make sure you are running the latest version of your site software. There are four main components you should pay attention to as the site owner: the WordPress core, PHP, Plugins, and Themes.</p>
+<h3>WordPress core</h3>
+<p>If you’re using an outdated version, WordPress will notify you with a banner and within the “Updates” section of your dashboard. You can also find the version in the bottom right-hand corner of the wp-admin page, by reading the wp-includes/version.php file if you prefer (S)FTP, or the wp core version command if you prefer SSH. If you have DreamPress or a WordPress One-Click Install, your site should receive automatic updates from DreamHost. However, if you need to manually update for any reason, use the instructions in the following article:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360037291651-Manually-updating-WordPress" target="_self" rel="undefined">Manually updating WordPress</a></li>
+</ul>
+<h3>PHP</h3>
+<p>PHP is the coding language that WordPress is built upon along with HTML, CSS, and JavaScript. Make sure your site is running the latest version of PHP that your plugins and theme can support. View the following article for instructions on how to update your site's PHP version:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214205508-Updating-PHP-overview-" target="_self">Updating PHP overview</a></li>
+</ul>
+<h3>Plugins and themes</h3>
+<p>You should also make sure you’re using the latest version for each of your plugins and themes. While WordPress will notify you of any new plugin and theme versions, there are a few things you will need to remember:</p>
+<ul>
+<li>Premium (purchased) plugins and themes are NOT stored in the WordPress repository. You will need to download updates to these plugins from the marketplace where you purchased them.</li>
+<li>Some plugins and themes are considered abandoned and have not been updated in quite some time. These can still be downloaded from wordpress.org, but they may not be compatible with modern versions of WordPress.</li>
+</ul>
+<p>View the following articles for instructions on updating your WordPress plugins and themes:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215300817-Managing-WordPress-plugins" target="_self">Managing WordPress plugins</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215527157-Managing-WordPress-themes" target="_self">Managing WordPress themes</a></li>
+</ul>
+</div>
+<h2><span id="Configuring_plugins_and_themes">Configuring plugins and themes</span></h2>
+<div class="solvvy-solution">
+<p>Now that you’re sure everything is running on modern technology, it’s time to make sure your plugins and theme are configured efficiently. Because every plugin serves a different purpose and each theme has different options, there are still some general guidelines you should follow.</p>
+<h3>Uninstall redundant plugins</h3>
+<p>If your site has any plugins that are no longer needed, be sure to uninstall them.</p>
+<p>Additionally, make sure that you are not using similar plugins that do the same thing, such as multiple image optimization plugins. Some plugins, such as Jetpack, include many different features, so you can disable the ones you don't need.</p>
+<p>If you have multiple plugins performing the same service, you should test your site performance with each one set to active and then compare the results to help decide which one you should keep. You may also want to test your multifunctional plugins (such as Jetpack) alongside dedicated plugins with their overlapping features disabled.</p>
+<h3>Review your theme</h3>
+<p>Many themes, especially premium ones, include many extra features, which can require higher resource requirements and reduce site performance. When optimizing a WordPress site, it is recommended to test with a default theme set to active in order to obtain an effective benchmark.</p>
+<h3>Compatibility</h3>
+<p>In some situations, plugin features work well separately but can conflict with one another. It is recommended that you test different combinations of your plugins together if you're seeing any delays or issues with your site's loading time(s).</p>
+<p>For example, a plugin that defers javascript parsing and a lazy loader plugin that delays loading images until they are needed are both useful for improving site loading times. However, when combined with a javascript-based image slider plugin, your site will either not load the images or take much longer to load as the site waits for one of the two plugins to time out.</p>
+</div>
+<h2><span id="Optimizing_images">Optimizing images</span></h2>
+<div class="solvvy-solution">
+<p>One way to optimize a website is to reduce the size of the content, especially images. These can include backgrounds, icons, features images, calls to action, avatars, and more. The following are several different ways to optimize your site's images.</p>
+<h3>Filetype</h3>
+<p>You should consider what file type to use for your site's image. The ideal choice can vary based on the purpose of the images, but often include:</p>
+<ul>
+<li><strong>JPG</strong> - uses lossy compression, which reduces the image quality in exchange for a smaller file size. These are often used for photographs and smaller-scale images that can afford the drop in quality.</li>
+<li><strong>PNG</strong> - often used for highly detailed images like photographs, but in contrast to JPGs, they use lossless compression. This means each image's quality is much better, but its file size is greatly increased compared to a JPG. These should only be used in situations where a high-quality image is required or images that use transparency.</li>
+<li><strong>GIF</strong> - is smaller and is of lower quality than a JPG, but supports animations If you use animated GIFs on your homepage. Be aware of the file size and make sure it isn't so large that it slows down your web page's loading times.</li>
+<li><strong>SVG</strong> - are vector-based graphics, which scale to any size without a loss in quality. Its file size will increase the more detailed they are, so they generally should only be used for logos or icons.</li>
+<li><strong>WEBP</strong> - a modern format created by Google that supports lossy and lossless compression, animation, and transparency. It is generally more compact than older file types but is not yet been fully supported by every browser. Visitors using older browsers may not be able to load some images. This issue can be circumvented using redirects or HTML tags, but WordPress sites can use Jetpack’s Site Accelerator feature or a similar plugin to serve WEBP content if needed.</li>
+</ul>
+<h3>Size and scale</h3>
+<p>Very high-resolution images can be problematic on a website. If you have higher resolution images that you want to use on your site, consider resizing the image in an image editor before uploading it to your site. This is especially important when trying to optimize for mobile browsers, as smaller screens will be less impacted by lower resolution images, but more impacted by larger site sizes.</p>
+<h3>Plugins</h3>
+<p>It's recommended that you use an image CDN such as Jetpack’s free Site Accelerator. The plugin can downsize your images when needed, convert them to WEBP format, and can be configured to use Lazy Loading. Another alternative is Imagify by WP Rocket, which offers many of the same features and includes a free option.</p>
+<h3>Lazy loading</h3>
+<p>Lazy loading delays an image element being loaded until it is actually visible in the viewport, which reduces the initial load time for a visitor. Several WordPress plugins offer this feature, including Jetpack, LazyLoad by WP Rocket, and a3 Lazy Load.</p>
+</div>
+<h2><span id="Minifying">Minifying CSS/JS/HTML</span></h2>
+<div class="solvvy-solution">
+<p>Minification is the process of reducing the size of your static CSS, JS, and HTML files using two techniques. The first is removing all the unnecessary parts of the file such as comments and white space. For example, here’s a snippet of CSS code that has not been minified:</p>
+<div class="preboxcontainer">
+<pre class="prebox">/* Applies to the entire body of the HTML document (except where overridden by more specific
+selectors). */
+body {
+  margin: 25px;
+  background-color: rgb(240,240,240);
+  font-family: arial, sans-serif;
+  font-size: 14px;
+}</pre>
+</div>
+<p>Once minified, the same code looks like this:</p>
+<div class="preboxcontainer">
+<pre class="prebox">body{margin:25px;background-color:rgb(240,240,240);font-family:arial,sans-serif;font-size:14px;}</pre>
+</div>
+<p>This is less human-readable, but the file size of the resulting file is much smaller and will load much faster. Since most users will not be interacting with static files, this is typically a good tradeoff.</p>
+<p>The second technique used in minification is combining multiple files of the same type into one file, which reduces the overall number of HTTP requests when loading the site.</p>
+<h3>Plugins</h3>
+<p>Jetpack’s Site Accelerator will minify static files, but only covers assets from WordPress Core, WooCommerce, and Jetpack. <a href="https://wordpress.org/plugins/autoptimize/" target="_self">Autoptimize</a> is another option and covers all of your site's static files.</p>
+<p>Another plugin that may be useful is <a href="https://wordpress.org/plugins/async-javascript/" target="_self">Async JavaScript</a>, which defers the parsing of JS files. This means that other site content, such as images and text, will load before the site's Javascript files. This can improve the browsing experience in many cases, but be aware that some themes rely on JS to render content, which may cause conflicts.</p>
+</div>
+<h2><span id="Caching">Caching</span></h2>
+<div class="solvvy-solution">
+<p>Caching is a simple and useful option to increase site performance. If you have DreamPress, a <a href="https://help.dreamhost.com/hc/en-us/articles/215300647-Managing-the-DreamPress-cache" target="_self">server caching solution</a> is already configured as a part of that platform. If you have a standard WordPress installation, there are many different plugins you can use. Two common free recommendations are <a href="https://wordpress.org/plugins/cache-enabler/" target="_self">Cache Enabler</a> and <a href="https://wordpress.org/plugins/wp-super-cache/" target="_self">WP Super Cache</a>.</p>
+</div>
+<h2><span id="Wpcron">WP-Cron</span></h2>
+<div class="solvvy-solution">
+<p>WP-Cron is a WordPress scheduling function used by an array of plugins. Each time a site page is loaded, WordPress checks an internal schedule to see if there are any events to run. Many of its events are intended to go unnoticed, such as a plugin's weekly tasks (e.g., delete its transients or check for updates).</p>
+<p>Other common scheduled events include backups or posts. If these are run at inopportune times they can cause performance issues, such as when performance-heavy tasks such as full-site backups coincide with normal visitor hours. As such, it is recommended that you move scheduled events to your site's off-peak hours.</p>
+<p>If your plugins do not have settings to individually manage their scheduled tasks, you can use a plugin like <a href="https://wordpress.org/plugins/wp-crontrol/" target="_self">WP Control</a> to add, remove, manually run, and reschedule scheduled events.</p>
+<p>Another potential issue can occur on particularly busy sites, where WordPress is continually checking its schedule to the point of causing performance issues. In these cases, it's recommended to <a href="https://help.dreamhost.com/hc/en-us/articles/360048323291-Disabling-WP-CRON-to-Improve-Overall-Site-Performance" target="_self">disable WP-Cron and set up a system cron</a> to handle task scheduling instead.</p>
+</div>
+<h2><span id="Optimizing_databases">Optimizing databases</span></h2>
+<div class="solvvy-solution">
+<p>See the following article for more information about optimizing WordPress databases:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/4404267062164-Optimizing-WordPress-databases" target="_self">Optimizing WordPress databases</a></li>
+</ul>
+</div>
+<h2><span id="Controling_traffic">Controlling traffic</span></h2>
+<div class="solvvy-solution">
+<p>If your site has already been optimized, but you're seeing a decrease in performance, check the HTTP requests hitting your server. This information can be found by <a href="https://help.dreamhost.com/hc/en-us/articles/216512197-Viewing-your-access-and-error-logs-via-SFTP" target="_self">checking your site's access logs</a>. Note that this raw data is more reliable when it comes to troubleshooting problematic traffic than the data provided by analytics plugins. View the following article for several different commands you can use to sort and view the log data:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216105097-Viewing-and-examining-your-access-log-via-SSH" target="_self">Viewing and examining your access.log via SSH</a></li>
+</ul>
+<p>You can run the following command to count the number of times each IP has hit your site:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span>awk '{print $1}' <span class="code-highlight">/path/to/your/access.log</span> | sort | uniq -c |sort -n</pre>
+</div>
+<p>Once you have a list of IPs, use a WHOIS lookup to investigate the IP address and determine if any additional actions need to be taken.</p>
+<h3>Controlling bots and crawlers</h3>
+<p>Search engine indexing bots and crawlers are important for SEO, but they can sometimes be aggressive, to the point of impacting site performance. You can restrict their indexing behavior via a robots.txt file placed in the domain directory that these crawlers look for by adding the following line:</p>
+<div class="preboxcontainer">
+<pre class="prebox">User-agent: * Crawl-Delay: 10</pre>
+</div>
+<p>This directive tells crawlers to wait 10 seconds between each HTTP request instead of sending them all at once. However, if the crawler isn't programmed to follow robots.txt directives, then you will need to block them.</p>
+<p>View the following article for more information on limiting bots and crawlers:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216105077-How-can-I-control-bots-spiders-and-crawlers-" target="_self">How can I control bots, spiders and crawlers?</a></li>
+</ul>
+<h3>Blocking traffic</h3>
+<p>If a high-traffic IP is not a known bot or crawler, your own network, or a third-party service you’re using (such as a backup or CDN service), you may want to block it.</p>
+<p>You can add the following simple directive to the .htaccess file in the domain directory to block the traffic from a specific IP:</p>
+<div class="preboxcontainer">
+<pre class="prebox">deny from <span class="code-highlight">$IP</span></pre>
+</div>
+<p>View the following article for more information on allow/deny directives:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216363167-How-do-I-deny-access-to-my-site-with-an-htaccess-file-" target="_self">How do I deny access to my site with an .htaccess file?</a></li>
+</ul>
+<h3>Limiting /wp-admin/admin-ajax.php calls</h3>
+<p>The <code>admin-ajax.php</code> call, also known as the wp-admin heartbeat, sends a request every 15 seconds to keep the connection between the browser and the server alive. This allows for smooth autosaves, prevents timeouts for users, and helps third-party plugin functions that are running in the background. However, each request loads the entirety of the /wp-admin page, which can increase resource usage on the server. In some cases, <code>admin-ajax.php</code> can be called on the public-facing side of the site, usually due to a theme or plugin function.</p>
+<p>If you see public-side admin-ajax.php calls, you can toggle your plugins off in a staging environment to find the culprit. Another method of limiting the function is the <a href="https://wordpress.org/plugins/heartbeat-control/" target="_self">Heartbeat Control</a> plugin, which can disable admin-ajax calls on the public-facing and /wp-admin pages along with limiting post editor autosave frequency.</p>
+</div>
+<h2><span id="Using_a_cdn">Using a CDN</span></h2>
+<div class="solvvy-solution">
+<p>A CDN can increase the performance of even a well-optimized site. <a href="https://help.dreamhost.com/hc/en-us/articles/215873088-Cloudflare-overview" target="_self">Cloudflare</a> is a free CDN option that includes multiple other features. See the following article for more information about installing Cloudflare:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216477717-How-to-enable-Cloudflare-on-your-domain" target="_self">How to enable Cloudflare on your domain</a></li>
+</ul>
+</div>
+<h2><span id="Additional_steps">Additional steps</span></h2>
+<div class="solvvy-solution">
+<p>After you've gone through these optimization steps, you may find that your site still has performance issues. The first thing you should do is conduct an additional review of your plugins and themes. If you're not able to remove any additional plugins or use a less resource-intensive theme, you have two further options.</p>
+<p>The first option, If you're not expecting much site growth or you want to give your site a stronger start, consider using DreamHost's Site Optimization service. For more information about the service, see the following page:</p>
+<ul>
+<li><a href="https://www.dreamhost.com/pro-services/management/site-optimization/" target="_blank" rel="noopener">DreamHost's Site Optimization</a></li>
+</ul>
+<p>The second option is to upgrade your hosting plan, especially if you're on a Shared Hosting plan. This may be more helpful if you're expecting to see a growth in site traffic and use. Consider upgrading the site to <a href="https://help.dreamhost.com/hc/en-us/articles/214581158-DreamPress-overview" target="_self">DreamPress</a> or <a href="https://help.dreamhost.com/hc/en-us/articles/215280058-Virtual-Private-Server-VPS-overview-" target="_self">VPS</a> hosting.</p>
+</div>
+<h2><span id="See_also">See also</span></h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215036388-How-do-I-optimize-my-database-" target="_self">How do I optimize my database?</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215300867-General-WordPress-optimization-techniques" target="_self">General WordPress optimization techniques</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/4404267062164-Optimizing-WordPress-databases">Optimizing WordPress databases </a></li>
+</ul>
+</div>
