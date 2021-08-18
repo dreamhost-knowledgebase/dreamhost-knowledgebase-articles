@@ -1,8 +1,11 @@
 <h2>Overview</h2>
+<div class="solvvy-solution">
 <p>VPS machines running Debian Stretch are unable to run Passenger if the server type is set to Nginx (instead of Apache). Any application formerly configured to run on Nginx with Passenger will no longer function after the upgrade to Debian Stretch.</p>
 <p>An alternative method of hosting an application under Nginx without passenger would be to run it on a stand-alone HTTP server. This must also be run on a non-privileged port. The proxy can then be enabled via the DreamHost panel.</p>
 <p>This article lists a few simple examples of how to create a stand-alone server for Node, Python, and Ruby.&nbsp;</p>
+</div>
 <h2>Initial configuration</h2>
+<div class="solvvy-solution">
 <h3>Step 1 — Configure the public directory</h3>
 <p>First, configure the domain to use the public subdirectory as the primary directory for the domain. View the following article for instructions on how to adjust your site's web directory on the server.</p>
 <ul>
@@ -26,13 +29,12 @@
 <li>Select the port # the stand-alone server will run on.</li>
 <li>Click&nbsp;<strong>Add Proxy Server...</strong>.</li>
 </ol>
-<div class="alert alert-note">
-<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
-<div class="alert-content">
+<div class="notebox-note">
 <p>In all the following examples, port 8002 is used.</p>
 </div>
 </div>
 <h2>Node.js</h2>
+<div class="solvvy-solution">
 <ol>
 <li>Install a <a href="https://help.dreamhost.com/hc/en-us/articles/360029083351-Installing-a-custom-version-of-NVM-and-Node-js" target="_self">custom version of Node.js</a>.</li>
 <li>In the app directory (<span class="text-object">example.com</span>), <a style="background-color: #ffffff;" href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH" target="_self">create a file</a> named <span class="text-object">app.js</span> with the following code:</li>
@@ -45,11 +47,8 @@
   response.end("Hello World From Node");
   }).listen(8002);</pre>
 </div>
-<div class="alert alert-note">
-<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
-<div class="alert-content">
+<div class="notebox-note">
 <p>The <span class="code">listen</span> function tells node which port the application to listen on.</p>
-</div>
 </div>
 <p>Start the default node server by running the <span class="text-object">app.js</span> file.</p>
 <div class="preboxcontainer">
@@ -62,7 +61,9 @@
 </div>
 </div>
 <p>Visit the domain (without the port added to the URL) and you will see the application run.</p>
+</div>
 <h2>Python</h2>
+<div class="solvvy-solution">
 <p>A common standalone server used for Python applications is <a href="https://gunicorn.org/" target="_self">Gunicorn</a> inspired by the Ruby Unicorn server.</p>
 <div class="prereqs">
 <p>You must first install a custom version of Python. This allows you to create a virtualenv and install custom Python modules locally.</p>
@@ -95,7 +96,9 @@
 <pre class="prebox"><span class="server">(venv)[server]$ </span><span class="command">GUNICORN_CMD_ARGS="--bind=localhost:8002" gunicorn myapp:app</span></pre>
 </div>
 <p>Visit the domain and you will see&nbsp; 'Hello, World From Gunicorn!'.</p>
+</div>
 <h2>Ruby</h2>
+<div class="solvvy-solution">
 <p>Make <span class="text-object">.gems</span> the default Gems directory for our user. Add the following to the <span class="text-object">.bash_profile</span> file.</p>
 <div class="preboxcontainer">
 <pre class="prebox">export PATH=$HOME/.gems/bin:$PATH
@@ -127,4 +130,4 @@ bind 'tcp://127.0.0.1:8002'</pre>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">puma -C config.rb</span></pre>
 </div>
-<p>&nbsp;</p>
+</div>

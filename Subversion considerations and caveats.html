@@ -53,19 +53,12 @@
 <p>The prior section's steps require each user to have a Unix account with shell access so they can log in via <a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a>. However, the DreamHost panel provides a way to create user accounts only for Subversion.</p>
 <p>But for those accounts, if you want to specify who has read vs. read-write access and/or per-directory of your repository, you must manually edit the .access file as described in the latest Subversion manual on "Per-directory access control" and DreamHost's implementation of this feature. You can manually add and administer the usernames and passwords for Subversion by using htpasswd to add/edit users to the .passwd file for your repository.</p>
 <h3><span id="Note_after_manually_editing_either_the_.access_or_.passwd_files">Note after manually editing either the .access or .passwd files</span></h3>
-<dl>
-<dd>
 <ul>
 <li>The file's group changes from dhapache to whatever the auto-generated group for your account is, which prevents the Apache module from being able to read the files, so you then need to change the permissions so that they can be read by Apache(do <span class="code">chmod 644</span>).</li>
 <li>You will also need to be prepared that if you now use the DreamHost control panel to change settings (at least if you make changes to the user list), the panel not only reverts the file permissions back to dhapache but also overwrites both files, overwriting any changes you made to them. So you'd should always have a backup to reconstruct anything important that might get overwritten.</li>
 </ul>
-</dd>
-</dl>
-<div class="alert alert-note">
-<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" alt="" width="60" height="60" /></div>
-<div class="alert-content">
+<div class="notebox-note">
 <p><span class="code">chmod 644</span> is giving "world" read access to those files which may be a security risk. While these files won't be accessible via <span class="text-object">http</span> (unless you also publish your svn/ which would likely be unwise), these files are accessible to other shell users to your account and MAYBE by other DreamHost account holders on your shared host. Therefore, for real security, you should not use <span class="text-object">http</span>, but instead <span class="text-object">https</span> (which is also the only option if accessing via WebDAV) or SSH.</p>
-</div>
 </div>
 </div>
 <h2>See also</h2>

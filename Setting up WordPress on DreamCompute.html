@@ -11,6 +11,7 @@
 </ul>
 <p>This example will use Ubuntu 20, but you can use whichever flavor of Linux you prefer. As long as you can install Apache, PHP, and database software, WordPress will be able to run.</p>
 <p>Whichever image you pick, remember it's better to use instances with a volume boot disk as they are permanent (as opposed to instances with <a href="https://help.dreamhost.com/hc/en-us/articles/217701757-What-s-the-difference-between-ephemeral-and-volume-boot-disks-">ephemeral boot disks</a>).</p>
+</div>
 <h2>Step 1 — Point DNS to your instance</h2>
 <div class="solvvy-solution">
 <p>First, you'll need to point the DNS of your domain to the instance. View the following article for details:</p>
@@ -31,11 +32,8 @@
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/360000274451-Creating-a-new-user-on-an-instance">Creating a new user on an instance</a></li>
 </ul>
-<div class="alert alert-note">
-<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
-<div class="alert-content">
+<div class="notebox-note">
 <p>This article assumes the new user is named <span class="text-object">exampleuser</span>.&nbsp;</p>
-</div>
 </div>
 <p>After creating the user, assign it sudo privileges. Then log in to your instance using the default user. Once logged in, switch to the new user before continuing.</p>
 </div>
@@ -68,10 +66,12 @@
 </ul>
 </div>
 <h2>Step 5 — Configure the MySQL server</h2>
+<div class="solvvy-solution">
 <p>You must now configure and secure the MySQL server by adding a password and choosing which features you'd like to disable. View the following link for instructions.</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215879487#secure-mysql" target="_blank" rel="noopener">Securing MySQL</a></li>
 </ul>
+</div>
 <h2>Step 6 — Create a folder for your website</h2>
 <div class="solvvy-solution">
 <p>Create a folder for the website.</p>
@@ -114,11 +114,8 @@
 </pre>
 </div>
 <p>Once the VirtualHost is added, the site will need to be enabled with the <span class="code">a2ensite</span> command.</p>
-<div class="alert alert-note">
-<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
-<div class="alert-content">
+<div class="notebox-note">
 <p>If you want to disable a site, you would use the command <span class="code">a2dissite</span>.</p>
-</div>
 </div>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[exampleuser@instance]$ </span><span class="command">sudo a2ensite</span>
@@ -138,7 +135,6 @@ To activate the new configuration, you need to run:
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[exampleuser@instance]$ </span><span class="command">sudo service apache2 reload</span>
 </pre>
-</div>
 </div>
 <h2>Step 8 — Create the database and users</h2>
 <div class="solvvy-solution">
@@ -271,7 +267,7 @@ Success: WordPress installed successfully.
 </div>
 <p>Modify the permissions of <span class="text-object">wp-config.php</span> so that only users on your instance can access it.</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[exampleuser@instance]$ </span><span class="command ">chmod -v 640 wp-config.php</span>
+<pre class="prebox"><span class="server">[exampleuser@instance]$ </span><span class="command">chmod -v 640 wp-config.php</span>
 mode of 'wp-config.php' changed from 0644 (rw-r--r--) to 0640 (rw-r-----)
 </pre>
 </div>
@@ -282,7 +278,6 @@ mode of 'wp-config.php' changed from 0644 (rw-r--r--) to 0640 (rw-r-----)
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[exampleuser@instance]$ </span><span class="command">sudo chown -R <span class="code-highlight">exampleuser</span>:www-data /var/www/<span class="code-highlight">example.com</span></span>
 </pre>
-</div>
 </div>
 </div>
 <h2>Step 12 — Editing the wp-config.php file</h2>
@@ -367,4 +362,5 @@ mode of 'wp-config.php' changed from 0644 (rw-r--r--) to 0640 (rw-r-----)
 <ul>
 <li><a href="https://codex.wordpress.org/Hardening_WordPress">Hardening WordPress</a></li>
 </ul>
+</div>
 </div>
