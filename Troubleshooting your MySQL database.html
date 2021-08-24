@@ -27,46 +27,9 @@
 </div>
 <h2><span id="Error_messages">Error messages</span></h2>
 <div class="solvvy-solution">
-<h3>"<em>The used command is not allowed with this MySQL version</em>"</h3>
-<p>This error may occur when using the "LOAD DATA LOCAL INFILE" statement on Ubuntu 12.04 webservers. A change in the mysql library from Debian to Ubuntu requires code changes to work around this error and allow your statement to execute.</p>
-<dl>
-<dt>
-<h3>mysql command line</h3>
-</dt>
-<dd>Add the <span class="code">--local-infile</span> flag to your mysql connection statement, such as:</dd>
-</dl>
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">mysql --local-infile -h <span class="code-highlight">HOSTNAME</span> -u <span class="code-highlight">USERNAME</span> -p<span class="code-highlight">PASSWORD DATABASENAME</span></span></pre>
-</div>
-<dl>
-<dt>
-<h3>PHP mysql_connect()</h3>
-</dt>
-<dd>Add 2 extra params to mysql_connect, a <span class="code">false</span> for "new link" and then a client flag of <span class="code">128</span> or <span class="code">CLIENT_LOCAL_FILES</span>:</dd>
-</dl>
-<div class="preboxcontainer">
-<pre class="prebox"><span class="cmdoutput">mysql_connect('HOSTNAME','USERNAME','PASSWORD', <span class="green">false, 128</span>);</span></pre>
-</div>
-<dl>
-<dt>
-<h3>PHP mysqli_connect()</h3>
-</dt>
-<dd>Initialize mysqli first via <span class="code">mysqli_init</span>, and use <span class="code">mysqli_options()</span> to specify local infile as <span class="code">true</span> before connecting to the mysql server:</dd>
-</dl>
-<div class="preboxcontainer">
-<pre class="prebox"><span class="cmdoutput">$link = mysqli_init();
-<span class="green">mysqli_options</span>($link, MYSQLI_OPT_LOCAL_INFILE, <span class="green">true</span>);
-mysqli_real_connect($link, 'HOSTNAME','USERNAME','PASSWORD','DATABASENAME');</span></pre>
-</div>
-<dl>
-<dt>
-<h3>PERL DBI</h3>
-</dt>
-<dd>The <span class="code">mysql_local_infile</span> param can be added to your data source name variable, or directly in <span class="code">DBI-&gt;connect</span>:</dd>
-</dl>
-<div class="preboxcontainer">
-<pre class="prebox"><span class="cmdoutput">$dbh = DBI-&gt;connect("DBI:mysql:database=DATABASENAME;host=HOSTNAME;<span class="green">mysql_local_infile=1</span>", "USERNAME", "PASSWORD");</span></pre>
-</div>
+<h3>"<em>Loading local data is disabled; this must be enabled on both the client and server sides</em>"</h3>
+<p>This error can occur when using the <span class="code">LOAD DATA LOCAL INFILE</span> statement to load data into a MySQL 8 database. A change to the default settings introduced in MySQL 8 no longer allows local data to be loaded, for security purposes.</p>
+<p>It is possible to load data using an alternate method. See the <a href="https://help.dreamhost.com/hc/en-us/articles/215099117#local-infile-setting-mysql-8" target="_blank" rel="noopener">MySQL Overview</a> page for more details.</p>
 </div>
 <h2>See also</h2>
 <div class="solvvy-hidden">
