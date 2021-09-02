@@ -48,36 +48,52 @@
 <li>The Return-Path Return-Path — <strong>&lt;admin@example.com&gt;</strong></li>
 <li>The d=domain in the DKIM-Signature&nbsp;—&nbsp;DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; <strong>d=example.com</strong>;</li>
 </ul>
-The domains mentioned in all of these areas must be identical, otherwise DMARC will fail alignment.</li>
+The domains mentioned in all of these areas must be identical, otherwise, DMARC will fail alignment.</li>
 <li>
-<p><a href="https://help.dreamhost.com/hc/en-us/articles/215029918-How-do-I-add-an-email-address-">Create two separate email addresses</a> to receive DMARC daily aggregate and forensic reports.&nbsp;It’s recommended you create two email addresses since you may receive a large amount of reports. For example:</p>
+<p><a href="https://help.dreamhost.com/hc/en-us/articles/215029918-How-do-I-add-an-email-address-">Create two separate email addresses</a> to receive DMARC daily aggregate and forensic reports. It’s recommended you create two email addresses since you may receive a large number of reports. For example:</p>
 <ul>
 <li><span class="text-object">dmarc_agg@example.com</span></li>
 <li><span class="text-object">dmarc_forensic@example.com</span></li>
 </ul>
 </li>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/215414867#TXT_record">Create the TXT record</a>.
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360035516812-Adding-custom-DNS-records#TXT_record" target="_self" rel="undefined">Create the TXT record</a>.
 <ol>
-<li>In your panel, navigate to the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;" target="_blank" rel="noopener">Manage Domains</a> page.</li>
-<li>Click the <span class="text-link">DNS</span> link under your domain.</li>
-<li>When the following page opens, enter a new TXT record as shown in the following example:
+<li>Navigate to the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.dashboard#!/grid-view" target="_blank" rel="noopener">Manage Websites</a> page.</li>
+<li>Click the <strong>Manage</strong> button.
 <dl>
-<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/dmarc-record.png" /></dd>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-dns-tab.png" alt="DNS tab" width="245" height="73" /></dd>
 </dl>
+</li>
+<li>Click the <span class="text-link">DNS</span> tab.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-button-add-record.png" alt="Add Record button" width="139" height="43" /></dd>
+</dl>
+</li>
+<li>Click the&nbsp;<strong>Add Record</strong> button.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-dns-txt-record-add-01.png" alt="Add A Record" width="640" height="102" /></dd>
+</dl>
+</li>
+<li>Hover over the <span class="text-section">TXT Record</span> section and click the <span class="text-link">ADD</span> link.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-dmarc-add.png" alt="Add A Record" width="600" height="256" /></dd>
+</dl>
+</li>
+<li>Enter the following:
 <ul>
-<li><strong>Name</strong>&nbsp;— _dmarc</li>
-<li><strong>Type</strong>&nbsp;— TXT</li>
-<li><strong>Value</strong>&nbsp;— Below is a basic configuration that handles the majority of your DMARC needs. Just make sure to adjust the email addresses to the addresses you created above to receive incoming reports.
+<li><strong>Host</strong>: _dmarc</li>
+<li><strong>TXT Value *</strong> — Below is a basic configuration that handles the majority of your DMARC needs. Just make sure to adjust the email addresses to the addresses you created above to receive incoming reports.
 <div class="preboxcontainer">
 <pre class="prebox">v=DMARC1; p=none; fo=1; rua=mailto:<span class="code-highlight">dmarc_agg@example.com</span>;ruf=mailto:<span class="code-highlight">dmarc_forensic@example.com</span>;pct=100</pre>
 </div>
 View the section below for further details on the different options you can use.</li>
 </ul>
 </li>
+<li>Click the <strong>Add Record</strong>&nbsp;button to save.</li>
 </ol>
+<p>After clicking the <strong>Add Record</strong> button, the propagation for the new record begins. This can take up to 6 hours before the new record updates online.</p>
 </li>
 </ol>
-<p>Within 4-6 hrs the record will update online.</p>
 </div>
 <h2>Tags you can use in your DMARC record</h2>
 <div class="solvvy-solution">
