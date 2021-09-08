@@ -16,7 +16,6 @@
 <p>In the following examples, <span class="code">username</span> would be your <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access" target="_self">Shell user</a> and <strong>example.com</strong> your website.</p>
 </div>
 </div>
-
 <h2><span id="creating">Creating</span></h2>
 <div class="solvvy-solution">
 <h3>Making a bucket</h3>
@@ -58,24 +57,21 @@ Total Objects: 4
 </div>
 <h2><span id="uploading">Uploading</span></h2>
 <div class="solvvy-solution">
-<p>You can use either the <a href="https://docs.aws.amazon.com/cli/latest/reference/s3/cp.html" target="_self">cp</a> or <a href="https://docs.aws.amazon.com/cli/latest/reference/s3/sync.html" target="_self">sync</a> command to upload files and directories. The difference is that <span class="code">cp</span> will overwrite any existing file or directory with the same name. The <span class="code">sync</span> command will only upload new or changed files.</p>
+<p>You can use either the <a href="https://docs.aws.amazon.com/cli/latest/reference/s3/cp.html" target="_self">cp</a> or <a href="https://docs.aws.amazon.com/cli/latest/reference/s3/sync.html" target="_self">sync</a> command to upload files and directories. The difference is that <span class="code">cp</span> will&nbsp;overwrite any existing file or directory with the same name. The <span class="code">sync</span> command will only upload new or changed files.</p>
 <h3>Uploading a single file</h3>
 <p><strong>Copying a file</strong></p>
-<p>This copies a file named <span class="text-object">file.txt</span> to your bucket. Make sure to also specify the same name of the file within the bucket file-path. </p>
+<p>This copies a file named <span class="text-object">file.txt</span> to your bucket. Make sure to also specify the same name of the file within the bucket file-path.&nbsp;</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">aws --endpoint-url https://objects-us-east-1.dream.io s3 cp <span class="code-highlight">/home/username/file.txt</span> s3://<span class="code-highlight">my-bucket/file.txt</span></span>
 </pre>
 </div>
 <h3>Uploading a directory</h3>
-<div class="alert alert-important">
-<div class="alert-icon"><img height="60" src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60"/></div>
-<div class="alert-content">
+<div class="notebox-important">
 <p>When uploading a directory, make sure to add the directory name to the s3 file path in your command. For example:</p>
 <p>s3://my-bucket/<span class="text-object">my-directory</span></p>
 <p>If you do not add the directory path you wish to upload to, the contents of the directory you're uploading will be placed in the bucket's top-level directory.</p>
 </div>
-</div>
-<h4><strong>Using the cp command </strong></h4>
+<h4><strong>Using the cp command&nbsp;</strong></h4>
 <p>Use the <span class="code">--recursive</span> flag to copy a directory and any subdirectories.</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">aws --endpoint-url https://objects-us-east-1.dream.io s3 cp <span class="code-highlight">/home/username/my-directory</span> s3://<span class="code-highlight">my-bucket/my-directory</span> --recursive</span>
