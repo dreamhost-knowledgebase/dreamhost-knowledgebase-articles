@@ -8,11 +8,8 @@
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215912848-How-to-launch-an-instance-using-the-DreamCompute-dashboard" target="_self" rel="undefined">Launched an Ubuntu instance</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/115003441752-Adding-a-website-to-DreamCompute">Added your primary website to DreamCompute</a>&nbsp;(i.e., <strong>example.com</strong>)
-<div class="alert alert-important">
-<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
-<div class="alert-content">
+<div class="notebox-important">
 <p>This article assumes you've created your site in the <span class="text-object">/var/www</span> directory and not your <span class="text-object">/home/username</span> directory.</p>
-</div>
 </div>
 </li>
 <li>Using the same steps, added any subdomains you want hosted to DreamCompute (i.e., <strong>blog.example.com</strong>)</li>
@@ -46,11 +43,8 @@ ssl.conf<br />ssl.load</pre>
 <ol>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216201547-Connect-to-your-instance-with-SSH-keys-overview">Log into your instance</a>.</li>
 <li>Run the commands below to install a Let's Encrypt certificate.
-<div class="alert alert-important">
-<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
-<div class="alert-content">
+<div class="notebox-important">
 <p>Make sure to change <strong>example.com</strong> to your actual domain name in the command below.</p>
-</div>
 </div>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">sudo apt install certbot python3-certbot-apache -y<br /></span><span class="server">[user@instance]# </span><span class="command">sudo certbot --manual -d "<span class="code-highlight">example.com</span>" -d "*.<span class="code-highlight">example.com</span>" --server https://acme-v02.api.letsencrypt.org/directory certonly</span></pre>
@@ -84,12 +78,9 @@ Tzx6GaeSJHe14C6t_M9wTBDe0s1stDMuq2Y15GLFZPE
 Before continuing, verify the record is deployed.
 -------------------------------------------------------------------------------</pre>
 </div>
-<div class="alert alert-important">
-<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
-<div class="alert-content">
+<div class="notebox-important">
 <p>DO NOT press the <span class="code">Enter</span> key yet. You must first set up this record in your DreamHost panel.</p>
 <p>The most simple way to do this is to click <span class="code">CTRL + C</span> on your keyboard to abort the current terminal process. Next, copy the long TXT record from your terminal and paste it into your DreamHost panel.</p>
-</div>
 </div>
 </li>
 <li>Log into your <a href="https://panel.dreamhost.com">DreamHost panel</a> and navigate to the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;" target="_blank" rel="noopener">Manage Domains</a> page.</li>
@@ -196,11 +187,8 @@ IMPORTANT NOTES:
 <pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">sudo vim <span class="code-highlight">example.com</span>-le-ssl.conf</span></pre>
 </div>
 <p>In this file add the following code.</p>
-<div class="alert alert-important">
-<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
-<div class="alert-content">
+<div class="notebox-important">
 <p>Make sure to change <strong>example.com</strong> to your actual domain name.</p>
-</div>
 </div>
 <div class="preboxcontainer">
 <pre class="prebox">&lt;IfModule mod_ssl.c&gt;
@@ -232,18 +220,14 @@ Enabling site example.com-le-ssl</pre>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">sudo systemctl reload apache2</span></pre>
 </div>
-</div>
 <h2>Configure your subdomains to use this certificate</h2>
 <div class="solvvy-solution">
 <p>Make an additional files for any subdomains you wish to use this same certificate for. For example, if you want the subdomain <strong>sub1.example.com</strong> to also be protected by this Wildcard certificate, add files named <span class="text-object">sub1.example.com.conf</span> and&nbsp;<span class="text-object">sub1.example.com-le-ssl.conf</span>&nbsp;to the <span class="text-object">/etc/apache2/sites-available</span> directory as shown above.</p>
-<div class="alert alert-important">
-<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
-<div class="alert-content">
+<div class="notebox-important">
 <p>When editing the sub1.example.com-le-ssl.conf file, make sure to change 'sub1.example.com' to your actual <strong>sub</strong>.domain name, except for the last 2 lines:</p>
 <p>SSLCertificateFile /etc/letsencrypt/live/<strong>example.com</strong>/fullchain.pem</p>
 <p>SSLCertificateKeyFile /etc/letsencrypt/live/<strong>example.com</strong>/privkey.pem</p>
 <p>These must continue to point to the primary domain name.</p>
-</div>
 </div>
 <div class="preboxcontainer">
 <pre class="prebox">&lt;IfModule mod_ssl.c&gt;
@@ -269,5 +253,6 @@ Enabling site example.com-le-ssl</pre>
 <p>Finally, reload Apache so it knows about the new configurations.</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">sudo systemctl reload apache2</span></pre>
+</div>
 </div>
 </div>
