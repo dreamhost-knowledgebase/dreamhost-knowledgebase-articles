@@ -11,6 +11,30 @@
 </ul>
 <p>Once you’re logged in, proceed with the steps below.</p>
 </div>
+<h2>Checking your database size</h2>
+<div class="solvvy-solution">
+<p>Before optimizing your database, you should check the current size of your database. You can check your database's size using phpMyAdmin or SSH.</p>
+<h3>Using phpMyAdmin</h3>
+<p>Using the instructions below, you can view your database's size within phpMyAdmin.</p>
+<ol>
+<li>Click the database name you're checking the size of on the left-side menu.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/misc-phpmyadmin-database-size.png" alt="phpMyAdmin database size" width="584" height="16" /></dd>
+</dl>
+</li>
+<li>On the far-right side of the bottom row of the main panel, you can see the full size of the database.</li>
+</ol>
+<h3>Using SSH</h3>
+<p>You can also use SSH to connect and log into your database and follow the steps below to find your database's size. View the following article for instructions on connecting via SSH:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214882998-How-do-I-connect-to-my-database-via-SSH-" target="_self">How do I connect to my database via SSH?</a></li>
+</ul>
+<p>Run the following query to see the size of the database in MB (do not replace any text or add any line breaks):</p>
+<div class="preboxcontainer">
+<pre class="prebox">      <span class="command">SELECT table_schema "database", sum(data_length + index_length)/1024/1024 "size in MB" FROM information_schema.TABLES GROUP BY table_schema;</span>
+      </pre>
+</div>
+</div>
 <h2><span id="Optimizing_your_database">Optimizing your database</span></h2>
 <div class="solvvy-solution">
 <p>On the left side of phpMyAdmin, you’ll see a list of databases:</p>
