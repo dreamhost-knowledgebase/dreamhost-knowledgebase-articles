@@ -84,15 +84,20 @@
 <div class="solvvy-solution">
 <p>Sometimes running an optimization via phpMyAdmin tends to fail and the page eventually times out. This is possibly due to the database being too large for phpMyAdmin to handle. The alternative is to optimize via <a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a>. As a shell user, you can SSH into your domain and perform the following command which is the same function run on phpMyAdmin:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">mysql -u <span class="code-highlight">username</span> -p<span class="code-highlight">password</span> -h <span class="code-highlight">hostname</span> <span class="code-highlight">databasename</span> -e "show tables" | grep -v Tables_in | grep -v "+" | gawk '{print "optimize table " $1 ";"}' | mysql -u <span class="code-highlight">username</span> -p<span class="code-highlight">password</span> -h <span class="code-highlight">hostname</span> <span class="code-highlight">databasename</span> </span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">mysqlcheck -h <span class="code-highlight">HOSTNAME</span> -u <span class="code-highlight">USERNAME</span> -p -o <span class="code-highlight">DATABASE</span></span></pre>
 </div>
 <p>Replace the <em>variables</em> in the above command with your actual database information:</p>
 <ul>
-<li><strong>username</strong> – database username</li>
-<li><strong>password</strong> – user’s password</li>
-<li><strong>hostname</strong> – database hostname you set up and is active</li>
-<li><strong>databasename</strong> – the name of the database in which you’re running the command</li>
+<li><strong>USERNAME</strong> – database username</li>
+<li><strong>HOSTNAME</strong> – database hostname you set up and is active</li>
+<li><strong>DATABASE</strong> – the name of the database in which you’re running the command</li>
 </ul>
+<p><span class="code">-p</span> will prompt you to enter your database password, which will prevent the password from being saved in your SSH user's bash history.</p>
+<div class="notebox-note">
+<p>You may see the following note in the command output:</p>
+<span class="code">Table does not support optimize, doing recreate + analyze instead</span>
+<p>This message occurs when MySQL's InnoDB storage engine performs a different set of operations to optimize the table and can be safely disregarded.</p>
+</div>
 <p>You can output the log of the command into a file for viewing by adding the following to the end of the command:</p>
 <div class="preboxcontainer">
 <pre class="prebox">&gt;&gt; results.txt</pre>
