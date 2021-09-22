@@ -83,11 +83,8 @@ myphoto2.jpg 262518  2011-08-08T21:38:01.000Z</pre>
 <span id="s3-perl-deleting-a-bucket"></span>
 <h2>Deleting a Bucket</h2>
 <div class="solvvy-solution">
-<div class="alert alert-important">
-<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
-<div class="alert-content">
+<div class="notebox-important">
 <p>The Bucket must be empty, otherwise it won’t work.</p>
-</div>
 </div>
 <div class="preboxcontainer">
 <pre class="prebox">$conn-&gt;delete_bucket($bucket);</pre>
@@ -97,11 +94,8 @@ myphoto2.jpg 262518  2011-08-08T21:38:01.000Z</pre>
 <span id="s3-perl-forced-delete-for-non-empty-buckets"></span>
 <h2>Forced Delete for Non-empty Buckets</h2>
 <div class="solvvy-solution">
-<div class="alert alert-important">
-<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
-<div class="alert-content">
+<div class="notebox-important">
 <p>not available in the <a href="https://metacpan.org/release/TIMA/Amazon-S3-0.441/view/lib/Amazon/S3.pm">Amazon::S3</a> perl module</p>
-</div>
 </div>
 </div>
 <div id="creating-an-object">&nbsp;</div>
@@ -156,11 +150,8 @@ $bucket-&gt;set_acl({
 <h2>Generate Object Download URLs (signed and unsigned)</h2>
 <div class="solvvy-solution">
 <p>This generates an unsigned download URL for <code class="docutils literal"><span class="pre">hello.txt</span></code>. This works because <code class="docutils literal"><span class="pre">hello.txt</span></code>&nbsp;was made public by setting the ACL above. Then this generates a signed download URL for <code class="docutils literal"><span class="pre">secret_plans.txt</span></code> that will work for 1 hour. Signed download URLs will work for the time period even if the object is private (when the time period is up, the URL will stop working).</p>
-<div class="alert alert-important">
-<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
-<div class="alert-content">
+<div class="notebox-important">
 <p>The <a class="reference external" href="https://metacpan.org/release/TIMA/Amazon-S3-0.441/view/lib/Amazon/S3.pm">Amazon::S3</a> module does not have a way to generate download URLs, so these examples use another module instead. Unfortunately, most modules for generating these URLs assume that you are using Amazon. For this reason, a more obscure module, <a class="reference external" href="https://metacpan.org/release/MIKE/Muck-0.02">Muck::FS::S3</a>&nbsp;is used.&nbsp;This should be the same as Amazon’s sample S3 perl module, but this sample module is not in CPAN. So, you can either use CPAN to install <a class="reference external" href="https://metacpan.org/release/MIKE/Muck-0.02">Muck::FS::S3</a>, or install Amazon’s sample S3 module manually. If you go the manual route, you can remove <code class="docutils literal"><span class="pre">Muck::FS::</span></code> from the example below.</p>
-</div>
 </div>
 <div class="preboxcontainer">
 <pre class="prebox">use Muck::FS::S3::QueryStringAuthGenerator;

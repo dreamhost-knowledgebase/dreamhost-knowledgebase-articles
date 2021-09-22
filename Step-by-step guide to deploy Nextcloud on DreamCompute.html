@@ -1,6 +1,6 @@
 <h2>Overview</h2>
 <div class="solvvy-solution">
-<p>This article explains how to install Nextcloud on two DreamCompute instances. One instance is for&nbsp; the application itself and the other instance for the database it uses.</p>
+<p>This article explains how to install Nextcloud on two DreamCompute instances. One instance is for the application itself and the other instance for the database it uses.</p>
 </div>
 <h2>Step 1 —&nbsp;Add a security group</h2>
 <div class="solvvy-solution">
@@ -27,6 +27,7 @@
 </ul>
 <h3>Use a volume based instance</h3>
 <p>It is recommended to boot a <a href="https://help.dreamhost.com/hc/en-us/articles/217701757-What-s-the-difference-between-ephemeral-and-volume-boot-disks-">volume backed instance</a> as they are permanent as opposed to <a href="https://help.dreamhost.com/hc/en-us/articles/217701757-What-s-the-difference-between-ephemeral-and-volume-boot-disks-">ephemeral disks</a> and can be larger than 80GB in size if larger amounts of data will be stored. This can be done in the <a class="reference external" href="https://help.dreamhost.com/hc/en-us/articles/215912848-How-to-launch-an-instance-using-the-DreamCompute-dashboard">DreamCompute dashboard</a> or with the <a href="https://help.dreamhost.com/hc/en-us/articles/216511617-How-to-launch-an-instance-using-the-OpenStack-CLI">OpenStack command line client</a>.</p>
+</div>
 <div id="installing-mariadb">&nbsp;</div>
 <h2>Step 3 — Installing MariaDB on instance #1</h2>
 <div class="solvvy-solution">
@@ -63,11 +64,8 @@ bind-address            = 127.0.0.1
 </pre>
 </div>
 <p>where <strong>$IP</strong> is the <a href="https://help.dreamhost.com/hc/en-us/articles/115001754711-Locating-IP-Address-of-your-instance">IP address</a> of the database instance.</p>
-<div class="alert alert-important">
-<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
-<div class="alert-content">
+<div class="notebox-important">
 <p>If you have <a href="https://help.dreamhost.com/hc/en-us/articles/229789688-Private-networking-overview">private networking</a> enabled, this will be the private IP address and not the floating IP if your database instance has one.</p>
-</div>
 </div>
 <p>This makes the database listen to connections from its IP address instead of only listening on 127.0.0.1 (the localhost).</p>
 </div>
@@ -83,12 +81,9 @@ bind-address            = 127.0.0.1
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">MariaDB [(none)]&gt; </span><span class="command">create database <span class="code-highlight">nextcloud</span>;</span></pre>
 </div>
-<div class="alert alert-important">
-<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
-<div class="alert-content">
+<div class="notebox-important">
 <p>In the next command, change $IP to the IP address of the second instance you created for the web server.</p>
 <p>Do not add the IP address of the database instance as this will cause it to not connect.</p>
-</div>
 </div>
 <p>Make sure to leave the single quotes around username, IP, and password. For example, if your password is Xhd379s, enter it like this</p>
 <ul>
@@ -110,11 +105,8 @@ bind-address            = 127.0.0.1
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">MariaDB [(none)]&gt; </span><span class="command">flush privileges;</span></pre>
 </div>
-<div class="alert alert-important">
-<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
-<div class="alert-content">
+<div class="notebox-important">
 <p>If you want to allow root login from any IP address, you can change $IP to '%'. However this is not recommended, especially if your database instance has a public IP address (because then anyone can try to access it).</p>
-</div>
 </div>
 <p>Log out of the database:</p>
 <div class="preboxcontainer">
@@ -126,8 +118,8 @@ Bye</pre>
 <pre class="prebox"><span class="server">[root@dbinstance]# </span><span class="command">service mysql restart</span>
 </pre>
 </div>
-</div>
 <p>This completes the installation of the database instance.</p>
+</div>
 <div id="installing-the-nextcloud-application">&nbsp;</div>
 <h2>Step 5 —&nbsp;Installing the Nextcloud application on instance #2</h2>
 <div class="solvvy-solution">
@@ -147,9 +139,7 @@ Bye</pre>
 php7.0-mbstring php7.0-intl php7.0-mcrypt php-imagick php7.0-xml php7.0-zip</span></pre>
 </div>
 </div>
-<div class="alert alert-important">
-<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
-<div class="alert-content">
+<div class="notebox-important">
 <p>The backslash character \ is used when entering a long command. When you enter the \, the terminal command continues to the next line until you finish entering it.</p>
 <p>You could also remove the \ character and put every parameter into a single line.</p>
 </div>
@@ -176,7 +166,7 @@ This will download a compressed copy of the Nextcloud application.
 </li>
 </ol>
 </div>
-This creates a directory called <span class="text-object"><span class="text-object">nextcloud in your current directory.</span></span>
+<p>This creates a directory called <span class="text-object"><span class="text-object">nextcloud in your current directory.</span></span></p>
 <div id="setting-up-the-nextcloud-directory">
 <h3>Setting up the nextcloud directory</h3>
 <p>You must now copy Nextcloud to the directory <span class="text-object">/var/www/nextcloud</span>. Run the following:</p>
@@ -188,7 +178,6 @@ This creates a directory called <span class="text-object"><span class="text-obje
 <p>Change the permissions of the nextcloud directory so the web user, www-data in this case, can access it. Run the following:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[root@instance]# </span><span class="command">chown -R www-data:www-data /var/www/nextcloud</span></pre>
-</div>
 </div>
 <div id="configuring-apache">&nbsp;</div>
 <h2>Step 7 — Configuring Apache</h2>
@@ -247,5 +236,4 @@ This creates a directory called <span class="text-object"><span class="text-obje
 <li>The host is the IP address of your database instance with :3306 appended to the end</li>
 </ul>
 <p>Click <strong>Finish Installation</strong> and you have a working installation of Nextcloud.</p>
-</div>
 </div>
