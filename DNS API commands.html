@@ -1,116 +1,58 @@
-<div class="document">
-<div class="documentwrapper">
-<div class="body">
-<div id="DNS API commands">
-<div class="altTitle">DNS API</div>
-<div class="table-of-content container">
-<ul class="simple">
-<li><a class="reference internal" href="#dns-list_records">dns-list_records</a></li>
-<li><a class="reference internal" href="#dns-add_record">dns-add_record</a></li>
-<li><a class="reference internal" href="#dns-remove_record">dns-remove_record</a></li>
-<li><a class="See also" href="#See_also">See also</a></li>
+<h2>Overview</h2>
+<div class="solvvy-solution">
+<p>The DNS API module allows you to manage your domain's DNS records. The following options are available.</p>
+<ul>
+<li>List all records (<a href="#dns-list_records" target="_self">dns-list_records</a>)</li>
+<li>Add a record (<a href="#dns-add_record" target="_self">dns-add_record</a>)</li>
+<li>Remove a record (<a href="#dns-remove_record" target="_self">dns-remove_record</a>)</li>
+</ul>
+<p>View the following article for instructions on how to connect to the DreamHost API. You will use the instructions in this article to construct your API call.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/4407354972692" target="_blank" rel="noopener">Connecting to the DreamHost API</a></li>
 </ul>
 </div>
-<div class="notebox-note">
-<p>If you find any instructions in this article do not function as intended, it's possible it may be out of date. When in doubt, please contact support for further assistance.</p>
-</div>
-<p>The DNS API module allows you to manage Domain Name Service records.</p>
-</div>
-<h2>Commands</h2>
+<h2><span id="dns-list_records">dns-list_records</span></h2>
 <div class="solvvy-solution">
-<h3><span id="dns-list_records">dns-list_records</span></h3>
-<p>Dump a list of all DNS records for all domains (not including registrations) on all accounts you have access to. Please note that this skips the dreamhosters.com, dreamhost.com, dreamhostps.com, and newdream.net zones.</p>
-<table class="wikitable">
-<tbody>
-<tr>
-<td><strong>Command</strong></td>
-<td>dns-list_records</td>
-</tr>
-<tr>
-<td><strong>Values</strong></td>
-<td>(none)</td>
-</tr>
-<tr>
-<td><strong>Result</strong></td>
-<td>
-<p>success<br />account_id zone record type value comment editable<br />1 718apts.com 718apts.com A 1.2.3.4 0<br />1 718apts.com 718apts.com MX 0 mx1.balanced.dreamhost.com. 0<br />1 718apts.com 718apts.com MX 0 mx2.balanced.dreamhost.com. 0<br />1 718apts.com 718apts.com NS ns1.dreamhost.com. 0<br />1 718apts.com 718apts.com NS ns2.dreamhost.com. 0<br />1 718apts.com 718apts.com NS ns3.dreamhost.com. 0<br />1 718apts.com test.718apts.com CNAME ghs.google.com. A test I did. 1</p>
-</td>
-</tr>
-<tr>
-<td><strong>Possible values</strong></td>
-<td><strong>type</strong>&nbsp;: A,MX,NS,CNAME,PTR,NAPTR,TXT,SRV,AAAA, or A6
-<p><strong>editable</strong>&nbsp;: 0 or 1</p>
-</td>
-</tr>
-<tr>
-<td><strong>Possible errors</strong></td>
-<td>(none)</td>
-</tr>
-</tbody>
-</table>
-<h3><span id="dns-add_record">dns-add_record</span></h3>
-<p>Adds a new DNS record to a domain you already have hosted with DreamHost. However, you cannot add dreamhosters.com records. Keep in mind DNS changes may take a while to propagate.</p>
-<table class="wikitable">
-<tbody>
-<tr>
-<td><strong>Command</strong></td>
-<td>dns-add_record</td>
-</tr>
-<tr>
-<td><strong>Values</strong></td>
-<td><strong>record</strong>&nbsp;: The full name of the record you'd like to add, e.g., testing.groo.com
-<p><strong>type</strong>&nbsp;: A,CNAME,NS,PTR,NAPTR,SRV,TXT, or AAAA <strong>value</strong>&nbsp;: The DNS record's value. <strong>comment</strong>&nbsp;: Optional comment for this record.</p>
-</td>
-</tr>
-<tr>
-<td><strong>Result</strong></td>
-<td>
-<p>success<br />record_added</p>
-</td>
-</tr>
-<tr>
-<td><strong>Possible errors</strong></td>
-<td>
-<p>no_record<br />no_type<br />no_value<br />invalid_record (may have specifics after a tab)<br />invalid_type (may have specifics after a tab)<br />invalid_value (may have specifics after a tab)<br />no_such_zone<br />CNAME_must_be_only_record<br />CNAME_already_on_record<br />record_already_exists_not_editable<br />record_already_exists_remove_first<br />internal_error_updating_zone<br />internal_error_could_not_load_zone<br />internal_error_could_not_add_record</p>
-</td>
-</tr>
-</tbody>
-</table>
-<h3><span id="dns-remove_record">dns-remove_record</span></h3>
-<p>Removes an existing editable DNS record you have with DreamHost. However, you cannot remove dreamhosters.com records. Keep in mind DNS changes may take a while to propagate.</p>
-<table class="wikitable">
-<tbody>
-<tr>
-<td><strong>Command</strong></td>
-<td>dns-remove_record</td>
-</tr>
-<tr>
-<td><strong>Values</strong></td>
-<td>
-<p><strong>record</strong>&nbsp;: The full name of the record you'd like to remove, e.g., testing.groo.com<br /><strong>type</strong>&nbsp;: The type (see dns-add_record) of the record you'd like to remove.<br /><strong>value</strong>&nbsp;: The value (see dns-add_record) of the record you'd like to remove.</p>
-</td>
-</tr>
-<tr>
-<td><strong>Result</strong></td>
-<td>
-<p>success<br />record_removed</p>
-</td>
-</tr>
-<tr>
-<td><strong>Possible errors</strong></td>
-<td>
-<p>no_record<br />no_type<br />no_value<br />no_such_record<br />no_such_type<br />no_such_value<br />not_editable<br />internal_error_could_not_destroy_record<br />internal_error_could_not_update_zone</p>
-</td>
-</tr>
-</tbody>
-</table>
+<p>The <span class="code">dns-list_records</span> command lists all DNS records for all domains on all accounts you have access to. This command will not list records in the following cases:</p>
+<ul>
+<li>Registration only domain</li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360002284771-What-is-a-dreamhosters-com-subdomain-" target="_blank" rel="noopener">dreamhosters.com</a> subdomain</li>
+</ul>
+<h3>Running the command</h3>
+<p>The following command lists all DNS records for all domains in your account.</p>
+<div class="preboxcontainer">
+<pre class="prebox">https://api.dreamhost.com/?key=1A2B3C4D5E6F7G8H<span class="code-highlight">&amp;cmd=dns-list_records</span></pre>
+</div>
+</div>
+<h2><span id="dns-add_record">dns-add_record</span></h2>
+<div class="solvvy-solution">
+<p>The <span class="code">dns-add_record</span> allows you to add a new DNS record to a domain (excluding <a href="https://help.dreamhost.com/hc/en-us/articles/360002284771-What-is-a-dreamhosters-com-subdomain-" target="_self">dreamhosters.com</a> subdomains).</p>
+<div class="notebox-note">
+<p>After adding a record, it will still take several hours to <a href="https://help.dreamhost.com/hc/en-us/articles/215840248-DNS-propagation-overview" target="_self">propagate online</a>.</p>
+</div>
+<h3>Running the command</h3>
+<p>You must specify the following values when running this command.</p>
+<ul>
+<li><strong>record</strong> : The domain name you are adding the record to (<strong>example.com</strong>)</li>
+<li><strong>type</strong>&nbsp;: A,CNAME,NS,NAPTR,SRV,TXT, or AAAA</li>
+<li><strong>value</strong>&nbsp;: The DNS record's value.</li>
+<li><strong>comment</strong>&nbsp;: Optional comment for this record.</li>
+</ul>
+<p>The following command adds a <span class="text-object">TXT</span> record with a value of <span class="code">test123</span> to the domain <strong>example.com</strong>.</p>
+<div class="preboxcontainer">
+<pre class="prebox">https://api.dreamhost.com/?key=1A2B3C4D5E6F7G8H<span class="code-highlight">&amp;cmd=dns-add_record&amp;record=example.com&amp;type=TXT&amp;value=test123"</span></pre>
+</div>
+</div>
+<h2><span id="dns-remove_record">dns-remove_record</span></h2>
+<div class="solvvy-solution">
+<p>This is the opposite of <span class="code">dns-add_record</span>. The same values must be specified when running the command. The following command removes a <span class="text-object">TXT</span> record with a value of <span class="code">test123</span> from the domain <strong>example.com</strong>.</p>
+<div class="preboxcontainer">
+<pre class="prebox">https://api.dreamhost.com/?key=1A2B3C4D5E6F7G8H<span class="code-highlight">&amp;cmd=dns-remove_record&amp;record=example.com&amp;type=TXT&amp;value=test123"</span></pre>
+</div>
 </div>
 <h2><span id="See_also">See also</span></h2>
 <div class="solvvy-hidden">
 <ul>
 <li><a href="/hc/en-us/articles/217560167-Application-programming-interface-overview">Application programming interface overview</a></li>
 </ul>
-</div>
-</div>
-</div>
 </div>

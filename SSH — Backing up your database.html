@@ -27,7 +27,7 @@
 </div>
 <p>Once there, run the following command. Make sure to change the username, password, yourMySQLHostname, and dbname to the correct credentials.&nbsp;</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">mysqldump --opt --user=<span class="code-highlight">username</span> -p --host=<span class="code-highlight">yourMySQLHostname</span> <span class="code-highlight">dbname</span> &gt; nameofyourbackup.sql</span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">mysqldump --opt --user=<span class="code-highlight">username</span> -p --host=<span class="code-highlight">yourMySQLHostname</span> --no-tablespaces <span class="code-highlight">dbname</span> &gt; nameofyourbackup.sql</span></pre>
 </div>
 <ul>
 <li>You will then be prompted for your database user's password</li>
@@ -72,7 +72,7 @@ password="<span class="code-highlight">password</span>"
 
 for DB in $(mysql --host="$host" --user="$username" -p"$password" -e"show databases" --skip-column-names -s | grep -v information_schema); 
 do 
-  mysqldump --opt --host="$host" --user="$username" -p"$password" $DB &gt; ./$DB.sql; 
+  mysqldump --opt --host="$host" --user="$username" -p"$password" --no-tablespaces $DB &gt; ./$DB.sql; 
 done</pre>
 </div>
 </li>
@@ -91,7 +91,7 @@ done</pre>
 <p>Make sure you add single quotes before and after your password to ensure the command reads it correctly.</p>
 </div>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">mysqldump --opt --user=<span class="code-highlight">username</span> --password='<span class="code-highlight">password</span>' --host=<span class="code-highlight">yourMySQLHostname</span> <span class="code-highlight">dbname</span> &gt; nameofyourbackup.sql</span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">mysqldump --opt --user=<span class="code-highlight">username</span> --password='<span class="code-highlight">password</span>' --host=<span class="code-highlight">yourMySQLHostname</span> --no-tablespaces <span class="code-highlight">dbname</span> &gt; nameofyourbackup.sql</span></pre>
 </div>
 </div>
 <h2>See also</h2>

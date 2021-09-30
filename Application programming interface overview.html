@@ -1,79 +1,17 @@
-<div class="document">
-<div class="documentwrapper">
-<div class="body">
-<div id="Application programming interface overview" class="solvvy-hidden">
-<div class="altTitle">API overview</div>
-<div class="table-of-content container">
-<ul class="simple">
-<li><a class="reference internal" href="#What_is_an_API">What is an API?</a></li>
-<li><a class="reference internal" href="#Does_DreamHost_have_an_API">Does DreamHost have an API?</a></li>
-<li><a class="reference internal" href="#How_does_DreamHost_API_work">How does DreamHost's API work?</a></li>
-<li><a class="reference internal" href="#What_values_does_DreamHost_API_use">What values does DreamHost's API use?</a></li>
-<li><a class="reference internal" href="#Implementation_notes">Implementation notes</a></li>
-<li><a class="reference internal" href="#List_of_API_modules">List of API modules</a></li>
-<li><a class="reference internal" href="#Could_you_make_X_functionality_accessible_via_the_API">Could you make X functionality accessible via the API?</a></li>
-<li><a class="reference internal" href="#What_sort_of_applications_use_the_API">What sort of applications use the API?</a></li>
-<li><a class="See also" href="#See_also">See also</a></li>
+<h2><span id="What_is_an_API">Overview</span></h2>
+<div class="solvvy-solution">
+<p>An <strong>application programming interface</strong> (API) is a software interface built for a specific software platform. This interface allows external software (such as a program you created) or a URL you visit in a browser to interact with the primary software platform.</p>
+<p>DreamHost offers an API customers can use to interact with their account information such as Domains, DNS, Mail, Databases, and Users.</p>
+</div>
+<h2 class="header-section">Connecting to the API</h2>
+<h2><span id="How_does_DreamHost_API_work">How do I connect to DreamHost's API?</span></h2>
+<div class="solvvy-solution">
+<p>You can connect DreamHost's API in two ways:</p>
+<ul>
+<li>Visiting a URL in your browser</li>
+<li>Writing a script</li>
 </ul>
-</div>
-</div>
-<div class="notebox-note">
-<p>If you find any instructions in this article do not function as intended, it's possible it may be out of date. When in doubt, please contact support for further assistance.</p>
-</div>
-</div>
-<h2><span id="What_is_an_API">What is an API?</span></h2>
-<div class="solvvy-solution">
-<p>An <strong>application programming interface</strong> (API) is a source code interface that a computer system or program library provides to support requests for services to be made of it by a computer program. An API differs from an application binary interface in that it is specified in terms of a programming language that can be compiled when an application is built, rather than an explicit low level description of how data is laid out in memory.</p>
-<p>The software that provides the functionality described by an API is said to be an <em>implementation</em> of the API. The API itself is abstract, in that it specifies an interface and does not get involved with implementation details.</p>
-<p>A good example of an API would be a web service interface, such as the API provided by Google for its mapping service.</p>
-</div>
-<h2><span id="Does_DreamHost_have_an_API">Does DreamHost have an API?</span></h2>
-<div class="solvvy-solution">
-<p>Yes.</p>
-</div>
-<h2><span id="How_does_DreamHost_API_work">How does DreamHost's API work?</span></h2>
-<div class="solvvy-solution">
-<p>The DreamHost API is available in a simple "flat" interface, which is easy to use!</p>
-<p>All you have to do is visit ("GET" or "POST" to) a simple URL (programmatically or even just with a web browser), and the result is returned as tab-delimited plain text (or other formats if you like).</p>
-<p>That simple URL is:</p>
-<a href="https://api.dreamhost.com/">https://api.dreamhost.com/</a>
-<p>And the plain text result is something like:</p>
-<div class="preboxcontainer">
-<pre class="prebox">error
-no_key
-</pre>
-</div>
-<p>Or maybe:</p>
-<div class="preboxcontainer">
-<pre class="prebox">success
-added_web
-</pre>
-</div>
-</div>
-<h2><span id="What_values_does_DreamHost_API_use">What values does DreamHost's API use?</span></h2>
-<div class="solvvy-solution">
-<h3>Required</h3>
-<dl>
-<dt>key</dt>
-<dd>An API Key that you need to generate <a href="https://panel.dreamhost.com/?tree=home.api">via the web panel.</a></dd>
-</dl>
-<div class="notebox-important">
-<p>In order for a sub-account to create an API Key, it must be granted 'Billing'&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/215413677-Account-privileges-overview">Account Privileges</a>.</p>
-<p>Please note that if a sub-account creates an API Key, it will only be visible to the sub-account on the&nbsp;<a href="https://panel.dreamhost.com/?tree=home.api">API Key</a> page in the panel.&nbsp;The primary account owner will not be able to view the sub-account's API Key in their panel.</p>
-</div>
-<dl>
-<dt>cmd</dt>
-<dd>The command you'd like to run. When you create your key you pick what command(s) it may access.</dd>
-<dt>unique_id</dt>
-<dd>You may pass a new unique_id (max length: 64 chars) when you submit a request, to make sure you don't accidentally submit the same command twice. Note that only successful queries "use up" a unique_id. DreamHost recommends using <a href="https://en.wikipedia.org/wiki/Universally_unique_identifier">UUIDs</a> for this purpose if you'd like. The unique_id you use only applies to your specific API key, so you never need to worry about any other users already "using" a specific unique_id.</dd>
-</dl>
-<div class="notebox-note">
-<p>Individual commands may have additional required values.</p>
-</div>
-<h3>Optional</h3>
-<dl>
-<dt>format</dt>
-<dd>The format you want to receive output in. Valid formats are:
+<p>In both cases, the results are returned in the format of your choice. Valid formats are:</p>
 <ul>
 <li><a href="https://api.dreamhost.com/?key=6SHU5P2HLDAYECUM&amp;cmd=user-list_users_no_pw&amp;format=tab">tab</a> (default)</li>
 <li><a href="https://api.dreamhost.com/?key=6SHU5P2HLDAYECUM&amp;cmd=user-list_users_no_pw&amp;format=xml">xml</a></li>
@@ -83,84 +21,36 @@ added_web
 <li><a href="https://api.dreamhost.com/?key=6SHU5P2HLDAYECUM&amp;cmd=user-list_users_no_pw&amp;format=yaml">yaml</a></li>
 <li><a href="https://api.dreamhost.com/?key=6SHU5P2HLDAYECUM&amp;cmd=user-list_users_no_pw&amp;format=html">html</a></li>
 </ul>
-</dd>
-</dl>
-<dl>
-<dt>account</dt>
-<dd>The account number to perform operations under. Defaults to your own account, or the first account you have access to otherwise.</dd>
-</dl>
+<p>View the following article for instructions on how to connect to the DreamHost API:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/4407354972692-Connecting-to-the-DreamHost-API" target="_self">Connecting to the DreamHost API</a></li>
+</ul>
 </div>
-<h2><span id="Implementation_notes">Implementation notes</span></h2>
+<h2 class="header-section">Implementation notes</h2>
 <div class="solvvy-solution">
-<h3>Case sensitivity</h3>
+<h2>Case sensitivity</h2>
 <p>All <strong>parameter</strong> names are case-sensitive and must be in lower case. However, the <strong>values</strong> you submit to the server are generally case-insensitive.</p>
-<h3>Rate limit</h3>
-<p>In order to ensure that DreamHost systems remains stable and responsive, the rate at which certain API commands or groups of API commands can be run by the same user has been limited. These limits are relatively generous and very few users ever run into them. Limits are usually set per hour or per day, although some commands may have limits in shorter periods of time such as 10 minutes. When API calls fail for any reason (for example if you tried to create a user that already existed), it does <em>not</em> count against your limits (note that this also means that failing because you exceeded the rate limit also does <em>not</em> count). When you do run into a limit, the error returned is:</p>
+<h2>Rate limiting</h2>
+<p>In order to ensure DreamHost systems remain stable and responsive, the rate at which certain API commands or groups of API commands can be run by the same user is limited.</p>
+<p>These limits are relatively generous and very few users ever run into them.&nbsp;Limits are usually set per hour or per day, although some commands may have limits in shorter periods of time such as 10 minutes.</p>
+<p>When API calls fail for any reason (for example if you tried to create a user that already existed), it does <em>not</em> count against your limits (note that this also means that failing because you exceeded the rate limit also does <em>not</em> count).</p>
+<p>When you do run into a limit, the error returned is:</p>
 <div class="preboxcontainer">
 <pre class="prebox">error
 slow_down_bucko (detailed info about type of limit reached after a tab)</pre>
 </div>
-<p>If you run into this error, you should consider ways in which you could reduce the frequency that you are calling the API. Most likely you would only run into these limits if you have a script or automated program that loops to repeatedly make API calls. So you can simply slow down the rate at which your script runs, or make sure that it keeps track of how many commands it has issued in the last hour/day.</p>
-<h3>Test Account</h3>
+<p>If you run into this error, you should consider ways in which you could reduce the frequency that you are calling the API.&nbsp;Most likely you would only run into these limits if you have a script or automated program that loops to repeatedly make API calls.&nbsp;So you can simply slow down the rate at which your script runs, or make sure that it keeps track of how many commands it has issued in the last hour/day.</p>
+</div>
+<h2 class="header-section">Test Account</h2>
+<div class="solvvy-solution">
 <p>If you wish to test the DreamHost API without having your own account, you may use the following API Key:</p>
 <div class="preboxcontainer">
 <pre class="prebox">6SHU5P2HLDAYECUM</pre>
 </div>
-<p>This account only has access to "list" functions however (and only <em>user-list_users_no_pw</em>, not <em>user-list_users</em>) , as well as dreamhost_ps-set_size, dreamhost_ps-set_settings, and dreamhost_ps-reboot to ps7093.</p>
-<h4>An example</h4>
+<p>This account only has access to "list" commands. For example:</p>
 <div class="preboxcontainer">
-<pre class="prebox">https://api.dreamhost.com/?key=6SHU5P2HLDAYECUM&amp;cmd=user-list_users_no_pw&amp;unique_id=4082432&amp;format=perl</pre>
+<pre class="prebox">https://api.dreamhost.com/?key=6SHU5P2HLDAYECUM&amp;cmd=dns-list_records</pre>
 </div>
-<p>If you are writing a simple bash script to interface with DreamHost's API, this may help as a start:</p>
-<div class="preboxcontainer">
-<pre class="prebox">#!/bin/sh
-####
-#### USE THIS SCRIPT AT YOUR OWN RISK.  
-####
-
-PS=$1
-
-KEY=YOUR-KEY-HERE
-UUID=`uuidgen`
-CMD=user-list_users_no_pw
- 
-if [ $# -lt 1 ]; then
- 	echo "usage: `basename $0` [hostname]" 
-	exit 1
-fi
-
-if [ "$PS" = "" ]; then
-	PS=`hostname | cut -f1 -d.`
-fi 
-
-# ARGS='other_http_get_arguments_for_the_DreamHost_cmd_that_you_are_using=4&amp;foo=123'
-LINK="https://api.dreamhost.com/?key=$KEY&amp;unique_id=$UUID&amp;cmd=$CMD&amp;ps=$PS&amp;$ARGS"
-
-RESPONSE=`wget -O- -q "$LINK"`
-
-echo "$LINK"
-echo "$RESPONSE"
-if&nbsp;! (echo $RESPONSE | grep -q 'success'); then
-	exit 1
-fi
-
-# Now use the content of $RESPONSE to do whatever you wish.
-#
-# Rinse, lather, repeat.</pre>
-</div>
-</div>
-<h2><span id="List_of_API_modules">List of API modules</span></h2>
-<div class="solvvy-solution">
-<p>API commands are grouped into modules. All the commands in a module will start with <em>module_name-</em></p>
-<p>Detailed information about API commands such as values you need to send and the format of the results can be found on the documentation page for each module, which are listed in the <span class="text-section">See also</span> section below.</p>
-</div>
-<h2><span id="Could_you_make_X_functionality_accessible_via_the_API">Could you make X functionality accessible via the API?</span></h2>
-<div class="solvvy-solution">
-<p>The point of the API is to make tasks that one person may want to often do available via a programming interface — not to facilitate reselling of services to multiple people. That is how DreamHost decides if a certain feature should be incorporated into the API.</p>
-</div>
-<h2><span id="What_sort_of_applications_use_the_API">What sort of applications use the API?</span></h2>
-<div class="solvvy-solution">
-<p>A short list can be found at <a href="/hc/en-us/articles/216944818-API-Apps">API Apps</a>.</p>
 </div>
 <h2><span id="See_also">See also</span></h2>
 <div class="solvvy-hidden">
@@ -179,6 +69,4 @@ fi
 <li><a href="/hc/en-us/articles/217560157-Service-control-API-commands">Service control API commands</a></li>
 <li><a href="/hc/en-us/articles/217078398-User-API-commands">User API commands</a></li>
 </ul>
-</div>
-</div>
 </div>
