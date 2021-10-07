@@ -1,168 +1,109 @@
-<div class="document">
-<div class="documentwrapper">
-<div class="body">
-<div id="Announcement List API commands" class="solvvy-hidden">
-<div class="altTitle">Announcement List API</div>
-<div class="table-of-content container">
-<ul class="simple">
-<li><a class="reference internal" href="#announcement_list-list_lists">announcement_list-list_lists</a></li>
-<li><a class="reference internal" href="#announcement_list-list_subscribers">announcement_list-list_subscribers</a></li>
-<li><a class="reference internal" href="#announcement_list-add_subscriber">announcement_list-add_subscriber</a></li>
-<li><a class="reference internal" href="#announcement_list-remove_subscriber">announcement_list-remove_subscriber</a></li>
-<li><a class="reference internal" href="#announcement_list-post_announcement">announcement_list-post_announcement</a></li>
-<li><a class="See also" href="#See_also">See also</a></li>
+<h2 class="subheader">Overview</h2>
+<div class="solvvy-solution">
+<p>The <strong>announcement_list</strong> API module allows you to manage Announcement Lists and subscribers.&nbsp;The following options are available.</p>
+<ul>
+<li>List all Announcement Lists (<a href="#announcement_list-list_lists" target="_self">announcement_list-list_lists</a>)</li>
+<li>List all Announcement List subscribers (<a href="#announcement_list-list_subscribers" target="_self">announcement_list-list_subscribers</a>)</li>
+<li>Send an email to add a subscriber (<a href="#announcement_list-add_subscriber" target="_self">announcement_list-add_subscriber</a>)</li>
+<li>Remove a subscriber (<a href="#announcement_list-remove_subscriber" target="_self">announcement_list-remove_subscriber</a>)</li>
+<li>Send an Announcement List (<a href="#announcement_list-post_announcement" target="_self">announcement_list-post_announcement</a>)</li>
+</ul>
+<div class="notebox-note">
+<p>View the following article for instructions on how to connect to the DreamHost API. You will use the instructions in this article to construct your API call.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/4407354972692" target="_blank" rel="noopener">Connecting to the DreamHost API</a></li>
 </ul>
 </div>
 </div>
-<div class="notebox-note">
-<p>If you find any instructions in this article do not function as intended, it's possible it may be out of date. When in doubt, please contact support for further assistance.</p>
-</div>
-<p>The <strong>announcement_list</strong> API module allows you to manage Announcement Lists and subscribers.</p>
-</div>
-<h2>Commands</h2>
+<h2 class="subheader"><span id="announcement_list-list_lists">announcement_list-list_lists</span></h2>
 <div class="solvvy-solution">
-<h3><span id="announcement_list-list_lists">announcement_list-list_lists</span></h3>
-<p>Dump a list of all Announcement Lists you have on your account(s).</p>
-<table class="wikitable">
-<tbody>
-<tr>
-<td><strong>Command</strong></td>
-<td>announcement_list-list_lists</td>
-</tr>
-<tr>
-<td><strong>Values</strong></td>
-<td>(none)</td>
-</tr>
-<tr>
-<td><strong>Result</strong></td>
-<td>
-<p>success<br />account_id listname domain name start_date max_bounces num_subscribers<br />1 fun example.com "DH Fun" &lt;fun@dreamhost.com&gt; 2007-12-13 5 102<br />1 announcements dreamhost.com "DH Announcements" &lt;announcements@dreamhost.com&gt; 2001-05-09 6 302420</p>
-</td>
-</tr>
-<tr>
-<td><strong>Possible errors</strong></td>
-<td>(none)</td>
-</tr>
-</tbody>
-</table>
-<h3><span id="announcement_list-list_subscribers">announcement_list-list_subscribers</span></h3>
-<p>Dump a list of all subscribers to an Announcement List.</p>
-<table class="wikitable">
-<tbody>
-<tr>
-<td><strong>Command</strong></td>
-<td>announcement_list-list_subscribers</td>
-</tr>
-<tr>
-<td><strong>Values</strong></td>
-<td>
-<p><strong>listname</strong>&nbsp;: The name of the Announcement List, like announcements<br /><strong>domain</strong>&nbsp;: The domain of the Announcement List, like example.com</p>
-</td>
-</tr>
-<tr>
-<td><strong>Result</strong></td>
-<td>
-<p>success<br />email confirmed subscribe_date name num_bounces<br />josh@gmail.com 1 2007-12-13 16:55:15 Josh 0<br />joe@hotmail.com 1 2007-12-13 16:55:08 Joe 0<br />john@yahoo.com 1 2007-12-19 09:16:32 John 0</p>
-</td>
-</tr>
-<tr>
-<td><strong>Possible errors</strong></td>
-<td>
-<p>no_listname<br />no_domain<br />no_such_listname<br />no_such_domain</p>
-</td>
-</tr>
-</tbody>
-</table>
-<h3><span id="announcement_list-add_subscriber">announcement_list-add_subscriber</span></h3>
-<p>Sends an opt-in email to an email address to ask them to subscribe to an Announcement List.</p>
-<table class="wikitable">
-<tbody>
-<tr>
-<td><strong>Command</strong></td>
-<td><strong>announcement_list-add_subscriber</strong></td>
-</tr>
-<tr>
-<td><strong>Values</strong></td>
-<td>
-<p><strong>listname&nbsp;:</strong> The name of the Announcement List, like announcements<br /><strong>domain&nbsp;: </strong>The domain of the Announcement List, like example.com<br /><strong>email&nbsp;: </strong>The email address to subscribe, like test@test.com<br /><strong>name&nbsp;: </strong>The name of the person, like Josh Jones (optional)</p>
-</td>
-</tr>
-<tr>
-<td><strong>Result</strong></td>
-<td>
-<p><strong>success </strong><br /><strong>sent_opt_in_email</strong></p>
-</td>
-</tr>
-<tr>
-<td><strong>Possible errors</strong></td>
-<td>
-<p>no_listname<br />no_domain<br />no_such_listname<br />no_such_domain<br />no_email<br />invalid_email (may have specifics after a tab)<br />already_subscribed<br />email_may_not_be_added_to_any_dreamhost_list_ever<br />email_requested_to_be_added_in_last_two_days_already (may have specifics after a tab)<br />internal_error_opting_in</p>
-</td>
-</tr>
-</tbody>
-</table>
-<h3><span id="announcement_list-remove_subscriber">announcement_list-remove_subscriber</span></h3>
-<p>Immediately removes an email address from an Announcement List.</p>
-<table class="wikitable">
-<tbody>
-<tr>
-<td><strong>Command</strong></td>
-<td>announcement_list-remove_subscriber</td>
-</tr>
-<tr>
-<td><strong>Values</strong></td>
-<td>
-<p><strong>listname</strong>&nbsp;: The name of the Announcement List, like announcements<br /><strong>domain</strong>&nbsp;: The domain of the Announcement List, like example.com<br /><strong>email</strong>&nbsp;: The email address to unsubscribe, like test@test.com</p>
-</td>
-</tr>
-<tr>
-<td><strong>Result</strong></td>
-<td>
-<p>success<br />unsubscribed</p>
-</td>
-</tr>
-<tr>
-<td><strong>Possible errors</strong></td>
-<td>
-<p>no_listname<br />no_domain<br />no_such_listname<br />no_such_domain<br />no_email<br />not_subscribed<br />internal_error_unsubscribing</p>
-</td>
-</tr>
-</tbody>
-</table>
-<h3><span id="announcement_list-post_announcement">announcement_list-post_announcement</span></h3>
-<p>Post an announcement to an Announcement List.</p>
-<table class="wikitable">
-<tbody>
-<tr>
-<td><strong>Command</strong></td>
-<td>announcement_list-post_announcement</td>
-</tr>
-<tr>
-<td><strong>Values</strong></td>
-<td>
-<p><strong>listname</strong>&nbsp;: The name of the Announcement List, like announcements<br /><strong>domain</strong>&nbsp;: The domain of the Announcement List, like example.com<br /><strong>subject</strong>&nbsp;: The subject of the message (optional)<br /><strong>message</strong>&nbsp;: The text of the message to send<br /><strong>name</strong>&nbsp;: The name for the list to use, like: "list name" &lt;list@example.com&gt;<br /><strong>stamp</strong>&nbsp;: The time to send the message, like 2009-05-28 19:40:00 (optional)<br /><strong>charset</strong>&nbsp;: The character set in which the message is encoded (optional)<br /><strong>type</strong> : The format of the message, either text or HTML (optional)<br /><strong>duplicate_ok</strong>: Whether to allow duplicate messages to be sent, like 1 or 0 (optional)</p>
-</td>
-</tr>
-<tr>
-<td><strong>Result</strong></td>
-<td>
-<p>success<br />posted</p>
-</td>
-</tr>
-<tr>
-<td><strong>Possible errors</strong></td>
-<td>
-<p>no_listname<br />no_domain<br />no_such_listname<br />no_such_domain<br />message_required<br />invalid_stamp<br />invalid_type<br />invalid_name<br />duplicate_message (may have specifics after a tab)<br />internal_error_updating_list<br />internal_error_sending_mail</p>
-</td>
-</tr>
-</tbody>
-</table>
+<p>The <span class="code">announcement_list-list_lists</span> command lists Announcement Lists you have on your account.</p>
+<h3>Running the command</h3>
+<p>The following command lists all Announcement Lists on your account.</p>
+<div class="preboxcontainer">
+<pre class="prebox">https://api.dreamhost.com/?key=1A2B3C4D5E6F7G8H<span class="code-highlight">&amp;cmd=announcement_list-list_lists</span></pre>
+</div>
+</div>
+<h2><span id="announcement_list-list_subscribers">announcement_list-list_subscribers</span></h2>
+<div class="solvvy-solution">
+<p>The <span class="code">announcement_list-list_subscribers</span> command lists all subscribers to an Announcement List.</p>
+<p>You must specify the following values when running this command.</p>
+<ul>
+<li><strong>listname</strong>: <span class="code">&amp;listname=</span> followed by the name of the Announcement List. This would be the <span class="text-object">List Name</span> that appears on the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=mail.list" target="_blank" rel="noopener">Announce Lists</a> page in your panel. For example, if the <span class="text-object">List Name</span> in your panel shows <span class="text-object">testlist@example.com</span>, this would be <span class="code">testlist</span>.</li>
+<li><strong>domain</strong>: <span class="code">&amp;domain=</span> followed by the domain of the Announcement List. For example, <span class="code">example.com</span>.</li>
+</ul>
+<h3>Running the command</h3>
+<p>The following command lists all Announcement Lists on your account.</p>
+<div class="preboxcontainer">
+<pre class="prebox">https://api.dreamhost.com/?key=1A2B3C4D5E6F7G8H<span class="code-highlight">&amp;cmd=announcement_list-list_subscribers&amp;listname=testlist&amp;domain=example.com</span></pre>
+</div>
+</div>
+<h2><span id="announcement_list-add_subscriber">announcement_list-add_subscriber</span></h2>
+<div class="solvvy-solution">
+<p>The <span class="code">announcement_list-add_subscriber</span> command sends an opt-in email to an email address to ask them to subscribe to the Announcement List.</p>
+<p>You must specify the following values when running this command.</p>
+<ul>
+<li><strong>listname</strong>: <span class="code">&amp;listname=</span> followed by the name of the Announcement List. This would be the <span class="text-object">List Name</span> that appears on the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=mail.list" target="_blank" rel="noopener">Announce Lists</a> page in your panel. For example, if the <span class="text-object">List Name</span> in your panel shows <span class="text-object">testlist@example.com</span>, this would be <span class="code">testlist</span>.</li>
+<li><strong>domain</strong>: <span class="code">&amp;domain=</span> followed by the domain of the Announcement List. For example, <span class="code">example.com</span>.</li>
+<li><strong>email: </strong><span class="code">&amp;email=</span> followed by the email address you want to subscribe. For example, <strong>newuser@example.com</strong>.</li>
+<li><strong>name </strong>: <span class="code">&amp;name=</span> followed by the name. For example: <span class="text-object">John Doe</span>.</li>
+</ul>
+<h3>Running the command</h3>
+<p>The following command sends an opt-in email to an email address asking them to click a link to subscribe to your Announcement Lists.</p>
+<div class="preboxcontainer">
+<pre class="prebox">https://api.dreamhost.com/?key=1A2B3C4D5E6F7G8H<span class="code-highlight">&amp;cmd=announcement_list-add_subscriber&amp;listname=testlist&amp;domain=example.com&amp;email=newuser@example.com</span></pre>
+</div>
+</div>
+<h2><span id="announcement_list-remove_subscriber">announcement_list-remove_subscriber</span></h2>
+<div class="solvvy-solution">
+<p>The <span class="code">announcement_list-remove_subscriber</span> command immediately removes an email address from an Announcement List.</p>
+<p>You must specify the following values when running this command.</p>
+<ul>
+<li><strong>listname</strong>: <span class="code">&amp;listname=</span> followed by the name of the Announcement List. This would be the <span class="text-object">List Name</span> that appears on the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=mail.list" target="_blank" rel="noopener">Announce Lists</a> page in your panel. For example, if the <span class="text-object">List Name</span> in your panel shows <span class="text-object">testlist@example.com</span>, this would be <span class="code">testlist</span>.</li>
+<li><strong>domain</strong>: <span class="code">&amp;domain=</span> followed by the domain of the Announcement List. For example, <span class="code">example.com</span>.</li>
+<li><strong>email: </strong><span class="code">&amp;email=</span> followed by the email address you want to subscribe. For example, <strong>newuser@example.com</strong>.</li>
+</ul>
+<h3>Running the command</h3>
+<p>The following command lists all Announcement Lists on your account.</p>
+<div class="preboxcontainer">
+<pre class="prebox">https://api.dreamhost.com/?key=1A2B3C4D5E6F7G8H<span class="code-highlight">&amp;cmd=announcement_list-remove_subscriber&amp;listname=testlist&amp;domain=example.com&amp;email=newuser@example.com</span></pre>
+</div>
+</div>
+<h2><span id="announcement_list-post_announcement">announcement_list-post_announcement</span></h2>
+<div class="solvvy-solution">
+<p>The <span class="code">announcement_list-post_announcement</span> command posts an announcement to an Announcement List.</p>
+<p>You must specify the following values when running this command.</p>
+<ul>
+<li><strong>listname</strong>: <span class="code">&amp;listname=</span> followed by the name of the Announcement List. This would be the <span class="text-object">List Name</span> that appears on the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=mail.list" target="_blank" rel="noopener">Announce Lists</a> page in your panel. For example, if the <span class="text-object">List Name</span> in your panel shows <span class="text-object">testlist@example.com</span>, this would be <span class="code">testlist</span>.</li>
+<li><strong>domain</strong>: <span class="code">&amp;domain=</span> followed by the domain of the Announcement List. For example, <span class="code">example.com</span>.</li>
+<li><strong>subject </strong>(optional): <span class="code">&amp;subject=</span> followed by the subject of the message.</li>
+<li><strong>message</strong>: <span class="code">&amp;message=</span> followed by the text of the message to send. If <span class="code">html</span> is set as the type, you can type the HTML code directly here. For example: <strong>&lt;h1&gt;Header&lt;/h1&gt;&lt;p&gt;Paragraph&lt;/p&gt;</strong>.</li>
+<li><strong>name</strong>: <span class="code">&amp;name=</span> followed by the <span class="text-object">List Name</span> for this list on the "Edit" list page. For example: <span class="text-object">"list name" &lt;testlist@example.com&gt;</span>
+<dl>
+<dd>
+<div class="notebox-note">
+<p>This is the <span class="text-object">From Name</span> field that appears on the page where you edit the Announcement List. For example, navigate to the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=mail.list" target="_blank" rel="noopener">Announce Lists</a> page, then click the <strong>Edit</strong> button to the right. The second field is titled <span class="text-object">From Name</span>. Copy the full list name from this field.</p>
+</div>
+</dd>
+</dl>
+</li>
+<li><strong>stamp</strong>&nbsp;(optional): <span class="code">&amp;stamp=</span> followed by the time to send the message. For example: <span class="text-object">2021-10-28 19:40:00</span>.</li>
+<li><strong>charset</strong> (optional): <span class="code">&amp;charset=</span> followed by the character set in which the message is encoded. For example utf-8.</li>
+<li><strong>type</strong> (optional): <span class="code">&amp;type=</span> followed by the format of the message. Option are <span class="code">text</span> or <span class="code">html</span>.</li>
+<li><strong>duplicate_ok </strong>(optional): <span class="code">&amp;duplicate_ok=</span> followed by a <span class="code">1</span> or <span class="code">0</span>. This indicates if you allow duplicate messages to be sent.</li>
+</ul>
+<h3>Running the command</h3>
+<p>The following command lists all Announcement Lists on your account.</p>
+<div class="preboxcontainer">
+<pre class="prebox">https://api.dreamhost.com/?key=1A2B3C4D5E6F7G8H<span class="code-highlight">&amp;cmd=announcement_list-post_announcement&amp;listname=testlist&amp;domain=example.com&amp;subject=List Subject Here&amp;message=&lt;h1&gt;Header&lt;/h1&gt;&lt;p&gt;Paragraph&lt;/p&gt;&amp;name="listname" &lt;testlist@example.com&gt;&amp;stamp=2021-10-05 14:45:00&amp;charset=utf-8&amp;type=html&amp;duplicate_ok=1</span></pre>
+</div>
 </div>
 <h2><span id="See_also">See also</span></h2>
-<div class="solvvy-hidden">
+<div class="solvvy-solution">
 <ul>
-<li><a href="/hc/en-us/articles/217560167-Application-programming-interface-overview">Application programming interface overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/217560167-Application-programming-interface-overview">Application programming interface overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/4407354972692-Connecting-to-the-DreamHost-API">Connecting to the DreamHost API</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/217555677-API-metacommands">API metacommands</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/217555707-DNS-API-commands">DNS API commands</a></li>
 </ul>
-</div>
-</div>
 </div>
