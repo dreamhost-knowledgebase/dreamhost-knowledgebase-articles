@@ -1,14 +1,14 @@
 <h2>Overview</h2>
 <div class="solvvy-solution">
-<p>FastCGI is a way to have CGI scripts execute time-consuming code (like opening a database) only once, rather than every time the script is loaded. In technical terms, FastCGI is a language independent, scalable, open extension to CGI that provides high performance without the limitations of server specific APIs.</p>
+<p>FastCGI is a way to have CGI scripts execute time-consuming code (like opening a database) only once, rather than every time the script is loaded. In technical terms, FastCGI is a language-independent, scalable, open extension to CGI that provides high performance without the limitations of server-specific APIs.</p>
 </div>
 <h2>Difference between FCGI and CGI</h2>
 <div class="solvvy-solution">
 <h3>CGI</h3>
 <p><a href="https://en.wikipedia.org/wiki/Common_Gateway_Interface">CGI</a> is a protocol for web servers to execute dynamic web programs.</p>
-<p>CGI creates new processes for each request which makes CGI programs simple to implement, but limits efficiency and scalability. At high loads, CGI process creation overhead becomes significant.</p>
+<p>CGI creates new processes for each request which makes CGI programs simple to implement but limits efficiency and scalability. At high loads, CGI process creation overhead becomes significant.</p>
 <h3>FCGI</h3>
-<p><a href="https://en.wikipedia.org/wiki/Common_Gateway_Interface">FCGI</a> is a newer variation on CGI that helps to reduce overhead associated with CGI programs, allowing a server to handle more web page requests at once.</p>
+<p><a href="https://en.wikipedia.org/wiki/Common_Gateway_Interface">FCGI</a> is a newer variation on CGI that helps to reduce the overhead associated with CGI programs, allowing a server to handle more web page requests at once.</p>
 <p>FCGI uses persistent processes to handle a series of requests. Each individual FastCGI process can handle many requests over its lifetime, thereby avoiding the overhead of per-request process creation and termination.</p>
 <h3>Differences</h3>
 <p>FCGI is an improved version of CGI that runs faster, however, since FCGI processes are always running, more memory is used by the server.</p>
@@ -54,7 +54,7 @@ while ( FCGI::accept() &gt;= 0 ) {
 }
 </pre>
 </div>
-<p>While you might think that you need to print the header only once, in fact the header must be included in the <span class="text-section">RUNS EVERY TIME</span> section.</p>
+<p>While you might think that you need to print the header only once, in fact, the header must be included in the <span class="text-section">RUNS EVERY TIME</span> section.</p>
 </div>
 <h2><span id="No_exits">No exits</span></h2>
 <div class="solvvy-solution">
@@ -124,7 +124,7 @@ while ( FCGI::accept() &gt;= 0 ) {
 <h2><span id="Errors_and_troubleshooting">Errors and troubleshooting</span></h2>
 <div class="solvvy-solution">
 <p>Bad scripts won't return an error immediately; you must wait a couple of minutes for the script to time out. If the script is on a web page, the page appears to hang – and even when the script times out, the actual error message might not be logged and you may only see a 500 error. This means that testing under FastCGI is rather impractical. Development should be done with standard CGI, or on your local computer. FastCGI should be added after the script has already been debugged.</p>
-<p>Also, while it's tempting to develop on a live server, it's dangerous and makes you a bad neighbor for shared hosting.</p>
+<p>Also, while it's tempting to develop on a live server, it's dangerous and makes you a bad neighbor for Shared Hosting.</p>
 <p>To see immediately if a script will fail (won't check all cases because&nbsp;%ENV is different), test it from the command line:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">perl ~/<span class="code-highlight">example.com/myscript.fcgi</span></span>
