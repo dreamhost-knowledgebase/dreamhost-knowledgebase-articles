@@ -61,13 +61,23 @@
 <h2><span id="A_couple_of_technical_notes">Technical notes</span></h2>
 <div class="solvvy-solution">
 <h3>Error logs</h3>
-<p>Output to STDERR for processes run through the Rack interface is automatically directed to the server's master error log file rather than the domain/subdomain specific log file.</p>
-<h4>Troubleshooting the error log</h4>
-<div class="alert-warning">
-<p>DreamHost customers do not have access to the master error log file.</p>
+<p>Output to STDERR for processes run through the Rack interface is automatically directed to the domain/subdomain specific log file.</p>
+<ul>
+<li>/home/user/logs/domain.com/http/</li>
+</ul>
+<p>Or:</p>
+<ul>
+<li>/home/user/logs/domain.com/https/</li>
+</ul>
+<div class="notebox-note">
+<p>This article explains how to view your error log via SSH which requires some basic knowledge of a shell terminal. For an easier option using FTP, view the following article instead:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216512217-Viewing-and-examining-your-error-log-via-SSH" target="_self">Viewing and examining your error log via SSH</a></li>
+</ul>
 </div>
+<h4>Troubleshooting the error log</h4>
 <p>This limitation can make debugging initialization errors (in particular syntax errors and gem resolution issues) tricky. Passenger will often produce an error output webpage including a stack traceback, but sometimes it does not.</p>
-<p><a href="https://help.dreamhost.com/hc/en-us/articles/215722447-Contacting-DreamHost-via-email" target="_self">Contact DreamHost support</a> if Passenger is not producing useful error output. Support will then examine the master log file for you.</p>
+<p><a href="https://help.dreamhost.com/hc/en-us/articles/215722447-Contacting-DreamHost-via-email" target="_self">Contact DreamHost support</a> if you are running into issues with Passenger not producing useful error output. Our Support team will be happy to take a look to see what may be causing the issue.</p>
 <p>Once a framework (such as RoR) is up and running, its error output is typically handled by the framework's own error logging mechanism. For example, RoR records its error output in a file named <span class="text-object">log/production.log</span>.</p>
 <h3>Ruby version</h3>
 <p>DreamHost servers run a <a href="https://help.dreamhost.com/hc/en-us/articles/360003836911-Ruby-at-DreamHost" target="_self">default version of Ruby</a>. You can also install <a href="/hc/en-us/articles/217185247-Ruby-Version-Manager-RVM-">RVM</a> to use a different version of Ruby</p>
