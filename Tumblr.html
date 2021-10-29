@@ -1,75 +1,62 @@
 <h2>Overview</h2>
 <div class="solvvy-solution">
 <p>Tumblr is a <a class="new" title="W:micro-blogging (page does not exist)" href="https://en.wikipedia.org/wiki/Microblogging">micro-blogging</a> service that offers you the ability to replace your Tumblr URL with an external domain. It requires you to change the <a href="/hc/en-us/articles/215413857-DreamHost-DNS-overview">DNS</a> <a href="https://help.dreamhost.com/hc/en-us/articles/360035516812-Adding-custom-DNS-records">A record</a> for your registered domain to Tumblr's <a href="/hc/en-us/articles/217294917-IP-Address">IP address</a>.</p>
-<p>This article describes how to configure a custom domain registered with DreamHost for use with Tumblr as well as setting up optional DNS records for Round Robin DNS protection.</p>
-<div class="notebox-note">
+<p>This article describes how to configure a custom domain registered with DreamHost for use with Tumblr as well as setting up optional DNS records for Round Robin DNS protection. View <a href="https://tumblr.zendesk.com/hc/en-us/articles/231256548-Custom-Domains" target="_blank" rel="noopener">Tumblr's help page</a> for further information. You will need to create one of the following DNS records.</p>
+<div class="notebox-important">
 <ul>
-<li>The following instructions are only necessary if you want your root domain (or the www version of your domain) to point to Tumblr.</li>
-<li>If you want a subdomain to point to Tumblr, you just need to add a custom DNS record.</li>
+<li>If your domain has two levels (<strong>example.com</strong>), point the A record to <span class="text-object">66.6.44.4</span></li>
+<li>If your domain has three or more levels (<strong>www.example.com</strong> or <strong>blog.example.com</strong>), point a CNAME record to <span class="text-object">domains.tumblr.com</span></li>
 </ul>
 </div>
 </div>
-<h2><span id="Configuring_Tumblr_for_a_custom_domain_registered_with_DreamHost">Configuring Tumblr for a custom domain registered with DreamHost</span></h2>
+<h2><span id="Configuring_Tumblr_for_a_custom_domain_registered_with_DreamHost">Setting your domain to DNS Only</span></h2>
+<div class="solvvy-solution">Before adding a custom DNS record, you must set your domain to <span class="text-product">DNS Only</span>. This removes DreamHost's DNS records from your domain. View the following article for instructions.<br />
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360056398191-Setting-your-domain-to-DNS-Only-">Setting your domain to 'DNS Only'</a></li>
+</ul>
+</div>
+<h2>Adding DNS records</h2>
 <div class="solvvy-solution">
-<ol>
-<li>Go to the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;" target="_blank" rel="noopener">Manage Domains</a>&nbsp;page.
-<dl>
-<dd><em>The <span class="panel-page">Manage Domains</span> page opens.</em></dd>
-<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-07_panel_edit_link.png" alt="" /></dd>
-</dl>
-</li>
-<li>To the right of your domain, click the <strong>Edit</strong> button under the <span class="text-object">Web Hosting</span> column.
-<dl>
-<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-07_panel_host_dns_only.png" /></dd>
-</dl>
-</li>
-<li>Scroll down to the bottom of the page and click the <strong>Host DNS only!</strong> button.</li>
-<li>On the <span class="panel-page">Manage Domains</span> page, click the <span class="text-link">DNS</span> link under the domain's name.</li>
-<li>Proceed to one of the following sections based on how many levels your custom domain contains:
+<p>The type of record you create depends on how many levels your domain uses. View the sections below to determine which type of record to add.</p>
+<h3>Creating an A record</h3>
+<p>If your custom domain contains two levels (e.g., <strong>example.com</strong>), you must create an A record. View the following article for instructions on how to add this record type:</p>
 <ul>
-<li>If your custom domain contains two levels (e.g., <strong>example.com</strong>), use the A-record method.</li>
-<li>If your custom domain contains three or more levels (e.g., <strong>www.example.com</strong> or <strong>blog.example.com</strong>), use the CNAME-record method.</li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360035516812#A_record">A record</a></li>
 </ul>
-</li>
-</ol>
-<h3><span id="Using_the_A-record_method">Using the A-record method</span></h3>
-<dl>
-<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-07_panel_tumblr_01.png" /></dd>
-</dl>
-<dl>
-<dt>Enter the following</dt>
-</dl>
+<p>Enter the following:</p>
 <ul>
-<ul>
-<li><strong>Name:</strong> leave it blank</li>
-<li><strong>Type:</strong> enter <em>A</em></li>
-<li><strong>Value:</strong> enter <em>66.6.44.4</em> (Tumblr's IP Address)</li>
+<li><strong>Host</strong>: Leave this field blank</li>
+<li><strong>Points to</strong>: 66.6.44.4</li>
 </ul>
-</ul>
-<h3><span id="Using_the_CNAME-record_method">Using the CNAME-record method</span></h3>
 <dl>
-<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-07_panel_tumblr_02.png" /></dd>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-manage-websites-tumblr-a-record.png" alt="A record" width="393" height="205" /></dd>
 </dl>
+<dl></dl>
+<h3>Creating a CNAME record</h3>
+<p>If your custom domain contains three or more levels (e.g., <strong>www.example.com</strong> or <strong>blog.example.com</strong>), you must create a CNAME record. View the following article for instructions on how to add this record type:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360035516812#CNAME_record">CNAME record</a></li>
+</ul>
+<p>Enter the following:</p>
+<ul>
+<li><strong>Host</strong>: Your subdomain (for example: www)</li>
+<li><strong>Points to</strong>: domains.tumblr.com</li>
+</ul>
+<dl></dl>
 <dl>
-<dt>Enter the following</dt>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-manage-websites-tumblr-cname-record.png" alt="CNAME record" width="410" height="216" /></dd>
 </dl>
-<ul>
-<ul>
-<li><strong>Name:</strong> enter <em>www</em></li>
-<li><strong>Type:</strong> select&nbsp;<em>CNAME</em></li>
-<li><strong>Value:</strong> enter <em>domains.tumblr.com</em></li>
-</ul>
-</ul>
 <h3><span id="Finishing_the_setup">Finishing the setup</span></h3>
 <ol>
+<li>Log into your Tumblr account.</li>
 <li>Click the <strong>Settings</strong> button under the account menu at the top of the dashboard.</li>
-<li>Select the blog you’d like to update.</li>
-<li>Click the pencil to the right of the <span class="text-section">Username</span> section (the <span class="text-section">Tumblr URL</span> section for secondary blogs), and then enable "Use a custom domain."</li>
-<li>Enter your domain (e.g., <strong>example.com</strong>) or subdomain (e.g., <strong>blog.example.com</strong>). Then click “Test your domain.”</li>
-<li>Correct any problems if the test finds any, and then click “Test your domain” until the test is successful.</li>
+<li>Select the blog you'd like to update.</li>
+<li>Click the pencil to the right of the <span class="text-section">Username</span> section (the <span class="text-section">Tumblr URL</span> section for secondary blogs), and then enable <span class="text-object">Use a custom domain</span>.</li>
+<li>Enter your domain (e.g., <strong>example.com</strong>) or subdomain (e.g., <strong>blog.example.com</strong>). Then click <span class="text-object">Test your domain</span>.</li>
+<li>Correct any problems the test finds, then click <span class="text-object">Test your domain</span> until the test is successful.</li>
 <li>Click the <strong>Save</strong> button.</li>
 </ol>
-<p>You can view additional information on the Tumblr page:</p>
+<p>You can view additional information in the Tumblr help center:</p>
 <ul>
 <li><a href="https://tumblr.zendesk.com/hc/en-us/sections/205853348-Blog-management#customdomain" rel="nofollow">tumblr.zendesk.com/hc/en-us/sections/205853348-Blog-management#customdomain</a></li>
 </ul>
