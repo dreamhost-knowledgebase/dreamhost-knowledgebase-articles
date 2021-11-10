@@ -2,13 +2,13 @@
 <div class="solvvy-solution">
 <p>This article explains how to force PHP to load a file that does not end with the extension <span class="text-object">.php</span>.</p>
 </div>
-<h2>Using an .htaccess file</h2>
+<h2>FCGI</h2>
 <div class="solvvy-solution">
 <p>To process files with PHP whose names don't end with <span class="text-object">.php</span>, you can use a directive in <span class="text-object">.htaccess</span>.</p>
 <p>For example, <a href="https://help.dreamhost.com/hc/en-us/articles/115000098272-Creating-and-editing-a-file-via-FTP">create a file</a> named <span class="text-object">myfile.test</span> with the following code:</p>
 <div class="preboxcontainer">
 <pre class="prebox">&lt;?php
-echo 'testing an extension using PHP';
+  echo 'testing an extension using PHP';
 ?&gt;</pre>
 </div>
 <p>The extension <span class="text-object">.test</span> doesn’t exist. But, you can force it to run as PHP by adding this code to your <a href="https://help.dreamhost.com/hc/en-us/articles/216456227--htaccess-overview">.htaccess file</a>:</p>
@@ -16,20 +16,20 @@ echo 'testing an extension using PHP';
 <pre class="prebox">AddHandler fcgid-script .test
 FcgidWrapper "/dh/cgi-system/php74.cgi" .test</pre>
 </div>
-<p>If you load the file in a browser, it will now load as a normal PHP file.</p>
+<p>If you load the file in a browser, it will now load like a normal PHP file.</p>
 </div>
-<h2>CGI and FCGI</h2>
+<h2>CGI</h2>
 <div class="solvvy-solution">
 <p>In the above example, files with the extension <span class="text-object">.test</span> are using PHP 7.4 with FastCGI.</p>
-<p>If you do not want to change the version of PHP but want PHP to use CGI (instead of FastCGI), use this line in your <span class="text-object">.htaccess</span> file:</p>
-<div class="preboxcontainer">
-<pre class="prebox">AddHandler php-cgi .test</pre>
-</div>
+<p>If you want to use CGI (instead of FastCGI), add the following line to your <span class="text-object">.htaccess</span> file:</p>
 <div class="notebox-note">
-<p>If you use the <span class="code">php5-cgi</span> directive in a FastCGI environment you'll force all PHP code in the specified extensions to be run using CGI regardless of what option you choose in the panel.</p>
+<p>This line uses the <a href="https://help.dreamhost.com/hc/en-us/articles/215082337-What-versions-of-PHP-are-available-at-DreamHost-" target="_self">default shell version of PHP</a>.</p>
+<p>Additionally, using this directive in a FastCGI environment forces all PHP code in the specified extensions to run using CGI regardless of what option you choose in the panel.</p>
+</div>
+<div class="preboxcontainer">
+<pre class="prebox">AddHandler php5-cgi .test</pre>
 </div>
 </div>
-
 <h2>See also</h2>
 <div class="solvvy-hidden">
 <ul>
