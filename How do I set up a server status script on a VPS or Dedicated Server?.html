@@ -17,49 +17,40 @@
 </div>
 <h2><span id="Installing_a_server_script">Installing a server script</span></h2>
 <div class="solvvy-solution">
-<p>Download a copy of the script in one of two ways:</p>
-<ul>
-<li>Visit the URL of the script. You can then download it in your browser:
-<ul>
-<li><a href="https://cdn.rawgit.com/watsonian/server-status-report/master/status.rb">https://cdn.rawgit.com/watsonian/server-status-report/master/status.rb</a></li>
-</ul>
-<dl>
-<dd><em>If you download the file by visiting the URL, you still must upload the file via <a href="https://help.dreamhost.com/hc/en-us/articles/115000675027-FTP-overview-and-credentials">FTP</a>.</em></dd>
-</dl>
-</li>
-<li>If you’re able to <a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a> into your VPS, you can simply run:
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">curl -s -o status.rb https://cdn.rawgit.com/watsonian/server-status-report/master/status.rb</span></pre>
+<p>Download a copy of the script in one of two ways.</p>
+<div class="notebox-note">
+<p>It's recommended you add the script into your <a href="https://help.dreamhost.com/hc/en-us/articles/360001219231#the-users-home-directory" target="_self">user's home directory</a>.</p>
 </div>
-<dl>
-<dd>
-<p>The script is named status.rb, and the script itself is written in Ruby to take advantage of the ERB templating system to produce the HTML content.</p>
-</dd>
-</dl>
-</li>
+<h3>FTP</h3>
+<p>Click the following link to download the script to your computer:</p>
+<ul>
+<li><a href="https://cdn.jsdelivr.net/gh/watsonian/server-status-report@master/status.rb">https://cdn.jsdelivr.net/gh/watsonian/server-status-report@master/status.rb</a></li>
 </ul>
+<p>You must then upload the file via <a href="https://help.dreamhost.com/hc/en-us/articles/115000675027-FTP-overview-and-credentials">FTP</a>.</p>
+<h3>SSH</h3>
+Log in to your server via <a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a>. You can then simply run the following command to download the script:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">curl -s -o status.rb https://cdn.jsdelivr.net/gh/watsonian/server-status-report@master/status.rb</span></pre>
+</div>
 </div>
 <h2><span id="Confirming_if_mailx_is_installed">Confirming if mailx is installed</span></h2>
 <div class="solvvy-solution">
-<p>Once you've downloaded the script successfully, you must make sure that the mailx package is installed on your PS.</p>
-<p>To find out, run this command:</p>
+<p>Once you've downloaded the script successfully, you must make sure that the mailx package is installed.&nbsp;To find out, run the following command:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">dpkg -l | grep mailx</span></pre>
 </div>
-<p>If you see output something like this:</p>
+<p>If installed, you'll see the following output.</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="cmdoutput">ii  bsd-mailx        8.1.2-0.20100314cvs-1        simple mail user agent</span>
+<pre class="prebox"><span class="cmdoutput">ii  bsd-mailx     8.1.2-0.20180807cvs-1     simple mail user agent</span>
 </pre>
 </div>
-<p>it means it's installed.</p>
-<p>If instead you see output like this:</p>
+<p>If instead, you see the following output, you need to install it.</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="cmdoutput">rc  mailx        8.1.2-0.20050715cvs-1        A simple mail user agent</span>
+<pre class="prebox"><span class="cmdoutput">rc  mailx     8.1.2-0.20050715cvs-1     A simple mail user agent</span>
 </pre>
 </div>
-<p>then that means you need to install it.</p>
+<p><span style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;">You can only install mailx on a Dedicated Server with an </span><a style="background-color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;" href="/hc/en-us/articles/215945467-How-do-I-add-users-to-a-Dedicated-server-">admin user</a><span style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;">. This is because it requires </span><span class="code" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;">sudo</span><span style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;">. Once logged in, run the following command:</span></p>
 <div class="notebox-important">
-<p>You can only install mailx on a Dedicated Server with an <a href="/hc/en-us/articles/215945467-How-do-I-add-users-to-a-Dedicated-server-">admin user</a>. This is because it requires <span class="code">sudo</span>. Once logged in, run the following command:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">sudo apt-get install mailx</span></pre>
 </div>
@@ -71,21 +62,16 @@
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">/usr/bin/ruby /<span class="code-highlight">path/to/script/status.rb</span> | /usr/bin/mail -a "Content-type: text/html;" -s "Status Report: $HOSTNAME" "<span class="code-highlight">some@example.com</span>"</span></pre>
 </div>
-<p>If the above command does not work, try modifying '/usr/bin/ruby' with '/usr/bin/ruby1.8'.</p>
+<div class="notebox-note">
 <ul>
+<li>If you added the script to your <a href="https://help.dreamhost.com/hc/en-us/articles/360001219231#the-users-home-directory" target="_self">user's home directory</a>, you can change the path to <span class="code">~/status.rb</span>.</li>
+<li>Change the email address to where you’d like the cron job email sent to.</li>
 <li>You can change the subject to anything you like.</li>
-</ul>
-<ul>
-<li>You can also change the email to any address you’d like the cron email sent to.</li>
-</ul>
-<ul>
 <li>If you want to CC the email to more email addresses, you can use the <span class="code">-c</span> flag and pass it a comma separated list of email addresses.</li>
 </ul>
-<ul>
-<li>Running it once per hour is probably not a bad idea, but you can run it as frequently or infrequently as you like.</li>
-</ul>
 </div>
-<h2><span id="Conclusion">Conclusion</span></h2>
+</div>
+<h2><span id="Conclusion">Email</span></h2>
 <div class="solvvy-solution">
 <p>If you set everything up properly, then you should start getting emails that look roughly like this:</p>
 <dl>
