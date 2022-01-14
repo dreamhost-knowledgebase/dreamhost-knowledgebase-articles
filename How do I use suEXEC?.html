@@ -1,23 +1,27 @@
 <h2>Overview</h2>
 <div class="solvvy-solution">
-<p>suEXEC (which stands for "switch user execution") provides <a href="/hc/en-us/articles/217214317-Apache-HTTP-Server">Apache</a> users the ability to run <a href="/hc/en-us/articles/217297307-CGI-overview">CGI</a> and SSI programs under user IDs different from the user ID of the calling web server. Normally, when a CGI or SSI program executes, it runs as the same user who is running the web server.</p>
-<p>As a security precaution, suEXEC REQUIRES that all CGI scripts and the directories in which they reside not be writable by anyone but the owner user. suEXEC performs checks on the executed CGI to ensure security for the server. It has strict permission checking that results in a "500 Internal Server Error" if the permissions of the script are not set correctly. It also cleans the environment by only passing through those environment variables that are considered safe.</p>
-<p>When used properly, this feature can considerably reduce the security risks involved with allowing users to develop and run private CGI or SSI programs.</p>
+<p>suEXEC (which stands for "switch user execution") allows <a href="/hc/en-us/articles/217214317-Apache-HTTP-Server">Apache</a> users to run <a href="/hc/en-us/articles/217297307-CGI-overview">CGI</a> and SSI programs under different users. When used properly, it considerably reduces the security risks involved with allowing users to develop and run private CGI or SSI programs.</p>
+<h2>Security</h2>
+<h3><span id="Script_permissions">Script permissions</span></h3>
+<div class="solvvy-solution">
+<p>suEXEC requires all CGI scripts and the directories they reside to only be writable by the owner. If permissions are not set correctly, a <span class="text-object">500 Internal Server Error</span> is thrown.</p>
+<p>The script must also be executable. You can set permissions by logging into your server via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview" target="_self">SSH</a> and running the <span class="code">chmod</span> command. For example:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">chmod 755 <span class="code-highlight">script.cgi</span></span></pre>
+</div>
+<h3>Environment variable checking</h3>
+<p>suEXEC only passes through environment variables that are considered safe.</p>
 <div class="notebox-note">
 <p>In the following examples, <span class="code">username</span> would be your <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access" target="_self">Shell user</a> and <strong>example.com</strong> your website.</p>
 </div>
 </div>
-<h2><span id="Script_permissions">Script permissions</span></h2>
-<div class="solvvy-solution">
-<p>Because of the way suEXEC handles security, the directory in which your CGI script lives and the script itself must not be writable by anyone but the user. If it is writable, a "500 Internal Server Error" appears. The script must also be executable, and the easiest way to set permissions is with <span class="code">chmod</span>:</p>
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command"> chmod 755 <span class="code-highlight">script.cgi</span></span></pre>
 </div>
-</div>
-<h2><span id="Apache_module_mod_env">Apache module mod_env</span></h2>
+<h2 class="header-section">suEXEC example</h2>
 <div class="solvvy-solution">
-<p>Because suEXEC cleans the environment by wiping out all the environment variables except those deemed safe by the server's configuration, the directives provided by <a href="http://httpd.apache.org/docs/2.2/mod/mod_env.html">mod_env</a> such as <span class="code">SetEnv</span>, <span class="code">PassEnv</span>, and <span class="code">SetEnvIf</span> don't work as expected.</p>
-<p>Say you have <span class="text-object">foobar.cgi</span> installed at both <span class="text-object">/home/username/example.com</span> and <span class="text-object">/home/username/example2.com</span>:</p>
+<p>Because suEXEC only allows variables deemed safe by the server's configuration, the directives provided by <a href="https://httpd.apache.org/docs/2.4/mod/mod_env.html" target="_self" rel="undefined">mod_env</a> such as <span class="code">SetEnv</span>, <span class="code">PassEnv</span>, and <span class="code">SetEnvIf</span> don't work as expected.</p>
+<p>The following steps create a simple example of how suEXEC functions at DreamHost.</p>
+<h3>Step 1 — Add a file to your site</h3>
+<p><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH" target="_self">Create a file</a> named <span class="text-object">foobar.cgi</span> with the following content.</p>
 <div class="preboxcontainer">
 <pre class="prebox">#!/usr/bin/perl
 
@@ -29,69 +33,106 @@ my $q = CGI-&gt;new;
 print $q-&gt;header();
 print $ENV{FOOBAR};</pre>
 </div>
-<p>In your first domain's directory, add an <a href="/hc/en-us/articles/216456227--htaccess-overview">.htaccess</a> with the directive:</p>
+<p>Place this file in two different websites under the same username. For example:</p>
+<ul>
+<li><span class="text-object">/home/username/example.com</span></li>
+<li><span class="text-object">/home/username/example2.com</span></li>
+</ul>
+<h3>Step 2 — Add an .htaccess file to each directory</h3>
+<p>In the <strong>example.com</strong> directory, add an <a href="/hc/en-us/articles/216456227--htaccess-overview">.htaccess</a> with the following directive:</p>
 <div class="preboxcontainer">
 <pre class="prebox">SetEnv FOOBAR <span class="code-highlight">foo</span></pre>
 </div>
-<p>and into your second domain's directory, add the following:</p>
+<p>In the <strong>example2.com</strong> directory, add an <a href="/hc/en-us/articles/216456227--htaccess-overview">.htaccess</a> with the following directive:</p>
 <div class="preboxcontainer">
 <pre class="prebox">SetEnv FOOBAR <span class="code-highlight">bar</span></pre>
 </div>
-<p>When you visit <strong>example.com/foobar.cgi</strong> in your browser, you'd expect it to print foo, and when you visit <strong>example2.com/foobar.cgi</strong>, you'd expect bar. Instead, default is printed both times.</p>
-<p>At first, you might assume <span class="code">mod_env</span> is not installed or that the <span class="code">SetEnv</span> directive is not allowed from .htaccess. In fact, <span class="code">SetEnv</span> is working just fine. It is setting the environment variable; suEXEC just isn't passing it to your CGI script.</p>
-<p>On the one hand, if you're developing your own application, you can just keep this in mind while developing it and not design your application to use non-standard environmental variables. If, on the other hand, you are using a third-party application and modifying the source code would be prohibitively difficult and/or time-consuming (or if you just need to have those custom environment variables in the application you're developing yourself), there are a few workarounds which are described in the next section.</p>
+<h3>Step 3 — Visit the files in a browser</h3>
+<p>Visit <strong>example.com/foobar.cgi</strong> in your browser. You'd expect it to print <span class="code">foo</span>.</p>
+<p>Visit <strong>example2.com/foobar.cgi</strong> in your browser. You'd expect it to print <span class="code">bar</span>.</p>
+<p>Instead, <span class="code">default</span> is printed on both pages.</p>
+<h3>Explanation</h3>
+<p><span class="code">SetEnv</span> is working correctly to set the environment variable. The problem is that suEXEC isn't passing it to your CGI script.</p>
 </div>
-<h2><span id="Workarounds">Workarounds</span></h2>
+<h2 class="header-section">Workarounds</h2>
+<p>The following sections offer you a few ways to get your environment variables working as intended.</p>
 <div class="solvvy-solution">
-<h3><span id="Workaround_A:_Prepending_HTTP_to_variable_name">Workaround A: Prepending HTTP_ to variable name</span></h3>
-<p>The way DreamHost configures suEXEC, it allows any environment variable that begins with <span class="code">HTTP_</span> through. So, if you change your <span class="text-object">.htaccess</span> file to:</p>
+<h3><span id="Workaround_A:_Prepending_HTTP_to_variable_name">Option 1: Prepend HTTP_ to the variable name</span></h3>
+<p>DreamHost's configuration of suEXEC allows any environment variable beginning with <span class="code">HTTP_</span> through.</p>
+<p>Change your <span class="text-object">.htaccess</span> file to the following:</p>
 <div class="preboxcontainer">
 <pre class="prebox">SetEnv HTTP_FOOBAR <span class="code-highlight">foobar</span></pre>
 </div>
-<p>and use:</p>
+<p>then use the following in your CGI script.</p>
 <div class="preboxcontainer">
 <pre class="prebox">$ENV{HTTP_FOOBAR} </pre>
 </div>
-<p>in your CGI script, it works as expected.</p>
-<p>This workaround is probably best suited to applications you're developing yourself. Digging through the source code of third-party applications (especially large applications, which may have hundreds of thousands of lines) and changing each instance of <span class="code">$ENV{FOOBAR}</span> to <span class="code">$ENV{HTTP_FOOBAR}</span> would be both prohibitively complex and time-consuming, not to mention you'd have to redo all that work every time you upgraded the application. This solution is a bit hacky, but it works.</p>
-<h3><span id="Workaround_B:_Editing_the_CGI_script_to_set_the_variable_itself">Workaround B: Editing the CGI script to set the variable itself</span></h3>
-<p>You can place <span class="code">$ENV{FOOBAR} = 'foo';</span> at the top of your script. Like Workaround A, this workaround is best suited to applications you're developing yourself. However, its usefulness is limited: the purpose of using environment variables is to alter the behavior of your script based on the context (or environment) it's executed from. If you set the variable from within the script itself, the behavior of the script is the same regardless of the context it's executed from.</p>
-<h3><span id="Workaround_C:_Creating_a_wrapper_script">Workaround C: Creating a wrapper script</span></h3>
-<p>Create <span class="text-object">wrapper.cgi</span>:</p>
+<p>This allows it to work as expected.</p>
+<div class="notebox-note">
+<p><strong>When to use this option</strong></p>
+<p>This workaround is best suited to applications you're developing yourself.</p>
+<p>Digging through the source code of third-party applications (especially large applications, which may have hundreds of thousands of lines) and changing each instance of <span class="code">$ENV{FOOBAR}</span> to <span class="code">$ENV{HTTP_FOOBAR}</span> would be both prohibitively complex and time-consuming, not to mention you'd have to redo all that work every time you upgraded the application.</p>
+</div>
+<h3><span id="Workaround_B:_Editing_the_CGI_script_to_set_the_variable_itself">Option 2: Edit the CGI script to set the variable itself</span></h3>
+<p>Place <span class="code">$ENV{FOOBAR} = 'foo';</span> at the top of your script. For example:</p>
+<div class="preboxcontainer">
+<pre class="prebox">#!/usr/bin/perl
+
+use strict;
+use CGI;
+
+<span class="code-highlight">$ENV{FOOBAR} = 'foo';</span>
+
+$ENV{FOOBAR} ||= 'default';
+my $q = CGI-&gt;new;
+print $q-&gt;header();
+print $ENV{FOOBAR};</pre>
+</div>
+<div class="notebox-note">
+<p><strong>When to use this option</strong></p>
+<p>Like Option 1, this workaround is best suited to applications you're developing yourself.</p>
+<p>However, keep in mind the purpose of using environment variables is to alter the behavior of your script based on the context (or environment) it's executed from. If you set the variable from within the script itself, the behavior of the script is the same regardless of the context it's executed from.</p>
+</div>
+<h3><span id="Workaround_C:_Creating_a_wrapper_script">Option 3: Create a wrapper script</span></h3>
+<p>Create a file named <span class="text-object">wrapper.cgi</span> with the following content:</p>
 <div class="preboxcontainer">
 <pre class="prebox">#!/bin/sh
 
 export FOOBAR=foo
-exec /home/<span class="code-highlight">username/example.com</span>$SCRIPT_URL
+exec /home/<span class="code-highlight">username/example.com/foobar.cgi</span>
 </pre>
 </div>
-<ul>
-<li>If you just have one CGI script you wish to set an environmental variable for, you can change the last line of the wrapper to:</li>
-</ul>
-<dl>
-<dd>
-<div class="preboxcontainer">
-<pre class="prebox">exec /home/<span class="code-highlight">username/example.com</span>/foobar.cgi</pre>
-</div>
-</dd>
-</dl>
-<ul>
-<li>If you need to set an environment variable for dozens or even hundreds of files of a third-party application , <span class="code">$SCRIPT_URL</span> allows you to determine which script was requested and set the environmental variable for that script.</li>
-</ul>
-<p>Then, use an <span class="text-object">.htaccess</span> file to redirect requests for the script to <span class="text-object">wrapper.cgi</span>:</p>
+<p>Then add the following to your <span class="text-object">.htaccess</span> file to redirect requests for the script to <span class="text-object">wrapper.cgi</span>:</p>
 <div class="preboxcontainer">
 <pre class="prebox">RewriteEngine On
-RewriteRule ^application/.*\.cgi /wrapper.cgi
+RewriteRule ^<span class="code-highlight">script.cgi</span> /wrapper.cgi
 </pre>
 </div>
+<div class="notebox-important">
 <ul>
-<li><span class="text-object">application</span> is the directory where your (third-party or in-house developed) app lives.</li>
-<li>If you're only setting an environment variable for one (or a few) CGI scripts, you can specify the script in the RewriteRule (e.g., <span class="code">RewriteRule ^script.cgi /wrapper.cgi</span>). Just add additional RewriteRules for additional scripts.</li>
 <li>As you can imagine, simply continuing to add RewriteRules past a few scripts becomes unwieldy. Instead, it's best to match all files ending with a specific file extension. By matching only files ending with <span class="text-object">.cgi</span>, <span class="text-object">.pl</span>, <span class="text-object">.py</span>, <span class="text-object">.rb</span>, and so on, static files such as HTML documents and images are unaffected.</li>
-<li>If your wrapper script is in the same directory as the scripts you wish to wrap and you're matching by pattern (this doesn't matter if you are matching a specific file name), your wrapper must have a different file extension than your scripts. For example, if your wrapper ends in <span class="text-object">.cgi</span>, you might want to use <span class="text-object">.pl</span> (<span class="code">RewriteRule .*\.pl wrapper.cgi</span>) or .py (<span class="code">RewriteRule .*\.py wrapper.cgi</span>) for your scripts.</li>
-<li><span class="text-object">wrapper.cgi</span> can call a script outside your domain's directory. This is actually what you probably want to do, as the wrapper in both <span class="text-object">/home/username/example.com/</span> and <span class="text-object">/home/username/example2.com</span> can refer to the same script(s) in /home/shared.</li>
+<li>If your wrapper script is in the same directory as the scripts you wish to wrap and you're matching by pattern (this doesn't matter if you are matching a specific file name), your wrapper must have a different file extension than your scripts. For example, if your wrapper ends in <span class="text-object">.cgi</span>, you might want to use the following for <span class="text-object">.pl</span> and <span class="text-object">.py</span> extensions.
+<div class="preboxcontainer">
+<pre class="prebox">RewriteRule .*\.pl wrapper.cgi
+RewriteRule .*\.py wrapper.cgi</pre>
+</div>
+</li>
+<li><span class="text-object">wrapper.cgi</span> can call a script outside your domain's directory. This is actually what you probably want to do, as the wrapper in both <span class="text-object">/home/username/example.com/</span> and <span class="text-object">/home/username/example2.com</span> can refer to the same script(s) in <span class="text-object">/home/username</span>.</li>
+<li>If you're setting environment variables for an application, you can specify the application directory instead. For example:
+<div class="preboxcontainer">
+<pre class="prebox">RewriteEngine On
+RewriteRule ^application/.*\.cgi /wrapper.cgi</pre>
+</div>
+</li>
 </ul>
-<p>Workaround C is convoluted but is suitable for a far wider range of cases than either Workaround A or Workaround B. Unlike Workaround A, you can set an environmental variable for hundreds (or thousands) of files by editing just two files (<span class="text-object">wrapper.cgi</span> and <span class="text-object">.htaccess</span>. And, when you set an environmental variable for a third-party application, you don't have to modify any files when you upgrade the application. You can have multiple wrapper scripts, so unlike Workaround B, the context (or environment) can actually alter the behavior of the script(s). Simply copy <span class="text-object">wrapper.cgi</span> and <span class="text-object">.htaccess</span> from <strong>example.com</strong> to <strong>example2.com</strong>, edit wrapper.cgi, and then change <span class="code">export FOOBAR=foo</span> to <span class="code">export FOOBAR=bar</span>, and you're done.</p>
+</div>
+<div class="notebox-note">
+<p><strong>When to use this option</strong></p>
+<p>Option 3 is convoluted but is suitable for a far wider range of cases</p>
+<p>Unlike Option 1, you can set an environmental variable for hundreds (or thousands) of files by editing just two files (<span class="text-object">wrapper.cgi</span> and <span class="text-object">.htaccess)</span>.</p>
+<p>And, when you set an environmental variable for a third-party application, you don't have to modify any files when you upgrade the application.</p>
+<p>You can have multiple wrapper scripts, so unlike Option 2, the context (or environment) can actually alter the behavior of the script(s). Simply copy <span class="text-object">wrapper.cgi</span> and <span class="text-object">.htaccess</span> from <strong>example.com</strong> to <strong>example2.com</strong>, edit <span class="text-object">wrapper.cgi</span>, and then change <span class="code">export FOOBAR=foo</span> to <span class="code">export FOOBAR=bar</span>, and you're done.</p>
+</div>
 </div>
 <h2><span id="See_also">See also</span></h2>
 <div class="solvvy-hidden">
@@ -106,6 +147,6 @@ RewriteRule ^application/.*\.cgi /wrapper.cgi
 </ul>
 <h3>External links</h3>
 <ul>
-<li><a href="http://httpd.apache.org/docs/2.2/suexec.html">Apache 2.2 suexec documentation</a></li>
+<li><a href="https://httpd.apache.org/docs/2.4/suexec.html" target="_self" rel="undefined">Apache 2.4 suEXEC documentation</a></li>
 </ul>
 </div>
