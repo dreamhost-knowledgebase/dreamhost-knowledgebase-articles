@@ -1,10 +1,20 @@
 <h2>Overview</h2>
 <div class="solvvy-solution">
-<p>PHP has built in functions that allow you to connect to your database server to retrieve data. This article details a few examples of using these functions.</p>
+<p>PHP has built-in functions that allow you to connect to your database server to retrieve data. This article details a few examples of using these functions using the <span class="code">mysqli</span> extension.</p>
+<div class="notebox-important">
+<p>The examples in this article should be placed in a separate PHP file. Your other PHP files would then reference this script to perform the connection. View the following links for further information:</p>
+<ul>
+<li><a href="https://www.w3schools.com/php/php_mysql_connect.asp" target="_self" rel="undefined">w3schools.com/php/php_mysql_connect</a></li>
+<li><a href="https://www.php.net/manual/en/book.mysqli.php" target="_self" rel="undefined">php.net/manual/en/book.mysqli</a></li>
+</ul>
 </div>
-<h2><span id="Standard_connections">Standard mysqli connections</span></h2>
+<div class="prereqs">
+<p>View the <a href="/hc/en-us/articles/214395638-phpMyAdmin-overview">phpMyAdmin</a> article for details on how to find your database credentials.</p>
+</div>
+</div>
+<h2><span id="Standard_connections">Creating a connection</span></h2>
 <div class="solvvy-solution">
-<p>The following script creates a MySQL resource named <span class="code">$link</span>. This resource can then be used to create queries. Below is a very simple example of a PHP connection script. View the <a href="/hc/en-us/articles/214395638-phpMyAdmin-overview">phpMyAdmin</a> article for details on how to find your database credentials:</p>
+<p>Create a file named <span class="text-object">connection.php</span> with the following code.&nbsp;This script creates a MySQL resource named <span class="code">$link</span>. This resource can then be used to create queries.&nbsp;&nbsp;</p>
 <div class="preboxcontainer">
 <pre class="prebox">&lt;?php
 
@@ -17,32 +27,30 @@ $link = mysqli_connect($hostname, $username, $password, $database);
 if (mysqli_connect_errno()) {
    die("Connect failed: %s\n" + mysqli_connect_error());
    exit();
-}
+}<br><span class="phpkeywordcolor">echo</span>&nbsp;<span class="phpstringcolor">"Connected successfully"</span>;
 ?&gt;
 </pre>
 </div>
-<p>It's a good idea to put this script into a separate file, and then use PHP's include() function to append it to the beginning of any web page that requires database access. There is normally no reason to have more than one database for a website (particularly because there is no theoretical limit to the number of tables per database), so there is rarely a need for more than one connection resource. The connection closes once the execution of the script ends, or by invoking the mysqli_close() function.</p>
+<p>Run the script and you should see <span class="text-object">Connected successfully</span>.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">php connection.php</span></pre>
+</div>
+<p>Other PHP scripts that require database access can then use the <span class="code">include()</span> function to access this file.</p>
 </div>
 <h2><span id="Executing_queries">Executing queries</span></h2>
 <div class="solvvy-solution">
 <h3><span id="Retrieving_a_ResultSet">Retrieving a ResultSet</span></h3>
-<p>The following example extracts data in the specified table and displays it in an HTML table for you to view. This script is an addition to the script above, so make sure you already have your connection script created. The <span class="code">$link</span> resource is then used to extract the data.</p>
-<p>In this example, a MySQL table named ‘test_data’ contains the following:</p>
-<div class="preboxcontainer">
-<pre class="prebox">+----+---------------+
-| id | test_data     |
-+----+---------------+
-|  1 | A value       |
-|  2 | Another value |
-|  3 | Still another |
-+----+---------------+
-</pre>
+<p>The following example extracts data in the specified table and displays it in an HTML table for you to view.</p>
+<div class="notebox-note">
+<p>This script is an addition to the script above, so make sure you already have your connection script created.</p>
+<p>Add an <span class="code">include</span> call at the top of your script to the <span class="text-object">connection.php</span> file. The <span class="code">$link</span> resource is then used to extract the data.</p>
 </div>
 <p>This script then extracts the data from that table:</p>
 <div class="preboxcontainer">
 <pre class="prebox">&lt;?php
+<span class="code-highlight">include 'connection.php';</span>
 
-$sql = "SELECT * FROM test_table";
+$sql = "SELECT * FROM <span class="code-highlight">test_table</span>";
 $result = mysqli_query($link,$sql) or die("Unable to select: ".mysql_error());
 print "&lt;table&gt;\n";
 while($row = mysqli_fetch_row($result)) {
@@ -54,7 +62,6 @@ while($row = mysqli_fetch_row($result)) {
 }
 print "&lt;/table&gt;\n";
 mysqli_close($link);
-
 ?&gt;
 </pre>
 </div>
