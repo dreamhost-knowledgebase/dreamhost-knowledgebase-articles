@@ -1,0 +1,228 @@
+<h2>Overview</h2>
+<div class="solvvy-solution">
+<div class="notebox-tip">
+<p>You can now migrate your own WordPress site to DreamHost for free, using the DreamHost Automated Migration Plugin. The plugin can be used on any DreamHost account with an active hosting plan. See the following article for more details:</p>
+<ul>
+<li><a href="/hc/en-us/articles/360035448951-Using-the-DreamHost-Automated-Migration-WordPress-plugin">Using the DreamHost Automated Migration WordPress plugin</a></li>
+</ul>
+<p>If you are having trouble migrating your website from another host, or just don't have the time, DreamHost currently offers a service that takes care of that for you. You can find more information in the DreamHost <a href="/hc/en-us/articles/360027686731-Website-migration-services">Website migration services</a> article.</p>
+</div>
+<p>This article describes how to move your WordPress site from your current host to DreamHost.</p>
+<p>If you're moving your WordPress site from another DreamHost account, some additional steps are required to ensure that additional items (such as email) are moved correctly. See the following article for further details:</p>
+<ul>
+<li><a href="/hc/en-us/articles/215413747-How-to-move-a-domain-hosting-between-accounts" target="_self">How to move a domain hosting between accounts</a></li>
+</ul>
+<p>If you're moving from <a href="https://wordpress.com/" target="_self">WordPress.com</a>, then use the following WordPress instructions for further details:</p>
+<ul>
+<li><a href="https://wordpress.com/support/moving-a-blog/#moving-to-wordpress-org">Moving from .com to self-hosted WordPress</a></li>
+</ul>
+</div>
+<h2>Backing up your data</h2>
+<div class="solvvy-solution">
+<p>Before making any changes to your website, DreamHost highly recommends backing up your database. Instructions can be found in the following article:</p>
+<ul>
+<li><a href="/hc/en-us/articles/215039758-How-do-I-backup-my-database-">Backup MySQL</a></li>
+</ul>
+<p>However, you may need to contact your current host for instructions on how to export files from their system.</p>
+</div>
+<h2>Step 1 — Preparation</h2>
+<div class="solvvy-solution">
+<p>Make sure you have the following items in order to successfully manually migrate your WordPress files to DreamHost:</p>
+<ul>
+<li>You must at least save your <strong>wp-content</strong> folder and <strong>MySQL database</strong>. You do not have to include your .htaccess and wp-config.php unless you have custom coding within these files. DreamHost recommends using the latest WordPress core files.</li>
+<li>Before you start uploading your content, please be sure that your domain is <a href="/hc/en-us/articles/360049378932" target="_blank" rel="noopener">fully hosted</a> and has WordPress installed. DreamHost recommends using the <a href="/hc/en-us/articles/215525277" target="_blank" rel="noopener">One-Click Installer</a> or purchasing a <a href="/hc/en-us/articles/214583258" target="_blank" rel="noopener">DreamPress plan</a> to have the WordPress core files installed automatically.</li>
+</ul>
+<p>The default web directory is located in the following path, which is where you should upload your content:</p>
+<div class="preboxcontainer">
+<pre class="prebox">/home/user/yourdomain.com</pre>
+</div>
+<p>If you’re using Shared Hosting, VPS, or a Dedicated server, please make sure you know where your web directory resides. DreamHost recommends using a <a href="/hc/en-us/articles/115000675027-FTP-overview-and-credentials">FTP client</a> to upload your content but you can also use <a href="/hc/en-us/articles/360003490852-Using-the-website-file-manager-in-the-panel">WebFTP</a> if your files are smaller than 1GB.</p>
+</div>
+<h2>Step 2 — Uploading your files to DreamHost</h2>
+<div class="solvvy-solution">
+<p>After you set up a new WordPress install at DreamHost, you are now ready to upload your saved content that is described in the previous section.</p>
+<p>The following image shows an example WebFTP file directory in a domain folder named "exampledreamhost.com". Upload your files to the domain folder of your WordPress site. You can also delete the "wp-content" folder since there is no content within it:</p>
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/manually-migrate-wp-01.png" alt="manually-migrate-wp-01.png" width="600" height="496" /></dd>
+</dl>
+<p>The following shows you the two files after you upload them, "example-backup.sql" and "wp-content.zip":</p>
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/manually-migrate-wp-02.png" alt="manually-migrate-wp-02.png" width="601" height="567" /></dd>
+</dl>
+<p>You can unzip the "wp-content.zip" file by right-clicking on the file and selecting 'extract'. If you’re using SSH to extract your files instead, you can instead use the following command:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">unzip  wp-content.zip</span>
+</pre>
+</div>
+</div>
+<h2>Step 3 — Importing your content</h2>
+<div class="solvvy-solution">
+<p>Since you now have your backed-up SQL file uploaded to your domain directory, all you need to do now is reset your new database and import your backed-up database. Resetting your database simply means removing all tables from the database so that you have a blank database to import your SQL file into.</p>
+<p>There are two methods to clear out your current database, which are described in the following sections:</p>
+<ul>
+<li>Using phpMyAdmin (simple, limited to 200MB)</li>
+<li>Using SSH via wp-cli commands (more advanced)</li>
+</ul>
+<h3>phpMyAdmin</h3>
+<p>To clear your current database using phpMyAdmin:</p>
+<ol>
+<li>See the following article to learn more about how to login to phpMyAdmin:
+<ul>
+<li><a href="/hc/en-us/articles/360002440711-Accessing-your-DreamPress-database">Accessing your DreamPress database</a></li>
+</ul>
+</li>
+<li>After you login to phpMyAdmin, highlight all of your tables:
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/manually-migrate-wp-03.png" alt="manually-migrate-wp-03.png" width="699" height="278" /></dd>
+</dl>
+</li>
+<li>After you highlight all of your tables, select the 'drop tables' option in the dropdown at the bottom and then click <strong>OK</strong>. Make sure the table is cleared.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/manually-migrate-wp-03.png" alt="manually-migrate-wp-03.png" width="699" height="278" /></dd>
+</dl>
+</li>
+<li>Click the 'Import' tab at the top to upload your SQL file.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/manually-migrate-wp-04.png" alt="manually-migrate-wp-04.png" width="700" height="309" /></dd>
+</dl>
+</li>
+<li>Click the <strong>Choose File</strong> button, select your SQL file, and then allow it to upload.</li>
+<li>Verify that your tables are correct. You can make any updates to the wp-config.php file such as your adjusting the prefix tables if needed.</li>
+</ol>
+<h3>SSH via wp-cli commands</h3>
+<p>If you prefer not use phpMyAdmin, you can instead upload your SQL file using wp-cli commands via SSH.</p>
+<p>In the following directory-listing example, you can see that the SQL table "example-backup.sql" has already been uploaded:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">ls</span>
+<span class="cmdoutput">example-backup.sql  license.txt      wp-admin		   wp-config.php   wp-includes	      wp-mail.php	xmlrpc.php
+favicon.gif	    quickstart.html  wp-blog-header.php    wp-content	   wp-links-opml.php  wp-settings.php
+favicon.ico	    readme.html      wp-comments-post.php  wp-content.zip  wp-load.php	      wp-signup.php
+index.php	    wp-activate.php  wp-config-sample.php  wp-cron.php	   wp-login.php       wp-trackback.php</span>
+</pre>
+</div>
+<p>Run the following command, which removes your current tables:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp db reset</span>
+<span class="cmdoutput">Are you sure you want to reset the 'example_dreamhost' database? [y/n] y<br />
+Success: Database reset.</span>
+</pre>
+</div>
+<p>After the reset completes, run the following command to import the backup (be sure to replace 'filename.sql' with the actual file name of your backed-up database):</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp db import <span class="code-highlight">filename.sql</span></span>
+<span class="cmdoutput">Success: Imported from 'example-backup.sql'.</span>
+</pre>
+</div>
+<p>That should complete the import of your database. Large files may take longer but you will received a confirmation when the import completes. Make sure your wp-config.php prefix settings are correct and that your site is live.</p>
+</div>
+<h2>What if I migrate my domain to a different URL?</h2>
+<div class="solvvy-solution">
+<p>The example above shows a domain using the same URL from an old host that is imported to DreamHost. If you're moving your site to a new domain name during your migration, the above steps are the same, but include one extra step. You must update your 'Home' and 'Site URL' as well as your database URLs within the imported database.</p>
+<p>There are several ways to do this, which are described below. If you plan to use a plugin to help replace your database URLs, you can use a plugin called "Better Search Replace" (described below) or "Velvet Blues". If you plan to use SSH instead, wp-cli includes Better Search Replace functionality.</p>
+<h3>Updating your 'Home' and 'Site URL' through wp-admin</h3>
+<div class="alert-warning">
+<p>Make sure you have a backup of your SQL file. If you make a mistake in the following steps, it may be difficult to fix within a live site.</p>
+</div>
+<p>You can update your Home (Wordpress Address URL) and Site URL (Site Address URL) through the wp-admin page. Go to <span class="text-section">Settings &gt; General</span>:</p>
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/manually-migrate-wp-05.png" alt="manually-migrate-wp-05.png" width="700" height="404" /></dd>
+</dl>
+<p>The following shows how to update database URLs using the "Better Search Replace” plugin:</p>
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/manually-migrate-wp-06.png" alt="manually-migrate-wp-06.png" width="699" height="355" /></dd>
+</dl>
+<p>In this example, the following change is made:</p>
+<ul>
+<li><strong>Old URL</strong>: http://www.exampledreamhost.com/</li>
+<li><strong>New URL</strong>: https://exampledreamhost.com/</li>
+</ul>
+<p>Run the search-replace tool, which replaces your old URLs with the new one.</p>
+<h3>Updating your 'Home' and 'Site URL' through SSH</h3>
+<div class="alert-warning">
+<p>Make sure you have a backup of your SQL file. If you make a mistake in the following steps, it may be difficult to fix within a live site.</p>
+</div>
+<p>You can also use wp-cli commands through SSH to update the URL values. Make sure you're in the domain directory for WordPress:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">pwd</span>
+<span class="cmdoutput">/home/wp/exampledreamhost.com</span>
+</pre>
+</div>
+<p>Run the following command, which makes a backup to your user directory:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp db export ~/backup`date +"%d-%m-%Y"-%T`.sql</span>
+</pre>
+</div>
+<p>Run the following commands before updating your Home/SiteURL to make sure they're properly pointed:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp option get home</span>
+<span class="cmdoutput">http://www.exampledreamhost.com</span>
+</pre>
+</div>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp option get siteurl</span>
+<span class="cmdoutput">http://www.exampledreamhost.com/</span>
+</pre>
+</div>
+<p>You can see from the above example URL that the old location is used (http://www.exampledreamhost.com). You can now update the URLs so that it points to 'https://exampledreamhost.com' instead.</p>
+<ul>
+<li><strong>Old URL</strong>: http://www.exampledreamhost.com</li>
+<li><strong>New URL</strong>: https://exampledreamhost.com</li>
+</ul>
+<p>Run the following commands to update the WordPress (home) and Site Address (siteurl):</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp option update home 'https://exampledreamhost.com'</span>
+<span class="cmdoutput">Success: Updated 'home' option.</span>
+</pre>
+</div>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp option update siteurl 'https://exampledreamhost.com'</span>
+<span class="cmdoutput">Success: Updated 'siteurl' option.</span>
+</pre>
+</div>
+<p>Run the following command after you update the Home/SiteURL to update the remaining database URLs:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp search-replace <span class="code-highlight">'oldurl.tld/' 'newurl.tld/'</span></span>
+</pre>
+</div>
+<p>As an extra verification step, you can add the dry-run flag. Make sure there are two small dashes (<span class="code">--</span>) when using this flag; i.e., <span class="code">--dry-run</span>, which performs a command without making any changes. Verify that it is replacing the old URL with the new one.</p>
+<p>Another tool you can use is the <span class="code">--all-tables-with-prefix</span> flag, which ensures the change is applied to all of the tables.</p>
+<p>For example:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp search-replace 'http://www.exampledreamhost.com/' 'https://exampledreamhost.com/' --all-tables-with-prefix --dry-run</span>
+<span class="cmdoutput">Success: 5 replacements to be made.</span>
+</pre>
+</div>
+<p>The above response confirms that there are replacements to be made. When you’re ready to run the command, make sure to remove the <span class="code">--dry-run</span> flag:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp search-replace 'http://www.exampledreamhost.com/' 'https://exampledreamhost.com/' --all-tables-with-prefix</span>
+<span class="cmdoutput">Success: Made 5 replacements.</span>
+</pre>
+</div>
+<p>After you complete the search-replace function, be sure to run the following command to clear any cache:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp cache flush</span>
+<span class="cmdoutput">Success: The cache was flushed.</span>
+</pre>
+</div>
+The <span class="code">wp cache flush</span> command clears any cache that results from the search-replace functions.</div>
+<h2>Viewing your site and updating DNS</h2>
+<div class="solvvy-solution">
+<p>If your DNS is not pointed to DreamHost, view the following article to view your site using a <span class="text-object">hosts</span> file.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115006086308-How-to-view-your-DreamHost-site-using-your-hosts-file">How to view your DreamHost site using your hosts file</a></li>
+</ul>
+<p>If the site appears as it should, you are ready to point your DNS to Dreamhost.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214694378-What-DreamHost-DNS-records-do-I-point-my-site-to-">What DreamHost DNS records do I point my site to</a></li>
+</ul>
+</div>
+<h2><span id="See_also">See also</span></h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360001310966-How-to-log-into-your-WordPress-site">How to log into your WordPress site</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215525287-WordPress-overview">WordPress overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215412347-Updating-your-DNS-after-your-WordPress-site-has-been-migrated-to-DreamHost">Updating your DNS after your WordPress site has been migrated to DreamHost</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214828548-How-do-I-install-WordPress-before-my-DNS-is-pointed-to-DreamHost-">How do I install WordPress before my DNS is pointed to DreamHost?</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215525277-How-to-install-WordPress-using-the-One-Click-Installer">How to install WordPress using the One-Click Installer</a></li>
+</ul>
+</div>
