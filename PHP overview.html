@@ -1,76 +1,92 @@
-<h2>Overview</h2>
 <div class="solvvy-solution">
-<p>PHP is a general-purpose server-side scripting language. It can be embedded within or used to manipulate HTML pages.</p>
+<p>PHP is a free scripting language that is usually combined with HTML to create dynamic and interactive websites. PHP can add the following functionality to a website:</p>
+<ul>
+<li>Create and manipulate files on the server</li>
+<li>Save contact form data</li>
+<li>Connect a website to a database</li>
+<li>Encrypt data</li>
+</ul>
+<p>This article explains how PHP is configured at DreamHost along with details of an <a href="#h_01FV128637PDSW0Z2NRHTCEAZN" target="_self">extended support plan</a> available.</p>
+<h3>PHP requires a server</h3>
+<p>Where HTML can run on any computer,&nbsp;PHP needs a web server to run. This means you must either purchase a hosting plan and upload your PHP code to the server, or create a local server on your home computer to run it.</p>
+<div class="notebox-note">
+<p>PHP is installed on all DreamHost servers by default.</p>
 </div>
-<h2><span id="An_example_of_PHP">An example of PHP</span></h2>
+<h3>Popular language for site builders</h3>
+<p>Many popular site builder applications are written in PHP. For example:</p>
+<ul>
+<li>WordPress</li>
+<li>MediaWiki</li>
+<li>Joomla</li>
+<li>Drupal</li>
+</ul>
+</div>
+<h2 class="header-section">PHP versions</h2>
 <div class="solvvy-solution">
-<p>A file with the following text that is saved with a file extension of <span class="text-object">.php</span>, outputs "Hello, world!" when opened with a web browser:</p>
-<div class="preboxcontainer">
-<pre class="prebox">&lt;?php
-echo "Hello, world!";
-?&gt;</pre>
+<h2>PHP versions at DreamHost</h2>
+<p>The following article lists PHP versions available at DreamHost.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215082337-What-versions-of-PHP-are-available-at-DreamHost-">What versions of PHP are available at DreamHost?</a></li>
+</ul>
+<p>The following articles explain how to view and upgrade your site's PHP version.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214898997-What-version-of-PHP-is-my-site-using-">What version of PHP is my site using?</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214895317-How-do-I-change-the-PHP-version-of-my-site-">How do I change the PHP version of my site?</a></li>
+</ul>
+<h2>Updates</h2>
+<p>PHP is continually being updated by its developers. At any time, there are versions that are officially supported by PHP's development team, and versions that are no longer being maintained.</p>
+<p>It's very important to make sure the version your site is using is currently supported by PHP's developers. The benefits of staying updated include:</p>
+<ul>
+<li>New features/functionality</li>
+<li>Security improvements</li>
+<li>Stability and speed improvements</li>
+<li>Bug fixes</li>
+</ul>
+<h2>Supported / Outdated versions</h2>
+<p>As newer versions are released, older versions are retired. When an old version of PHP is no longer supported by its developers, it has reached its End of Life (EOL) status. A list of current PHP versions and their EOL schedule can be found at the following link:</p>
+<ul>
+<li><a class="external-link" title="Follow link" href="https://www.php.net/supported-versions.php" target="_blank" rel="nofollow noopener">https://www.php.net/supported-versions.php</a> &nbsp;</li>
+</ul>
+<h2 id="h_01FV128637PDSW0Z2NRHTCEAZN">DreamHost extended support plan</h2>
+<p>DreamHost offers a plan to support older PHP versions that have been EOLd by <a href="https://www.php.net/" target="_blank" rel="noopener">php.net</a>. This gives you extra time to upgrade the version of PHP after it's no longer officially supported. View the following article for further details:</p>
+<ul class="article-list">
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360004672631-PHP-Extended-Support">PHP Extended Support</a></li>
+</ul>
 </div>
-</div>
-<h2><span id="PHP_on_DreamHost">PHP on DreamHost</span></h2>
+<h2 class="header-section">DreamHost PHP configurations</h2>
 <div class="solvvy-solution">
-<h3><span id="General_requirements_for_using_PHP_at_DreamHost">General requirements for using PHP at DreamHost</span></h3>
+<h2><span id="PHP_on_DreamHost">PHP server configuration</span></h2>
+<div class="solvvy-solution">
 <p>DreamHost currently allows the following PHP configurations:</p>
 <ul>
 <li>PHP 7 and 8 running as a <a href="/hc/en-us/articles/217297307-CGI-overview">CGI</a> or <a href="/hc/en-us/articles/217298967-FastCGI-overview">FastCGI</a> application</li>
 </ul>
-</div>
-<h2>Default PHP version in the panel</h2>
-<div class="solvvy-solution">
-<p>When you add a new domain in your panel, PHP 7.4 is selected by default.</p>
-<p>If you choose to run PHP 7.3, the following error may appear on your site.</p>
+<div class="notebox-important">
+<p><a href="https://www.php.net/manual/en/security.apache.php" target="_blank" rel="noopener">mod_php</a> is not supported on <a href="https://help.dreamhost.com/hc/en-us/articles/215560437-What-types-of-hosting-plans-are-available-" target="_self">managed hosting plans</a>. These include:</p>
 <ul>
-<li><strong>JIT compilation failed: no more memory errors</strong></li>
+<li>Shared</li>
+<li>VPS</li>
+<li>DreamPress</li>
+<li>Dedicated (without an admin user)</li>
 </ul>
-<p>This is a bug with PCRE which you can read about here:</p>
-<ul>
-<li><a class="external-link" title="Follow link" href="https://bugs.php.net/bug.php?id=77260" rel="nofollow">https://bugs.php.net/bug.php?id=77260</a></li>
-<li><a class="external-link" title="Follow link" href="https://bugs.php.net/bug.php?id=78630" rel="nofollow">https://bugs.php.net/bug.php?id=78630</a></li>
+<p>However, you are able to install this manually on a <a href="https://help.dreamhost.com/hc/en-us/articles/215279658-Dedicated-server-overview" target="_self" rel="undefined">Dedicated Server</a>&nbsp;or&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/214840947-What-is-DreamCompute">DreamCompute</a>&nbsp;as those plans allow&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/216994417-Is-root-sudo-access-available-" target="_self">sudo</a> access.</p>
+</div>
+</div>
+<h2>Adjusting the default PHP settings</h2>
+<p>PHP is installed with default settings. You can adjust many of these by creating or editing a file named <span class="text-object">php.ini</span>. Any settings you add into this file override the server's default PHP settings.</p>
+<p>The standard term for this file is&nbsp;<span class="text-object">php.ini</span>, however, DreamHost uses the term&nbsp;<span class="text-object">phprc</span> file instead. This acts the same way – only the name is different. View the following article for more information:</p>
+<ul class="article-list">
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214200688-php-ini-overview">php.ini overview</a></li>
 </ul>
-<p>To work around this bug, DreamHost automatically adds the following lines to your site's <span class="text-object">phprc</span> file.</p>
-<div class="preboxcontainer">
-<pre class="prebox">pcre.jit = 0</pre>
 </div>
-<p>This setting accommodates the majority of all PHP websites. However, if you specifically need this enabled, you can adjust the setting to the value of <strong>1</strong> in your <a href="https://help.dreamhost.com/hc/en-us/articles/214894037-How-do-I-create-a-phprc-file-via-FTP-" target="_self">phprc file</a>.</p>
-</div>
-<h2><span id="Advanced_topics">Advanced topics</span></h2>
-<div class="solvvy-solution">
-<h3><span id="Changing_the_output_buffer_cache">Changing the output buffer cache</span></h3>
-<p>If you are using PHP FastCGI, the PHP functions flush(), ob_flush(), and ob_implicit_flush() will not function as expected. By default, output is buffered at a higher level than PHP (specifically, by the Apache module mod_deflate which is similar in form/function to mod_gzip).</p>
-<p>If you need unbuffered output, you must either use CGI (instead of FastCGI) or contact support to request that mod_deflate is disabled for your site.</p>
-</div>
-<h2><span id="See_also">See also</span></h2>
+<h2 id="See_also" class="header-section">More information</h2>
 <div class="solvvy-hidden">
-<h3>PHP category links</h3>
+<h3>DreamHost articles</h3>
 <ul>
-<li><a href="/hc/en-us/sections/203272348-General">General PHP articles</a></li>
-<li><a href="/hc/en-us/sections/203248597-Updating">Updating PHP articles</a></li>
-<li><a href="/hc/en-us/sections/203242357-Directives">PHP directive articles</a></li>
-<li><a href="/hc/en-us/sections/203242367-Extensions">PHP extension articles</a></li>
-<li><a href="/hc/en-us/sections/203364358-Installing-PHP-applications">Installing PHP applications articles</a></li>
-<li><a href="/hc/en-us/sections/203275788-Troubleshooting">PHP troubleshooting articles</a></li>
-<li><a href="/hc/en-us/sections/203242337-Advanced">Advanced PHP articles</a></li>
-<li><a href="/hc/en-us/sections/203272338-Custom-Configurations">Custom PHP configuration articles</a></li>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/360001301686-Default-PHP-settings-at-DreamHost">Default PHP settings at DreamHost</a></li>
-</ul>
-<h3>Internal links</h3>
-<ul>
-<li><a href="/hc/en-us/articles/214200688-php-ini-overview">php.ini overview</a></li>
-<li><a href="/hc/en-us/articles/214895317-How-do-I-change-the-PHP-version-of-my-site-">How do I change the PHP version of my site?</a></li>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/214895287-Viewing-your-site-s-PHP-version-and-settings">Viewing your site's PHP version and settings</a></li>
-<li><a href="/hc/en-us/articles/215082337-What-versions-of-PHP-are-available-at-DreamHost-">What versions of PHP are available at DreamHost?</a></li>
-<li><a href="/hc/en-us/articles/214202238-Command-line-PHP-overview">Command line PHP overview</a></li>
-<li><a href="/hc/en-us/articles/214202148-How-do-I-change-the-PHP-version-my-shell-uses-">How do I change the PHP version my shell uses?</a></li>
-<li><a href="/hc/en-us/articles/214200768-Cannot-modify-header-information">Cannot modify header information</a></li>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/214894197-Where-can-I-view-PHP-errors-and-warnings-">Where can I view PHP errors and warnings?</a></li>
-<li><a href="/hc/en-us/articles/214200668-How-do-I-create-a-phprc-file-via-SSH-">How do I enable PHP error logging?</a></li>
-<li><a href="/hc/en-us/articles/214893937-How-do-I-increase-the-PHP-memory-limit-">How do I increase the PHP memory limit?</a></li>
-<li><a href="/hc/en-us/articles/214200558-How-do-I-increase-the-PHP-upload-limit-">How do I increase the PHP upload limit?</a></li>
-<li><a href="/hc/en-us/articles/214392988-How-do-I-install-PEAR-">How do I install PEAR?</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214200688-php-ini-overview">php.ini overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360004672631-PHP-Extended-Support">PHP Extended Support</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/sections/115000045072-PHP-versions" target="_self">PHP versions</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/sections/203272338-Custom-Configurations" target="_self">Custom configurations</a></li>
 </ul>
 <h3>PHP mail articles</h3>
 <ul>
@@ -80,7 +96,7 @@ echo "Hello, world!";
 </ul>
 <h3>External links</h3>
 <ul>
-<li><a href="https://www.afterhoursprogramming.com/tutorial/php/introduction-php/">PHP Tutorials</a> – Beginner PHP tutorials.</li>
-<li><a href="https://www.php.net/manual/en/index.php">PHP Documentation</a> – All the information you could ever need.</li>
+<li><a href="https://www.php.net/manual/en/index.php" target="_self" rel="undefined">php.net</a> – PHP's official website</li>
+<li><a href="https://www.w3schools.com/php/" target="_blank" rel="noopener">PHP tutorial</a> – W3Schools</li>
 </ul>
 </div>
