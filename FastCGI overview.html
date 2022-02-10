@@ -1,186 +1,61 @@
-<h2>Overview</h2>
-<div class="solvvy-solution">
-<p>FastCGI is a way to have CGI scripts execute time-consuming code (like opening a database) only once, rather than every time the script is loaded. In technical terms, FastCGI is a language-independent, scalable, open extension to CGI that provides high performance without the limitations of server-specific APIs.</p>
-</div>
-<h2>Difference between FCGI and CGI</h2>
-<div class="solvvy-solution">
-<h3>CGI</h3>
-<p><a href="https://en.wikipedia.org/wiki/Common_Gateway_Interface">CGI</a> is a protocol for web servers to execute dynamic web programs.</p>
-<p>CGI creates new processes for each request which makes CGI programs simple to implement but limits efficiency and scalability. At high loads, CGI process creation overhead becomes significant.</p>
-<h3>FCGI</h3>
-<p><a href="https://en.wikipedia.org/wiki/Common_Gateway_Interface">FCGI</a> is a newer variation on CGI that helps to reduce the overhead associated with CGI programs, allowing a server to handle more web page requests at once.</p>
-<p>FCGI uses persistent processes to handle a series of requests. Each individual FastCGI process can handle many requests over its lifetime, thereby avoiding the overhead of per-request process creation and termination.</p>
-<h3>Differences</h3>
-<p>FCGI is an improved version of CGI that runs faster, however, since FCGI processes are always running, more memory is used by the server.</p>
-<p>In general, FCGI is recommended.</p>
-</div>
-<h2><span id="Configuration_details">Configuration details</span></h2>
-<div class="solvvy-solution">
-<p>This is the current FastCGI (mod_fastcgi) configuration at DreamHost:</p>
-<div class="preboxcontainer">
-<pre class="prebox">FastCgiConfig -autoUpdate -initial-env RAILS_ENV=production -idle-timeout 60 -startDelay 10 -maxClassProcesses 2 -killInterval 300
-</pre>
-</div>
-<p>These settings are almost exactly the default configuration for FastCGI.</p>
-<p>On <a href="/hc/en-us/articles/215280058-Virtual-Private-Server-overview-VPS-">DreamHost private servers</a>, FastCGI is handled by mod_fcgid rather than mod_fastcgi.</p>
-<p>mod_fcgid is an Apache module providing a FastCGI interface. It's an alternative to mod_fastcgi that is specifically tuned for the dynamic FastCGI configuration used on DreamHost servers.</p>
-</div>
-<h2><span id="Making_changes_to_your_scripts">Making changes to your scripts</span></h2>
-<div class="solvvy-solution">
-<h3><span id="Structure_of_a_FastCGI_script">Structure of a FastCGI script</span></h3>
-<p>FastCGI scripts have two sections:</p>
-<ol>
-<li>Code that runs just once (like opening a database).</li>
-<li>Code that runs every time.</li>
-</ol>
-<p>Here's an example with Perl:</p>
-<div class="preboxcontainer">
-<pre class="prebox">#!/usr/bin/perl
-
-#-----------------------
-#  CODE THAT RUNS ONCE
-#-----------------------
-    $counter=0;
-
-#---------------------------------
-#  CODE THAT RUNS EVERY TIME
-#---------------------------------
-
-use FCGI;
-while ( FCGI::accept() &gt;= 0 ) {
-     $counter++;
-     print "Content-type:text/html\n\n";
-     print "I have run $counter times.";
-}
-</pre>
-</div>
-<p>While you might think that you need to print the header only once, in fact, the header must be included in the <span class="text-section">RUNS EVERY TIME</span> section.</p>
-</div>
-<h2><span id="No_exits">No exits</span></h2>
-<div class="solvvy-solution">
-<p>If your script terminates by some command (such as <strong>exit;</strong> or <strong>last;</strong> in Perl), the script starts over from scratch the next time it's run, losing the benefits of running certain code only once. Additionally, if a script is terminated this way it may not run again for several minutes.</p>
-<p>The symptom is that the browser tries to load the page for a couple of minutes, finally giving up with "an error occurred while processing this directive". The error is even more frustrating because you (or your users) have to wait multiple minutes to get it.</p>
-<p>The solution is to use whatever flow control is available in your programming language to have the script finish by itself. Here's a before and after example in Perl with some pseudocode:</p>
-<table cellpadding="5">
-<tbody>
-<tr>
-<td valign="top"><strong>Wrong way</strong>
-<div class="preboxcontainer">
-<pre class="prebox">#!/usr/bin/perl
-
-#-----------------------
-#  CODE THAT RUNS ONCE
-#-----------------------
-     (open a database)
-
-#---------------------------------
-#  CODE THAT RUNS EVERY TIME
-#---------------------------------
-
-use FCGI;
-while ( FCGI::accept() &gt;= 0 ) {
-      print "Content-type:text/html\n\n";
-
-      if (some test) { exit;}
-
-      more code;
-}</pre>
-</div>
-</td>
-<td valign="top"><strong>Right way</strong>
-<div class="preboxcontainer">
-<pre class="prebox">#!/usr/bin/perl
-
-#-----------------------
-#  CODE THAT RUNS ONCE
-#-----------------------
-     (open a database)
-
-#---------------------------------
-#  CODE THAT RUNS EVERY TIME
-#---------------------------------
-
-use FCGI;
-
-while ( FCGI::accept() &gt;= 0 ) {
-      print "Content-type:text/html\n\n";
-
-      if (some test) { goto(EXITLABEL) }
-
-      more code;
-
-      EXITLABEL: {}
-}</pre>
-</div>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h2><span id="Using_.24ENV.7B.27QUERY_STRING.27.7D_instead_of_.40ARGV">Using $ENV{'QUERY_STRING'} instead of @ARGV</span></h2>
-<div class="solvvy-solution">
-<p>You cannot get the query string in FastCGI by using the @ARGV array. You must use <code>$ENV{'QUERY_STRING'}</code> instead.</p>
-</div>
 <h2><span id="Errors_and_troubleshooting">Errors and troubleshooting</span></h2>
 <div class="solvvy-solution">
-<p>Bad scripts won't return an error immediately; you must wait a couple of minutes for the script to time out. If the script is on a web page, the page appears to hang – and even when the script times out, the actual error message might not be logged and you may only see a 500 error. This means that testing under FastCGI is rather impractical. Development should be done with standard CGI, or on your local computer. FastCGI should be added after the script has already been debugged.</p>
-<p>Also, while it's tempting to develop on a live server, it's dangerous and makes you a bad neighbor for Shared Hosting.</p>
-<p>To see immediately if a script will fail (won't check all cases because&nbsp;%ENV is different), test it from the command line:</p>
+<h3>Errors</h3>
+<p>If an error occurs in your FastCGI script, it may not be returned immediately. If the script loads a web page, the page will appear to hang. When the script times out, it's possible that the error message may not be logged and you'll only see a 500 error.</p>
+<h3>Testing</h3>
+<p>For the reasons stated above, testing under FastCGI is impractical. Development should be done with standard CGI, or on your local computer. FastCGI should only be added after the script has already been debugged.</p>
+<p><strong>Command line testing</strong></p>
+<p>Testing a script from the command line allows you to immediately confirm if it will fail.</p>
+<div class="notebox-note">
+<p>This may not catch 100% of errors due to differences with <a href="https://alvinalexander.com/perl/edu/qanda/plqa00014/" target="_self">%ENV</a>.</p>
+</div>
+<p>For example:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">perl ~/<span class="code-highlight">example.com/myscript.fcgi</span></span>
 </pre>
 </div>
-<p>or, for deeper checking if you can use the debugger:</p>
+<p>You can also add the <span class="code">-d</span> flag for more debugging information.</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">perl -d ~/<span class="code-highlight">example.com/myscript.fcgi</span></span>
 </pre>
 </div>
-<p>If you've introduced an error into a script, fixing the error might not fix it immediately, because sometimes the server is still running an old version of the script from memory for various reasons. (The server is supposed to look at the modification date of the file so that it's always running the most recent version, but this is often not the case. When the server fails to do this, running <span class="code">touch</span> on the file doesn't help, either.)</p>
-<p>To make the server run the current version of the script, find the old process and kill it:</p>
+<h3>Killing an old process</h3>
+<p>Fixing an error may not fix the script immediately because the server could still be running an old version of the script from memory.&nbsp;To force the server to run the current version of the script, <a href="https://www.cyberciti.biz/faq/linux-find-process-name/" target="_self" rel="undefined">locate the old process name</a>, then kill the process:</p>
+<div class="notebox-important">
+<p>Make sure to change <span class="code">username</span>&nbsp;to your&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access" target="_self">Shell user</a>.</p>
+</div>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">killall -USR1 scriptname.fcgi     (replace scriptname.fcgi with the name of the process)</span>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">killall -u username <span class="code-highlight">processname</span></span>
 </pre>
 </div>
-<p>The above command may not always convince all the processes to stop. To force them to stop use:</p>
+<p>If the command above does not work, replace <span class="code">killall</span> with <span class="code">killall -9</span>.</p>
+<h3>Check the error.log file</h3>
+<p>Always check your site's <a href="https://help.dreamhost.com/hc/en-us/articles/216512197-Viewing-your-access-and-error-logs-via-SFTP" target="_blank" rel="noopener">error log</a> file if you receive an error.</p>
+<h3>Check file and directory permissions</h3>
+<p>Make sure that the script you are trying to execute is set as executable.</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">killall -9 scriptname.fcgi   (replace scriptname.fcgi with the name of the process)</span>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">chmod +x <span class="code-highlight">myscript.fcgi</span></span></pre>
+</div>
+<p>The directory the script is in and any directories above must also be writable.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">chmod -R 755 ~/<span class="code-highlight">example.com/</span></span></pre>
+</div>
+<h3>.htaccess file directives</h3>
+<p>Check your <span class="text-object">.htaccess</span> file to see if there's a line referencing <span class="code">.cgi</span>.</p>
+<div class="preboxcontainer">
+<pre class="prebox">RewriteRule ^(.*)$ scriptname<span class="code-highlight">.cgi</span> [QSA,L]
 </pre>
 </div>
-<p>Occasionally, you may need to use ruby1.8 as a task ID:</p>
+<p>If so, update it to <span class="code">.fcgi</span>.</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">killall -9 ruby1.8</span>
+<pre class="prebox">RewriteRule ^(.*)$ scriptname<span class="code-highlight">.fcgi</span> [QSA,L]
 </pre>
 </div>
+<h3>Clear your tmp directory</h3>
+<p>Finally, try deleting all sessions in your&nbsp;<a href="/hc/en-us/articles/216735938--tmp-directory-overview" target="_blank" rel="noopener">/tmp</a> folder.</p>
+<div class="notebox-important">
+<p>This option is only possible if your site is on a <a href="/hc/en-us/articles/215280058-Virtual-Private-Server-overview-VPS-" target="_blank" rel="noopener">VPS</a>&nbsp;or&nbsp;<a href="/hc/en-us/articles/215279658-Dedicated-server-overview" target="_blank" rel="noopener">Dedicated Server</a>.</p>
 </div>
-<h2><span id="My_FastCGI_Isn.27t_working">My FastCGI Isn't working</span></h2>
-<div class="solvvy-solution">
-<p>Make sure that the script you are trying to execute is set as executable:</p>
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">chmod +x myscript.fcgi</span>
-</pre>
-</div>
-<p>Check the <a href="https://help.dreamhost.com/hc/en-us/articles/216512197-Viewing-your-access-and-error-logs-via-SFTP">error log</a> if you are getting the error:</p>
-<div class="preboxcontainer">
-<pre class="prebox">[Fri Sep 05 11:55:03 2008] [error] [client 123.45.67.89] FastCGI: comm with (dynamic) server "/home/username/example.com/myscript.fcgi" aborted: (first read) idle timeout (60 sec)
-</pre>
-</div>
-<p>Make sure you check your file and directory permissions. The directory containing the fcgi, and the fcgi itself, must be owned by your default Unix group and be group-writable:</p>
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">chgrp -R `groups | awk '{print $1}'` ~/<span class="code-highlight">example.com/</span></span>
-<span class="server">[server]$ </span><span class="command">chmod -R g+w ~/<span class="code-highlight">example.com/</span></span>
-</pre>
-</div>
-<p>Also, check to see if you have a similar directive:</p>
-<div class="preboxcontainer">
-<pre class="prebox">RewriteRule ^(.*)$ scriptname.cgi [QSA,L]
-</pre>
-</div>
-<p>That needs to be changed to:</p>
-<div class="preboxcontainer">
-<pre class="prebox">RewriteRule ^(.*)$ scriptname.fcgi [QSA,L]
-</pre>
-</div>
-<p>Finally, try deleting all sessions in your <a href="/hc/en-us/articles/216735938--tmp-directory-overview">/tmp</a> folder (if you’re on a <a href="/hc/en-us/articles/215280058-Virtual-Private-Server-overview-VPS-">VPS</a> or <a href="/hc/en-us/articles/215279658-Dedicated-server-overview" target="_self" rel="undefined">Dedicated Server</a>).</p>
 </div>
 <h2><span id="See_also">See also</span></h2>
 <div class="solvvy-hidden">
