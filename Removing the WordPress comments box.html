@@ -1,28 +1,17 @@
-<div class="document">
-<div class="documentwrapper">
-<div class="body">
-<div id="disable-wp-comments" class="solvvy-hidden">
-<div class="table-of-content container">
-<div class="altTitle">Removing WordPress comments</div>
-<ul class="simple">
-<li><a class="reference internal" href="#pages_posts">Turning off comments on pages and posts</a></li>
-<li><a class="reference internal" href="#just_pages">Turning off comments on pages only</a></li>
-<li><a class="reference internal" href="#template_mods">Modifying page templates to permanently remove comments</a></li>
-<li><a class="reference internal" href="#function_mods">Adding a function to a theme that removes comments from a page</a></li>
-<li><a class="reference internal" href="#see_also">See also</a></li>
-</ul>
-</div>
-</div>
 <h2>Overview</h2>
 <div class="solvvy-solution">
 <p>This article describes how to use built-in WordPress tools to remove the comments box from pages and posts.</p>
+<p>See the following article to learn more about how to disable comments in WordPress:</p>
+<ul>
+<li><a href="https://www.wpbeginner.com/wp-tutorials/how-to-completely-disable-comments-in-wordpress/#:~:text=To%20do%20that%2C%20go%20to,on%20all%20your%20future%20posts" target="_self">How to Completely Disable Comments in WordPress</a> — WPBeginner.com</li>
+</ul>
 </div>
 <h2><span id="pages_posts">Turning off comments on pages and posts</span></h2>
 <div class="solvvy-solution">
 <p>You can turn off comments to achieve either of the following, which are described in the following sections:</p>
 <ul>
-<li><a class="reference internal" href="#new" target="_self">Option one</a>: Comments won't appear on any new (or yet-to-be published) pages and posts</li>
-<li><a class="reference internal" href="#already" target="_self">Option two</a>: Additional comments won't appear on pages and posts that have already published</li>
+<li><a class="reference internal" href="#new" target="_self">Option one</a>: Comments won't appear on any new (or yet-to-be-published) pages and posts</li>
+<li><a class="reference internal" href="#already" target="_self">Option two</a>: Additional comments won't appear on pages and posts that have already been published</li>
 </ul>
 <h3><span id="new">Option 1 — Disable comments on new pages and posts</span></h3>
 <p>The following steps disable comments for any new pages and posts you create:</p>
@@ -40,10 +29,10 @@
 <dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2019-07_wp-admin_comments_spam_11.fw.png" alt="2019-07_wp-admin_comments_spam_11.fw.png" /></dd>
 </dl>
 </li>
-<li>Uncheck the <span class="text-object">Allow people to post comments on new articles</span> check box.</li>
+<li>Uncheck the <span class="text-object">Allow people to post comments on the new articles</span> check box.</li>
 </ol>
 <h3><span id="already">Option 2 — Disable comments on pages and posts that are already published</span></h3>
-<p>Use the following steps to disable comments to pages and posts that have already published:</p>
+<p>Use the following steps to disable comments to pages and posts that have already been published:</p>
 <ol>
 <li>Open the <a href="/hc/en-us/articles/360001310966-How-to-log-into-your-WordPress-site">WP-Admin panel</a> for your WordPress site.
 <dl>
@@ -111,42 +100,6 @@
 <li>Return to the page you're editing and click the <span class="text-object">gear</span> icon in the upper right. Make sure the <span class="text-object">Allow Comments</span> checkbox is unchecked.</li>
 </ol>
 </div>
-<h2>Making changes to WordPress source files</h2>
-<div class="solvvy-solution">
-<p>You can also make changes to your WordPress installation and source files located on your server (such as page template and theme files). For more information on how to edit files that are located on your server, see the following article:</p>
-<ul>
-<li><a href="/hc/en-us/articles/115000098272-Creating-and-editing-a-file-via-FTP">Creating and editing a file via FTP</a></li>
-</ul>
-<h3><span id="template_mods">Modifying page templates to permanently remove comments</span></h3>
-<p>The page template you use typically stores code that makes calls for comments to appear. You can remove this code from the template (or theme), which then disables comments from appearing on your pages.</p>
-<div class="notebox-important">
-<p>Make sure you make a backup (aka, creating a "child theme") of your theme before making the following modifications.</p>
-</div>
-<p>To disable comments from appearing on the page template, open the <span class="text-object">page.php</span> file in your theme folder. For example:</p>
-<ul>
-<li>example.com/wp-content/themes/twentynineteen/<strong>page.php</strong></li>
-</ul>
-<p>Remove the following line:</p>
-<div class="preboxcontainer">
-<pre class="prebox">&lt;?php comments_template('', true); ?&gt;
-</pre>
-</div>
-<h3><span id="function_mods">Adding a function to a theme that removes comments from a page</span></h3>
-<div class="notebox-note">
-<p>Make sure you remove any comments using one of the methods described above before adding the following code.</p>
-</div>
-<p>You can also add the following code to the <span class="text-object">functions.php</span> file. This prevents comment support on your pages.</p>
-<p>To remove comment support, add the following code to the <span class="text-object">functions.php</span> file. Make sure to save it when finished:</p>
-<div class="preboxcontainer">
-<pre class="prebox">//remove comments from pages
-add_action('init', 'remove_comment_support', 100);
-
-function remove_comment_support() {
-remove_post_type_support( 'page', 'comments' );
-}
-</pre>
-</div>
-</div>
 <h2><span id="see_also">See also</span></h2>
 <div class="solvvy-hidden">
 <ul>
@@ -154,8 +107,4 @@ remove_post_type_support( 'page', 'comments' );
 <li><a href="/hc/en-us/articles/360030564232-Mass-deleting-spam-comments-in-WordPress">Mass deleting spam comments in WordPress</a></li>
 <li><a href="/hc/en-us/articles/360030890011-Preventing-spam-comments-on-your-WordPress-site">Preventing spam comments on your WordPress site</a></li>
 </ul>
-</div>
-</div>
-</div>
-<div class="clearer">&nbsp;</div>
 </div>
