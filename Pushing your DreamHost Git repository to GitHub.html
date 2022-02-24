@@ -11,7 +11,29 @@
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/115000732471-Pushing-your-local-git-repository-to-a-DreamHost-server-Windows">Pushing your local Git repository to a DreamHost server — Windows</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216445197-Pushing-your-local-Git-repository-to-a-DreamHost-server-Linux-Mac-OS-X">Pushing your local Git repository to a DreamHost server — Linux &amp; Mac OS X</a></li>
 </ul>
+<div class="prereqs">
+<p><strong>Create a github.com token</strong></p>
+<p>Before proceeding, make sure you first create a new token in github.&nbsp;It's no longer possible to use a password when pushing a repository to github.com, so you must create an access token to continue.</p>
+<p>This token will act as a password when committing your repository. View the following article for more information:</p>
+<ul>
+<li><a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token" target="_self" rel="undefined">Creating a personal access token</a></li>
+</ul>
 </div>
+</div>
+<h2>Configure your DreamHost repository to use 'main' as the primary branch</h2>
+<h3>If you have not created a local repository for your DreamHost files yet</h3>
+<p>View the following article to configure your DreamHost repository.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216445317-How-do-I-set-up-a-Git-repository-">How do I set up a Git repository?</a></li>
+</ul>
+<h3>If you have already created a local repository for your DreamHost files</h3>
+<div class="notebox-important">
+<p>This step is not required but will help to ensure future compatibility with third-party git software programs like github.com.</p>
+</div>
+<p>If you've already created a local repository on your DreamHost server, the primary branch name is <span class="text-object">master</span>. You may want to update this to <span class="text-object">main</span> to avoid future compatibility issues. View the following article for further information and instructions on how to change the branch name.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/4466702078740-Configure-git-to-use-main-as-the-primary-branch">Configure git to use 'main' as the primary branch</a></li>
+</ul>
 <h2><span id="Pushing_your_DreamHost_repository_to_GitHub">Pushing your DreamHost repository to GitHub</span></h2>
 <div class="solvvy-solution">
 <p>If you've developed your site on your DreamHost server, it's recommended to put a copy on GitHub for two main purposes:</p>
@@ -22,7 +44,11 @@
 <p>Follow these steps to push your repository to GitHub</p>
 <ol>
 <li>Sign up at&nbsp;<a href="https://github.com/join">GitHub</a>.</li>
-<li>Create a&nbsp;<a href="https://docs.github.com/en/get-started/quickstart/create-a-repo">public or private repository</a> in your GitHub account.</li>
+<li>Create a&nbsp;<a href="https://docs.github.com/en/get-started/quickstart/create-a-repo">public or private repository</a> in your GitHub account.
+<div class="notebox-important">
+<p>To avoid errors, do not initialize the new repository with a <span class="text-object">README</span>, license, or <span class="text-object">gitignore</span> files. You can add these files after your project has been pushed to GitHub.</p>
+</div>
+</li>
 <li>Once created, <strong>github.com</strong> shows you several commands to run to push your git repository to their servers.</li>
 <li>Log into your DreamHost server via&nbsp;<a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a>&nbsp;and navigate to your application folder where you set up your git repository.</li>
 <li>Run the following command to push your app to GitHub:
@@ -31,24 +57,18 @@
 <p><span class="code">repo_name</span> is the name of the repository you created at <strong>github.com</strong>. Make sure <span class="code">.git</span> is at the end.</p>
 </div>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">git remote add origin https://github.com/<span class="code-highlight">github_username</span>/<span class="code-highlight">repo_name</span>.git</span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">git remote add origin https://github.com/<span class="code-highlight">github_username</span>/<span class="code-highlight">repo_name</span>.git</span>
+<span class="server">[server]$ </span><span class="command">git push -u origin main</span></pre>
+</div>
+<div class="notebox-important">
+<p>When you run the <span class="code">push</span> command, you are prompted for your github username and password. Enter the token you created above in the password field.</p>
 </div>
 <dl>
 <dd>View the following links for details:
 <ul>
 <li><a href="http://git-scm.com/book/en/v2/Git-Basics-Working-with-Remotes">Working with Remotes</a></li>
 <li><a href="https://docs.github.com/en/get-started/getting-started-with-git/managing-remote-repositories">Adding a Remote</a></li>
-</ul>
-</dd>
-</dl>
-</li>
-<li><a href="https://docs.github.com/en/get-started/using-git/pushing-commits-to-a-remote-repository">Push your repository</a>&nbsp;to GitHub.
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">git push -u origin master</span></pre>
-</div>
-<dl>
-<dd>View the following link for details:
-<ul>
+<li><a href="https://docs.github.com/en/get-started/using-git/pushing-commits-to-a-remote-repository" target="_self" rel="undefined">Pushing commits to a remote repository</a></li>
 <li><a href="http://git-scm.com/docs/git-push">Git push</a></li>
 </ul>
 </dd>

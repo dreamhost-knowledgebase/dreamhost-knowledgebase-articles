@@ -136,11 +136,17 @@ $</span></pre>
 <dd><em>This opens up a terminal that's already running Git.</em></dd>
 </dl>
 </li>
-<li>Run the following to create your user and email to be used with Git:
+<li>Run the following to create your user and email to be used with Git. This also sets the primary branch to main instead of the master:
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[local ~]$ </span><span class="command">git config --global user.name <span class="code-highlight">"John Doe"</span></span>
 <span class="server">[local ~]$ </span><span class="command">git config --global user.email <span class="code-highlight">johndoe@example.com</span></span>
-</pre>
+<span class="server">[local ~]$ </span><span class="command">git config --global init.defaultBranch main</span></pre>
+</div>
+<div class="notebox-note">
+<p>The last line ensures newly created repositories use the name <span class="text-object">main</span> as the primary branch. View the following article for further details:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/4466702078740-Configure-git-to-use-main-as-the-primary-branch">Configure git to use 'main' as the primary branch</a></li>
+</ul>
 </div>
 <dl>
 <dd><em>This creates a <span class="text-object">.gitconfig</span> file under your username.</em></dd>
@@ -148,9 +154,9 @@ $</span></pre>
 </li>
 <li>Run the following in your project directory to initialize the repository and create your first commit:
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">git init</span>
-<span class="server">[server]$ </span><span class="command">git add .</span>
-<span class="server">[server]$ </span><span class="command">git commit -m "First Commit"</span>
+<pre class="prebox"><span class="server">[local ~]$ </span><span class="command">git init</span>
+<span class="server">[local ~]$ </span><span class="command">git add .</span>
+<span class="server">[local ~]$ </span><span class="command">git commit -m "First Commit"</span>
 </pre>
 </div>
 <dl>
@@ -158,10 +164,13 @@ $</span></pre>
 </dl>
 </li>
 <li>When you initialize the repository, a directory titled <span class="text-object">.git</span> is created. By default, you cannot see this in Windows. If you'd like to view hidden files (files that start with a period), click <span class="text-object">View</span> in the top menu. To the right, check the box for hidden files.&nbsp;You do not need to view this <span class="text-object">.git</span> folder to proceed with these steps. This is just a way for you to see your commands have created the local repository.</li>
-<li>Add the remote repository. Make sure to user your user and server name.
+<li>Add the remote repository. Make sure to use your <a href="https://help.dreamhost.com/hc/en-us/articles/4402199390996-Difference-between-SFTP-and-Shell-users" target="_self">Shell user</a> and server name.
+<div class="notebox-note">
+<p>The word <span class="code">dreamhost</span>&nbsp;is just an alias. It can be named anything you want. But this alias name will be used when you push your content to <strong>github.com</strong>.</p>
+</div>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[local ~]$ </span><span class="command">git remote add dreamhost ssh://<span class="code-highlight">user@server.dreamhost.com/~/example.com.git</span></span>
-<span class="server">[local ~]$ </span><span class="command">git push -u dreamhost master</span>
+<span class="server">[local ~]$ </span><span class="command">git push -u dreamhost main</span>
 </pre>
 </div>
 </li>

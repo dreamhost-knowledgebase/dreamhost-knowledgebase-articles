@@ -1,0 +1,74 @@
+<h2>Overview</h2>
+<div class="solvvy-solution">
+<p>Historically, when a new git repository was created, the primary branch was named <span class="text-object">master</span>. Many companies that use the git software such as <a href="https://github.com/" target="_blank" rel="noopener">github.com</a>, <a href="https://gitlab.com/" target="_blank" rel="noopener">gitlab.com</a>, and <a href="https://bitbucket.org/" target="_blank" rel="noopener">bitbucket.org</a> have renamed this primary branch to <span class="text-object">main</span>. The following links give you more information about this topic:</p>
+<ul>
+<li><a href="https://git-scm.com/book/en/v2/Git-Branching-Branch-Management">https://git-scm.com/book/en/v2/Git-Branching-Branch-Management</a></li>
+<li><a href="https://github.com/github/renaming">https://github.com/github/renaming</a></li>
+<li><a href="https://sfconservancy.org/news/2020/jun/23/gitbranchname/">https://sfconservancy.org/news/2020/jun/23/gitbranchname/</a></li>
+<li><a href="https://about.gitlab.com/blog/2021/03/10/new-git-default-branch-name/">https://about.gitlab.com/blog/2021/03/10/new-git-default-branch-name/</a></li>
+<li><a href="https://bitbucket.org/blog/moving-away-from-master-as-the-default-name-for-branches-in-git">https://bitbucket.org/blog/moving-away-from-master-as-the-default-name-for-branches-in-git</a></li>
+</ul>
+<h3>What does this mean?</h3>
+<p>If you created a repository on your DreamHost server in the past, the primary branch is named <span class="text-object">master</span>. This will continue to function normally on your DreamHost server without any issue.</p>
+<p>However, it's recommended that going forward, you create new repositories with the primary branch name of <span class="text-object">main</span>. This will ensure future compatibility with other software programs as mentioned above.</p>
+</div>
+<h2>Updating your git config file</h2>
+<div class="solvvy-solution">
+<p>You can run the following command to add a line to your git <span class="text-object">config</span> file. This will ensure all future repositories you create use <span class="text-object">main</span> as the primary branch.</p>
+<p>The following steps can be run on your local computer or your DreamHost server.</p>
+<ol>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215360828-SSH-client-software" target="_self">Open a terminal</a> on your home computer or log into your DreamHost server via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview" target="_self">SSH</a>.</li>
+<li>Run the following command:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">git config --global init.defaultBranch main</span></pre>
+</div>
+</li>
+</ol>
+<p>Now when you initialize a new repository by running <span class="code">git init</span>, <span class="text-object">main</span> will be used instead of <span class="text-object">master</span> as the primary branch.</p>
+<h3>Changing an existing repository to use main</h3>
+<p>If you've created a repository in the past using git, the primary branch is named <span class="text-object">master</span>. You can check by running the following command on your home computer or DreamHost server.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">git branch -a</span></pre>
+</div>
+<p>If there are multiple branches, the active branch will display a <span class="code">*</span> to the left. If you see the primary branch is <span class="text-object">master</span>, run the following commands to update it to <span class="text-object">main</span>.</p>
+<ol>
+<li>Make sure the active branch is <span class="text-object">master</span>.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">git checkout master</span></pre>
+</div>
+</li>
+<li>Rename it using the <span class="code">-m</span> option.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">git branch -m main</span></pre>
+</div>
+<div class="notebox-note">
+<p>If the main branch exists for some reason, you can use <span class="code">-M</span> to force the rename.</p>
+</div>
+</li>
+</ol>
+<h3>Updating remote repositories</h3>
+<p>If you have pushed this local repository to a remote repository (such as github.com), you must push it again to reset the upstream branch.</p>
+<div class="notebox-tip">
+<p>Change <span class="code">REMOTENAME</span> to the name of your remote repository. Run <span class="code">git remote</span> to view existing remotes.</p>
+</div>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">git push -u <span class="code-highlight">REMOTENAME</span> main</span></pre>
+</div>
+<p>You should then delete the old master branch.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">git push <span class="code-highlight">REMOTEBRANCH</span> --delete master</span></pre>
+</div>
+<p>View the following link for further details.</p>
+<ul>
+<li><a href="https://git-scm.com/docs/git-branch">https://git-scm.com/docs/git-branch</a></li>
+</ul>
+</div>
+<h2>See also</h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115000677931-What-is-Git-">What is Git?</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216445317-How-do-I-set-up-a-Git-repository-">How do I set up a Git repository?</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115000676991-Pushing-your-DreamHost-Git-repository-to-GitHub">Pushing your DreamHost Git repository to GitHub</a></li>
+<li><a href="https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-branches-in-your-repository/renaming-a-branch" target="_self">Renaming a branch at github.com</a></li>
+</ul>
+</div>
