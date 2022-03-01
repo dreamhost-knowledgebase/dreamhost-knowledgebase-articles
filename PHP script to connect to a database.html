@@ -12,22 +12,64 @@
 <p>View the <a href="/hc/en-us/articles/214395638-phpMyAdmin-overview">phpMyAdmin</a> article for details on how to find your database credentials.</p>
 </div>
 </div>
+<h2>Creating a file to store your database credentials</h2>
+<div class="solvvy-solution">
+<p>For security purposes, you should always avoid placing your database credentials directly into your PHP scripts.</p>
+<p>Instead, create a separate file to store your database credentials. You can then call this file within your PHP script to connect to the database.</p>
+<ol>
+<li>Navigate into your <a href="https://help.dreamhost.com/hc/en-us/articles/360001219231-Where-is-the-home-directory-#the-users-home-directory" target="_self">user's home directory</a>.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~</span></pre>
+</div>
+</li>
+<li>Create a new directory named something like database.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">mkdir database</span></pre>
+</div>
+</li>
+<li>Change into this new directory.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd database</span></pre>
+</div>
+</li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH" target="_self">Create a new file</a> named something like <span class="text-object">dbcredentials.php</span>.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">nano dbconnection.php</span></pre>
+</div>
+</li>
+<li>Add the following code to this file.
+<div class="notebox-note">
+<p>Change the highlighted words to your <a href="https://help.dreamhost.com/hc/en-us/articles/221610868-phpMyAdmin-Finding-your-login-credentials" target="_self">database credentials</a>.</p>
+</div>
+<div class="preboxcontainer">
+<pre class="prebox">&lt;?php
+  $DBhostname = "<span class="code-highlight">HOSTNAME</span>";  
+  $DBusername = "<span class="code-highlight">USERNAME</span>";
+  $DBpassword = "<span class="code-highlight">PASSWORD</span>"; <br />  $DBname = "<span class="code-highlight">DATABASE_NAME</span>";
+?&gt;</pre>
+</div>
+</li>
+</ol>
+<p>You can then call this file using <span class="code">require_once</span> as shown below.</p>
+</div>
 <h2><span id="Standard_connections">Creating a connection</span></h2>
 <div class="solvvy-solution">
-<p>Create a file named <span class="text-object">connection.php</span> with the following code.&nbsp;This script creates a MySQL resource named <span class="code">$link</span>. This resource can then be used to create queries.&nbsp;&nbsp;</p>
+<p>In your website directory, create a file named <span class="text-object">connection.php</span> with the following code.&nbsp;This script creates a MySQL resource named <span class="code">$link</span>. This resource can then be used to create queries.</p>
+<div class="notebox-note">
+<p>Change&nbsp;<span class="code">username</span>&nbsp;to your&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access" target="_self">Shell user</a>.&nbsp;</p>
+<p><span class="text-object">database</span> and <span class="text-object">dbcredentials.php</span> are from the directions above.</p>
+</div>
 <div class="preboxcontainer">
 <pre class="prebox">&lt;?php
 
-$hostname = "<span class="code-highlight">mysql.example.com</span>"; // the hostname you created when creating the database
-$username = "<span class="code-highlight">yourusername</span>";      // the username specified when setting up the database
-$password = "<span class="code-highlight">yourpassword</span>";      // the password specified when setting up the database
-$database = "<span class="code-highlight">databasename</span>";      // the database name chosen when setting up the database 
+require_once "/home/<span class="code-highlight">username/database/dbcredentials.php</span>";
 
-$link = mysqli_connect($hostname, $username, $password, $database);
+$link = mysqli_connect($DBhostname, $DBusername, $DBpassword, $DBname);
+
 if (mysqli_connect_errno()) {
    die("Connect failed: %s\n" + mysqli_connect_error());
    exit();
-}<br><span class="phpkeywordcolor">echo</span>&nbsp;<span class="phpstringcolor">"Connected successfully"</span>;
+}<br /><span class="phpkeywordcolor">echo</span>&nbsp;<span class="phpstringcolor">"Connected successfully"</span>;
 ?&gt;
 </pre>
 </div>
