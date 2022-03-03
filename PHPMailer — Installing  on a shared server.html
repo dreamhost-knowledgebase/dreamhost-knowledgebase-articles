@@ -2,28 +2,37 @@
 <div class="solvvy-solution">
 <p>PHPMailer allows you to send email from your site via SMTP. Visit <a href="https://github.com/PHPMailer/PHPMailer/blob/master/README.md">PHPMailer’s GitHub page</a> for further details on what it has to offer.</p>
 <div class="notebox-important">
-<p>This article explains how to install PHPMailer on a VPS or Dedicated Server using Composer. If your website is on a shared server, view the following article instead.</p>
+<p>This article explains how to install PHPMailer on a shared server. If your website is on a VPS or Dedicated Server, view the following article instead.</p>
 <ul>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/360031174411" target="_self" rel="undefined">Installing PHPMailer on a shared server</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360031176531-PHPMailer-Installing-on-a-VPS-or-Dedicated-server" target="_self" rel="undefined">Installing PHPMailer on a VPS or Dedicated Server</a></li>
 </ul>
-</div>
-</div>
-<h2>Install PHPMailer using Composer</h2>
-<div class="solvvy-solution">
-<p>The recommended way to install PHPMailer is through composer on a VPS or Dedicated Server.</p>
-<ol>
-<li>View the following article to set up composer on your DreamHost server:
-<ul>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/214899037-Installing-Composer-overview">Installing Composer overview</a></li>
-</ul>
-</li>
-<li>Once composer is configured, navigate to the directory you wish to install PHPMailer in.</li>
-<li>In that directory, install PHPMailer by running the following command:
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">composer require phpmailer/phpmailer</span></pre>
 </div>
 <div class="notebox-note">
-<p>This installs PHPMailer into a folder called <span class="text-object">/vendor</span> in the directory where the command was run.</p>
+<p>In the following examples, <span class="code">username</span> would be your <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access" target="_self">Shell user</a> and <strong>example.com</strong> your website.</p>
+</div>
+</div>
+<h2><span id="How_to_download_PHPMailer">Installing PHPMailer</span></h2>
+<div class="solvvy-solution">
+<ol>
+<li>Log into your server via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview" target="_self">SSH</a>.</li>
+<li>Make sure you're in your <a href="https://help.dreamhost.com/hc/en-us/articles/360001219231-Where-is-the-home-directory-#the-users-home-directory" target="_self">user's home directory</a>.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~</span></pre>
+</div>
+</li>
+<li>Download the zip file from GitHub.com.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wget https://github.com/PHPMailer/PHPMailer/archive/master.zip</span></pre>
+</div>
+</li>
+<li>Unzip the file.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">unzip master.zip</span></pre>
+</div>
+This creates a directory named <span class="text-object">PHPMailer-master</span>.</li>
+<li>Rename this directory.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">mv PHPMailer-master PHPMailer</span></pre>
 </div>
 </li>
 </ol>
@@ -37,8 +46,11 @@
 <p>Insert the following code into the PHP file.</p>
 <div class="notebox-important">
 <p>You only need to update the code in bold.</p>
-<p><strong>username</strong> — Make sure to change the 'username' field to your actual <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access">shell username</a>.</p>
-<p><strong>Path to the autoload.php file</strong>&nbsp;— This is the full path to the autoload.php file. This is different depending on where you installed PHPMailer. Make sure to change this path to the location where you installed PHPMailer.</p>
+<p><strong>username</strong> — Make sure to change the 'username' field to your actual <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access">shell username</a>. You can also view this by running the following command.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">echo $USER</span>
+username</pre>
+</div>
 <p><strong>Host&nbsp;</strong>— If you're sending from a DreamHost address, you should only use <strong>smtp.dreamhost.com</strong>. If you are using a Gmail address, use <strong>smtp.gmail.com</strong>.</p>
 <p><strong>Username</strong> and <strong>setFrom</strong> must both be an email on the domain you're sending from.</p>
 </div>
@@ -49,8 +61,9 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-//Load composer's autoloader
-require '/home/<span class="code-highlight">username</span>/vendor/autoload.php';
+require '/home/<span class="code-highlight">username</span>/PHPMailer/src/Exception.php';
+require '/home/<span class="code-highlight">username</span>/PHPMailer/src/PHPMailer.php';
+require '/home/<span class="code-highlight">username</span>/PHPMailer/src/SMTP.php';
 
 $mail = new PHPMailer(true);                              // Passing `true` enables exceptions
 try {
@@ -59,14 +72,14 @@ try {
     $mail-&gt;isSMTP();                                      // Set mailer to use SMTP
     $mail-&gt;Host = '<span class="code-highlight">smtp.dreamhost.com</span>';                  // Specify main and backup SMTP servers
     $mail-&gt;SMTPAuth = true;                               // Enable SMTP authentication
-    $mail-&gt;Username = '<span class="code-highlight">user@example.com'</span>;                // SMTP username
+    $mail-&gt;Username = '<span class="code-highlight">contact@example.com'</span>;             // SMTP username
     $mail-&gt;Password = '<span class="code-highlight">secret</span>';                           // SMTP password
-    $mail-&gt;SMTPSecure = 'ssl';                            // Enable SSL encryption, TLS also accepted with port 587
+    $mail-&gt;SMTPSecure = 'ssl';                            // Enable SSL encryption, TLS also accepted with port 465
     $mail-&gt;Port = 465;                                    // TCP port to connect to
 
     //Recipients
-    $mail-&gt;setFrom('<span class="code-highlight">user@example.com</span>', 'Mailer');
-    $mail-&gt;addAddress('<span class="code-highlight">joe@example.net</span>', '<span class="code-highlight">Joe User</span>');     // Add a recipient
+    $mail-&gt;setFrom('<span class="code-highlight">contact@example.com</span>', 'Mailer');          //This is the email your form sends From
+    $mail-&gt;addAddress('<span class="code-highlight">recipient@dreamhost.com</span>', '<span class="code-highlight">Joe User</span>'); // Add a recipient address
     //$mail-&gt;addAddress('contact@example.com');               // Name is optional
     //$mail-&gt;addReplyTo('info@example.com', 'Information');
     //$mail-&gt;addCC('cc@example.com');
