@@ -7,7 +7,7 @@
 <h2>What is Git?</h2>
 <div class="solvvy-solution">
 <p>Git is a versioning control system that allows you to keep track of every change you make to your site. It is ideal for creating and maintaining themes, plugins, and any customizations to your WordPress website beyond those you can make in the dashboard. As a version control tool, Git allows you to take snapshots of your code so that you can retrieve a backup at any time. Git also allows you to create a “branch” to add a new feature, fix a bug, or even experiment with new changes without worrying about messing up the current version.</p>
-<p>In the past, you would use FTP/SFTP to update your website. However a major problem with these protocols is that you cannot go back to an earlier version of your customizations in cases such as when a change breaks your site. You also can’t review an earlier version to see what did change. These issues are solved by using Git.</p>
+<p>In the past, you would use FTP/SFTP to update your website. However, a major problem with these protocols is that you cannot go back to an earlier version of your customizations in cases such as when a change breaks your site. You also can’t review an earlier version to see what did change. These issues are solved by using Git.</p>
 <p>Git is commonly used with SSH and a terminal when creating remote repositories. However, there are also some good GUI Git applications that can be used. Two good ones are <a href="https://www.sourcetreeapp.com/">SourceTree</a> and <a href="https://www.git-tower.com/mac/">Tower</a> ($$).</p>
 </div>
 <h2>What can Git be used for?</h2>
@@ -49,12 +49,15 @@
 <pre class="prebox"><span class="server">[mycomputer]$ </span><span class="command">git --version</span></pre>
 </div>
 <h3>Step 2&nbsp;— Create a shell user in the DreamHost panel</h3>
-<p>Set up a <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access">shell user</a> in the DreamHost panel if you haven’t done so already. You can also change the current DreamPress user from SFTP to Shell on the <a class="panel-link" href="https://panel.dreamhost.com/?tree=users.dashboard" target="_blank" rel="noopener">FTP Users &amp; Files</a> page. Once you have done that, write down your shell username, password, and server. For DreamPress, your username and server look something like this:</p>
+<p>Set up a <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access">shell user</a> in the DreamHost panel if you haven’t done so already. You can also change the current DreamPress user from SFTP to Shell on the <a class="panel-link" href="https://panel.dreamhost.com/?tree=users.dashboard" target="_blank" rel="noopener">FTP Users &amp; Files</a> page. Once you have done that, write down your shell username, password, and host (server name). For DreamPress, your username and host look something like this:</p>
 <dl>
 <dd>
-<p><strong>Shell username:</strong> &nbsp;wp_ab1cde<br /><strong>Server:</strong> &nbsp;wp_123456.dreamhostps.com</p>
+<p><strong>Shell username:</strong> &nbsp;wp_ab1cde<br /><strong>Host:</strong> &nbsp;wp_123456.dreamhostps.com</p>
 </dd>
 </dl>
+<div class="notebox-important">
+<p>For the rest of this tutorial, your DreamPress <span class="text-object">Host</span> name will be referred to as the <span class="text-object">server</span>.</p>
+</div>
 <h3>Step 3&nbsp;— Set up an SSH key on your computer</h3>
 <p>This allows you to automatically connect to your DreamPress server and enables Git commands to work remotely. This varies a bit between Windows, Mac, and Linux, so check out this help article:</p>
 <ul>
@@ -73,11 +76,28 @@
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[mycomputer]$ </span><span class="command">ssh wp_ab1cde@wp_123456.dreamhostps.com</span></pre>
 </div>
-<p>The first time you do this, you must accept your server as a valid host. This information is&nbsp;saved in a known host file on your computer.</p>
+<p>The first time you do this, you must accept your server as a valid host. This information is&nbsp;saved in a known <span class="text-object">hosts</span> file on your computer. View the following article for information on how to verify the server identity.</p>
+<ul class="article-list">
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360004634231-The-server-s-host-key-is-unknown">The server's host key is unknown</a></li>
+</ul>
 <h3>Step 6&nbsp;— Set up your server Git repo</h3>
 <p>This does not need to be in the same directory as your child theme, but make sure you remember where you create this directory. This example creates a <span class="text-object">/git</span> directory under your username, outside of the website directory. Run the following Linux commands to create the directory and initialize the repository on your web server.</p>
 <ol>
-<li>Make sure you're in your user's&nbsp;directory by running pwd:
+<li>Run the following commands to create your identity to be used with Git. View the <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview" target="_self">SSH</a> article for details on how to log into your server:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">git config --global user.name "<span class="code-highlight">John Doe</span>"</span>
+<span class="server">[server]$ </span><span class="command">git config --global user.email <span class="code-highlight">johndoe@example.com</span></span>
+<span class="server">[server]$ </span><span class="command">git config --global init.defaultBranch main</span>
+</pre>
+</div>
+<div class="notebox-note">
+<p>The last line ensures newly created repositories use the name <span class="text-object">main</span> as the primary branch. View the following article for further details:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/4466702078740-Configure-git-to-use-main-as-the-primary-branch">Configure git to use 'main' as the primary branch</a></li>
+</ul>
+</div>
+</li>
+<li>Make sure you're in your user's&nbsp;directory by running <span class="code">pwd</span>:
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">pwd</span>
 <span class="cmdoutput">/home/username/</span></pre>
@@ -102,7 +122,7 @@
 <li>Be sure to create a directory for every unique project. This helps you to keep track of them in the future.</li>
 </ol>
 <h3>Step 7&nbsp;— Create a file to copy updates</h3>
-<p>This step creates a file to copy updates from your server Git repo to your child theme directory. This example uses&nbsp;a text editor program named nano. View the '<a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Creating and editing a file via SSH</a>' article for further information on how to edit a file.</p>
+<p>This step creates a file to copy updates from your server Git repo to your child theme directory. This example uses&nbsp;a text editor program named <span class="text-object">nano</span>. View the <a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Creating and editing a file via SSH</a> article for further information on how to edit a file.</p>
 <ol>
 <li>Make sure you're in your <span class="text-object">/git/projectname</span> directory.</li>
 <li>Run <span class="code">nano</span>&nbsp;and create a file named <span class="text-object">post-receive</span>:
@@ -155,10 +175,13 @@ GIT_WORK_TREE=/home/<span class="code-highlight">username</span>/<span class="co
 <p>This is done by using a git remote command in your child theme directory.</p>
 <ol>
 <li>Make sure you're in child theme directory:
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[mycomputer]$ </span><span class="command">git remote add myserver ssh://username@server.example.com/~/git/projectname</span></pre>
+<div class="notebox-note">
+<p>In the following example, the word <span class="code">myserver</span> is just an alias. It can be named anything you want. But this alias name will be used when you push your content in the future.</p>
 </div>
-<p><em>You can use any servername you like instead of "myserver". Using the example username and server, the command is:</em></p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[mycomputer]$ </span><span class="command">git remote add <span class="code-highlight">myserver</span> ssh://<span class="code-highlight">username@server.dreamhostps.com/~/git/projectname</span></span></pre>
+</div>
+<p><em>The following is how it would appear with a DreamPress user and server:</em></p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[mycomputer]$ </span><span class="command">git remote add myserver ssh://wp_ab1cde@wp_123456.dreamhostps.com/~/git/projectname</span></pre>
 </div>
@@ -193,9 +216,8 @@ GIT_WORK_TREE=/home/<span class="code-highlight">username</span>/<span class="co
 <ol>
 <li>In the child theme directory, run the following command only once:
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[mycomputer]$ </span><span class="command">git push myserver +master:refs/heads/master</span>
-<span class="server">[mycomputer]$ </span><span class="command">git push --set-upstream myserver master</span>
-<span class="cmdoutput">Branch master set up to track remote branch master from myserver</span></pre>
+<pre class="prebox"><span class="server">[mycomputer]$ </span><span class="command">git push -u myserver main</span>
+<span class="cmdoutput">Branch main set up to track remote branch 'main' from 'myserver'</span></pre>
 </div>
 </li>
 <li>Whenever you create a new snapshot in your local git repo, push it to your server simply with this command:
