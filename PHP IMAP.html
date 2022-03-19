@@ -20,18 +20,18 @@
 <h2><span id="Basic_.27mail.28.29.27_function_replacement">Basic mail() function replacement</span></h2>
 <div class="solvvy-solution">
 <p>The <span class="text-object">imap_mail()</span> function can replace the standard <span class="text-object">mail()</span> function typically used for sending email. Parameters for both functions are mostly similar.</p>
-<p>Here's a basic example using imap_mail():</p>
+<p>Here's a basic example using <span class="text-object">imap_mail()</span>:</p>
 <div class="preboxcontainer">
 <pre class="prebox">&lt;?php
 
-$to = "recipient@example.com, recipient2@example.com";
-$subject = "Test Email";
-$body = "This is only a test.";
-$headers = "From: me@example.com\r\n".
-   	"Reply-To: me@example.com\r\n";
+$to = "<span class="code-highlight">recipient@example.com, recipient2@example.com</span>";
+$subject = "<span class="code-highlight">Test Email</span>";
+$body = "<span class="code-highlight">This is only a test.</span>";
+$headers = "From: <span class="code-highlight">me@example.com</span>\r\n".
+   	"Reply-To: <span class="code-highlight">me@example.com</span>\r\n";
 $cc = null;
 $bcc = null;
-$return_path = "me@example.com";
+$return_path = "<span class="code-highlight">me@example.com</span>";
 
 imap_mail($to, $subject, $body, $headers, $cc, $bcc, $return_path);
 
@@ -41,35 +41,33 @@ imap_mail($to, $subject, $body, $headers, $cc, $bcc, $return_path);
 <h3><span id="Explanation_of_fields_on_this_form">Explanation of fields on this form</span></h3>
 <dl>
 <dt><strong>$headers</strong></dt>
-<dd>This section has two fields: <span class="code">From</span> and <span class="code">Reply-To</span>.</dd>
+<dd>This section has two fields, <span class="code">From</span> and <span class="code">Reply-To</span>:
+<ul>
+<li>The <span class="code">From</span> email address should be set with the email address sending the message. If you’re not using SMTP authentication, this must be an email address on the same domain you’re sending from and must be hosted with DreamHost. If you want to use any other address as the ‘From’, you must use SMTP authentication.</li>
+<li>The <span class="code">Reply-To</span> email address can be set with any address and receives the replies back to the message from the recipient.</li>
+</ul>
+</dd>
 </dl>
-<dl>
-<dt><strong>The ‘From’ email address</strong></dt>
-<dd>Should be set with the email address sending the message. If you’re not using SMTP authentication, this must be an email address on the same domain you’re sending from and must be hosted with DreamHost. If you want to use any other address as the ‘From’, you must use SMTP authentication.</dd>
-</dl>
-<dl>
-<dt><strong>The ‘Reply-To’ email address</strong></dt>
-<dd>Can be set with any address and receives the replies back to the message from the recipient.</dd>
-</dl>
+<dl></dl>
 <dl>
 <dt><strong>$return_path</strong></dt>
-<dd>Rejected mail goes back to the envelope sender listed here. You want the ‘Reply-To’ and ‘Return-Path’ set to the same sending user.</dd>
+<dd>Rejected mail goes back to the envelope sender listed here. You want the <span class="code">Reply-To</span> and <span class="code">Return-Path</span> set to the same sending user.</dd>
 </dl>
 </div>
 <h2><span id="Saving_sent_emails">Saving sent emails</span></h2>
 <div class="solvvy-solution">
-<p>The form setup above allows you to send the message but does not save it in the SENT folder. If you want to see a record of all emails sent, you can add another function to store the message into the SENT folder.</p>
-<p>To store the sent message in the ‘Sent’ folder, add this function to the PHP file. Make sure to use your <a href="https://help.dreamhost.com/hc/en-us/articles/214918038#Server_names">mail server name</a> for the hostname. In this example it's <span class="text-object">imap.dreamhost.com</span>.</p>
+<p>The form setup above allows you to send the message but does not save it in the <span class="text-object">SENT</span> folder. If you want to see a record of all emails sent, you can add another function to store the message into the <span class="text-object">SENT</span> folder.</p>
+<p>To store the sent message in the <span class="text-object">SENT</span> folder, add this function to the PHP file. Make sure to use your <a href="https://help.dreamhost.com/hc/en-us/articles/214918038#Server_names">mail server name</a> for the hostname. In the following example it's <span class="text-object">imap.dreamhost.com</span>:</p>
 <div class="preboxcontainer">
 <pre class="prebox">&lt;?php
 
 //The first line connects to your inbox over port 143
-$mbox = imap_open("{imap.dreamhost.com:143/notls}INBOX", "me@example.com", "password");
+$mbox = imap_open("<span class="code-highlight">{imap.dreamhost.com:143/notls}</span>INBOX", "<span class="code-highlight">me@example.com</span>", "<span class="code-highlight">password</span>");
 
-//imap_append() appends a string to a mailbox. In this example your SENT folder.
+//imap_append() appends a string to a mailbox. In this example your <span class="text-object">SENT</span> folder.
 // Notice the 'r' format for the date function, which formats the date correctly for messaging.
-imap_append($mbox, "{imap.dreamhost.com:143/notls}INBOX.Sent",
-    "From: me@example.com\r\n".
+imap_append($mbox, "<span class="code-highlight">{imap.dreamhost.com:143/notls}</span>INBOX.Sent",
+    "From: <span class="code-highlight">me@example.com</span>\r\n".
     "To: ".$to."\r\n".
     "Subject: ".$subject."\r\n".
     "Date: ".date("r", strtotime("now"))."\r\n".
