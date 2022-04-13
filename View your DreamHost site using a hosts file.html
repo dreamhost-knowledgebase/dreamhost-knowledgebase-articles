@@ -1,0 +1,207 @@
+<div class="document">
+<div class="documentwrapper">
+<div class="body">
+<div id="Editing your hosts file">
+<div class="altTitle">Using your hosts file</div>
+<div class="table-of-content container">
+<ul class="simple">
+<li><a class="reference internal" href="#Locate_your_A_records">Locate your A records</a></li>
+<li><a class="reference internal" href="#Using_Windows_7_and_8.1">Using Windows 7 &amp; 8.1</a></li>
+<li><a class="reference internal" href="#Using_Windows_10">Using Windows 10</a></li>
+<li><a class="reference internal" href="#Using_Apple_Mac_OS">Using Apple Mac OS</a></li>
+<li><a class="reference internal" href="#Using_Linux">Using Linux</a></li>
+<li><a class="reference internal" href="#WordPress_migration_instructions">Move WordPress instructions</a></li>
+<li><a class="reference internal" href="#See_also">See also</a></li>
+</ul>
+</div>
+<h2>Overview</h2>
+<div class="solvvy-solution">
+<p>A <span class="text-object">hosts</span> file is a text file on your home computer. It is used to map a domain name to a specific server. If you edit it, you can change where your computer searches for a website.</p>
+<p>For example, when you look up a URL in your browser, your computer sends out a query into the Internet to find where your site is located. Your site is located where your DNS is pointed to. If you edit the <span class="text-object">hosts</span> file, you can change where your computer searches for a website.</p>
+<p>In this way you can view a site on your DreamHost server when the DNS is pointed to another company.</p>
+<div class="notebox-note">
+<p>This article explains how to view your site before pointing your DNS to DreamHost by editing the <span class="text-object">hosts</span> file on your <strong>desktop or laptop</strong>&nbsp;computer (not a mobile device).</p>
+<p>To test on a mobile device, or for another option on how to view your site at DreamHost before pointing DNS, view the following article:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214695758-Previewing-your-site-with-a-dreamhosters-com-subdomain-before-changing-DNS">Previewing your site with a dreamhosters.com subdomain before changing DNS</a></li>
+</ul>
+</div>
+</div>
+<h2><strong><span id="Locate_your_A_records">Locate your A records</span></strong></h2>
+<div class="solvvy-solution">
+<p>Each site at DreamHost has two A records for the URL. One for your domain with and without www. For example:</p>
+<ul>
+<li>208.113.137.245 example.com</li>
+<li>208.113.137.245 www.example.com</li>
+</ul>
+<p>View the <a href="/hc/en-us/articles/215413857-DreamHost-DNS-overview">DNS</a> article for details on how to view these records. Make a note of these as you'll need to add the IP to your <span class="text-object">hosts</span> file in the next step.</p>
+</div>
+<h2><strong><span id="Using_Windows_7_and_8.1">Using Windows 7 &amp; 8.1</span></strong></h2>
+<div class="solvvy-solution">
+<p>On most Windows systems, you can find the <span class="text-object">hosts</span> file in the following directory:</p>
+<div class="preboxcontainer">
+<pre class="prebox">C:\Windows\System32\Drivers\etc</pre>
+</div>
+<p>It might be set to hidden so make sure you have <a href="https://support.microsoft.com/en-us/windows/show-hidden-files-0320fe58-0117-fd59-6851-9b7f9840fdb2#show-hidden-files=windows-7">'show hidden files'</a> turned on.</p>
+<p>Notepad is a basic text editing program that is already install on Windows. To open the <span class="text-object">hosts</span> file with Notepad, follow the steps below:</p>
+<ol>
+<li>Open the 'Start' menu.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/01_Hosts_file_Windows.png" alt="01 Hosts file Windows.png" /></dd>
+</dl>
+</li>
+<li>In the search box, type in 'notepad'.</li>
+<li>Right click on the 'Notepad' option and choose 'Run as administrator'.
+<dl>
+<dd><em>This opens a blank Notepad file</em></dd>
+</dl>
+</li>
+<li>On the top left of this blank file, click the 'File &gt; Open...' menu option.
+<dl>
+<dd><img src="https://kbimages.dreamhosters.com/images/02_Hosts_file_Windows.png" alt="02 Hosts file Windows.png" /></dd>
+</dl>
+</li>
+<li>In the 'Explorer' window, navigate to the <span class="text-object">C:\Windows\System32\Drivers\etc</span> directory.</li>
+<li>Choose the <span class="text-object">hosts</span> file and click <strong>Open</strong>.</li>
+<li>At the bottom of the file, add your DreamHost site IP followed by the domain.
+<div class="preboxcontainer">
+<pre class="prebox">208.113.137.245 example.com <br />208.113.137.245 www.example.com</pre>
+</div>
+</li>
+<li>Save the file.</li>
+<li>Finally, make sure to flush your computer's DNS to ensure the new settings update.
+<ul>
+<li><a href="/hc/en-us/articles/215680477-Flush-DNS-overview">Flush DNS</a></li>
+</ul>
+</li>
+<li>Restart your browser and try accessing your domain.</li>
+</ol>
+<p>You can now view your site as it appears on your DreamHost server. Once you point your DNS to DreamHost, you can then remove these lines.</p>
+</div>
+<h2><strong><span id="Using_Windows_10">Using Windows 10</span></strong></h2>
+<div class="solvvy-solution">
+<p>On most Windows systems, you can find the <span class="text-object">hosts</span> file in the following directory:</p>
+<div class="preboxcontainer">
+<pre class="prebox">C:\Windows\System32\Drivers\etc
+</pre>
+</div>
+<p>Notepad is a basic text editing program that is already install on Windows. To open the <span class="text-object">hosts</span> file with Notepad, follow the steps below:</p>
+<ol>
+<li>Open the 'Start' menu.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/View_hosts_file_Windows10_01.png" alt="View hosts file Windows10 01.png" /></dd>
+</dl>
+</li>
+<li>Start to type in the word 'notepad' and it will display the icon.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/View_hosts_file_Windows10_02.png" alt="View hosts file Windows10 02.png" /></dd>
+</dl>
+</li>
+<li>Right click on the 'Notepad' option and choose 'Run as administrator'.</li>
+<li>You may receive a pop-up message titled “User Access Control” asking, “Do you want to allow this app to make changes to your PC?” Click Yes. This opens a blank Notepad file.</li>
+<li>On the top left of this blank file, click the 'File &gt; Open...' menu option.
+<dl>
+<dd><img src="https://kbimages.dreamhosters.com/images/02_Hosts_file_Windows.png" alt="02 Hosts file Windows.png" /></dd>
+</dl>
+</li>
+<li>In the 'Explorer' window, navigate to 'This PC'. Then to the <span class="text-object">C:\Windows\System32\drivers\etc</span> directory.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/notepad-all-files.png" alt="notepad all-files dropdown" /></dd>
+</dl>
+</li>
+<li>Choose the <span class="text-object">hosts</span> file and click Open. You may need to change the “Text Documents (*.txt)” in the lower right to <span class="text-object">All Files</span> in the dropdown list.</li>
+<li>At the bottom of the file, add your DreamHost site IP followed by the domain.
+<div class="preboxcontainer">
+<pre class="prebox">208.113.137.245 example.com <br />208.113.137.245 www.example.com</pre>
+</div>
+</li>
+<li>Save the file.</li>
+<li>Finally, make sure to flush your computer's DNS to ensure the new settings update.
+<ul>
+<li><a href="/hc/en-us/articles/215680477-Flush-DNS-overview">Flush DNS</a></li>
+</ul>
+</li>
+<li>Restart your browser and try accessing your domain.</li>
+</ol>
+<p>You can now view your site as it appears on your DreamHost server. Once you point your DNS to DreamHost, you can then remove these lines.</p>
+</div>
+<h2><strong><span id="Using_Apple_Mac_OS">Using Apple Mac OS</span></strong></h2>
+<div class="solvvy-solution">
+<ol>
+<li>Launch Terminal by pressing <strong>command (⌘) + spacebar</strong> which opens the search box.
+<dl>
+<dd><img src="https://kbimages.dreamhosters.com/images/04_DNS_hosts.fw.png" alt="04 DNS hosts.fw.png" /></dd>
+</dl>
+</li>
+<li>Type the word <strong>Terminal</strong>.</li>
+<li>Press the return key or click the <strong>Terminal</strong> icon beneath TOP HIT.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/06_DNS_hosts.fw.png" alt="06 DNS hosts.fw.png" /></dd>
+</dl>
+</li>
+<li>View the <a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Creating and editing a file via SSH</a>&nbsp;article for instructions on how to edit this file. This example uses the nano editor.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/07_DNS_hosts.fw.png" alt="07 DNS hosts.fw.png" /></dd>
+</dl>
+Type the following into your terminal:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">sudo nano /private/etc/hosts</span></pre>
+</div>
+</li>
+<li>Enter the administrator password. Note: Typed passwords are not displayed on the command line.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/08_DNS_hosts.fw.png" alt="08 DNS hosts.fw.png" /></dd>
+</dl>
+</li>
+<li>Once the <span class="text-object">hosts</span> file is open, use the arrow keys to navigate to the bottom to make any modifications.</li>
+<li>When finished, <a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">save and close</a> the file to return to your terminal prompt.</li>
+<li>Finally, close Terminal when finished.</li>
+</ol>
+<p>Make sure to <a href="/hc/en-us/articles/214981288-Flushing-your-DNS-cache-in-Mac-OS-X-and-Linux">flush your DNS</a> to ensure the new settings update. Once you point your DNS to DreamHost, you can then remove these lines.</p>
+</div>
+<h2><strong><span id="Using_Linux">Using Linux</span></strong></h2>
+<div class="solvvy-solution">
+<p>On most Linux-based systems:</p>
+<ul>
+<li>The <span class="text-object">hosts</span> file can be located in the <span class="text-object">/etc/</span> directory.</li>
+<li>The <span class="text-object">hosts</span> file is usually called <span class="text-object">hosts</span>.</li>
+<li>The full path is <span class="text-object">/etc/hosts</span>.</li>
+</ul>
+<p>The steps to edit and save the file are the same as the 'Mac OS' instructions above.</p>
+</div>
+<h2><span id="WordPress_migration_instructions">Move WordPress instructions</span></h2>
+<div class="solvvy-solution">
+<p>This section explains how to view your WordPress site (at DreamHost) if it was moved by the <a href="https://help.dreamhost.com/hc/en-us/articles/115004182807">Professional Services Team</a>. This section only applies to NON-DreamPress migrations.</p>
+<p>First, read through the sections&nbsp;above to locate and edit your computer's <span class="text-object">hosts</span> file.</p>
+<p>Normally, updating a <span class="text-object">hosts</span> file only requires you to add two lines (as mentioned above). With this migration process, you also need to add a third line of text for the MySQL server. For example, if your site was <strong>example.com</strong>, you would add these lines to the bottom of your <span class="text-object">hosts</span> file:</p>
+<div class="preboxcontainer">
+<pre class="prebox">111.111.111.111 example.com
+111.111.111.111 www.example.com
+222.222.222.222 mysql.example.com</pre>
+</div>
+<p><span style="font-weight: 400;">Replace the example IP addresses above with your site's actual</span><span style="font-weight: 400;">&nbsp;IP addresses. You can find them in the DreamHost web panel on the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;" target="_blank" rel="noopener noreferrer">Manage Domains</a> page. Under your domain name, click <span class="text-link">DNS</span> link.</span></p>
+<p>If you need further assistance locating your site's IP addresses, view the '<a href="https://help.dreamhost.com/hc/en-us/articles/215413857-DreamHost-DNS-overview"><span style="font-weight: 400;">DNS</span></a><span style="font-weight: 400;">' article for more detailed instructions.</span></p>
+<h3>Confirming the 'hosts' file is working</h3>
+<p>You can confirm you are loading the migrated site from DreamHost's servers if you are able to load the following page (replacing <strong>example.com</strong> with your domain):</p>
+<ul>
+<li><strong>http://example.com/quickstart.html</strong></li>
+</ul>
+<h3>View your public site through a proxy</h3>
+<p>Once your <span class="text-object">hosts</span> file is working, your computer will show you how your site looks at DreamHost. If you want to also view your current (public) site, you must use a proxy website.</p>
+<p>An example of a proxy site is <a href="https://kproxy.com/" target="_self" rel="undefined">kproxy.com</a>. Visit that link in your browser, enter your domain name in the box, then press <span class="code">Enter</span>. It uses your site's public DNS (not your local <span class="text-object">hosts</span> file) to view the site at your current hosting company.</p>
+<h3>Comparing the sites</h3>
+<p>Viewing your site using a <span class="text-object">hosts</span> file and a proxy site allows you to view both versions of your site for a side by side comparison. You can have one browser tab open on the migrated site (viewed using your <span class="text-object">hosts</span> file) and another browser tab open on the proxy site (viewed using DNS) to see your current public site.</p>
+<h3>Making further changes to your site</h3>
+<p>During your inspection of the site, you may feel the need to change the setting of something that was out of scope of the migration service. Please refrain from changing anything that may alter the look or behavior of the site since the Professional Services Team must be able to compare the migrated site (at DreamHost) to the live site (at your current host).</p>
+<p>If you must update something, make sure to document any change so the Professional Services Team can separate what may have been affected by the migration from subsequent alterations on your end.</p>
+</div>
+<h2><span id="See_also">See also</span></h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214695758-Previewing-your-site-with-a-dreamhosters-com-subdomain-before-changing-DNS">Previewing your site with a dreamhosters.com subdomain before changing DNS</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
