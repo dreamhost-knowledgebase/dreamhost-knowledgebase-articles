@@ -1,0 +1,154 @@
+<h2>Overview</h2>
+<div class="solvvy-solution">
+<div class="notebox-important">
+<p>This article explains how to verify you're connecting to a DreamHost server and that your connection is secure. If you follow the steps in this article and the fingerprint values do not match what shows in your DreamHost panel, DO NOT CONNECT to the server. <a href="https://help.dreamhost.com/hc/en-us/articles/218084068-Contacting-support-overview">Contact DreamHost support</a> so they may investigate why the fingerprints are different.</p>
+</div>
+<p>Every DreamHost server has several unique SSH keys assigned to it. These keys are used to identify the server and ensure your connection is safe and trusted.&nbsp;When you first use an SSH program or terminal to connect to your server, it checks the keys. Since they are not currently stored on your computer, you will see the following warning:</p>
+<dl>
+<dd>
+<p><strong>The server's host key is unknown. You have no guarantee that the server is the computer you think it is.</strong></p>
+</dd>
+</dl>
+<p>This article explains how to verify that the key you're seeing is correct. You can then continue to log into the server safely.</p>
+</div>
+<h2>Verifying the fingerprint using an FTP client</h2>
+<div class="solvvy-solution">
+<div class="notebox-note">
+<p>The following examples must be run in an SSH terminal. View the following articles for further information:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215360828-SSH-client-software">SSH clients</a></li>
+</ul>
+</div>
+<p>When you originally log into a DreamHost server, you may see the following warning:</p>
+<dl>
+<dd>
+<p><strong>The server's host key is unknown. You have no guarantee that the server is the computer you think it is.</strong></p>
+</dd>
+</dl>
+<p>For example:</p>
+<dl>
+<dd><img src="https://kbimages.dreamhosters.com/images/2018-06_panel_server_host_keys_01.png" alt="" /></dd>
+</dl>
+<p>To confirm if this is the correct server, navigate to the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=users.sshkeys&amp;" target="_blank" rel="noopener noreferrer">SSH Keys</a> page. On that page, you'll see your server along with its matching Fingerprints.</p>
+<p>For example:</p>
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-06_panel_server_host_keys_02.png" alt="" /></dd>
+</dl>
+<p>Compare the two to confirm it's the same server. You can then accept the warning and log in normally.</p>
+</div>
+<h2><span id="using-ssh-to-verify-fingerprint">Using SSH to verify the server's fingerprint</span></h2>
+<div class="solvvy-solution">
+<p>You can use SSH to verify the server's fingerprint using a few commands. Please note that some commands only work on specific versions of OpenSSH. To verify your current version, run the following command:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">ssh -V</span></pre>
+</div>
+<p>This responds with the version number. There are a few command that do NOT work if the version is lower than 6.8.</p>
+<p>The following examples are going to use the fingerprints from the shared server named batroc:</p>
+<p><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-11_panel_ssh-keys_verifying-fingerprints_01.png" /></p>
+<h3>Using OpenSSH version 7.6p1</h3>
+<p>A common command to run is: FingerprintHash.</p>
+<h4>Check the RSA (MD5) fingerprint</h4>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">ssh -o HostKeyAlgorithms=ssh-rsa -o FingerprintHash=md5 batroc.dreamhost.com</span>
+The authenticity of host 'batroc.dreamhost.com (67.205.12.21)' can't be established.
+RSA key fingerprint is <span class="green">MD5:a1:85:cc:7b:06:c9:14:f3:a8:38:7a:95:76:f1:17:eb</span>.</pre>
+</div>
+<h4>Check the RSA (SHA256) fingerprint</h4>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">ssh -o HostKeyAlgorithms=ssh-rsa -o FingerprintHash=sha256  batroc.dreamhost.com</span>
+The authenticity of host 'batroc.dreamhost.com (67.205.12.21)' can't be established.
+RSA key fingerprint is <span class="green">SHA256:mYNdKXseiTyZVeIdXNqy8rJTfrKnBo2QG1XK9DdUSYc</span>.</pre>
+</div>
+<h4>Check the ECDSA (MD5) fingerprint</h4>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">ssh -o HostKeyAlgorithms=ecdsa-sha2-nistp256 -o FingerprintHash=md5 batroc.dreamhost.com</span>
+The authenticity of host 'batroc.dreamhost.com (67.205.12.21)' can't be established.
+ECDSA key fingerprint is <span class="green">MD5:08:88:80:ff:e8:dd:4a:4f:6b:3a:64:cf:8c:84:f2:13</span>.</pre>
+</div>
+<h4>Check the ECDSA (SHA256) fingerprint</h4>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">ssh -o HostKeyAlgorithms=ecdsa-sha2-nistp256 -o FingerprintHash=sha256 batroc.dreamhost.com</span>
+The authenticity of host 'batroc.dreamhost.com (67.205.12.21)' can't be established.
+ECDSA key fingerprint is <span class="green">SHA256:ijqWGQW20bkvOViujUO5PRknle09aDPUjh25u60T7eQ</span>.</pre>
+</div>
+<h4>Check the ED25519 (MD5) fingerprint</h4>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">ssh -o HostKeyAlgorithms=ssh-ed25519 -o FingerprintHash=md5  batroc.dreamhost.com</span>
+The authenticity of host 'batroc.dreamhost.com (67.205.12.21)' can't be established.
+ED25519 key fingerprint is <span class="green">MD5:c9:aa:b8:02:0c:ca:46:59:63:17:16:0a:7c:26:c6:24</span>.</pre>
+</div>
+<h4>Check the ED25519 (SH256) fingerprint</h4>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">ssh -o HostKeyAlgorithms=ssh-ed25519 -o FingerprintHash=sha256  batroc.dreamhost.com</span>
+The authenticity of host 'batroc.dreamhost.com (67.205.12.21)' can't be established.
+ED25519 key fingerprint is <span class="green">SHA256:q3JfuvuldJy5u/ETWHW7HBQ3Zqn763z/CWlumFuOH3s</span>.</pre>
+</div>
+</div>
+<h2>Using OpenSSH lower than 6.8</h2>
+<div class="solvvy-solution">
+<p>As mentioned above, the 'FingerprintHash' command does not work on OpenSSH versions lower than 6.8. However you can run ssh-keyscan to download the public key, then check its fingerprints.</p>
+<p>First, download the public key from the server.</p>
+<div class="notebox-note">
+<p>Depending on the version of OpenSSH you're using, only certain keys will be downloaded. Versions lower than 6.8 will default to MD5.</p>
+</div>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">ssh-keyscan batroc.dreamhost.com &gt; batrockeys.pub</span></pre>
+</div>
+<p>You can now check the keys in that file for their fingerprints. Only the fingerprints of the keys you downloaded will display.&nbsp;This prints the RSA (MD5) and ECDSA (MD5) fingerprints.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">ssh-keygen -l -f batrockeys.pub</span>
+<span class="green">2048 a1:85:cc:7b:06:c9:14:f3:a8:38:7a:95:76:f1:17:eb</span> batroc.dreamhost.com (RSA)
+<span class="green">256 08:88:80:ff:e8:dd:4a:4f:6b:3a:64:cf:8c:84:f2:13</span> batroc.dreamhost.com (ECDSA)</pre>
+</div>
+<!--
+<h3>Generate a hash of a different key</h3>
+  <p>
+    As stated above, only certain keys will download based on the version of
+    OpenSSH you're using. However, you can generate a hash of a different key
+    if needed.
+  </p>
+  
+  <h4>
+    <strong>Generate an RSA (SHA256) hash based on the RSA (MD5) key</strong>
+  </h4>
+  <p>
+    This assumes that when you run ssh-keyscan, only the MD5 keys are downloaded.
+    Use 'cat' to view the keys:
+  </p>
+  <div class="preboxcontainer">
+    <pre class="prebox"><span class="server">[server]$ </span><span class="command">cat batrockeys.pub</span>
+batroc.dreamhost.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDFc4bKkZW+0bb+UYtDZwH/IAT5V4ybLlJWJ4cp7Ny3c4767aQheZr5ifcAEc+itEqnGPWIQ/qxbKZnw6F5dBXggbx+KIZX7JXDfJqNkFuVz3mKsvKxu0qGw2/b40dRiUe0+cAxamR73YNpCeCZuo515lJCw4eVo3BJtnHetT/yF9xtdGPQm334yDHunEtUgKFzqyEDEolFtL5FZcPP137RgfMdp+BWQj8tOiodmcUlA1kEhkN63JRcSsSJhd1FFAA4PoiyvsPm+PGUCIFwzKW13SXEIi0GQ2J8Rl3YW7B/H1HXCDGfT75T1OhP3mGN3H8Es9ieq/1kKTyzscq6C30z
+batroc.dreamhost.com ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBDIXGPnE5gz3j8vzl8LeboCFAkcZ0L76ld5Y4knIghV+tTxOrUW2M3m6bN3qNJK9U8oJLiTafotQ/Js4JUTY8L8=</pre>
+  </div>
+  <p>
+    You can see that there are two keys in this file. You must delete one of
+    them (or more) so only a single key is left. Open the file and delete the
+    second line so only one line for a single key is left.
+  </p>
+  <p>
+    You can now run the following command to generate a SHA256 hash based on
+    that single key.
+  </p>
+  <div class="preboxcontainer">
+    <pre class="prebox"><span class="server">[server]$ </span><span class="command">awk '{print $3}' batrockeys.pub | base64 -d | sha256sum -b | awk '{print $1}' | xxd -r -p | base64</span>
+<span class="green">mYNdKXseiTyZVeIdXNqy8rJTfrKnBo2QG1XK9DdUSYc=</span></pre>
+  </div>
+  <p>
+    As you can see, this prints out the RSA (SHA256) fingerprint. If you would
+    have deleted the first key instead, the output would show the ECDSA (SHA256)
+    fingerprint.
+  </p>
+  <div class="preboxcontainer">
+    <pre class="prebox"><span class="server">[server]$ </span><span class="command">awk '{print $3}' batrockeys.pub | base64 -d | sha256sum -b | awk '{print $1}' | xxd -r -p | base64</span>
+<span class="green">ijqWGQW20bkvOViujUO5PRknle09aDPUjh25u60T7eQ=</span></pre>
+  </div>
+--></div>
+<h2><span id="See_also">See also</span></h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="/hc/en-us/articles/215613107-List-of-FTP-client-software">List of FTP client software</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214920778-Where-do-I-upload-my-files-once-connected-via-FTP-">Where do I upload my files once connected via FTP?</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215613037-How-to-view-hidden-files-in-an-FTP-client">How to view hidden files in an FTP client</a></li>
+</ul>
+</div>
