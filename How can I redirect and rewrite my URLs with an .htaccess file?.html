@@ -14,7 +14,7 @@
 <div class="solvvy-solution">
 <p>The examples below can be entered into your <span class="text-object">.htaccess</span> file exactly as shown. Just make sure to adjust the actual path to the file so the <span class="text-object">.htaccess</span> file knows where it's located. Also, if you see the domain <strong>example.com</strong>, change this to your own domain name.</p>
 </div>
-<h2><span id="Redirecting_a_URL">Redirecting all URLs</span></h2>
+<h2><span id="Redirecting_a_URL">Redirecting all URLs to a new site</span></h2>
 <div class="solvvy-solution">
 <p>The following line redirects all URLs on your site to the new site.</p>
 <div class="preboxcontainer">
@@ -77,6 +77,15 @@
 <p>This redirects files in a old directory (<span class="text-object">/blog/archives</span>) to a new directory (<span class="text-object">/archives</span>). The file must exist in the new directory to function.</p>
 <div class="preboxcontainer">
 <pre class="prebox">RewriteRule ^blog/archives/(.*)$ /newarchives/$1 [R=301,NC,L]</pre>
+</div>
+<h3>Redirecting an old directory to the home directory</h3>
+<p>This redirects files in a old directory (<span class="text-object">/blog/archives</span>) to the home directory.</p>
+<ul>
+<li>If you add a specific file (<span class="text-object">example.com/blog/archives/test.html</span>) to the end, it must exist in the home directory to load.</li>
+<li>If ony the subdirectory is visited, the home directory loads. If you added an index file (such as <span class="text-object">index.html</span>), it will load.</li>
+</ul>
+<div class="preboxcontainer">
+<pre class="prebox">RewriteRule ^blog/archives/(.*)$ /$1 [R=301,NC,L]</pre>
 </div>
 </div>
 <h2><span id="Redirect_non-existing_pages_to_index.php">Redirect non-existing pages to index.php</span></h2>
