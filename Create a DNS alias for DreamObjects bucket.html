@@ -1,0 +1,98 @@
+<h2>Overview</h2>
+<div class="solvvy-solution">
+<div class="alert-warning">
+<p>The steps to create a DNS alias in this article do not allow you to connect to your DreamObjects bucket with a secure (<span class="text-object">HTTPS</span>) connection.&nbsp;If you require a secure connection to your DreamObjects buckets, please view the following article instead.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360000575351-How-to-use-Cloudflare-with-DreamObjects" target="_self">How to use Cloudflare with DreamObjects</a></li>
+</ul>
+</div>
+<p>DreamObjects allows you to create aliases that point to your buckets using CNAME records.&nbsp;Using a CNAME record in this way makes your links look more professional as they do not show the full 'objects-us-east-1.dream.io' portion of the URL.</p>
+<p>For example, you can use a CNAME record to map a DreamObjects bucket URL to a domain under your control, like <strong>media.example.com</strong>. This way, a URL for your object would be <strong>media.example.com/object</strong> rather than <strong>bucket.objects-us-east-1.dream.io/object</strong>.</p>
+<h3>Examples of CNAME records and bucket</h3>
+<table class="docutils" border="1"><colgroup> <col width="38%"> <col width="62%"> </colgroup>
+<tbody valign="top">
+<tr class="row-odd">
+<td><strong>CNAME Record</strong></td>
+<td><strong>DH Bucket to which it points</strong></td>
+</tr>
+<tr class="row-even">
+<td>bucket.example.com</td>
+<td>bucket.objects-us-east-1.dream.io</td>
+</tr>
+<tr class="row-odd">
+<td>bucket.example.com/object</td>
+<td>bucket.objects-us-east-1.dream.io/object</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="notebox-important">
+<p>The panel configuration option is not required in order for an alias to function properly. If you are not using DreamHost’s nameservers, all you need to do is substitute the name of your bucket in the above example and manually create a custom DNS record of type CNAME on your third-party nameservers.</p>
+</div>
+<h2>Adding a DreamObjects CNAME record</h2>
+<div class="solvvy-solution">
+<p>You can create, delete and modify your DreamObjects CNAME records within the panel using the built-in interface. The interface includes:</p>
+<ul class="simple">
+<li>A section for permissions</li>
+<li>A link to the bucket</li>
+<li>A section for setting up aliases as subdomains of domains on the Account</li>
+</ul>
+<ol class="arabic">
+<li>
+<p class="first">Navigate to the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=cloud.objects&amp;" target="_blank" rel="noopener noreferrer">DreamObjects</a>&nbsp;page.</p>
+<blockquote>
+<div>
+<div class="figure"><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-06_panel_dho_cname_01.png" alt="panel DreamObjects cname 01"></div>
+</div>
+</blockquote>
+</li>
+<li>
+<p class="first">To the right of your bucket, click the <span class="text-link">Change Settings</span> link.</p>
+<blockquote>
+<div>
+<div class="figure"><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-06_panel_dho_cname_02.png" alt="panel DreamObjects cname 02"></div>
+</div>
+</blockquote>
+</li>
+<li>Toggle the permissions option to either ‘PRIVATE’ or ‘PUBLIC’.</li>
+<li>Enter your alias and choose the domain you wish to assign this to.</li>
+<li>Click the <strong>Save Settings</strong> button to save.</li>
+</ol>
+</div>
+<h2>If you're using 3rd party DNS</h2>
+<div class="solvvy-solution">
+<p>To view the record after it's created:</p>
+<ol>
+<li>Navigate to the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.dashboard#!/grid-view" target="_blank" rel="noopener noreferrer">Manage Websites</a> page.</li>
+<li>Open the <span class="panel-page">Manage</span> page for your site.
+<ul>
+<li>If you're in <a href="https://help.dreamhost.com/hc/en-us/articles/360001294366#grid_or_list" target="_self">Grid view</a>, hover over your website and click the <strong>Manage</strong> button.</li>
+<li>If you're in <a href="https://help.dreamhost.com/hc/en-us/articles/360001294366#grid_or_list" target="_self">List view</a>, click the&nbsp;<strong>Manage</strong> button to the right of your website.</li>
+</ul>
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-dns-tab.png" alt="DNS tab" width="245" height="73"></dd>
+</dl>
+</li>
+<li>Click the <span class="text-link">DNS</span> tab to view the record:
+<div class="figure"><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-dreamobjects-alias-record.png" width="601" height="91"></div>
+</li>
+</ol>
+<p>If you’re using a third-party DNS, you must copy this CNAME record from the panel to your current hosting company's DNS records.</p>
+</div>
+<h2>Linking a file using the CNAME record</h2>
+<div class="solvvy-solution">
+<p>The following example uses the CNAME to link an image file:</p>
+<div class="preboxcontainer">
+<pre class="prebox">https://blog.example.com/image.png
+</pre>
+</div>
+<p>If your image is in a subdirectory (in DreamObjects), you must specify the full path. This example shows that the <span class="text-object">image.png</span> file is in the <span class="text-object">/savedimages/</span> folder.</p>
+<div class="preboxcontainer">
+<pre class="prebox">https://blog.example.com/savedimages/image.png</pre>
+</div>
+</div>
+<!--DreamObjects Button-->
+<div class="dream-sign-up">
+<h2>Start Storing Your Data Today!</h2>
+<div class="solvvy-hidden"><a href="https://www.dreamhost.com/cloud/storage/">Sign Up for DreamObjects</a></div>
+</div>

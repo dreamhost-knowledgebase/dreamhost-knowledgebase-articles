@@ -7,12 +7,14 @@
 <ul class="simple">
 <li><a class="reference internal" href="#prep">What to expect</a></li>
 <li><a class="reference internal" href="#version">Checking the version of Ubuntu</a></li>
+<li><a class="reference internal" href="#dns-change">DNS change</a></li>
 <li><a class="reference internal" href="#mysql">MySQL</a></li>
+<li><a class="reference internal" href="#vps-name-change">VPS name change</a></li>
 </ul>
 <ul class="simple">
 <li><a class="reference internal" href="#webserver">Web server version changes</a></li>
 </ul>
-<span class="toc-sublink"> <a href="#curl">curl</a> </span> <span class="toc-sublink"> <a href="#ffmpeg">FFmpeg</a></span> <span class="toc-sublink"> <a href="#gcc">GCC</a></span> <span class="toc-sublink"> <a href="#java" target="_self">Java</a></span> <span class="toc-sublink"> <a href="#node">Node / NVM</a></span> <span class="toc-sublink"> <a href="#openssl">OpenSSL</a></span> <span class="toc-sublink"> <a href="#perl">Perl</a> </span> <span class="toc-sublink"> <a href="#python">Python</a> </span> <span class="toc-sublink"> <a href="#ssh">SSH</a> </span>
+<span class="toc-sublink"> <a href="#curl">curl</a> </span> <span class="toc-sublink"> <a href="#ffmpeg">FFmpeg</a></span> <span class="toc-sublink"> <a href="#gcc">GCC</a></span> <span class="toc-sublink"> <a href="#java" target="_self">Java</a></span> <span class="toc-sublink"> <a href="#node">Node / NVM</a></span> <span class="toc-sublink"> <a href="#openssl">OpenSSL</a></span> <span class="toc-sublink"> <a href="#perl">Perl</a> </span> <span class="toc-sublink"> <a href="#python">Python</a></span> <span class="toc-sublink"> <a href="#ruby">Ruby</a></span> <span class="toc-sublink"> <a href="#ssh">SSH</a> </span>
 <ul class="simple">
 <li><a class="reference internal" href="#support">How can I find support?</a></li>
 </ul>
@@ -39,6 +41,10 @@ Debian GNU/Linux 10 \n \l</pre>
 Ubuntu 20.04.3 LTS \n \l</pre>
 </div>
 </div>
+<h2><span id="dns-change">DNS change</span></h2>
+<div class="solvvy-solution">
+<p>If you are using DreamHost's nameservers, no work is needed; the DNS changes will happen automatically. If you are managing your DNS through an external DNS provider (such as Cloudflare), you will need to update your DNS records within one week of the upgrade completion notice.</p>
+</div>
 <h2><span id="mysql">MySQL</span></h2>
 <div class="solvvy-solution">
 <p>DreamHost MySQL servers will be upgraded to MySQL version 8 as part of the Ubuntu upgrade.</p>
@@ -46,6 +52,10 @@ Ubuntu 20.04.3 LTS \n \l</pre>
 <ul>
 <li><a href="https://dev.mysql.com/blog-archive/whats-new-in-mysql-8-0-generally-available/">What’s New in MySQL 8.0?</a></li>
 </ul>
+</div>
+<h2><span id="vps-name-change">VPS name change</span></h2>
+<div class="solvvy-solution">
+<p>The server name of your VPS will be changing. This will only affect you if you use your server name in your SFTP or SSH settings. The new server name will be included in the maintenance completion notice you receive once the upgrade is complete (in addition to the number changing, you will also notice that DreamHost has changed the naming scheme from <span class="text-object">ps####</span> to <span class="text-object">vps####</span>).</p>
 </div>
 <h2><span id="webserver">Web server version changes</span></h2>
 <div class="solvvy-solution">
@@ -72,6 +82,18 @@ Ubuntu 20.04.3 LTS \n \l</pre>
 <li>Python 2 (from 2.7.13/16 to 2.7.17)</li>
 <li>Python 3 (from 3.5.3/3.7.3 to 3.8.2)</li>
 </ul>
+<h3><span id="ruby">Ruby</span></h3>
+<p>The Ruby version on the server is 2.7.0p0. If you would like more control over this (e.g., you wish to use an older or newer version of Ruby), DreamHost strongly recommends using <a href="/hc/en-us/articles/217185247-Ruby-Version-Manager-RVM-">RVM</a>.</p>
+<p>If you are using <a href="/hc/en-us/articles/115001070131-Using-Bundler-to-install-Ruby-gems">Bundler</a>, you only need to run:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">bundle exec gem pristine</span>
+</pre>
+</div>
+<p>Then, reload Passenger so that the changes take effect by running <span class="code">touch</span> on a <span class="text-object">restart.txt</span> file from your apps <span class="text-object">tmp</span> directory:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">touch  tmp/restart.txt</span>
+</pre>
+</div>
 <h3><span id="ssh">SSH</span></h3>
 <p>The version of SSH changed from Stretch (7.4p1) or Buster (7.9p1) to 8.2p1.</p>
 </div>
