@@ -1,0 +1,44 @@
+<h2>Overview</h2>
+<div class="solvvy-solution">
+<p>This article explains how to force PHP to load a file that does not end with the extension <span class="text-object">.php</span>.</p>
+</div>
+<h2>FCGI</h2>
+<div class="solvvy-solution">
+<p>To process files with PHP whose names don't end with <span class="text-object">.php</span>, you can use a directive in <span class="text-object">.htaccess</span>.</p>
+<p>For example, <a href="https://help.dreamhost.com/hc/en-us/articles/115000098272-Creating-and-editing-a-file-via-FTP">create a file</a> named <span class="text-object">myfile.test</span> with the following code:</p>
+<div class="preboxcontainer">
+<pre class="prebox">&lt;?php
+  echo 'testing an extension using PHP';
+?&gt;</pre>
+</div>
+<p>The extension <span class="text-object">.test</span> doesn’t exist. But, you can force it to run as PHP by adding this code to your <a href="https://help.dreamhost.com/hc/en-us/articles/216456227--htaccess-overview">.htaccess file</a>:</p>
+<div class="preboxcontainer">
+<pre class="prebox">AddHandler fcgid-script .test
+FcgidWrapper "/dh/cgi-system/php74.cgi" .test</pre>
+</div>
+<p>If you load the file in a browser, it will now load like a normal PHP file.</p>
+</div>
+<h2>CGI</h2>
+<div class="solvvy-solution">
+<p>In the above example, files with the extension <span class="text-object">.test</span> are using PHP 7.4 with FastCGI.</p>
+<p>If you want to use CGI (instead of FastCGI), add the following line to your <span class="text-object">.htaccess</span> file:</p>
+<div class="notebox-note">
+<p>This line uses the <a href="https://help.dreamhost.com/hc/en-us/articles/215082337-What-versions-of-PHP-are-available-at-DreamHost-" target="_self">default shell version of PHP</a>.</p>
+<p>Additionally, using this directive in a FastCGI environment forces all PHP code in the specified extensions to run using CGI regardless of what option you choose in the panel.</p>
+</div>
+<div class="preboxcontainer">
+<pre class="prebox">AddHandler php5-cgi .test</pre>
+</div>
+</div>
+<h2>See also</h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214202188-PHP-overview">PHP overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216456227--htaccess-overview">.htaccess overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214200688-php-ini-overview">php.ini overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214895287-Viewing-your-site-s-PHP-version-and-settings">Viewing your site's PHP version and settings</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214202148-How-do-I-change-the-PHP-version-my-shell-uses-">How do I change the PHP version my shell uses?</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214895317-How-do-I-change-the-PHP-version-of-my-site-">How do I change the PHP version of my site?</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214202238-Command-line-PHP-overview">Command line PHP overview</a></li>
+</ul>
+</div>

@@ -1,0 +1,104 @@
+<div class="notebox-note">
+<p>The standard term for a PHP configuration file is php.ini. However, DreamHost uses the term <span class="text-object">phprc</span> file instead. This acts the same way – only the name is different. In this article, only the term <span class="text-object">phprc</span> is used.</p>
+</div>
+<h2>Loaders and Extensions</h2>
+<div class="solvvy-solution">
+<h3>Loaders</h3>
+<p>PHP Loaders are extensions to PHP which load special types of PHP files that have been encoded with an encoding product such as ionCube Loader.</p>
+<p>To activate the loader, you must add a line to your <span class="text-object">phprc</span> file.&nbsp;Below are links to pages that provide further instructions on installing and using the various PHP loaders:</p>
+<ul>
+<li><a href="/hc/en-us/articles/214897027-Enabling-ionCube-Loader">Enabling ionCube Loader</a></li>
+</ul>
+<h3>Extensions</h3>
+<p>PHP Extensions are libraries of pre-built code. They allow you to use specific functions already created to simplify your code. The following is a current list of PHP Extensions:</p>
+<ul>
+<li><a href="https://www.php.net/manual/en/extensions.alphabetical.php" target="_self" rel="undefined">php.net/manual/en/extensions.alphabetical.php</a></li>
+</ul>
+<p>Some extensions are already activated by default (such as <span class="text-object">Phar</span>). Others are not, but can be activated by adding a line to your <span class="text-object">phprc</span> file.</p>
+</div>
+<h2>Checking if an Extension is already active</h2>
+<div class="solvvy-solution">
+<p>Before adding an extension, make sure it's not already activated by default. For example, the <span class="text-object">Phar</span> extension is already activate with any version of PHP at DreamHost. If you then add the <span class="text-object">phar.so</span> extension to your <span class="text-object">phprc</span> file, your site will thrown an error, so it's important to only add an extension if needed.</p>
+<p>You can view any currently active extension by adding a <span class="text-object">phpinfo.php</span> file to your site.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214895287-Viewing-your-site-s-PHP-version-and-settings">Viewing your site's PHP version and settings</a></li>
+</ul>
+<p>If an extension is already active, you'll see its corresponding block when visiting the <span class="text-object">phpinfo.php</span> file. For example, this shows that the <span class="text-object">Phar</span> extension is active.</p>
+<p><img class="img-border" src="https://kbimages.dreamhosters.com/images/phar.png" alt="phar extension" /></p>
+</div>
+<h2>Adding an extension</h2>
+<div class="solvvy-solution">
+<h3>Step 1 — Create a phprc file</h3>
+<p>View the following articles for instructions on how to create a <span class="text-object">phprc</span> file.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214894037-Create-a-phprc-file-via-FTP">Create a phprc file via FTP</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214200668-Create-a-phprc-file-via-SSH">Create a phprc file via SSH</a></li>
+</ul>
+<p>If the file already exists, view the following articles for instructions on how to update it (depending on if you're using an FTP client or SSH):</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115000098272-Creating-and-editing-a-file-via-FTP">Creating and editing a file via FTP</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Creating and editing a file via SSH</a></li>
+</ul>
+<h3>Step 2 —&nbsp;<span id="Loading_PHP_extensions">Load the extension</span></h3>
+<p>To load an extension, add the following line your <span class="text-object">phprc</span> file (make sure to change <span class="text-object">extension_name</span> to the actual extension.):</p>
+<p>For example.</p>
+<div class="preboxcontainer">
+<pre class="prebox">extension = <span class="code-highlight">extension_name</span>.so</pre>
+</div>
+<h3>Step 3 — Kill off all running php processes</h3>
+<p>Make sure to&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/214200748-My-phprc-file-isn-t-updating">kill running php processes</a>&nbsp;to ensure your new settings take effect.</p>
+<h3>Step 4 — Confirming your changes</h3>
+<p>After you've edited the file and killed off all PHP processes, check to confirm the extension has been enabled. You can do this by creating a <a href="https://help.dreamhost.com/hc/en-us/articles/214895287-Viewing-your-site-s-PHP-version-and-settings">phpinfo.php file</a>. You should see the following:</p>
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-05_php_extension_intl.png" alt="" /></dd>
+</dl>
+<p>If you do not see your changes have updated, try killing off your PHP processes again:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214200748-My-phprc-file-isn-t-updating">My phprc file isn't updating</a></li>
+</ul>
+</div>
+<h2><span id="Compiling_PHP_extensions">Compiling PHP extensions</span></h2>
+<div class="solvvy-solution">
+<p>Some extensions are not complied with PHP. In these instances, you must download the extension and compile it manually.</p>
+<p>Visit the following links for a list of available extensions:</p>
+<ul>
+<li><a href="https://www.php.net/manual/en/extensions.php">php.net extensions</a></li>
+<li><a href="https://pecl.php.net/">pecl extensions</a></li>
+</ul>
+<div class="notebox-note">
+<p>If any installation requires sudo privileges, you must upgrade to a <a href="/hc/en-us/articles/215279658-Dedicated-server-overview">Dedicated</a> Server.</p>
+<p>If any installation requires you to run <span class="code">phpize</span>, just specify the full path to your desired version of PHP. For example, for PHP 7.4 run the following:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">/usr/local/php74/bin/phpize</span></pre>
+</div>
+<p>You can use different versions of PHP if needed. For example.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">/usr/local/php72/bin/phpize</span>
+<span class="server">[server]$ </span><span class="command">/usr/local/php73/bin/phpize</span>
+<span class="server">[server]$ </span><span class="command">/usr/local/php74/bin/phpize<br /><span class="server">[server]$ </span>/usr/local/php80/bin/phpize</span>
+</pre>
+</div>
+</div>
+</div>
+<h2>hash.so</h2>
+<div class="solvvy-solution">
+<p>Starting with PHP 7.2.11, hash.so is built into PHP. If you're using this version or higher, you should no longer call it from your <a href="https://help.dreamhost.com/hc/en-us/articles/214200688-php-ini-overview">phprc file</a>.</p>
+</div>
+<h2>mcrypt.so</h2>
+<div class="solvvy-solution">
+<p>Support for mcrypt has been removed starting with PHP 7.2.0. Any scripts that depend on mcrypt will need to be updated to use <a href="https://www.php.net/manual/en/book.openssl.php">OpenSSL</a> or <a href="https://www.php.net/manual/en/book.sodium.php#book.sodium">Sodium</a> instead.</p>
+</div>
+<h2>WebP</h2>
+<div class="solvvy-solution">
+<p>Support for the WebP image format is available via <a href="https://www.php.net/manual/en/book.image.php">GD</a>, which is activated by default on DreamHost servers.</p>
+</div>
+<h2>See also</h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214200688-php-ini-overview">php.ini overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214200748-My-phprc-file-isn-t-updating">My phprc file isn't updating</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/sections/203272338-Custom-Configurations">PHP custom configurations</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/sections/203275788-Troubleshooting">PHP troubleshooting articles</a></li>
+</ul>
+</div>
