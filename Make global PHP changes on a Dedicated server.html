@@ -1,0 +1,71 @@
+<h2>Overview</h2>
+<div class="solvvy-solution">
+<p>Every installation of PHP comes with default settings which are usually fine for most websites. Occasionally, the needs of a website makes it necessary to adjust these PHP settings. For example, your site may need to upload files larger than the current PHP upload limit allows. In that case, you would need to create a <a href="https://help.dreamhost.com/hc/en-us/articles/214200688-php-ini-overview">php.ini (phprc)</a> file and update this value. If you have a Dedicated Server it’s possible to set a single <span class="text-object">phprc</span> file for the entire server, rather than set them up individually&nbsp;for each site.</p>
+</div>
+<h2>How to enable global changes</h2>
+<div class="solvvy-solution">
+<p>The following describes how to enable global PHP changes on your Dedicated server. You can also set them on a per-user basis using a <span class="text-object">phprc</span> file. See the <a href="/hc/en-us/articles/214200688" target="_blank" rel="noopener noreferrer">php.ini overview</a> article for more information.</p>
+<div class="notebox-important">
+<p>If you intend on making Global changes to your PHP configuration, you must UN-check the <span class="text-object">DreamHost Managed</span> checkbox in your panel. Otherwise, your custom settings will be overwritten by the server next time a config is run.</p>
+<p>Navigate to the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=dedicated.dashboard&amp;" target="_blank" rel="noopener noreferrer">Dedicated Servers Dashboard</a> page. To the right of the server click the <strong>Configure</strong> button. On the next page, UN-check <span class="text-object">DreamHost Managed</span>. Finally, click <strong>Save ds#### settings...</strong> at the bottom to save.</p>
+</div>
+<div class="notebox-note">
+<p>If you have a custom <span class="text-object">phprc</span> file set up under your user, it will override the global <span class="text-object">php.ini</span> file for that specific user, for the version of PHP for which the custom <span class="text-object">phprc</span> file was created.</p>
+</div>
+<ol>
+<li>Log into your server <a href="/hc/en-us/articles/216041267-SSH-overview">via SSH</a>, using your admin user. You can create an admin user at <a class="panel-link" href="https://panel.dreamhost.com/?tree=dedicated.usersdashboard" target="_blank" rel="noopener noreferrer">Dedicated Admin Users</a>.</li>
+<li>Once you log into your server, navigate to the directory for the version of PHP you wish to edit:<br /><strong>For PHP 7.3</strong>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd /etc/php73</span></pre>
+</div>
+<strong>For PHP 7.4</strong>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd /etc/php74</span></pre>
+</div>
+<strong>For PHP 8.0</strong>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd /etc/php80</span></pre>
+</div>
+<strong>For PHP 8.1</strong>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd /etc/php81</span></pre>
+</div>
+<dl>
+<dd><em>Once you are in that directory, you’ll see the <span class="text-object">php.ini</span> file.</em></dd>
+</dl>
+</li>
+<li>Run the following <a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">command to edit it</a>:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">sudo nano php.ini</span></pre>
+</div>
+</li>
+<li>When finished editing, close the file and return to your shell.</li>
+<li><a href="/hc/en-us/articles/214200748-My-phprc-file-isn-t-updating">Kill off</a> any PHP processes to update the file.</li>
+</ol>
+<p>Once you finish, the global php.ini is now used for all sites on your server which do not have a custom <span class="text-object">phprc</span> file enabled.</p>
+<div class="notebox-note">
+<p>If your server is running NGINX, you must stop NGINX before killing PHP, then restart it. The following commands can only be run on a Dedicated Server with an admin user.</p>
+</div>
+<p>To stop/kill/restart NGINX:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">sudo /etc/init.d/nginx stop</span>
+<span class="server">[server]$ </span><span class="command">pkill -9 php</span>
+<span class="server">[server]$ </span><span class="command">sudo /etc/init.d/nginx start</span>
+</pre>
+</div>
+</div>
+<h2>Loading PHP extensions on all domains (on VPS or Dedicated)</h2>
+<div class="solvvy-solution">
+<p>On a DreamHost VPS or Dedicated Server, you can find the directory at <span class="text-object">/etc/php#/conf.d/</span> (just make sure to change the php# folder to the actual version you’re updating). Any files in this directory are loaded by all PHP interpreters for this version of PHP.</p>
+</div>
+<h2>See also</h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214200688-php-ini-overview">php.ini overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/sections/203272338-Custom-Configurations">PHP custom configurations</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214893957-Enable-PHP-extensions-and-loaders">Enable PHP extensions and loaders</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/sections/203275788-Troubleshooting">PHP troubleshooting articles</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Creating and editing a file via SSH</a></li>
+</ul>
+</div>

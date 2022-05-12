@@ -1,14 +1,16 @@
 <h2>Overview</h2>
 <div class="solvvy-solution">
 <p>PHPMailer allows you to send email from your site via SMTP. Visit <a href="https://github.com/PHPMailer/PHPMailer/blob/master/README.md">PHPMailer’s GitHub page</a> for further details on what it has to offer.</p>
-<p>This article explains how to install PHPMailer on a VPS or Dedicated server using Composer. If your website is on a Shared server, view the following article instead.</p>
+<div class="notebox-important">
+<p>This article explains how to install PHPMailer on a VPS or Dedicated Server using Composer. If your website is on a shared server, view the following article instead.</p>
 <ul>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/360031174411" target="_self">Installing PHPMailer on a Shared server</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360031174411" target="_self" rel="undefined">Installing PHPMailer on a shared server</a></li>
 </ul>
+</div>
 </div>
 <h2>Install PHPMailer using Composer</h2>
 <div class="solvvy-solution">
-<p>The recommend way to install PHPMailer is through composer on a VPS or Dedicated server.</p>
+<p>The recommended way to install PHPMailer is through composer on a VPS or Dedicated Server.</p>
 <ol>
 <li>View the following article to set up composer on your DreamHost server:
 <ul>
@@ -20,27 +22,25 @@
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">composer require phpmailer/phpmailer</span></pre>
 </div>
-<div class="alert alert-note">
-<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
-<div class="alert-content">
+<div class="notebox-note">
 <p>This installs PHPMailer into a folder called <span class="text-object">/vendor</span> in the directory where the command was run.</p>
-</div>
 </div>
 </li>
 </ol>
 </div>
 <h2><span id="Basic_code_example">Basic code example for email hosted at DreamHost</span></h2>
 <div class="solvvy-solution">
-<p>Insert the following code into a PHP file.</p>
-<div class="alert alert-important">
-<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-important-icon.svg" width="60" height="60" /></div>
-<div class="alert-content">
+<p>Create a new PHP file and name it something like <span class="text-object">phpmail.php</span></p>
+<div class="notebox-note">
+<p>It can be named anything and be placed in any directory.</p>
+</div>
+<p>Insert the following code into the PHP file.</p>
+<div class="notebox-important">
 <p>You only need to update the code in bold.</p>
-<p><strong>username</strong> — Make sure to change the 'username' field to your actual <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access">shell username</a>.</p>
+<p><strong>username</strong> — Make sure to change the 'username' field to your actual <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access">shell username</a>. Then add the full path to the <span class="text-object">vendor</span> directory you created in step #2 above.</p>
 <p><strong>Path to the autoload.php file</strong>&nbsp;— This is the full path to the autoload.php file. This is different depending on where you installed PHPMailer. Make sure to change this path to the location where you installed PHPMailer.</p>
 <p><strong>Host&nbsp;</strong>— If you're sending from a DreamHost address, you should only use <strong>smtp.dreamhost.com</strong>. If you are using a Gmail address, use <strong>smtp.gmail.com</strong>.</p>
 <p><strong>Username</strong> and <strong>setFrom</strong> must both be an email on the domain you're sending from.</p>
-</div>
 </div>
 <div class="preboxcontainer">
 <pre class="prebox">&lt;?php
@@ -50,7 +50,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 //Load composer's autoloader
-require '/home/<span class="code-highlight">username</span>/vendor/autoload.php';
+require '/home/<span class="code-highlight">username/path-to-vendor-dir</span>/vendor/autoload.php';
 
 $mail = new PHPMailer(true);                              // Passing `true` enables exceptions
 try {
@@ -87,15 +87,31 @@ try {
 } catch (Exception $e) {
     echo 'Message could not be sent.';
     echo 'Mailer Error: ' . $mail-&gt;ErrorInfo;
-}<br />?&gt;</pre>
+}<br>?&gt;</pre>
 </div>
-<div class="alert alert-note">
-<div class="alert-icon"><img src="https://kbimages.dreamhosters.com/images/dh-kb-note-icon.svg" width="60" height="60" /></div>
-<div class="alert-content">
+<div class="notebox-note">
 <p>It is recommended to use port 465 with SSL as shown above.</p>
 <p>You could optionally use port 587 with TLS.</p>
 </div>
 </div>
+<h2>Running the file</h2>
+<div class="solvvy-solution">
+<p>The file you created is a simple PHP file, so it can be run like this:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">php phpmail.php</span></pre>
+</div>
+<p>This sends an email to the recipient address you added to the script.</p>
+</div>
+<h2>Using PHPMailer in a contact form</h2>
+<div class="solvvy-solution">
+<p>The code above is a simple example that sends an email when the script is run. Most often, a contact form is used to send the email. View the following link for an example of using PHPMailer in a contact form instead.</p>
+<ul>
+<li><a href="https://github.com/PHPMailer/PHPMailer/blob/master/examples/simple_contact_form.phps" target="_self">simple_contact_form.phps</a></li>
+</ul>
+<p>The following page lists additional examples of other ways you could use PHPMailer.</p>
+<ul>
+<li><a href="https://github.com/PHPMailer/PHPMailer/tree/master/examples">https://github.com/PHPMailer/PHPMailer/tree/master/examples</a></li>
+</ul>
 </div>
 <h2>Allowing GMAIL to send from your mail application</h2>
 <div class="solvvy-solution">
