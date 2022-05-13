@@ -1,0 +1,299 @@
+<h2>Overview</h2>
+<div class="solvvy-solution">
+<p>The PHP Extension and Application Repository, or "PEAR", is a repository of reusable PHP code which you can add to your website to easily enable certain functions such as SMTP Mail.</p>
+<p>Various packages can be downloaded from the PEAR repository, at:</p>
+<ul>
+<li><a href="https://pear.php.net/packages.php" target="_self" rel="undefined">pear.php.net/packages.php</a></li>
+</ul>
+<p>The following information walks you through the following:</p>
+<ul>
+<li>How to set up your DreamHost environment to run PEAR.</li>
+<li>How to download and install the packages.</li>
+</ul>
+</div>
+<h2>PEAR MAIL compared to PHPMailer</h2>
+<div class="solvvy-solution">
+<p>Both PEAR MAIL and <a href="https://help.dreamhost.com/hc/en-us/articles/215842658-PHPmailer-overview">PHPMailer</a> allow you to send email using SMTP. But there are a few reasons why PHPMailer may be a better choice. For example:</p>
+<ul>
+<li>PEAR MAIL cycles the socket connection for each message. This could potentially cause the connection to be caught by DreamHost's servers as a brute force attempt.</li>
+<li>PHPMailer open a socket only once. The socket is then kept open as it processes messages.</li>
+<li>PHPMailer is very well documented with many online examples and help pages.</li>
+<li>PHPMailer integrates well with Google's SMTP servers.</li>
+</ul>
+<p>For these reasons, <a href="https://help.dreamhost.com/hc/en-us/articles/215842658-PHPmailer-overview">PHPMailer</a> is worth taking a look at as an alternative to PEAR MAIL.</p>
+</div>
+<h2><span id="Installing_PEAR_manually">Installing PEAR manually</span></h2>
+<div class="solvvy-solution">
+<div class="notebox-important">
+<p>PEAR is not installed by default on DreamHost servers. If you require any PEAR package to operate on your site it must be installed manually using the following steps.</p>
+</div>
+<ol>
+<li>Make sure the user assigned to your domain is a SHELL user. Visit the following article which explains how to set up your SHELL user:
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access">Creating a user with Shell (SSH) access</a></li>
+</ul>
+</li>
+<li>Once the user is a SHELL user, log into the web server via SSH. Visit the SSH article for instructions on how to log into your server depending on which operating system you are using:
+<ul>
+<li><a href="/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
+</ul>
+</li>
+<li>Once you’ve logged into your server, make sure you're in your <a href="https://help.dreamhost.com/hc/en-us/articles/360001219231-Where-is-the-home-directory-#the-users-home-directory" target="_self">user's directory</a>. Run these commands in your SHELL terminal:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~</span>
+<span class="server">[server]$ </span><span class="command">pwd</span> <br><span class="cmdoutput">/home/username</span></pre>
+</div>
+<ul>
+<li>User is named <span class="text-object">username</span>.</li>
+<li>In this example, you can see you're in the user's directory because the full path is <span class="text-object">/home/username</span>.</li>
+</ul>
+</li>
+<li>Make a temporary directory. This will be used in the following steps when installing.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">mkdir -p pear/tmp/pear/install</span></pre>
+</div>
+</li>
+<li>Run the following <span class="code"><a href="https://help.dreamhost.com/hc/en-us/articles/217213327-Wget">wget</a></span> command to download the <span class="text-object">go-pear.phar</span> file to your user's directory:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wget https://pear.php.net/go-pear.phar</span></pre>
+</div>
+</li>
+<li>Run the file by entering this command in the same directory:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">/usr/local/php74/bin/php go-pear.phar</span></pre>
+</div>
+</li>
+<li>During the install process, provide the following responses at the prompts:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">/usr/local/php74/bin/php go-pear.phar</span>
+Below is a suggested file layout for your new PEAR installation. To
+change individual locations, type the number in front of the
+directory. Type 'all' to change all of them or simply press Enter to
+accept these locations.
+
+ 1. Installation base ($prefix)                   : /home/username/pear
+ 2. Temporary directory for processing            : /tmp/pear/install
+ 3. Temporary directory for downloads             : /tmp/pear/install
+ 4. Binaries directory                            : /home/username/pear/bin
+ 5. PHP code directory ($php_dir)                 : /home/username/pear/share/pear
+ 6. Documentation directory                       : /home/username/pear/docs
+ 7. Data directory                                : /home/username/pear/data
+ 8. User-modifiable configuration files directory : /home/username/pear/cfg
+ 9. Public Web Files directory                    : /home/username/pear/www
+10. Tests directory                               : /home/username/pear/tests
+11. Name of configuration file                    : /home/username/.pearrc
+
+1-11, 'all' or Enter to continue:
+</pre>
+</div>
+</li>
+<li>You should change the location of the tmp directories. Type <strong>2</strong>&nbsp;and press <span class="code">Enter</span>.
+<div class="preboxcontainer">
+<pre class="prebox">(Use $prefix as a shortcut for '/home/username/pear', etc.)
+Temporary directory for processing [/tmp/pear/install] : <span class="code-highlight">/home/username/pear/tmp/pear/install</span></pre>
+</div>
+Change the <span class="text-object">username</span> to your actual Shell username in the command above.</li>
+<li>Press <span class="code">Enter</span> to save and proceed.</li>
+<li>The list appears again. This type <strong>3</strong> and press <span class="code">Enter</span>.
+<div class="preboxcontainer">
+<pre class="prebox">(Use $prefix as a shortcut for '/home/username/pear', etc.)
+Temporary directory for downloads [/tmp/pear/install] : <span class="code-highlight">/home/username/pear/tmp/pear/install</span></pre>
+</div>
+Change the <span class="text-object">username</span> to your actual Shell username in the command above.</li>
+<li>Click <span class="code">Enter</span> to save and proceed.
+<div class="preboxcontainer">
+<pre class="prebox">WARNING!  The include_path defined in the currently used php.ini does not
+contain the PEAR PHP directory you just specified:
+&lt;/home/username/pear/share/pear&gt;
+If the specified directory is also not in the include_path used by
+your scripts, you will have problems getting any PEAR packages working.
+
+Would you like to alter php.ini &lt;/etc/php74/php.ini&gt;? [Y/n] :</pre>
+</div>
+</li>
+<li>Type in <span class="code">Y</span> and press <span class="code">Enter</span>.
+<div class="preboxcontainer">
+<pre class="prebox">WARNING: Cannot write to /etc/php74/php.ini, but php.ini was successfully created
+at &lt;/home/username/pear/php.ini-gopear&gt;. Please replace the file &lt;/etc/php74/php.ini&gt; with
+&lt;/home/username/pear/php.ini-gopear&gt; or modify your php.ini by adding:
+
+include_path=".:/home/username/pear/share/pear"
+
+Current include path           : .:
+Configured directory           : /home/username/pear/share/pear
+Currently used php.ini (guess) : /etc/php74/php.ini
+Press Enter to continue:</pre>
+</div>
+</li>
+<li>Click <span class="code">Enter</span> again to proceed.
+<div class="preboxcontainer">
+<pre class="prebox">The 'pear' command is now at your service at /home/username/pear/bin/pear
+
+** The 'pear' command is not currently in your PATH, so you need to
+** use '/home/username/pear/bin/pear' until you have added
+** '/home/username/pear/bin' to your PATH environment variable.
+
+Run it without parameters to see the available actions, try 'pear list'
+to see what packages are installed, or 'pear help' for help.
+
+For more information about PEAR, see:
+
+  http://pear.php.net/faq.php
+  http://pear.php.net/manual/
+
+Thanks for using go-pear!</pre>
+</div>
+<dl>
+<dd><em>The <span class="code">include_path</span> will be set in the following steps.</em></dd>
+</dl>
+</li>
+<li>View the&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">creating and editing a file via SSH</a>&nbsp;article for instructions on how to edit your existing <span class="text-object">.bash_profile</span>.&nbsp;You’ll see these lines already in that file:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="cmdoutput"># ~/.bash_profile: executed by bash(1) for login shells. <br> <br>umask 002 <br>PS1='[\h]$ '</span></pre>
+</div>
+</li>
+<li>At the bottom, enter these two lines:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="cmdoutput">export PHP_PEAR_PHP_BIN=/usr/local/php74/bin/php
+export PATH=${HOME}/pear/bin:/usr/local/php74/bin:${PATH}</span></pre>
+</div>
+</li>
+<li>Save and close the file&nbsp;and return to your shell.</li>
+<li><span class="x x-first x-last">Run the following command to allow your current Shell session to use PEAR</span>:<br>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">. ~/.bash_profile</span></pre>
+</div>
+</li>
+</ol>
+<p>You've now installed PEAR – but for your environment to know where to find this installation, you must set up the <span class="code">include_path</span> within your <span class="text-object">phprc</span> file.</p>
+</div>
+<h2><span id="Setting_the_include_path_in_your_phprc_file">Setting the include_path in your phprc file</span></h2>
+<div class="solvvy-solution">
+<div class="notebox-note">
+<p>If you do not set up this <span class="code">include_path</span> correctly, you may find your installation does not work as intended.</p>
+</div>
+<ol>
+<li>Update your <span class="text-object">phprc</span> file to allow PHP to know where to look for the PEAR install. View the following articles for instructions on how to create a <span class="text-object">phprc</span> file:
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214200668-Create-a-phprc-file-via-SSH">Create a phprc file via SSH</a></li>
+</ul>
+If the file already exists, view the following article for instructions on how to update it:
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Creating and editing a file via SSH</a></li>
+</ul>
+</li>
+<li>Update the <span class="text-object">phprc</span> file with the following command:
+<div class="preboxcontainer">
+<pre class="prebox">include_path = ".:/home/username/pear/share/pear"</pre>
+</div>
+<ul>
+<li>Change <span class="text-object">username</span> to your actual Shell username that the domain is under.</li>
+</ul>
+</li>
+<li>Navigate back to your <a href="https://help.dreamhost.com/hc/en-us/articles/360001219231-Where-is-the-home-directory-#the-users-home-directory" target="_self">user's directory</a>.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~</span></pre>
+</div>
+</li>
+<li>Once there, run <span class="code">pear list</span> to see if you get a response:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">pear list</span>
+
+Installed packages, channel pear.php.net:
+Package          Version State
+Archive_Tar      1.3.12  stable
+Console_Getopt   1.3.1   stable
+PEAR             1.9.5   stable
+Structures_Graph 1.0.4   stable
+XML_Util         1.2.3   stable
+</pre>
+</div>
+</li>
+</ol>
+<p>Since you receive a response, you can see that PEAR is now functioning.</p>
+</div>
+<h2><span id="Changing_the_tmp_directory">Changing the /tmp cache directory</span></h2>
+<div class="solvvy-solution">
+<p>When you installed PEAR above, you manually set the location of the tmp directories. You should also update the location of the cache directory to this temp location.</p>
+<p>Run the following to view the current <span class="text-object">/tmp</span> directories:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">pear config-show | grep cache_dir</span>
+<span class="cmdoutput">PEAR Installer cache directory cache_dir        /tmp/pear/cache</span>
+</pre>
+</div>
+<p>Run the following to update the cache <span class="text-object">tmp</span> directory. Change <span class="text-object">username</span> to the shell user you're currently running the command under.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">pear config-set cache_dir /home/<span class="code-highlight">username</span>/pear/tmp/</span>
+<span class="cmdoutput">config-set succeeded</span>
+</pre>
+</div>
+</div>
+<h2>Installing packages</h2>
+<div class="solvvy-solution">
+<p>You are now able to install any packages you like using the <span class="code">pear</span> command. For example, run the following to install the mail package:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">pear install --alldeps Mail</span></pre>
+</div>
+<ul>
+<li>The <span class="code">-onlyreqdeps</span> flag instructs the installer to install only required dependencies.</li>
+<li>Visit&nbsp;<a href="https://pear.php.net/packages.php" target="_blank" rel="noopener noreferrer">pear.php.net/packages.php</a>&nbsp;for a list of available packages.</li>
+</ul>
+<p>If you see any errors when attempting to install, view the following article for possible solutions:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214395118-Troubleshooting-PEAR-errors">Troubleshooting PEAR errors</a></li>
+</ul>
+</div>
+<h2><span id="Confirming_your_PEAR_environment_settings">Confirming your PEAR environment settings</span></h2>
+<div class="solvvy-solution">
+<p>To see if your environment is correctly set, run the following commands in your <a href="https://help.dreamhost.com/hc/en-us/articles/360001219231-Where-is-the-home-directory-#the-users-home-directory" target="_self">user's directory</a>:</p>
+<h3>To determine which PHP (local or shared) command will be used:</h3>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">which php</span></pre>
+</div>
+<h3>To determine which PHP version is being used:</h3>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">php -v</span></pre>
+</div>
+<h3>To determine which PEAR (local or shared) command will be used:</h3>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">which pear</span></pre>
+</div>
+<h3>To determine which PEAR version is being used:</h3>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">pear -V</span></pre>
+</div>
+<h3>Use this command to display all your PEAR settings – your local configuration data should display:</h3>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">pear config-show</span></pre>
+</div>
+</div>
+<h2>Troubleshooting</h2>
+<div class="solvvy-solution">
+<p>View the following article for troubleshooting examples:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214395118-Troubleshooting-PEAR-errors">Troubleshooting PEAR errors</a></li>
+</ul>
+</div>
+<h2>Example of a PHP SMTP mail script</h2>
+<div class="solvvy-solution">
+<p>View the following article for an example of how to send PHP mail via SMTP.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216140597-How-do-I-send-PHP-mail-via-SMTP-">How do I send PHP mail via SMTP?</a></li>
+</ul>
+</div>
+<h2><span id="See_also">See also</span></h2>
+<div class="solvvy-hidden">
+<h3>Internal links</h3>
+<ul>
+<li><a href="/hc/en-us/articles/214202188-PHP-overview">PHP overview</a></li>
+<li><a href="/hc/en-us/articles/214200688-php-ini-overview">php.ini overview</a></li>
+<li><a href="/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
+<li><a href="/hc/en-us/articles/214395118-Troubleshooting-PEAR-errors">Troubleshooting PEAR errors</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Creating and editing a file via SSH</a></li>
+</ul>
+<h3>External links</h3>
+<ul>
+<li><a href="https://pear.php.net/">PEAR official site</a></li>
+<li><a href="https://pear.php.net/manual/en/installation.checking.php">Checking if PEAR works (and tips for fixing common problems)</a></li>
+</ul>
+</div>
