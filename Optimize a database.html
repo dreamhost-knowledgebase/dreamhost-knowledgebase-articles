@@ -1,0 +1,124 @@
+<h2>Overview</h2>
+<div class="solvvy-solution">
+<p>Optimizing your MySQL database tables is one way of making improvements to your website. The optimizing function reorganizes the table and index data, which reduces space and improves I/O efficiency.</p>
+<p>This guide describes how to optimize your tables via phpMyAdmin.</p>
+</div>
+<h2><span id="Accessing_your_database">Accessing your database</span></h2>
+<div class="solvvy-solution">
+<p>For detailed instructions on how to log into your database via phpMyAdmin, please visit the following article:</p>
+<ul>
+<li><a href="/hc/en-us/articles/214395638-phpMyAdmin-overview">phpMyAdmin overview</a></li>
+</ul>
+<p>Once you’re logged in, proceed with the steps below.</p>
+</div>
+<h2>Checking your database size</h2>
+<div class="solvvy-solution">
+<p>Before optimizing your database, you should check the current size of your database. You can check your database's size using phpMyAdmin or SSH.</p>
+<h3>Using phpMyAdmin</h3>
+<p>Using the instructions below, you can view your database's size within phpMyAdmin.</p>
+<ol>
+<li>Click the database name you're checking the size of on the left-side menu.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/misc-phpmyadmin-database-size.png" alt="phpMyAdmin database size" width="913" height="25"></dd>
+</dl>
+</li>
+<li>On the far-right side of the bottom row of the main panel, you can see the full size of the database.</li>
+</ol>
+<h3>Using SSH</h3>
+<p>You can also use SSH to connect and log into your database and follow the steps below to find your database's size. View the following article for instructions on connecting via SSH:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214882998-Connect-to-a-database-via-SSH" target="_self">Connect to a database via SSH</a></li>
+</ul>
+<p>Run the following query to see the size of the database in MB (do not replace any text or add any line breaks):</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="command">SELECT table_schema "database", sum(data_length + index_length)/1024/1024 "size in MB" FROM information_schema.TABLES GROUP BY table_schema;</span></pre>
+</div>
+</div>
+<h2><span id="Optimizing_your_database">Optimizing your database</span></h2>
+<div class="solvvy-solution">
+<p>On the left side of phpMyAdmin, you’ll see a list of databases:</p>
+<ol>
+<li>Select your database from the list.
+<dl>
+<dd><em>In the center panel, a list of your tables appears:</em></dd>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/01_Optimizing_Database.fw.png" alt="01 Optimizing Database.fw.png" width="864" height="381"></dd>
+</dl>
+</li>
+<li>Look at the <span class="text-object">Overhead</span> column to the far right – if you see any numerical values, those tables can be optimized. In the example above, only those tables have been selected.
+<div class="notebox-note">
+<p>You can also click the <span class="text-link">Check All</span> link on the bottom left which selects all tables.</p>
+</div>
+</li>
+<li>At the bottom of your table list, click the <span class="text-object">With selected</span> dropdown menu.
+<dl>
+<dd><img src="https://kbimages.dreamhosters.com/images/02_Optimizing_Database.fw.png" alt="02 Optimizing Database.fw.png"></dd>
+</dl>
+</li>
+<li>From the dropdown menu, select <span class="text-object">Optimize table</span>.
+<dl>
+<dd><em>The optimization may take time to complete depending how large the database is. Once it completes, the page displays the query that was run along with a success message:</em></dd>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/03_Optimizing_Database.fw.png" alt="03 Optimizing Database.fw.png" width="567" height="325"></dd>
+</dl>
+<div class="notebox-note">
+<p>You can safely disregard the “Table does not support optimize, doing recreate + analyze instead” message as it's just informational.</p>
+</div>
+</li>
+</ol>
+</div>
+<h2><span id="Repairing_tables">Repairing tables</span></h2>
+<div class="solvvy-solution">
+<p>In addition to optimizing a table, you can also 'repair' a table. Follow all steps mentioned above. In step #3, choose <span class="text-object">Repair table</span> from the dropdown menu.</p>
+<dl>
+<dd><img src="https://kbimages.dreamhosters.com/images/01_Optimizing_Database_repair_table.fw.png" alt="01 Optimizing Database repair table.fw.png"></dd>
+</dl>
+<p>The two options are similar but used under different circumstances:</p>
+<ul>
+<li><strong>Repair Table</strong> - Repairs a possibly corrupted table. This is run generally if you’re getting database errors. This can be run via phpMyAdmin or set up as a cron job to have it run routinely.</li>
+</ul>
+<ul>
+<li><strong>Optimize Table</strong> - Simply reorganizes the physical storage for table data and associated indexes. This function improves table access as part of its function is to reduce storage space.</li>
+</ul>
+</div>
+<h2><span id="Optimizing_via_SSH">Optimizing via SSH</span></h2>
+<div class="solvvy-solution">
+<p>Sometimes running an optimization via phpMyAdmin tends to fail and the page eventually times out. This is possibly due to the database being too large for phpMyAdmin to handle. The alternative is to optimize via <a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a>. As a shell user, you can SSH into your domain and perform the following command which is the same function run on phpMyAdmin:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">mysqlcheck -h <span class="code-highlight">HOSTNAME</span> -u <span class="code-highlight">USERNAME</span> -p -o <span class="code-highlight">DATABASE</span></span></pre>
+</div>
+<p>Replace the <em>variables</em> in the above command with your actual database information:</p>
+<ul>
+<li><strong>USERNAME</strong> – database username.</li>
+<li><strong>HOSTNAME</strong> – database hostname you set up and is active.</li>
+<li><strong>DATABASE</strong> – the name of the database in which you’re running the command.</li>
+</ul>
+<p><span class="code">-p</span> will prompt you to enter your database password, which will prevent the password from being saved in your SSH user's bash history.</p>
+<div class="notebox-note">
+<p>You may see the following note in the command output:</p>
+<span class="code">Table does not support optimize, doing recreate + analyze instead</span>
+<p>This message occurs when MySQL's InnoDB storage engine performs a different set of operations to optimize the table and can be safely disregarded.</p>
+</div>
+<p>You can output the log of the command into a file for viewing by adding the following to the end of the command:</p>
+<div class="preboxcontainer">
+<pre class="prebox">&gt;&gt; results.txt</pre>
+</div>
+<h3>&nbsp;Using a cron job to optimize</h3>
+<p>You can also cleanup overhead via a shell script and/or cron job using&nbsp;<a href="https://dev.mysql.com/doc/refman/5.7/en/mysqlcheck.html">mysqlcheck</a>&nbsp;which checks, repairs, and optimizes tables. It's a good idea to run a monthly&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/215088668-How-do-I-create-a-cron-job-">cron job</a>&nbsp;to do this for you. The cron job might look like this:</p>
+<div class="preboxcontainer">
+<pre class="prebox">#!/bin/sh
+/usr/bin/mysqlcheck -o -v -u <span class="code-highlight">USER</span> -p <span class="code-highlight">PASSWORD</span> -h <span class="code-highlight">MYSQL.EXAMPLE.COM DATABASENAME</span>;
+</pre>
+</div>
+<p>Replace the items in all-caps with the actual&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/221610868-Finding-your-database-login-credentials">credentials for your database</a>.</p>
+<h3><span id="Repairing_via_SSH">Repairing via SSH</span></h3>
+<p>You can also run a command to repair a table instead of optimizing it:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">mysql -u <span class="code-highlight">username</span> -p<span class="code-highlight">password</span> -h <span class="code-highlight">hostname</span> <span class="code-highlight">databasename</span> -e "show tables" | grep -v Tables_in | grep -v "+" | gawk '{print "repair table " $1 ";"}' | mysql -u <span class="code-highlight">username</span> -p<span class="code-highlight">password</span> -h <span class="code-highlight">hostname</span> <span class="code-highlight">databasename</span> </span></pre>
+</div>
+</div>
+<h2><span id="See_also">See also</span></h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215099117-MySQL-overview">MySQL overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214395638-phpMyAdmin-overview">phpMyAdmin overview</a></li>
+</ul>
+</div>
