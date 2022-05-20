@@ -1,0 +1,70 @@
+<h2>Overview</h2>
+<div class="solvvy-solution">
+<p>The following describes how to create a script and cron job that sends you rejected emails from the server.</p>
+</div>
+<h2>Background</h2>
+<div class="solvvy-solution">
+<p>When an email is sent from your web server and it then gets blocked or rejected, it is stored in the following directory:</p>
+<div class="preboxcontainer">
+<pre class="prebox">/home/username/Maildir/new</pre>
+</div>
+<p>To view the blocked or rejected emails, you must manually log into your server and check this directory. A simpler option is to instead create a cron job that triggers a shell script. The script then tells the server to email you any blocked or rejected emails when it occurs.</p>
+<p>For more information about blocked or rejected emails, see the following article:</p>
+<ul>
+<li><a href="/hc/en-us/articles/215036118-Sender-domain-policy-FAQs">Sender domain policy FAQs</a></li>
+</ul>
+</div>
+<h2>Creating the shell script</h2>
+<div class="solvvy-solution">
+<ol>
+<li>Log into your server via <a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a>.</li>
+<li>Make sure you're in your <a href="https://help.dreamhost.com/hc/en-us/articles/360001219231-Where-is-the-home-directory-#the-users-home-directory" target="_self">user's home directory</a>:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~</span>
+<span class="server">[server]$ </span><span class="command">pwd</span>
+/home/username</pre>
+</div>
+</li>
+<li>Create <a href="/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">a new file via SSH</a>, and then name it something like <span class="text-object">mailrejections.sh</span>.</li>
+<li>Add the following code to this file:
+<div class="notebox-note">
+<ul>
+<li>You only need to change the highlighted fields.</li>
+<li>You can change the message to anything you like.</li>
+</ul>
+</div>
+<div class="preboxcontainer">
+<pre class="prebox">#!/bin/bash
+
+#Check ~/Maildir/new for any files created within the last 15 min
+files=$(find ~/Maildir/new -type f -mmin -15)
+
+for emailFileName in $files; do
+  #open each email individually and assign to new variable
+  emailContent=$(cat $emailFileName)<br />  printf '%s\n' "${emailContent[*]}" | mail -s "<span class="code-highlight">These emails were rejected" admin@example.com</span>
+done<br />exit 0</pre>
+</div>
+</li>
+<li>Make sure to change the email to the address you'd like to receive these notifications from.</li>
+</ol>
+</div>
+<h2>Creating the cron job</h2>
+<div class="solvvy-solution">
+<p>After you create the script, you must create a new cron job to run every 15 minutes. The cron job then runs the file you just created.</p>
+<ol>
+<li>Create a new cron job <a href="/hc/en-us/articles/215088668-How-do-I-create-a-cron-job-">in your panel</a>:
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-09_panel_cron_emailrejection.png" alt="" /></dd>
+</dl>
+</li>
+<li>Make sure to adjust the username to the correct Shell user for which you created the script.</li>
+<li>Click the <strong><label for="special">When to run </label></strong>drop down menu and select <strong>Custom</strong>.</li>
+<li>Select 'Every 15 minutes' for the time frame.
+<div class="notebox-note">
+<p>You can change the time frame to anything you like, but just make sure to update the same time frame in your script to match.</p>
+</div>
+</li>
+<li>Click the <strong>Add</strong> button to save.</li>
+</ol>
+<p>The cron job runs your script every 15 minutes. If an email is rejected, a copy of it is then sent to the address you specified in the script.</p>
+</div>
