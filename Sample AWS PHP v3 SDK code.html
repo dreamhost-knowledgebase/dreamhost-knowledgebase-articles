@@ -1,32 +1,11 @@
-<div class="document">
-<div class="documentwrapper">
-<div class="body">
-<div id="sample_aws_php.v3_sdk" class="solvvy-hidden">
-<div class="table-of-content container">
-<ul class="simple">
-<li><a class="reference internal" href="#connection">Creating a connection</a></li>
-<li><a class="reference internal" href="#owned_buckets">Listing owned Buckets</a></li>
-<li><a class="reference internal" href="#create_bucket">Creating a Bucket</a></li>
-<li><a class="reference internal" href="#buckets_contents">Listing a Bucket’s contents</a></li>
-<li><a class="reference internal" href="#delete_contents">Deleting the entire contents of a Bucket</a></li>
-<li><a class="reference internal" href="#delete_bucket">Deleting a Bucket</a></li>
-<li><a class="reference internal" href="#create_object">Creating an object</a></li>
-<li><a class="reference internal" href="#change_acl">Changing an object’s ACL</a></li>
-<li><a class="reference internal" href="#delete_object">Deleting an object</a></li>
-<li><a class="reference internal" href="#download_object">Downloading an object to a file</a></li>
-<li><a class="reference internal" href="#generate_download_url">Generating object download URLs</a></li>
-</ul>
-</div>
-</div>
-<span id="EXACT_HEADING_NAME"></span>
+<div class="auto-toc">&nbsp;</div>
 <div class="notebox-note">
 <p>It's not recommended to store credentials in an executable file. A better option is to load credentials from 'environment variables' or from a 'credentials ini file'. View the following site for further details:</p>
 <ul>
 <li><a href="https://docs.aws.amazon.com/sdk-for-php/v3/developer-guide/guide_configuration.html#credentials">Amazon Web Services (AWS) credentials</a></li>
 </ul>
 </div>
-</div>
-<h2><span id="connection">Creating a connection</span></h2>
+<h2>Creating a connection</h2>
 <div class="solvvy-solution">
 <p>Creates an S3 client object to interact with the DHO server:</p>
 <div class="preboxcontainer">
@@ -52,7 +31,7 @@ $client = new Aws\S3\S3Client([
 ]);</pre>
 </div>
 </div>
-<h2><span id="owned_buckets">Listing owned Buckets</span></h2>
+<h2>Listing owned Buckets</h2>
 <div class="solvvy-solution">
 <p>Lists buckets owned by the S3 user:</p>
 <div class="preboxcontainer">
@@ -73,7 +52,7 @@ mahbuckat2   2011-04-21T18:05:48.000Z
 mahbuckat3   2011-04-21T18:07:18.000Z</pre>
 </div>
 </div>
-<h2><span id="create_bucket">Creating a Bucket</span></h2>
+<h2>Creating a Bucket</h2>
 <div class="solvvy-solution">
 <div class="preboxcontainer">
 <pre class="prebox">$BUCKET_NAME='<span class="code-highlight">my-new-bucket</span>';
@@ -88,7 +67,7 @@ try {
 }</pre>
 </div>
 </div>
-<h2><span id="buckets_contents">Listing a Bucket’s contents</span></h2>
+<h2>Listing a Bucket’s contents</h2>
 <div class="solvvy-solution">
 <div class="preboxcontainer">
 <pre class="prebox">$objects = $client-&gt;listObjectsV2([
@@ -104,14 +83,14 @@ foreach ($objects['Contents'] as $object){
 myphoto2.jpg 262518  2011-08-08T21:38:01.000Z</pre>
 </div>
 </div>
-<h2><span id="delete_contents">Deleting the entire contents of a Bucket</span></h2>
+<h2>Deleting the entire contents of a Bucket</h2>
 <div class="solvvy-solution">
 <div class="preboxcontainer">
 <pre class="prebox">$batch = Aws\S3\BatchDelete::fromListObjects($client, ['Bucket' =&gt; '<span class="code-highlight">my-new-bucket</span>']);
 $batch-&gt;delete();</pre>
 </div>
 </div>
-<h2><span id="delete_bucket">Deleting a Bucket</span></h2>
+<h2>Deleting a Bucket</h2>
 <div class="solvvy-solution">
 <div class="notebox-important">
 <p>The Bucket must be empty, otherwise the following call does not work.</p>
@@ -120,7 +99,7 @@ $batch-&gt;delete();</pre>
 <pre class="prebox">$client-&gt;deleteBucket(array('Bucket' =&gt; '<span class="code-highlight">my-new-bucket</span>'));</pre>
 </div>
 </div>
-<h2><span id="create_object">Creating an object</span></h2>
+<h2>Creating an object</h2>
 <div class="solvvy-solution">
 <p>Uploads a file from the filesystem and sets it to 'private':</p>
 <div class="preboxcontainer">
@@ -139,7 +118,7 @@ try{
 }</pre>
 </div>
 </div>
-<h2><span id="change_acl">Changing an object’s Access Control List (ACL)</span></h2>
+<h2>Changing an object’s Access Control List (ACL)</h2>
 <div class="solvvy-solution">
 <p>Changes the availability of the object <span class="text-object">hello.txt</span> to 'publicly readable', and object <span class="text-object">secret_plans.txt</span> to 'private'.</p>
 <div class="preboxcontainer">
@@ -161,7 +140,7 @@ $client-&gt;putObjectAcl(array(
 </ul>
 </div>
 </div>
-<h2><span id="delete_object">Deleting an object</span></h2>
+<h2>Deleting an object</h2>
 <div class="solvvy-solution">
 <p>Deletes the object <span class="text-object">goodbye.txt</span>:</p>
 <div class="preboxcontainer">
@@ -171,7 +150,7 @@ $client-&gt;putObjectAcl(array(
 ));</pre>
 </div>
 </div>
-<h2><span id="download_object">Downloading an object to a file</span></h2>
+<h2>Downloading an object to a file</h2>
 <div class="solvvy-solution">
 <p>Downloads the object <span class="text-object">poetry.pdf</span> from ‘my-bucket-name’ and saves it in <span class="text-object">/home/username/documents.&nbsp;</span>. Make sure to change <span class="text-object">username</span> to your Shell user.</p>
 <div class="preboxcontainer">
@@ -182,7 +161,7 @@ $client-&gt;putObjectAcl(array(
 ));</pre>
 </div>
 </div>
-<h2><span id="generate_download_url">Generating object download URLs (unsigned and pre-signed)</span></h2>
+<h2>Generating object download URLs (unsigned and pre-signed)</h2>
 <div class="solvvy-solution">
 <p>Generates an unsigned download URL for <span class="text-object">hello.txt</span>. This works because <span class="text-object">hello.txt</span> was made public by setting the ACL above, which then generates a signed download URL for <span class="text-object">secret_plans.txt</span> that works for 1 hour. Signed download URLs work for the time period even if the object is private (when the time period is up, the URL stops working):</p>
 <div class="preboxcontainer">
@@ -200,7 +179,5 @@ echo $signed_url-&gt;getUri() . "\n";</pre>
 <div class="preboxcontainer">
 <pre class="prebox">https://my-bucket-name.objects-us-east-1.dream.io/hello.txt
 https://my-bucket-name.objects-us-east-1.dream.io/secret_plans.txt?Signature=XXXXXXXXXXXXXXXXXXXXXXXXXXX&amp;Expires=1316027075&amp;AWSAccessKeyId=XXXXXXXXXXXXXXXXXXX</pre>
-</div>
-</div>
 </div>
 </div>

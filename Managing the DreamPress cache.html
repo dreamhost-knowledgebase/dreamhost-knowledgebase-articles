@@ -1,34 +1,17 @@
-<div class="document">
-<div class="documentwrapper">
-<div class="body">
-<div id="ARTICLE-TITLE-NAME" class="solvvy-hidden">
-<div class="table-of-content container">
-<ul class="simple">
-<li><a class="reference internal" href="#overview">Overview</a></li>
-<li><a class="reference internal" href="#why_caching_plugin">Do I need a caching plugin?</a></li>
-<li><a class="reference internal" href="#testing_cache_plugin">Testing your site's cache performance using the Proxy Cache Purge plugin</a></li>
-<li><a class="reference internal" href="#testing_cache_ssh">Testing your site's cache via SSH</a></li>
-<li><a class="reference internal" href="#troubleshooting_cache">Troubleshooting DreamPress cache issues</a></li>
-<li><a class="reference internal" href="#bypass_cache">Temporarily bypassing the DreamPress cache</a></li>
-<li><a class="reference internal" href="#why_purge">When would I need to purge my cache?</a></li>
-<li><a class="reference internal" href="#manually_plugin">Manually purging the cache via the plugin</a></li>
-<li><a class="reference internal" href="#manually_ssh">Manually purging the cache via SSH</a></li>
-</ul>
-</div>
-</div>
+<div class="auto-toc">&nbsp;</div>
 <div class="notebox-important">
 <p>The following instructions assume you have the latest version of the <a href="https://wordpress.org/plugins/varnish-http-purge/">Proxy Cache Purge</a> (formerly called “Varnish HTTP Purge”) plugin. If your WP-Admin shows that an update is available for this plugin, please update before proceeding or if you are encountering difficulties with any of the following steps.</p>
 </div>
-<h2><span id="overview">Overview</span></h2>
+<h2>Overview</h2>
 <div class="solvvy-solution">
 <p>DreamPress includes built-in server caching, which speeds up your site significantly. Since caching creates static versions of your site, fewer resources are needed by the server when a customer visits your site. This allows your site to not only load faster, but also helps manage larger amounts of traffic. However, when caching is not working, your site will typically run slower and your resource usage will be higher.</p>
 </div>
-<h2><span id="why_caching_plugin">Do I need a caching plugin?</span></h2>
+<h2>Do I need a caching plugin?</h2>
 <div class="solvvy-solution">
 <p>Many WordPress guides, including <a href="https://www.dreamhost.com/wordpress/guide-to-wp-caching/#">DreamHost's</a>, recommend caching plugins such as WP Super Cache on WordPress sites. However, since DreamPress comes with built-in caching, a third-party caching plugin such as WP Super Cache is not necessary and might conflict with the DreamPress cache. Instead, DreamHost recommends using its built-in server cache on your DreamPress site. The <a href="https://wordpress.org/plugins/varnish-http-purge/">Proxy Cache Purge</a> plugin is optimized to provide all the tools you need to automatically manage the DreamPress cache and analyze your site's ability to cache. Disabling the plugin doesn't disable the cache, as it's simply a tool to help determine if the cache is working properly or not.</p>
 <p>The Proxy Cache Purge plugin comes preinstalled on all new and upgraded DreamPress installations. If you've copied over an existing WordPress site from another host to DreamPress, installing this plugin is highly recommended so that managing your DreamPress cache is automated and does not require your attention under normal circumstances.</p>
 </div>
-<h2><span id="testing_cache_plugin">Testing your site's cache performance using the Proxy Cache Purge plugin</span></h2>
+<h2>Testing your site's cache performance using the Proxy Cache Purge plugin</h2>
 <div class="solvvy-solution">
 <p>Due to the thousands of plugins and customizations available for WordPress sites, not all sites automatically work effectively with all caching methods. The&nbsp;Proxy Cache Purge plugin offers an option in your WP-Admin panel for you to check page URLs on your site to make sure they are caching successfully. If a page on your site is not caching, the 'Check Caching' option tells you the items you can check that may resolve this issue.</p>
 <p>To access this option:</p>
@@ -54,7 +37,7 @@
 </ol>
 <p>This feature auto-scans the URL you selected and reports back any issues it finds as well as any known problematic plugins. If the report says <span class="text-object">Your caching service appears to be running properly</span>, that means caching on the server is working properly. However, if you see <span class="text-object">Varnish caching service is running but is unable to cache your site</span>, that means there is an issue with the server cache.</p>
 </div>
-<h2><span id="testing_cache_ssh">Testing your site's cache via SSH</span></h2>
+<h2>Testing your site's cache via SSH</h2>
 <div class="solvvy-solution">
 <p>If you aren't able to use the Proxy Cache Purge plugin, you can also use an <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview" target="_self">SSH command</a> to check your site's cache.</p>
 <div class="preboxcontainer">
@@ -62,7 +45,7 @@
 </div>
 <p>Your terminal will print several lines of information about the domain specified. If you see <span class="code">x-cache: hit</span> and <span class="code">x-cacheable: Yes:Forced</span>, the server proxy cache is working as intended. If the proxy cache is not working, the command will return <span class="code">x-cache: Miss</span> instead.</p>
 </div>
-<h2><span id="troubleshooting_cache">Troubleshooting DreamPress cache issues</span></h2>
+<h2>Troubleshooting DreamPress cache issues</h2>
 <div class="solvvy-solution">
 <p>If the Proxy Cache Purge plugin reports that your caching isn't working, there are several things you can test. The most common steps to resolve cache issues are toggling your plugins, switching out your theme, or identifying possible coding issues.</p>
 <div class="notebox-note">
@@ -107,7 +90,8 @@
 </div>
 <p>Once you've set up the default .htaccess, test your site's cache again. If the default .htaccess coding still doesn't fix your caching error, it's most likely the custom code being used on your domain. Please be sure to check with your developer regarding any custom content.</p>
 </div>
-<h2><span id="bypass_cache">Temporarily bypassing the DreamPress cache</span></h2>
+<div id="bypass_cache" class="section-link">&nbsp;</div>
+<h2>Temporarily bypassing the DreamPress cache</h2>
 <div class="solvvy-solution">
 <p>The Proxy Cache Purge plugin includes a 'Development Mode' feature, which allows you to temporarily bypass caching for all visitors. This prevents visitors from seeing any old cached content on your WordPress site. You might find this useful if your site is still under development or if you are making major changes to the design. In addition, if you are having issues with a theme or plugin, your developer may ask you to try disabling the cache for further testing.</p>
 <div class="notebox-important">
@@ -147,11 +131,12 @@
 </ol>
 <p>Development Mode remains active for 24 hours, after which it disables and caching resumes normally. You can also manually disable Development Mode on this same page by returning to the 'Settings' page and unchecking the <span class="text-object">Development Mode</span> checkbox and then saving it.</p>
 </div>
-<h2><span id="why_purge">When would I need to purge my cache?</span></h2>
+<div id="why_purge" class="section-link">&nbsp;</div>
+<h2>When would I need to purge my cache?</h2>
 <div class="solvvy-solution">
 <p>When you make changes to your site such as customizing or creating new content, the new changes may not show live yet because the old version of your site is cached. Purging your cache can help to push your changes live so visitors see the most recent version of your site.</p>
 </div>
-<h2><span id="manually_plugin">Manually purging the cache via the plugin</span></h2>
+<h2>Manually purging the cache via the plugin</h2>
 <div class="solvvy-solution">
 <p>The Proxy Cache Purge plugin includes a 'Purge Cache' button located in the WP-Admin toolbar at the top:</p>
 <dl>
@@ -176,7 +161,7 @@
 <p>If you need to selectively purge specific files such as CSS you manually changed and uploaded via SFTP/SSH, you'll need to do it via SSH for now.</p>
 </div>
 </div>
-<h2><span id="manually_ssh">Manually purging the cache via SSH</span></h2>
+<h2>Manually purging the cache via SSH</h2>
 <div class="solvvy-solution">
 <p>To manually purge the DreamPress cache, you must verify that the DreamPress user is a <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access">shell account</a>, and make use of the WP-CLI command-line tool while logged into your domain via <a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a>.</p>
 <p>The following is an example command of how to purge a single CSS file:</p>
@@ -190,13 +175,10 @@
 </pre>
 </div>
 </div>
-<h2><span id="see">See also</span></h2>
+<h2>See also</h2>
 <div class="solvvy-hidden">
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/214581158-DreamPress-overview">DreamPress overview </a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/214581728-DreamPress-FAQs">DreamPress FAQs</a></li>
 </ul>
-</div>
-</div>
-</div>
 </div>
