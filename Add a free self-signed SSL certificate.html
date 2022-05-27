@@ -1,0 +1,118 @@
+<h2>Overview</h2>
+<div class="solvvy-solution">
+<p>A self-signed certificate is an SSL certificate that has not been validated by a Certificate Authority (CA). That's what meant in that it is 'self' signed.</p>
+<p>The level of encryption can be the same as any other certificate, but because it's not validated by a CA, the browser will display a warning when visiting the site.</p>
+<p>For this reason, these types of certificates are only recommended for internal use on your website where no visitor would ever see or come into contact with.&nbsp;</p>
+</div>
+<h2><span id="self_signed_warnings">Browser warnings for self-signed certificates</span></h2>
+<div class="solvvy-solution">
+<p>Because a trusted authority did not sign it, browsers cannot trust it. It will still function normally, but visitors to your site will see a warning. Below are examples of what a visitor would see in Firefox and Chrome.</p>
+<div class="notebox-important">
+<p>If you want to attract visitors to your site, <strong>DO NOT</strong> use a self-signed certificate.</p>
+</div>
+<p><strong>Firefox</strong></p>
+<p><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-05_ssl_self_signed_warning_01.png" alt="" width="684" height="456" /></p>
+<p><strong>Chrome</strong></p>
+<p><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-05_ssl_self_signed_warning_02.png" alt="" width="563" height="452" /></p>
+</div>
+<h2>Creating a self-signed certificate</h2>
+<div class="solvvy-solution">
+<p>There is no way in the DreamHost panel to add a self-signed certificate. You have two options to create this type of cert.</p>
+<ul>
+<li>Create it via SSH command line</li>
+<li>3rd party website</li>
+</ul>
+<h3>Creating a self-signed certificate via SSH</h3>
+<p>You can run these commands on a Linux or Mac computer, however these instructions show how to log into your DreamHost web server to run the commands.</p>
+<ol>
+<li>Log into your DreamHost web server via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH</a>.</li>
+<li>Connect to your domain via SSH. Visit the SSH article for instructions.</li>
+<li>Once logged into your server via SSH, make sure you're in your <a href="https://help.dreamhost.com/hc/en-us/articles/360001219231-Where-is-the-home-directory-#the-users-home-directory" target="_self">user's home directory</a>:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~</span></pre>
+</div>
+</li>
+<li>Run <span class="code">openssl</span> to create your private key which you will use to create the CSR. Type in the following to open the OpenSSL command line tool.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">openssl</span></pre>
+</div>
+<dl>
+<dd><em>Your command prompt now changes to <span class="code">OpenSSL&gt;</span> which means you’re ready to run the following commands.</em></dd>
+</dl>
+</li>
+<li>Generate a new RSA private key by entering the following command without a password:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">OpenSSL&gt; </span><span class="command">genrsa -out Private.key 2048</span>
+Generating RSA private key, 2048 bit long modulus
+........................................................+++
+........................................................+++
+e is 65537 (0x10001)</pre>
+</div>
+</li>
+<li>Using this new private key, create the certificate.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">OpenSSL&gt; </span><span class="command">req -new -x509 -key Private.key -out Certificate.crt -days 365</span>
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter '.', the field will be left blank.
+-----
+Country Name (2 letter code) [AU]:
+State or Province Name (full name) [Some-State]:
+Locality Name (eg, city) []:
+Organization Name (eg, company) [Internet Widgits Pty Ltd]:
+Organizational Unit Name (eg, section) []:
+Common Name (e.g. server FQDN or YOUR name) []:
+Email Address []:</pre>
+</div>
+</li>
+<li>The step above asks you for your site information to create a CSR. You can just click through these options without entering anything since your browser will throw a warning for the Self-Signed certificate by default.</li>
+<li>Log out of OpenSSL
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">OpenSSL&gt;</span><span class="command"> quit</span></pre>
+</div>
+</li>
+<li>Check to confirm your private key and certificate have been created.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">ls -1</span>
+Certificate.crt
+Private.key</pre>
+</div>
+</li>
+</ol>
+<p>Now that the private key and certificate have been created, you can install them in your panel using the following article:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215089668-Install-a-third-party-SSL-certificate">Install a third-party SSL certificate</a></li>
+</ul>
+<p>Using SSH, you can open the files to view their contents by running cat:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cat Certificate.crt</span>
+<span class="server">[server]$ </span><span class="command">cat Private.key</span></pre>
+</div>
+<h3>Creating a self-signed cert with an online website</h3>
+<p>There are several websites that allow you to create a self-signed certificate within it such as the following:</p>
+<ul>
+<li><a href="https://getacert.com/index.html" target="_self">https://getacert.com/index.html</a></li>
+</ul>
+</div>
+<h2>Forcing your site to load HTTPS be default</h2>
+<div class="solvvy-solution">
+<p>Even after you have added the SSL certificate to your site, visitors will not be able to use it unless they manually type in <span class="text-object">https</span> before your domain name. This defeats the purpose of adding it in the first place since the certificate is meant to protect all of your website traffic.</p>
+<p>There are several ways to fix this. View the following article for instructions on how to create a configuration file to redirect all visitor traffic to the secure version of your URL (<span class="text-object">https</span>).</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115003505112-How-to-force-your-site-to-redirect-to-https-SSL-">How to force your site to redirect to https (SSL)</a></li>
+</ul>
+</div>
+<h2>See also</h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="/hc/en-us/articles/215089118-Adding-an-SSL-certificate-overview">Adding an SSL certificate overview</a></li>
+<li><a href="/hc/en-us/articles/216539558-Let-s-Encrypt-SSL-certificate-overview">Let's Encrypt SSL certificate overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216041537-SSL-certificates-overview">SSL certificates overview</a></li>
+<li><a href="/hc/en-us/articles/215089778-What-do-I-need-from-DreamHost-before-purchasing-a-third-party-SSL-certificate-">What do I need from DreamHost before purchasing a third party SSL certificate?</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215089748-Purchase-a-professionally-signed-SSL-certificate">Purchase a professionally-signed SSL certificate</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215089668-Install-a-third-party-SSL-certificate">Install a third-party SSL certificate</a></li>
+</ul>
+</div>
