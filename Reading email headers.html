@@ -1,0 +1,93 @@
+<h2>Overview</h2>
+<div class="solvvy-solution">
+<p>Viewing your message headers is like looking at the map that your email takes when being delivered to your mailbox. Understandably this map is very helpful in finding out the causes for many email problems that can be experienced on any system. From delayed mail to email bounces, headers are the number one clue in troubleshooting delivery issues that may occur.</p>
+</div>
+<h2><span id="Understanding_received_message_headers">Understanding received message headers</span></h2>
+<div class="solvvy-solution">
+<p>By default, mail clients will only show you the basic headers of a message such as the sender and recipient. This information is useful, but it is not all of the information that you actually have access to. In your mail program, you can select a message then choose to <a href="https://help.dreamhost.com/hc/en-us/articles/215466778-Viewing-email-headers">view the message’s full header details</a>:</p>
+<div class="notebox-note">
+<p>You must read the header details from the bottom up to see the path of the message.</p>
+</div>
+<dl>
+<dd><img src="https://kbimages.dreamhosters.com/images/03_Atmail.png" alt="Headers6.fw.png" width="741" height="556" /></dd>
+</dl>
+<p>This information has kind of an odd trait. You must read it from the bottom up to see the path of the message. In the example above, the first line, shown as ‘Return-Path’, shows where the email was created and originally sent from. Each 'Received' line is a server the email passed through on its way to the recipient.</p>
+<p>The following is a quick overview of the basic fields you’ll see:</p>
+<dl>
+<dt><strong>Return-Path</strong></dt>
+<dd>If the message is rejected, it will be sent back to the email address listed here, which is also the sender of the message.</dd>
+</dl>
+<dl>
+<dt><strong>X-Original-To</strong></dt>
+<dd>The email address listed here is the original recipient of the email that was received.</dd>
+</dl>
+<dl>
+<dt><strong>Delivered-To</strong></dt>
+<dd>In the example listed above, you will see a strange looking email address here:</dd>
+</dl>
+<dl>
+<dd>Delivered-To: x15975942@homiemail-mx33.g.dreamhost.com</dd>
+</dl>
+<dl>
+<dd>The email user listed (to the left of the ‘@’ symbol) is the user ID for the recipient email address hosted with DreamHost. The server listed (to the right of the ‘@’ symbol) is your DreamHost mail server that received this particular message.</dd>
+</dl>
+<dl>
+<dt><strong>Received</strong></dt>
+<dd>There is a ‘Received by’ and ‘Received from’ details listed on the headers. When checking your headers, the ‘Received by’ is indicating that it was received by the IP or servername when the message was originally sent.</dd>
+</dl>
+<dl>
+<dd>The ‘Received from’ would be the server that sent or relayed the email at any specific point in the header.</dd>
+</dl>
+<dl>
+<dt><strong>DKIM-Signature</strong></dt>
+<dd>This shows the <a href="https://help.dreamhost.com/hc/en-us/articles/215029758-DKIM-records">DKIM</a> signature, if the email has one. All emails sent from DreamHost-hosted mail accounts are signed with DKIM. You can read more about DKIM signing in the DKIM article.</dd>
+</dl>
+<dl>
+<dt><strong>MIME-Version</strong></dt>
+<dd>1.0: This is just showing the MIME version at 1.0, which has no relevance in troubleshooting mail delivery.</dd>
+</dl>
+<dl>
+<dt><strong>X-Received</strong></dt>
+<dd>This shows the message being received at the first server. Then an ID is applied to it so the message can be tracked.</dd>
+</dl>
+<div class="notebox-note">
+<p>The example headers used are a very basic set of headers for a message. The test message sent to produce the example was as simple as it can get. When implementing other options such as message filtering and/or spam filtering, the headers will contain other added details pertaining to those additional settings.</p>
+</div>
+</div>
+<h2><span id="Tracking_the_message_delivery_through_the_headers">Tracking the message delivery through the headers</span></h2>
+<div class="solvvy-solution">
+<p>As noted above, headers are read starting from the bottom. In the same example from above, the message was originally sent on:</p>
+<div class="preboxcontainer">
+<pre class="prebox">Received: by 10.176.80.232 with HTTP; Thu, 22 Sep 2016 14:19:22 -0700 (PDT)
+</pre>
+</div>
+<p>This shows the message being received with the timestamp listed above. Once received, the 'X-Received' status applied the SMTP ID for that message, which was also done at the same time:</p>
+<div class="preboxcontainer">
+<pre class="prebox">X-Received: by 10.176.4.72 with SMTP id 66mr1541980uav.133.1474579162566; Thu, 22 Sep 2016 14:19:22 -0700 (PDT)
+</pre>
+</div>
+<p>The message was sent from a test Google user. The details below shows Google looking to pass the message off to the final recipient:</p>
+<div class="preboxcontainer">
+<pre class="prebox">Received: by mail-pa0-f52.google.com with SMTP id eu11so9302323pac.11 for &lt;user@thunderbird.dreamhosters.com&gt;; <br />Wed, 07 Jan 2015 20:50:12 -0800 (PST)
+
+from mail-ua0-f172.google.com (mail-ua0-f172.google.com [209.85.217.172]) <br />(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits)) <br />(No client certificate requested) by homiemail-mx33.g.dreamhost.com (Postfix) <br />with ESMTPS id 7C9F08009A15 for &lt;user@dreamhostexample.com&gt;; Thu, 22 Sep 2016 14:19:23 -0700 (PDT)
+</pre>
+</div>
+<p>From there, it went from Google to your DreamHost incoming server at 'homiemail-mx18'. That MX server then delivered the message to the final recipient.</p>
+<p>As you can see, the entire delivery process only took 1 second from the point it was sent to the point it was received.</p>
+<div class="notebox-note">
+<p>There are tools that help to evaluate the message headers of a message:&nbsp;</p>
+<ul>
+<li>Google has one here: <a href="https://toolbox.googleapps.com/apps/messageheader/analyzeheader" target="_self" rel="undefined">toolbox.googleapps.com/apps/messageheader/analyzeheader</a></li>
+<li>Here's another one: <a href="https://mxtoolbox.com/EmailHeaders.aspx" target="_self" rel="undefined">mxtoolbox.com/EmailHeaders.aspx</a></li>
+</ul>
+</div>
+</div>
+<h2>See also</h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215466588-Reading-sent-and-bounced-email-headers">Reading sent and bounced email headers</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215466778-Viewing-email-headers">Viewing email headers</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/217114867-Viewing-email-headers-using-webmail">Viewing email headers using Webmail</a></li>
+</ul>
+</div>

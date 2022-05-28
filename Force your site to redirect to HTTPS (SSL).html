@@ -1,0 +1,42 @@
+<h2>Overview</h2>
+<div class="solvvy-solution">
+<p>When you <a href="https://help.dreamhost.com/hc/en-us/articles/215089118-Adding-an-SSL-certificate-overview" target="_self">add an SSL certificate</a> to your website in the panel, DreamHost automatically redirects the URL visitors use to view your site from <span class="text-object">HTTP</span> to <span class="text-object">HTTPS</span>. The <span class="text-object">S</span> ensures that your connection is encrypted. For example:</p>
+<ul>
+<li><strong>https</strong>://example.com</li>
+</ul>
+<p>There's nothing on your end you must do in order to force your site to use the secure URL.</p>
+</div>
+<h2>Adding custom code to force the redirect</h2>
+<div class="solvvy-solution">
+<p>In some special cases, it may be necessary for you to create your own custom configuration file to force the redirect from <span class="text-object">HTTP</span> to <span class="text-object">HTTPS</span>. To create this file, you must log in to your server via FTP or SSH as described below.</p>
+<p><strong>Adding custom code is only necessary if your website requires specific code to force the redirect</strong>. As stated above, your site will automatically redirect when you add an SSL certificate in the panel, so adding custom rules is only necessary if your website requires them.</p>
+<div class="alert-warning">
+<p>If you need to manually force the redirect to <span class="text-object">HTTPS</span> using specialized rules, you must first disable the automatic redirect in your panel.&nbsp;View the following article for instructions on how to remove the DreamHost service that automatically redirects your site to <span class="text-object">HTTPS</span>.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360027022831-Disabling-the-automatic-redirect-to-HTTPS" target="_self">Disabling the automatic redirect to HTTPS</a></li>
+</ul>
+<p>When the DreamHost redirect is no longer active, only your custom code will control the redirect to the <span class="text-object">HTTPS</span> version of your site.</p>
+</div>
+</div>
+<h2>Using the panel's redirect service to force HTTPS</h2>
+<div class="solvvy-solution">
+<p>It is not possible to use the <a href="https://help.dreamhost.com/hc/en-us/articles/215455377#redirect_to_https" target="_self">panel's Redirect service</a> to force your site to load the <span class="text-object">HTTPS</span> version of its URL.</p>
+<p>This is because the <span class="text-object">HTTPS</span> service only functions when the site is Fully Hosted, and the Redirect service removes hosting from the domain.</p>
+</div>
+<h2>What configuration file do I need to create?</h2>
+<div class="solvvy-solution">
+<p>If your site requires custom code to force the redirect to <span class="text-object">HTTPS</span>, you will need to update a configuration file for your domain on the server. The name and location of the custom configuration file is different depending on what type of server your site is running on. This would either be Apache or Nginx.</p>
+<h3>For Apache servers</h3>
+<p>The majority of all DreamHost customers are running their site on an Apache server. In this case, you'd just need to create an <span class="text-object">.htaccess</span> file for your site.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215747758-Force-your-site-to-load-securely-with-an-htaccess-file">Force your site to load securely with an .htaccess file</a></li>
+</ul>
+<h3>For Nginx servers</h3>
+<p>If your site is running on a&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/215280058-Virtual-Private-Server-VPS-overview-">VPS</a> or <a href="https://help.dreamhost.com/hc/en-us/articles/215279658-Dedicated-server-overview">Dedicated</a> Server, and you have manually&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/214880148-Change-your-web-server-to-Nginx">configured it to run Nginx instead</a>, you need to create a <span class="text-object">redirects.conf</span> file. View the link below for further information.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115001397291" target="_self">Forcing your Nginx site to load securely</a></li>
+</ul>
+<div class="notebox-note">
+<p>Unless you've manually <a href="https://help.dreamhost.com/hc/en-us/articles/214880148-Change-your-web-server-to-Nginx" target="_self" rel="undefined">changed your VPS or Dedicated Server to run Nginx</a>, you are using Apache.</p>
+</div>
+</div>
