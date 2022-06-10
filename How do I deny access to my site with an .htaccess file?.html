@@ -1,6 +1,15 @@
-<h2>Creating an .htaccess file on your DreamHost web server</h2>
+<h2>Overview</h2>
 <div class="solvvy-solution">
-<p>View the following article for instructions on how to create an <span class="text-object">.htaccess</span> file on your web server:</p>
+<p>This article explains the different ways you can deny access to your website or specific parts of your site using an <span class="text-object">.htaccess</span> file.</p>
+<div class="notebox-note">
+<p>This article shows examples for both <a href="https://help.dreamhost.com/hc/en-us/articles/217214317-Apache-HTTP-Server" target="_self">Apache versions</a> 2.2 and 2.4.</p>
+<p>All DreamHost servers currently run version 2.4, but older 2.2 code will still function.</p>
+</div>
+</div>
+<div class="prereqs">
+<p><strong>Creating an .htaccess file on your DreamHost web server</strong></p>
+<div class="solvvy-solution">
+<p>The code examples in this article must be placed in the <span class="text-object">.htaccess</span> file of your website.&nbsp;View the following article for instructions on how to create an <span class="text-object">.htaccess</span> file on your web server:</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216456227#Creating_an_.htaccess_file">Creating an .htaccess file on your DreamHost web server</a></li>
 </ul>
@@ -11,17 +20,37 @@
 </ul>
 <p>Once the file has been created, you can add the code examples below to it.&nbsp;</p>
 </div>
+</div>
+<h2>Deny access to an entire website</h2>
+<div class="solvvy-solution">
+<p>The following code prevents anyone from viewing your website. Visitors will instead see a <span class="code">403</span> when viewing your website.</p>
+<h3>Apache 2.2</h3>
+<div class="preboxcontainer">
+<pre class="prebox">Order deny,allow
+Deny from all</pre>
+</div>
+<h3>Apache 2.4</h3>
+<div class="preboxcontainer">
+<pre class="prebox">Require all denied</pre>
+</div>
+</div>
 <h2><span id="Deny_access_to_files">Deny access to files</span></h2>
 <div class="solvvy-solution">
 <h3><span id="Denying_access_to_specific_file_extensions">Denying access to specific file extensions</span></h3>
 <p>The following code forces any file ending in .inc to throw a 403 Forbidden error when visited:</p>
+<h3>Apache 2.2</h3>
 <div class="preboxcontainer">
 <pre class="prebox">&lt;Files ~ "\.inc$"&gt;  
-Order Allow,Deny
-Deny from All
+  Order Allow,Deny
+  Deny from All
 &lt;/Files&gt;
 </pre>
 </div>
+</div>
+<h3>Apache 2.4</h3>
+<div class="preboxcontainer">
+<pre class="prebox">&lt;FilesMatch "\.(inc)$"&gt;<br />  Require all denied<br />&lt;/FilesMatch&gt;
+</pre>
 </div>
 <h2><span id="Denying_access_to_.22hidden.22_files">Denying access to "hidden" files</span></h2>
 <div class="solvvy-solution">
@@ -72,7 +101,9 @@ RewriteRule (^|/)blah(/|$) - [F]
 </div>
 <h2><span id="Denying_access_from_specific_IP_addresses">Denying access from specific IP addresses</span></h2>
 <div class="solvvy-solution">
-<p>If you have problems with certain visitors to your website, you can easily ban them. There are two different ways to ban visitors:</p>
+<p>If you have problems with certain visitors to your website, you can easily ban them.</p>
+<h3>Apache 2.2</h3>
+<p>There are two different ways to ban visitors:</p>
 <ul>
 <li>using their IP address, or</li>
 <li>the domain name from which they are visiting.</li>
@@ -91,19 +122,31 @@ RewriteRule (^|/)blah(/|$) - [F]
 <li><a href="https://ip2cidr.com/">IP to CIDR</a></li>
 </ul>
 </div>
+<h3>Apache 2.4</h3>
+<div class="preboxcontainer">
+<pre class="prebox">&lt;RequireAll&gt;<br />  Require all granted<br />  Require not ip xxx.xxx.xxx.xxx<br />&lt;/RequireAll&gt;</pre>
+</div>
 <h2><span id="Allowing_access_from_a_specific_IP">Allowing access from a specific IP</span></h2>
 <div class="solvvy-solution">
 <p>If you need to deny access to your site to everyone while still allowing yourself or another specific IP address to visit it, you can use something like this:</p>
+<h3>Apache 2.2</h3>
 <div class="preboxcontainer">
 <pre class="prebox">order deny,allow
 deny from all
 allow from <span class="code-highlight">&lt;YOUR_IP_ADDRESS&gt;</span>
 </pre>
 </div>
+<h3>Apache 2.4</h3>
+<div class="preboxcontainer">
+<pre class="prebox">&lt;RequireAll&gt;<br />  Require all denied<br />  Require ip <span class="code-highlight">&lt;YOUR_IP_ADDRESS&gt;</span><br />&lt;/RequireAll&gt;
+</pre>
+</div>
 </div>
 <h2><span id="Denying_access_from_a_specific_domain">Denying access from a specific domain</span></h2>
 <div class="solvvy-solution">
-<p>This denies access from anyone connecting to your site from <strong>www.example.com</strong>. If someone clicks on a link at <strong>example.com</strong> that redirects to your site, they then see a 403 Forbidden error:</p>
+<p>This denies access from anyone connecting to your site from <strong>www.example.com</strong>.</p>
+<h3>Apache 2.2</h3>
+<p>If someone clicks on a link at <strong>example.com</strong> that redirects to your site, they then see a 403 Forbidden error:</p>
 <div class="preboxcontainer">
 <pre class="prebox">SetEnvIfNoCase Referer "<span class="code-highlight">example.com</span>" bad_referer
 Order Allow,Deny
@@ -124,6 +167,13 @@ RewriteRule .* - [F]
 RewriteCond&nbsp;%{HTTP_REFERER} ^<span class="code-highlight">https://example.com/</span>
 RewriteRule /* <span class="code-highlight">https://www.google.com</span> [R,L]
 </pre>
+</div>
+<h3>Apache 2.4</h3>
+<div class="preboxcontainer">
+<pre class="prebox">&lt;RequireAll&gt;
+  Require all granted
+  Require not host <span class="code-highlight">example.com</span>
+&lt;/RequireAll&gt;</pre>
 </div>
 </div>
 <h2><span id="See_also">See also</span></h2>

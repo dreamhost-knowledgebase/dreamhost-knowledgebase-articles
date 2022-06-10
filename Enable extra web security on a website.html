@@ -1,0 +1,69 @@
+<h2>Overview</h2>
+<div class="solvvy-solution">
+<p><strong>mod_security</strong> is a Web Application Firewall (WAF) that filters and blocks known malicious HTTP requests. Blocked HTTP requests include many, but not all forms of Brute Force, Cross-Site Scripting (XSS), Remote File Inclusion (RFI) , Remote Execution, and SQL injection (SQLi) attacks.</p>
+<p>DreamHost enables mod_security for free by default. You can enable/disable this feature using the 'Extra Web Security' option in the panel.</p>
+</div>
+<h2>Where to enable this feature?</h2>
+<div class="solvvy-solution">
+<p>There are two sections in the panel this can be added:</p>
+<ul>
+<li>On the <span class="panel-page">Manage Domains</span> page</li>
+<li>When editing SSL settings</li>
+</ul>
+</div>
+<h2><span id="Enabling_mod_security">Enabling mod_security on the 'Manage Domains' page</span></h2>
+<div class="solvvy-solution">
+<ol>
+<li>Navigate to the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=domain.manage&amp;" target="_blank" rel="noopener noreferrer">Manage Domains</a> page.</li>
+<li>Click the <strong>Edit</strong> button under the <span class="text-object">Web Hosting</span> column.
+<dl>
+<dd><em>The <span class="panel-page">Manage Domains</span> page appears:</em></dd>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-enable-extra-security.png" alt="Enable extra security" width="563" height="135"></dd>
+</dl>
+<ul>
+<li>Under the <span class="text-section">Web Options</span> section, the checkbox titled <span class="text-object">Extra Web Security?</span> is enabled by default.</li>
+</ul>
+</li>
+<li>If you wish to disable mod_security, un-check this box and save the change(s).</li>
+</ol>
+<p>The Extra Web Security option enables the use of a special security module for your website. Many common attacks that can compromise your website are blocked by this option, but there are no guarantees that all attacks will be prevented. With Extra Web Security enabled, DreamHost proactively ensures that the most commonly known attacks are prevented.</p>
+</div>
+<h2><span id="mod_security_related_log_entries">mod_security related log entries</span></h2>
+<div class="solvvy-solution">
+<p>DreamHost uses the <a href="https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#4xx_Client_Error">HTTP response code 418</a>. If you see 418 response codes in your access.log files, it means that the request was blocked by mod_security. However, this may not mean a specific visitor was blocked, but rather a request to your website. You need to read your log entries to determine what caused the 418 error.</p>
+<p>Further details related to the block are often in the corresponding date stamped error.log entry. If you are having trouble deciphering why you are getting a 418 error in your log files, please don’t hesitate to contact support at <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=support.msg&amp;" target="_blank" rel="noopener noreferrer">Contact Support</a>.</p>
+</div>
+<h2><span id="DreamHost_mod_security_rules">DreamHost mod_security rules</span></h2>
+<div class="solvvy-solution">
+<p>While a majority of DreamHost’s mod_security rule set is custom created as threats emerge, the base of DreamHost’s mod_security rule set comes from the <a href="https://owasp.org/www-project-modsecurity-core-rule-set/">OWASP mod_security Core Rules Set</a>.</p>
+</div>
+<h2>'Unused' error message</h2>
+<div class="solvvy-solution">
+<p>When a 418 error response is triggered by a user visiting your site, the following error message appears:</p>
+<div class="preboxcontainer">
+<pre class="prebox">Unused. The server encountered an internal error or misconfiguration and was unable to complete your request.</pre>
+</div>
+<p>The 418 error indicates that there is a temporary ban by <span class="text-product">mod_security</span> on the server. Most often, this is triggered by multiple failed login attempts to a WordPress site. Once triggered, the message appears after any subsequent attempts to access the login page.</p>
+<div class="notebox-important">
+<p>DreamHost support is unable to remove this ban once it has been triggered. In order for the ban to expire, the user must stop accessing the server for 10 minutes.</p>
+</div>
+<p>If you are seeing the 418 error outside of the context of a WordPress site login, please review your <a href="/hc/en-us/sections/203242117-Logs">error and access logs</a> for 418 response codes or <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=support.msg&amp;" target="_blank" rel="noopener noreferrer">Contact Support</a>.</p>
+</div>
+<h2><span id="An_important_note_about_modifying_.htaccess_mod_security_rules">An important note about modifying .htaccess mod_security rules</span></h2>
+<div class="solvvy-solution">
+<p>Disabling and modifying of mod_security rules via .htaccess is not supported at this time.</p>
+</div>
+<h2><span id="See_also">See also</span></h2>
+<div class="solvvy-hidden">
+<h3>Internal links</h3>
+<ul>
+<li><a href="/hc/en-us/articles/215608187-Keeping-your-DreamHost-panel-secure">Keeping your DreamHost panel secure</a></li>
+<li><a href="/hc/en-us/articles/214916918-Keeping-your-website-secure">Keeping your website secure</a></li>
+</ul>
+<h3>External links</h3>
+<ul>
+<li><a href="https://github.com/SpiderLabs/ModSecurity">mod_security Official Site</a></li>
+<li><a href="https://github.com/SpiderLabs/ModSecurity/wiki">mod_security Reference Manual</a></li>
+<li><a href="https://modsecurity.comodo.com/">What is mod_security?</a></li>
+</ul>
+</div>
