@@ -1,0 +1,126 @@
+<h2>Creating an .htaccess file on your DreamHost web server</h2>
+<div class="solvvy-solution">
+<p>View the following article for instructions on how to create an <span class="text-object">.htaccess</span> file on your web server:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216456227#Creating_an_.htaccess_file">Creating an .htaccess file on your DreamHost web server</a></li>
+</ul>
+<p>If the file already exists, view the following articles for instructions on how to update it (depending on if you're using an FTP client or SSH):</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115000098272-Creating-and-editing-a-file-via-FTP">Creating and editing a file via FTP</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Creating and editing a file via SSH</a></li>
+</ul>
+</div>
+<h2><span id="GZIP">GZIP</span></h2>
+<div class="solvvy-solution">
+<div class="notebox-important">
+<p>DreamHost enables GZIP compression by default on all web hosting plans, so you do not need to take any further steps to turn it on for your site.</p>
+<p>However, please note that&nbsp;<span class="code">SSLCompression</span>&nbsp;is disabled on DreamHost servers by default due to a&nbsp;<a href="http://breachattack.com/">security vulnerability</a>&nbsp;when compression is combined with&nbsp;<span class="text-object">HTTPS</span>&nbsp;(using a TLS/<a href="https://help.dreamhost.com/hc/en-us/articles/215089118-Adding-an-SSL-certificate-overview">SSL</a>&nbsp;Certificate).</p>
+<p>You can read more about GZIP Compression and alternatives to use for HTTPS in the following article:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360005040932-Enable-GZIP-compression">Enable GZIP compression</a></li>
+</ul>
+</div>
+<p>DEFLATE is a lossless data compression algorithm similar to gzip, but it works in Apache 2. In the past, mod_gzip was a recommended tool. But DreamHost uses Apache 2 and mod_deflate, which calls gzip on the back end automatically.</p>
+<div class="notebox-note">
+<p>The following are default settings on DreamHost servers and do not need to be enabled. However, you can adjust these values in&nbsp;your <span class="text-object">.htaccess</span> file as needed:</p>
+</div>
+<div class="preboxcontainer">
+<pre class="prebox">&lt;ifmodule mod_deflate.c&gt;
+  # Compress HTML, CSS, JavaScript, Text, XML and fonts
+  AddOutputFilterByType DEFLATE image/svg+xml
+  AddOutputFilterByType DEFLATE application/javascript
+  AddOutputFilterByType DEFLATE application/rss+xml
+  AddOutputFilterByType DEFLATE application/vnd.ms-fontobject
+  AddOutputFilterByType DEFLATE application/x-font
+  AddOutputFilterByType DEFLATE application/x-font-opentype
+  AddOutputFilterByType DEFLATE application/x-font-otf
+  AddOutputFilterByType DEFLATE application/x-font-truetype
+  AddOutputFilterByType DEFLATE application/x-font-ttf
+  AddOutputFilterByType DEFLATE application/x-javascript
+  AddOutputFilterByType DEFLATE application/xhtml+xml
+  AddOutputFilterByType DEFLATE application/xml
+  AddOutputFilterByType DEFLATE font/opentype
+  AddOutputFilterByType DEFLATE font/otf
+  AddOutputFilterByType DEFLATE font/ttf
+  AddOutputFilterByType DEFLATE image/x-icon
+  AddOutputFilterByType DEFLATE text/css
+  AddOutputFilterByType DEFLATE text/html
+  AddOutputFilterByType DEFLATE text/javascript
+  AddOutputFilterByType DEFLATE text/plain
+  AddOutputFilterByType DEFLATE text/xml
+  # Remove browser bugs (only needed for really old browsers)
+  BrowserMatch ^Mozilla/4 gzip-only-text/html
+  BrowserMatch ^Mozilla/4\.0[678] no-gzip
+  BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
+  Header append Vary User-Agent
+&lt;/ifmodule&gt;</pre>
+</div>
+<p>View the following page for further details:</p>
+<ul>
+<li><a href="https://httpd.apache.org/docs/2.4/mod/mod_deflate.html" target="_self" rel="undefined">mod_deflate</a></li>
+</ul>
+</div>
+<h2><span id="Browser_caching">Browser caching</span></h2>
+<div class="solvvy-solution">
+<p>Using <a href="http://httpd.apache.org/docs/2.2/mod/mod_expires.html">mod_expires</a>, you can tell visiting browsers to hold on to certain files longer (likes images, which are rarely changed).</p>
+<div class="notebox-note">
+<p>The following are default settings on DreamHost servers and do not need to be enabled. However, you can adjust these values in&nbsp;your <span class="text-object">.htaccess</span> file as needed:</p>
+</div>
+<div class="preboxcontainer">
+<pre class="prebox"># BEGIN Expire headers  
+&lt;IfModule mod_expires.c&gt;  
+  # Turn on the module.
+  ExpiresActive on
+  # Set the default expiry times.
+  ExpiresDefault "access plus 2 days"
+  ExpiresByType image/jpg "access plus 1 month"
+  ExpiresByType image/svg+xml "access 1 month"
+  ExpiresByType image/gif "access plus 1 month"
+  ExpiresByType image/jpeg "access plus 1 month"
+  ExpiresByType image/png "access plus 1 month"
+  ExpiresByType text/css "access plus 1 month"
+  ExpiresByType text/javascript "access plus 1 month"
+  ExpiresByType application/javascript "access plus 1 month"
+  ExpiresByType application/x-shockwave-flash "access plus 1 month"
+  ExpiresByType image/ico "access plus 1 month"
+  ExpiresByType image/x-icon "access plus 1 month"
+  ExpiresByType text/html "access plus 600 seconds"
+&lt;/IfModule&gt;  
+# END Expire headers  
+</pre>
+</div>
+</div>
+<h2><span id="disabling-caching">Disabling caching</span></h2>
+<div class="solvvy-solution">
+<p>The examples above display DreamHost's default server settings. However, it may sometimes be necessary to disable caching completely. This can be accomplished by adding the following rules to your <span class="text-object">.htaccess</span> file.</p>
+<div class="notebox-important">
+<p>Disabling cache could significantly impact your site speed and site optimization scores. It's highly recommended that you leave caching active on your site to ensure it's responding as quickly as possible.</p>
+<p>Only proceed with adding the following rules if you are absolutely sure you know what you're doing and understand the consequences. You can test your site speed using some of the websites mentioned here:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216560958-#Website_loading_tools" target="_self">Website loading tools</a></li>
+</ul>
+</div>
+<div class="preboxcontainer">
+<pre class="prebox">#Disables GZIP
+SetEnv no-gzip 1
+    
+#Turns off the expires headers for Apache
+&lt;IfModule mod_expires.c&gt;
+  ExpiresActive Off
+&lt;/IfModule&gt;
+
+# Disable Caching
+&lt;IfModule mod_headers.c&gt;
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+    Header set Pragma "no-cache"
+    Header set Expires 0
+&lt;/IfModule&gt;</pre>
+</div>
+</div>
+<h2><span id="See_also">See also</span></h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216456227--htaccess-overview">.htaccess overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/217738987-What-can-I-do-with-an-htaccess-file-">What can I do with an .htaccess file?</a></li>
+</ul>
+</div>

@@ -1,0 +1,73 @@
+<h2>Creating an .htaccess file on your DreamHost web server</h2>
+<div class="solvvy-solution">
+<p>View the following article for instructions on how to create an <span class="text-object">.htaccess</span> file on your web server:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216456227#Creating_an_.htaccess_file">Creating an .htaccess file on your DreamHost web server</a></li>
+</ul>
+<p>If the file already exists, view the following articles for instructions on how to update it (depending on if you're using an FTP client or SSH):</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115000098272-Creating-and-editing-a-file-via-FTP">Creating and editing a file via FTP</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Creating and editing a file via SSH</a></li>
+</ul>
+</div>
+<h2>What to change in the examples below?</h2>
+<div class="solvvy-solution">
+<p>The examples below can be entered into your <span class="text-object">.htaccess</span> file exactly as shown.</p>
+<p>Only if the example contains a URL in bold should you change that to your actual URL. For example, if you see the domain <strong>example.com</strong>, change this to your own domain name.</p>
+</div>
+<h2><span id="Changing_the_file_extension">Changing the file extension</span></h2>
+<div class="solvvy-solution">
+<p>This example allows you to use a <span class="text-object">.zig</span> extension in addition to the regular <span class="text-object">.php</span> extension. So, you could access a file at <strong>example.zig</strong> as well as <strong>example.php</strong>:</p>
+<div class="preboxcontainer">
+<pre class="prebox">Options +FollowSymlinks
+RewriteEngine On
+RewriteBase /
+RewriteRule ^(.+)\.zig$ /$1.php [NC,L]
+</pre>
+</div>
+</div>
+<h2><span id="Forcing_other_file_extensions_to_load_as_PHP">Forcing other file extensions to load as PHP</span></h2>
+<div class="solvvy-solution">
+<p>View the following article which gives several examples on how to force any file extension to load as a <span class="text-object">.php</span> file.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214200788-Force-other-file-extensions-to-load-as-PHP">Force other file extensions to load as PHP</a></li>
+</ul>
+</div>
+<h2><span id="Removing_the_file_extension">Removing the file extension</span></h2>
+<div class="solvvy-solution">
+<p>This example completely removes the file extension from your URL. So, <span class="text-object">example.php</span> would appear as <span class="text-object">example</span>. The following example is for .php files, but for any other type, just replace .php with your desired type and add those lines and extensions in the same way:</p>
+<div class="preboxcontainer">
+<pre class="prebox">RewriteEngine On
+RewriteCond&nbsp;%{THE_REQUEST} ^[A-Z]{3,9}\ /.*index\ HTTP/
+RewriteRule ^(.*)index$ http://<span class="code-highlight">example.com</span>/$1 [L,R=301]
+
+RewriteCond&nbsp;%{REQUEST_FILENAME}&nbsp;!-d
+RewriteRule ^([^/]+)/$ http://<span class="code-highlight">example.com</span>/$1 [L,R=301]
+
+RewriteCond&nbsp;%{THE_REQUEST} ^[A-Z]{3,9}\ /(.+)\.php\ HTTP/
+RewriteRule ^(.+)\.php$ http://<span class="code-highlight">example.com</span>/$1 [L,R=301]
+RewriteRule ^([a-z]+)$ /$1.php [L]
+</pre>
+</div>
+</div>
+<h2><span id="Allowing_a_file_to_load_without_the_extension">Allowing a file to load without the extension</span></h2>
+<div class="solvvy-solution">
+<p>This example does not automatically remove the file extension. However, it does allow the file to be loaded without the extension. So, if <span class="text-object">example.com/test.php</span> exists, you can then load it as <span class="text-object">example.com/test</span>:</p>
+<div class="preboxcontainer">
+<pre class="prebox">Options +FollowSymlinks
+RewriteEngine On
+RewriteBase /
+RewriteCond&nbsp;%{REQUEST_FILENAME}&nbsp;!-f
+RewriteCond&nbsp;%{REQUEST_FILENAME}&nbsp;!-d
+RewriteCond&nbsp;%{REQUEST_FILENAME}.php -f
+RewriteRule ^(.+)$ /$1.php [L,QSA]
+</pre>
+</div>
+</div>
+<h2><span id="See_also">See also</span></h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216456227--htaccess-overview">.htaccess overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/217738987-What-can-I-do-with-an-htaccess-file-">What can I do with an .htaccess file?</a></li>
+</ul>
+</div>

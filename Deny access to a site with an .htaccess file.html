@@ -1,0 +1,185 @@
+<h2>Overview</h2>
+<div class="solvvy-solution">
+<p>This article explains the different ways you can deny access to your website or specific parts of your site using an <span class="text-object">.htaccess</span> file.</p>
+<div class="notebox-note">
+<p>This article shows examples for both <a href="https://help.dreamhost.com/hc/en-us/articles/217214317-Apache-HTTP-Server" target="_self">Apache versions</a> 2.2 and 2.4.</p>
+<p>All DreamHost servers currently run version 2.4, but older 2.2 code will still function.</p>
+</div>
+</div>
+<div class="prereqs">
+<p><strong>Creating an .htaccess file on your DreamHost web server</strong></p>
+<div class="solvvy-solution">
+<p>The code examples in this article must be placed in the <span class="text-object">.htaccess</span> file of your website.&nbsp;View the following article for instructions on how to create an <span class="text-object">.htaccess</span> file on your web server:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216456227#Creating_an_.htaccess_file">Creating an .htaccess file on your DreamHost web server</a></li>
+</ul>
+<p>If the file already exists, view the following articles for instructions on how to update it (depending on if you're using an FTP client or SSH):</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115000098272-Creating-and-editing-a-file-via-FTP">Creating and editing a file via FTP</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Creating and editing a file via SSH</a></li>
+</ul>
+<p>Once the file has been created, you can add the code examples below to it.&nbsp;</p>
+</div>
+</div>
+<h2>Deny access to an entire website</h2>
+<div class="solvvy-solution">
+<p>The following code prevents anyone from viewing your website. Visitors will instead see a <span class="code">403</span> when viewing your website.</p>
+<h3>Apache 2.2</h3>
+<div class="preboxcontainer">
+<pre class="prebox">Order deny,allow
+Deny from all</pre>
+</div>
+<h3>Apache 2.4</h3>
+<div class="preboxcontainer">
+<pre class="prebox">Require all denied</pre>
+</div>
+</div>
+<h2><span id="Deny_access_to_files">Deny access to files</span></h2>
+<div class="solvvy-solution">
+<h3><span id="Denying_access_to_specific_file_extensions">Denying access to specific file extensions</span></h3>
+<p>The following code forces any file ending in .inc to throw a 403 Forbidden error when visited:</p>
+<h3>Apache 2.2</h3>
+<div class="preboxcontainer">
+<pre class="prebox">&lt;Files ~ "\.inc$"&gt;  
+  Order Allow,Deny
+  Deny from All
+&lt;/Files&gt;
+</pre>
+</div>
+</div>
+<h3>Apache 2.4</h3>
+<div class="preboxcontainer">
+<pre class="prebox">&lt;FilesMatch "\.(inc)$"&gt;<br />  Require all denied<br />&lt;/FilesMatch&gt;
+</pre>
+</div>
+<h2><span id="Denying_access_to_.22hidden.22_files">Denying access to "hidden" files</span></h2>
+<div class="solvvy-solution">
+<p>File names beginning with a dot are considered "hidden" by UNIX. Usually, you don't want to serve them to visitors.</p>
+<p>DreamHost already disallows retrieving <span class="text-object">.htaccess</span> and <span class="text-object">.htpasswd</span>, but you can recursively deny all access to all hidden files by placing the following into a top-level <span class="text-object">.htaccess</span>:</p>
+<div class="preboxcontainer">
+<pre class="prebox">RedirectMatch 403 /\..*$</pre>
+</div>
+</div>
+<h2><span id="Deny_access_to_folders">Deny access to folders</span></h2>
+<div class="solvvy-solution">
+<h3><span id="Denying_access_to_a_directory_listing">Denying access to a directory listing</span></h3>
+<p>If you don't have an index file in your directory, all of your files are listed in a directory list for anyone to view. The following code forces this directory listing to throw a 403 Forbidden error instead when visited:</p>
+<div class="preboxcontainer">
+<pre class="prebox">Options -Indexes
+</pre>
+</div>
+</div>
+<h2><span id="Denying_access_during_a_specific_hour_of_the_day">Denying access during a specific hour of the day</span></h2>
+<div class="solvvy-solution">
+<p>If you wish to block access to files in a directory during a specific time of day, then you can do so by adding the following code to an <span class="text-object">.htaccess</span> file:</p>
+<div class="preboxcontainer">
+<pre class="prebox">RewriteEngine On
+# If the hour is 16 (4 PM)
+RewriteCond&nbsp;%{TIME_HOUR} ^16$
+# Then deny all access
+RewriteRule ^.*$ - [F,L]
+</pre>
+</div>
+<p>If someone visits the directory anytime between 4:00 – 4:59 pm, a 500 Internal Server error is thrown. You can also specify multiple hours as well:</p>
+<div class="preboxcontainer">
+<pre class="prebox">RewriteEngine On
+# Multiple hour blocks
+# If the hour is 4 PM or 5 PM or 8 AM
+RewriteCond&nbsp;%{TIME_HOUR} ^16|17|08$
+# Then deny all access
+RewriteRule ^.*$ - [F,L]</pre>
+</div>
+</div>
+<h2><span id="Denying_access_to_a_directory">Denying access to a directory</span></h2>
+<div class="solvvy-solution">
+<p>If you have a directory named <span class="text-object">blah</span> that you want to block, but it can occur anywhere in your directory tree, use the following:</p>
+<div class="preboxcontainer">
+<pre class="prebox">RewriteEngine On
+RewriteRule (^|/)blah(/|$) - [F]
+</pre>
+</div>
+</div>
+<h2><span id="Denying_access_from_specific_IP_addresses">Denying access from specific IP addresses</span></h2>
+<div class="solvvy-solution">
+<p>If you have problems with certain visitors to your website, you can easily ban them.</p>
+<h3>Apache 2.2</h3>
+<p>There are two different ways to ban visitors:</p>
+<ul>
+<li>using their IP address, or</li>
+<li>the domain name from which they are visiting.</li>
+</ul>
+<p>Here's an example that denies a user by their IP address:</p>
+<div class="preboxcontainer">
+<pre class="prebox">deny from 173.236.241.100</pre>
+</div>
+<p>When the user tries to connect to your site from that specific IP, they see a 403 Forbidden page instead. If you want to block an entire block of IPs, just leave the last octet off. For example:</p>
+<div class="preboxcontainer">
+<pre class="prebox">deny from 173.236.241.</pre>
+</div>
+<p>This denies access from anyone using an IP in the range from 173.236.241.0 all the way up to 173.236.241.255.</p>
+<p>The following link is a useful online tool that automatically generates an IP range for you:</p>
+<ul>
+<li><a href="https://ip2cidr.com/">IP to CIDR</a></li>
+</ul>
+</div>
+<h3>Apache 2.4</h3>
+<div class="preboxcontainer">
+<pre class="prebox">&lt;RequireAll&gt;<br />  Require all granted<br />  Require not ip xxx.xxx.xxx.xxx<br />&lt;/RequireAll&gt;</pre>
+</div>
+<h2><span id="Allowing_access_from_a_specific_IP">Allowing access from a specific IP</span></h2>
+<div class="solvvy-solution">
+<p>If you need to deny access to your site to everyone while still allowing yourself or another specific IP address to visit it, you can use something like this:</p>
+<h3>Apache 2.2</h3>
+<div class="preboxcontainer">
+<pre class="prebox">order deny,allow
+deny from all
+allow from <span class="code-highlight">&lt;YOUR_IP_ADDRESS&gt;</span>
+</pre>
+</div>
+<h3>Apache 2.4</h3>
+<div class="preboxcontainer">
+<pre class="prebox">&lt;RequireAll&gt;<br />  Require all denied<br />  Require ip <span class="code-highlight">&lt;YOUR_IP_ADDRESS&gt;</span><br />&lt;/RequireAll&gt;
+</pre>
+</div>
+</div>
+<h2><span id="Denying_access_from_a_specific_domain">Denying access from a specific domain</span></h2>
+<div class="solvvy-solution">
+<p>This denies access from anyone connecting to your site from <strong>www.example.com</strong>.</p>
+<h3>Apache 2.2</h3>
+<p>If someone clicks on a link at <strong>example.com</strong> that redirects to your site, they then see a 403 Forbidden error:</p>
+<div class="preboxcontainer">
+<pre class="prebox">SetEnvIfNoCase Referer "<span class="code-highlight">example.com</span>" bad_referer
+Order Allow,Deny
+Allow from ALL
+Deny from env=bad_referer
+</pre>
+</div>
+<p>This example throws a 500 Internal Server Error for anyone linking from <strong>example.com</strong>:</p>
+<div class="preboxcontainer">
+<pre class="prebox">RewriteEngine on
+RewriteCond&nbsp;%{HTTP_REFERER} <span class="code-highlight">example\.com</span> [NC,OR]
+RewriteRule .* - [F]
+</pre>
+</div>
+<p>The following example redirects any visitor connecting from <strong>example.com</strong> to <strong>google.com</strong>:</p>
+<div class="preboxcontainer">
+<pre class="prebox">RewriteEngine On
+RewriteCond&nbsp;%{HTTP_REFERER} ^<span class="code-highlight">https://example.com/</span>
+RewriteRule /* <span class="code-highlight">https://www.google.com</span> [R,L]
+</pre>
+</div>
+<h3>Apache 2.4</h3>
+<div class="preboxcontainer">
+<pre class="prebox">&lt;RequireAll&gt;
+  Require all granted
+  Require not host <span class="code-highlight">example.com</span>
+&lt;/RequireAll&gt;</pre>
+</div>
+</div>
+<h2><span id="See_also">See also</span></h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216456227--htaccess-overview">.htaccess overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/217738987-What-can-I-do-with-an-htaccess-file-">What can I do with an .htaccess file?</a></li>
+</ul>
+</div>

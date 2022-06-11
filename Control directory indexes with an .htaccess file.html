@@ -1,0 +1,96 @@
+<h2>Creating an .htaccess file on your DreamHost web server</h2>
+<div class="solvvy-solution">
+<p>View the following article for instructions on how to create an <span class="text-object">.htaccess</span> file on your web server:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216456227#Creating_an_.htaccess_file">Creating an .htaccess file on your DreamHost web server</a></li>
+</ul>
+<p>If the file already exists, view the following articles for instructions on how to update it (depending on if you're using an FTP client or SSH):</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115000098272-Creating-and-editing-a-file-via-FTP">Creating and editing a file via FTP</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Creating and editing a file via SSH</a></li>
+</ul>
+</div>
+<h2><span id="What_are_directory_indexes.3F">What is directory indexing?</span></h2>
+<div class="solvvy-solution">
+<p>Directory indexing allows visitors to&nbsp;view a list of files instead of the actual webpage. When&nbsp;directory indexing is enabled, visitors can look inside any directory that does not have an <span class="text-object">index.html</span> (or <span class="text-object">index.php</span>, etc.) file in it and browse the contents of the directory. This is probably not the behavior you typically want, especially if said directory contains something like script configuration files that could pose a security risk.</p>
+<p>Directory indexing is enabled by default at DreamHost. This allows you to further control what files control your site when visited.</p>
+</div>
+<h2>'Coming soon' page displays even though it doesn't exist</h2>
+<div class="solvvy-solution">
+<p>If your web server was recently upgraded to Ubuntu 18 (Bionic), you may see your site displaying a 'Coming Soon' page that does not exist on your web server. Add the following line to your site's <span class="text-object">.htaccess</span> file to resolve this.</p>
+<div class="preboxcontainer">
+<pre class="prebox">DirectoryIndex disabled</pre>
+</div>
+</div>
+<h2><span id="Turning_off_directory_indexes">Turning off directory indexes</span></h2>
+<div class="solvvy-solution">
+<p>Place the following line in an <span class="text-object">.htaccess</span> file in your domain's folder to disable directory indexes throughout your entire site:</p>
+<div class="preboxcontainer">
+<pre class="prebox">Options -Indexes
+</pre>
+</div>
+<p>Now, if someone tries to browse the contents of any directory of your site, they'll get a 403 (Forbidden) error.</p>
+<div class="notebox-note">
+<p>If a subdirectory contains an index file (such as <span class="text-object">index.html</span>), that directory will still load. This option only disables directories without index files.</p>
+</div>
+</div>
+<h2><span id="Turning_on_directory_indexes_for_specific_folders">Turning on directory indexes for specific folders</span></h2>
+<div class="solvvy-solution">
+<p>If there's a particular directory in your site that you do want people to be able to browse, simply create a new <span class="text-object">.htaccess</span> file in that particular folder. Add the following:</p>
+<div class="preboxcontainer">
+<pre class="prebox">DirectoryIndex disabled
+Options +Indexes</pre>
+</div>
+<p>This overrides the "global" setting and allows users to view the content of that directory.</p>
+</div>
+<h2><span id="Alternative_index_files">Alternative index files</span></h2>
+<div class="solvvy-solution">
+<p>When a visitor accesses your website, the server checks the folder for an index file. Some examples of common index files are:</p>
+<ul>
+<li><span class="text-object">index.htm</span></li>
+<li><span class="text-object">index.html</span></li>
+<li><span class="text-object">index.php</span></li>
+<li><span class="text-object">index.cgi</span></li>
+<li><span class="text-object">index.pl</span></li>
+</ul>
+<p>The supported index files depend on how the server is set up. DreamHost's servers are set to:</p>
+<div class="preboxcontainer">
+<pre class="prebox">DirectoryIndex index.html index.shtml index.htm Index.html Index.htm Index.shtml default.htm Default.htm default.html Default.html default.shtml Default.shtml page1.html index.pl index.cgi index.php index.php3 index.phtml home.htm home.html home.shtml index.wml index.pcgi quickstart.html
+</pre>
+</div>
+<ul>
+<li>As long as you name your "index" file any one of the above, it will automatically load.</li>
+</ul>
+<ul>
+<li>When you add a new domain/subdomain to your account, DreamHost creates a <span class="text-object">quickstart.html</span> file for you and places it in your directory which loads by default unless you delete it or add your own index file.</li>
+</ul>
+<ul>
+<li>If you have two files with names from the list above, Apache shows the one that appears first (e.g., <span class="text-object">index.html</span> will show up, even if you have an <span class="text-object">index.php</span> file in the same directory).</li>
+</ul>
+<ul>
+<li>You can change your own DirectoryIndex setting to be anything you like using an <span class="text-object">.htaccess</span> file. If the server cannot find an index file, it tries to display an index of all the files within the current directory; however if this is disabled, the server ends up displaying a 404 forbidden error.</li>
+</ul>
+<p>Using an <span class="text-object">.htaccess</span> file, you can change the index file to something else other than any of the index defaults listed above. To do this, insert the following line into an <span class="text-object">.htaccess</span> file:</p>
+<div class="preboxcontainer">
+<pre class="prebox">DirectoryIndex <span class="code-highlight">pagename.html</span></pre>
+</div>
+<p>Change <span class="text-object">pagename.html</span> to the page that you wish to use as the index file. If you then visit your site, the <span class="text-object">pagename.html</span> file is what displays, not your <span class="text-object">index.html</span> file.</p>
+<p>If you specify something like <span class="text-object">example.html</span> to be the directoryindex and you have not uploaded this file to your web directory, Apache shows a listing of all files since it cannot find the one you specified. Be careful where you place this rule (or any rule), because it is recursive.</p>
+</div>
+<h2><span id="Fail_safe_directory_listing">Fail safe directory listing</span></h2>
+<div class="solvvy-solution">
+<p>The following allows a specific file to load just in case there is no default index file already set up:</p>
+<div class="preboxcontainer">
+<pre class="prebox">Options -Indexes
+DirectoryIndex index.php index.html <span class="code-highlight">/example.php</span>
+</pre>
+</div>
+<p>When a visitor requests a directory, Apache searches for <span class="text-object">index.php</span>, then <span class="text-object">index.html</span>, and if neither are found it displays <span class="text-object">/example.php</span>.</p>
+</div>
+<h2><span id="See_also">See also</span></h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216456227--htaccess-overview">.htaccess overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/217738987-What-can-I-do-with-an-htaccess-file-">What can I do with an .htaccess file?</a></li>
+</ul>
+</div>

@@ -1,0 +1,39 @@
+<h2>Creating an .htaccess file on your DreamHost web server</h2>
+<div class="solvvy-solution">
+<p>View the following article for instructions on how to create an <span class="text-object">.htaccess</span> file on your web server:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216456227#Creating_an_.htaccess_file">Creating an .htaccess file on your DreamHost web server</a></li>
+</ul>
+<p>If the file already exists, view the following articles for instructions on how to update it (depending on if you're using an FTP client or SSH):</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115000098272-Creating-and-editing-a-file-via-FTP">Creating and editing a file via FTP</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Creating and editing a file via SSH</a></li>
+</ul>
+</div>
+<h2>Pointing your site to the maintenance page</h2>
+<div class="solvvy-solution">
+<p>If your site is going into maintenance, you can forward visitors to a maintenance message automatically. First, you must create a file named <span class="text-object">maintenance.html</span> in your web directory.</p>
+<p>View the following articles for instructions on how to create a file:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214894037-Create-a-phprc-file-via-FTP">Create a phprc file via FTP</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214200668-Create-a-phprc-file-via-SSH">Create a phprc file via SSH</a></li>
+</ul>
+<p>Then, add the following to your <span class="text-object">.htaccess</span> file. You only need to change the URL in bold to whatever page you'd like to display.</p>
+<div class="preboxcontainer">
+<pre class="prebox">Options +FollowSymlinks
+RewriteEngine On
+RewriteBase /
+RewriteCond&nbsp;%{REQUEST_URI}&nbsp;!/<span class="code-highlight">maintenance.html</span>$
+RewriteRule .* /<span class="code-highlight">maintenance.html</span> [L]
+</pre>
+</div>
+<p>If you now visit the site, it automatically loads the contents of the <span class="text-object">maintenance.html</span> file, but the URL does not change.</p>
+<p>You can replace [L] with [R=307,L] if you prefer that the user see the URL change to <strong>example.com/maintenance.html</strong>. However, this is usually not what you want.</p>
+</div>
+<h2><span id="See_also">See also</span></h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216456227--htaccess-overview">.htaccess overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/217738987-What-can-I-do-with-an-htaccess-file-">What can I do with an .htaccess file?</a></li>
+</ul>
+</div>
