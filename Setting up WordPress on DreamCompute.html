@@ -12,6 +12,10 @@
 <p>This example will use Ubuntu 20, but you can use whichever flavor of Linux you prefer. As long as you can install Apache, PHP, and database software, WordPress will be able to run.</p>
 <p>Whichever image you pick, remember it's better to use instances with a volume boot disk as they are permanent (as opposed to instances with <a href="https://help.dreamhost.com/hc/en-us/articles/217701757-What-s-the-difference-between-ephemeral-and-volume-boot-disks-">ephemeral boot disks</a>).</p>
 </div>
+<div class="steps-section--container">
+<div class="steps-section--border">&nbsp;</div>
+<div class="steps-section--content">
+<div class="steps-section--step"><img class="steps-number-icon" src="https://kbimages.dreamhosters.com/graphics/number-1.svg" width="50px" />
 <h2>Step 1 — Point DNS to your instance</h2>
 <div class="solvvy-solution">
 <p>First, you'll need to point the DNS of your domain to the instance. View the following article for details:</p>
@@ -19,6 +23,7 @@
 <li><a class="reference external" href="https://help.dreamhost.com/hc/en-us/articles/218672058-Configuring-DNS-for-your-domains">Configuring DNS for your domains</a></li>
 </ul>
 </div>
+<div class="steps-section--step"><img class="steps-number-icon" src="https://kbimages.dreamhosters.com/graphics/number-2.svg" width="50px" />
 <h2>Step 2 — Add SSH Access</h2>
 <div class="solvvy-solution">
 <p>WordPress users often need SSH access in order to accomplish specific configurations within WordPress. By default, this is disabled, so you will need to edit your SSH config using a text editor, such as vim, emacs, or nano (this one is easiest for beginners). View the following article for further information:</p>
@@ -26,6 +31,7 @@
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/360000281572-Adding-SSH-access-to-your-users">Adding SSH access to your users</a></li>
 </ul>
 </div>
+<div class="steps-section--step"><img class="steps-number-icon" src="https://kbimages.dreamhosters.com/graphics/number-3.svg" width="50px" />
 <h2>Step 3 — Create a user with sudo privileges</h2>
 <div class="solvvy-solution">
 <p>While it is not required to make a separate user on the instance for WordPress, it's strongly recommended for security. View the following article for further information:</p>
@@ -37,6 +43,7 @@
 </div>
 <p>After creating the user, assign it sudo privileges. Then log in to your instance using the default user. Once logged in, switch to the new user before continuing.</p>
 </div>
+<div class="steps-section--step"><img class="steps-number-icon" src="https://kbimages.dreamhosters.com/graphics/number-4.svg" width="50px" />
 <h2>Step 4 — Install LAMP</h2>
 <div class="solvvy-solution">
 <p>While you certainly can install everything on its own, the LAMP stack for Ubuntu is perfect for WordPress. A separate DreamHost article on how to configure LAMP is available below, but you can just run the following commands to install.</p>
@@ -65,13 +72,15 @@
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215912838-Configuring-security-groups">Configuring security groups</a>&nbsp;</li>
 </ul>
 </div>
+<div class="steps-section--step"><img class="steps-number-icon" src="https://kbimages.dreamhosters.com/graphics/number-5.svg" width="50px" />
 <h2>Step 5 — Configure the MySQL server</h2>
 <div class="solvvy-solution">
 <p>You must now configure and secure the MySQL server by adding a password and choosing which features you'd like to disable. View the following link for instructions.</p>
 <ul>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/215879487#secure-mysql" target="_blank" rel="noopener">Securing MySQL</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215879487#secure-mysql" target="_blank" rel="noopener noreferrer">Securing MySQL</a></li>
 </ul>
 </div>
+<div class="steps-section--step"><img class="steps-number-icon" src="https://kbimages.dreamhosters.com/graphics/number-6.svg" width="50px" />
 <h2>Step 6 — Create a folder for your website</h2>
 <div class="solvvy-solution">
 <p>Create a folder for the website.</p>
@@ -84,6 +93,7 @@
 <pre class="prebox"><span class="server">[exampleuser@instance]$ </span><span class="command">sudo chown -R <span class="code-highlight">exampleuser</span>:www-data /var/www/<span class="code-highlight">example.com</span>/</span></pre>
 </div>
 </div>
+<div class="steps-section--step"><img class="steps-number-icon" src="https://kbimages.dreamhosters.com/graphics/number-7.svg" width="50px" />
 <h2>Step 7 — Configure the site's VirtualHosts file</h2>
 <div class="solvvy-solution">
 <p>Next, you'll want to configure VirtualHosts so your instance's Apache service knows how to handle the domain. To do this, you need to create a <span class="text-object">.conf</span> file.</p>
@@ -92,7 +102,7 @@
 </pre>
 </div>
 <p>It is recommended that you name the file after your domain, so that you can always know what <span class="text-object">.conf</span> file is for what domain.</p>
-<p>Edit the file. <a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH" target="_blank" rel="noopener">You can use the vim or nano editor</a>.</p>
+<p>Edit the file. <a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH" target="_blank" rel="noopener noreferrer">You can use the vim or nano editor</a>.</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[exampleuser@instance]$ </span><span class="command">sudo vim /etc/apache2/sites-available/<span class="code-highlight">example.com</span>.conf</span></pre>
 </div>
@@ -137,6 +147,8 @@ To activate the new configuration, you need to run:
 </pre>
 </div>
 </div>
+</div>
+<div class="steps-section--step"><img class="steps-number-icon" src="https://kbimages.dreamhosters.com/graphics/number-8.svg" width="50px" />
 <h2>Step 8 — Create the database and users</h2>
 <div class="solvvy-solution">
 <p>WordPress requires a database. To create one, start by accessing the MySQL service installed by LAMP earlier.</p>
@@ -147,11 +159,13 @@ Enter password:
 </div>
 <p>Enter the password that you created for the MySQL root user in step #5 above.</p>
 <p>Your command prompt changes to <span class="text-object">mysql&gt;</span>. You can now create&nbsp;the database and assign a new user to it with their own unique password.</p>
+</div>
 <h3>Create the database</h3>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">mysql&gt; </span><span class="command">CREATE DATABASE <span class="code-highlight">wordpressdb</span> DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;</span></pre>
 </div>
 <p>This creates a new database named <span class="text-object">wordpressdb</span>.</p>
+</div>
 <h3>Create a database user</h3>
 <p>Run the following command to create a user for this database.</p>
 <div class="notebox-note">
@@ -175,6 +189,7 @@ Enter password:
 </div>
 <p>This logs you into the MySQL server and your command prompt changes to <span class="text-object">mysql&gt;</span>.</p>
 </div>
+<div class="steps-section--step"><img class="steps-number-icon" src="https://kbimages.dreamhosters.com/graphics/number-9.svg" width="50px" />
 <h2>Step 9 — Install WP-CLI</h2>
 <div class="solvvy-solution">
 <p>While this is optional, it is strongly recommended. DreamHost includes WP-CLI on all its managed servers due to its usefulness. For more information about WP-CLI, view the project homepage below.</p>
@@ -213,6 +228,8 @@ WP-CLI version: 2.5.0</pre>
 <span class="server">[exampleuser@instance]$ </span><span class="command">sudo mv wp-cli.phar /usr/local/bin/wp</span></pre>
 </div>
 </div>
+</div>
+<div class="steps-section--step"><img class="steps-number-icon" src="https://kbimages.dreamhosters.com/graphics/number-10.svg" width="50px" />
 <h2>Step 10 — Install WordPress</h2>
 <div class="solvvy-solution">
 <p>Navigate into your site's directory and use WP-CLI to download the latest version of WordPress.</p>
@@ -246,6 +263,8 @@ Success: WordPress installed successfully.
 </div>
 <p>Visit your domain to see a new WordPress site has been created.</p>
 </div>
+</div>
+<div class="steps-section--step"><img class="steps-number-icon" src="https://kbimages.dreamhosters.com/graphics/number-11.svg" width="50px" />
 <h2>Step 11 — Set permissions</h2>
 <div class="solvvy-solution">
 <h3>Setting directory and file permissions</h3>
@@ -278,6 +297,7 @@ mode of 'wp-config.php' changed from 0644 (rw-r--r--) to 0640 (rw-r-----)
 </pre>
 </div>
 </div>
+<div class="steps-section--step"><img class="steps-number-icon" src="https://kbimages.dreamhosters.com/graphics/number-12.svg" width="50px" />
 <h2>Step 12 — Editing the wp-config.php file</h2>
 <div class="solvvy-solution">
 <p>You must now add a line to the bottom of the <span class="text-object">wp-config.php</span> file.</p>
@@ -289,6 +309,15 @@ mode of 'wp-config.php' changed from 0644 (rw-r--r--) to 0640 (rw-r-----)
 <pre class="prebox">define('FS_METHOD', 'direct');</pre>
 </div>
 <p>You can now install Themes and Plugins within the WordPress dashboard.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 <h2>Additional configurations</h2>
 <div class="solvvy-solution">
