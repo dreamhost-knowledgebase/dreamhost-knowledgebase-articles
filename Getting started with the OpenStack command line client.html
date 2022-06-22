@@ -108,68 +108,20 @@
 </div>
 <p>This lists the instances you have in your tennant with some basic information about them.</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack image list</span>
-+--------------------------------------+---------------+-------------+
-| ID                                   | Name          | Status      |
-+--------------------------------------+---------------+-------------+
-| 76a93b4b-566c-41eb-ab9d-26ce5be04010 | CentOS-7      | active      |
-| 0c35ed32-a053-4481-8bac-efd3a5f9513e | CoreOS-Stable | active      |
-| 0415d69c-28b3-4bfd-ab64-711c699c60b9 | Debian-8      | active      |
-| cbd81524-f477-4d7c-963c-84699acf711b | Debian-9      | active      |
-| b0a29bbc-dd13-4305-8380-043b86356edf | Fedora-25     | active      |
-| 03b1467b-4c5d-4f85-aa62-035841a88aca | Fedora-29     | active      |
-| 03a87e23-77e5-403b-a437-10e0b28b2583 | Ubuntu-14.04  | active      |
-| 04f22a69-bdfe-4c2d-b996-aab8d69e4a0e | Ubuntu-16.04  | active      |
-| fc6510a1-c057-4a74-bac9-3d8b74270038 | Ubuntu-17.10  | active      |
-| b86ca11c-e7c1-4ae1-8580-62c464b19dfd | Ubuntu-18.04  | active      |
-+--------------------------------------+---------------+-------------+</pre>
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack image list --status active</span>
++--------------------------------------+--------------+--------+<br />| ID                                   | Name         | Status |<br />+--------------------------------------+--------------+--------+<br />| e87001f8-475e-403e-830d-24484187da08 | Debian-10    | active |<br />| 3272eb6f-b9cc-472e-ab0f-972670fc56a4 | Debian-11    | active |<br />| 40d4bb2e-bf2e-4af7-8b09-3bc6bd83fd65 | Debian-9     | active |<br />| b20aa3ec-2fd9-4350-80b3-0d590bd5998f | Fedora-33    | active |<br />| f9ef2681-3083-43ae-83b6-7c3e3be08ee3 | Fedora-34    | active |<br />| d920b7b4-36a4-4d46-b1f0-70c1bc9c9530 | Fedora-35    | active |<br />| 03a87e23-77e5-403b-a437-10e0b28b2583 | Ubuntu-14.04 | active |<br />| 6d73bd0e-1db4-452a-84c6-adaad0bae72a | Ubuntu-18.04 | active |<br />| 6da7de0c-fb47-4ffc-9f72-58323efcc842 | Ubuntu-20.04 | active |<br />| 2b2c61c6-324c-47f4-88c1-9ae8a978ddfd | Ubuntu-22.04 | active |<br />+--------------------------------------+--------------+--------+</pre>
 </div>
 <p>This lists the images available to your tennant.</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack volume list</span>
-+--------------------------------------+-----------------------------+-----------+------+---------------------------------+
-| ID                                   | Display Name                | Status    | Size | Attached to                     |
-+--------------------------------------+-----------------------------+-----------+------+---------------------------------+
-| 21cb1ef8-8541-4919-a8e0-2af66e547b03 | db_volume                   | available |   10 |                                 |
-| 2b3ce54e-7445-4d9e-a153-d03b120f1d1a | Meretricious Nibblet Volume | available |   10 |                                 |
-+--------------------------------------+-----------------------------+-----------+------+---------------------------------+</pre>
++--------------------------------------+------+--------+------+-----------------------------------+<br />| ID                                   | Name | Status | Size | Attached to                       |<br />+--------------------------------------+------+--------+------+-----------------------------------+<br />| 539dcff1-117b-472a-8cf6-f7069d8a545f |      | in-use | 3    | Attached to Ubuntu22 on /dev/vda  |<br />+--------------------------------------+------+--------+------+-----------------------------------+</pre>
 </div>
 <p>This lists the volumes you have created.</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server create --key-name <span class="code-highlight">my_key</span> --image <span class="code-highlight">Ubuntu-16.04</span> --flavor <span class="code-highlight">100 awesome_server</span></span>
-+--------------------------------------+-----------------------------------------------------+
-| Field                                | Value                                               |
-+--------------------------------------+-----------------------------------------------------+
-| OS-DCF:diskConfig                    | MANUAL                                              |
-| OS-EXT-AZ:availability_zone          | iad-2                                               |
-| OS-EXT-STS:power_state               | NOSTATE                                             |
-| OS-EXT-STS:task_state                | scheduling                                          |
-| OS-EXT-STS:vm_state                  | building                                            |
-| OS-SRV-USG:launched_at               | None                                                |
-| OS-SRV-USG:terminated_at             | None                                                |
-| accessIPv4                           |                                                     |
-| accessIPv6                           |                                                     |
-| addresses                            |                                                     |
-| adminPass                            | DCa8su7uHQUR                                        |
-| config_drive                         |                                                     |
-| created                              | 2016-12-02T19:46:41Z                                |
-| flavor                               | gp1.subsonic (100)                                  |
-| hostId                               |                                                     |
-| id                                   | 24c4538d-6607-4546-95b4-49ee9aa4a26a                |
-| image                                | Ubuntu-16.04 (30a2a55a-2045-4ed8-a605-2d1c1143edd3) |
-| key_name                             | my_key                                              |
-| name                                 | awesome_server                                      |
-| os-extended-volumes:volumes_attached | []                                                  |
-| progress                             | 0                                                   |
-| project_id                           |                                                     |
-| properties                           |                                                     |
-| security_groups                      | [{u'name': u'default'}]                             |
-| status                               | BUILD                                               |
-| updated                              | 2016-12-02T19:46:42Z                                |
-| user_id                              |                                                     |
-+--------------------------------------+-----------------------------------------------------+</pre>
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server create --key-name <span class="code-highlight">my_key</span> --image <span class="code-highlight">Ubuntu-22.04</span> --flavor <span class="code-highlight">100 awesome_server</span></span>
+</pre>
 </div>
-<p>This creates an Ubuntu 16.04 instance with the gp1.subsonic flavor (ID 100), and uses the key called <code class="docutils literal"><span class="pre">my_key</span></code>.</p>
+<p>This creates an Ubuntu 22.04 instance with the gp1.subsonic flavor (ID 100), and uses the key called <code class="docutils literal"><span class="pre">my_key</span></code>.</p>
 </div>
 <div class="clearer">&nbsp;</div>
 <div class="footer">&nbsp;</div>
