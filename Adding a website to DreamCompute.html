@@ -3,6 +3,10 @@
 <p>There are several steps you must take to add your website to DreamCompute. Make sure you follow the steps below in order.</p>
 <p>All steps assume you're running commands under the <a href="https://help.dreamhost.com/hc/en-us/articles/228377408-How-to-find-the-default-user-of-an-image">default user of your instance</a>.</p>
 </div>
+<div class="steps-section--container">
+<div class="steps-section--border">&nbsp;</div>
+<div class="steps-section--content">
+<div class="steps-section--step"><img class="steps-number-icon" src="https://kbimages.dreamhosters.com/graphics/number-1.svg" width="50px" />
 <h2>Step 1 — Create an instance</h2>
 <div class="solvvy-solution">
 <p>You must first launch a new instance. You can do this in the DreamCompute dashboard, or by using the OpenStack CLI. View the following articles for instructions:</p>
@@ -10,14 +14,18 @@
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215912848-How-to-launch-an-instance-using-the-DreamCompute-dashboard">How to launch an instance using the DreamCompute dashboard</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216511617-How-to-launch-an-instance-using-the-OpenStack-CLI">How to launch an instance using the OpenStack CLI</a></li>
 </ul>
+</div>
+<div class="steps-section--step"><img class="steps-number-icon" src="https://kbimages.dreamhosters.com/graphics/number-2.svg" width="50px" />
 <h2>Step 2 — Point your DNS to the new instance</h2>
 <p>You must now log into your DreamHost panel. There you can adjust the DNS on your domain to point to your DreamCompute instance.</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/218672058-Configuring-DNS-for-your-domains">Configuring DNS for your domains</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/115001754711-Locating-the-IP-Address-of-your-instance">Locating the IP address of your instance</a></li>
 </ul>
-<h2>Step 3 — Install Apache or LAMP on the instance</h2>
-<p>Log into your instance using the <a href="https://help.dreamhost.com/hc/en-us/articles/216201547-Connect-to-your-instance-with-SSH-keys-overview">Key Pair</a> and the <a href="https://help.dreamhost.com/hc/en-us/articles/228377408-How-to-find-the-default-user-of-an-image">default user assigned to it</a>. Install Apache based on what image you choose to create the instance from. Below shows how to do this on Ubuntu.</p>
+</div>
+<div class="steps-section--step"><img class="steps-number-icon" src="https://kbimages.dreamhosters.com/graphics/number-3.svg" width="50px" />
+<h2>Step 3&nbsp;— Install Apache or LAMP on the instance</h2>
+<p>Log into your instance using the&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/216201547-Connect-to-your-instance-with-SSH-keys-overview">Key Pair</a>&nbsp;and the&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/228377408-How-to-find-the-default-user-of-an-image">default user assigned to it</a>. Install Apache based on what image you choose to create the instance from. Below shows how to do this on Ubuntu.</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215879457-How-to-Configure-Apache-on-DreamCompute-Running-Debian-or-Ubuntu">How to Configure Apache on DreamCompute Running Debian or Ubuntu</a></li>
 </ul>
@@ -25,6 +33,8 @@
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215879467-How-to-Configure-LAMP-on-DreamCompute-running-Debian-or-Ubuntu">How to Configure LAMP on DreamCompute running Debian or Ubuntu</a></li>
 </ul>
+</div>
+<div class="steps-section--step"><img class="steps-number-icon" src="https://kbimages.dreamhosters.com/graphics/number-4.svg" width="50px" />
 <h2>Step 4 — Create a new user</h2>
 <p>Create a new user for the website. Make sure to assign the user sudo privileges, then log in as the new user.</p>
 <ul>
@@ -34,24 +44,27 @@
 <p>The remaining commands in this article assume you're logged in as the new user you just created.</p>
 </div>
 </div>
-<div id="add-ssh-access"> </div>
+<div id="add-ssh-access">&nbsp;</div>
+</div>
+<div class="steps-section--step"><img class="steps-number-icon" src="https://kbimages.dreamhosters.com/graphics/number-5.svg" width="50px" />
 <h2>Step 5 — Add SSH access</h2>
 <p>Depending on the permissions your user may need, you may want to enable SSH for the user. This allows the user to log into the instance via SSH, as opposed to security keys.</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/360000281572-Adding-SSH-access-to-your-users">Adding SSH access to your users</a></li>
 </ul>
-<div id="add-your-domain"> </div>
-<h2>Step 6 — Add your domain</h2>
+<div id="add-your-domain">&nbsp;</div>
+</div>
+<div class="steps-section--step"><img class="steps-number-icon" src="https://kbimages.dreamhosters.com/graphics/number-6.svg" width="50px" />
+<h2>Step 6&nbsp;— Add your domain</h2>
 <div class="notebox-note">
 <p>In the following examples, <span class="code">username</span> would be your <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access" target="_self">Shell user</a> and <strong>example.com</strong> your website.</p>
 </div>
-
 <p>Make a folder for the website under your new username.</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">sudo mkdir /home/<span class="code-highlight">username</span>/<span class="code-highlight">example.com</span></span>
 </pre>
 </div>
-<p>Configure VirtualHosts so your instance knows how to handle the domain. To do this, you need to make a <span class="text-object">.conf</span> file.</p>
+<p>Configure VirtualHosts so your instance knows how to handle the domain.&nbsp;To do this, you need to make a <span class="text-object">.conf</span> file.</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">sudo touch /etc/apache2/sites-available/<span class="code-highlight">example.com.conf</span></span>
 </pre>
@@ -91,7 +104,9 @@ To activate the new configuration, you need to run:
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">sudo service apache2 reload</span></pre>
 </div>
-<h2>Step 7 — Enable userdir</h2>
+</div>
+<div class="steps-section--step"><img class="steps-number-icon" src="https://kbimages.dreamhosters.com/graphics/number-7.svg" width="50px" />
+<h2>Step 7&nbsp;— Enable userdir</h2>
 <p>Run the following under your default user:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">sudo a2enmod userdir</span>
@@ -120,13 +135,17 @@ To activate the new configuration, you need to run:
 <pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">sudo service apache2 reload</span></pre>
 </div>
 <p>If you view your site now, you'll see it resolving on the DreamCompute instance.</p>
-<h2>Step 8 — Adding a Let's Encrypt certificate</h2>
-<p>If you now add a <a href="https://help.dreamhost.com/hc/en-us/articles/222168828-Setting-up-Let-s-Encrypt-on-DreamCompute-with-Apache">'Let Encrypt' certificate</a> it will be installed on your domain without further configuration. The configuration file will also show under:</p>
+</div>
+<div class="steps-section--step"><img class="steps-number-icon" src="https://kbimages.dreamhosters.com/graphics/number-8.svg" width="50px" />
+<h2>Step 8&nbsp;— Adding a Let's Encrypt certificate</h2>
+<p>If you now add a <a href="https://help.dreamhost.com/hc/en-us/articles/222168828-Setting-up-Let-s-Encrypt-on-DreamCompute-with-Apache">'Let Encrypt' certificate</a>&nbsp;it will be installed on your domain without further configuration. The configuration file will also show under:</p>
 <div class="preboxcontainer">
 <pre class="prebox">/etc/apache2/sites-available/</pre>
 </div>
-<p>If you visit your site now, you should see it resolving from your <a href="https://help.dreamhost.com/hc/en-us/articles/360001219231-Where-is-the-home-directory-#the-users-home-directory" target="_self">user's /home directory</a>.<span style="font-family: monospace, monospace; font-size: 1em;"> </span></p>
-
+<p>If you visit your site now, you should see it resolving from your <a href="https://help.dreamhost.com/hc/en-us/articles/360001219231-Where-is-the-home-directory-#the-users-home-directory" target="_self">user's /home directory</a>.<span style="font-family: monospace, monospace; font-size: 1em;">&nbsp;</span></p>
+</div>
+</div>
+</div>
 <h2>Editing site files with an FTP client</h2>
 <div class="solvvy-solution">
 <p>When site permissions are set to user:user, your FTP client can update files normally. However, depending on your website's functionality, it may need to communicate directly with Apache.</p>
