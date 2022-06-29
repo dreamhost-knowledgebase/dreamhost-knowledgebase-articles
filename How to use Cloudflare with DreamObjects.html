@@ -1,83 +1,79 @@
 <h2>Overview</h2>
 <div class="solvvy-solution">
 <p>This article explains how to configure a DreamObjects bucket so that its content can be accelerated and protected using Cloudflare.</p>
-</div>
-<h2>Prerequisites</h2>
-<div class="solvvy-solution">
+<div class="prereqs">
+<p><strong>Prerequisites</strong></p>
 <p>This article assumes the following about your website configuration:</p>
 <ul>
 <li>Your <a href="https://help.dreamhost.com/hc/en-us/articles/215767937-Domain-registration-overview">domain is registered</a> with DreamHost</li>
 <li>You have a <a href="https://help.dreamhost.com/hc/en-us/articles/214823108-DreamObjects-overview">DreamObjects account</a> set up</li>
 </ul>
 </div>
-<h2>Create a Cloudflare account</h2>
-<div class="solvvy-solution">
-<p>You can create directly with Cloudflare:</p>
-<ul>
-<li><a href="https://www.cloudflare.com/">https://www.cloudflare.com/</a></li>
-</ul>
 </div>
-<h2>Add your domain to your Cloudflare account</h2>
+<div class="steps-section--container">
+<div class="steps-section--border">&nbsp;</div>
+<div class="steps-section--content">
+<div class="steps-section--step"><img class="steps-number-icon" src="https://kbimages.dreamhosters.com/graphics/number-1.svg" width="50px" />
+<h2>Step 1 — Add your domain to a free Cloudflare account</h2>
 <div class="solvvy-solution">
-<p>Add your domain to your Cloudflare account. This assigns a pair of Cloudflare nameservers to the domain and allows you to manage your domain's DNS entries at Cloudflare. For more information about adding a domain to Cloudflare, see their documentation here:</p>
+<p>View the following article for instructions on how to create free account with Cloudflare:</p>
 <ul>
-<li><a href="https://support.cloudflare.com/hc/en-us/articles/201720164-Creating-a-Cloudflare-account-and-adding-a-website#2YulMb5YJTVnMxgAgNWdS2" target="_self">Add a domain to Cloudflare</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/7087974733332-Create-a-free-Cloudflare-account">Create a free Cloudflare account</a></li>
 </ul>
-<p>During this process you'll see the nameservers Cloudflare assigns to your domain. They will appear like this:</p>
+<p><span style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 15px;">After you've added your domain, Cloudflare assigns your specific nameservers. </span>They will appear like this:</p>
 <img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/3rd-cloudflare-add-free-account-07.png" width="356" height="140" />
-<p>Copy those nameservers as you'll need to change them in your DreamHost panel in the next step.</p>
+<p>Continue to follow the instructions in the article above to update your domain's nameservers at DreamHost to use these new Cloudflare nameservers.</p>
 </div>
-<h2>Point the domain's nameservers to Cloudflare</h2>
-<div class="solvvy-solution">
-<p>In your <a href="https://panel.dreamhost.com">DreamHost account</a>, update your domain registration's nameservers to point to Cloudflare. For more information about changing a domain's nameservers to Cloudflare, view the following articles:</p>
-<ul>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/360038897151-Changing-your-nameservers-at-DreamHost">Changing your nameservers at DreamHost</a></li>
-<li><a href="https://support.cloudflare.com/hc/en-us/articles/205195708-Step-3-Change-your-domain-name-servers-to-Cloudflare">Change your domain name servers to Cloudflare — Cloudflare Support</a></li>
-</ul>
-</div>
-<h2>Create a bucket and Cloudflare DNS record</h2>
-<div class="solvvy-solution">
-<p>Create a bucket and subdomain to use when accessing your content.</p>
-<div class="notebox-important">
-<p>The name you give the bucket must be the same name you give your subdomain. This name must also be a fully-qualified domain name (FQDN). For example, if your new bucket is named <strong>mynewbucket.example.com</strong>, the DNS entry you create within the Cloudflare panel should be <strong>mynewbucket.example.com</strong>.</p>
-<p>This example uses <strong>mycdn<cite>.example.com</cite></strong>.</p>
-</div>
-<h3>Create a bucket in your DreamObjects panel</h3>
-<p>Create a bucket named <strong>mycdn.example.com</strong>. View the following article for instructions on how to create a new bucket in your DreamObjects panel.</p>
+<div class="steps-section--step"><img class="steps-number-icon" src="https://kbimages.dreamhosters.com/graphics/number-2.svg" width="50px" />
+<h2>Step 2 — Create a bucket in your DreamObjects panel</h2>
+<p>View the following article for instructions on how to create a new bucket in your DreamObjects panel.</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215321178-DreamObjects-Buckets">DreamObjects buckets</a></li>
 </ul>
+<p>The new bucket should be named something like <strong>mycdn.example.com</strong>. This is how it would look after adding it to your DreamObjects panel:</p>
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/dho-cloudflare-bucket-name.png" width="220" height="111" /></dd>
+</dl>
 <div class="notebox-important">
-<p>if you have an existing bucket that you would like to use with this solution, you will need to "rename" the bucket by migrating its contents. View the following article for instruction on how to do that:</p>
+<p>You can name the bucket anything you like, but the name must be the same name you give your subdomain in the Cloudflare panel. This name must also be a fully-qualified domain name (FQDN).</p>
+<p>For example, if your new bucket is named <strong>mynewbucket.example.com</strong>, the DNS entry you create within the Cloudflare panel should be <strong>mynewbucket.example.com</strong>.</p>
+<p>This example uses <strong>mycdn<cite>.example.com</cite></strong>.</p>
 </div>
+<h3>Migrating an existing bucket</h3>
+<p>if you have an existing bucket that you would like to use with this solution, you will need to "rename" the bucket by migrating its contents. View the following article for instruction on how to do that:</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/360052395291-Renaming-a-bucket-using-the-panel-migration-tool">Renaming a bucket using the panel migration tool</a></li>
 </ul>
-<h3>Create a CNAME record in your Cloudflare account</h3>
-<ol>
-<li>Log into your Cloudflare account.
-<dl>
-<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/Cloudflare_DNS.png" alt="Cloudflare_DNS.png" /></dd>
-</dl>
-</li>
-<li>Click the DNS button in the top menu.</li>
-<li>You'll see several DNS fields below. Create a CNAME DNS record with the following settings. Make sure to change 'mycdn' to your bucket name and <strong>example.com</strong> to your actual domain name:
-<dl>
-<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/Cloudflare_DNS_record.png" alt="Cloudflare_DNS_record.png" /></dd>
-</dl>
-</li>
-</ol>
-<ul>
-<li><strong>Type</strong>: In the dropdown menu, select 'CNAME'</li>
-<li><strong>Name</strong>: mycdn.example.com</li>
-<li><strong>Target</strong>: mycdn.example.com.objects-us-east-1.dream.io</li>
+</div>
+<div class="steps-section--step"><img class="steps-number-icon" src="https://kbimages.dreamhosters.com/graphics/number-3.svg" width="50px" />
+<h2>Step 3 — Create a CNAME record in your Cloudflare account</h2>
+<p>View the following article for instructions on how to add a DNS record in your Cloudflare panel.</p>
+<ul class="article-list">
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/7181260919572-Updating-DNS-records-at-Cloudflare">Updating DNS records at Cloudflare</a></li>
 </ul>
+<p>Create a CNAME DNS record with the following settings. Make sure to change <span class="text-object">mycdn</span> to your bucket name and <strong>example.com</strong> to your actual domain name:</p>
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/cloudflare-dho-cname-record.png" /></dd>
+</dl>
+<ul>
+<li><strong>Type</strong>: In the dropdown menu, select <span class="text-object">CNAME</span></li>
+<li><strong>Name</strong>: <span class="text-object">mycdn</span></li>
+<li><strong>Target</strong>: <span class="text-object">mycdn.example.com.objects-us-east-1.dream.io</span></li>
+</ul>
+<p>Click the&nbsp;<strong>Save</strong> button to save this new DNS record.</p>
 <p>For more information about adding CNAME records in Cloudflare, see their documentation here:</p>
 <ul>
 <li><a href="https://support.cloudflare.com/hc/en-us/articles/360020615111-Configuring-a-CNAME-setup" target="_self">Configuring a CNAME setup</a></li>
 </ul>
 </div>
+</div>
+</div>
+</div>
 <h2>How long until it's working?</h2>
 <div class="solvvy-solution">
 <p>As soon as DNS information propagates, your bucket's content will be reachable using the subdomain record you created.</p>
+<p>For example, if you've <a href="https://help.dreamhost.com/hc/en-us/articles/215253518-Uploading-a-file-from-the-DreamHost-panel-into-DreamObjects" target="_self">uploaded an image to your bucket</a> named <span class="text-object">myimage.png</span>, you can now reach it at:</p>
+<ul>
+<li><strong>mycdn.example.com/myimage.png</strong></li>
+</ul>
 </div>

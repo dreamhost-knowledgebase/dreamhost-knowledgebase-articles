@@ -114,9 +114,31 @@ $</span></pre>
 <span class="server">[server]$ </span><span class="command">mkdir <span class="code-highlight">example.com.git</span></span>
 <span class="server">[server]$ </span><span class="command">cd ~/<span class="code-highlight">example.com.git</span></span>
 <span class="server">[server]$ </span><span class="command">git init --bare</span>
-<span class="server">[server]$ </span><span class="command">exit</span>
+<span class="server">[server]$ </span><span class="command">git symbolic-ref HEAD refs/heads/main</span>
 </pre>
 </div>
+</li>
+<li>Run <span class="code">ls -la</span> to confirm the files and directories have been created.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">ls -la</span>
+HEAD
+/branches
+config
+description
+/hooks
+/info
+/objects
+/refs</pre>
+</div>
+</li>
+<li>Confirm the <span class="text-object">HEAD</span> file is set to use <span class="text-object">main</span> by running the following command.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cat HEAD</span>
+ref: refs/heads/main</pre>
+</div>
+<dl>
+<dd><em>You should see <span class="text-object">main</span> being used.</em></dd>
+</dl>
 </li>
 </ol>
 </div>
@@ -149,7 +171,7 @@ $</span></pre>
 </ul>
 </div>
 <dl>
-<dd><em>This creates a <span class="text-object">.gitconfig</span> file under your username.</em></dd>
+<dd><em>This creates a <span class="text-object">.gitconfig</span> file under your username. You can view it at: <span class="text-object">C:\Users\yourusername\.gitconfig</span></em></dd>
 </dl>
 </li>
 <li>Run the following in your project directory to initialize the repository and create your first commit:
@@ -163,7 +185,11 @@ $</span></pre>
 <dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/git_hidden_files.png" alt="01 Git on Windows.png" /></dd>
 </dl>
 </li>
-<li>When you initialize the repository, a directory titled <span class="text-object">.git</span> is created. By default, you cannot see this in Windows. If you'd like to view hidden files (files that start with a period), click <span class="text-object">View</span> in the top menu. To the right, check the box for hidden files.&nbsp;You do not need to view this <span class="text-object">.git</span> folder to proceed with these steps. This is just a way for you to see your commands have created the local repository.</li>
+<li>When you initialize the repository, a directory titled <span class="text-object">.git</span> is created.
+<div class="notebox-tip">
+<p>By default, you cannot see this in Windows. If you'd like to view hidden files (files that start with a period), click <span class="text-object">View</span> in the top menu. To the right, check the box for hidden files.&nbsp;You do not need to view this <span class="text-object">.git</span> folder to proceed with these steps. This is just a way for you to see your commands have created the local repository.</p>
+</div>
+</li>
 <li>Add the remote repository. Make sure to use your <a href="https://help.dreamhost.com/hc/en-us/articles/4402199390996-Difference-between-SFTP-and-Shell-users" target="_self">Shell user</a> and server name.
 <div class="notebox-note">
 <p>The word <span class="code">dreamhost</span>&nbsp;is just an alias. It can be named anything you want. But this alias name will be used when you push your content to <strong>github.com</strong>.</p>
@@ -180,7 +206,7 @@ $</span></pre>
 <h2><span id="Confirming_your_repository_was_correctly_pushed_to_your_DreamHost_server">Confirming your repository was correctly pushed to your DreamHost server</span></h2>
 <div class="solvvy-solution">
 <ol>
-<li>Log into your DreamHost server via SSH.<br /><em>When you run <span class="code">git status</span> in the <span class="text-object">/example.com.git</span> directory, you'll receive the following error because it's a <span class="text-object">bare</span> repository:</em>
+<li>Log into your DreamHost server via SSH.<br /><em>When you run <span class="code">git status</span> in the <span class="text-object">/example.com.git</span> directory, you'll receive the following error because this directory is not a 'working tree':</em>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">git status</span>
 <span class="cmdoutput">fatal: This operation must be run in a work tree</span></pre>

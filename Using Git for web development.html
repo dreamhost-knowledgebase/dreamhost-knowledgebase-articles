@@ -24,13 +24,21 @@
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">nano hooks/post-receive</span></pre>
 </div>
 </li>
-<li>Add this code to the file. It tells where to push these changes. In this example, change <span class="code">username</span> to your actual <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access" target="_self">shell user</a>, and change <strong>example.com</strong> to your website.
+<li>Add this code to the file. It tells where to push these changes. In this example, change <span class="code">username</span> to your actual <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access" target="_self">shell user</a>, and change <span class="code">example.com</span> to your website.
 <div class="preboxcontainer">
 <pre class="prebox">#!/bin/sh
-GIT_WORK_TREE=/home/<span class="code-highlight">username</span>/<span class="code-highlight">example.com</span> git checkout -f</pre>
+GIT_WORK_TREE=/home/<span class="code-highlight">username</span>/<span class="code-highlight">example.com</span> git checkout -f main</pre>
+</div>
+<div class="alert-warning">
+<p>If you have <a href="https://help.dreamhost.com/hc/en-us/articles/216385637-Enable-Passenger-on-a-domain" target="_self">enabled Passenger</a> on your domain, your public website directory is set to use <span class="text-object">/public</span>. In this case, you'd need to add this directory to the file path as shown below.</p>
+<div class="preboxcontainer">
+<pre class="prebox">#!/bin/sh
+GIT_WORK_TREE=/home/username/example.com<span class="code-highlight">/public</span> git checkout -f main</pre>
+</div>
 </div>
 <div class="notebox-note">
-<p>By default, the primary branch of git repositories is named <span class="text-object">master</span>. However, many companies using git have renamed this primary branch to <span class="text-object">main</span>. The local and remote branches must use the same primary branch name, so you may need to change your local branch name to match your remote branch name. View the following article for instructions on how to configure git to use <span class="text-object">main</span>:</p>
+<p>In these examples, the branch named <span class="text-object">main</span> is being used. If you've followed along with DreamHost's articles, your local and DreamHost server's repository are set to use this branch already. You should only change this branch name if you want to push a different branch to your live website.</p>
+<p>View the following article for instructions on how to configure git to use <span class="text-object">main</span>:</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/4466702078740-Configure-git-to-use-main-as-the-primary-branch" target="_self">Configure git to use 'main' as the primary branch</a></li>
 </ul>

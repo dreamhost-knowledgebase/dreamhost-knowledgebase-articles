@@ -98,11 +98,33 @@ dreamhost-git-key.pub</pre>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~</span>
 <span class="server">[server]$ </span><span class="command">mkdir <span class="code-highlight">example.com.git</span></span>
-<span class="server">[server]$ </span><span class="command">cd <span class="code-highlight">~/example.com.git</span></span>
+<span class="server">[server]$ </span><span class="command">cd ~/<span class="code-highlight">example.com.git</span></span>
 <span class="server">[server]$ </span><span class="command">git init --bare</span>
-<span class="server">[server]$ </span><span class="command">exit</span>
+<span class="server">[server]$ </span><span class="command">git symbolic-ref HEAD refs/heads/main</span>
 </pre>
 </div>
+</li>
+<li>Run <span class="code">ls -la</span> to confirm the files and directories have been created.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">ls -la</span>
+HEAD
+/branches
+config
+description
+/hooks
+/info
+/objects
+/refs</pre>
+</div>
+</li>
+<li>Confirm the <span class="text-object">HEAD</span> file is set to use <span class="text-object">main</span> by running the following command.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cat HEAD</span>
+ref: refs/heads/main</pre>
+</div>
+<dl>
+<dd><em>You should see <span class="text-object">main</span> being used.</em></dd>
+</dl>
 </li>
 </ol>
 </div>
