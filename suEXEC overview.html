@@ -20,6 +20,10 @@
 <div class="solvvy-solution">
 <p>Because suEXEC only allows variables deemed safe by the server's configuration, the directives provided by <a href="https://httpd.apache.org/docs/2.4/mod/mod_env.html" target="_self" rel="undefined">mod_env</a> such as <span class="code">SetEnv</span>, <span class="code">PassEnv</span>, and <span class="code">SetEnvIf</span> don't work as expected.</p>
 <p>The following steps create a simple example of how suEXEC functions at DreamHost.</p>
+<div class="steps-section--container">
+<div class="steps-section-sublist--border">&nbsp;</div>
+<div class="steps-section--content">
+<div class="steps-section--step"><img class="steps-number-sublist-icon" src="https://kbimages.dreamhosters.com/graphics/number-1.svg" width="30px" />
 <h3>Step 1 — Add a file to your site</h3>
 <p><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH" target="_self">Create a file</a> named <span class="text-object">foobar.cgi</span> with the following content.</p>
 <div class="preboxcontainer">
@@ -38,6 +42,8 @@ print $ENV{FOOBAR};</pre>
 <li><span class="text-object">/home/username/example.com</span></li>
 <li><span class="text-object">/home/username/example2.com</span></li>
 </ul>
+</div>
+<div class="steps-section--step"><img class="steps-number-sublist-icon" src="https://kbimages.dreamhosters.com/graphics/number-2.svg" width="30px" />
 <h3>Step 2 — Add an .htaccess file to each directory</h3>
 <p>In the <strong>example.com</strong> directory, add an <a href="/hc/en-us/articles/216456227--htaccess-overview">.htaccess</a> with the following directive:</p>
 <div class="preboxcontainer">
@@ -47,12 +53,17 @@ print $ENV{FOOBAR};</pre>
 <div class="preboxcontainer">
 <pre class="prebox">SetEnv FOOBAR <span class="code-highlight">bar</span></pre>
 </div>
+</div>
+<div class="steps-section--step"><img class="steps-number-sublist-icon" src="https://kbimages.dreamhosters.com/graphics/number-3.svg" width="30px" />
 <h3>Step 3 — Visit the files in a browser</h3>
 <p>Visit <strong>example.com/foobar.cgi</strong> in your browser. You'd expect it to print <span class="code">foo</span>.</p>
 <p>Visit <strong>example2.com/foobar.cgi</strong> in your browser. You'd expect it to print <span class="code">bar</span>.</p>
 <p>Instead, <span class="code">default</span> is printed on both pages.</p>
 <h3>Explanation</h3>
 <p><span class="code">SetEnv</span> is working correctly to set the environment variable. The problem is that suEXEC isn't passing it to your CGI script.</p>
+</div>
+</div>
+</div>
 </div>
 <h2 class="header-section">Workarounds</h2>
 <p>The following sections offer you a few ways to get your environment variables working as intended.</p>
