@@ -2,6 +2,10 @@
 <div class="solvvy-solution">
 <p>This article explains how to install Nextcloud on two DreamCompute instances. One instance is for the application itself and the other instance for the database it uses.</p>
 </div>
+<div class="steps-section--container">
+<div class="steps-section--border">&nbsp;</div>
+<div class="steps-section--content">
+<div class="steps-section--step"><img class="steps-number-icon" src="https://kbimages.dreamhosters.com/graphics/number-1.svg" alt="" width="50px" />
 <h2>Step 1 —&nbsp;Add a security group</h2>
 <div class="solvvy-solution">
 <p>First, create a Security Group for the database instance. This is so it allows TCP on port 3306, the MySQL/MariaDB port. View the following two articles for further instructions:</p>
@@ -10,6 +14,8 @@
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/360000717692-Managing-Security-Groups-using-the-OpenStack-CLI">Managing Security Groups using the OpenStack CLI</a></li>
 </ul>
 </div>
+</div>
+<div class="steps-section--step"><img class="steps-number-icon" src="https://kbimages.dreamhosters.com/graphics/number-2.svg" alt="" width="50px" />
 <h2>Step 2 — Launch an instance</h2>
 <div class="solvvy-solution">
 <p>Next, launch two Ubuntu 16.04 LTS instances.</p>
@@ -29,6 +35,8 @@
 <p>It is recommended to boot a <a href="https://help.dreamhost.com/hc/en-us/articles/217701757-What-s-the-difference-between-ephemeral-and-volume-boot-disks-">volume backed instance</a> as they are permanent as opposed to <a href="https://help.dreamhost.com/hc/en-us/articles/217701757-What-s-the-difference-between-ephemeral-and-volume-boot-disks-">ephemeral disks</a> and can be larger than 80GB in size if larger amounts of data will be stored. This can be done in the <a class="reference external" href="https://help.dreamhost.com/hc/en-us/articles/215912848-How-to-launch-an-instance-using-the-DreamCompute-dashboard">DreamCompute dashboard</a> or with the <a href="https://help.dreamhost.com/hc/en-us/articles/216511617-How-to-launch-an-instance-using-the-OpenStack-CLI">OpenStack command line client</a>.</p>
 </div>
 <div id="installing-mariadb">&nbsp;</div>
+</div>
+<div class="steps-section--step"><img class="steps-number-icon" src="https://kbimages.dreamhosters.com/graphics/number-3.svg" alt="" width="50px" />
 <h2>Step 3 — Installing MariaDB on instance #1</h2>
 <div class="solvvy-solution">
 <p>In order to install MariaDB on your database instance, first, log into the instance with with your <a href="https://help.dreamhost.com/hc/en-us/articles/228377408-How-to-find-the-default-user-of-an-image">default username</a> and <a href="https://help.dreamhost.com/hc/en-us/articles/115001736691-How-to-create-a-Key-pair-overview">security key</a>:</p>
@@ -47,6 +55,8 @@
 <p>During installation the root database user will be set up without a password, but an authentication plugin will prevent login from anyone but the operating system root user. A password can be set if desired.</p>
 </div>
 <div id="configuring-mariadb">&nbsp;</div>
+</div>
+<div class="steps-section--step"><img class="steps-number-icon" src="https://kbimages.dreamhosters.com/graphics/number-4.svg" alt="" width="50px" />
 <h2>Step 4 —&nbsp;Configuring MariaDB</h2>
 <div class="solvvy-solution">
 <div id="changing-the-bind-address">
@@ -121,6 +131,8 @@ Bye</pre>
 <p>This completes the installation of the database instance.</p>
 </div>
 <div id="installing-the-nextcloud-application">&nbsp;</div>
+</div>
+<div class="steps-section--step"><img class="steps-number-icon" src="https://kbimages.dreamhosters.com/graphics/number-5.svg" alt="" width="50px" />
 <h2>Step 5 —&nbsp;Installing the Nextcloud application on instance #2</h2>
 <div class="solvvy-solution">
 <div id="installing-dependencies">
@@ -145,6 +157,8 @@ php7.0-mbstring php7.0-intl php7.0-mcrypt php-imagick php7.0-xml php7.0-zip</spa
 </div>
 </div>
 <div id="downloading-nextcloud">&nbsp;</div>
+</div>
+<div class="steps-section--step"><img class="steps-number-icon" src="https://kbimages.dreamhosters.com/graphics/number-6.svg" alt="" width="50px" />
 <h2>Step 6 — Downloading Nextcloud</h2>
 <div class="solvvy-solution">
 <p>Now we need to download the actual Nextcloud application.</p>
@@ -180,6 +194,8 @@ This will download a compressed copy of the Nextcloud application.
 <pre class="prebox"><span class="server">[root@instance]# </span><span class="command">chown -R www-data:www-data /var/www/nextcloud</span></pre>
 </div>
 <div id="configuring-apache">&nbsp;</div>
+</div>
+<div class="steps-section--step"><img class="steps-number-icon" src="https://kbimages.dreamhosters.com/graphics/number-7.svg" alt="" width="50px" />
 <h2>Step 7 — Configuring Apache</h2>
 <div class="solvvy-solution">
 <p>You must now configure Apache to use Nextcloud. Create a file in the directory <span class="text-object">/etc/apache2/sites-available</span> called <span class="text-object">nextcloud.conf</span>.</p>
@@ -224,6 +240,8 @@ This will download a compressed copy of the Nextcloud application.
 </pre>
 </div>
 <div id="finishing-the-installation">&nbsp;</div>
+</div>
+<div class="steps-section--step"><img class="steps-number-icon" src="https://kbimages.dreamhosters.com/graphics/number-8.svg" alt="" width="50px" />
 <h2>Step 8 —&nbsp;Finishing the Installation</h2>
 <div class="solvvy-solution">
 <p>Now that everything is configured on the instance, open a browser and visit <a class="reference external" href="https://IP/nextcloud">https://IP/nextcloud</a> where <strong>IP</strong> is the IP address of your application instance.</p>
@@ -236,4 +254,7 @@ This will download a compressed copy of the Nextcloud application.
 <li>The host is the IP address of your database instance with :3306 appended to the end</li>
 </ul>
 <p>Click <strong>Finish Installation</strong> and you have a working installation of Nextcloud.</p>
+</div>
+</div>
+</div>
 </div>
