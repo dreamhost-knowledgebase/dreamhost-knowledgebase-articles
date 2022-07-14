@@ -1,7 +1,7 @@
 <h2>Overview</h2>
 <div class="solvvy-solution">
 <p>This article lists a few troubleshooting steps you can take with Django.</p>
-<div class="notebox-note">
+<div class="prereqs">
 <p>To run the commands in this article, you must log into your server via SSH with your Shell user. View the following articles for more information:</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
@@ -10,17 +10,24 @@
 </ul>
 </div>
 </div>
-<h2>Errors due to Ubuntu upgrades</h2>
+<h2>Errors due to server upgrades</h2>
 <div class="solvvy-solution">
-<p>DreamHost recently upgraded web servers to use a <a href="https://help.dreamhost.com/hc/en-us/articles/360022178852" target="_self" rel="undefined">newer version of Ubuntu</a>. With the new version of Ubuntu comes a newer version of Django. If you previously installed your version of Django using the old django-setup.py install script, you could potentially see errors with your website. Unfortunately, technical support is unable to assist with any older installation errors.</p>
-<p>The only recommended way to currently install Django is in a virtualenv:</p>
+<p>DreamHost frequently upgrades the operating systems on its web servers to ensure security and provide upgraded software. The following article explains how you can view the current operating system your server uses.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360059767631-Viewing-your-server-s-software-versions">Viewing your server's software versions</a></li>
+</ul>
+<p>The recommended way to install Django is in a virtual environment:</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215317948-Install-Django-using-virtualenv">Install Django using virtualenv</a></li>
 </ul>
+<p>After a server upgrade, it may be necessary to reinstall your virtual environment and Django project to resolve any conflicts.</p>
 </div>
-<h2>Application isn't working</h2>
+<h2>Confirm credentials are correct</h2>
 <div class="solvvy-solution">
 <p>If your application isn't working, make sure you’re using the correct usernames, passwords, database names, and hostnames in the <span class="text-object">/projectname/settings.py</span> file.</p>
+</div>
+<h2>Kill existing processes</h2>
+<div class="solvvy-solution">
 <p>If you make changes to the code, such as working through the official tutorials, and they don't seem to work, make sure to kill any existing Python processes and reload the page:</p>
 <dl>
 <dd>
@@ -43,6 +50,25 @@
 <dl>
 <dd>Passenger looks for this file and reloads the application when this file is modified.</dd>
 </dl>
+<p>If you find this did not work, try reloading your site in the panel as shown below.</p>
+<h3>Re-save your domain settings in the panel</h3>
+<h3>Shared servers</h3>
+<ol>
+<li>Navigate to the&nbsp;<a class="panel-link" href="https://panel.dreamhost.com/?tree=domain.manage" target="_blank" rel="noopener noreferrer">Manage Domains</a>&nbsp;page.</li>
+<li>Click the&nbsp;<span class="text-link">Edit</span>&nbsp;link to the right of your domain, under the&nbsp;<span class="text-object">Web Hosting</span>&nbsp;column.</li>
+<li>Scroll down and click the&nbsp;<strong>Change settings</strong>&nbsp;button to save.</li>
+<li>Wait 5 minutes, then view your site.</li>
+</ol>
+<h3>VPS and dedicated servers</h3>
+<ol>
+<li>Navigate to the&nbsp;<a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=vps.dashboard" target="_blank" rel="noopener noreferrer">VPS</a>&nbsp;or&nbsp;<a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=dedicated.dashboard&amp;" target="_blank" rel="noopener noreferrer">Dedicated</a>&nbsp;page.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-button-reload-http.png" alt="reload http button" width="129" height="" /></dd>
+</dl>
+</li>
+<li>Click the&nbsp;<strong>Reload HTTP</strong>&nbsp;button.</li>
+<li>Wait 5 minutes for it to rebuild the configuration file.</li>
+</ol>
 </div>
 <h2>Shared Hosting changes are not reflected</h2>
 <div class="solvvy-solution">
@@ -55,28 +81,12 @@
 </dd>
 </dl>
 </div>
-<h2>Custom Python version</h2>
+<h2>Premature end of script headers</h2>
 <div class="solvvy-solution">
-<p>If you installed a <a href="https://help.dreamhost.com/hc/en-us/articles/115000218612-Installing-a-custom-version-of-Python-2">custom version of Python</a> in your directory and you'd like to use it, add the following to your <span class="text-object">passenger_wsgi.py</span> file:</p>
-<dl>
-<dd>
-<div class="preboxcontainer">
-<pre class="prebox">if sys.hexversion &lt; 0x2060000: os.execl("<span class="code-highlight">/path/to/your/copy/of/python2.7</span>", "python2.7", *sys.argv)</pre>
-</div>
-</dd>
-</dl>
-</div>
-<h2>500 error</h2>
-<div class="solvvy-solution">
-<p>If you're getting meaningless 500 pages even though you have DEBUG enabled in your Django app, you're probably running into a Passenger problem dealing with errors. View the <a href="/hc/en-us/articles/215769548#500_Errors_with_Passenger_WSGI_workaround">500 Errors with Passenger WSGI</a> Workaround article for details.</p>
-<p>If you're following the Django tutorial or migrating an existing project, you may get "Premature end of script headers" in your sites <a href="https://help.dreamhost.com/hc/en-us/articles/216512197-Viewing-your-access-and-error-logs-via-SFTP">error log</a>. This may be due to the Passenger file not including your project directory in its path. One solution is to open <span class="text-object">passenger_wsgi.py</span> and add the following:</p>
-<dl>
-<dd>
-<div class="preboxcontainer">
-<pre class="prebox">sys.path.append(os.getcwd()+"/&lt;<span class="code-highlight">project_name</span>&gt;")</pre>
-</div>
-</dd>
-</dl>
+<p>If you're seeing "Premature end of script headers" in your sites <a href="https://help.dreamhost.com/hc/en-us/articles/216512197-Viewing-your-access-and-error-logs-via-SFTP">error log</a>, view the following article to confirm your <span class="text-object">passenger_wsgi.py</span> file is correctly configured:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360002341572-Creating-a-Django-project">Creating a Django project</a></li>
+</ul>
 </div>
 <h2>404 error on admin page</h2>
 <div class="solvvy-solution">
