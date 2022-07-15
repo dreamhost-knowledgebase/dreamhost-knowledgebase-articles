@@ -16,10 +16,15 @@
 </div>
 <h2><span id="Redirecting_all_URLs">Redirecting all URLs to a new site</span></h2>
 <div class="solvvy-solution">
-<p>The following line redirects all URLs on your site to the new site.</p>
+<p>The following two examples redirect all URLs on your current website to a second website. This is useful after you have migrated your site to a new domain name.</p>
+<h3>Option #1</h3>
 <div class="preboxcontainer">
 <pre class="prebox">Redirect 301 / https://example.com/</pre>
 </div>
+<h3>Option #2</h3>
+<p>In this example, your old site named&nbsp;<strong>example.com</strong> would redirect while preserving all URLs to a new site named&nbsp;<strong>dreamhostexample.com</strong>.</p>
+<div class="preboxcontainer">
+<pre class="prebox">&lt;IfModule mod_rewrite.c&gt;<br />  RewriteEngine On<br />  RewriteCond %{HTTP_HOST} ^<span class="code-highlight">example.com</span>$ [OR]<br />  RewriteCond %{HTTP_HOST} ^www.<span class="code-highlight">example.com</span>$<br />  RewriteRule (.*)$ https://www.<span class="code-highlight">dreamhostexample.com</span>/$1 [R=301,L]<br />&lt;/IfModule&gt;</pre>
 </div>
 <h2><span id="Redirecting_a_URL">Redirecting a single URL</span></h2>
 <div class="solvvy-solution">
@@ -185,4 +190,5 @@ RewriteRule . /<span class="code-highlight">index.php</span> [L]
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/217738987-What-can-I-do-with-an-htaccess-file-">What can I do with an .htaccess file?</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216456087-Creating-redirects-with-Nginx">Creating redirects with Nginx</a></li>
 </ul>
+</div>
 </div>
