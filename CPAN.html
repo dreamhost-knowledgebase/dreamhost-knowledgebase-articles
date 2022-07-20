@@ -1,4 +1,4 @@
-<div id="auto-toc"> </div>
+<div id="auto-toc">&nbsp;</div>
 <div class="notebox-important">
 <p><strong>POSSIBLE OUTDATED INFORMATION!</strong></p>
 <ul>
@@ -8,7 +8,7 @@
 <li>If you require root/sudo access to run a command, you must upgrade to a Dedicated Server and add an <a href="https://help.dreamhost.com/hc/en-us/articles/215945467-Add-users-to-a-Dedicated-server">admin user</a>.</li>
 </ul>
 </div>
-<p>The Comprehensive Perl Archive Network (CPAN) allows you to use an extensive library of pre-made modules available at <a href="https://metacpan.org/" rel="undefined" target="_self">metacpan.org/</a>.</p>
+<p>The Comprehensive Perl Archive Network (CPAN) allows you to use an extensive library of pre-made modules available at <a href="https://metacpan.org/" target="_self" rel="undefined">metacpan.org/</a>.</p>
 <p>CPAN normally requires root access, but this article shows you how to set up CPAN as a non-root user.</p>
 <div class="notebox-note">
 <p>In the following examples, <span class="code">username</span> would be your <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access" target="_self">Shell user</a> and <strong>example.com</strong> your website.</p>
@@ -72,11 +72,11 @@ sites for you? (This means connecting to the Internet) [yes] <span class="comman
 to your shell configuration files (or registry, if you are on Windows) and
 then restart your command line shell and CPAN before installing modules:
 
-export PERL_LOCAL_LIB_ROOT="$PERL_LOCAL_LIB_ROOT:/home/username/perl5";
-export PERL_MB_OPT="--install_base /home/username/perl5";
-export PERL_MM_OPT="INSTALL_BASE=/home/username/perl5";
-export PERL5LIB="/home/username/perl5/lib/perl5:$PERL5LIB";
-export PATH="/home/username/perl5/bin:$PATH";<br/>
+PATH="/home/username/perl5/bin${PATH:+:${PATH}}"; export PATH;
+PERL5LIB="/home/username/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
+PERL_LOCAL_LIB_ROOT="/home/username/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
+PERL_MB_OPT="--install_base \"/home/username/perl5\""; export PERL_MB_OPT;
+PERL_MM_OPT="INSTALL_BASE=/home/username/perl5"; export PERL_MM_OPT;<br />
 Would you like me to append that to /home/username/.bashrc now? [yes] <span class="command">yes</span></pre>
 </div>
 </li>
@@ -115,7 +115,7 @@ You can re-run configuration any time with 'o conf init' in the CPAN shell</pre>
 <div class="solvvy-solution">
 <p>Now that everything is set up, you can install the modules.</p>
 <ol>
-<li>Open cpan again:
+<li>Open CPAN again:
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server] </span><span class="command">cpan</span></pre>
 </div>
@@ -135,11 +135,12 @@ You can re-run configuration any time with 'o conf init' in the CPAN shell</pre>
 <pre class="prebox"><span class="server">[cpan[1] </span><span class="command">i XML::Simple</span>
 Module id = XML::Simple
     CPAN_USERID  GRANTM (Grant McLean &lt;grantm@cpan.org&gt;)
-    CPAN_VERSION 2.24
-    CPAN_FILE    G/GR/GRANTM/XML-Simple-2.24.tar.gz
+    CPAN_VERSION 2.25
+    CPAN_FILE    G/GR/GRANTM/XML-Simple-2.25.tar.gz
+    UPLOAD_DATE  2018-03-18
     MANPAGE      XML::Simple - An API for simple XML files
-    INST_FILE    /home/username/perl5/lib/perl5/XML/Simple.pm
-    INST_VERSION 2.24</pre>
+    INST_FILE    /usr/share/perl5/XML/Simple.pm
+    INST_VERSION 2.22</pre>
 </div>
 </div>
 <h2>Making your FastCGI / CGI scripts work</h2>
@@ -230,7 +231,7 @@ eof</pre>
 </div>
 <h2>Installing Module::Build and many other modules</h2>
 <div class="solvvy-solution">
-<p>If you're installing Module::Build or others which use Module::Build in their installation, it might help to add the above PERL5LIB lines to your <span class="text-object">.bash_profile</span>, otherwise anything you build won't know how to read the Module::Build Build script.</p>
+<p>If you're installing Module::Build or others which use Module::Build in their installation, it might help to add the above PERL5LIB lines to your <span class="text-object">.bash_profile</span>, otherwise, anything you build won't know how to read the Module::Build Build script.</p>
 </div>
 <h2>Other modules</h2>
 <div class="solvvy-solution">
@@ -273,7 +274,7 @@ eof</pre>
 <div class="preboxcontainer">
 <pre class="prebox">PREFIX=/home/<span class="code-highlight">username</span>/perlmods</pre>
 </div>
-<p>Use <em>perldoc</em> to get a listing of CPAN settings that you can edit:</p>
+<p>Use <span class="code">perldoc</span> to get a listing of CPAN settings that you can edit:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">perldoc CPAN</span>
 </pre>
@@ -296,6 +297,6 @@ eof</pre>
 <div class="solvvy-solution">
 <p>There is a monitor service running that may kill your perl installs. Visit the following article for more information.</p>
 <ul>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/216540488-Why-were-my-processes-killed-on-my-Shared-server-" rel="undefined" target="_self">Why were my processes killed on my shared server?</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216540488-Why-were-my-processes-killed-on-my-Shared-server-" target="_self" rel="undefined">Why were my processes killed on my shared server?</a></li>
 </ul>
 </div>

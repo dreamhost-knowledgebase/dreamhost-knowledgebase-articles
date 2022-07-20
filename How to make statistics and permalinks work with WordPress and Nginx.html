@@ -1,11 +1,11 @@
 <h2>Overview</h2>
 <div class="solvvy-solution">
-<p>Nginx is a high performance web server used as an alternative to the popular Apache web server. WordPress works great on Nginx machines, however you need to adjust some files to get site statistics to work as they would on an Apache server.</p>
-<p>This article shows you how to view your Analog stats after enabling stats in your DreamHost panel.</p>
+<p>Nginx is a high performance web server used as an alternative to the popular Apache web server. WordPress works great on Nginx machines, however, you must adjust certain files to enable site statistics to work as they would on an Apache server.</p>
+<p>This article describes how to view your Analog stats after enabling stats in your DreamHost panel.</p>
 </div>
 <h2>WordPress stats and Apache</h2>
 <div class="solvvy-solution">
-<p>Site statistics are not initially available when running WordPress. When WordPress is running on an Apache server, you can use an <span class="text-object">.htaccess</span> file to allow the <span class="text-object">/stats</span> subdirectory to serve your site statistics. View the following article for details:</p>
+<p>Site statistics are not initially available when running WordPress. When WordPress is running on an Apache server, you can use an <span class="text-object">.htaccess</span> file to allow the <span class="text-object">/stats</span> subdirectory to serve your site statistics. See the following article for details:</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/217068087-Making-stats-accessible-with-an-htaccess-file">Making stats available with an .htaccess file</a></li>
 </ul>
@@ -15,24 +15,28 @@
 <div class="notebox-important">
 <p>After making any adjustments to&nbsp;a <span class="text-object">.conf</span> file, you must <a href="https://help.dreamhost.com/hc/en-us/articles/216454967-How-to-reload-and-restart-Nginx-Dedicated-servers-only-" target="_self" rel="undefined">restart your VPS or reload your Dedicated Server</a>.</p>
 </div>
-<p>When using Nginx, your <span class="text-object">.htaccess</span> file does not function. So you must add code to another file in order to view your stats. Your Nginx WordPress site has two directories:</p>
+<p>When using Nginx, your <span class="text-object">.htaccess</span> file does not function. You must add code to another file in order to view your stats. Your Nginx WordPress site has the following two directories, which are described below:</p>
+<ul>
+<li>Your web directory (aka document root)</li>
+<li>Your nginx/example.com directory</li>
+</ul>
 <div class="notebox-note">
 <p>In the following examples, <span class="code">username</span> would be your <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access" target="_self">Shell user</a> and <strong>example.com</strong> your website.</p>
 </div>
 <p><strong>Your web directory (aka document root)</strong></p>
-<p>This is the directory where all of your website's files are located.&nbsp;</p>
+<p>This web directory is where all of your website's files are located:&nbsp;</p>
 <div class="preboxcontainer">
 <pre class="prebox">/home/<span class="code-highlight">username</span>/<span class="code-highlight">example.com</span></pre>
 </div>
 <p><strong>Your nginx/example.com directory</strong></p>
-<p>This directory only contains configuration files for your site.</p>
+<p>The nginx directory only contains configuration files for your site:</p>
 <div class="preboxcontainer">
 <pre class="prebox">/home/<span class="code-highlight">username</span>/nginx/<span class="code-highlight">example.com</span></pre>
 </div>
 <div class="notebox-note">
 <p>View the <a href="https://help.dreamhost.com/hc/en-us/articles/216455077-Nginx-configuration-file-locations">Nginx configuration file locations</a>&nbsp;article for further details.</p>
 </div>
-<p>In this <span class="text-object">/home/username/nginx/example.com</span> directory, create a file titled <span class="text-object">wordpress.conf</span>. Add the following rule at the very beginning of this <span class="text-object">wordpress.conf</span> file.</p>
+<p>Within the <span class="text-object">/home/username/nginx/example.com</span> directory, create a file titled <span class="text-object">wordpress.conf</span>&nbsp;and then add the following rule at the very beginning of this <span class="text-object">wordpress.conf</span> file:</p>
 <div class="preboxcontainer">
 <pre class="prebox">### stats
 if ($request_uri ~* ^/(stats|failed_auth\.html).*$)
@@ -41,11 +45,11 @@ if ($request_uri ~* ^/(stats|failed_auth\.html).*$)
 }
 </pre>
 </div>
-<p>Now when you visit <strong>example.com/stats</strong>, a login prompt displays allowing you to log in and view your site statistics.</p>
+<p>When you visit <strong>example.com/stats</strong>, a login prompt displays allowing you to log in and view your site statistics.</p>
 </div>
 <h2>Enabling stats and permalinks</h2>
 <div class="solvvy-solution">
-<p>WordPress uses something called 'permalinks' to make the URLs easier to read. When running Nginx, add the following two sections to get both site statistics and permalinks to function.</p>
+<p>WordPress uses 'permalinks' to make the URLs easier to read. When running Nginx, add the following two sections to enable both the site statistics and permalinks to function:</p>
 <div class="preboxcontainer">
 <pre class="prebox">### stats
 if ($request_uri ~* ^/(stats|doc|failed_auth\.html).*$)
@@ -61,7 +65,7 @@ if (!-e $request_filename) {
 </div>
 <h2>Troubleshooting</h2>
 <div class="solvvy-solution">
-<p>If you've enabled a stats user on the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=advanced.stats&amp;" target="_blank" rel="noopener">Site Statistics</a> page but find stats are still not accessible, please <a href="https://help.dreamhost.com/hc/en-us/articles/218084068-Contacting-support-overview">contact DreamHost support</a>.</p>
+<p>If you've enabled a stats user on the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=advanced.stats&amp;" target="_blank" rel="noopener noreferrer">Site Statistics</a> page but find that the stats are still not accessible, please <a href="https://help.dreamhost.com/hc/en-us/articles/218084068-Contacting-support-overview">contact DreamHost support</a>.</p>
 </div>
 <h2>See also</h2>
 <div class="solvvy-hidden">
