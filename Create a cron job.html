@@ -1,3 +1,4 @@
+<div id="auto-toc">&nbsp;</div>
 <h2>Overview</h2>
 <div class="solvvy-solution">
 <p>You can have DreamHost automatically configure a cron job in the panel on the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=advanced.cron&amp;" target="_blank" rel="noopener noreferrer">Cron Jobs</a> page. This article contains the following contents.</p>
@@ -12,7 +13,8 @@
 <p>Cron jobs can be created on any hosting plan.</p>
 </div>
 </div>
-<h2><span id="creating-a-cron-job">Creating a cron job in the panel</span></h2>
+<div id="creating-a-cron-job">&nbsp;</div>
+<h2>Creating a cron job in the panel</h2>
 <div class="solvvy-solution">
 <div class="notebox-note">
 <p>This example runs a single file named <span class="text-object">script.php</span>.</p>
@@ -23,7 +25,7 @@
 <dd><em>The <span class="panel-page">Cron Jobs</span> page appears:</em></dd>
 </dl>
 <dl>
-<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-09_panel_cron_add_01.png"></dd>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-09_panel_cron_add_01.png" /></dd>
 </dl>
 </li>
 <li>Click the <strong>Add New Cron Job</strong> button.
@@ -31,7 +33,7 @@
 <dd><em>The <span class="panel-page">Creating New Cron Job</span> page opens:</em></dd>
 </dl>
 <dl>
-<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-cron-job-create.png"></dd>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-cron-job-create.png" /></dd>
 </dl>
 </li>
 <li>To create the cron, fill in the following fields:
@@ -65,33 +67,34 @@
 </div>
 <h2>The 'Day of Week' and 'Day of Month' fields</h2>
 <div class="solvvy-solution">
-<h3>When the 'Day of Week' field overrides the 'Day of Month'</h3>
+<h3 class="subtoc-heading">When the 'Day of Week' field overrides the 'Day of Month'</h3>
 <p>The <span class="text-object">Day of Week</span> field will override the <span class="text-object">Day of Month</span> field only if the <span class="text-object">Day of Month</span> field is set to <span class="text-object">Every Day</span>. For example, the following configuration would only run on Thursdays.</p>
 <dl>
-<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/cron-day-of-week_01.png" alt="crontab day of week"></dd>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/cron-day-of-week_01.png" alt="crontab day of week" /></dd>
 </dl>
-<h3>When the 'Day of Week' field does NOT override the 'Day of Month'</h3>
+<h3 class="subtoc-heading">When the 'Day of Week' field does NOT override the 'Day of Month'</h3>
 <p>The <span class="text-object">Day of Week</span> field will <strong>NOT</strong> override the <span class="text-object">Day of Month</span> field if the <span class="text-object">Day of Month</span> field is set to a specific day(s). They will then run together.</p>
 <p>In the example below, the&nbsp;<span class="text-object">Day of Week</span> field is set to run at 3:44 pm Thursday. The&nbsp;<span class="text-object">Day of Month</span> field is also set for the 26th (which is a Wednesday). The cron job will still run every Thursday, but also on the 26th of the month.&nbsp;</p>
 <dl>
-<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/cron-day-of-week.png" alt="crontab day of week"></dd>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/cron-day-of-week.png" alt="crontab day of week" /></dd>
 </dl>
 </div>
-<h2><span id="url-with-variables">Running a cron job from a URL with variables</span></h2>
+<div id="url-with-variables">&nbsp;</div>
+<h2>Running a cron job from a URL with variables</h2>
 <div class="solvvy-solution">
 <p>It's common for a custom URL in your site to use variables. For example:</p>
 <div class="preboxcontainer">
 <pre class="prebox">https://example.com/script.php<span class="code-highlight">?firstname=john&amp;lastname=doe</span></pre>
 </div>
 <p>The problem is that the variables only work in a web browser when visiting the URL. They will not function when running the URL on the server. There are two ways you can have a cron job run such a URL.</p>
-<h3>Using curl or wget</h3>
+<h3 class="subtoc-heading">Using curl or wget</h3>
 <p>When running <span class="code">curl</span> or <span class="code">wget</span> on a URL with variables, make sure to enclose the URL in single quotes.</p>
 <div class="preboxcontainer">
 <pre class="prebox">curl 'https://example.com/script.php?firstname=john&amp;lastname=doe'</pre>
 </div>
 <p>Here's how it would look in the panel.</p>
-<p><img class="img-border" src="https://kbimages.dreamhosters.com/images/cron-variables-curl.png" alt="cron variables using curl"></p>
-<h3>Using php.cgi</h3>
+<p><img class="img-border" src="https://kbimages.dreamhosters.com/images/cron-variables-curl.png" alt="cron variables using curl" /></p>
+<h3 class="subtoc-heading">Using php.cgi</h3>
 <p>The other option is to use php.cgi instead of the path to PHP. When creating the URL, you must change the first ? sign into a space, and every &amp; after that into a space. For example:</p>
 <p><strong>Path to original file and URL</strong></p>
 <div class="preboxcontainer">
@@ -106,9 +109,10 @@
 <pre class="prebox">/dh/cgi-system/php74.cgi /home/<span class="code-highlight">username</span>/<span class="code-highlight">example.com</span>/script.php firstname=john lastname=doe</pre>
 </div>
 <p>Here's how it would look in the panel.</p>
-<p><img class="img-border" src="https://kbimages.dreamhosters.com/images/cron-variables-php-cgi.png" alt="cron variables using php.cgi"></p>
+<p><img class="img-border" src="https://kbimages.dreamhosters.com/images/cron-variables-php-cgi.png" alt="cron variables using php.cgi" /></p>
 </div>
-<h2><span id="paths">Paths to common programs</span></h2>
+<div id="paths">&nbsp;</div>
+<h2>Paths to common programs</h2>
 <div class="solvvy-hidden">
 <p>Below are the paths to common programs on the server. This is the path you would add before the file you wish to run.</p>
 <table style="border-collapse: collapse; width: 30%;" border="1">
@@ -132,16 +136,16 @@
 <tr>
 <td>php</td>
 <td>
-<p>/usr/bin/php<br>/usr/local/php72/bin/php<br>/usr/local/php73/bin/php<br>/usr/local/php74/bin/php<br>/usr/local/php80/bin/php</p>
+<p>/usr/bin/php<br />/usr/local/php72/bin/php<br />/usr/local/php73/bin/php<br />/usr/local/php74/bin/php<br />/usr/local/php80/bin/php</p>
 </td>
 </tr>
 <tr>
 <td>php-cgi</td>
-<td>/dh/cgi-system/php72.cgi<br>/dh/cgi-system/php73.cgi<br>/dh/cgi-system/php74.cgi<br>/dh/cgi-system/php80.cgi</td>
+<td>/dh/cgi-system/php72.cgi<br />/dh/cgi-system/php73.cgi<br />/dh/cgi-system/php74.cgi<br />/dh/cgi-system/php80.cgi</td>
 </tr>
 <tr>
 <td>python</td>
-<td>/usr/bin/python<br>/usr/bin/python3</td>
+<td>/usr/bin/python<br />/usr/bin/python3</td>
 </tr>
 <tr>
 <td>ruby</td>
