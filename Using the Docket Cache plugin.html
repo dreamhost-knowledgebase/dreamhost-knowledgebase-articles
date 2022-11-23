@@ -1,0 +1,101 @@
+<h2>Overview</h2>
+<div class="solvvy-solution">
+<p>As part of the WordPress 6.1 release, the WordPress Performance Team has added two Site Health checks:</p>
+<ul>
+<li><a href="https://wordpress.org/support/article/optimization/#persistent-object-cache" target="_blank" rel="noopener noreferrer">Persistent Object Cache</a></li>
+<li>Page Cache</li>
+</ul>
+<p>The new Site Health checks first determine if the site is using a Persistent Object Cache. If a certain site resource threshold is met, you may see a notice suggesting that a Persistent Object Cache be enabled. <span style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;">View the following WordPress article for more information:</span></p>
+<ul>
+<li><a href="https://make.wordpress.org/core/2022/10/06/new-cache-site-health-checks-in-wordpress-6-1/" target="_blank" rel="noopener noreferrer">New cache Site Health checks in WordPress 6.1</a></li>
+</ul>
+<p>This article describes various resources you can use to enable object caching, including the <span class="text-product">Docket Cache — Object Cache Accelerator</span> plugin.</p>
+</div>
+<h2>Object caching alternatives</h2>
+<div class="solvvy-solution">
+<p>Object Caching alternatives such as Redis or Memcached can be used instead, however, a <a href="https://help.dreamhost.com/hc/en-us/articles/215279658-Dedicated-server-overview" target="_self">Dedicated server</a> with an <a href="https://help.dreamhost.com/hc/en-us/articles/215945467-Add-users-to-a-Dedicated-server" target="_self">admin user</a> is required.&nbsp; For example, the following article explains how to install Memcached on a Dedicated server:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/217212317-Memcached-overview">Memcached overview</a></li>
+</ul>
+</div>
+<h2>Installing the 'Docket Cache — Object Cache Accelerator' plugin</h2>
+<div class="solvvy-solution">
+<p>You can also utilize a filesystem level Object Cache instead of using a service like Redis or Memcached.</p>
+<p>With WordPress, exporting the PHP objects is an advanced step, as most plugins that implement file-based solutions will serialize and unserialize the object to store and retrieve the data. The <a href="https://wordpress.org/plugins/docket-cache/" target="_blank" rel="noopener noreferrer">Docket Cache — Object Cache Accelerator</a> plugin can help you accomplish this.</p>
+<p>To install the plugin:</p>
+<ol>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360001310966-How-to-log-into-your-WordPress-site" target="_self" rel="undefined">Log in to</a> your WordPress site.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/wp-admin-docket-cache-object-cache-accelerator-plugin-01.png" alt="wp-admin-docket-cache-object-cache-accelerator-plugin-01.png" width="589" height="328" /></dd>
+</dl>
+</li>
+<li>Navigate to the <span class="text-section">Plugins &gt; Add New</span>.</li>
+<li>Search for the <span class="text-product">Docket Cache — Object Cache Accelerator</span> plugin.</li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215300817#installing-a-new-plugin" target="_self">Install and activate</a> the plugin.</li>
+</ol>
+</div>
+<h2>Using the 'Docket Cache — Object Cache Accelerator' plugin</h2>
+<div class="solvvy-solution">
+<p>The <span class="text-product">Docket Cache — Object Cache Accelerator</span> plugin automatically implements Object Cache after it's activated. There are also a few key features and requirements to be aware of when using the plugin as described below.</p>
+<h3>Jetpack</h3>
+<p>The <span class="text-product">Docket Cache — Object Cache Accelerator</span> plugin provides an optimization feature called <span class="text-object">Deactivate XML-RPC / Pingbacks</span> that is enabled by default.</p>
+<div class="notebox-important">
+<p>Jetpack needs the <span class="code">xmlrpc.php</span> file to be accessible or it won't be able to connect to your WordPress site.</p>
+</div>
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/wp-admin-docket-cache-object-cache-accelerator-plugin-02.png" alt="wp-admin-docket-cache-object-cache-accelerator-plugin-02.png" width="515" height="465" /></dd>
+</dl>
+<h4><strong>If Jetpack cannot connect to your WordPress site</strong></h4>
+<p>Proceed with the following two steps to disable this option if Jetpack is not able to connect to your WordPress site:</p>
+<ol>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115000098272-Creating-and-editing-a-file-via-FTP" target="_self">Add the following line</a> in your site's <a href="https://help.dreamhost.com/hc/en-us/articles/214693268-WordPress-wp-config-php-overview" target="_self">wp-config.php</a> file to disable this option:
+<div class="preboxcontainer">
+<pre class="prebox">define('DOCKET_CACHE_PINGBACK', false);</pre>
+</div>
+</li>
+<li>Navigate to <span class="text-section">Docket Cache &gt; Configuration &gt; WP TWEAKS</span>.</li>
+<li>Toggle the <span class="text-object">Deactivate XML-RPC / Pingbacks</span> setting to <span class="text-object">Disable</span>.</li>
+</ol>
+<h3>OPcache</h3>
+<p>One of the server requirements for the <span class="text-product">Docket Cache — Object Cache Accelerator</span> plugin is the PHP module OPcache. Depending on your hosting plan, you may need to manually enable this:</p>
+<p><strong>Shared Hosting and DreamPress plans</strong></p>
+<p>This is enabled by default on <a href="https://help.dreamhost.com/hc/en-us/articles/360022117051-Adding-a-Shared-Starter-hosting-plan" target="_self">Shared Hosting</a> and <a href="https://help.dreamhost.com/hc/en-us/articles/214581158-DreamPress-overview" target="_self">DreamPress</a> hosting plans.</p>
+<p><strong>VPS and Dedicated hosting plans</strong></p>
+<p>This option must be enabled manually in your DreamHost panel for <a href="https://help.dreamhost.com/hc/en-us/articles/215280058-Virtual-Private-Server-VPS-overview-" target="_self">VPS</a> and <a href="https://help.dreamhost.com/hc/en-us/articles/215279658-Dedicated-server-overview" target="_self">Dedicated</a> hosting plans. View the following article for instructions on how to enable OPcache:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216660668-OPcache-overview">OPcache overview</a></li>
+</ul>
+<h3>Cronbot service</h3>
+<p>Cronbot is an external service that pings your website every hour to keep the WordPress Cron service running. This is enabled by default, however, DreamHost does NOT recommend using this feature.</p>
+<h4><strong>Disable WP-CRON and create a Cron Job in your panel</strong></h4>
+<p>It's recommended that you disable <span class="text-object">WP-CRON</span>, then configure a Cron Job in your DreamHost panel. View the following article for instructions on how to disable WP-CRON:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360048323291-Disabling-WP-CRON-to-Improve-Overall-Site-Performance">Disabling WP-CRON to Improve Overall Site Performance</a></li>
+</ul>
+<h4><strong>Disable Cronbot</strong></h4>
+<p>Proceed with the following two steps to disable this service:</p>
+<ol>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115000098272-Creating-and-editing-a-file-via-FTP" target="_self">Add the following line</a> in your site's <a href="https://help.dreamhost.com/hc/en-us/articles/214693268-WordPress-wp-config-php-overview" target="_self">wp-config.php</a> file to disable this option:
+<div class="preboxcontainer">
+<pre class="prebox">define('DOCKET_CACHE_CRONBOT', false);</pre>
+</div>
+</li>
+<li>Toggle this setting by navigating to <span class="text-section">Docket Cache &gt; Configuration &gt; FEATURE OPTIONS.</span></li>
+</ol>
+<h3>Flushing cache</h3>
+<p>When making changes and updates to your WordPress site, you should purge the cache so that changes can be displayed publicly on the site.</p>
+<p>You can purge the cache within the <span class="text-product">Docket Cache — Object Cache Accelerator</span> plugin by navigating to the <span class="text-object">Overview</span> tab and clicking the <strong>Flush Object Cache</strong> and <strong>Flush OPcache</strong> buttons.</p>
+<div class="notebox-note">
+<p>If you have a separate caching plugin, or if your theme has its own caching feature, they must be purged separately.</p>
+</div>
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/wp-admin-docket-cache-object-cache-accelerator-plugin-03.png" alt="wp-admin-docket-cache-object-cache-accelerator-plugin-03.png" width="331" height="484" /></dd>
+</dl>
+</div>
+<h2>For more information</h2>
+<div class="solvvy-solution">
+<p>Docket Cache also provides numerous features that are helpful for general WordPress management. These features are not exclusive to caching and are helpful for general troubleshooting, testing, and WordPress management. View the following link for further information.</p>
+<ul>
+<li><a href="https://docs.docketcache.com/" target="_blank" rel="noopener noreferrer">Docket Cache Documentation</a></li>
+</ul>
+</div>
