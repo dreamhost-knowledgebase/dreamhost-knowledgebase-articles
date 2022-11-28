@@ -9,47 +9,63 @@
 <div class="notebox-note">
 <p>Only a professionally-signed or 'Let's Encrypt' certificate will work with <a href="/hc/en-us/articles/216475197-Cloudflare-with-SSL-overview" target="_blank" rel="noopener noreferrer">Cloudflare’s Full SSL (Strict) setup</a>.</p>
 </div>
-<p>Before you begin to add the certificate, make sure your domain is <a href="https://help.dreamhost.com/hc/en-us/articles/215416227-How-do-I-add-a-domain-" target="_self">Fully Hosted</a> or configured to <a href="https://help.dreamhost.com/hc/en-us/articles/215455377-Redirect-a-domain" target="_self">redirect</a> and the DNS of your domain is already pointing to DreamHost. This means that either your Nameservers should be pointed to DreamHost, or your A records (www and non-www record) should be pointed to your domain's IP address (assuming your Nameservers are at a different company).</p>
+<p>Before you begin to add the certificate, make sure the following is configured:</p>
+<ol>
+<li>Your domain is <a href="https://help.dreamhost.com/hc/en-us/articles/215416227-How-do-I-add-a-domain-" target="_self">Fully Hosted</a> or configured to <a href="https://help.dreamhost.com/hc/en-us/articles/215455377-Redirect-a-domain" target="_self">redirect</a></li>
+<li>The DNS of your domain is already pointing to DreamHost. This means that either your:
 <ul>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/216385467-Nameservers-overview">What are DreamHost's nameservers?</a></li>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/360035516812-Adding-custom-DNS-records#A_record">Adding custom DNS records</a></li>
+<li>Nameservers should be pointed to DreamHost</li>
+<li>or if your Nameservers are pointing to another company, your A records (www and non-www records) and AAAA (IPv6) records should be pointed to your domain's IP addresses.</li>
 </ul>
+</li>
+<li>Disable your <span class="text-object">.htaccess</span> file</li>
+</ol>
+<div class="notebox-important">
+<p><strong>Why does my DNS need to be pointed to DreamHost?</strong></p>
 <p>This is because 'Let's Encrypt' adds a <span class="text-object">.well_known/</span> directory to your site to authenticate the certificate. If your site's DNS is not resolving to a Fully Hosted domain at DreamHost, the certificate cannot create this folder to authenticate and your panel will display the following:</p>
 <p><img class="img-border" src="https://kbimages.dreamhosters.com/images/2019-01_panel_ssl_lets-encrypt-unavailable.png" /></p>
-<p>View the following sections to check your DNS values.</p>
-<h3 class="subtoc-heading">Checking where your nameservers are pointed</h3>
-<p>View the following link to check where your nameservers are pointed:</p>
-<ul>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/216385467#checking-nameservers">Where are my nameservers pointed?</a></li>
-</ul>
-<p>If they are already pointed to DreamHost, you do not need to change anything.</p>
-<p>If they are NOT pointed to DreamHost, you'll need to either point them or change your domain's two A records.</p>
-<div class="notebox-important">
+</div>
+<div class="notebox-tip">
+<p><strong>CAA records </strong></p>
 <p>CAA records can be created by a website owner to specify which Certificate Authorities (CAs) are permitted to issue SSL certificates for a domain.</p>
 <p>View the following article if you'd like to add CAA records to your domain before purchasing an SSL certificate.</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/360029281672-CAA-policy-records">CAA policy records</a></li>
 </ul>
 </div>
-<h3 class="subtoc-heading">Updating your domain's A records</h3>
-<p>As explained above, if your nameservers are not pointed to DreamHost and you do not wish to change them, the other option is to update your domain's two A records.</p>
-<p>You'll need to update the www A record, and the non-www A record. For example:</p>
+<p>View the following sections to check your DNS values.</p>
+<h3 class="subtoc-heading">Option 1 — Point your nameservers</h3>
+<p>View the following link to check where your nameservers are pointed:</p>
 <ul>
-<li><strong>www.example.com</strong></li>
-<li><strong>example.com</strong></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216385467#checking-nameservers">Where are my nameservers pointed?</a></li>
 </ul>
-<div class="notebox-note">
-<p>If you're pointing a subdomain such as <strong>blog.example.com</strong>, you'll still need to create the www record. For example:</p>
-<ul>
-<li><strong>www.blog.example.com</strong></li>
-<li><strong>blog.example.com</strong></li>
-</ul>
-</div>
-<p>These must be updated at the company where your nameservers are pointed. View the following article for instructions on how to find the correct IP address to point them to:</p>
+<p>If they are already pointed to DreamHost, you do not need to change anything.</p>
+<p>If they are NOT pointed to DreamHost, you'll need to either <a href="https://help.dreamhost.com/hc/en-us/articles/216385447-Change-nameservers-at-your-current-host" target="_self">point them at your current host</a> or change your domain's A records as described below.</p>
+<h3 class="subtoc-heading">Option 2 — Point your domain's A records</h3>
+<p>If your nameservers are not pointed to DreamHost and you do not wish to change them, the other option is to update your domain's A and AAAA records. These must be updated at the company where your nameservers are pointed. View the following article for instructions on how to find the correct IP address to point them to:</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/214694378-What-DreamHost-DNS-records-do-I-point-my-site-to-">What DreamHost DNS records do I point my site to?</a></li>
 </ul>
-<h3 class="subtoc-heading">Adding .htaccess rules</h3>
+<p><strong>Pointing A records</strong></p>
+<p>You must update both the A records for the www and the non-www records for your website. For example:</p>
+<ul>
+<li><strong>example.com</strong></li>
+<li><strong>www.example.com</strong></li>
+</ul>
+<div class="notebox-note">
+<p>If you're pointing to a subdomain such as <strong>blog.example.com</strong>, you'll still need to create the www record. For example:</p>
+<ul>
+<li><strong>blog.example.com</strong></li>
+<li><strong>www.blog.example.com</strong></li>
+</ul>
+</div>
+<p><strong>Pointing an AAAA record</strong>&nbsp;</p>
+<p>An AAAA record is an IPv6 record. These are not added by default at DreamHost, but you can add them manually as explained in the following article:</p>
+<ul class="article-list">
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216510458-IPv6">IPv6</a></li>
+</ul>
+<p>Once added, you'll see the new address in your panel. You can then point to this record from the company where your nameservers are pointed.<span style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;">&nbsp;</span></p>
+<h3 class="subtoc-heading">Disable your .htaccess file</h3>
 <p>Additionally, certain <span class="text-object">.htaccess</span> rules such as IP blocking, rewrite rules, and password protection may cause the installation to fail. To play it safe, rename your <span class="text-object">.htaccess</span> file (to something like <span class="text-object">.htaccess_OFF</span>) in order to turn it off temporarily. Then, install the certificate. Once installed, you can rename the file back to <span class="text-object">.htaccess</span>.</p>
 <p>If disabling your <span class="text-object">.htaccess</span> breaks your site, then add the following rule which should allow the installation to process:</p>
 <div class="preboxcontainer">
