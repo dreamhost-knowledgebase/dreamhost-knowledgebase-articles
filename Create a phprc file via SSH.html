@@ -8,9 +8,6 @@
 <p>The standard term for a PHP configuration file is php.ini. However, DreamHost uses the term <span class="text-object">phprc</span> file instead. This acts the same way – only the name is different. In this article, only the term <span class="text-object">phprc</span> is used.</p>
 </div>
 <p>You can create a <span class="text-object">phprc</span> file <a href="https://help.dreamhost.com/hc/en-us/articles/214894037-Create-a-phprc-file-via-FTP">using an FTP client</a>, or by logging into the server via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH</a>, however creating a <span class="text-object">phprc</span> file is easier using an FTP client. This article is for more advanced users and explains how to create this <span class="text-object">phprc</span> file via SSH.</p>
-<div class="notebox-important">
-<p>The <span class="text-object">.php</span> directory discussed in this article is automatically created after you have <a href="https://help.dreamhost.com/hc/en-us/articles/215416227-How-do-I-add-a-domain-" target="_self">added hosting to your website</a>, except on certain Dedicated servers. If you are trying to create a <span class="text-object">phprc</span> file under a user on a Dedicated server, you may need to create the <span class="text-object">.php</span> directory along with the nested subdirectories for any PHP versions you are using.</p>
-</div>
 </div>
 <h2>Adding a phprc file using SSH</h2>
 <div class="solvvy-solution">
@@ -22,7 +19,7 @@
 </li>
 <li>Make sure you’re in your <a href="https://help.dreamhost.com/hc/en-us/articles/360001219231-Where-is-the-home-directory-#the-users-home-directory" target="_self">user's directory</a> by typing in <span class="code">pwd</span> to confirm:
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">pwd</span> <br><span class="cmdoutput">/home/username</span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">pwd</span> <br /><span class="cmdoutput">/home/username</span></pre>
 </div>
 <div class="notebox-note">
 <p>Remember to first <a href="https://help.dreamhost.com/hc/en-us/articles/214898997-What-version-of-PHP-is-my-site-using-">check which version of PHP your site is using</a>. In the following example, we’ll assume the site is using PHP 7.4. In this directory, you can run a single command to create the <span class="text-object">/.php</span> folder as well as the <span class="text-object">/7.4</span>&nbsp;folder that goes inside of it. &nbsp;If your site is running PHP 7.3, the directory would be named 7.3 instead.</p>
@@ -31,6 +28,25 @@
 <li>Run the following command to change into the <span class="text-object">.phprc</span> directory:
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~/.php</span></pre>
+</div>
+<div class="notebox-tip">
+<p>If you find this directory does not exist under your user, you can simply create the <span class="text-object">.php</span> directory along with the nested subdirectories for any PHP versions you are using.</p>
+<dl>
+<dd>
+<p>3.1 - Use the <span class="code">mkdir</span> command to create the <span class="text-object">.php</span> directory.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">mkdir ~/.php</span></pre>
+</div>
+<p>3.2 - Change into this new directory.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~/.php</span></pre>
+</div>
+<p>3.3 - Create any subdirectories for the specific version of PHP you're creating a <span class="text-object">phprc</span> file for.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">mkdir ~/7.4</span></pre>
+</div>
+</dd>
+</dl>
 </div>
 </li>
 <li>Change into the directory of the PHP version your site is using:
