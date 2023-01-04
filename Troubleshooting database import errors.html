@@ -1,21 +1,24 @@
 <div class="notebox-tip">
 <p>If you find yourself in a situation that requires changes to your site, and your developer isn't available to help, DreamHost's skilled support team may be able to assist you for a small fee. You can find more information about supported services and associated costs in the <a href="/hc/en-us/articles/360042256912-Professional-Services-overview">DreamHost Professional Services</a> article.</p>
 </div>
-
 <h2>ERROR 1044</h2>
 <div class="solvvy-solution">
-<p>Most SQL files contain a CREATE DATABASE and a USE statement, which are created when you export the contents of an existing database. These statements are intended to completely automate the process of migrating the database to a new installation.</p>
-<p>If you attempt to import your data into a new database on DreamHost with such a file, it fails as you do not have CREATE DATABASE permissions from the command line (or anywhere except the Control Panel).</p>
-<p>When you use the import command as described in the previous section, you'll see the following error message:</p>
+<p>MySQL databases can be exported into a single file which you can then use to migrate the database to another hosting company.</p>
+<p>Very often, this MySQL file contains a <span class="code">CREATE DATABASE</span> and a <span class="code">USE</span> statement. These statements are intended to automate the process of migrating the database to a new location, however, attempting to import your database to DreamHost with such a file will fail as you do not have <span class="code">CREATE DATABASE</span> permissions.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115000263911-MySQL-limitations-due-to-shared-hosting">MySQL limitations due to shared hosting</a></li>
+</ul>
+<p>When you import a database with these statements via <a href="https://help.dreamhost.com/hc/en-us/articles/221614988-SSH-Importing-a-database" target="_self">SSH</a> or <a href="https://help.dreamhost.com/hc/en-us/articles/214395768-phpMyAdmin-How-to-import-a-database-or-table" target="_self">phpMyAdmin</a>, you'll see the following error message:</p>
 <div class="preboxcontainer">
 <pre class="prebox">ERROR 1044 (42000): Access denied for user 'your_user_name'@'yourhost/hostmask' to database 'newdbname'</pre>
 </div>
-<p>This error message indicates that you don't have sufficient permissions to create the new database, which is caused by the CREATE DATABASE statement in the SQL file being imported. This is not a major problem as you have already created the database. Because of this, the CREATE DATABASE statement that is in your exported SQL file is not even needed.</p>
+<p>This error message indicates that you don't have sufficient permissions to create the new database and is caused by the <span class="code">CREATE DATABASE</span> statement in the MySQL file being imported.</p>
+<p>The only way to create a database at DreamHost is <a href="https://help.dreamhost.com/hc/en-us/articles/221691727-Creating-a-MySQL-database" target="_self">in the panel</a>. Because of this, the <span class="code">CREATE DATABASE</span> statement that is in your MySQL file is not needed.</p>
 <h3>The solution</h3>
 <p>To resolve this issue:</p>
 <ol>
-<li>Open the SQL file in a text editor (not a word processor, such as MS-Word).</li>
-<li>Delete the lines that begin with CREATE DATABASE and USE. For example:
+<li>Open the MySQL file in a text editor (not a word processor, such as MS-Word).</li>
+<li>Delete the lines that begin with <span class="code">CREATE DATABASE</span> and <span class="code">USE</span>. For example:
 <div class="preboxcontainer">
 <pre class="prebox">CREATE DATABASE `newdbname` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_c$ USE `newdbname`;</pre>
 </div>
@@ -25,29 +28,30 @@
 <div class="preboxcontainer">
 <pre class="prebox">USE `newdbname`;</pre>
 </div>
+<div class="notebox-tip">
 <ul>
-<li>The exact text of the CREATE DATABASE statement differs depending on the database name and the character set used.</li>
+<li>The exact text of the <span class="code">CREATE DATABASE</span> statement differs depending on the database name and the character set used.</li>
 <li>Make sure to delete everything from the beginning of the line through, and including, the semi-colon at the end of the line.</li>
 </ul>
+</div>
 </li>
-<li>Once you have deleted these statements, save your edited SQL file, and then repeat the import command as indicated in the previous section.</li>
+<li>Once you have deleted these statements, save your edited MySQL file, and then try importing again.</li>
 </ol>
-<p>If you have done everything else correctly, the import should proceed without further issue.</p>
 </div>
 <h2>ERROR 1227</h2>
 <div class="solvvy-solution">
-<p>If you restore a MySQL backup to a database under another user and have any views in your database, you'll get an error similar to this:</p>
+<p>If you restore a MySQL backup to a database under another user and have any 'views' in your database, you'll get an error similar to this:</p>
 <div class="preboxcontainer">
 <pre class="prebox">ERROR 1227 (42000) at line 694: Access denied; you need the SUPER privilege for this operation.</pre>
 </div>
-<p>You'll need to remove the DEFINER mentioned in the <span class="text-object">.sql</span> file at the line specified in the error.</p>
+<p>You'll need to remove&nbsp;the <span class="code">DEFINER</span> mentioned in the <span class="text-object">.sql</span> file at the line specified in the error.</p>
 </div>
 <h2>See also</h2>
 <div class="solvvy-hidden">
 <ul>
 <li><a href="/hc/en-us/articles/215099117-MySQL-overview">MySQL overview</a></li>
 <li><a href="/hc/en-us/articles/214395738-phpMyAdmin-How-to-backup-export-a-database-or-table">phpMyAdmin — How to backup / export a database or table</a></li>
-<li><a href="/hc/en-us/articles/214395768-phpMyAdmin-How-to-import-a-database-or-table" rel="undefined" target="_self">phpMyAdmin — How to import a database or table</a></li>
+<li><a href="/hc/en-us/articles/214395768-phpMyAdmin-How-to-import-a-database-or-table" target="_self" rel="undefined">phpMyAdmin — How to import a database or table</a></li>
 <li><a href="/hc/en-us/articles/221614988-SSH-Importing-a-database">SSH — Importing a database</a></li>
 <li><a href="/hc/en-us/articles/221686207-SSH-Backing-up-your-database">SSH — Backing up your database</a></li>
 </ul>
