@@ -1,0 +1,170 @@
+<div id="auto-toc">&nbsp;</div>
+<h2>Overview</h2>
+<div class="solvvy-solution">
+<p>After you <a href="https://help.dreamhost.com/hc/en-us/articles/214588698-Installing-WP-Super-Cache" target="_blank" rel="noopener">install WP Super Cache</a>, you can use the following information to further optimize the plugin.</p>
+</div>
+<h2>Configuring the WP Super Cache plugin</h2>
+<div class="solvvy-solution">
+<p>To configure the WP Super Cache plugin:</p>
+<ol>
+<li>Navigate to the <span class="text-section">Settings &gt; WP Super Cache</span> section of your <a href="https://help.dreamhost.com/hc/en-us/articles/360001310966-How-to-log-into-your-WordPress-site">WordPress admin dashboard</a>.</li>
+<li>Open the <span class="text-object">Advanced</span> tab on the WP Super Cache Settings page and make sure the following options are checked/enabled:
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/wp-admin-wp-super-cache-advanced-tab.png" alt="wp-admin-wp-super-cache-advanced-tab.png" /></dd>
+</dl>
+<ul>
+<li><strong>Caching</strong>: Enable Caching</li>
+<li><strong>Cache Delivery Method</strong>: Expert</li>
+<ul>
+<li>This option adds rules to the site's <a href="https://help.dreamhost.com/hc/en-us/articles/216456227--htaccess-overview">.htaccess</a> file</li>
+</ul>
+<li><strong>Miscellaneous / Cache Restrictions</strong>:</li>
+<ul>
+<li>Disable caching for logged in visitors.</li>
+<li>Don't cache pages with GET parameters.</li>
+<li>Compress pages so they're served more quickly to visitors.</li>
+<li>Cache rebuild.</li>
+</ul>
+<li><strong>Advanced</strong></li>
+<ul>
+<li>Extra homepage checks.</li>
+</ul>
+</ul>
+</li>
+<li>Click the <strong>Update Status</strong> button, which refreshes the page.</li>
+<li>Scroll down to <span class="text-object">Rejected URL Strings</span> section and make sure the following exclusions are included within the text box:
+<div class="preboxcontainer">
+<pre class="prebox">wp-.*\.php
+index\.php
+/store
+/cart
+/checkout
+/my-account
+/feed
+/addons
+/administrator
+/resetpass
+/register
+/login
+/mepr
+/account
+/thank-you
+/ref</pre>
+</div>
+</li>
+<li>Click the <strong>Save Strings</strong> button and wait for the page to refresh.</li>
+<li>Open the <span class="text-object">Easy</span> tab and scroll down to the <strong>Cache Tester</strong> section.</li>
+<li>Click the <strong>Test Cache</strong> button and wait for the results.</li>
+</ol>
+<p>The following message appears, which indicates that your setup has been successfully configured:</p>
+<div class="preboxcontainer">
+<pre class="prebox">The timestamps on both pages match!</pre>
+</div>
+</div>
+<h2>Verifying WP Super Cache is actually working</h2>
+<div class="solvvy-solution">
+<p>To test WP Super Cache:</p>
+<ol>
+<li>Open the WP Super Cache admin page and click the <span class="text-object">Easy</span> tab.
+<dl>
+<dd><img src="https://kbimages.dreamhosters.com/images/09_WP_Super_Cache.fw.png" alt="09 WP Super Cache.fw.png" /></dd>
+</dl>
+</li>
+<li>Click the <strong>Test Cache</strong> button, which tests if WP Super Cache is functioning.
+<dl>
+<dd><em>The following appears when you click the <strong>Test Cache</strong> button:</em></dd>
+<dd><img src="https://kbimages.dreamhosters.com/images/10_WP_Super_Cache.fw.png" alt="10 WP Super Cache.fw.png" /></dd>
+</dl>
+</li>
+</ol>
+<div id="timestamp_error" class="section-link">&nbsp;</div>
+<h3 class="subtoc-heading">Timestamps differ or were not found error</h3>
+<p>You may see the following error message when you test your cache:</p>
+<div class="preboxcontainer">
+<pre class="prebox">The pages do not match! Timestamps differ or were not found!</pre>
+</div>
+<p>This is a Cloudflare Minify issue and occurs when you have enabled Cloudflare on your domain.</p>
+<p>To fix:</p>
+<ol>
+<li>Log into your <a href="https://dash.cloudflare.com/login">Cloudflare account</a>.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/cloudflare_speed_tab.png" alt="cloudflare_speed_tab.png" /></dd>
+</dl>
+</li>
+<li>In the left menu, click the <span class="text-object">Speed</span> tab and then click <strong>Optimization</strong>.
+<dl>
+<dd><img src="https://kbimages.dreamhosters.com/images/2x/cloudflare_auto_minify.png" alt="cloudflare_auto_minify.png" /></dd>
+</dl>
+</li>
+<li>Scroll down to the <span class="text-object">Auto Minify</span> section and un-check the <strong>HTML</strong> option.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/cloudflare_caching_tab.png" alt="cloudflare_caching_tab.png" /></dd>
+</dl>
+</li>
+<li>Open the <span class="text-object">Caching</span> tab and then click <strong>Configuration</strong>.
+<dl>
+<dd><img src="https://kbimages.dreamhosters.com/images/2x/cloudflare_purge_everything.png" alt="cloudflare_purge_everything.png" /></dd>
+</dl>
+</li>
+<li>In the first section, click the <strong>Purge Everything</strong> button.</li>
+<li>Wait at least 30 seconds and then test your cache again in WordPress. It should now show that the timestamps match.</li>
+</ol>
+</div>
+<h2>Changing the caching type</h2>
+<div class="solvvy-solution">
+<p>Open the <span class="text-object">Advanced</span> tab to view the various caching types. WP Super Cache supports two modes:</p>
+<ul>
+<li>Simple</li>
+<li>Expert (mod_rewrite)</li>
+</ul>
+<p>You can change these settings on the <span class="text-object">Advanced</span> tab.</p>
+<p>There are pros and cons for each option: if performance is a priority or if your content is not updating that often, use the <strong>Expert (mod_rewrite)</strong> option, which speeds up the Time to First Byte (TTFB) by orders of magnitude. This is because it doesn't have to search for additional PHP handlers to parse the cached file. Instead, it writes the content as raw HTML and then serves the HTML by itself.</p>
+<p>If you're using Nginx, use the <strong>Simple</strong> option instead.</p>
+</div>
+<h2>Making WP Super Cache work with Nginx</h2>
+<div class="solvvy-solution">
+<p>You can find your <span class="code">wordpress.conf</span> file on your Nginx server in the following directory. Change the username to your <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access">Shell user</a> and <span class="code">example.com</span> to your website:</p>
+<div class="preboxcontainer">
+<pre class="prebox">/home/<span class="code-highlight">username</span>/nginx/<span class="code-highlight">example.com</span>/wordpress.conf</pre>
+</div>
+<p>The following are a few snippets from a <span class="code">wordpress.conf</span> file:</p>
+<div class="preboxcontainer">
+<pre class="prebox">###### rest of wordpress.conf above...
+###
+# only rewrite to the supercache file if it actually exists
+if (-f $document_root$supercache_file) {
+  rewrite ^(.*)$ $supercache_file break;
+}
+
+### stats
+if ($request_uri ~* ^/(stats|doc|failed_auth\.html).*$) {
+  break;
+}
+
+# all other requests go to WordPress
+if (!-e $request_filename) {
+  rewrite ^.*$ /index.php last;
+}</pre>
+</div>
+<p>See the following article for further information on using WordPress with Nginx:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214824958-How-to-make-statistics-and-permalinks-work-with-WordPress-and-Nginx">How to make statistics and permalinks work with WordPress and Nginx</a></li>
+</ul>
+</div>
+<h2>See also</h2>
+<div class="solvvy-hidden">
+<h3>Internal links</h3>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214588698-Installing-WP-Super-Cache">Installing WP Super Cache</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360001310966-How-to-log-into-your-WordPress-site">How to log into your WordPress site</a></li>
+<li><a href="/hc/en-us/articles/215525287-WordPress-overview">WordPress overview</a></li>
+<li><a href="/hc/en-us/articles/215300817-Managing-WordPress-plugins">Managing WordPress plugins</a></li>
+<li><a href="/hc/en-us/articles/214586538-WordPress-caching-options">WordPress caching options</a></li>
+<li><a href="/hc/en-us/articles/215300867-General-WordPress-optimization-techniques">General WordPress optimization techniques</a></li>
+</ul>
+<h3>External links</h3>
+<ul>
+<li><a href="https://odd.blog/wp-super-cache/">WP Super Cache Homepage</a></li>
+<li><a href="https://wordpress.org/plugins/wp-super-cache/">WordPress.org's WP Super Cache listing</a></li>
+</ul>
+</div>
