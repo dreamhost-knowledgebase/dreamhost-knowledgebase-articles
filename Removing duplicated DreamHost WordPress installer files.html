@@ -2,18 +2,23 @@
 <div class="solvvy-solution">
 <p>There are several different ways to install WordPress. For example:</p>
 <ul>
-<li>Downloading the files directly from <a href="https://wordpress.org/download/#download-install" target="_self">WordPress.org</a> and uploading them to your site</li>
-<li>Using <a href="https://help.dreamhost.com/hc/en-us/articles/360024826351-Installing-WordPress-using-wp-cli-and-SSH" target="_self">wp-cli via SSH</a> to install directly onto the server</li>
-<li>Using the <a href="https://help.dreamhost.com/hc/en-us/articles/215525277-Install-WordPress-using-the-DreamHost-WordPress-installer" target="_self" rel="undefined">DreamHost WordPress installer</a> in the panel</li>
+<li>Using the <a href="https://help.dreamhost.com/hc/en-us/articles/215525277-Install-WordPress-using-the-DreamHost-WordPress-installer" target="_self" rel="undefined">DreamHost WordPress installer</a> in the panel.</li>
+<li>Downloading the files directly from <a href="https://wordpress.org/download/#download-install" target="_self">WordPress.org</a> and uploading them to your site.</li>
+<li>Using <a href="https://help.dreamhost.com/hc/en-us/articles/360024826351-Installing-WordPress-using-wp-cli-and-SSH" target="_self">wp-cli via SSH</a> to install directly onto the server.</li>
 </ul>
-<p>The DreamHost WordPress install service in the panel is the easiest option. However, it's important you ensure that WordPress has not already been manually installed into your site's directory using a different installation method. If a WordPress install already exists, the DreamHost WordPress install will proceed, but all old files will be appended with a timestamp.</p>
-<p>For example, normal WordPress files will look like this:</p>
+<p>This article explains how the DreamHost WordPress installer will duplicate manually-installed files and how to delete them from the server.</p>
+</div>
+<h2>Manual WordPress installs</h2>
+<div class="solvvy-solution">
+<p>If you previously uploaded a WordPress site to your server manually, it will not display in the panel but the WordPress files will exist in your website directory. If you then use the <a href="https://help.dreamhost.com/hc/en-us/articles/215525277-Install-WordPress-using-the-DreamHost-WordPress-installer" target="_self" rel="undefined">DreamHost WordPress installer</a> in the panel, new WordPress files will be installed normally and the old files will be appended with a timestamp.</p>
+<h3>How old files are renamed</h3>
+<p>For example, WordPress files look like this:</p>
 <ul>
 <li><span class="text-object">index.php</span></li>
 <li><span class="text-object">wp-login.php</span></li>
 <li><span class="text-object">wp-settings.php</span></li>
 </ul>
-<p>If these files already exist and you run the DreamHost WordPress install, the newly installed files from the DreamHost WordPress install will have a timestamp added. For example:</p>
+<p>If these files already exist and you run the DreamHost WordPress installer, a timestamp will be added to the old files. For example:</p>
 <ul>
 <li><span class="text-object">index.php.1555975213</span></li>
 <li><span class="text-object">wp-login.php.1555975213</span></li>
@@ -25,12 +30,12 @@
 <div class="solvvy-solution">
 <ol>
 <li>Log into your server via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview" target="_self">SSH</a>.</li>
-<li>Navigate into your <a href="https://help.dreamhost.com/hc/en-us/articles/360001219231#the-website-directory" target="_self">website's directory</a>. Change <strong>example.com</strong> to your website.
+<li>Navigate into your <a href="https://help.dreamhost.com/hc/en-us/articles/360001219231#the-website-directory" target="_self">website's directory</a>. Change <strong>example.com</strong> to your website:
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~/<span class="code-highlight">example.com</span></span></pre>
 </div>
 </li>
-<li>Run the following command to delete these duplicated files. Just change the timestamp number.
+<li>Run the following command to delete these duplicated files. Just change the timestamp number:
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">find . -name "*<span class="code-highlight">.1555975213</span>" -type f -delete</span></pre>
 </div>
