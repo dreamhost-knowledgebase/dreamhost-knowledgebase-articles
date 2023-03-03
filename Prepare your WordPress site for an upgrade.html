@@ -1,97 +1,90 @@
 <div id="auto-toc">&nbsp;</div>
 <h2>Overview</h2>
 <div class="solvvy-solution">
-<div class="notebox-important">
-<p>You should always <a href="https://help.dreamhost.com/hc/en-us/articles/360001331703-Upgrading-your-WordPress-site-to-the-latest-PHP-version">upgrade to the latest version of PHP</a> as it provides better performance and compatibility with the latest versions of WordPress.</p>
+<p>This article describes how to prepare your WordPress website for an upcoming version release.</p>
+<h3>Updating the PHP version of your site</h3>
+<p>It's highly recommended that you <a href="https://help.dreamhost.com/hc/en-us/articles/360001331703-Upgrading-your-WordPress-site-to-the-latest-PHP-version">upgrade to the latest version of PHP</a> as it provides better performance and compatibility with the latest versions of WordPress.</p>
+<div class="alert-warning">
+<p>Not all third-party themes and plugins have been updated to be compatible with PHP 8. If your site relies on a specific plugin or theme, make sure you verify that it is PHP 8 compatible before upgrading.</p>
 </div>
-<p>The following describes how to prepare your site for an upcoming WordPress release.</p>
 </div>
-<h2>Background</h2>
+<h2>Back up your site and database</h2>
 <div class="solvvy-solution">
-<p>Since version 5.6, which was released in late 2020, new installs of WordPress have been set to automatically upgrade the core software to the latest available release — whether it's major or minor — shortly after it has been made available for download.</p>
-<p>This means that a large number of WordPress sites have been receiving major releases to their core WordPress software without any issues over a period of time. So, you can be assured that WordPress will continue to work as expected when pending updates are made to your site.</p>
-<p>Nevertheless, given the large number of themes, plugins, and other customizations that you may have added to your WordPress install, there are a number of variables that should be taken into account to make sure your upgrade process goes smoothly.</p>
-</div>
-<h2>Backing up your site and database</h2>
-<div class="solvvy-solution">
-<p>Before you make any updates to your WordPress site, DreamHost recommends backing up your WordPress installation. The following describes how to back up your site if it was installed using the&nbsp; <a href="https://help.dreamhost.com/hc/en-us/articles/215525277-Install-WordPress-using-the-DreamHost-WordPress-installer" target="_self">DreamHost WordPress installer</a> or DreamPress.</p>
+<p>Before you make any updates to your WordPress site, DreamHost recommends backing up your WordPress installation. The steps are different depending on if your site was installed using the <a href="https://help.dreamhost.com/hc/en-us/articles/215525277-Install-WordPress-using-the-DreamHost-WordPress-installer" target="_self">DreamHost WordPress installer</a> or <a href="https://help.dreamhost.com/hc/en-us/articles/214581158-DreamPress-overview" target="_self">DreamPress</a>.</p>
 <h3 class="subtoc-heading">DreamHost WordPress install</h3>
-<p>While DreamHost does not offer on-demand backups in the DreamHost panel for WordPress sites installed by the DreamHost WordPress installer, there are two options for making sure you have a backup before an upgrade occurs:</p>
+<p>There are two options to back up a WordPress site created by the <a href="https://help.dreamhost.com/hc/en-us/articles/215525277-Install-WordPress-using-the-DreamHost-WordPress-installer" target="_self">DreamHost WordPress installer</a> in your panel.</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215089888-WordPress-backup-tools">Install a WordPress backup plugin</a> <em>(easiest)</em></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215768237-Manually-backing-up-website-data">Run a manual backup</a> <em>(advanced — requires using the command line and logging into your site via SSH)</em></li>
 </ul>
-<p>The most important thing here is to make sure that whatever backup you perform is saved onto your local computer or uploaded to a cloud service such as Google Drive or Dropbox. That way, you'll have an off-site backup to restore from in case something unfortunate occurs to your site during the upgrade process.</p>
+<p>Either option provides you with an off-site backup that allows you to quickly restore your site from in case an error occurs during the upgrade process.</p>
 <h3 class="subtoc-heading">DreamPress</h3>
-<p>DreamPress users have the ability to create an on-demand backup of a DreamPress site. See the following article to learn more about how to create a DreamPress backup:</p>
+<p>DreamPress websites have the ability to create an on-demand backup in the DreamHost panel. View the following article for instructions on how back up your DreamPress website:</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/360001445126-Creating-and-restoring-backups-for-DreamPress">Creating and restoring backups for DreamPress</a></li>
 </ul>
 </div>
-<h2>Updating your plugins</h2>
+<h2>Update your plugins</h2>
 <div class="solvvy-solution">
-<p>One of the things that make automatic WordPress upgrades go smoothly is making sure any out-of-date plugins have been updated before the new WordPress version is released.</p>
-<p>Leading up to major releases of WordPress, plugin developers are contacted and asked to make sure that their code is compatible with the changes being made to the core software. You may notice a week or two before a new release that a number of your site's plugins and themes have updates available. This is generally because the developers are preparing their plugins for a new release.</p>
-<p>Fortunately, updating plugins is as simple as <a href="https://help.dreamhost.com/hc/en-us/articles/360001310966-How-to-log-into-your-WordPress-site">logging into your site</a> and making a few selections:</p>
+<p>Make sure plugins are updated before the new WordPress version is released.&nbsp;You may notice a week or two before a new release that a number of your site's plugins and themes have updates available. This is generally because the developers are preparing their plugins for a new release.</p>
+<p>View the following article for instructions on how to update your plugin:</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215300817-Managing-WordPress-plugins">Managing WordPress plugins</a></li>
 </ul>
-<p>If the plugin is part of the core functionality of your site (e.g., WooCommerce, Easy Digital Downloads, Paid Memberships Pro, and so on) DreamHost suggests that you create a backup before updating (see above). However, if the plugin is a little more basic (e.g., Akismet, Smash Balloon, Site Kit, and so on) you may wish to consider <a href="https://wordpress.org/support/article/managing-plugins/#enable-automatic-plugin-update">enabling automatic plugin updates</a>, so you have one less thing to worry about.</p>
+<h3 class="subtoc-heading">Manual or automatic plugin updates</h3>
+<p>If the plugin is part of the core functionality of your site (e.g., WooCommerce) DreamHost suggests that you create a backup before updating (see above).</p>
+<p>However, if the plugin is a more basic (e.g., Akismet) you may consider <a href="https://wordpress.org/support/article/managing-plugins/#enable-automatic-plugin-update" target="_blank" rel="noopener noreferrer">enabling automatic plugin updates</a> to ensure they are always at their latest version.</p>
 </div>
-<h2>How to test a pre-release WordPress version</h2>
+<h2>Use a staging site to test the new version</h2>
 <div class="solvvy-solution">
-<div class="notebox-note">
-<p>The following steps are only necessary if there is an upcoming WordPress version available that is not yet officially released and you would like to test.</p>
-</div>
-<p>If your site leverages some sort of advanced functionality, such as eCommerce or memberships, it's best to "test" your site against the new WordPress version before upgrading. You can create a staging site to accomplish this.</p>
-<p>A staging site is basically a secondary environment where you make a copy of your current site. You can then use a tester plugin to test changes (such as updated plugins, new designs, and upgraded core software) on your staging site before updating your live site.</p>
-Using staging is totally optional, but it's an important best practice to ensure that everything looks, works, and feels right before the upgrade occurs.
+<p>If your site depends on essential functionality, such as eCommerce or memberships, it's best to create a staging site to test the new WordPress version before upgrading your live site.</p>
+<p><span style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;">Testing using staging site is not required, but it's a safe way to ensure your site will continue to function properly before upgrading.</span></p>
 <h3 class="subtoc-heading">Setting up a staging site</h3>
-<p>You can set up a staging environment depending on the type of hosting plan you are currently on.</p>
-<h4>DreamPress</h4>
-<p>See the following article to quickly set up a staging environment on DreamPress:</p>
+<p><strong>DreamPress hosting plans</strong></p>
+<p>View the following article to set up a staging environment for your DreamPress site in the panel:</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/360001265112-How-to-stage-a-DreamPress-site">How to stage a DreamPress site</a></li>
 </ul>
-<h4>All other DreamHost hosting plans</h4>
-<p>See the following article to learn more about staging for Shared, VPS, and Dedicated hosting plans, which is a bit more of a manual process:</p>
+<p><strong>All other hosting plans</strong></p>
+<p>View the following article to set up a staging environment if your WordPress site is hosted on a shared, VPS, or Dedicated hosting plan:</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/360003838631-Creating-a-staging-WordPress-site">Creating a staging WordPress site</a></li>
 </ul>
-<p>You can also use a plugin such as <a href="https://wordpress.org/plugins/migrate-guru/">Migrate Guru</a> to move your site files and database to a secondary install, which simplifies the process considerably.</p>
-<h3 class="subtoc-heading">Using the WordPress Beta Tester plugin to test your site</h3>
-<p>After you create a staging site, use the following instructions to test it.</p>
+<p><strong>Plugin option</strong></p>
+<p>Another option is to use a plugin such as <a href="https://wordpress.org/plugins/migrate-guru/" target="_blank" rel="noopener noreferrer">Migrate Guru</a> to migrate your site files and database to a secondary install.</p>
+</div>
+<h2>Use the WordPress Beta Tester plugin to test the new version</h2>
+<div class="solvvy-solution">
+<div class="notebox-tip">
+<p>The following steps are only necessary if there is an upcoming WordPress version available that is not yet officially released that you would like to test.</p>
+</div>
+<p>After you create a staging site (as mentioned above), use the following instructions to test a pre-release version of WordPress.</p>
 <ol>
 <li>Log into your staging site.</li>
-<li>Install the <a href="https://wordpress.org/plugins/wordpress-beta-tester/">WordPress Beta Tester</a> plugin. Once activated, go to <span class="text-object">Tools » Beta Testing</span> in the WordPress Dashboard and then select <span class="text-object">Bleeding Edge</span>:
+<li>Install the <a href="https://wordpress.org/plugins/wordpress-beta-tester/" target="_blank" rel="noopener noreferrer">WordPress Beta Tester</a> plugin.</li>
+<li>Navigate to <span class="text-section">Tools &gt; Beta Testing</span> and select the <span class="text-object">Bleeding Edge</span> option.</li>
+<li>Click <strong>Save Changes</strong>.</li>
+<li>When the page reloads, select the <span class="text-object">Release Candidates Only</span> option.</li>
+<li>Click <strong>Save Changes</strong> again.</li>
+<li>Navigate to <span class="text-section">Dashboard &gt; Updates</span>.
 <dl>
-<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/wp-admin-beta-tester-01.png" alt="wp-admin-beta-tester-01.png" /></dd>
-</dl>
-</li>
-<li>Click <strong>Save Changes</strong> and then select the <span class="text-object">Release Candidates Only</span> option when the page reloads:
-<dl>
-<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/wp-admin-beta-tester-02.png" alt="wp-admin-beta-tester-02.png" /></dd>
-</dl>
-</li>
-<li>Click <strong>Save Changes</strong> again and then go to the <span class="text-object">Dashboard » Updates</span> page.
-<dl>
-<dd><em>When a Release Candidate (RC) of the next version of WordPress is available, you'll have the ability to update your staging site to it:</em></dd>
+<dd><em>When a Release Candidate (RC) of the next version of WordPress is available, you'll have the ability to update your staging site to it on this page:</em></dd>
 </dl>
 <dl>
-<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/wp-admin-beta-tester-03.png" alt="wp-admin-beta-tester-03.png" /></dd>
-</dl>
+<dd>
 <div class="notebox-note">
 <p>Release Candidates are effectively "preview" copies of WordPress that are ready to release so long as there are no major or site-breaking bugs.</p>
 </div>
+</dd>
+</dl>
 </li>
 <li>Once your staging site is on the most recent Release Candidate, ensure that everything is fully functional. Here are a few things to check:
 <ul>
-<li>Are all the pages still displaying as they should?</li>
-<li>Is anything unexpected happening when you browse around or try to create new content?</li>
+<li>Do all pages display as they should?</li>
+<li>Does anything unexpected happen when you browse or try to create new content?</li>
 <li>If you run an eCommerce site, are you still able to add products to the cart and check out?</li>
 </ul>
 </li>
 </ol>
-<p>If something isn't appearing or working as you expect, note what's breaking and reach out to the developer of whichever plugin or theme that is having issues. They may already have a pending update that fixes what you're seeing. Or, if they don't, you may have found something that can be fixed quickly and will save a lot of other users from having a poor upgrade experience.</p>
-<p>You can also contact <a href="https://help.dreamhost.com/hc/en-us/articles/218084068-Contacting-support-overview">DreamHost support</a> if you have any questions about your WordPress experience.</p>
+<p>If something isn't functioning as expected, note what's breaking and reach out to the developer of the specific plugin or theme as they may already have a pending update that fixes your issue.</p>
 </div>
