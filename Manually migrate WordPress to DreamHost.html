@@ -19,116 +19,192 @@
 </ul>
 </div>
 <div class="notebox-note">
-<p>When you create a backup of your website hosted at Wordpress.com, the exported site is in XML format. Only posts, pages, comments, categories, and tags can be exported. Themes and widgets cannot be exported. If you need to export your database, it needs to be exported separately. See the following article for further details:</p>
+<p>When you create a backup of your website hosted at Wordpress.com, the exported site is in XML format. Only posts, pages, comments, categories, and tags can be exported. Themes and widgets cannot be exported. If you need to export your database, you must export it separately. See the following article for further details:</p>
 <ul>
 <li><a href="https://wordpress.com/support/phpmyadmin-and-mysql/">WordPress.com database export</a></li>
 </ul>
 </div>
-<h2>Backing up your data</h2>
+<h2>Back up your website at your current host</h2>
 <div class="solvvy-solution">
-<p>Before making any changes to your website, DreamHost highly recommends backing up your database. Instructions can be found in the following article:</p>
-<ul>
-<li><a href="/hc/en-us/articles/215039758-How-do-I-backup-my-database-">Backup MySQL</a></li>
-</ul>
-<p>However, you may need to contact your current host for instructions on how to export files from their system.</p>
+<p>Before making any changes to your website, DreamHost highly recommends backing up both your website files and your database at your current hosting company.</p>
+<h3>Website files</h3>
+<p>Contact your current host for instructions on how to export your website files. They should have instructions on how to log into your server via FTP to download your files and save them to a <span class="text-object">.zip</span> file.</p>
+<div class="notebox-important">
+<p>In the steps below, you only need to upload the <span class="text-object">wp-content</span> folder.</p>
+<p>Uploading your <span class="text-object">.htaccess</span> and <span class="text-object">wp-config.php</span> files is only necessary if you have custom coding within these files.</p>
+</div>
+<h3>Database file</h3>
+<p>Contact your current host for instructions on how to export your website's database. You will need to download a file ending with a <span class="text-object">.sql</span> extension.</p>
+</div>
+<h2>Install WordPress</h2>
+<div class="solvvy-solution">
+<p>Make sure your domain is <a href="/hc/en-us/articles/360049378932" target="_blank" rel="noopener noreferrer">fully hosted</a> in your DreamHost panel and that WordPress is already installed.</p>
+<div class="notebox-note">
+<p>DreamHost recommends using the <a href="https://help.dreamhost.com/hc/en-us/articles/215525277-Install-WordPress-using-the-DreamHost-WordPress-installer" target="_blank" rel="noopener noreferrer">DreamHost WordPress installer</a> or purchasing a <a href="https://help.dreamhost.com/hc/en-us/articles/214583258-Add-DreamPress-to-a-new-domain" target="_blank" rel="noopener noreferrer">DreamPress plan</a> to have the WordPress core files installed automatically.</p>
+</div>
 </div>
 <div class="steps-section--container">
 <div class="steps-section--border">&nbsp;</div>
 <div class="steps-section--content">
 <div class="steps-section--step"><img class="steps-number-icon" src="https://kbimages.dreamhosters.com/graphics/number-1.svg" width="50px" />
-<h2>Step 1 — Preparation</h2>
+<h2>Step 1 — Clear out your DreamHost database</h2>
 <div class="solvvy-solution">
-<p>Make sure you have the following items in order to successfully manually migrate your WordPress files to DreamHost:</p>
+<p>When you installed WordPress in the panel, a database was created automatically for you.&nbsp;You must now clear out all tables in this database so it is blank. You can then import your SQL file into it.</p>
+<h3 class="subtoc-heading">phpMyAdmin</h3>
+<p>View the following articles for instructions on how to log into your database via phpMyAdmin:</p>
 <ul>
-<li>You must at least save your <strong>wp-content</strong> folder and <strong>MySQL database</strong>. You do not have to include your .htaccess and wp-config.php unless you have custom coding within these files. DreamHost recommends using the latest WordPress core files.</li>
-<li>Before you start uploading your content, please be sure that your domain is <a href="/hc/en-us/articles/360049378932" target="_blank" rel="noopener noreferrer">fully hosted</a> and has WordPress installed. DreamHost recommends using the <a href="https://help.dreamhost.com/hc/en-us/articles/215525277-Install-WordPress-using-the-DreamHost-WordPress-installer" target="_blank" rel="noopener">DreamHost WordPress installer</a> or purchasing a <a href="https://help.dreamhost.com/hc/en-us/articles/214583258-Add-DreamPress-to-a-new-domain" target="_blank" rel="noopener noreferrer">DreamPress plan</a> to have the WordPress core files installed automatically.</li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/221610868-Finding-your-database-login-credentials">Finding your database login credentials</a></li>
+<li><a href="/hc/en-us/articles/360002440711-Accessing-your-DreamPress-database" target="_self" rel="undefined">Accessing your DreamPress database</a> (DreamPress sites only)</li>
 </ul>
-<p>The default web directory is located in the following path, which is where you should upload your content:</p>
+<div class="notebox-tip">
+<p>You can also obtain your database credentials by opening your <a href="https://help.dreamhost.com/hc/en-us/articles/214693268-WordPress-wp-config-php-overview" target="_self">wp-config.php</a> file. You'll see the following lines:</p>
 <div class="preboxcontainer">
-<pre class="prebox">/home/user/yourdomain.com</pre>
-</div>
-<p>If you’re using Shared Hosting, VPS, or a Dedicated server, please make sure you know where your web directory resides. DreamHost recommends using a <a href="/hc/en-us/articles/115000675027-FTP-overview-and-credentials">FTP client</a> to upload your content but you can also use <a href="/hc/en-us/articles/360003490852-Using-the-website-file-manager-in-the-panel">WebFTP</a> if your files are smaller than 1GB.</p>
-</div>
-</div>
-<div class="steps-section--step"><img class="steps-number-icon" src="https://kbimages.dreamhosters.com/graphics/number-2.svg" width="50px" />
-<h2>Step 2 — Uploading your files to DreamHost</h2>
-<div class="solvvy-solution">
-<p>After you set up a new WordPress install at DreamHost, you are now ready to upload your saved content that is described in the previous section.</p>
-<p>The following image shows an example WebFTP file directory in a domain folder named "exampledreamhost.com". Upload your files to the domain folder of your WordPress site. You can also delete the "wp-content" folder since there is no content within it:</p>
-<dl>
-<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/manually-migrate-wp-01.png" alt="manually-migrate-wp-01.png" width="600" height="496" /></dd>
-</dl>
-<p>The following shows you the two files after you upload them, "example-backup.sql" and "wp-content.zip":</p>
-<dl>
-<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/manually-migrate-wp-02.png" alt="manually-migrate-wp-02.png" width="601" height="567" /></dd>
-</dl>
-<p>You can unzip the "wp-content.zip" file by right-clicking on the file and selecting 'extract'. If you’re using SSH to extract your files instead, you can instead use the following command:</p>
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">unzip  wp-content.zip</span>
+<pre class="prebox">define('DB_NAME', ‘exampledatabase’);
+define('DB_USER', 'exampledbuser');
+define('DB_PASSWORD', ‘database password here’);
+define('DB_HOST', 'mysql.example.com');
 </pre>
 </div>
 </div>
+<ol>
+<li>Select your database name in the left menu.</li>
+<li>Click <strong>Check all</strong> so all tables are checked.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/manually-migrate-wp-03.png" alt="manually-migrate-wp-03.png" width="699" height="278" /></dd>
+</dl>
+</li>
+<li>In the dropdown at the bottom, select the <span class="text-object">Drop</span>&nbsp;option.</li>
+<li>Click <strong>Yes</strong>.
+<dl>
+<dd><em>All tables are removed.</em></dd>
+</dl>
+</li>
+</ol>
 </div>
-<div class="steps-section--step"><img class="steps-number-icon" src="https://kbimages.dreamhosters.com/graphics/number-3.svg" width="50px" />
-<h2>Step 3 — Importing your content</h2>
+</div>
+<div class="steps-section--step"><img class="steps-number-icon" src="https://kbimages.dreamhosters.com/graphics/number-2.svg" width="50px" />
+<h2>Step 2 — Import your database file</h2>
 <div class="solvvy-solution">
-<p>Since you now have your backed-up SQL file uploaded to your domain directory, all you need to do now is reset your new database and import your backed-up database. Resetting your database simply means removing all tables from the database so that you have a blank database to import your SQL file into.</p>
-<p>There are two methods to clear out your current database, which are described in the following sections:</p>
+<p>There are two methods to import your database:</p>
 <ul>
 <li>Using phpMyAdmin (simple, limited to 200MB)</li>
 <li>Using SSH via wp-cli commands (more advanced)</li>
 </ul>
-<h3 class="subtoc-heading">phpMyAdmin</h3>
-<p>To clear your current database using phpMyAdmin:</p>
+<h3>phpMyAdmin</h3>
 <ol>
-<li>See the following article to learn more about how to login to phpMyAdmin:
-<ul>
-<li><a href="/hc/en-us/articles/360002440711-Accessing-your-DreamPress-database">Accessing your DreamPress database</a></li>
-</ul>
-</li>
-<li>After you login to phpMyAdmin, highlight all of your tables:
-<dl>
-<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/manually-migrate-wp-03.png" alt="manually-migrate-wp-03.png" width="699" height="278" /></dd>
-</dl>
-</li>
-<li>After you highlight all of your tables, select the 'drop tables' option in the dropdown at the bottom and then click <strong>OK</strong>. Make sure the table is cleared.
-<dl>
-<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/manually-migrate-wp-03.png" alt="manually-migrate-wp-03.png" width="699" height="278" /></dd>
-</dl>
-</li>
-<li>Click the 'Import' tab at the top to upload your SQL file.
+<li>Click the <span class="text-object">Import</span> tab in the top menu.
 <dl>
 <dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/manually-migrate-wp-04.png" alt="manually-migrate-wp-04.png" width="700" height="309" /></dd>
 </dl>
 </li>
-<li>Click the <strong>Choose File</strong> button, select your SQL file, and then allow it to upload.</li>
-<li>Verify that your tables are correct. You can make any updates to the wp-config.php file such as your adjusting the prefix tables if needed.</li>
+<li>Click the <strong>Choose File</strong> button.</li>
+<li>Locate and upload your SQL file from your computer.<br />
+<dl>
+<dd><em>The database displays the uploaded tables.</em></dd>
+</dl>
+</li>
 </ol>
-<h3 class="subtoc-heading">SSH via wp-cli commands</h3>
-<p>If you prefer not use phpMyAdmin, you can instead upload your SQL file using wp-cli commands via SSH.</p>
-<p>In the following directory-listing example, you can see that the SQL table "example-backup.sql" has already been uploaded:</p>
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">ls</span>
-<span class="cmdoutput">example-backup.sql  license.txt      wp-admin		   wp-config.php   wp-includes	      wp-mail.php	xmlrpc.php
-favicon.gif	    quickstart.html  wp-blog-header.php    wp-content	   wp-links-opml.php  wp-settings.php
-favicon.ico	    readme.html      wp-comments-post.php  wp-content.zip  wp-load.php	      wp-signup.php
-index.php	    wp-activate.php  wp-config-sample.php  wp-cron.php	   wp-login.php       wp-trackback.php</span>
-</pre>
+<h3>SSH</h3>
+<ol>
+<li>Log into your server via <a href="https://help.dreamhost.com/hc/en-us/articles/115000675027-FTP-overview-and-credentials" target="_self">FTP</a>.</li>
+<li>Upload your database file into your <a href="https://help.dreamhost.com/hc/en-us/articles/360001219231-Where-is-the-home-directory-#the-users-home-directory" target="_self" rel="undefined">user's home directory</a>.</li>
+<li>Log into your server via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview" target="_self">SSH</a>.</li>
+<li>Run the following command in your user's home directory to import the file into your database.
+<div class="notebox-note">
+<p>Make sure to replace <span class="text-object">filename.sql</span> with the actual file name of your backed-up database:</p>
 </div>
-<p>Run the following command, which removes your current tables:</p>
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp db reset</span>
-<span class="cmdoutput">Are you sure you want to reset the 'example_dreamhost' database? [y/n] y<br />
-Success: Database reset.</span>
-</pre>
-</div>
-<p>After the reset completes, run the following command to import the backup (be sure to replace 'filename.sql' with the actual file name of your backed-up database):</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">wp db import <span class="code-highlight">filename.sql</span></span>
 <span class="cmdoutput">Success: Imported from 'example-backup.sql'.</span>
 </pre>
 </div>
-<p>That should complete the import of your database. Large files may take longer but you will received a confirmation when the import completes. Make sure your wp-config.php prefix settings are correct and that your site is live.</p>
+<p>Large files may take longer but you will receive a confirmation when the import completes.</p>
+<div class="alert-warning">
+<p>If you uploaded a custom <span class="text-object">wp-config.php</span> file, this command will fail. You must first <a href="https://help.dreamhost.com/hc/en-us/articles/214693268-WordPress-wp-config-php-overview" target="_self">update this file</a> to use the new DreamHost database credentials.</p>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="steps-section--step"><img class="steps-number-icon" src="https://kbimages.dreamhosters.com/graphics/number-3.svg" width="50px" />
+<h2>Step 3 — Upload the wp-content folder</h2>
+<div class="solvvy-solution">
+<p>If you created&nbsp;a <span class="text-object">.zip</span> file of your website files at your former host, you must extract the files first.&nbsp;</p>
+<p>Right-click the file and select the <span class="text-object">Extract</span> option.</p>
+<p>All of your former WordPress files and directories are extracted into a new folder named the same as your domain name. In this folder, you'll find the <span class="text-object">wp-content</span> folder.</p>
+<div class="solvvy-solution">
+<ol>
+<li>Log into your server via <a href="https://help.dreamhost.com/hc/en-us/articles/115000675027-FTP-overview-and-credentials" target="_self">FTP</a>.</li>
+<li>Navigate to your <a href="https://help.dreamhost.com/hc/en-us/articles/360001219231-Where-is-the-home-directory-#the-website-directory" target="_self">website directory</a>.</li>
+<li>Delete the <span class="text-object">wp-content</span> folder since there is currently no content within it.</li>
+<li>Locate your backed-up WordPress files on your computer.</li>
+<li>Upload only the <span class="text-object">wp-content</span> folder.&nbsp;</li>
+</ol>
+<div class="notebox-tip">
+<p><strong>Extracting on the server via SSH</strong></p>
+<p>You can also upload the <span class="text-object">.zip</span> file to your server and extract it via SSH. This may be a better option if your <span class="text-object">wp-content</span> folder is very large.</p>
+<ol>
+<li>Log into your server via <a href="https://help.dreamhost.com/hc/en-us/articles/115000675027-FTP-overview-and-credentials" target="_self">FTP</a>.</li>
+<li>Upload the <span class="text-object">.zip</span> file to your <a href="https://help.dreamhost.com/hc/en-us/articles/360001219231-Where-is-the-home-directory-#the-website-directory" target="_self" rel="undefined">website directory</a>.</li>
+<li>Log into your server via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview" target="_self">SSH</a>.</li>
+<li>Navigate to your&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/360001219231-Where-is-the-home-directory-#the-website-directory" target="_self" rel="undefined">website directory</a>.
+<div class="notebox-note">
+<p>Replace <span class="text-object">example.com</span> with your website name.</p>
+</div>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~/example.com</span>
+</pre>
+</div>
+</li>
+<li>Run the following command.
+<div class="notebox-note">
+<p>Replace <span class="text-object">wp-content.zip</span> with the actual file name.</p>
+</div>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">unzip  wp-content.zip</span>
+</pre>
+</div>
+<dl>
+<dd><em>This extracts all of the files into a new directory, which is named the same as your domain.</em></dd>
+</dl>
+</li>
+<li>Move the&nbsp;<span class="text-object">wp-content</span>&nbsp;folder from the newly extracted directory into your website directory.
+<div class="notebox-note">
+<p>Change <span class="text-object">example.com</span> in this example to your website.</p>
+</div>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">mv example.com/wp-content .</span>
+</pre>
+</div>
+</li>
+<li>Run the following to view all of the files:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">ls -la</span>
+</pre>
+</div>
+<dl>
+<dd><em>You should see your <span class="text-object">wp-content</span> folder along with all of the other WordPress files.</em></dd>
+</dl>
+</li>
+<li>Delete the newly extracted directory:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">rm example.com</span></pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="steps-section--step"><img class="steps-number-icon" src="https://kbimages.dreamhosters.com/graphics/number-4.svg" width="50px" />
+<h2>Step 4 — Update the wp-config.php file</h2>
+<div class="solvvy-solution">
+<h3>Update the table prefix</h3>
+<p>Update the <span class="text-object">wp-config.php</span> file to use the table prefix of the new database you just uploaded. You can view the table prefix in phpMyAdmin. It's the first text of each table. For example, if phpMyAdmin shows this for the <span class="text-object">options</span> table:</p>
+<div class="preboxcontainer">
+<pre class="prebox">wp_3zby173r_options</pre>
+</div>
+<p>Then, the table prefix is: <span class="code">wp_3zby173r_</span>. Update this value in the <span class="text-object">wp-config.php</span> file.</p>
+</div>
 </div>
 </div>
 </div>
