@@ -3,7 +3,7 @@
 <div class="notebox-important">
 <p>This article explains how to verify you're connecting to a DreamHost server and that your connection is secure. If you follow the steps in this article and the fingerprint values do not match what shows in your DreamHost panel, DO NOT CONNECT to the server. <a href="https://help.dreamhost.com/hc/en-us/articles/218084068-Contacting-support-overview">Contact DreamHost support</a> so they may investigate why the fingerprints are different.</p>
 </div>
-<p>Every DreamHost server has several unique SSH keys assigned to it. These keys are used to identify the server and ensure your connection is safe and trusted.&nbsp;When you first use an SSH program or terminal to connect to your server, it checks the keys. Since they are not currently stored on your computer, you will see the following warning:</p>
+<p>Every DreamHost server has several unique SSH keys assigned to it. These keys are used to identify the server and ensure your connection is safe and trusted. When you first use an SSH program or terminal to connect to your server, it checks the keys. Since they are not currently stored on your computer, you will see the following warning:</p>
 <dl>
 <dd>
 <p><strong>The server's host key is unknown. You have no guarantee that the server is the computer you think it is.</strong></p>
@@ -20,20 +20,10 @@
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215360828-SSH-client-software">SSH clients</a></li>
 </ul>
 </div>
-<p>When you originally log into a DreamHost server, you may see the following warning:</p>
-<dl>
-<dd>
-<p><strong>The server's host key is unknown. You have no guarantee that the server is the computer you think it is.</strong></p>
-</dd>
-</dl>
-<p>For example:</p>
-<dl>
-<dd><img src="https://kbimages.dreamhosters.com/images/2018-06_panel_server_host_keys_01.png" alt="" /></dd>
-</dl>
 <p>To confirm if this is the correct server, navigate to the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=users.sshkeys&amp;" target="_blank" rel="noopener noreferrer">SSH Keys</a> page. On that page, you'll see your server along with its matching Fingerprints.</p>
 <p>For example:</p>
 <dl>
-<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-06_panel_server_host_keys_02.png" alt="" /></dd>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-06_panel_server_host_keys_02.png" alt=" Panel server host keys"></dd>
 </dl>
 <p>Compare the two to confirm it's the same server. You can then accept the warning and log in normally.</p>
 </div>
@@ -45,7 +35,7 @@
 </div>
 <p>This responds with the version number. There are a few command that do NOT work if the version is lower than 6.8.</p>
 <p>The following examples are going to use the fingerprints from the shared server named batroc:</p>
-<p><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-11_panel_ssh-keys_verifying-fingerprints_01.png" /></p>
+<p><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-11_panel_ssh-keys_verifying-fingerprints_01.png" alt="Panel SSH keys fingerprints"></p>
 <h3>Using OpenSSH version 7.6p1</h3>
 <p>A common command to run is: FingerprintHash.</p>
 <h4>Check the RSA (MD5) fingerprint</h4>
@@ -95,7 +85,7 @@ ED25519 key fingerprint is <span class="green">SHA256:q3JfuvuldJy5u/ETWHW7HBQ3Zq
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">ssh-keyscan batroc.dreamhost.com &gt; batrockeys.pub</span></pre>
 </div>
-<p>You can now check the keys in that file for their fingerprints. Only the fingerprints of the keys you downloaded will display.&nbsp;This prints the RSA (MD5) and ECDSA (MD5) fingerprints.</p>
+<p>You can now check the keys in that file for their fingerprints. Only the fingerprints of the keys you downloaded will display. This prints the RSA (MD5) and ECDSA (MD5) fingerprints.</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">ssh-keygen -l -f batrockeys.pub</span>
 <span class="green">2048 a1:85:cc:7b:06:c9:14:f3:a8:38:7a:95:76:f1:17:eb</span> batroc.dreamhost.com (RSA)
@@ -143,11 +133,12 @@ batroc.dreamhost.com ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbml
     <pre class="prebox"><span class="server">[server]$ </span><span class="command">awk '{print $3}' batrockeys.pub | base64 -d | sha256sum -b | awk '{print $1}' | xxd -r -p | base64</span>
 <span class="green">ijqWGQW20bkvOViujUO5PRknle09aDPUjh25u60T7eQ=</span></pre>
   </div>
---></div>
+-->
+</div>
 <h2><span id="See_also">See also</span></h2>
 <div class="solvvy-hidden">
 <ul>
-<li><a href="/hc/en-us/articles/215613107-List-of-FTP-client-software">List of FTP client software</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215613107-List-of-FTP-client-software">List of FTP client software</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/214920778-Where-do-I-upload-my-files-once-connected-via-FTP-">Where do I upload my files once connected via FTP?</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215613037-How-to-view-hidden-files-in-an-FTP-client">How to view hidden files in an FTP client</a></li>
 </ul>
