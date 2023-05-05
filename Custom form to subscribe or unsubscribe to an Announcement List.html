@@ -1,12 +1,14 @@
-<div id="auto-toc"> </div>
-<h2>Form example</h2>
+<div id="auto-toc">&nbsp;</div>
+<h2>Overview</h2>
 <div class="solvvy-solution">
-<p>This article walks you through how to create a custom contact form to allow users to subscribe to your Announcement List.</p>
+<p>This article walks you through creating a custom contact form to allow users to subscribe to your Announcement List.</p>
+<div class="notebox-important">
 <p>Please note that if you have multiple mailing lists, you must have a separate subscription form for each one.</p>
+</div>
 </div>
 <h2>Section 1 — Adding your list's values</h2>
 <div class="solvvy-solution">
-<p>This first section is responsible for sending information to your list. You must change the <strong>_MailingListName_</strong> and <strong>_DomainName_ </strong>values to your specific list values.</p>
+<p>This first section is responsible for sending information to your list. You must change the&nbsp;<strong>_MailingListName_</strong>&nbsp;and <strong>_DomainName_ </strong>values to your specific list values.</p>
 <div class="preboxcontainer">
 <pre class="prebox">&lt;form method="post" action="https://scripts.dreamhost.com/add_list.cgi"&gt;
 
@@ -14,7 +16,7 @@
 &lt;input type="hidden" name="domain" value="<span class="code-highlight">DomainName"</span>&gt;</pre>
 </div>
 <div class="notebox-note">
-<p>You <strong>must</strong> customize the text <strong>MailingListName</strong> and <strong>DomainName </strong>according to your needs. The other fields can remain as they are, but these two must be updated to your specific Announcement List details. See below for an explanation of these fields.</p>
+<p>You <strong>must</strong> customize the text <strong>MailingListName</strong>&nbsp;and <strong>DomainName&nbsp;</strong>according to your needs. The other fields can remain as they are, but these two must be updated to your specific Announcement List details. See below for an explanation of these fields.</p>
 </div>
 <h3>Explanation of the fields above</h3>
 <table class="wikitable">
@@ -41,15 +43,15 @@
 </tbody>
 </table>
 </div>
-<h2>Section 2 — Name and email fields</h2>
+<h2>Section 2 — Email fields</h2>
 <div class="solvvy-solution">
 <p><span data-sheets-userformat="{\" data-sheets-value="{\">This section adds an input field for the user's name and email address. The second email field validates that you've entered your email correctly.</span></p>
 <div class="preboxcontainer">
-<pre class="prebox">&lt;!--Visible Fields--&gt;
+<pre class="prebox"><!--&lt;!--Visible Fields--&gt;
 &lt;div&gt;
     &lt;label for="name"&gt;Name:&lt;/label&gt;
     &lt;input type="text" name="name"&gt;
-&lt;/div&gt;
+&lt;/div&gt;-->
 &lt;!-- Required: --&gt;
 &lt;div&gt;
     &lt;label for="email"&gt;Email:&lt;/label&gt;
@@ -64,44 +66,7 @@
 &lt;/div&gt;</pre>
 </div>
 </div>
-<h2>Section 3 — Optional fields</h2>
-<div class="solvvy-solution">
-<p>After you've added fields for the user's name and email, you can add additional fields to suit your list's needs. The following fields are optional, but show how to add additional fields for:</p>
-<ul>
-<li>street</li>
-<li>city</li>
-<li>state</li>
-<li>zip</li>
-<li>country</li>
-</ul>
-<div class="preboxcontainer">
-<pre class="prebox">&lt;div&gt;
-    &lt;label for="street"&gt;Street:&lt;/label&gt;
-    &lt;input type="text" name="street" required &gt;
-&lt;/div&gt;
-
-&lt;div&gt;
-    &lt;label for="city"&gt;City:&lt;/label&gt;
-    &lt;input type="text" name="city" required&gt;
-&lt;/div&gt;
-
-&lt;div&gt;
-    &lt;label for="state"&gt;State:&lt;/label&gt;
-    &lt;input type="text" name="state"  required&gt;
-&lt;/div&gt;
-
-&lt;div&gt;
-    &lt;label for="zip"&gt;Zipcode:&lt;/label&gt;
-    &lt;input type="text" name="zip"  required&gt;
-&lt;/div&gt;
-
-&lt;div&gt;
-    &lt;label for="zip"&gt;Country:&lt;/label&gt;
-    &lt;input type="text" name="country" required&gt;
-&lt;/div&gt;</pre>
-</div>
-</div>
-<h2>Section 4 — Submit and Unsubscribe buttons</h2>
+<h2>Section 3 — Submit and Unsubscribe buttons</h2>
 <div class="solvvy-solution">
 <div class="notebox-note">
 <p>Subscription confirmation emails:</p>
@@ -122,7 +87,8 @@
 &lt;/div&gt;</pre>
 </div>
 <h3>Explanation of the fields above</h3>
-<table class="wikitable"><colgroup> <col width="30%"/> <col width="75%"/> </colgroup>
+<table class="wikitable">
+<colgroup> <col width="30%"> <col width="75%"> </colgroup>
 <tbody>
 <tr>
 <th bgcolor="#F2F2F2">Field</th>
@@ -138,6 +104,45 @@
 </tr>
 </tbody>
 </table>
+</div>
+<h2>Full example of basic form</h2>
+<div class="solvvy-solution">
+<p>This is the full HTML-only code example of how a very simple subscription form would look like.</p>
+<div class="preboxcontainer">
+<pre class="prebox">&lt;html&gt;
+&lt;body&gt;
+
+&lt;form method="post" action="https://scripts.dreamhost.com/add_list.cgi"&gt;
+
+&lt;input type="hidden" name="list" value="<span class="code-highlight">MailingListName"</span>&gt;
+&lt;input type="hidden" name="domain" value="<span class="code-highlight">DomainName"</span>&gt;
+    
+&lt;!-- Required: --&gt;
+&lt;div&gt;
+    &lt;label for="email"&gt;Email:&lt;/label&gt;
+    &lt;input type="text" name="email" placeholder="Enter a valid email" required&gt;
+&lt;/div&gt;
+
+&lt;!-- Optional: --&gt;
+&lt;div&gt;
+    &lt;label for="confirm-email"&gt;Confirm Email:&lt;/label&gt;
+    &lt;input type="text" name="address2" placeholder="Please verify you email" required&gt;
+    &lt;input type="hidden" name="req_address2" value="1" input name="email" /&gt;
+&lt;/div&gt;
+
+&lt;div class="button"&gt;
+    &lt;input type="submit" name="submit" value="<span class="code-highlight">Join Our Announcement List</span>"&gt;
+&lt;/div&gt;
+
+&lt;!-- Optional Unsubscribe Button --&gt;
+&lt;div class="button"&gt;
+    &lt;input type="submit" name="unsub" value="<span class="code-highlight">Remove from list</span>"&gt;
+&lt;/div&gt;
+&lt;/form&gt;<br>
+&lt;body&gt;
+&lt;html&gt;
+</pre>
+</div>
 </div>
 <h2>How do I use images for my subscribe and unsubscribe submit buttons?</h2>
 <div class="solvvy-solution">
@@ -178,11 +183,11 @@ label {
 <div class="solvvy-solution">
 <p>There are several default pages that display depending on the information the user enters into your form. For example, this is how the default Success page looks:</p>
 <dl>
-<dd><img alt="Announcement_List_Success_add.png" src="https://kbimages.dreamhosters.com/images/Announcement_List_Success_add.png"/></dd>
+<dd><img src="https://kbimages.dreamhosters.com/images/Announcement_List_Success_add.png" alt="Announcement_List_Success_add.png"></dd>
 </dl>
 <p>You can change these default URLs to a custom URL you have created. To change where the URLs redirect, you must add your custom URLs in the panel while editing the list.</p>
 <dl>
-<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-09_panel_announcement_list_custom_pages.png"/></dd>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-09_panel_announcement_list_custom_pages.png"></dd>
 </dl>
 <p>For example, the following items can be adjusted from your list's 'Edit' page.</p>
 <ul>
@@ -208,7 +213,8 @@ label {
 <td style="background-color: #effbf8;">The URL of the page that appears if someone who is already on the list attempts to subscribe to it. You can create your own .html page or omit this field from the HTML form. If omitted, the value in the <em>Already Subscribed URL</em> field on the Announcement List edit page will be used instead.</td>
 </tr>
 <tr>
-<td style="background-color: #effbf8;"><strong>_https://NotOnURL</strong>_</td>
+<td style="background-color: #effbf8;">
+<strong>_https://NotOnURL</strong>_</td>
 <td style="background-color: #effbf8;">The URL of the page that appears if they are not on the list, and they have attempted to unsubscribe. You can create your own .html page or omit this field from the HTML form. If omitted, the value in the <em>Not Subscribed URL</em> field on the Announcement List edit page will be used instead.</td>
 </tr>
 <tr>
@@ -257,10 +263,11 @@ Thanks for subscribing&lt;?php if ($name!="") echo ", $name"; ?&gt; - we'll send
 </div>
 <h2>A note for WordPress sites</h2>
 <div class="solvvy-solution">
-<p>If your site uses <a href="/hc/en-us/articles/215525287-WordPress-overview">WordPress</a>, you must link to the <a href="https://wordpress.org/support/article/using-permalinks/" rel="undefined" target="_self">default "Ugly" permalink type</a> (of the form <strong>https://example.com/?p=<em>N</em></strong>), even if you use any of the "Pretty" permalinks instead. This is because the mailing list scripts automatically add parameters to the URLs which don't work with "Pretty" permalinks.</p>
+<p>If your site uses <a href="/hc/en-us/articles/215525287-WordPress-overview">WordPress</a>, you must link to the <a href="https://wordpress.org/support/article/using-permalinks/" target="_self" rel="undefined">default "Ugly" permalink type</a> (of the form <strong>https://example.com/?p=<em>N</em></strong>), even if you use any of the "Pretty" permalinks instead. This is because the mailing list scripts automatically add parameters to the URLs which don't work with "Pretty" permalinks.</p>
 <p>If you edit a post or a page, you can find the post ID number in the URL line after the post= text. For example, you might see something like:</p>
 <ul>
-<li><strong>https://example.com/wp-admin/post.php?post=3141?action="edit"</strong>, so the post ID is <span class="text-object">3141</span>.</li>
+<li>
+<strong>https://example.com/wp-admin/post.php?post=3141?action="edit"</strong>, so the post ID is <span class="text-object">3141</span>.</li>
 </ul>
 <p>In this example, you would use something like:</p>
 <ul>

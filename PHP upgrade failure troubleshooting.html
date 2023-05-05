@@ -1,0 +1,111 @@
+<h2>Overview</h2>
+<div class="solvvy-solution">
+<p>When <a href="https://help.dreamhost.com/hc/en-us/articles/214895317-Change-the-PHP-version-of-a-site" target="_self">upgrading the PHP version of your website</a> in the panel, you may see an <span class="text-object">Unsuccessful</span> message.&nbsp;This article offers you a few troubleshooting tools to help determine where the error is coming from.</p>
+</div>
+<h2>WordPress sites</h2>
+<div class="solvvy-solution">
+<p><a href="https://help.dreamhost.com/hc/en-us/articles/214693248-WordPress-wp-cli-overview" target="_self">wp-cli</a> is a command line tool that allows you to run WordPress commands from your server. The following command will test all installed WordPress items with PHP 8.0 and above to see if they are compatible.</p>
+<ol>
+<li>Log into your server via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview" target="_self">SSH</a>.</li>
+<li>Make sure you're in your <a href="https://help.dreamhost.com/hc/en-us/articles/360001219231#the-website-directory" target="_self">website directory</a>.</li>
+<li>Run the following command.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wp php-compat --php_version=8.0 </span></pre>
+</div>
+</li>
+</ol>
+<div class="notebox-note">
+<p>This command may take a few minutes to finish.</p>
+<p>Replace <span class="text-object">8.0</span> with a different PHP version you'd like to test.</p>
+</div>
+</div>
+<h2>All other PHP-based sites</h2>
+<div class="solvvy-solution">
+<p>If there is an <span class="text-object">index.php</span> file in the domain directory, run the following command to test the site on PHP 8.0:</p>
+<ol>
+<li>Log into your server via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview" target="_self">SSH</a>.</li>
+<li>Make sure you're in your <a href="https://help.dreamhost.com/hc/en-us/articles/360001219231#the-website-directory" target="_self">website directory</a>.</li>
+<li>Run the following command.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">/dh/cgi-system/php80 .cgi index.php</span></pre>
+</div>
+</li>
+</ol>
+<div class="notebox-note">
+<p>Replace <span class="text-object">8.0</span> with a different PHP version you'd like to test.</p>
+<p>You can also test other <span class="text-object">.php</span> files using this same command. Most often, this will output errors pointing to the exact file with outdated code.</p>
+</div>
+</div>
+<h2>Check PHP and error log</h2>
+<div class="solvvy-solution">
+<h3>PHP log</h3>
+<p>You can manually enable PHP error logging on your PHP website to catch any errors that may not be recorded by default.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214894197-Enable-PHP-error-logging">Enable PHP error logging</a></li>
+</ul>
+<h3>Error log</h3>
+<p>You should also check your website's general error log for additional errors.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216512197-Viewing-your-access-and-error-logs-via-SFTP">Viewing your access and error logs via SFTP</a></li>
+</ul>
+</div>
+<h2>Check if your software is compatible with PHP 8</h2>
+<div class="solvvy-solution">
+<p>If your website is using CMS software, check its version to see if it is compatible with PHP 8. If not, it may need to be manually upgraded.</p>
+<h3>Concrete CMS - (formerly Concrete5)</h3>
+<p>Version 9 is compatible with PHP 8</p>
+<ul>
+<li><a class="external-link" href="https://documentation.concrete5.org/tutorials/how-find-your-concrete5-version" target="_blank" rel="noopener noreferrer">How to find the Concrete5 version</a></li>
+<li><a href="https://documentation.concretecms.org/developers/introduction/system-requirements" target="_blank" rel="noopener noreferrer">Concrete CMS System Requirements</a></li>
+<li><a class="external-link" href="https://documentation.concrete5.org/developers/installation/upgrading-concrete5" target="_blank" rel="noopener noreferrer">Concrete5 upgrade instructions</a></li>
+</ul>
+<h3>Joomla</h3>
+<p>Version 4+ is compatible with PHP 8</p>
+<ul>
+<li><a href="https://docs.joomla.org/How_to_check_the_Joomla_version%3F" target="_blank" rel="noopener noreferrer">How to check the Joomla version</a></li>
+<li><a href="https://downloads.joomla.org/us/technical-requirements-us" target="_blank" rel="noopener noreferrer">Joomla Technical Requirements</a></li>
+<li><a href="https://docs.joomla.org/Category:Version_History" target="_blank" rel="noopener noreferrer">Joomla version history</a></li>
+<li><a href="https://docs.joomla.org/Joomla_1.5_to_3.x_Step_by_Step_Migration" target="_blank" rel="noopener noreferrer">Upgrade instructions from 1.5 to 3.x</a></li>
+<li><a href="https://docs.joomla.org/Joomla_2.5_to_3.x_Step_by_Step_Migration" target="_blank" rel="noopener noreferrer">Upgrade instructions from 2.5 to 3.x</a></li>
+<li><a href="https://docs.joomla.org/J3.x:Upgrading_from_Joomla_3.4.x_to_3.5" target="_blank" rel="noopener noreferrer">Upgrade instructions from 3.4.x to 3.5</a></li>
+</ul>
+<h3>MediaWiki</h3>
+<p>Versions 1.39 is compatible with PHP 8</p>
+<ul>
+<li><a class="external-link" href="https://www.mediawiki.org/wiki/Compatibility" target="_blank" rel="noopener noreferrer">MediaWiki Compatibility</a></li>
+<li><a class="external-link" href="https://www.mediawiki.org/wiki/Manual:Upgrading" target="_blank" rel="noopener noreferrer">MediaWiki's Upgrade guide</a></li>
+</ul>
+<h3>phpBB</h3>
+<p>Versions 3.3.10 is compatible with PHP 8</p>
+<p>You can locate the version in your admin area. It is also located in a file located at:</p>
+<dl>
+<dd><em><span class="text-object">example.com/phpbb/docs/CHANGELOG.html</span></em></dd>
+</dl>
+<ul>
+<li><a class="external-link" href="https://www.phpbb.com/downloads/3.3/update" target="_blank" rel="noopener noreferrer">phpBB update instructions</a></li>
+</ul>
+<h3>ZenCart</h3>
+<p>Version 1.5.7 compatible with PHP 8</p>
+<ul>
+<li><a href="https://docs.zen-cart.com/user/first_steps/version/" target="_blank" rel="noopener noreferrer">View ZenCart version</a></li>
+<li><a href="https://docs.zen-cart.com/user/first_steps/server_requirements/" target="_blank" rel="noopener noreferrer">ZenCart Server Requirements</a></li>
+<li><a class="external-link" href="https://www.zen-cart.com/forumdisplay.php?2-Zen-Cart-Release-Announcements" target="_blank" rel="noopener noreferrer">ZenCart version/release history (forum)</a></li>
+<li><a class="external-link" href="https://docs.zen-cart.com/user/upgrading/" target="_blank" rel="noopener noreferrer">ZenCart upgrade instructions</a></li>
+</ul>
+</div>
+<h2>Contact Professional Services for help</h2>
+<div class="solvvy-solution">
+<p>If your website is using old software, or if it was built a long time ago, this may be a great time to update and redesign the entire site or even create a new one. DreamHost's Professional Services may also be able to help with this.</p>
+<ul class="article-list">
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360042256912-Professional-Services-overview">Professional Services overview</a></li>
+</ul>
+</div>
+<h2>See also</h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215082337-What-versions-of-PHP-are-available-at-DreamHost-">What versions of PHP are available at DreamHost?</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214898997-What-version-of-PHP-is-my-site-using-">What version of PHP is my site using?</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214895287-Viewing-your-site-s-PHP-version-and-settings">Viewing your site's PHP version and settings</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214895317-Change-the-PHP-version-of-a-site">Change the PHP version of a site</a></li>
+</ul>
+</div>
