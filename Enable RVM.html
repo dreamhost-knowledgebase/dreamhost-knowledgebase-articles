@@ -1,16 +1,16 @@
 <h2>Overview</h2>
 <div class="solvvy-solution">
 <div class="notebox-important">
-<p>If your Ruby application won't start because of a missing gem, then you must install it locally using Bundler. For more information about using Bundler, please visit the following page:</p>
+<p>If your Ruby application doesn't start because of a missing gem, install it locally using Bundler. For more information about using Bundler, please visit the following page:</p>
 <ul>
 <li><a href="/hc/en-us/articles/115001070131-Using-Bundler-to-install-Ruby-gems">Using Bundler to install Ruby gems</a></li>
 </ul>
 </div>
 <p>Ruby Version Manager (RVM) is a utility that allows you to add your own personal version of Ruby to a user. It allows you to add, remove, or have multiple versions of Ruby and its libraries to live in your user directory.</p>
-<p>This article describes how to enable the RVM with Passenger using the DreamHost panel.</p>
-<p>Please note this does <strong>NOT</strong> install RVM. You must still manually install this yourself. Visit the <a href="/hc/en-us/articles/217185247-Ruby-Version-Manager-RVM-">RVM</a> article for detailed instructions on how to manually install. Once RVM has been installed and you've installed a custom version of Ruby, you can then select which version of Ruby you'd like to use (for a specific domain) by enabling the option in the panel below.</p>
+<p>This article describes enabling the RVM with Passenger using the DreamHost panel.</p>
+<p>Please note this does <strong>NOT</strong> install RVM. You must still manually install this yourself. Visit the <a href="/hc/en-us/articles/217185247-Ruby-Version-Manager-RVM-">RVM</a> article for detailed instructions on how to install manually. Once RVM has been installed and you've installed a custom version of Ruby, you can select which version of Ruby you'd like to use (for a specific domain) by enabling the option in the panel below.</p>
 <div class="notebox-note">
-<p>Your domain must run on a <a href="https://help.dreamhost.com/hc/en-us/articles/215280058-Virtual-Private-Server-VPS-overview-">VPS</a>&nbsp;or&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/215279658-Dedicated-server-overview">Dedicated</a> Server in order to enable RVM in the DreamHost panel. If your VPS is running Nginx, view the following article instead.</p>
+<p>Your domain must run on a <a href="https://help.dreamhost.com/hc/en-us/articles/215280058-Virtual-Private-Server-VPS-overview-">VPS</a>&nbsp;or&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/215279658-Dedicated-server-overview">Dedicated</a> Server to enable RVM in the DreamHost panel. If your VPS is running Nginx, view the following article instead.</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/360044520212-Running-an-Nginx-application-without-Passenger" target="_self">Running an Nginx application without Passenger</a></li>
 </ul>
@@ -20,7 +20,7 @@
 <div class="solvvy-solution">
 <p>To enable RVM:</p>
 <ol>
-<li>Visit the <a href="/hc/en-us/articles/217185247-Ruby-Version-Manager-RVM-">RVM</a> article for instructions on how to manually install Ruby Version Manager.</li>
+<li>Visit the <a href="/hc/en-us/articles/217185247-Ruby-Version-Manager-RVM-">RVM</a> article for instructions on manually installing Ruby Version Manager.</li>
 <li>Using RVM, install any custom version of Ruby you like under your <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access">Shell user</a>.</li>
 <li>Navigate to the <a class="panel-link" href="https://panel.dreamhost.com/?tree=domain.dashboard#!/list-view" target="_blank" rel="noopener noreferrer">Manage Websites</a> page.</li>
 <li>Click the <strong>Manage</strong> button to open the <a href="https://help.dreamhost.com/hc/en-us/articles/360043889332-The-Manage-Websites-page" target="_blank" rel="noopener noreferrer"><span class="panel-page">Manage Websites</span></a> page, which allows you to adjust various settings for your site.
@@ -30,9 +30,9 @@
 </ul>
 </li>
 <li>Scroll down to the <span class="text-section">Additional Settings</span> section and click the <strong>Modify</strong> button on the <span class="text-object">Web Options</span> row.</li>
-<li>Enable <span class="text-object">Passenger</span> by clickling the radio button on the right. The panel adds a <span class="text-object">/public</span> subdirectory and the <span class="text-object">RVM</span> row appears.
+<li>Enable <span class="text-object">Passenger</span> by clicking the radio button on the right. The panel adds a <span class="text-object">/public</span> subdirectory, and the <span class="text-object">RVM</span> row appears.
 <div class="notebox-important">
-<p>If you already have a <span class="text-object">/public</span> directory in the current <span class="text-object">Web directory</span>, clicking OK will only switch the 'Web directory' to this new <span class="text-object">/public</span> folder. Nothing in it is removed.</p>
+<p>If you already have a <span class="text-object">/public</span> directory in the current <span class="text-object">Web directory</span>, clicking OK will only switch the <span class="text-object">Web directory</span> to this new <span class="text-object">/public</span> folder. Nothing in it is removed.</p>
 <p>If you do not already have a <span class="text-object">/public</span> directory, the panel creates it for you with a coming soon page. The files in your current <span class="text-object">Web directory</span> remain untouched.</p>
 </div>
 </li>
@@ -40,15 +40,15 @@
 <li>Click the <strong>Save Changes</strong> button to save your changes.</li>
 </ol>
 <div class="notebox-important">
-<p>Make sure to change <span class="code">username</span> to your <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access" target="_self">Shell user</a>.</p>
+<p>Make sure to change the <span class="code">username</span> to your <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access" target="_self">Shell user</a>.</p>
 <p>The path may not appear exactly as it does in the panel. For example, once you have manually installed a version of Ruby, it could also appear in the following directory:</p>
 <div class="preboxcontainer">
 <pre class="prebox">/home/<span class="code-highlight">username</span>/.rvm/wrappers/ruby-<span class="code-highlight">2.2.2</span>/ruby</pre>
 </div>
-<p>Make sure to confirm where your custom version of Ruby has been installed to before saving your changes above.</p>
+<p>Confirm where your custom version of Ruby has been installed before saving your changes above.</p>
 </div>
 <div class="notebox-important">
-<p>You can set up multiple domains/subdomains on a single user via <a href="https://rvm.io/gemsets/basics">Gemsets</a>, but you will need to create <a href="https://rvm.io/rubies/alias">aliases</a> without the '@' character.</p>
+<p>You can set up multiple domains/subdomains on a single user via <a href="https://rvm.io/gemsets/basics">Gemsets</a>, but you must create <a href="https://rvm.io/rubies/alias">aliases</a> without the '@' character.</p>
 <p>So, if the following paths give an invalid characters message:</p>
 <ul>
 <li>/home/username/.rvm/wrappers/ruby-2.2.1@firstsite/ruby</li>
