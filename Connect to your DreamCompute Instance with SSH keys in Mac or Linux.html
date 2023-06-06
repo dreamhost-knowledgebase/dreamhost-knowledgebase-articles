@@ -19,7 +19,7 @@
 <p>If you created the Key pair in the dashboard, a <span class="text-object">.pem</span> file was automatically downloaded to your computer. Move that file into your <span class="text-object">~/.ssh/</span> directory.</p>
 <p>For example, let's say you named the Key pair <span class="text-object">dashboardkey</span> when creating it in the panel. A file named <span class="text-object">dashboardkey.pem</span> was downloaded.</p>
 <ol>
-<li>Move that from your <span class="text-object">/Downloads</span> directory into your <span class="text-object">~/.ssh</span> directory:
+<li>Move the file from your <span class="text-object">/Downloads</span> directory into your <span class="text-object">~/.ssh</span> directory:
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[macbook]$ </span><span class="command">mv ~/Downloads/dashboardkey.pem ~/.ssh</span></pre>
 </div>
@@ -29,7 +29,7 @@
 <pre class="prebox"><span class="server">[macbook]$ </span><span class="command">chmod 600 ~/.ssh/dashboardkey.pem</span></pre>
 </div>
 </li>
-<li>You can now log in while specifying that file name:
+<li>Run the following command to log in while specifying the file name:
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[macbook]$ </span><span class="command">ssh -i ~/.ssh/dashboardkey.pem <span class="code-highlight">USER@IP_ADDRESS</span></span></pre>
 </div>
@@ -38,7 +38,7 @@
 </div>
 <h2>If you created the Key pair on your local computer</h2>
 <div class="solvvy-solution">
-<p>If you created the Key pair on your local computer you now have a private and public key file in the <span class="text-object">~/.ssh</span> directory. For example:</p>
+<p>If you created the Key pair on your local computer, you now have a private and public key file in the <span class="text-object">~/.ssh</span> directory. For example:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[macbook]$ </span><span class="command">ls -la ~/.ssh</span>
 id_rsa
@@ -69,7 +69,17 @@ Enter the file in which you wish to save they key
 </div>
 <h2>Using a ~.ssh/config file to simplify logging in</h2>
 <div class="solvvy-solution">
-<p>You can also create a 'config' file to simplify the ssh login process. For example, you can simplify your login to something like <code><strong>ssh dhc</strong></code>.</p>
+<p>You can also create a 'config' file to simplify the ssh login process. For example, you can simplify your login to something like <span class="code">ssh dhc</span>.&nbsp;</p>
+<div class="notebox-note">
+<p>Here is a full example of what a <span class="text-object">~/.ssh/config</span> file would look like. This example assumes the private key was downloaded from the panel as a <span class="text-object">.pem</span> file and the username is 'ubuntu'.</p>
+<div class="preboxcontainer">
+<pre class="prebox">Host dhc
+
+HostName 208.113.167.187
+User ubuntu
+IdentityFile ~/.ssh/dashboardkey.pem</pre>
+</div>
+</div>
 <ol>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH" target="_self">Create a config file</a> in your <span class="text-object">~/.ssh</span> directory.</li>
 <li>Edit the file to add the following:
@@ -80,16 +90,7 @@ Enter the file in which you wish to save they key
 <li>IdentityFile: This is necessary if your private key is named something other than id_rsa</li>
 </ul>
 </li>
-<li>Here is a full example of what a <span class="text-object">~/.ssh/config</span> file would look like. This example assumes the private key was downloaded from the panel as a <span class="text-object">.pem</span> file and the username is 'ubuntu'.
-<div class="preboxcontainer">
-<pre class="prebox">Host dhc
-
-HostName 208.113.167.187
-User ubuntu
-IdentityFile ~/.ssh/dashboardkey.pem</pre>
-</div>
-</li>
-<li>You can now log into your instance with the following command
+<li>Run the following command to log into your instance.
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">ssh dhc</span></pre>
 </div>
