@@ -1,0 +1,70 @@
+<h2>Overview</h2>
+<div class="solvvy-solution">
+<p>You are able to manually create a <a href="https://help.dreamhost.com/hc/en-us/articles/218084098-CSR-overview" target="_self">CSR</a> on your DreamHost server if you need to re-issue a 3rd party SSL certificate from another provider. To proceed with these steps, you must have a Shell user configured in your panel and general knowledge of the UNIX Shell. View the following articles for further information.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access">Creating a user with Shell (SSH) access</a></li>
+<li><a href="/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
+</ul>
+<div class="notebox-note">
+<p>DreamHost support is unable to provide assistance with these steps. You'll need to have basic knowledge of the UNIX shell to complete this procedure.</p>
+</div>
+</div>
+<h2>Creating a CSR</h2>
+<p>The following instructions create a CSR file on your DreamHost server.</p>
+<div class="solvvy-solution">
+<ol>
+<li>Connect to your domain via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview" target="_self">SSH</a>.</li>
+<li>Once logged into your server, make sure you're in your <a href="https://help.dreamhost.com/hc/en-us/articles/360001219231-Where-is-the-home-directory-#the-users-home-directory" target="_self">user's home directory</a>:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~</span></pre>
+</div>
+</li>
+<li>Run the following command to generate a new RSA private key.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">openssl genrsa -out private.key 2048</span></pre>
+</div>
+<dl>
+<dd><em>This will create a file named <span class="text-object">private.key</span> in the user's home directory. You’ll use this to create the CSR.</em></dd>
+</dl>
+</li>
+<li>Create the CSR by running the following command:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">openssl req -new -sha256 -key private.key -out file.csr</span></pre>
+</div>
+<dl>
+<dd><em>You are then prompted for the following information:</em></dd>
+</dl>
+<div class="notebox-important">
+<p><span class="text-object">Common Name</span> is where you put your domain name, e.g., <strong>example.com</strong> or <strong>www.example.com</strong>.</p>
+<p>For the <span class="text-object">challenge password</span> and <span class="text-object">optional company name</span>, type in a period and press the <span class="code">Enter</span> key to proceed.</p>
+</div>
+<div class="preboxcontainer">
+<pre class="prebox">Country Name (2 letter code) [AU]: 
+State or Province Name (full name) [Some-State]: 
+Locality Name (eg, city) []: 
+Organization Name (eg, company) [Internet Widgits Pty Ltd]: 
+Organizational Unit Name (eg, section) []: 
+Common Name (eg, YOUR name) []: 
+Email Address []: 
+
+Please enter the following 'extra' attributes 
+to be sent with your certificate request 
+A challenge password []: <span class="code-highlight">.</span>
+An optional company name []: <span class="code-highlight">.</span></pre>
+</div>
+</li>
+</ol>
+<h3>Viewing the CSR file</h3>
+<p>Your CSR is now created in a file named <span class="text-object">file.csr</span>. You can view it's contents by running the following command:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cat file.csr</span></pre>
+</div>
+<p>You can either cut and paste this to a file on your local computer, or log into your server <a href="https://help.dreamhost.com/hc/en-us/articles/115000675027-FTP-overview-and-credentials">via FTP</a> and download the file.</p>
+</div>
+<h2>See also</h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215088748-Is-DreamHost-able-to-create-a-CSR-for-me-">Is DreamHost able to create a CSR for me? </a></li>
+</ul>
+</div>
