@@ -1,42 +1,66 @@
-<h2>Adding a Shell user</h2>
+<h2>Overview</h2>
 <div class="solvvy-solution">
-<p>View the <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access">Creating a user with Shell (SSH) access</a> article for instructions on adding a normal Shell user to your Dedicated server.</p>
-<p>The Shell user is able to run basic Shell commands after logging into the server via <a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a>.</p>
+<p>This article explains how to add an admin user to your Dedicated server. This user is different from a normal <a href="https://help.dreamhost.com/hc/en-us/articles/4402199390996-Difference-between-SFTP-and-Shell-users" target="_self">SFTP or Shell (SSH) user</a> in that it is able to run root/sudo commands on the server, allowing more control over customizing system configurations or installing software.</p>
+<div class="alert-warning">
+<p><strong>Important note about custom Admin user changes</strong></p>
+<p>With an admin user, you can make root/sudo changes to your server, but please note that your Dedicated server is still managed by DreamHost. This means that if you make any custom changes to Apache, they will be overwritten whenever an Apache config is run. This can happen when adding hosting to a domain, or adding an SSL certificate.&nbsp;</p>
+<p><strong>If you make any custom changes, make sure to clearly note what they were so you can quickly fix anything that was overwritten.</strong></p>
+</div>
 </div>
 <h2><span id="Adding_an_admin_user">Adding an admin user</span></h2>
 <div class="solvvy-solution">
-<p>The normal Shell user cannot run sudo/root commands on the server. If you need to run sudo/root commands, you must create an admin user.&nbsp;</p>
 <p>To add an admin user:</p>
 <ol>
-<li>Navigate to <a class="panel-link" href="https://panel.dreamhost.com/?tree=dedicated.usersdashboard" target="_blank" rel="noopener noreferrer">Admin Users</a> page in your panel.
+<li>Navigate to <a class="panel-link" href="https://panel.dreamhost.com/?tree=dedicated.usersdashboard" target="_blank" rel="noopener noreferrer">Admin Users</a> page in your panel.</li>
+<li>On the top right, click the <strong>Create User</strong> button.
 <dl>
-<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2019-11_panel_dedicated_add_users_01.fw.png" alt="2019-11_panel_dedicated_add_users_01.fw.png" /></dd>
-</dl>
-</li>
-<li>Click the <strong>+ Add A User</strong> button at the top right.
-<dl>
-<dd><em>The 'Add User Details' page appears:</em></dd>
-</dl>
-<dl>
-<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2019-11_panel_dedicated_add_users_02.fw.png" alt="2019-11_panel_dedicated_add_users_02.fw.png" /></dd>
+<dd><em>A 'Create User' panel appears to the right:</em></dd>
 </dl>
 </li>
 <li>Enter the following:
 <ul>
 <li><strong>Username</strong> — A user name for the new user.</li>
-<li><strong>Nickname</strong> — A nickname for the new user. This is a quick reference name that only displays in your panel.</li>
-<li><strong>What server will this user have access to?</strong> — Click the down arrow and select the Dedicated server on which the user will have access.</li>
-<li><strong>Select the Shell Type</strong> — Select a Shell type that you wish to you use. You can select bash, tcsh, ksh, or zsh from the drop-down list. See the <a href="/hc/en-us/articles/216557548-Available-shells-at-DreamHost" target="_self">Shell types</a> article for more information.&nbsp;</li>
-<li><strong>I have read and agreed to the terms of use</strong> — Check the check box. You must check the 'terms of use' check box in order to add a new admin user.</li>
+<li><strong>Server</strong> — Select the Dedicated server from the dropdown.</li>
+<li><strong>Password</strong> — You can either enter your own password or click the <strong>Generate strong password</strong> button to allow the panel to create it for you.</li>
+<li><strong>Secure Shell Access (SSH)</strong> — Select a Shell type that you wish to use. View the <a href="/hc/en-us/articles/216557548-Available-shells-at-DreamHost" target="_self">Shell types</a> article for more information.</li>
+<li><strong>Admin User Terms of Use</strong> — Read the terms of use, then check the check box titled <span class="text-object">I have read and agreed to the terms of use</span>.</li>
 </ul>
 </li>
-<li>When finished, click the <strong>Create User</strong> button.</li>
+<li>Click the <strong>Create User</strong> button.
+<dl>
+<dd><em>The user then appears on the <a class="panel-link" href="https://panel.dreamhost.com/?tree=dedicated.usersdashboard" target="_blank" rel="noopener noreferrer">Admin Users</a> page, noted by an icon.</em></dd>
+</dl>
+</li>
 </ol>
 </div>
-<h2>Important note about custom Admin user changes</h2>
+<h2>Assigning an admin user to a domain</h2>
 <div class="solvvy-solution">
-<p>With an admin user, you can make root/sudo changes to your server, but please note that your Dedicated server is still managed by DreamHost. This means that if you make any custom changes to Apache, they will be overwritten whenever an Apache config is run. This can happen when adding hosting to a domain, or adding an SSL certificate.&nbsp;</p>
-<p>If you make any custom changes, make sure to clearly note what they were so you can quickly fix anything that was overwritten.</p>
+<p>When an admin user is created, it is not assigned to a specific domain. This is because the purpose of the admin user is to log directly into the server to run sudo/root commands. If you attempt to <a href="https://help.dreamhost.com/hc/en-us/articles/360020605511-Moving-a-domain-to-a-new-user" target="_self">add the admin user to a domain</a> on the Dedicated server, the following error displays:</p>
+<div class="text-blockquote">
+<p><strong>Changes cannot be made.</strong></p>
+<p>Admin users cannot be assigned to a website.</p>
+</div>
+<p>If you need to assign a specific admin user to a domain, you must first <a href="#revoke-admin-privileges" target="_self" rel="undefined">revoke admin privileges</a> as described below.</p>
+<h3>What if my old admin user is assigned to a domain?</h3>
+<p>Domains that already have an admin user assigned to them will continue to function normally with the same user.</p>
+<h3>What if I change my old admin user assigned to a domain?</h3>
+<p>If the old admin user assigned to a domain is changed, it cannot be assigned again in the future, unless admin access is first revoked.</p>
+<h3>Can I change a Non-admin user to an admin user?</h3>
+<p>A user already assigned to a domain cannot be changed into a Dedicated admin user. A new admin user must be created.</p>
+</div>
+<div id="revoke-admin-privileges" class="section-link">&nbsp;</div>
+<h2>Revoke admin user privileges</h2>
+<div class="solvvy-solution">
+<p>To revoke admin user privileges:</p>
+<ol>
+<li>Navigate to <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=users.dashboard#" target="_blank" rel="noopener noreferrer">SFTP Users &amp; Files</a> page in your panel.</li>
+<li>Hover over the icon to the right of your admin user.
+<dl>
+<dd>A pop-out appears.</dd>
+</dl>
+</li>
+<li>Click the toggle button to remove admin privileges.</li>
+</ol>
 </div>
 <h2>See also</h2>
 <div class="solvvy-hidden">
