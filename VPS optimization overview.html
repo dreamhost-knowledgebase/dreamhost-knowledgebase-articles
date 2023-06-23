@@ -1,44 +1,45 @@
 <h2>Overview</h2>
 <div class="solvvy-solution">
-<p>Optimizing your private server helps it to use less memory which saves you money as well as speeding up your websites. This article describes the steps to pinpoint and mitigate the source of any memory issues on a <a href="/hc/en-us/articles/215280058-Virtual-Private-Server-overview-VPS-">DreamHost VPS</a>.</p>
+<p>This article gives you a few suggestions on how to identify memory issues and optimize your <a href="/hc/en-us/articles/215280058-Virtual-Private-Server-overview-VPS-">DreamHost VPS</a>. This will help it to use less memory which saves you money while speeding up your websites.</p>
 </div>
-<h2><span id="How_to_optimize_your_PS">How to optimize your PS</span></h2>
+<h2>Blocking abusive bots</h2>
 <div class="solvvy-solution">
-<h3>Blocking abusive access</h3>
-<p>Common problems for sites are caused by search engine indexing bots hammering them. When search engine bots hit a site, they usually hit it pretty hard.&nbsp;Finding abusive bots like this can often be more of an art than a science, but you can get some data on this by analyzing the <span class="text-object">access.log</span> file for your websites.</p>
-<p>To minimize the issue of abusive bots, you should definitely set up a <span class="text-object">robots.txt</span> file. This file can help to control what bots are allowed to search and how often.</p>
-<p>View the following article for detailed information on how to check your <span class="text-object">access.log</span> file and see who is hitting it the most:</p>
+<p>A common problem for websites is caused by search engine indexing bots repeatedly hitting the website.</p>
+<h3>Create a robots.txt file</h3>
+<p>To minimize the issue of abusive bots, you should set up a <span class="text-object">robots.txt</span> file. This file helps to control what bots are allowed to search and how often.</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216105077-Control-bots-spiders-and-crawlers">Control bots, spiders, and crawlers</a></li>
+</ul>
+<h3>View your access.log file</h3>
+<p>Finding abusive bots can often be more of an art than a science, but you can get some data on this by analyzing the <span class="text-object">access.log</span> file for your websites.&nbsp;View the following article for detailed information on how to check your <span class="text-object">access.log</span> file and see where the most traffic is coming from:</p>
+<ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216105097-Viewing-and-examining-your-access-log-via-SSH">Viewing and examining your access log via SSH</a></li>
 </ul>
 </div>
-<h2><span id="IP_Tables">IP Tables</span></h2>
-<div class="solvvy-solution">
-<p>Private servers are virtual servers running on a single host machine. The host machine controls IP tables for all private servers on it.</p>
-<p>It's not possible to install and control your own custom IP tables on your private server while it's being managed by DreamHost.</p>
-<p>If you wish to run your own custom IP tables, you must upgrade to a Dedicated Server and manually install this software.</p>
-</div>
 <h2><span id="Preventing_image_hotlinking">Preventing image hotlinking</span></h2>
 <div class="solvvy-solution">
-<p><a href="https://help.dreamhost.com/hc/en-us/articles/216363197-Prevent-image-hotlinking">Hotlinking</a> is when a site other than your own includes an image in their site that is actually hosted on your server. They do this by directly referencing the image's URL from your site in their own. This can cause massive problems for you if some of your hosted images are hotlinked in another popular site. Even a relatively low traffic site can cause poor server performance if this is the case. To prevent this from happening, you can review the <a href="https://help.dreamhost.com/hc/en-us/articles/216363197-Prevent-image-hotlinking">preventing hotlinking</a> article.</p>
+<p><a href="https://help.dreamhost.com/hc/en-us/articles/216363197-Prevent-image-hotlinking">Hotlinking</a> is when another website uses an image from your website. They do this by using your website's full image URL on their own site.&nbsp;This can cause massive problems for your site, as even a relatively low-traffic site can cause poor server performance.</p>
+<p>View the <a href="https://help.dreamhost.com/hc/en-us/articles/216363197-Prevent-image-hotlinking">preventing hotlinking</a> article for more information on how to prevent this from happening.</p>
 </div>
 <h2><span id="Caching_your_site">Caching your site</span></h2>
 <div class="solvvy-solution">
-<p>As you've probably seen by now, PHP processes can take up a significant amount of memory. If your site is getting hammered with traffic, the fewer hits that have to spawn a PHP CGI process, the better. This can be accomplished by enabling caching on your site. Essentially, caching renders a PHP script and then "caches" that HTML output as a file. The next time that page is accessed, the server outputs the static HTML page, rather than process the PHP script again. The task of serving a static file requires far less memory and generally serves more efficiently, than the processing and execution of a PHP script. So if you're having memory trouble on your PS, it's essential that you confirm that you're running software that has caching functionality and that you enable the use of this feature.</p>
-<p>You can also enable <a href="https://help.dreamhost.com/hc/en-us/articles/7087974733332-Create-a-free-Cloudflare-account" target="_blank" rel="noopener">Cloudflare</a>, which is a service that provides additional caching options for your websites if you expect a large volume of visitors.</p>
+<p>Caching helps to store website files, making them faster to access by your visitors.&nbsp;Make sure your website's software is using some sort of caching functionality to prevent memory issues and improve overall performance.</p>
+<h3>PHP processes</h3>
+<p>PHP processes can take up a significant amount of memory. If your site is getting a lot of traffic, enabling caching will help to reduce the number of PHP processes that are spawned.</p>
+<p>Caching renders a PHP script and then "caches" that HTML output as a file. The next time that page is accessed, the server outputs the static HTML page rather than processing the PHP script again.</p>
+<h3>Cloudflare</h3>
+<p>You can also enable a 3rd party service like <a href="https://help.dreamhost.com/hc/en-us/articles/7087974733332-Create-a-free-Cloudflare-account" target="_blank" rel="noopener noreferrer">Cloudflare</a>, which provides additional caching options for your websites if you expect a large volume of visitors.</p>
 </div>
-<h2><span id="Enabling_FastCGI_and_XCache">Enabling OPcache</span></h2>
+<h2><span id="Enabling_FastCGI_and_XCache">Enabling OPcache for PHP sites</span></h2>
 <div class="solvvy-solution">
-<p>Another improvement you can make in order to reduce memory usage is to turn on OPcache for your domains that run PHP-based sites.&nbsp;OPcache is a caching engine built into PHP. When enabled, it dramatically increases the performance of websites that utilize PHP.</p>
-<p>View the following article for details on how to enable this feature:</p>
+<p>OPcache is a caching engine built into PHP that, when enabled, dramatically increases the performance of PHP-based websites. <span style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;">View the following article for details on how to enable this feature:</span></p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216660668-OPcache-overview">OPcache overview</a></li>
 </ul>
 </div>
 <h2><span id="WordPress-specific_optimizations">WordPress-specific optimizations</span></h2>
 <div class="solvvy-solution">
-<p>If you're running multiple instances of the WordPress software on your private server, you should definitely review the <a href="/hc/en-us/sections/203242637">'WordPress Optimization' category</a> for detailed articles.</p>
+<p>If you're running multiple instances of the WordPress software on your VPS, review the <a href="/hc/en-us/sections/203242637" target="_self" rel="undefined">WordPress Optimization</a> category for detailed articles.</p>
 <p>Make sure to do the following with each installation:</p>
 <ul>
 <li>Always run the most recent version of WordPress.</li>
@@ -50,9 +51,14 @@
 <li>Finally, compressing your image files improves loading time and reduces overall memory usage.</li>
 </ul>
 </div>
+<h2><span id="IP_Tables">Configuring IP Tables</span></h2>
+<div class="solvvy-solution">
+<p>It is not possible to customize IP tables on a DreamHost VPS.&nbsp;This is because VPSs run on a single host machine where IP tables are configured, but there is no access to this machine.</p>
+<p>If you need to run your own custom IP tables, the only option would be to upgrade to a <a href="https://help.dreamhost.com/hc/en-us/articles/215279658-Dedicated-server-overview" target="_self">Dedicated Server</a> or <a href="https://help.dreamhost.com/hc/en-us/articles/214840947-What-is-DreamCompute-" target="_self">DreamCompute</a> and manually install this software.</p>
+</div>
 <h2>See also</h2>
 <div class="solvvy-hidden">
-<h3>Internal links</h3>
+<h3>DreamHost links</h3>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/214879348-Managing-your-VPS-memory-usage">Managing your VPS memory usage</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215280058-Virtual-Private-Server-VPS-overview-">Private server overview</a></li>
@@ -62,7 +68,7 @@
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215945987-Web-server-performance-comparison">Web server performance comparison</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215573127-Reboot-a-VPS">Reboot a VPS</a></li>
 </ul>
-<h3>External links</h3>
+<h3>3rd party links</h3>
 <ul>
 <li><a href="https://www.cyberciti.biz/tips/howto-performance-benchmarks-a-web-server.html">nixCraft Howto: Performance Benchmark a Webserver</a></li>
 <li><a href="https://www.unix.com/man-page/linux/1/ab/">Apache HTTP server benchmarking tool</a></li>
