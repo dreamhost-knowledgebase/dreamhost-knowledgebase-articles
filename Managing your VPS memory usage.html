@@ -1,93 +1,140 @@
 <h2>Overview</h2>
 <div class="solvvy-solution">
-<p>Every DreamHost <a href="/hc/en-us/articles/215280058">virtual private server</a> (VPS) uses roughly 100 MB of memory as a baseline without any user processes running. That's because several system processes must run for your VPS to work (sshd, proftpd, and so on). You must remember this when allocating memory for your VPS since that initial 100 MB is largely unusable for your site processes.</p>
+<p>This article explains how your VPS uses memory and different options to monitor and troubleshoot memory issues when they arise.</p>
+<div class="prereqs">
+<p>To run the commands in this article, you must have a Shell user configured in your panel and general knowledge of the UNIX Shell. View the following articles for further information.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access">Creating a user with Shell (SSH) access</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
+</ul>
+</div>
+</div>
+<h2>Baseline memory usage</h2>
+<div class="solvvy-solution">
+<p>Every DreamHost <a href="/hc/en-us/articles/215280058" target="_self" rel="undefined">VPS</a> uses roughly 100 MB of memory as a baseline without any user processes running. That's because several system processes must run for your VPS to work (sshd, proftpd, and so on). This must be considered when allocating memory for your VPS since that initial 100 MB is largely unusable for your site processes.</p>
 <p>After that initial 100 MB, most of the memory used by your VPS consists of Apache and PHP processes (or, in the case of Rails applications, Passenger and Rails processes).</p>
 </div>
-<h2><span id="Example_of_how_processes_use_memory">Example of how processes use memory</span></h2>
+<h2><span id="Example_of_how_processes_use_memory">Example of how PHP processes use memory</span></h2>
 <div class="solvvy-solution">
-<p>Whenever someone views your website, the PHP file for the page they view is parsed and executed by a PHP CGI process. At the same time, an Apache process will need to run to serve the resulting HTML output from the script to the browser.</p>
+<p>When your website is visited, the PHP file for the page viewed is parsed and executed by a PHP process. At the same time, an Apache process runs to serve the resulting HTML output from the script to the browser.</p>
 <p>The number of these processes that run is proportional to the amount of traffic you have. For example, if you have a large influx of traffic, additional PHP and Apache processes will spawn to facilitate that traffic. Apache and PHP will continue to spawn processes as requested until your VPS is completely out of memory.</p>
-<p>You must be careful how you set things up to prevent such problems. This often leads to problems where websites on a VPS will stop working due to memory saturation during peak hours and will start working normally again once the traffic dies down to more manageable levels.</p>
+<p>This often leads to problems where websites on a VPS will stop working due to memory saturation during peak hours and will start working normally again once the traffic dies down to more manageable levels.</p>
+<p>For this reason, you must be careful how you set things up to prevent such problems.</p>
 </div>
-<h2><span id="Checking_your_memory_usage">Checking your memory usage</span></h2>
+<h2><span id="Checking_your_memory_usage">Viewing memory usage in the panel</span></h2>
 <div class="solvvy-solution">
-<p>You can view your private server’s memory usage graph in your panel.</p>
+<p>You can view your VPS memory usage graph in your panel.</p>
 <ol>
 <li>Go to the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=vps.dashboard&amp;" target="_blank" rel="noopener noreferrer">VPS</a> page.</li>
 <li>To the right of your VPS, click the <span class="text-object">RAM</span> graph icon under the <span class="text-object">Usage</span> column.
 <dl>
-<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/01_VPS_Troubleshooting.fw.png" alt="01 VPS Troubleshooting.fw.png" width="692" height="331" /></dd>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-vps-memory-graph.png" alt="VPS memory graph" width="383" height="174" /></dd>
 </dl>
 </li>
 </ol>
-<p>The memory usage graph on your web panel helps you see usage trends but doesn't help get a good picture of what's actually going on in real-time since these graphs are generally updated once a day around midnight PDT/PST and are an average of the day's use.</p>
+<p>This graph is generally updated once a day, around midnight PDT/PST to display an average of the day's use.</p>
+<p>Since it is updated once per day, it helps you see usage trends. However, it is not useful to get a good picture of what's happening in real-time. The commands below help you to view real-time data.</p>
 </div>
 <h2><span id="The_top.2C_free.2C_and_ps_aux_commands">The top, free, and ps aux commands</span></h2>
 <div class="solvvy-solution">
-<p>You'll need to SSH into your VPS to obtain more information on exactly what's going on.</p>
-<div class="notebox-tip">
-<p>Open two connections in separate windows so you can easily review the results.</p>
-</div>
-<p>Once you're in, your primary tools are <span class="code">top -c</span>, <span class="code">free -m</span>, and <span class="code">ps aux</span>.</p>
-<h3><span id="Using_the_top_command">Using the top command</span></h3>
-<p>The <span class="code">top</span> command displays the currently active processes, the % of the CPU they're using, how much memory, which user is running it, and so on. Once <span class="code">top</span> is running, you can press <span class="code">Shift + m</span> to sort processes by memory usage rather than by CPU usage.</p>
-<p>While examining your top output, knowing what information you need to look at is important. The memory allocation you set in your panel relates to physical memory being used (as opposed to virtual memory). That memory corresponds to the <span class="text-object">RES</span> column in <span class="code">top</span> output. Below is what <span class="code">top</span> output sorted by memory (<span class="code">Shift + m</span>) might look like (the actual processes will likely be different on your VPS):</p>
+<p>To run the following commands, you must log into your server via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview" target="_self">SSH</a>.&nbsp;In your terminal application, open two connections in separate tabs to easily review the results.&nbsp;You can then run the following commands to troubleshoot memory issues:</p>
+<ul>
+<li><span class="code">top</span></li>
+<li><span class="code">free -m</span></li>
+<li><span class="code">ps aux</span></li>
+</ul>
+<h3><span id="Using_the_top_command">The 'top' command</span></h3>
+<p>In your terminal, type in <span class="code">top</span>. Then press the <span class="code">Enter</span> key.</p>
 <div class="preboxcontainer">
-<pre class="prebox">PID   USER     PR NI   VIRT  RES SHR   S &nbsp;%CPU &nbsp;%MEM    TIME+   COMMAND
-14871 exampleu  20   0  250m  14m 8340  S  5     1.3   0:04.12  php74.cgi
-23591 exampleu  20   0  250m  12m 8256  S  6     1.3   0:00.36  php74.cgi
-23618 exampleu  20   0  250m  13m 8256  S  4     1.3   0:00.19  php74.cgi
-23684 exampleu  20   0  250m  12m 8256  S  7     1.3   0:00.10  php74.cgi
-23652 exampleu  20   0  250m  13m 8256  S  6     1.3   0:00.18  php74.cgi
-23654 exampleu  20   0  250m  15m 8252  S  6     1.3   0:00.17  php74.cgi
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">top</span>
+</pre>
+</div>
+<p>The <span class="code">top</span> command displays the currently active processes, the % of the CPU they're using, how much memory, which user is running it, and so on.</p>
+<p><strong>Sorting by memory</strong></p>
+<p>Once <span class="code">top</span> is running, you can press <span class="code">Shift + m</span> to sort processes by memory usage rather than by CPU usage.</p>
+<p>While examining your top output, knowing what information you need to look at is important. The memory allocation you set in your panel relates to physical memory being used (as opposed to virtual memory). This corresponds to the <span class="text-object">RES</span> column in the&nbsp;output.</p>
+<p>Below is what <span class="code">top</span> output sorted by memory (<span class="code">Shift + m</span>) might look like (the actual processes will be different on your VPS):</p>
+<div class="notebox-note">
+<p>The values you see may be in kilobytes. To change to MB, just press the letter <span class="code">e</span>. Keep pressing to alternate between the different memory units.</p>
+</div>
+<div class="preboxcontainer">
+<pre class="prebox">PID   USER      PR  NI   VIRT  <span class="code-highlight">RES</span>  SHR   S &nbsp;%CPU &nbsp;%MEM    TIME+   COMMAND
+14871 exampleu  20   0   250m  <span class="code-highlight">14m</span>  8340  S   5     1.3   0:04.12  php74.cgi
+23591 exampleu  20   0   250m  <span class="code-highlight">12m</span>  8256  S   6     1.3   0:00.36  php74.cgi
+23618 exampleu  20   0   250m  <span class="code-highlight">13m</span>  8256  S   4     1.3   0:00.19  php74.cgi
+23684 exampleu  20   0   250m  <span class="code-highlight">12m</span>  8256  S   7     1.3   0:00.10  php74.cgi
+23652 exampleu  20   0   250m  <span class="code-highlight">13m</span>  8256  S   6     1.3   0:00.18  php74.cgi
+23654 exampleu  20   0   250m  <span class="code-highlight">15m</span>  8252  S   6     1.3   0:00.17  php74.cgi
 </pre>
 </div>
 <p>In the above example, you'll see a series of php74.cgi processes running which means the site spawning these processes is running under PHP 7.4. In the <span class="text-object">RES</span> column, you can see how much memory each is using. In this case, they all use 12–15 MB of memory. On a busy VPS, you'll likely have several Apache processes running. Those average around 9-11 MB of memory each. Apache and PHP processes multiply as your sites start serving more requests, so you can see that memory usage can quite easily skyrocket if you receive a lot of traffic.</p>
-<h3><span id="Using_the_free_command">Using the free command</span></h3>
-<p>In your other window, you can run <span class="code">free -m</span>. This command displays the current memory usage on your VPS and should look something like this:</p>
+<h3><span id="Using_the_free_command">The 'free' command</span></h3>
+<p>In your other window, run <span class="code">free -m</span> to display the current memory usage in megabytes.&nbsp;</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">free -m</span>
+</pre>
+</div>
+<p>The output will look something like this:</p>
 <div class="preboxcontainer">
 <pre class="prebox">              total        used        free      shared  buff/cache   available
 Mem:           1000         233         114          21         652         766
 Swap:             0           0           0
 </pre>
 </div>
-<p>The <span class="code">-m</span> option tells the command to display the memory usage in megabytes.</p>
-<p><strong>total&nbsp;—&nbsp;</strong> In the above example, the total available memory is roughly 1GB. You can see this value as 1000MB under the <span class="text-object">total</span> column.</p>
-<p><strong>used&nbsp;—&nbsp;</strong> Under the <span class="text-object">used</span> column in the first row, it shows 233 MB used.</p>
-<p><strong>available&nbsp;—&nbsp;</strong> Under the <span class="text-object">available</span> column, it shows 766 MB available. This is the total memory available for starting new applications or processes.</p>
-<p>The total you see should correspond to the amount of memory you allocated to your VPS in your panel.</p>
-<p>For more details about what memory usage looks like, visit the following:</p>
 <ul>
-<li><a href="https://www.linuxatemyram.com/" target="_self" rel="undefined">linuxatemyram.com</a></li>
+<li><strong>total&nbsp;—&nbsp;</strong> In the above example, the total available memory is roughly 1GB. You can see this value as 1000MB under the <span class="text-object">total</span> column.</li>
+<li><strong style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;">used&nbsp;—&nbsp;</strong><span style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;"> Under the </span><span class="text-object" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;">used</span><span style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;"> column in the first row, it shows 233 MB used.</span></li>
+<li><strong style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;">available&nbsp;—&nbsp;</strong><span style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;"> Under the </span><span class="text-object" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;">available</span><span style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;"> column, it shows 766 MB available. This is the total memory available for starting new applications or processes.</span></li>
 </ul>
-<h3><span id="Using_the_ps_aux_command">Using the ps aux command</span></h3>
-<p>The <span class="code">ps</span> command supplies you with similar information as <span class="code">top</span>, but simply takes a snapshot of the active processes and their usage and displays it on your screen. This is useful if you only want to see a particular process(es). For instance, if you only want to see running Apache processes, run the following command:</p>
+<p>The total you see should correspond to the amount of memory you allocated to your VPS in your panel.</p>
+<div class="notebox-tip">
+<p>Visit the following link for more details about memory usage:</p>
+<ul>
+<li><a href="https://www.linuxatemyram.com/" target="_blank" rel="noopener noreferrer">linuxatemyram.com</a></li>
+</ul>
+</div>
+<h3><span id="Using_the_ps_aux_command">The 'ps aux' command</span></h3>
+<p>The <span class="code">ps</span> command supplies you with similar information as <span class="code">top</span>, but simply displays a snapshot of the active processes and their usage. This is useful if you only want to see a particular process(es).</p>
+<p><strong>Apache processes</strong></p>
+<p>For instance, if you only want to see running Apache processes, run the following command:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">ps aux | grep apache</span>
 </pre>
 </div>
-<p>That will "pipe" (or pass) the output from ps to the <span class="code">grep</span> command, which will filter that output on a per-line basis looking for the string <span class="text-object">apache</span> in it. Any line with that output is displayed.</p>
-<p>Another useful variation is:</p>
+<p>That will "pipe" (or pass) the output from <span class="code">ps aux</span> to the <span class="code">grep</span> command, which will filter that output, looking for the string <span class="text-object">apache</span> in it. Any line with that output is displayed.</p>
+<p><strong>PHP processes</strong></p>
+<p>Run the following command to display PHP processes that are currently running:</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">ps aux | grep php</span>
-</pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">ps aux | grep php</span></pre>
 </div>
-<p>This allows you to observe all the PHP processes that are running.</p>
 </div>
 <h2>Recovering from memory saturation</h2>
 <div class="solvvy-solution">
-<p>Memory saturation is when your VPS is using up its entire allotment of memory. When this happens, a variety of things will start to happen. Your sites will likely stop responding in many cases, but beyond that other essential processes on your VPS will stop responding as well such as the SSH server, FTP server, streaming media server, and so. Your VPS can enter a state where you can't even log in due to memory saturation.</p>
+<p>Memory saturation is when your VPS is using up its entire allotment of memory. When this happens, a variety of things will start to happen.</p>
+<ul>
+<li>Your sites will likely stop responding in many cases</li>
+<li>Other essential processes on your VPS will stop responding as well, such as the SSH server, FTP server, streaming media server, and so.</li>
+<li>Your VPS can enter a state where you are unable to even log in due to memory saturation.</li>
+</ul>
 </div>
 <h3>Checking for the cause</h3>
 <div class="solvvy-solution">
-<p>You can usually tell if this is happening to you by checking a few things:</p>
+<p>You can usually tell if this is happening by checking a few things:</p>
 <h4>Checking your resource graph in the panel</h4>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/214880128-How-to-check-your-resource-usage-on-a-VPS" target="_self">How to check your resource usage on a VPS</a></li>
 </ul>
 <p>If the resource usage graph shows your memory spiking high above the allocated memory, then this is likely what's happening.</p>
-<h4>Run the 'free' command'</h4>
+<h4>Run the 'free' command</h4>
 <p>If you can still log into your VPS via SSH, try running the <span class="code">free -m</span> command to see how much memory you have available. The closer that is to zero, the worse you are. At zero, you've reached total memory saturation, and what happens next can be unpredictable.</p>
+<h3>Fixing the issue</h3>
+<p>The steps in this article explain how to locate the source of memory issues. From there, you'll have to continue troubleshooting what you've found to determine the original cause.&nbsp;</p>
+<p>For example, if PHP processes are causing memory issues, and your website is built on WordPress, you could start troubleshooting common WordPress topics.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/sections/203242657-Troubleshooting" target="_self">WordPress troubleshooting</a></li>
+</ul>
+<p>If, however, your website is built on custom code, the output of the commands above could point you to the specific script causing the memory issues.</p>
+<p>The commands above should be run on a regular basis over time to gain more information to help you diagnose the particular issue you're seeing.</p>
 </div>
 <h2>See also</h2>
 <div class="solvvy-hidden">
@@ -97,10 +144,4 @@ Swap:             0           0           0
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215572647-Simulating-high-traffic">Simulating high traffic</a></li>
 </ul>
 </div>
-<h2>See also</h2>
-<div class="solvvy-hidden">
-<ul>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/214879308-VPS-optimization-overview">VPS optimization overview</a></li>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/215572647-Simulating-high-traffic">Simulating high traffic</a></li>
-</ul>
-</div>
+<div class="solvvy-hidden">&nbsp;</div>
