@@ -1,23 +1,38 @@
 <h2>Overview</h2>
 <div class="solvvy-solution">
-<p>If your problem involves your memory usage spiking at certain times of the day, it can be difficult to figure out what's happening since things often run well when you can check on them. When that's the case, it's important to be able to simulate the environment that's causing the problem.</p>
-<p>A benchmark tool you can use to simulate traffic is the <span class="code">ab</span> command. View the following link for further details:</p>
+<p>If you find your VPS memory usage spikes at certain times of the day, you can use a benchmarking tool to simulate the high-traffic environment. Once running, you can then check memory processes to determine the cause of the problem.</p>
+<p>This article explains how to use the <span class="code">ab</span> command line benchmarking tool on your VPS.</p>
+<div class="prereqs">
+<p>To run the commands in this article, you must have a Shell user configured in your panel and general knowledge of the UNIX Shell. View the following articles for further information.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access">Creating a user with Shell (SSH) access</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
+</ul>
+</div>
+</div>
+<h2>Benchmark tool</h2>
+<div class="solvvy-solution">
+<p>View the following link for further details on the <span class="code">ab</span> command.</p>
 <ul>
 <li><a href="https://www.unix.com/man-page/linux/1/ab/" target="_blank" rel="noopener noreferrer">ab [linux man page]</a></li>
 </ul>
-<p>To use, enter the following command:</p>
+<p>To use this tool:</p>
+<ol>
+<li>Log into your server via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview" target="_self">SSH</a>.</li>
+<li>Run the following command:
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">ab -n 1000 -c 20 <span class="code-highlight">https://www.example.com/index.html</span></span></pre>
 </div>
-<p>This command attempts to create 1000 connections to <strong>https://www.example.com/index.html,</strong> limiting itself to 20 concurrent connections.</p>
+</li>
+</ol>
+<p>This command creates 1000 connections to <strong>https://www.example.com/index.html,</strong> limiting itself to 20 concurrent connections.</p>
 </div>
 <h2><span id="Viewing_your_processes_while_testing">Viewing your processes while testing</span></h2>
 <div class="solvvy-solution">
-<p>You'll likely want three terminal windows to observe what's happening.</p>
+<p>While the <span class="code">ab</span> command is running, open 2 more tabs in your terminal to observe server processes.</p>
 <ul>
-<li>In the first window, <a class="new" title="SSH (page does not exist)" href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview" target="_self" rel="undefined">SSH</a> to your server and run top -c. Then, sort by memory (<span class="code">Shift + M</span>).</li>
-<li>In the second window, run <span class="code">free -m</span> (or run <span class="code">watch free -m</span>).</li>
-<li>In the third window, run the <span class="code">ab</span> command to simulate traffic.</li>
+<li>In the first window,&nbsp;run <span class="code">top -c</span>. Then, sort by memory (<span class="code">Shift + M</span>).</li>
+<li>In the second window, run <span class="code">free -m</span> (or <span class="code">watch free -m</span>).</li>
 </ul>
 <p>These commands are effective at profiling your sites and checking to see if caching is working. You can repeat this process for each of your domains to see which ones most affect your memory usage so you know where to optimize.</p>
 </div>
