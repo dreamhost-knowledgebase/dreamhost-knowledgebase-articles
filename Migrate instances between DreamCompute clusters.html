@@ -1,0 +1,157 @@
+<h2>Overview</h2>
+<div class="solvvy-solution">
+<p>DreamCompute offers multiple clusters (also often called availability zones) which are independent OpenStack installations with their own servers, storage, and control panel. Some clusters have different features, such as SSD storage or different hardware that is useful for a given task. Migrating instances and data between clusters is not automated at this time, but this guide shows you how to accomplish this yourself.</p>
+<p>This guide assumes that you are comfortable working with SSH as well as some command line utilities like <span class="code">dd</span> and the OpenStack CLI. For more information about those utilities, see the articles below.</p>
+<ul>
+<li><a class="reference internal" href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
+<li><a class="reference external" href="https://man7.org/linux/man-pages/man1/dd.1.html" target="_self" rel="undefined">man7.org/linux/man-pages/man1/dd.1.html</a></li>
+<li><a class="reference internal" href="https://help.dreamhost.com/hc/en-us/articles/235817468-Getting-started-with-the-OpenStack-command-line-client">Getting started with the OpenStack command line client</a></li>
+</ul>
+</div>
+<h2>Things to keep in mind</h2>
+<div class="solvvy-solution">
+<p>Here are a few things to keep in mind and plan before a migration.</p>
+<h3>IP addresses will change</h3>
+<p>Each cluster has assigned blocks of IP addresses, therefore floating IPs, public IPv4, and public IPv6 addresses cannot be transferred between clusters. If you are using private networks (optional in US-East 2), the specific assigned 10.x.x.x address may also change.</p>
+<h3>SSH keys</h3>
+<p>Each cluster manages its SSH Keys separately, so if you have your keys already set up in the source cluster, you must set up the same keys (or new ones) in the destination cluster. You can grab the public key of any key pair in your project from the (<a href="https://iad2.dreamcompute.com/project/key_pairs/">'Project' &gt; 'Compute' &gt; 'Key Pairs'</a>) page of the DreamCompute dashboard.</p>
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/migrate-instances-between-clusters_01.png" alt="" /></dd>
+</dl>
+<dl>
+<dd>To get to that page, just click on the key pair name.</dd>
+</dl>
+<h3>Plan a maintenance window</h3>
+<p>To avoid open files causing corruption or other odd behavior, it is safest to move the data when the instance is not running. The copying of the data is generally fairly quick for smaller volumes, but for larger volumes it could take some time. Remember, the copy must complete before service can be restored.</p>
+<p>Additionally, DNS must be updated from the old public IPs to the new ones. Depending on the time to live (TTL) of your DNS provider, this process can take a matter of minutes up to 24 hours. DNS zones managed by DreamHost can have the TTL of 5 minutes.</p>
+<h3>Ephemeral instances</h3>
+<p>Ephemeral instances cannot have their data accessed by other instances when they are shut off. These instances can only be migrated while running, so it is best to shut down as many services as possible to limit the possibility of corruption. Please see the last section below for <a class="reference external" href="#migrating-an-ephemeral-instance-using-the-openstack-cli">instructions on migrating running instances</a>.</p>
+</div>
+<h2>Migrating a volume-backed instance using the OpenStack CLI</h2>
+<div class="solvvy-solution">
+<p>For this type of move, it is necessary to delete the instance so that it leaves behind a volume to migrate.</p>
+<div class="notebox-important">
+<p>This method requires that you did not select "Yes" for the "Delete Volume on Instance Delete" option when you created your instance. If you did, please skip to the last section for <a class="reference external" href="#migrating-an-ephemeral-instance-using-the-openstack-cli">instructions on migrating running instances</a>. If you continue, you may permanently destroy and lose your data.</p>
+</div>
+<p>As an overview, here are the components involved in accomplishing this task:</p>
+<div class="code highlight-python">
+<pre> SOURCE CLUSTER         DESTINATION CLUSTER
+
++---------------+     +----------------------+     +-------------------+
+| Temp Instance |----&gt;| Glance Image Service |----&gt;| Migrated Instance |
++---------------+     +----------------------+     +-------------------+
+        |(mount)
++----------------+
+| Volume To Copy |
++----------------+
+</pre>
+</div>
+<h3>Migration procedure</h3>
+<ol class="arabic simple">
+<li>Create a temporary "copy machine" by launching a new instance using the smallest available flavor. This guide uses Ubuntu commands. It is also recommended that you make the instance ephemeral since it will not be needed after the migration is complete.</li>
+<li>Install the needed software to access the Glance image service on this new instance:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">sudo -i</span>
+<span class="server">[root@instance]# </span><span class="command">apt-get install python-dev python-pip</span>
+<span class="server">[root@instance]# </span><span class="command">pip install python-openstackclient</span>
+</pre>
+</div>
+</li>
+<li>Run <span class="code">openstack help</span> and check for any other modules that it says are missing. Install them with:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[root@instance]# </span><span class="command">pip install MODULENAME</span>
+</pre>
+</div>
+</li>
+<li>Set up your <span class="text-object">openstack.rc</span> file for the DESTINATION cluster on this new instance. View the following article for instructions on how to download this file:
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/228047207-How-to-download-your-DreamCompute-openrc-file">How to download your DreamCompute openrc file</a></li>
+</ul>
+</li>
+<li>After downloading the file, either upload it to your instance or copy/paste its contents into a file on the instance. In the example below, the contents have been saved into a file named <span class="text-object">dreamcompute-CLUSTER.sh</span>, but you can name it anything you like. Once you finish, execute the file:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[root@instance]# </span><span class="command">. dreamcompute-CLUSTER.sh</span>
+</pre>
+</div>
+</li>
+<li>Enter your DreamCompute password at the "Please enter your OpenStack Password" prompt. This is the same password you use to log into the DreamCompute dashboard.</li>
+<li>After your shell session has the necessary authentication credentials to connect to the DESTINATION cluster, run the following command to see the OpenStack images currently in the DESTINATION cluster:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[root@instance]# </span><span class="command">openstack image list</span>
+</pre>
+</div>
+</li>
+<li>Delete the instance you wish to move, freeing up its volume so it can be attached to the newly-created instance.</li>
+<li>To attach the volume to the new instance, go to the Volumes menu, click on the drop-down box in the <span class="text-object">Actions</span> column on the right side, then click 'Edit Attachments'.</li>
+<li>
+<p>Determine the drive letter of the new volume. Generally /dev/vda will be the boot drive of your instance, so it may be /dev/vdb or /dev/vdc. One way to check for it is with the fdisk command:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[root@instance]# </span><span class="command">fdisk -l /dev/vdb | grep Disk</span>
+<span class="server">[root@instance]# </span><span class="command">fdisk -l /dev/vdc | grep Disk</span>
+</pre>
+</div>
+<p>The one that matches the size of the new volume is the one to use. Make note of the drive letter (the /dev/vdX part).</p>
+</li>
+<li>Use <span class="code">dd</span> to pipe the data directly into the glance image service. Don't forget to change the drive letter in the example below to the one you found above. You can also change any text in all CAPS to suit your taste.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[root@instance]# </span><span class="command">dd if=/dev/vdX | openstack image create \
+<span class="command">               --private --container-format bare \</span>
+<span class="command">               --disk-format raw "INSTANCENAME"</span>
+</span></pre>
+</div>
+</li>
+<li>Wait for this command to finish running. If successful, it should output the info about the new image that was created.</li>
+</ol>
+<p>You are now ready to go to the DESTINATION cluster to start up a new instance and to select the image that was just uploaded as the source. If the data is meant to be persistent, it is best to specify that you want to create a new volume in the <span class="text-object">Source</span> tab when launching the new instance.</p>
+</div>
+<div id="migrating-an-ephemeral-instance-using-the-openstack-cli" class="section-link">&nbsp;</div>
+<h2>Migrating an ephemeral instance using the OpenStack CLI</h2>
+<div class="solvvy-solution">
+<p>This type of migration is not recommended. However it may be necessary in some situations and so is included here.</p>
+<ol>
+<li>Shut down as many services on the instance as possible (such as database servers, <span class="text-object">http</span> servers, and so on), ideally leaving only default system tools and sshd running.</li>
+<li>Install the needed software to access the glance imaging service on the instance:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">sudo -i</span>
+<span class="server">[root@instance]# </span><span class="command">apt-get install python-dev python-pip</span>
+<span class="server">[root@instance]# </span><span class="command">pip install python-openstackclient</span>
+</pre>
+</div>
+</li>
+<li>Run <span class="code">openstack help</span> and check for any other modules that it says are missing. Install them with:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[root@instance]# </span><span class="command">pip install MODULENAME</span>
+</pre>
+</div>
+</li>
+<li>Set up your openstack.rc file for the DESTINATION cluster on this new instance. View the following article for instructions on how to download this file:
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/228047207-How-to-download-your-DreamCompute-openrc-file">How to download your DreamCompute openrc file</a></li>
+</ul>
+</li>
+<li>After downloading the file, either upload it to your instance or copy/paste its contents into a file on the instance. In the example below, the contents have been saved into a file named <span class="text-object">dreamcompute-CLUSTER.sh</span>, but you can name it anything you like. Once you finish, execute the file:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[root@instance]# </span><span class="command">. dreamcompute-CLUSTER.sh</span>
+</pre>
+</div>
+</li>
+<li>Enter your DreamCompute password at the "Please enter your OpenStack Password" prompt. This is the same password you use to log into the DreamCompute dashboard.</li>
+<li>After your shell session has the necessary authentication credentials to connect to the DESTINATION cluster, run the following command to see the OpenStack images currently in the DESTINATION cluster:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[root@instance]# </span><span class="command">openstack image list</span>
+</pre>
+</div>
+</li>
+<li>Determine the drive letter by examining the output of <span class="code">df -h</span> for the root (/) filesystem. Generally this is /dev/vda1.</li>
+<li>Use <span class="code">dd</span> to pipe the data from the disk directly into the glance image service. Change any text in all CAPS to suit your taste.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[root@instance]# </span><span class="command">dd if=/dev/vda | openstack image create \
+<span class="command">               --private --container-format bare \</span>
+<span class="command">               --disk-format raw "INSTANCENAME"</span>
+</span></pre>
+</div>
+</li>
+<li>Wait for the command to finish running. If successful, it should output the info about the new image that was created.</li>
+</ol>
+<p>You are now ready to go to the DESTINATION cluster to start up a new instance and to select the image that was just uploaded as the source. If the data is meant to be persistent, it is best to specify that you want to create a new volume in the <span class="text-object">Source</span> tab when launching the new instance.</p>
+</div>
