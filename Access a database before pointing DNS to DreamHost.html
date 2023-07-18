@@ -1,29 +1,47 @@
 <h2>Overview</h2>
 <div class="solvvy-solution">
-<p>To access your MySQL database, you need a unique hostname (domain name) or IP address for your MySQL server. This hostname can be any name you wish, so long as you have registered it, but it is commonly a subdomain of your primary domain and is named "mysql.example.TLD".</p>
-<p>For example, let’s say your domain is <strong>example.com</strong>: you can then create the subdomain <strong>mysql</strong>.example.com which is used to connect to your database server.</p>
-<p>This arrangement is convenient to use with DreamHost's MySQL installations, as you can create and manage all of your databases from the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=advanced.mysql" target="_blank" rel="noopener noreferrer">MySQL Databases</a> page.</p>
+<p>A <span class="text-object">mysql</span> hostname is used to access your DreamHost database. This hostname is commonly a subdomain of your primary domain.&nbsp;For example, if your domain is <strong>example.com</strong>, you can create a subdomain such as <strong>mysql.example.com</strong>&nbsp;to connect to your database server.</p>
+<p>However, if your <a href="https://help.dreamhost.com/hc/en-us/articles/216385467-Nameservers-overview" target="_self">nameservers</a> are not yet pointed to DreamHost, this URL will not function. This article gives you a few different options you can use to access the database before pointing your nameservers to DreamHost.</p>
 </div>
-<h2>What hostname should be used if DNS is not yet pointed to DreamHost?</h2>
+<h2>Accessing a DreamHost database</h2>
 <div class="solvvy-solution">
-<p>During a server or web host migration, the <a href="https://help.dreamhost.com/hc/en-us/articles/215413857-DreamHost-DNS-overview">DNS</a> for <strong>example.tld</strong>&nbsp;may not point to DreamHost's <a href="https://help.dreamhost.com/hc/en-us/articles/216385467-Nameservers-overview">nameservers</a>, so you won't be able to use <strong>mysql</strong>.example.tld for the MySQL hostname.</p>
-<p>If you have other domains hosted at DreamHost, you can use their hostname instead. This is because&nbsp;your MySQL server (which hosts all of your databases) is accessible from <em><strong>any</strong></em> subdomain that you assign to it within your DreamHost account.&nbsp;</p>
-<p>For example, if you have another domain like <strong>dreamhostexample.com</strong>&nbsp;and its nameservers are pointed to DreamHost, you could create a mysql hostname titled <strong>mysql</strong>.dreamhostexample.com. You can then use this hostname to connect to ANY database in your DreamHost account.</p>
-</div>
-<h2>What if I do not have any domains pointed to DreamHost?</h2>
-<div class="solvvy-solution">
-<p>If you do not have any domains hosted at DreamHost, you can still connect to your database. To do this, you must add a free <a href="https://help.dreamhost.com/hc/en-us/articles/360002284771-Using-a-dreamhosters-com-subdomain">dreamhosters.com subdomain</a>. It would appear like '<strong>example.dreamhosters.com</strong>'. You can then create a mysql hostname such as '<strong>mysql</strong>.example.dreamhosters.com'. View the following article for instructions on how to create this subdomain:</p>
+<p>When migrating a website, it's common to have the nameservers remain pointed to the old hosting company. This ensures the website remains online during the migration. The following options allow you to log into your database before pointing your nameservers to DreamHost.</p>
+<h3>Option 1 — Point your mysql A record to DreamHost (Recommended)</h3>
+<p>The best option is to log into your current hosting company's panel and point your <span class="text-object">mysql</span> A record to DreamHost.</p>
+<ol>
+<li>Locate your <span class="text-object">mysql</span> A record in your DreamHost panel. This will be a numerical IP address. View the following article for instructions:
 <ul>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/215036088-Connect-to-a-database-with-a-temporary-MySQL-hostname">Connect to a database with a temporary MySQL hostname</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214694378#What_A_records_do_I_point_my_site_to.3F" target="_self">What A records do I point my site to?</a></li>
 </ul>
-<p>You can also use the official phpMyAdmin hostname of your data center. First check the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=support.dc&amp;" target="_blank" rel="noopener noreferrer">Data Center</a> page. Scroll down to locate the data center your MySQL services are located in. It's either West coast or East coast. You can then use the following hostnames to connect depending on the location of your MySQL server.</p>
-<p><strong>West Coast:</strong><br /><a href="https://west1-phpmyadmin.dreamhost.com">https://west1-phpmyadmin.dreamhost.com </a><br /><br /><strong>East Coast:</strong><br /><a href="https://east1-phpmyadmin.dreamhost.com">https://east1-phpmyadmin.dreamhost.com</a></p>
-</div>
-<h2>Finding the IP address of your mysql hostname</h2>
-<div class="solvvy-solution">
-<p>You can also connect using the IP address of your hostname. View the following article for instructions on how to view your site's DNS records:</p>
+</li>
+<li>Log into your current hosting company's panel and point the <span class="text-object">mysql</span> A record for your domain to the DreamHost IP address.</li>
+<li>Wait a few hours for the DNS to update online.
 <ul>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/215413857-DreamHost-DNS-overview">DNS overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215840248-DNS-propagation-overview">DNS propagation overview</a></li>
 </ul>
-<p>There will be a record in that list named 'mysql'. You can use the IP to the right of it to connect.</p>
+</li>
+</ol>
+<p>Once the DNS has updated, you'll be able to visit your <span class="text-object">mysql</span> subdomain (<strong>mysql.example.com</strong>) and log in.</p>
+<div class="alert-warning">
+<p>Do not use the IP address to connect to your database in your website's configuration file. Although rare, this IP is subject to change over time. To avoid potential downtime, make sure to only use the hostname to connect.</p>
+</div>
+<h3>Option 2 — Use the official phpMyAdmin URL</h3>
+<p>You can also use the official phpMyAdmin hostname of your data center. First, check the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=support.dc&amp;" target="_blank" rel="noopener noreferrer">Data Center</a> page. Scroll down to locate the data center your MySQL services are located in. It's either West coast or East coast. You can then use the following hostnames to connect depending on the location of your MySQL server.</p>
+<ul>
+<li><strong>West Coast:</strong>&nbsp; <a href="https://west1-phpmyadmin.dreamhost.com">https://west1-phpmyadmin.dreamhost.com</a></li>
+<li><strong>East Coast:</strong>&nbsp; <a href="https://east1-phpmyadmin.dreamhost.com">https://east1-phpmyadmin.dreamhost.com</a></li>
+</ul>
+<h3>Option 3 — Use another domain's hostname</h3>
+<p>If you have other domains hosted at DreamHost, you can use their <span class="text-object">mysql</span> hostname instead. This is because your MySQL server (which hosts all of your databases) is accessible from <em><strong>any</strong></em> subdomain you assign to it within your DreamHost account.</p>
+<p>For example, if you have another domain like <strong>dreamhostexample.com</strong>&nbsp;and its nameservers are pointed to DreamHost, you could create a mysql hostname titled <strong>mysql.dreamhostexample.com</strong>. You can then use this hostname to connect to ANY database in your DreamHost account.</p>
+</div>
+<h2>See also</h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216385467-Nameservers-overview">Nameservers overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214694378-What-DreamHost-DNS-records-do-I-point-my-site-to-">What DreamHost DNS records do I point my site to?</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215099117-MySQL-overview">MySQL overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214395638-phpMyAdmin-overview">phpMyAdmin overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/221610868-Finding-your-database-login-credentials">Finding your database login credentials</a></li>
+</ul>
 </div>
