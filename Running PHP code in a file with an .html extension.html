@@ -5,25 +5,60 @@
 <pre class="prebox">&lt;html
 &lt;body&gt;
 
-&lt;?php
+<span class="code-highlight">&lt;?php
   echo "hello";
-?&gt;
+?&gt;</span>
 
 &lt;/body&gt;
 &lt;/html&gt;</pre>
 </div>
-<p>However, if you need to place PHP code in a file with an <span class="text-object">.html</span> extension, you must add a Handler to your <span class="text-object">.htaccess</span> file. For example, the same code above could be placed in a file named <span class="text-object">hello.html</span>.</p>
+<p>However, if you need to place PHP code in a file with an <span class="text-object">.html</span> extension, you must add a Handler to your <span class="text-object">.htaccess</span> file for the PHP code to function.</p>
+<div class="notebox-important">
+<p><strong>Custom file extensions</strong></p>
+<p>You can use the examples in this article for any file extension you like. For example, the file extension <span class="text-object">.test</span> does not exist. But if you create a file named <span class="text-object">myfile.test</span>, you can force it to run as PHP.</p>
+<p>Just change the code in the <span class="text-object">.htaccess</span> file to use the extension <span class="text-object">.test</span> instead of <span class="text-object">.html</span>.</p>
 </div>
-<h2>Code to add to your .htaccess file</h2>
+</div>
+<h2>Create an .htaccess file</h2>
 <div class="solvvy-solution">
-<p>View the following articles for instructions on how to edit files using an FTP or SSH client.</p>
+<p>The file you need to add code to is named <span class="text-object">.htaccess</span>. If this doesn't exist in your <a href="https://help.dreamhost.com/hc/en-us/articles/360001219231-Where-is-the-home-directory-#the-website-directory" target="_self">website's home directory</a>, view the following articles for instructions on how to create the file using an FTP or SSH client.</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/115000098272-Creating-and-editing-a-file-via-FTP">Creating and editing a file via FTP</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Creating and editing a file via SSH</a></li>
 </ul>
-<p>The file you need to add code to is named <span class="text-object">.htaccess</span>. If this doesn't exist in your <a href="https://help.dreamhost.com/hc/en-us/articles/360001219231-Where-is-the-home-directory-#the-website-directory" target="_self">website's home directory</a>, use the articles above to create it. Add the following line to the <span class="text-object">.htaccess</span> file:</p>
-<div class="preboxcontainer">
-<pre class="prebox">AddHandler php5-cgi .html</pre>
 </div>
-<p>This line of code allows files with <span class="text-object">.html</span> extensions to run PHP code in your browser.</p>
+<h2>FCGI</h2>
+<div class="solvvy-solution">
+<p>Add the following line to the&nbsp;<span class="text-object">.htaccess</span> file to use FastCGI for PHP:</p>
+<div class="preboxcontainer">
+<pre class="prebox">AddHandler fcgid-script <span class="code-highlight">.html</span>
+FcgidWrapper "/dh/cgi-system/php<span class="code-highlight">82</span>.cgi" <span class="code-highlight">.html</span></pre>
+</div>
+<p>If you load the file in a browser, it will now load like a normal PHP file.</p>
+<div class="notebox-note">
+<p>This code also changes the version of PHP you have set in the panel to the version in the second line.</p>
+</div>
+</div>
+<h2>CGI</h2>
+<div class="solvvy-solution">
+<p>If you want to use CGI (instead of FastCGI), add the following line to your <span class="text-object">.htaccess</span> file:</p>
+<div class="preboxcontainer">
+<pre class="prebox">AddHandler php5-cgi <span class="code-highlight">.html</span></pre>
+</div>
+<p>This line forces files with <span class="text-object">.html</span> extensions to run PHP code in your browser using CGI.</p>
+<div class="notebox-note">
+<p>The PHP version of your site remains the same as the <a href="https://help.dreamhost.com/hc/en-us/articles/214895317-Change-the-PHP-version-of-a-site" target="_self">version of PHP you selected in the panel</a>.&nbsp;For example, if you select PHP 8.2 FastCGI in the panel, this line forces your site to use PHP 8.2 CGI.</p>
+</div>
+</div>
+<h2>See also</h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214202188-PHP-overview">PHP overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216456227--htaccess-overview">.htaccess overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214200688-php-ini-overview">php.ini overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214895287-Viewing-your-site-s-PHP-version-and-settings">Viewing your site's PHP version and settings</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214202148-Change-the-PHP-version-the-shell-uses">Change the PHP version the shell uses</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214895317-Change-the-PHP-version-of-a-site">Change the PHP version of a site</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214202238-Command-line-PHP-overview">Command line PHP overview</a></li>
+</ul>
 </div>
