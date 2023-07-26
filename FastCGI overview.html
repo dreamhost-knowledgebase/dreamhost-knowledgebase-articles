@@ -1,26 +1,20 @@
 <h2><span id="overview">Overview</span></h2>
 <div class="solvvy-solution">
-<p><a href="https://en.wikipedia.org/wiki/FastCGI" target="_blank" rel="noopener noreferrer">FCGI</a>&nbsp;is a protocol for allowing programs to interact with a web server. It improves performance over CGI&nbsp; by reducing the overhead and allowing a server to handle more web page requests at once.</p>
-<h3>PHP</h3>
-<p>PHP is run through&nbsp;<a href="https://www.php.net/manual/en/install.fpm.php" target="_blank" rel="noopener noreferrer">FastCGI</a>&nbsp;by default at DreamHost. You can change this in your panel by adjusting your site's PHP version:</p>
-<ul class="article-list">
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/214895317-Change-the-PHP-version-of-a-site">Change the PHP version of a site</a></li>
-</ul>
+<p>The following articles describe common errors and troubleshooting steps for FastCGI scripts.</p>
 </div>
-<h2>Difference between CGI and FCGI</h2>
+<h2><span id="overview">FastCGI</span></h2>
 <div class="solvvy-solution">
-<h3>CGI</h3>
-<p><a href="https://en.wikipedia.org/wiki/Common_Gateway_Interface" target="_blank" rel="noopener noreferrer">CGI</a>&nbsp;is a protocol for web servers to execute dynamic web programs.&nbsp;CGI creates new processes for each request which makes CGI programs simple to implement but limits efficiency and scalability. At high loads, CGI process creation overhead becomes significant.</p>
-<h3>FCGI</h3>
-<p>FCGI uses persistent processes to handle a series of requests. Each individual FastCGI process can handle many requests over its lifetime, thereby avoiding the overhead of per-request process creation and termination.</p>
+<p><a href="https://en.wikipedia.org/wiki/FastCGI" target="_blank" rel="noopener noreferrer">FCGI</a> is a protocol for allowing programs to interact with a web server. It improves performance over CGI by using persistent processes to handle a series of requests. Each FastCGI process can handle many requests over its lifetime. It avoids the overhead of per-request process creation and termination and allows a server to handle more web page requests simultaneously.</p>
 </div>
 <h2><span id="Configuration_details">Configuration details</span></h2>
 <div class="solvvy-solution">
-<p>On DreamHost servers, FastCGI is handled by&nbsp;<a href="https://httpd.apache.org/mod_fcgid/" target="_blank" rel="noopener noreferrer">mod_fcgid</a>. This is an Apache module providing a FastCGI interface that is specifically tuned for the dynamic FastCGI configuration used on DreamHost servers.</p>
+<p>On DreamHost servers, FastCGI is handled by <a href="https://httpd.apache.org/mod_fcgid/" target="_blank" rel="noopener noreferrer">mod_fcgid</a>. This Apache module provides a FastCGI interface specifically tuned for the dynamic FastCGI configuration used on DreamHost servers.</p>
+<h3>PHP</h3>
+<p>PHP is run through <a href="https://www.php.net/manual/en/install.fpm.php" target="_blank" rel="noopener noreferrer">FastCGI</a> by default at DreamHost.</p>
 </div>
 <h2>Using $ENV{'QUERY_STRING'} instead of @ARGV</h2>
 <div class="solvvy-solution">
-<p>You cannot get the query string in FastCGI by using the&nbsp;<span class="code">@ARGV</span>&nbsp;array. You must use&nbsp;<span class="code">$ENV{'QUERY_STRING'}</span>&nbsp;instead. For example, add the following code to a file named&nbsp;<span class="text-object">test.pl</span>.</p>
+<p>You cannot get the query string in FastCGI by using the <span class="code">@ARGV</span> array. You must use <span class="code">$ENV{'QUERY_STRING'}</span> instead. For example, add the following code to a file named <span class="text-object">test.pl</span>.</p>
 <div class="preboxcontainer">
 <pre class="prebox">#!/usr/bin/perl
 
@@ -31,16 +25,16 @@ print "QUERY_STRING = $ENV{'QUERY_STRING'}";</pre>
 <ul>
 <li><strong>example.com?123</strong></li>
 </ul>
-<p>You will see the value&nbsp;<span class="code">123</span>&nbsp;is printed to the page.</p>
+<p>You will see the value <span class="code">123</span> is printed on the page.</p>
 </div>
 <h2><span id="errors">Errors and troubleshooting</span></h2>
 <div class="solvvy-solution">
 <h3>Errors</h3>
-<p>If an error occurs in your FastCGI script, it may not be returned immediately. If the script loads a web page, the page will appear to hang. When the script times out, it's possible that the error message may not be logged and you'll only see a 500 error.</p>
+<p>If an error occurs in your FastCGI script, it may not be returned immediately. If the script loads a web page, the page will appear to hang. When the script times out, it's possible that the error message may not be logged, and you'll only see a 500 error.</p>
 <h3>Testing</h3>
-<p>For the reasons stated above, testing under FastCGI is impractical. Development should be done with standard CGI, or on your local computer. FastCGI should only be added after the script has already been debugged.</p>
+<p>For the reasons stated above, testing under FastCGI is impractical. Development should be done on your local computer. FastCGI should only be added after the script has already been debugged.</p>
 <p><strong>Command line testing</strong></p>
-<p>Testing a script from the command line allows you to immediately confirm if it will fail.</p>
+<p>Testing a script from the command line allows you to confirm if it will fail immediately.</p>
 <div class="notebox-note">
 <p>This may not catch 100% of errors due to differences with <a href="https://alvinalexander.com/perl/edu/qanda/plqa00014/" target="_self">%ENV</a>.</p>
 </div>
@@ -96,7 +90,6 @@ print "QUERY_STRING = $ENV{'QUERY_STRING'}";</pre>
 <div class="solvvy-hidden">
 <ul>
 <li><a href="/hc/en-us/articles/216041267">SSH overview</a></li>
-<li><a href="/hc/en-us/articles/217297307">CGI overview</a></li>
 <li><a href="/hc/en-us/articles/214750888">UNIX commands</a></li>
 </ul>
 </div>
