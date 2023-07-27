@@ -1,0 +1,95 @@
+<h2><span id="overview">Overview</span></h2>
+<div class="solvvy-solution">
+<p>The following articles describe common errors and troubleshooting steps for FastCGI scripts.</p>
+</div>
+<h2><span id="overview">FastCGI</span></h2>
+<div class="solvvy-solution">
+<p><a href="https://en.wikipedia.org/wiki/FastCGI" target="_blank" rel="noopener noreferrer">FCGI</a> is a protocol for allowing programs to interact with a web server. It improves performance over CGI by using persistent processes to handle a series of requests. Each FastCGI process can handle many requests over its lifetime. It avoids the overhead of per-request process creation and termination and allows a server to handle more web page requests simultaneously.</p>
+</div>
+<h2><span id="Configuration_details">Configuration details</span></h2>
+<div class="solvvy-solution">
+<p>On DreamHost servers, FastCGI is handled by <a href="https://httpd.apache.org/mod_fcgid/" target="_blank" rel="noopener noreferrer">mod_fcgid</a>. This Apache module provides a FastCGI interface specifically tuned for the dynamic FastCGI configuration used on DreamHost servers.</p>
+<h3>PHP</h3>
+<p>PHP is run through <a href="https://www.php.net/manual/en/install.fpm.php" target="_blank" rel="noopener noreferrer">FastCGI</a> by default at DreamHost.</p>
+</div>
+<h2>Using $ENV{'QUERY_STRING'} instead of @ARGV</h2>
+<div class="solvvy-solution">
+<p>You cannot get the query string in FastCGI by using the <span class="code">@ARGV</span> array. You must use <span class="code">$ENV{'QUERY_STRING'}</span> instead. For example, add the following code to a file named <span class="text-object">test.pl</span>.</p>
+<div class="preboxcontainer">
+<pre class="prebox">#!/usr/bin/perl
+
+print "Content-type:text/html\n\n";
+print "QUERY_STRING = $ENV{'QUERY_STRING'}";</pre>
+</div>
+<p>Next, visit the following URL.</p>
+<ul>
+<li><strong>example.com?123</strong></li>
+</ul>
+<p>You will see the value <span class="code">123</span> is printed on the page.</p>
+</div>
+<h2><span id="errors">Errors and troubleshooting</span></h2>
+<div class="solvvy-solution">
+<h3>Errors</h3>
+<p>If an error occurs in your FastCGI script, it may not be returned immediately. If the script loads a web page, the page will appear to hang. When the script times out, it's possible that the error message may not be logged, and you'll only see a 500 error.</p>
+<h3>Testing</h3>
+<p>For the reasons stated above, testing under FastCGI is impractical. Development should be done on your local computer. FastCGI should only be added after the script has already been debugged.</p>
+<p><strong>Command line testing</strong></p>
+<p>Testing a script from the command line allows you to confirm if it will fail immediately.</p>
+<div class="notebox-note">
+<p>This may not catch 100% of errors due to differences with <a href="https://alvinalexander.com/perl/edu/qanda/plqa00014/" target="_self">%ENV</a>.</p>
+</div>
+<p>For example:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">perl ~/<span class="code-highlight">example.com/myscript.fcgi</span></span>
+</pre>
+</div>
+<p>You can also add the <span class="code">-d</span> flag for more debugging information.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">perl -d ~/<span class="code-highlight">example.com/myscript.fcgi</span></span>
+</pre>
+</div>
+<h3>Killing an old process</h3>
+<p>Fixing an error may not fix the script immediately because the server could still be running an old version of the script from memory.&nbsp;To force the server to run the current version of the script, <a href="https://www.cyberciti.biz/faq/linux-find-process-name/" target="_self" rel="undefined">locate the old process name</a>, then kill the process:</p>
+<div class="notebox-important">
+<p>Make sure to change <span class="code">username</span>&nbsp;to your&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access" target="_self">Shell user</a>.</p>
+</div>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">killall -u username <span class="code-highlight">processname</span></span>
+</pre>
+</div>
+<p>If the command above does not work, replace <span class="code">killall</span> with <span class="code">killall -9</span>.</p>
+<h3>Check the error.log file</h3>
+<p>Always check your site's <a href="https://help.dreamhost.com/hc/en-us/articles/216512197-Viewing-your-access-and-error-logs-via-SFTP" target="_blank" rel="noopener noreferrer">error log</a> file if you receive an error.</p>
+<h3>Check file and directory permissions</h3>
+<p>Make sure that the script you are trying to execute is set as executable.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">chmod +x <span class="code-highlight">myscript.fcgi</span></span></pre>
+</div>
+<p>The directory the script is in and any directories above must also be writable.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">chmod -R 755 ~/<span class="code-highlight">example.com/</span></span></pre>
+</div>
+<h3>.htaccess file directives</h3>
+<p>Check your <span class="text-object">.htaccess</span> file to see if there's a line referencing <span class="code">.cgi</span>.</p>
+<div class="preboxcontainer">
+<pre class="prebox">RewriteRule ^(.*)$ scriptname<span class="code-highlight">.cgi</span> [QSA,L]
+</pre>
+</div>
+<p>If so, update it to <span class="code">.fcgi</span>.</p>
+<div class="preboxcontainer">
+<pre class="prebox">RewriteRule ^(.*)$ scriptname<span class="code-highlight">.fcgi</span> [QSA,L]
+</pre>
+</div>
+<h3>Clear your tmp directory</h3>
+<p>Finally, try deleting all sessions in your&nbsp;<a href="/hc/en-us/articles/216735938--tmp-directory-overview" target="_blank" rel="noopener noreferrer">/tmp</a> folder.</p>
+<div class="notebox-important">
+<p>This option is only possible if your site is on a <a href="/hc/en-us/articles/215280058-Virtual-Private-Server-overview-VPS-" target="_blank" rel="noopener noreferrer">VPS</a>&nbsp;or&nbsp;<a href="/hc/en-us/articles/215279658-Dedicated-server-overview" target="_blank" rel="noopener noreferrer">Dedicated Server</a>.</p>
+</div>
+</div>
+<h2><span id="See_also">See also</span></h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="/hc/en-us/articles/216041267">SSH overview</a></li>
+<li><a href="/hc/en-us/articles/214750888">UNIX commands</a></li>
+</ul>
+</div>
