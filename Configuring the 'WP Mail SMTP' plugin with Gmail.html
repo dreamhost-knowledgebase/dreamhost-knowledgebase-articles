@@ -8,45 +8,54 @@
 </ul>
 </div>
 </div>
-<h2><span id="WP_Mail_SMTP">Configuring the WP Mail SMTP plugin</span></h2>
+<div class="steps-section--container">
+<div class="steps-section--border">&nbsp;</div>
+<div class="steps-section--content">
+<div class="steps-section--step"><img class="steps-number-icon" src="https://kbimages.dreamhosters.com/graphics/number-1.svg" width="50px" />
+<h2>Step 1 — Allowing GMAIL to send from your mail application</h2>
 <div class="solvvy-solution">
+<p>To use a Google email address, you must first log into your Google account and enable OAuth2 authentication. This allows Google to send email from your WordPress site. View the following article from the <span class="text-product">WP Mail SMTP</span> plugin's website for full instructions.</p>
+<ul>
+<li><a href="https://wpmailsmtp.com/docs/how-to-set-up-the-gmail-mailer-in-wp-mail-smtp/" target="_blank" rel="noopener noreferrer">Google Workspace / Gmail</a></li>
+</ul>
+</div>
+</div>
+<div class="steps-section--step"><img class="steps-number-icon" src="https://kbimages.dreamhosters.com/graphics/number-2.svg" width="50px" />
+<h2><span id="WP_Mail_SMTP">Step 2 — Configuring the WP Mail SMTP plugin</span></h2>
+<div class="solvvy-solution">
+<div class="notebox-note">
+<p>View the <a href="https://help.dreamhost.com/hc/en-us/articles/215526937-Configuring-the-WP-Mail-SMTP-plugin" target="_self">WP Mail SMTP article</a> for instructions on installing this plugin. Once installed, use the following steps to configure it.</p>
+</div>
 <ol>
-<li>In the WordPress dashboard, click 'Plugins &gt; Add New' in the left pane.</li>
-<li>Search for wp-mail-smtp. It can also <a href="https://wordpress.org/plugins/wp-mail-smtp/" target="_self">be found here</a>.</li>
-<li>Click the <strong>Install</strong> button, then&nbsp;<strong>Activate.&nbsp;</strong></li>
-<li>After it's installed and activated, navigate to the 'Plugins' page in your WordPress dashboard.</li>
-<li>Click the <span class="text-link">Settings</span> link under the plugin.</li>
+<li>Navigate to the <span class="text-section">WP MAIL SMTP &gt; General</span>&nbsp;page.</li>
 <li>Fill in the following fields:
 <ul>
-<li><strong>From Email</strong> - Enter the email you wish to send FROM</li>
+<li><strong>From Email</strong> - Enter the Google email you wish to send FROM</li>
 <li><strong>Force From Email</strong> - Check this box</li>
 <li><strong>From Name</strong> - Enter a name you'd like to appear as being sent FROM</li>
 <li><strong>Force From Name</strong> - Check this if you wish to force the FROM name</li>
-<li><strong>Return Path&nbsp;</strong>- Check this box</li>
+<li><strong>Return Path</strong> - Check this box</li>
 </ul>
 </li>
-<li>Under the <span class="text-section">Mailer</span> section select <span class="text-object">Gmail</span>.</li>
-<li>Scroll down to the <span class="text-section">Gmail</span> section.
+<li>Under the <span class="text-section">Mailer</span> section, choose <span class="text-object">Google / Gmail.</span></li>
+<li>Fill in the following fields:
+<div class="notebox-tip">
+<p>These credentials were created in Step 1 above.</p>
+</div>
 <ul>
-<li><strong>Client ID</strong>&nbsp;- This is a string of letter and numbers you will create in your Google account.</li>
-<li><strong>Client Secret</strong>&nbsp;- This is a string of letter and numbers you will create in your Google account.</li>
+<li><strong>Client ID</strong> - This is a string of letters and numbers you created in your Google account.</li>
+<li><strong>Client Secret</strong> - This is a string of letters and numbers you created in your Google account.</li>
 <li><strong>Authorized redirect URI&nbsp;</strong>- You will input this into your Google account.</li>
 </ul>
 </li>
-<li>Click the <strong>Save Settings</strong> button.</li>
+<li>Click <strong>Save Settings</strong>.</li>
 </ol>
-<p>You must now configure your settings within your Google account.</p>
 </div>
-<h2>Allowing GMAIL to send from your mail application</h2>
-<div class="solvvy-solution">
-<p>You now must allow Google to send email from your WordPress site. You can do this by enabling OAuth2 authentication in your Google account.</p>
-<ul>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/360029702631-Enabling-the-OAuth-2-API-to-use-with-your-WordPress-Mail-SMTP-plugin" target="_self">Enable OAuth2 authentication</a></li>
-</ul>
 </div>
-<h2 class="subheader">Adding code to hide your credentials</h2>
+<div class="steps-section--step"><img class="steps-number-icon" src="https://kbimages.dreamhosters.com/graphics/number-3.svg" width="50px" />
+<h2 class="subheader">Step 3 — Adding code to hide your credentials</h2>
 <div class="solvvy-solution">
-<p>The instructions above add your Google credentials to the WordPress dashboard. To further secure your credentials, the plugin recommends you add code to your <span class="text-object">wp-config.php</span> file instead. View the following page for further details.</p>
+<p>The instructions above add your Google credentials to the WordPress dashboard. To further secure your credentials, the plugin recommends adding code to your <span class="text-object">wp-config.php</span> file. View the following page for further details.</p>
 <ul>
 <li><a href="https://wpmailsmtp.com/docs/how-to-secure-smtp-settings-by-using-constants/#google" target="_blank" rel="noopener noreferrer">How to secure SMTP settings by using constants</a></li>
 </ul>
@@ -70,11 +79,23 @@ define( 'WPMS_GMAIL_CLIENT_SECRET', '<span class="code-highlight">**************
 define( 'WPMS_MAILER', 'gmail' );
 </pre>
 </div>
+<dl>
+<dd><em> The only parts you need to change are&nbsp;<span class="code">WPMS_GMAIL_CLIENT_ID</span> and <span class="code">WPMS_GMAIL_CLIENT_SECRET</span></em></dd>
+</dl>
 </li>
-<li>The only parts you need to change are&nbsp;<span class="code">WPMS_GMAIL_CLIENT_ID</span> and <span class="code">WPMS_GMAIL_CLIENT_SECRET</span>.</li>
 <li>Save the file.</li>
-<li>If you view the plugin page now, you'll see your credentials are not accessible.</li>
 </ol>
+<p>If you view the plugin page now, you'll see your credentials are not accessible.</p>
+</div>
+</div>
+</div>
+</div>
+<h2>Testing the plugin</h2>
+<div class="solvvy-solution">
+<p>You should now test the plugin to confirm it's correctly sending email from your Google address. View the following article for further instructions:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215526937#testing-the-plugin" target="_self" rel="undefined">Testing the WP Mail SMTP plugin</a></li>
+</ul>
 </div>
 <h2>See also</h2>
 <div class="solvvy-hidden">
