@@ -1,0 +1,114 @@
+<h2>Overview</h2>
+<div class="solvvy-solution">
+<p>A Certificate Signing Request (CSR) is a file you use to request an SSL certificate from a Certificate Authority (CA). The CSR contains information such as your name, address, domain name, and email, along with your public key. The Certificate Authority will then validate the information in the CSR to ensure it's correct before creating your SSL certificate.</p>
+<p>There are two ways to create a CSR at DreamHost:</p>
+<ul>
+<li><a href="#requesting-a-csr-from-support" target="_self">Requesting a CSR from support</a></li>
+<li><a href="#manually-creating-a-csr" target="_self">Manually creating a CSR</a></li>
+</ul>
+<div class="notebox-tip">
+<p><strong>You only need to use these instructions if you wish to purchase your SSL certificate at another company. </strong></p>
+<p>The instructions in this article explain how to create a CSR at DreamHost. The external certificate authority company will then use it to create an SSL certificate for your DreamHost domain.</p>
+<p>DreamHost also offers free and paid SSL certificates, which you can add in your panel. View the following articles for further information:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216539548-Adding-a-free-Let-s-Encrypt-certificate">Adding a free Let's Encrypt certificate</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360020291531-Purchase-a-professionally-signed-SSL-certificate">Purchase a professionally-signed SSL certificate</a></li>
+</ul>
+</div>
+</div>
+<div id="requesting-a-csr-from-support" class="section-link">&nbsp;</div>
+<h2>Requesting a CSR from support</h2>
+<div class="solvvy-solution">
+<p>DreamHost support is able to create a CSR for you upon request.</p>
+<div class="notebox-note">
+<p>Requests must be submitted by email on the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=support.msg&amp;" target="_blank" rel="noopener noreferrer">Contact Support</a> page in your panel.</p>
+</div>
+<p>When submitting the support request, make sure to clearly state that you need a CSR created for your domain. Support will need the following information to create the CSR:</p>
+<ul>
+<li>Country Name (2 letter code):</li>
+<li>State or Province Name (full name – no abbreviations!):</li>
+<li>Locality Name (e.g., city):</li>
+<li>Organization Name (e.g., company name):</li>
+<li>Organizational Unit Name (e.g., company section name):</li>
+<li>Common Name (e.g., SECURE DOMAIN NAME –&nbsp;<strong>do not include http://, https://, or www</strong>&nbsp;before the domain name. For example, just type:&nbsp;<strong>example.com</strong>):</li>
+<li>Email Address:</li>
+</ul>
+<p>Once created, support will email you instructions on how to <a href="https://help.dreamhost.com/hc/en-us/articles/115000675027-FTP-overview-and-credentials">download the new CSR file</a>.</p>
+</div>
+<div id="manually-creating-a-csr" class="section-link">&nbsp;</div>
+<h2>Manually creating a CSR</h2>
+<div class="solvvy-solution">
+<p>You are able to manually create a&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/218084098-CSR-overview" target="_self">CSR</a> by logging into your server via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview" target="_self">SSH</a> and running the commands below.</p>
+<div class="notebox-important">
+<p>To proceed with these steps, you must have a Shell user configured in your panel and general knowledge of the UNIX Shell. View the following articles for further information.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access">Creating a user with Shell (SSH) access</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
+</ul>
+</div>
+<h3>Creating a CSR</h3>
+<p>The following steps&nbsp;create a private key and CSR file.</p>
+<div class="notebox-tip">
+<p>The CSR must be created on the server where the SSL certificate will be used.&nbsp;</p>
+</div>
+<ol>
+<li>Log into your domain via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview" target="_self">SSH</a>.</li>
+<li>Navigate into your <a href="https://help.dreamhost.com/hc/en-us/articles/360001219231-Where-is-the-home-directory-#the-users-home-directory" target="_self">user's home directory</a>:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~</span></pre>
+</div>
+</li>
+<li>Run the following command to generate a new RSA private key.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">openssl genrsa -out private.key 2048</span></pre>
+</div>
+<dl>
+<dd><em>This creates a file named <span class="text-object">private.key</span> in the user's home directory. You’ll use this to create the CSR in the next step.</em></dd>
+</dl>
+</li>
+<li>Run the following command to create the CSR:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">openssl req -new -sha256 -key private.key -out file.csr</span></pre>
+</div>
+<dl>
+<dd><em>You are prompted for the following information:</em></dd>
+</dl>
+<div class="notebox-important" style="width: 900px; height: auto;">
+<p><span class="text-object">Common Name</span>&nbsp;is where you put your domain name, e.g.,&nbsp;<strong>example.com</strong>&nbsp;or&nbsp;<strong>www.example.com</strong>.</p>
+<p>For the&nbsp;<span class="text-object">challenge password</span>&nbsp;and&nbsp;<span class="text-object">optional company name</span>, type in a period and press the&nbsp;<span class="code">Enter</span>&nbsp;key to proceed.</p>
+</div>
+<div class="preboxcontainer">
+<pre class="prebox">Country Name (2 letter code) [AU]: 
+State or Province Name (full name) [Some-State]: 
+Locality Name (eg, city) []: 
+Organization Name (eg, company) [Internet Widgits Pty Ltd]: 
+Organizational Unit Name (eg, section) []: 
+Common Name (eg, YOUR name) []: 
+Email Address []: 
+
+Please enter the following 'extra' attributes 
+to be sent with your certificate request 
+A challenge password []: <span class="code-highlight">.</span>
+An optional company name []: <span class="code-highlight">.</span></pre>
+</div>
+</li>
+</ol>
+<h3>Viewing the CSR file</h3>
+<p>Your CSR is created in a file named <span class="text-object">file.csr</span>. You can view its contents by running the following command:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cat file.csr</span></pre>
+</div>
+<p>You can either cut and paste this code to a file on your local computer or log into your server <a href="https://help.dreamhost.com/hc/en-us/articles/115000675027-FTP-overview-and-credentials">via FTP</a>&nbsp;and download the file.</p>
+</div>
+<h2>Using the CSR file</h2>
+<div class="solvvy-solution">
+<p>The final step is to provide the CSR file to the certificate authority company where you are purchasing an SSL certificate.&nbsp;They will then use the CSR file to order/renew a signed SSL certificate for you to use at DreamHost.&nbsp;</p>
+</div>
+<h2>See also</h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216041537-SSL-certificates-overview">SSL certificates overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216539548-Adding-a-free-Let-s-Encrypt-certificate">Adding a free Let's Encrypt certificate</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360020291531-Purchase-a-professionally-signed-SSL-certificate">Purchase a professionally-signed SSL certificate</a></li>
+</ul>
+</div>
