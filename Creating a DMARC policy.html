@@ -1,8 +1,8 @@
-<h2>Overview</h2>
+<h2 id="h_01HBGVCKZT3KR05PXW1RGTGWHX">Overview</h2>
 <div class="solvvy-solution">
-<p>Domain-based Message Authentication, Reporting and Conformance (DMARC) is an Inbound email policy built on top of SPF and DKIM records, designed to detect and prevent fraudulent emails.</p>
+<p>Domain-based Message Authentication, Reporting, and Conformance (DMARC) is an Inbound email policy built on top of SPF and DKIM records, designed to detect and prevent fraudulent emails.</p>
 <p>When you add a DMARC policy to your domain, you choose to inform the recipient that your emails are protected by SPF and/or DKIM records, and what to do if your DMARC policy fails alignment with those records.</p>
-<h3>Example of the DMARC sending process</h3>
+<h3 id="h_01HBGVCKZT4FS2CSYFN2BK4SJP">Example of the DMARC sending process</h3>
 <ol>
 <li>Sender adds a DMARC policy to their domain.</li>
 <li>An email is sent.</li>
@@ -13,11 +13,11 @@
 </ol>
 <p>If 'alignment' is not passed (even if SPF/DKIM checks are passed), then the message fails. This helps to ensure that fraudulent activity appearing to come from the domain is blocked.</p>
 </div>
-<h2>What is alignment?</h2>
+<h2 id="h_01HBGVCKZTR3WZMTB3VBX5RDF3">What is alignment?</h2>
 <div class="solvvy-solution">
 <p>The DMARC policy checks the domain name listed in the message's <span class="code">From:</span> field. It then compares that domain to other authenticated domain names listed in the email's header. If they are identical, your DMARC policy is aligned.</p>
-<p>If not, you should contact your email host and ask for instructions on how to ensure your records are aligned.</p>
-<h3>Strict and relaxed alignment</h3>
+<p>If not, you should contact your email host and ask for instructions on ensuring your records are aligned.</p>
+<h3 id="h_01HBGVCKZTMNNQKGFB627HGGGA">Strict and relaxed alignment</h3>
 <p>The alignment in your policy can be set as strict or relaxed.</p>
 <ul>
 <li><strong>Strict alignment</strong>&nbsp;— the domains must be identical</li>
@@ -30,20 +30,20 @@
 <li><strong>example.com.au</strong></li>
 </ul>
 </div>
-<h2>What if the message fails alignment?</h2>
+<h2 id="h_01HBGVCKZTTMB3E1JB8RVJARM2">What if the message fails alignment?</h2>
 <div class="solvvy-solution">
 <p>The sender's DMARC policy contains information on how to handle emails that fail authentication. Two types of reports can be created:</p>
 <ul>
 <li><strong>Aggregate reports</strong>&nbsp;— sent as XML format once a day, consisting of aggregate data of all DMARC failures</li>
 <li><strong>Forensic reports</strong> (aka Failure reports) — generated immediately and consist of individual emails that failed</li>
 </ul>
-<h3>Analyzing the reports</h3>
+<h3 id="h_01HBGVCKZTP99X6NWJR39JEQ5J">Analyzing the reports</h3>
 <p>You can use a tool like the following to analyze your reports.</p>
 <ul>
 <li><a href="https://mxtoolbox.com/DmarcReportAnalyzer.aspx" target="_blank" rel="noopener noreferrer">https://mxtoolbox.com/DmarcReportAnalyzer.aspx</a></li>
 </ul>
 </div>
-<h2>Configuring a DMARC policy</h2>
+<h2 id="h_01HBGVCKZTXRNBC76796F7MMWW">Configuring a DMARC policy</h2>
 <div class="solvvy-solution">
 <ol>
 <li>Configure an <a href="https://help.dreamhost.com/hc/en-us/articles/216107737-SPF-overview">SPF</a> and/or <a href="https://help.dreamhost.com/hc/en-us/articles/215029758-DKIM-records">DKIM</a> record on your domain.</li>
@@ -55,7 +55,7 @@
 </ul>
 The domains mentioned in all of these areas must be identical, otherwise, DMARC will fail alignment.</li>
 <li>
-<p><a href="https://help.dreamhost.com/hc/en-us/articles/215029918-Add-an-email-address">Create two separate email addresses</a> to receive DMARC daily aggregate and forensic reports. It’s recommended you create two email addresses since you may receive a large number of reports. For example:</p>
+<p><a href="https://help.dreamhost.com/hc/en-us/articles/217139407-Add-an-email-address">Create two separate email addresses</a> to receive DMARC daily aggregate and forensic reports. It’s recommended you create two email addresses since you may receive a large number of reports. For example:</p>
 <ul>
 <li><span class="text-object">dmarc_agg@example.com</span></li>
 <li><span class="text-object">dmarc_forensic@example.com</span></li>
@@ -75,7 +75,11 @@ The domains mentioned in all of these areas must be identical, otherwise, DMARC 
 </li>
 <li>Click the <span class="text-link">DNS</span> tab.</li>
 <li>Click the&nbsp;<strong>Add Record</strong> button.</li>
-<li>Hover over the <span class="text-section">TXT Record</span> section and click the <span class="text-link">ADD</span> link.</li>
+<li>Hover over the <span class="text-section">TXT Record</span> section and click the <span class="text-link">ADD</span> link.
+<dl>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-dmarc-add.png" alt="panel-dmarc-add.png" width="600" height="257" /></dd>
+</dl>
+</li>
 <li>Enter the following:
 <ul>
 <li><strong>Host</strong>: _dmarc</li>
@@ -92,13 +96,13 @@ View the section below for further details on the different options you can use.
 </li>
 </ol>
 </div>
-<h2>Tags you can use in your DMARC record</h2>
+<h2 id="h_01HBGVCKZTJ3ZWM1HTVE4FCKM1">Tags you can use in your DMARC record</h2>
 <div class="solvvy-solution">
-<h3>Required tags</h3>
+<h3 id="h_01HBGVCKZTNQ4ARDJ124BSGB65">Required tags</h3>
 <p>There are 2 required tags, <span class="code">v</span> and <span class="code">p</span>.</p>
-<h4><strong>The v tag</strong></h4>
+<h4 id="h_01HBGVCKZT1CG98CSXD80TDZ4C"><strong>The v tag</strong></h4>
 <p>The <span class="code">v</span> tag identifies the text record as a DMARC record. This must be the first tag and have a value of DMARC1.</p>
-<h4><strong>The <span class="code">p</span> tag</strong></h4>
+<h4 id="h_01HBGVCKZTTQQ07APABTXYH3TW"><strong>The <span class="code">p</span> tag</strong></h4>
 <p>The p tag identifies the action the domain owner requests the recipient to take for failed messages. Options are:</p>
 <table class="wikitable"><colgroup> <col width="15%" /> <col width="85%" /> </colgroup>
 <tbody>
@@ -120,7 +124,7 @@ View the section below for further details on the different options you can use.
 </tr>
 </tbody>
 </table>
-<h3>Email tags</h3>
+<h3 id="h_01HBGVCKZTYMESQB28KH45VPP1">Email tags</h3>
 <p>These indicate where reports are sent.</p>
 <table class="wikitable"><colgroup> <col width="15%" /> <col width="85%" /> </colgroup>
 <tbody>
@@ -138,7 +142,7 @@ View the section below for further details on the different options you can use.
 </tr>
 </tbody>
 </table>
-<h3>Reporting tag</h3>
+<h3 id="h_01HBGVCKZTHR4N8KJVSP6DQ63J">Reporting tag</h3>
 <p><strong>fo</strong> controls when a failure report is created.</p>
 <table class="wikitable"><colgroup> <col width="15%" /> <col width="85%" /> </colgroup>
 <tbody>
@@ -165,7 +169,7 @@ View the section below for further details on the different options you can use.
 </tbody>
 </table>
 <p>A setting of fo=1 is recommended as it provides the most amount of data about any failures.</p>
-<h3>Optional tags</h3>
+<h3 id="h_01HBGVCKZTFZZGGM04CXSBA845">Optional tags</h3>
 <p>The following tags use a default value if the tag isn't set:</p>
 <table class="wikitable"><colgroup> <col width="15%" /> <col width="85%" /> </colgroup>
 <tbody>
@@ -195,7 +199,7 @@ View the section below for further details on the different options you can use.
 </tr>
 </tbody>
 </table>
-<h3>Subdomain tag</h3>
+<h3 id="h_01HBGVCKZTV44Z2PKMSD7JYTYY">Subdomain tag</h3>
 <p>The sp tag is used to set a different reporting policy for a subdomain. For example, you could set the primary domain to use <span class="code">p=reject</span> while setting all subdomains under this domain to use <span class="code">sp=quarantine</span>.</p>
 <table class="wikitable"><colgroup> <col width="15%" /> <col width="85%" /> </colgroup>
 <tbody>
@@ -214,7 +218,7 @@ View the section below for further details on the different options you can use.
 </tbody>
 </table>
 </div>
-<h2>See also</h2>
+<h2 id="h_01HBGVCKZTY00M093KQ9BRQTD2">See also</h2>
 <div class="solvvy-hidden">
 <ul>
 <li><a href="https://dmarc.org/overview/">DMARC Overview</a> - DMARC Resources Page</li>
