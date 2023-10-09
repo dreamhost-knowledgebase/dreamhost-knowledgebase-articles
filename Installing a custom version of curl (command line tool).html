@@ -1,14 +1,14 @@
-<h2>Overview</h2>
+<h2 id="h_01HC1454SZNPYDPD78A2P403XT">Overview</h2>
 <div class="solvvy-solution">
-<p>curl is installed on all DreamHost servers by default, however, you may want to install a newer version depending on your needs. This article walks you through how to install a custom version of curl (command line tool).</p>
+<p>curl is installed on all DreamHost servers by default; however, you may want to install a newer version depending on your needs. This article walks you through how to install a custom version of curl (command line tool).</p>
 <div class="notebox-note">
-<p>These instructions explain how to install the <span class="code">curl</span> command line tool. This is different from cURL. You can read more about that here:</p>
+<p>These instructions explain how to install the <span class="code">curl</span> command line tool which is different from cURL. View the following article for more information:</p>
 <ul>
-<li><a href="https://daniel.haxx.se/docs/curl-vs-libcurl.html">daniel.haxx.se/docs/curl-vs-libcurl.html</a></li>
+<li><a href="https://daniel.haxx.se/docs/curl-vs-libcurl.html" target="_blank" rel="noopener noreferrer">daniel.haxx.se/docs/curl-vs-libcurl.html</a></li>
 </ul>
 </div>
 </div>
-<h2>Installing curl</h2>
+<h2 id="h_01HC1454SZ39KGASNC35DN8KFW">Installing curl</h2>
 <div class="solvvy-solution">
 <ol>
 <li>Log in to your server <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview" target="_self">via SSH</a>.</li>
@@ -23,22 +23,25 @@
 </ul>
 <p>Right-click a <span class="text-link">.zip</span> link and copy its URL. You can then run the following <span class="code">wget</span> command to download the .zip file.</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">wget https://curl.haxx.se/download/curl-7.70.0.zip</span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">wget https://curl.se/download/curl-8.3.0.zip</span></pre>
 </div>
 </li>
 <li>Unzip the file.
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">unzip curl-7.70.0.zip</span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">unzip curl-8.3.0.zip</span></pre>
 </div>
 </li>
 <li>Navigate into this new directory.
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd curl-7.70.0</span></pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd curl-8.3.0</span></pre>
 </div>
 </li>
 <li>Run the following to install:
+<div class="notebox-tip">
+<p>curl requires you to choose which SSL library you'd prefer to use when building it. These instructions use openssl. View <a href="https://daniel.haxx.se/blog/2021/04/23/please-select-your-tls/" target="_blank" rel="noopener noreferrer">SELECT YOUR TLS</a> for further details.</p>
+</div>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">./configure --prefix=$HOME/curl</span>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">./configure --prefix=$HOME/curl --with-<span class="code-highlight">openssl</span></span>
 <span class="server">[server]$ </span><span class="command">make</span>
 <span class="server">[server]$ </span><span class="command">make install</span></pre>
 </div>
@@ -61,12 +64,9 @@
 <li>Check the location and version of <span class="code">curl</span>:
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">which curl</span>
-/home/username/curl/bin/curl
+/home/username/curl/bin/curl<br />
 <span class="server">[server]$ </span><span class="command">curl --version</span>
-curl 7.70.0 (x86_64-pc-linux-gnu) libcurl/7.70.0 OpenSSL/1.1.1 zlib/1.2.11
-Release-Date: 2020-04-29
-Protocols: dict file ftp ftps gopher http https imap imaps ldap ldaps pop3 pop3s rtsp smb smbs smtp smtps telnet tftp
-Features: AsynchDNS HTTPS-proxy IPv6 Largefile libz NTLM NTLM_WB SSL TLS-SRP UnixSockets</pre>
+curl 8.3.0 (x86_64-pc-linux-gnu)</pre>
 </div>
 </li>
 </ol>
