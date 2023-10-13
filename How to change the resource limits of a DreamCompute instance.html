@@ -1,4 +1,4 @@
-<h2>Overview</h2>
+<h2 id="h_01HCJT2JVYXNEQ5TCTFXTXWQM0">Overview</h2>
 <div class="solvvy-solution">
 <p>To change the resource limits (vCPU/RAM) of a specific instance, you need to change its 'Flavor'. This can be done within the DreamCompute dashboard, or using the OpenStack CLI. Use whichever option you're more comfortable with.</p>
 <ul>
@@ -6,44 +6,50 @@
 <li><a href="#OpenStackCLI">Changing limits using the OpenStack CLI</a></li>
 </ul>
 </div>
-<h2><span id="Dashboard">Changing resource limits in the dashboard</span></h2>
+<h2 id="h_01HCJT2JVYDKW1FKNQYN49E2CC"><span id="Dashboard">Changing resource limits in the dashboard</span></h2>
 <div class="solvvy-solution">
 <ol>
-<li>Navigate to the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=cloud.compute&amp;" target="_blank" rel="noopener">DreamCompute</a> page.</li>
-<li>Click the <strong>'View Dashboard' </strong>button.</li>
-<li>In the left menu click 'Compute'.</li>
-<li>From the dropdown click <span class="text-object">Instances</span>.</li>
-<li>To the right of your instance, under the <span class="text-object">Actions</span> column, is a <strong>Create Snapshot</strong> button. Click the little arrow next to it to view the dropdown menu.
+<li>Navigate to the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=cloud.compute&amp;" target="_blank" rel="noopener noreferrer">DreamCompute</a> page.</li>
+<li>Click the <strong>View Dashboard</strong> button.</li>
+<li>In the left menu, click <span class="text-object">Compute</span>.</li>
+<li>From the dropdown, click <span class="text-object">Instances</span>.</li>
+<li>To the right of your instance, click the <span class="text-object">Create Snapshot</span> dropdown.
 <dl>
 <dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/Resize_Instance_dropdown.png" alt="" /></dd>
 </dl>
 </li>
-<li>From the menu, select "Resize Instance".
+<li>From the menu, select <span class="text-object">Resize Instance</span>.
 <dl>
 <dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/Resize_Instance_popup.png" alt="" /></dd>
 </dl>
 </li>
-<li>In the pop-up, select the New Flavor you want from the dropdown, then click the <strong>Resize</strong> button.</li>
-<li>After a few moments, the instance will report that it is in a Resize/Migrate status and ask you to "Confirm or Revert Resize/Migrate".
+<li>In the pop-up, select the New Flavor you want from the dropdown, then click the <strong>Resize</strong> button.
+<dl>
+<dd>
+<div class="notebox-note">
+<p>After a few moments, the instance will report that it is in a Resize/Migrate status and ask you to "Confirm or Revert Resize/Migrate".</p>
+</div>
+</dd>
+</dl>
 <dl>
 <dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/Resize_Instance_confirm.png" alt="" /></dd>
 </dl>
 </li>
-<li>You can do this by clicking the <strong>Confirm Resize/Migrate</strong> button under the <span class="text-object">Actions</span> column.</li>
+<li>Click the <strong>Confirm Resize/Migrate</strong> button under the <span class="text-object">Actions</span> column.</li>
 </ol>
 <div class="notebox-note">
 <p>You can also cancel the resize by clicking the dropdown arrow and selecting the <span class="text-object">Revert Resize/Migrate</span> action.</p>
 </div>
 <p>After confirming or reverting the resize/migrate, the instance status will switch back to Active.</p>
 </div>
-<h2><span id="OpenStackCLI">Changing the resource limit using the OpenStackCLI</span></h2>
+<h2 id="h_01HCJT2JVYAMP2QWCZAC67CX0Y"><span id="OpenStackCLI">Changing the resource limit using the OpenStackCLI</span></h2>
 <div class="solvvy-solution">
 <div class="notebox-note">
 <p>To run the commands below, make sure you have installed the <a href="https://help.dreamhost.com/hc/en-us/articles/235817468-Getting-started-with-the-OpenStack-command-line-client">OpenStack command line client</a>.</p>
 <p>In the following examples, myInstance is the name of your instance.&nbsp;You can view the name of your instance in the <a href="https://iad2.dreamcompute.com/project/instances/">DreamCompute dashboard</a>.</p>
 </div>
 <ol>
-<li>First, using the <span class="code">openstack server show SERVER</span> command to show information about an instance. This includes its size, which is shown as the value of the flavor property:
+<li>Run the following command to display information about an instance. This includes its size, which is shown as the value of the flavor property.
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server show myInstance</span>
 +-----------------------------+--------------------------------------------------------------+
@@ -77,10 +83,9 @@
 +-----------------------------+--------------------------------------------------------------+
 </pre>
 </div>
-<p>In that example, the size (flavor) of the instance is <code class="docutils literal"><span class="pre">gp1.subsonic</span> <span class="pre">(100)</span></code>.</p>
+<p>In this example, the size (flavor) of the instance is <code class="docutils literal"><span class="pre">gp1.subsonic</span> <span class="pre">(100)</span></code>.</p>
 </li>
-<li>
-<p class="first">List the available flavors with the following command:</p>
+<li>List the available flavors with the following command.
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack flavor list</span>
 +-----+----------------+-------+------+-----------+-------+-----------+
@@ -96,8 +101,10 @@
 </pre>
 </div>
 </li>
-<li>
-<p class="first">To resize the instance, use the <span class="code">openstack <a href="https://docs.openstack.org/python-openstackclient/pike/cli/command-objects/server.html#server-resize">server resize</a></span> command specifying the instance ID/name and the new flavor. Include the <cite>–-wait</cite> parameter to display the resize progress. For example:</p>
+<li>Resize the instance using the <span class="code">openstack <a href="https://docs.openstack.org/python-openstackclient/pike/cli/command-objects/server.html#server-resize" target="_blank" rel="noopener noreferrer">server resize</a></span> command while specifying the new flavor and instance name.
+<div class="notebox-note">
+<p>You can also include the <span class="code">–-wait</span> parameter to display the resize progress.</p>
+</div>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server resize --flavor 200 --wait myInstance</span>
 Complete
@@ -108,33 +115,32 @@ Complete
 <p>The timeout value can be overridden on a per image basis by means of <span class="code">os_shutdown_timeout</span> that is an image metadata setting allowing different types of operating systems to specify how much time they need to shut down cleanly.</p>
 </div>
 </li>
-<li>
-<p class="first">Show the status for the instance.</p>
+<li>Display the status for the instance using the following command.
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server show INSTANCE_NAME -c status</span>
+<pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server show myInstance -c status</span>
 +--------+----------------+<br />| Field  | Value          |<br />+--------+----------------+<br />| status | VERIFY_RESIZE  |<br />+--------+----------------+
 </pre>
 </div>
 <p>When the resize completes, the status becomes VERIFY_RESIZE.</p>
 </li>
-<li>
-<p class="first">Confirm the resize, for example:</p>
+<li>Confirm the resize with <span class="code">--confirm</span>.
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server resize --confirm myInstance</span></pre>
 </div>
-<p>Run <span class="code">openstack server show INSTANCE_NAME -c status</span>&nbsp;again and you'll see the status is now ACTIVE.</p>
 </li>
-<li>
-<p class="first">If the resize fails or does not work as expected, revert the resize. For example:</p>
+<li>Run <span class="code">openstack server show myInstance -c status</span>&nbsp;again and you'll see the status is now ACTIVE.
+<div class="notebox-important">
+<p>Revert the resize if it fails or does not work as expected. For example:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack server resize --revert myInstance</span></pre>
 </div>
 <p>The instance status becomes ACTIVE.</p>
+</div>
 </li>
 </ol>
 </div>
 <!--DreamCompute Button-->
 <div class="dream-sign-up">
-<h2>Deploy Your Apps On Cloud Servers Today</h2>
+<h2 id="h_01HCJT2JVYQQXJC6GCMSAQAXZP">Deploy Your Apps On Cloud Servers Today</h2>
 <div class="solvvy-hidden"><a href="https://www.dreamhost.com/cloud/computing/">Sign Up for DreamCompute</a></div>
 </div>
