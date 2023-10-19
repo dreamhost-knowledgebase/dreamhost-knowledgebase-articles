@@ -1,25 +1,25 @@
-<h2>Overview</h2>
+<h2 id="h_01HD1TFP5PRKZPC0HJ023W2ZK8">Overview</h2>
 <div class="solvvy-solution">
 <p>It's a common desire to customize a WordPress site to your own personal look and feel. However, a major problem with customized theme code is that when the developer updates the theme, your customizations are overridden. A solution to this problem is to create a child theme with Git version control.</p>
 <p>Creating a child theme usually requires using something such as the Google browser developer tools to find out what changes you need to make to the theme’s CSS stylesheet. You also might need to make changes to one or more of the PHP files to update specific WordPress templates.</p>
 <p>Keeping track of multiple changes like this can quickly become tedious and confusing. Additionally, how can you test new changes without losing current changes and how do you go back to a change you previously made if you find you made a mistake? Once again, the best solution is to use Git version control with DreamPress.</p>
 </div>
-<h2>What is Git?</h2>
+<h2 id="h_01HD1TFP5Q18VNTYB0WWKRMK8R">What is Git?</h2>
 <div class="solvvy-solution">
 <p>Git is a versioning control system that allows you to keep track of every change you make to your site. It is ideal for creating and maintaining themes, plugins, and any customizations to your WordPress website beyond those you can make in the dashboard. As a version control tool, Git allows you to take snapshots of your code so that you can retrieve a backup at any time. Git also allows you to create a “branch” to add a new feature, fix a bug, or even experiment with new changes without worrying about messing up the current version.</p>
 <p>In the past, you would use FTP/SFTP to update your website. However, a major problem with these protocols is that you cannot go back to an earlier version of your customizations in cases such as when a change breaks your site. You also can’t review an earlier version to see what did change. These issues are solved by using Git.</p>
 <p>Git is commonly used with SSH and a terminal when creating remote repositories. However, there are also some good GUI Git applications that can be used. Two good ones are <a href="https://www.sourcetreeapp.com/">SourceTree</a> and <a href="https://www.git-tower.com/mac/">Tower</a> ($$).</p>
 </div>
-<h2>What can Git be used for?</h2>
+<h2 id="h_01HD1TFP5QS6CGM4MQP014TR5G">What can Git be used for?</h2>
 <div class="solvvy-solution">
 <p>Using Git for custom themes or plugins allows you to share them between websites or with other users. If you choose to do this it's highly recommended to put each project (theme or plugin) in its own repository. Doing so will allow you and others to easily keep track of your custom work.</p>
 </div>
-<h2>When should Git not be used?</h2>
+<h2 id="h_01HD1TFP5Q5GS0T33GZ0NZZWCY">When should Git not be used?</h2>
 <div class="solvvy-solution">
 <p>It's not recommended to use&nbsp;Git as a WordPress backup tool. For example, there is no need to put your instance of WordPress under version control. That is already done by the WordPress core developers. Also, if you had your entire site under Git version control, everything would get overwritten&nbsp;during a WordPress auto-update. Rather, think of Git as a tool to manage your customizations or your own theme and plugin development.</p>
 <p>Using Git for database version control is also difficult and is not recommended.&nbsp;WordPress already handles version control for posts and pages so this is unnecessary.</p>
 </div>
-<h2>Different&nbsp;ways to use Git</h2>
+<h2 id="h_01HD1TFP5QZ3BDJQ9TEG802FMH">Different&nbsp;ways to use Git</h2>
 <div class="solvvy-solution">
 <p>There are a few different workflows that can be used with Git and WordPress. What works best depends on if you are jointly developing with others or not, as well as&nbsp;your personal preference.</p>
 <ol>
@@ -28,7 +28,7 @@
 <li><strong>Local, public Git host and web server&nbsp;—</strong>&nbsp;This configuration is ideal when you are doing joint development with others. You can use <a href="https://github.com/">GitHub</a> or <a href="https://bitbucket.org">Bitbucket</a> to host your collaborative development to update and share code changes. And whenever you choose, you can push updates from the Git host to your web server. <a href="https://github.com/">GitHub</a> is best for code that will be shared publicly while <a href="https://bitbucket.org/">Bitbucket</a> is better for a private repository as it is free. (GitHub charges for private repositories.)</li>
 </ol>
 </div>
-<h2>How to use Git with a child theme on DreamPress</h2>
+<h2 id="h_01HD1TFP5QM8FTKPWXR0XQT2N0">How to use Git with a child theme on DreamPress</h2>
 <div class="solvvy-solution">
 <p>DreamPress has built-in support for Git. It can be used for either the second or third type of workflow shown above. The example below looks at the second workflow method—a local Git repository and one on your DreamPress server that you keep in sync.</p>
 <p>Probably the most common use case for using Git is in creating a child theme. Quite often you want to make changes to a theme and not have your changes overwritten when you need to update the theme.</p>
@@ -43,12 +43,12 @@
 <li><a href="https://help.dreamhost.com/hc/en-us/sections/203242177-Installing-DreamPress">Installing DreamPress</a></li>
 </ul>
 </div>
-<h3>Step 1&nbsp;— Install Git onto your computer</h3>
+<h3 id="h_01HD1TFP5QG9HPJM5S7BHMN4JV">Step 1&nbsp;— Install Git onto your computer</h3>
 <p>Git must be installed on your computer so you can run git commands. There is a great <a href="https://git-scm.com/book/en/v2/Getting-Started-Installing-Git">article in the online Git documentation</a> that explains how to do that for Windows, Mac OS, and Linux. Note that Git is now installed on Mac OS by default if you are at the latest release. You can check to see if it's installed with this command in the terminal app:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[mycomputer]$ </span><span class="command">git --version</span></pre>
 </div>
-<h3>Step 2&nbsp;— Create a shell user in the DreamHost panel</h3>
+<h3 id="h_01HD1TFP5QNF034CC9MD8PXG40">Step 2&nbsp;— Create a shell user in the DreamHost panel</h3>
 <p>Set up a <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access">shell user</a> in the DreamHost panel if you haven’t done so already. You can also change the current DreamPress user from a SFTP to a Shell user. View the article on <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access" target="_blank" rel="noopener noreferrer">how create a user with Shell access</a>.</p>
 <p>After you change the user type, write down your shell username, password, and host (server name). For DreamPress, your username and host look something like this:</p>
 <dl>
@@ -59,7 +59,7 @@
 <div class="notebox-important">
 <p>For the rest of this tutorial, your DreamPress <span class="text-object">Host</span> name will be referred to as the <span class="text-object">server</span>.</p>
 </div>
-<h3>Step 3&nbsp;— Set up an SSH key on your computer</h3>
+<h3 id="h_01HD1TFP5QNE177V7686XZ2KEZ">Step 3&nbsp;— Set up an SSH key on your computer</h3>
 <p>This allows you to automatically connect to your DreamPress server and enables Git commands to work remotely. This varies a bit between Windows, Mac, and Linux, so check out this help article:</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216499537-How-to-configure-passwordless-login-in-Mac-OS-X-and-Linux">Setting up an SSH Key for passwordless login</a></li>
@@ -69,10 +69,11 @@
 <p>Note the reference to <span class="text-object">username@server.dreamhost.com</span> in the help article. It looks like this using this article's example shell username and server above:</p>
 <p><span class="text-object">wp_ab1cde@wp_123456.dreamhostps.com</span></p>
 </div>
-<h3>Step 4&nbsp;— Choose your favorite terminal</h3>
-<p>Windows does not include a terminal, so you need to choose one like <a href="https://help.dreamhost.com/hc/en-us/articles/215464538-Configure-PuTTY">PuTTY</a>, SuperPutty, or MobaXterm. Both Mac OS and Linux include a terminal, but other options are available. For Mac OS, a good suggestion is&nbsp;iTerm2.</p>
+<h3 id="h_01HD1TFP5Q37E60R3M2GJKJNQC">Step 4&nbsp;— Choose your favorite terminal</h3>
+<p><strong>Windows</strong>: You can use the <a href="https://help.dreamhost.com/hc/en-us/articles/360001439466-Using-the-Windows-10-Shell">Windows Shell</a> or third-party programs like <a href="https://help.dreamhost.com/hc/en-us/articles/215464538-Configure-PuTTY">PuTTY</a>, SuperPutty, and MobaXterm.</p>
+<p><strong>Mac OS and Linux</strong>: Both Mac and Linux include a terminal, but third-party options are also available. For example, iTerm2 is very popular with Mac.</p>
 <p>Open your terminal at this point, which is used from here on out.</p>
-<h3>Step 5&nbsp;— Log into your server</h3>
+<h3 id="h_01HD1TFP5QASF32M0E9PY3NH26">Step 5&nbsp;— Log into your server</h3>
 <p>Log into your server using <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH</a>. This takes you directly into your shell user root. Using the sample shell user and server, it looks like:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[mycomputer]$ </span><span class="command">ssh wp_ab1cde@wp_123456.dreamhostps.com</span></pre>
@@ -81,7 +82,7 @@
 <ul class="article-list">
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/360004634231--The-server-s-host-key-is-unknown-warning">'The server's host key is unknown' warning</a></li>
 </ul>
-<h3>Step 6&nbsp;— Set up your server Git repo</h3>
+<h3 id="h_01HD1TFP5QM966Z7M3NMHA7H3Z">Step 6&nbsp;— Set up your server Git repo</h3>
 <p>This does not need to be in the same directory as your child theme, but make sure you remember where you create this directory. This example creates a <span class="text-object">/git</span> directory under your username, outside of the website directory. Run the following Linux commands to create the directory and initialize the repository on your web server.</p>
 <ol>
 <li>Run the following commands to create your identity to be used with Git. View the <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview" target="_self">SSH</a> article for details on how to log into your server:
@@ -122,7 +123,7 @@
 </li>
 <li>Be sure to create a directory for every unique project. This helps you to keep track of them in the future.</li>
 </ol>
-<h3>Step 7&nbsp;— Create a file to copy updates</h3>
+<h3 id="h_01HD1TFP5QDTAKR5G8A79CPZH0">Step 7&nbsp;— Create a file to copy updates</h3>
 <p>This step creates a file to copy updates from your server Git repo to your child theme directory. This example uses&nbsp;a text editor program named <span class="text-object">nano</span>. View the <a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Creating and editing a file via SSH</a> article for further information on how to edit a file.</p>
 <ol>
 <li>Make sure you're in your <span class="text-object">/git/projectname</span> directory.</li>
@@ -147,14 +148,14 @@ GIT_WORK_TREE=/home/<span class="code-highlight">username</span>/<span class="co
 </div>
 </li>
 </ol>
-<h3>Step 8&nbsp;— Create a child theme</h3>
+<h3 id="h_01HD1TFP5Q6GG2F8FRXJRSZFG8">Step 8&nbsp;— Create a child theme</h3>
 <p>Create a basic child theme. Use the following article for step by step instructions:</p>
 <ul>
 <li><a href="https://codex.wordpress.org/Child_Themes">Child Themes</a></li>
 </ul>
-<h3>Step 9&nbsp;— Download your website files to your computer</h3>
+<h3 id="h_01HD1TFP5Q7DCQS20MAV397PJJ">Step 9&nbsp;— Download your website files to your computer</h3>
 <p>You should have all of your DreamPress site files on your local computer. If not, download them via <a href="https://help.dreamhost.com/hc/en-us/articles/115000675027#FTP_security">SFTP</a>.</p>
-<h3>Step 10&nbsp;— Create your local git repository on your computer</h3>
+<h3 id="h_01HD1TFP5QJESGFBTAED3Y0HFY">Step 10&nbsp;— Create your local git repository on your computer</h3>
 <ol>
 <li>Make sure you're in your child theme directory:
 <div class="preboxcontainer">
@@ -167,12 +168,12 @@ GIT_WORK_TREE=/home/<span class="code-highlight">username</span>/<span class="co
 </div>
 </li>
 </ol>
-<h3>Step 11&nbsp;— Customize your local child theme on your computer</h3>
+<h3 id="h_01HD1TFP5QWEWCGXCYS0EQZ943">Step 11&nbsp;— Customize your local child theme on your computer</h3>
 <p>This step is not covered in this article. Check out this blog post on how to create a child theme:</p>
 <ul>
 <li><a href="https://developer.wordpress.org/themes/advanced-topics/child-themes/">Child theme handbook</a></li>
 </ul>
-<h3>Step 12 — Set up the connection to your remote server</h3>
+<h3 id="h_01HD1TFP5QG08S2N27Q5H7HAFQ">Step 12 — Set up the connection to your remote server</h3>
 <p>This is done by using a git remote command in your child theme directory.</p>
 <ol>
 <li>Make sure you're in child theme directory:
@@ -193,7 +194,7 @@ GIT_WORK_TREE=/home/<span class="code-highlight">username</span>/<span class="co
 </div>
 </li>
 </ol>
-<h3>Step 13&nbsp;— Save your changes</h3>
+<h3 id="h_01HD1TFP5QZN5JTTFANZPH0F6B">Step 13&nbsp;— Save your changes</h3>
 <p>Now that you've customized your child theme, you must save your changes to your local git repo.</p>
 <ol>
 <li>Add your changes to your local git index:
@@ -212,7 +213,7 @@ GIT_WORK_TREE=/home/<span class="code-highlight">username</span>/<span class="co
 </div>
 </li>
 </ol>
-<h3>Step 14&nbsp;— Push your changes to your website server</h3>
+<h3 id="h_01HD1TFP5Q2SQVAB7MWRXMFWF6">Step 14&nbsp;— Push your changes to your website server</h3>
 <p>Now that the connection between your local and server git instances is made, you can push your changes to your server repository and your WordPress site:</p>
 <ol>
 <li>In the child theme directory, run the following command only once:
@@ -229,7 +230,7 @@ GIT_WORK_TREE=/home/<span class="code-highlight">username</span>/<span class="co
 </ol>
 <p>That’s it! Once you have set this up, it's simple to keep these two repos in sync. You also have all of your child theme development under version control.</p>
 </div>
-<h2>See also</h2>
+<h2 id="h_01HD1TFP5QA8JXC2TBJCC0X89Y">See also</h2>
 <div class="solvvy-hidden">
 <ul>
 <li><a href="https://git-scm.com/doc">Git documentation</a></li>
