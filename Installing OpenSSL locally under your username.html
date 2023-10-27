@@ -1,31 +1,31 @@
-<h2>Overview</h2>
+<h2 id="h_01HDPFEHDPZR8Z155J1NTDQ7BH">Overview</h2>
 <div class="solvvy-solution">
 <p>OpenSSL is a toolkit for the Transport Layer Security (TLS) and Secure Sockets Layer (SSL) protocols. It is also a general-purpose cryptography library. It is used to secure connections on the server and within your software.</p>
 <p>This is already installed on all DreamHost servers. DreamHost runs version OpenSSL 1.1.1 on servers running Ubuntu 18 and 1.1.0l on servers running Debian Stretch.</p>
 </div>
-<h2>Do I need to install my own version?</h2>
+<h2 id="h_01HDPFEHDQEKYN59W4W8KVDHVJ">Do I need to install my own version?</h2>
 <div class="solvvy-solution">
 <p>The version on the server works for the majority of all web applications. However, newer software may require a higher version. For example, Python 3.7.1 requires version 1.0.2 or above. In you wish to use software that requires a higher version, you must install the newer version of OpenSSL locally under your <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access">Shell user</a>.</p>
 </div>
-<h2>Installing OpenSSL</h2>
+<h2 id="h_01HDPFEHDQ8BD11EDPPMPR5SD4">Installing OpenSSL</h2>
 <div class="solvvy-solution">
 <div class="notebox-note">
 <p>This example installs version 1.1.1g.</p>
 </div>
 <ol>
 <li>Log into your server via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview" target="_self">SSH</a>.</li>
-<li>Visit <a href="https://www.openssl.org/source/">https://www.openssl.org/source/</a>&nbsp;and locate the version you wish to download. Right click it and choose <span class="text-object">Copy link address</span>.</li>
-<li>Run <span class="code">wget</span> to download the file.
+<li>Visit <a href="https://www.openssl.org/source/">https://www.openssl.org/source/</a> and locate the version you wish to download. Right-click it and choose <span class="text-object">Copy link address</span>.</li>
+<li>Run <span class="code">wget</span> with the URL to download the file.
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">wget https://www.openssl.org/source/openssl-1.1.1g.tar.gz</span></pre>
 </div>
 </li>
-<li>You should also confirm the file's integrity by downloading the <span class="text-object">SHA256</span> file on the same page next to it.
+<li>Confirm the file's integrity by downloading the <span class="text-object">SHA256</span> file on the same page next to it.
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">wget https://www.openssl.org/source/openssl-1.1.1g.tar.gz.sha256</span></pre>
 </div>
 </li>
-<li>Once both files are downloaded, view the checksum to confirm the version you downloaded is safe to use.
+<li>View the checksum to confirm the version you downloaded is safe to use.
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">sha256sum openssl-1.1.1g.tar.gz</span>
 ddb04774f1e32f0c49751e21b67216ac87852ceb056b75209af2443400636d46 openssl-1.1.1g.tar.gz
@@ -43,7 +43,7 @@ If they match, proceed with the next step.</li>
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">cd openssl-1.1.1g</span></pre>
 </div>
 </li>
-<li>Configure the file:
+<li>Configure openssl:
 <div class="notebox-note">
 <p>This will configure it to be installed in a directory named <span class="text-object">openssl</span> under your user. Make sure to change <span class="text-object">username</span> to your <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access">Shell user</a>.</p>
 <p>You can install it anywhere you like, just make sure you&nbsp;<strong>DO NOT</strong> install it into a directory named <span class="text-object">openssl-1.1.1g</span>. This directory was already created when you decompressed the <span class="text-object">.tar.gz</span> file. If you configure it to install there, it will fail (since it already exists).</p>
@@ -55,16 +55,13 @@ If they match, proceed with the next step.</li>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">./config --prefix=/home/<span class="code-highlight">username</span>/openssl --openssldir=/home/<span class="code-highlight">username</span>/openssl no-ssl2</span></pre>
 </div>
-<div class="notebox-note">
-<p>Make sure to change 'username' to your <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access">Shell user</a>.</p>
-</div>
 </li>
 <li>Run <span class="code">make</span>. Once that is finished, run <span class="code">make test</span>:
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">make</span>
 <span class="server">[server]$ </span><span class="command">make test</span></pre>
 </div>
-At the end you should see <span class="text-object">All tests successful</span>.</li>
+At the end, you should see <span class="text-object">All tests successful</span>.</li>
 <li>Run <span class="code">make install</span>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">make install</span></pre>
@@ -84,7 +81,7 @@ export LD_LIBRARY_PATH=$HOME/openssl/lib<br />export LC_ALL="en_US.UTF-8"<br />e
 <p>In the last line, make sure to change <span class="text-object">username</span> to your <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access">Shell user</a>.</p>
 </div>
 </li>
-<li><span class="code">source</span> the <span class="text-object">.bash_profile</span>
+<li>Update the <span class="text-object">.bash_profile</span>.
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">. ~/.bash_profile</span></pre>
 </div>
@@ -100,7 +97,7 @@ OpenSSL 1.1.1g  21 Apr 2020</pre>
 </ol>
 <p>OpenSSL has been installed locally under your username.</p>
 </div>
-<h2>See also</h2>
+<h2 id="h_01HDPFEHDQHVTK9DC4GXKMZ1WT">See also</h2>
 <div class="solvvy-hidden">
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
