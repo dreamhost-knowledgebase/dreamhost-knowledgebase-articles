@@ -1,15 +1,15 @@
-<h2>Overview</h2>
+<h2 id="h_01HEG806D9X2AJAF4TRXWARFGB">Overview</h2>
 <div class="solvvy-solution">
 <p>This article walks you through installing Node.js using Node Version Manager (nvm) on a Shared, VPS or Dedicated Server.</p>
 <div class="notebox-important">
 <p>DreamHost support is unable to assist with custom installations. The directions below will explain how to install Node.js but if you find anything is not working as intended, you must contact a developer for further assistance.</p>
 </div>
 </div>
-<h2>What servers can Node.js be installed onto?</h2>
+<h2 id="h_01HEG806D9W1EKSAS3VAYW6Q4C">What servers can Node.js be installed onto?</h2>
 <div class="solvvy-solution">
 <p>Node.js can be installed onto Shared, VPS, and Dedicated Servers.</p>
 </div>
-<h2>What version of Node.js is installed?</h2>
+<h2 id="h_01HEG806D9WADSJYGWSAK2Q5ER">What version of Node.js is installed?</h2>
 <div class="solvvy-solution">
 <p>A default version of Node.js is only installed on certain operating systems. To confirm if Node.js is installed, log into your server via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview" target="_self">SSH</a>&nbsp;and run the following command:</p>
 <div class="preboxcontainer">
@@ -19,7 +19,7 @@
 <p>Please note that the default version is an older version and is not meant for development purposes. It's highly recommended you follow the steps below to install a current version.</p>
 </div>
 </div>
-<h2>Is it possible to run Node.js on ports 80 or 443?</h2>
+<h2 id="h_01HEG806D93J7VJ7NK88DX63C7">Is it possible to run Node.js on ports 80 or 443?</h2>
 <div class="solvvy-solution">
 <p>Yes, but only if you've enabled Passenger in the panel and the file to load your application is named <span class="text-object">app.js</span>. View the following article for further details.</p>
 <ul>
@@ -29,7 +29,7 @@
 <p>The version of Passenger running on DreamHost servers does not currently function with Node.js versions 14+.</p>
 </div>
 </div>
-<h2>Installing Node Version Manager (nvm)</h2>
+<h2 id="h_01HEG806D97JJXFM8KSSP6GNX7">Installing Node Version Manager (nvm)</h2>
 <div class="solvvy-solution">
 <p>The following steps install Node Version Manager. You can then use nvm to install Node.js.</p>
 <ol>
@@ -39,12 +39,12 @@
 <li><a href="https://github.com/nvm-sh/nvm#install-script">https://github.com/nvm-sh/nvm#install-script</a></li>
 </ul>
 </li>
-<li>Make sure you're in your <a href="https://help.dreamhost.com/hc/en-us/articles/360001219231-Where-is-the-home-directory-#the-users-home-directory" target="_self">user's directory</a>.
+<li>Confirm you're in your <a href="https://help.dreamhost.com/hc/en-us/articles/360001219231-Where-is-the-home-directory-#the-users-home-directory" target="_self">user's directory</a>.
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~</span></pre>
 </div>
 </li>
-<li>Run the following command to download NVM. Change the version number as needed:
+<li>Run the following command to download NVM. Change the version number as needed.
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash</span></pre>
 </div>
@@ -61,21 +61,18 @@
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">source .bashrc</span></pre>
 </div>
-<p>Then run the following to confirm your local <span class="text-object">.nvm</span> directory is set.</p>
+</li>
+<li>Confirm your local <span class="text-object">.nvm</span> directory is set.
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">echo $NVM_DIR</span>
 /home/username/.nvm</pre>
 </div>
-</li>
-<li>
 <div class="notebox-important">
-<p>This step only applies to Shared or Dedicated servers.</p>
-</div>
-<p><strong>If installing NVM as a user on a Shared or Dedicated Server</strong>, make sure the script isn't blocked by running the following as your user:</p>
+<p><strong>This step only applies to Shared or Dedicated servers.</strong></p>
+<p>If installing NVM as a user on a Shared or Dedicated Server, make sure the script isn't blocked by running the following as your user:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">setfattr -n user.pax.flags -v "mr" $NVM_DIR/nvm.sh</span></pre>
 </div>
-<div class="notebox-note">
 <p>This command does not return anything. If you see an error such as <span class="code">setfattr: /nvm.sh: No such file or directory</span>, something wasn't installed correctly. Try running the following command.</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">echo $NVM_DIR</span>
@@ -84,17 +81,17 @@
 <p>You should see the path to your local <span class="text-object">.nvm</span> directory. If you do not, make sure the <span class="text-object">.bashrc</span> file was updated as in step 5 above. Then try running this command again.</p>
 </div>
 </li>
-<li id="bash_profile">View the&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">creating and editing a file via SSH</a>&nbsp;article for instructions on how to edit your existing <span class="text-object">.bash_profile</span>. In this file, add the following line.
+<li id="bash_profile">Edit your <span class="text-object">.bash_profile and</span>&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">add the following line</a>.
 <div class="preboxcontainer">
 <pre class="prebox">source ~/.bashrc</pre>
 </div>
 </li>
-<li>Run the following command to allow your shell to use this new version of nvm:
+<li>Update your <span class="text-object" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;">.bash_profile so you can </span>use this new version of nvm.
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">. ~/.bash_profile</span></pre>
 </div>
 </li>
-<li>To test if you can now use nvm, run the following which should respond with the version you have installed:
+<li>Run the following command to test if nvm is now installed.
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">nvm --version</span>
 <span class="cmdoutput">0.39.0</span>
@@ -103,16 +100,16 @@
 </li>
 </ol>
 </div>
-<h2>Installing Node.js</h2>
+<h2 id="h_01HEG806D9TYQXKMYYP3V12S2K">Installing Node.js</h2>
 <div class="solvvy-solution">
 <p>Now that nvm has been installed, you can use it to install Node.js</p>
 <ol>
-<li>Check which versions of Node.js are available:
+<li>Check which versions of Node.js are available.
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">nvm ls-remote</span></pre>
 </div>
 </li>
-<li>Install any version of Node.js you wish:
+<li>Install any version of Node.js you wish.
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">nvm install v12.22.7</span></pre>
 </div>
@@ -134,13 +131,13 @@
 <p>This will need to be done each time a new version is installed.</p>
 </div>
 </li>
-<li>Set your current version of node to your new version:
+<li>Set your current version of node to your new version.
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">nvm use v12.22.7</span>
 Now using node v12.22.7 (npm v)</pre>
 </div>
 </li>
-<li>Check which version of Node.js is running by entering the following:
+<li>Check which version of Node.js is running by entering the following.
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">node -v</span>
 <span class="cmdoutput">v12.22.7</span>
@@ -149,7 +146,7 @@ Now using node v12.22.7 (npm v)</pre>
 </li>
 </ol>
 </div>
-<h2><span id="setting-default-version">Setting the default version of Node.js</span></h2>
+<h2 id="h_01HEG806DAKA6G02GSXAZCQA91"><span id="setting-default-version">Setting the default version of Node.js</span></h2>
 <div class="solvvy-solution">
 <p>After installing a new version of Node.js, your current Shell session should use it automatically when you log back in. If you notice that the version is not correct, you may need to review the <a href="#bash_profile">.bash_profile instructions</a> above. You could also set the new version as your default version by running the following command.</p>
 <div class="notebox-note">
@@ -160,7 +157,7 @@ Now using node v12.22.7 (npm v)</pre>
 default -&gt; v12.22.7</pre>
 </div>
 </div>
-<h2><span id="Testing_Node.js">Testing Node.js</span></h2>
+<h2 id="h_01HEG806DA3FTZWFCBBFYM6FSH"><span id="Testing_Node.js">Testing Node.js</span></h2>
 <div class="solvvy-solution">
 <p>Now that you have installed Node.js you can create a few simple test scripts to confirm if it's functioning.</p>
 <ul>
