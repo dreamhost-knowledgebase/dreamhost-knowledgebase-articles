@@ -1,67 +1,52 @@
+<div id="auto-toc">&nbsp;</div>
 <h2 id="h_01HBGVCKZT3KR05PXW1RGTGWHX">Overview</h2>
 <div class="solvvy-solution">
-<p>Domain-based Message Authentication, Reporting, and Conformance (DMARC) is an Inbound email policy built on top of SPF and DKIM records, designed to detect and prevent fraudulent emails.</p>
-<p>When you add a DMARC policy to your domain, you choose to inform the recipient that your emails are protected by SPF and/or DKIM records, and what to do if your DMARC policy fails alignment with those records.</p>
-<h3 id="h_01HBGVCKZT4FS2CSYFN2BK4SJP">Example of the DMARC sending process</h3>
+<p>Domain-based Message Authentication, Reporting, and Conformance (DMARC) is an Inbound email policy built on top of DKIM and SPF records, designed to detect and prevent fraudulent emails.</p>
+<p>When you add a DMARC policy to your domain, you choose to inform the recipient that your emails are protected by DKIM and/or SPF records and what to do if your DMARC policy fails alignment with those records.</p>
+<h3 id="h_01HBGVCKZT4FS2CSYFN2BK4SJP">Example of the DMARC validation process</h3>
 <ol>
-<li>Sender adds a DMARC policy to their domain.</li>
-<li>An email is sent.</li>
+<li>The sender adds a DMARC policy to their domain.</li>
+<li>The sender sends an email.</li>
 <li>The recipient checks if the email contains a DMARC policy.</li>
-<li>If so, the SPF/DKIM records mentioned in the sender's DMARC policy are validated.</li>
-<li>If the SPF/DKIM records pass validation, they must then pass something called 'alignment'.</li>
+<li>The recipient checks if the DKIM/SPF records mentioned in the sender's DMARC policy are valid.</li>
+<li>The recipient checks if the valid DKIM/SPF records also pass something called '<a href="#alignment">alignment</a>'.
+<ul>
 <li>If 'alignment' is passed, the email is received.</li>
+<li>If 'alignment' is not passed (even if DKIM/SPF checks are passed), then the message fails.</li>
+</ul>
+</li>
 </ol>
-<p>If 'alignment' is not passed (even if SPF/DKIM checks are passed), then the message fails. This helps to ensure that fraudulent activity appearing to come from the domain is blocked.</p>
-</div>
-<h2 id="h_01HBGVCKZTR3WZMTB3VBX5RDF3">What is alignment?</h2>
-<div class="solvvy-solution">
-<p>The DMARC policy checks the domain name listed in the message's <span class="code">From:</span> field. It then compares that domain to other authenticated domain names listed in the email's header. If they are identical, your DMARC policy is aligned.</p>
-<p>If not, you should contact your email host and ask for instructions on ensuring your records are aligned.</p>
-<h3 id="h_01HBGVCKZTMNNQKGFB627HGGGA">Strict and relaxed alignment</h3>
-<p>The alignment in your policy can be set as strict or relaxed.</p>
-<ul>
-<li><strong>Strict alignment</strong>&nbsp;— the domains must be identical</li>
-<li><strong>Relaxed alignment</strong>&nbsp;— the top-level "Organizational Domain" must match</li>
-</ul>
-<p>The 'Organizational Domain' is your domain name followed by its suffix. For example:</p>
-<ul>
-<li><strong>example.com</strong></li>
-<li><strong>example.net</strong></li>
-<li><strong>example.com.au</strong></li>
-</ul>
-</div>
-<h2 id="h_01HBGVCKZTTMB3E1JB8RVJARM2">What if the message fails alignment?</h2>
-<div class="solvvy-solution">
-<p>The sender's DMARC policy contains information on how to handle emails that fail authentication. Two types of reports can be created:</p>
-<ul>
-<li><strong>Aggregate reports</strong>&nbsp;— sent as XML format once a day, consisting of aggregate data of all DMARC failures</li>
-<li><strong>Forensic reports</strong> (aka Failure reports) — generated immediately and consist of individual emails that failed</li>
-</ul>
-<h3 id="h_01HBGVCKZTP99X6NWJR39JEQ5J">Analyzing the reports</h3>
-<p>You can use a tool like the following to analyze your reports.</p>
-<ul>
-<li><a href="https://mxtoolbox.com/DmarcReportAnalyzer.aspx" target="_blank" rel="noopener noreferrer">https://mxtoolbox.com/DmarcReportAnalyzer.aspx</a></li>
-</ul>
+<p>This process of validation helps to ensure that fraudulent activity appearing to come from the domain is blocked.</p>
 </div>
 <h2 id="h_01HBGVCKZTXRNBC76796F7MMWW">Configuring a DMARC policy</h2>
 <div class="solvvy-solution">
-<ol>
-<li>Configure an <a href="https://help.dreamhost.com/hc/en-us/articles/216107737-SPF-overview">SPF</a> and/or <a href="https://help.dreamhost.com/hc/en-us/articles/215029758-DKIM-records">DKIM</a> record on your domain.</li>
-<li>Send an email to yourself (or another address you own). Once received, view its headers. Verify domain alignment by identifying the domain listed as the sending address. It may be located in the following places:
-<ul>
-<li>The Envelope From domain&nbsp;— &nbsp;<strong>From: admin@example.com</strong></li>
-<li>The Return-Path Return-Path — <strong>&lt;admin@example.com&gt;</strong></li>
-<li>The d=domain in the DKIM-Signature&nbsp;—&nbsp;DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; <strong>d=example.com</strong>;</li>
-</ul>
-The domains mentioned in all of these areas must be identical, otherwise, DMARC will fail alignment.</li>
-<li>
+<p>The following steps explain how to configure a DMARC policy on your domain.</p>
+<div class="steps-section--container">
+<div class="steps-section--border">&nbsp;</div>
+<div class="steps-section--content">
+<div class="steps-section--step"><img class="steps-number-icon" src="https://kbimages.dreamhosters.com/graphics/number-1.svg" width="50px" />
+<h2 id="h_01HF5C3J08ED6T727TR0KHHV1Y">Step 1 — Create report emails</h2>
 <p><a href="https://help.dreamhost.com/hc/en-us/articles/217139407-Add-an-email-address">Create two separate email addresses</a> to receive DMARC daily aggregate and forensic reports. It’s recommended you create two email addresses since you may receive a large number of reports. For example:</p>
+<ul>
+<li style="list-style-type: none;">
 <ul>
 <li><span class="text-object">dmarc_agg@example.com</span></li>
 <li><span class="text-object">dmarc_forensic@example.com</span></li>
 </ul>
 </li>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/360035516812-Adding-custom-DNS-records#TXT_record" target="_self" rel="undefined">Create the TXT record</a>.
+</ul>
+</div>
+<div class="steps-section--step"><img class="steps-number-icon" src="https://kbimages.dreamhosters.com/graphics/number-2.svg" width="50px" />
+<h2 id="h_01HF5C3J08NGTSRMMV44YQDR23">Step 2 — Create DKIM and SPF records</h2>
+<p>Configure a DKIM and/or SPF record on your domain. It's recommended that you enable both records to take full advantage of the DMARC policy.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215029758-DKIM-records">DKIM records</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216107737-SPF-overview">SPF overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216106197-Add-an-SPF-record">Add an SPF record</a></li>
+</ul>
+</div>
+<div class="steps-section--step"><img class="steps-number-icon" src="https://kbimages.dreamhosters.com/graphics/number-3.svg" width="50px" />
+<h2 id="h_01HF5C3J08NGTSRMMV44YQDR23">Step 3 — Add the DMARC record in the panel</h2>
 <ol>
 <li>Navigate to the <a class="panel-link" href="https://panel.dreamhost.com/?tree=domain.dashboard#!/list-view" target="_blank" rel="noopener noreferrer">Manage Websites</a> page.</li>
 <li>Click the&nbsp;<strong>Manage</strong> button to open the <a href="https://help.dreamhost.com/hc/en-us/articles/360043889332-The-Domain-Settings-page" target="_blank" rel="noopener noreferrer"><span class="panel-page">Domain Settings</span></a> page, which allows you to adjust various settings for your site.
@@ -87,136 +72,279 @@ The domains mentioned in all of these areas must be identical, otherwise, DMARC 
 <div class="preboxcontainer">
 <pre class="prebox">v=DMARC1; p=none; fo=1; rua=mailto:<span class="code-highlight">dmarc_agg@example.com</span>;ruf=mailto:<span class="code-highlight">dmarc_forensic@example.com</span>;pct=100</pre>
 </div>
-View the section below for further details on the different options you can use.</li>
+<a href="#dmarc-tags">View the 'DMARC Tags' section below</a> for further details on the different options you can use.</li>
 </ul>
 </li>
 <li>Click the <strong>Add Record</strong>&nbsp;button to save.</li>
 </ol>
 <p>After clicking the <strong>Add Record</strong> button, the propagation for the new record begins. This can take up to 6 hours before the new record updates online.</p>
+</div>
+</div>
+</div>
+</div>
+<div id="alignment" class="section-link">&nbsp;</div>
+<h2 id="h_01HBGVCKZTR3WZMTB3VBX5RDF3">What is alignment?</h2>
+<div class="solvvy-solution">
+<p>The DMARC policy checks the domain name listed in the message's <span class="code">From:</span> field. It then compares that domain to other authenticated domain names listed in the email's header. If they are identical, your DMARC policy is aligned.</p>
+<p>If not, you should contact your email host and ask for instructions on ensuring your records are aligned.</p>
+<h3 id="h_01HBGVCKZTMNNQKGFB627HGGGA">Strict and relaxed alignment</h3>
+<p>The alignment in your policy can be set as strict or relaxed.</p>
+<ul>
+<li><strong>Strict alignment</strong>&nbsp;— the domains must be identical</li>
+<li><strong>Relaxed alignment</strong> — the top-level 'Organizational Domain' must match</li>
+</ul>
+<dl>
+<dd>
+<div class="notebox-tip">
+<p>The 'Organizational Domain' is your domain name followed by its suffix. For example:</p>
+<ul>
+<li><strong>example.com</strong></li>
+<li><strong>example.net</strong></li>
+<li><strong>example.com.au</strong></li>
+</ul>
+</div>
+</dd>
+</dl>
+</div>
+<h3 id="h_01HBGVCKZTTMB3E1JB8RVJARM2" class="subtoc-heading">What if the message fails alignment?</h3>
+<div class="solvvy-solution">
+<p>The sender's DMARC policy contains report email addresses (set in the <span class="code">rua</span> and <span class="code">ruf</span> tags) to handle emails that fail authentication. Two types of reports can be created:</p>
+<ul>
+<li><strong>Aggregate reports</strong> — These reports are sent in XML format once a day, consisting of aggregate data of all DMARC failures. This email address is set with the <span class="code">rua</span> tag.</li>
+<li><strong>Forensic reports</strong> (aka Failure reports) — These reports are generated immediately and consist of individual emails that failed. This email address is set with the <span class="code">ruf</span> tag.</li>
+</ul>
+<h3 id="h_01HBGVCKZTP99X6NWJR39JEQ5J" class="subtoc-heading">Analyzing the reports</h3>
+<p>You can use a tool like the following to analyze your reports.</p>
+<ul>
+<li><a href="https://mxtoolbox.com/DmarcReportAnalyzer.aspx" target="_blank" rel="noopener noreferrer">https://mxtoolbox.com/DmarcReportAnalyzer.aspx</a></li>
+</ul>
+<h3 id="h_01HF5C3J08M45658C2Y4BMBWBF" class="subtoc-heading">Testing received emails for alignment</h3>
+<p>These steps check received email headers to confirm if they will pass alignment.</p>
+<ol>
+<li>Send an email to yourself (or another address you own).</li>
+<li>View the received <a href="https://help.dreamhost.com/hc/en-us/articles/215466778-Viewing-email-headers">email's headers</a>.</li>
+<li>Verify domain alignment by identifying the domain listed as the sending address. It may be located in the following places:
+<table style="border-collapse: collapse; width: 100%;" border="1">
+<tbody>
+<tr>
+<th style="width: 40%;">Field</th>
+<th style="width: 60%;">Example</th>
+</tr>
+<tr>
+<td>The <strong>Envelope From</strong> domain</td>
+<td><span class="code">From: admin@example.com</span></td>
+</tr>
+<tr>
+<td>The <strong>Return-Path</strong></td>
+<td><span class="code">&lt;admin@example.com&gt;</span></td>
+</tr>
+<tr>
+<td>The <strong>d=domain</strong> in the DKIM-Signature</td>
+<td><span class="code">DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; <strong>d=example.com</strong>;</span></td>
+</tr>
+</tbody>
+</table>
+<div class="notebox-important">
+<p>The domains mentioned in all of these areas must be identical, otherwise, DMARC will fail alignment.</p>
+</div>
 </li>
 </ol>
 </div>
-<h2 id="h_01HBGVCKZTJ3ZWM1HTVE4FCKM1">Tags you can use in your DMARC record</h2>
+<div id="dmarc-tags" class="section-link">&nbsp;</div>
+<h2 id="h_01HBGVCKZTJ3ZWM1HTVE4FCKM1">DMARC Tags</h2>
 <div class="solvvy-solution">
-<h3 id="h_01HBGVCKZTNQ4ARDJ124BSGB65">Required tags</h3>
-<p>There are 2 required tags, <span class="code">v</span> and <span class="code">p</span>.</p>
-<h4 id="h_01HBGVCKZT1CG98CSXD80TDZ4C"><strong>The v tag</strong></h4>
-<p>The <span class="code">v</span> tag identifies the text record as a DMARC record. This must be the first tag and have a value of DMARC1.</p>
-<h4 id="h_01HBGVCKZTTQQ07APABTXYH3TW"><strong>The <span class="code">p</span> tag</strong></h4>
-<p>The p tag identifies the action the domain owner requests the recipient to take for failed messages. Options are:</p>
-<table class="wikitable"><colgroup> <col width="15%" /> <col width="85%" /> </colgroup>
+<p>DMARC records use tags to define how the DMARC record should be implemented. Of the 11 tags available, only 2 are required, but others are recommended. View the information below for further details.</p>
+<div class="solvvy-solution">
+<h3 id="h_01HBGVCKZTNQ4ARDJ124BSGB65" class="subtoc-heading">Required tags</h3>
+<p>The <span class="code">v</span> and <span class="code">p</span> tags are required.</p>
+<h4 id="h_01HBGVCKZT1CG98CSXD80TDZ4C"><strong>The <span class="code">v</span> tag</strong></h4>
+<table style="border-collapse: collapse; width: 100%;" border="1">
 <tbody>
 <tr>
-<th bgcolor="#F2F2F2">Tag</th>
-<th bgcolor="#F2F2F2">Description</th>
+<th style="width: 15%;">Tag</th>
+<th style="width: 85%;">Description</th>
 </tr>
 <tr>
-<td>p=none</td>
+<td>v=DMARC1</td>
+<td>The <span class="code">v</span> tag identifies the text record as a DMARC record. This must be the first tag and have a value of <span class="code">DMARC1</span>.</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<h4 id="h_01HBGVCKZTTQQ07APABTXYH3TW"><strong>The <span class="code">p</span> tag</strong></h4>
+<p>The <span class="code">p</span> tag identifies the action the domain owner requests the recipient to take for failed messages. Options are:</p>
+<table style="border-collapse: collapse; width: 100%;" border="1">
+<tbody>
+<tr>
+<th style="width: 15%;">Tag</th>
+<th style="width: 85%;">Description</th>
+</tr>
+<tr>
+<td>p=<span class="text-object">none</span></td>
 <td>No action should be taken for emails that fail DMARC authentication.</td>
 </tr>
 <tr>
-<td>p=quarantine</td>
+<td>p=<span class="text-object">quarantine</span></td>
 <td>If an email fails DMARC authentication, it should be treated as suspicious. How this is handled is up to the recipient, for example, it may be placed in a SPAM folder.</td>
 </tr>
 <tr>
-<td>p=reject</td>
+<td>p=<span class="text-object">reject</span></td>
 <td>If an email fails DMARC authentication, the recipient should reject the email during the SMTP transaction.</td>
 </tr>
 </tbody>
 </table>
-<h3 id="h_01HBGVCKZTYMESQB28KH45VPP1">Email tags</h3>
+<p>&nbsp;</p>
+<h3 id="h_01HBGVCKZTYMESQB28KH45VPP1" class="subtoc-heading">Email tags (Recommended)</h3>
 <p>These indicate where reports are sent.</p>
-<table class="wikitable"><colgroup> <col width="15%" /> <col width="85%" /> </colgroup>
+<table style="border-collapse: collapse; width: 100%;" border="1">
 <tbody>
 <tr>
-<th bgcolor="#F2F2F2">Tag</th>
-<th bgcolor="#F2F2F2">Description</th>
+<th style="width: 50%;">Tag</th>
+<th style="width: 50%;">Description</th>
 </tr>
 <tr>
-<td>rua=mailto:dmarc_agg@example.com</td>
-<td>This address is where aggregate DMARC reports should be sent to.</td>
+<td>rua=<span class="text-object">mailto:dmarc_agg@example.com</span></td>
+<td>The address where aggregate DMARC reports should be sent to.</td>
 </tr>
 <tr>
-<td>ruf=mailto:dmarc_forensic@example.com</td>
-<td>Indicates where forensic DMARC reports should be sent to.</td>
+<td>ruf=<span class="text-object">mailto:dmarc_forensic@example.com</span></td>
+<td>The address where forensic DMARC reports should be sent to.</td>
 </tr>
 </tbody>
 </table>
-<h3 id="h_01HBGVCKZTHR4N8KJVSP6DQ63J">Reporting tag</h3>
-<p><strong>fo</strong> controls when a failure report is created.</p>
-<table class="wikitable"><colgroup> <col width="15%" /> <col width="85%" /> </colgroup>
+<p>&nbsp;</p>
+<h3 id="h_01HBGVCKZTFZZGGM04CXSBA845" class="subtoc-heading">Optional tags</h3>
+<p>The following tags use a default value if the tag isn't set.</p>
+<p><strong>adkim</strong></p>
+<p>Sets a DKIM identifier alignment mode. This determines how strictly DKIM signatures (<span class="code">d=example.com</span>) must match the domain the email is sent from.</p>
+<table style="border-collapse: collapse; width: 100%;" border="1">
 <tbody>
 <tr>
-<th bgcolor="#F2F2F2">Tag</th>
-<th bgcolor="#F2F2F2">Description</th>
+<th style="width: 15%;">Tag</th>
+<th style="width: 85%;">Description</th>
 </tr>
 <tr>
-<td>0</td>
-<td>Creates a report if all authentication steps fail. (Default)</td>
+<td>adkim=<span class="text-object">r</span></td>
+<td>
+<p>relaxed mode (default): This allows subdomains to send email. For example, it will validate if the email is sent from an address specified in the DKIM record (<span class="code">d=example.com</span>) or a from a subdomain (blog.example.com).</p>
+</td>
 </tr>
 <tr>
-<td>1</td>
-<td>Creates a report if any authentication steps fail.</td>
-</tr>
-<tr>
-<td>d</td>
-<td>Creates a DKIM failure report if the message had a signature that failed evaluation.</td>
-</tr>
-<tr>
-<td>s</td>
-<td>Creates an SPF failure report if the message failed SPF authentication.</td>
+<td>adkim=<span class="text-object">s</span></td>
+<td>strict mode: This prohibits subdomains from sending email. It will only validate if the email is sent from an address specified in the DKIM record (<span class="code">d=example.com</span>).&nbsp;</td>
 </tr>
 </tbody>
 </table>
-<p>A setting of fo=1 is recommended as it provides the most amount of data about any failures.</p>
-<h3 id="h_01HBGVCKZTFZZGGM04CXSBA845">Optional tags</h3>
-<p>The following tags use a default value if the tag isn't set:</p>
-<table class="wikitable"><colgroup> <col width="15%" /> <col width="85%" /> </colgroup>
+<p>&nbsp;</p>
+<p><strong>aspf</strong></p>
+<p>Sets a strict or relaxed SPF identifier alignment mode. This determines how strictly SPF signatures must match the domain the email is sent from. This can be seen in the email headers by comparing the <span class="code">Mail-From</span> address (also known as the <span class="code">Return-Path</span>) and the <span class="code">From</span> address fields.</p>
+<table style="border-collapse: collapse; width: 100%;" border="1">
 <tbody>
 <tr>
-<th bgcolor="#F2F2F2">Tag</th>
-<th bgcolor="#F2F2F2">Description</th>
+<th style="width: 15%;">Tag</th>
+<th style="width: 85%;">Description</th>
 </tr>
 <tr>
-<td>adkim</td>
-<td>Sets a strict or relaxed DKIM identifier alignment. (The default is relaxed).</td>
+<td>aspf=<span class="text-object">r</span></td>
+<td>relaxed mode (default): This allows subdomains to send email.</td>
 </tr>
 <tr>
-<td>aspf</td>
-<td>Sets a strict or relaxed SPF identifier alignment. (The default is relaxed).</td>
+<td>aspf=<span class="text-object">s</span></td>
+<td>strict mode: This prohibits subdomains from sending email.&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<div>
+<p>&nbsp;</p>
+<p><strong>rf, ri, and pct</strong></p>
+</div>
+<div>
+<table style="border-collapse: collapse; width: 100%;" border="1">
+<tbody>
+<tr>
+<th style="width: 15%;">Tag</th>
+<th style="width: 85%;">Description</th>
 </tr>
 <tr>
-<td>rf</td>
-<td>Format for failure reports. (The default is Authentication Failure Reporting Format, or 'AFRF').</td>
+<td>rf=<span class="text-object">afrf</span></td>
+<td>The Report Format for failure reports. The only current option is Authentication Failure Reporting Format, or <span class="code">afrf</span>).</td>
 </tr>
 <tr>
-<td>ri</td>
+<td>ri=<span class="text-object">86400</span></td>
 <td>Sets the number of seconds between sending aggregate reports. (The default value is 86,400 seconds, or one day).</td>
 </tr>
 <tr>
-<td>pct</td>
-<td>Sets the percentage of messages DMARC is applied to. Setting this to 100 would apply to every email and is recommended.</td>
-</tr>
-</tbody>
-</table>
-<h3 id="h_01HBGVCKZTV44Z2PKMSD7JYTYY">Subdomain tag</h3>
-<p>The sp tag is used to set a different reporting policy for a subdomain. For example, you could set the primary domain to use <span class="code">p=reject</span> while setting all subdomains under this domain to use <span class="code">sp=quarantine</span>.</p>
-<table class="wikitable"><colgroup> <col width="15%" /> <col width="85%" /> </colgroup>
-<tbody>
-<tr>
-<th bgcolor="#F2F2F2">Tag</th>
-<th bgcolor="#F2F2F2">Description</th>
-</tr>
-<tr>
-<td>sp</td>
-<td>Sets a reporting policy for the subdomain, different form the primary domain. For example:<br />
-<div class="preboxcontainer">
-<pre class="prebox">v=DMARC1; p=none; <span class="code-highlight">sp=quarantine;</span>fo=1; rua=mailto:dmarc_agg@example.com;ruf=mailto:dmarc_forensic@example.com;pct=100&lt;</pre>
-</div>
+<td>pct=<span class="text-object">100</span></td>
+<td>
+<p>Sets the percentage of messages DMARC is applied to. View <a href="https://mxtoolbox.com/dmarc/details/dmarc-tags/dmarc-percentage" target="_blank" rel="noopener noreferrer nofollow">DMARC Percentage Tag</a> for more information.</p>
 </td>
 </tr>
 </tbody>
 </table>
+</div>
+<p>&nbsp;</p>
+<p><strong>fo</strong></p>
+<p>Failure Reporting Options (fo) controls when a failure report is created. The&nbsp;<span class="code">ruf</span> tag must also be defined for this tag to function.</p>
+<table style="border-collapse: collapse; width: 100%;" border="1">
+<tbody>
+<tr>
+<th style="width: 15%;">Tag</th>
+<th style="width: 85%;">Description</th>
+</tr>
+<tr>
+<td>fo=<span class="text-object">0</span></td>
+<td>Creates a report if DKIM and SPF authentication steps fail. (Default)</td>
+</tr>
+<tr>
+<td>fo=<span class="text-object">1</span></td>
+<td>Creates a report if either DKIM or SPF authentication steps fail.</td>
+</tr>
+<tr>
+<td>fo=<span class="text-object">d</span></td>
+<td>Creates a DKIM failure report if the message fails DKIM validation.</td>
+</tr>
+<tr>
+<td>fo=<span class="text-object">s</span></td>
+<td>Creates an SPF failure report if the message fails SPF validation.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div>
+<p>A setting of <span class="code">fo=1</span> is recommended as it provides the most amount of data about any failures.</p>
+</div>
+<div>
+<p>&nbsp;</p>
+<p><strong>sp</strong></p>
+</div>
+<div>
+<p>The Subdomain Policy (sp) tag is used to set a different reporting policy for a subdomain. If not set, the <span class="code">p</span> tag will be applied to all subdomains.</p>
+<p>For example, you could set the primary domain to use <span class="code">p=reject</span> while setting all subdomains under this domain to use <span class="code">sp=quarantine</span>.</p>
+</div>
+<div>
+<table style="border-collapse: collapse; width: 100%;" border="1">
+<tbody>
+<tr>
+<th style="width: 15%;">Tag</th>
+<th style="width: 85%;">Description</th>
+</tr>
+<tr>
+<td>sp=<span class="text-object">none</span></td>
+<td>
+<p>Deliver messages that fail authentication from this subdomain.</p>
+</td>
+</tr>
+<tr>
+<td>sp=<span class="text-object">quarantine</span></td>
+<td>Mark messages as SPAM that fail authentication from this subdomain.</td>
+</tr>
+<tr>
+<td>sp=<span class="text-object">reject</span></td>
+<td>Reject messages that fail authentication from this subdomain.</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 <h2 id="h_01HBGVCKZTY00M093KQ9BRQTD2">See also</h2>
 <div class="solvvy-hidden">
