@@ -1,17 +1,64 @@
-<h2>Overview</h2>
+<h2 id="h_01HF5FX3QB9FCT6FBK8RM4EJVA">Overview</h2>
 <div class="solvvy-solution">
-<p>This article lists the different locations for Nginx configuration files.</p>
+<p>If you have <a href="https://help.dreamhost.com/hc/en-us/articles/214880148-Change-your-web-server-to-Nginx">changed your web server to Nginx</a>, you will notice certain configuration files (such as <span class="text-object">.htaccess</span>) no longer function. This is because Nginx does not support directory-level configurations outside of the primary server configuration file. However, it's still possible to set up <a href="#configuration-files">local configuration files</a> under your username for customizations like a redirect.</p>
+<p>This article lists the different configuration file locations for Nginx at DreamHost.</p>
+</div>
+<h2 id="h_01HF5FX3QCW4AM33V17Q65YGHQ"><span id="Local_configuration_files">Local configuration files</span></h2>
+<div class="solvvy-solution">
+<p>Nginx enables an <span class="text-object">/nginx</span> directory under your <a href="https://help.dreamhost.com/hc/en-us/articles/360001219231#the-users-home-directory">website username</a>.&nbsp;It is located in the following directory:</p>
+<div class="notebox-note">
+<p>In the following examples, <span class="code">username</span> would be your <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access" target="_self">Shell user</a> and <strong>example.com</strong> your website.</p>
+</div>
+<div class="preboxcontainer">
+<pre class="prebox">/home/username/<span class="code-highlight">nginx</span>/example.com</pre>
+</div>
+<p>This directory is the only place you should load any <span class="text-object">.conf</span> file you want your website to use. Additionally, any file ending in <span class="text-object">.conf</span> is inserted into the server block of the <span class="text-object">nginx.conf</span> file.</p>
+<h3 id="h_01HF5G7FYNKPNXTK1Q407DCK3J">Creating the configuration directory</h3>
 <div class="notebox-important">
-<p>This article contains information/examples using root/sudo/admin users. If you require sudo/admin access, you must upgrade to a Dedicated Server.</p>
+<p>The <span class="text-object">/nginx/example.com</span> directories do not exist by default. You must create them manually by running the following command under your username:</p>
 </div>
+<ol>
+<li>Log into your server via&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH</a>.</li>
+<li>Navigate to your <a href="https://help.dreamhost.com/hc/en-us/articles/360001219231#the-users-home-directory">user's home directory</a>.</li>
+<li>Run the following command:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">mkdir -p nginx/example.com</span></pre>
 </div>
-<h2><span id="The_nginx.conf_file">The nginx.conf file</span></h2>
+</li>
+</ol>
+<p>You can now add your custom configuration files ending in <span class="text-object">.conf</span> to this directory for the website <strong>example.com</strong>.&nbsp;</p>
+<h3 id="h_01HF5HKE8ZTWWW1D4T2H7C0Y1P">The two Nginx directories</h3>
+<p>To clarify, you'll now have two directories your domain uses:</p>
+<p><strong>Your website directory</strong></p>
+<p>This is your website directory where all files are located.</p>
+<dl>
+<dd>
+<div class="preboxcontainer">
+<pre class="prebox">/home/username/example.com</pre>
+</div>
+</dd>
+</dl>
+<p><strong>Your nginx configuration directory</strong></p>
+<p>This is where all Nginx config files are located.</p>
+<dl>
+<dd>
+<div class="preboxcontainer">
+<pre class="prebox">/home/username/<span class="code-highlight">nginx</span>/example.com</pre>
+</div>
+</dd>
+</dl>
+</div>
+<h2 id="h_01HF5FX3QCW9NDG2XNJ15EESTF"><span id="The_nginx.conf_file">The nginx.conf file (Dedicated servers only)</span></h2>
 <div class="solvvy-solution">
+<div class="notebox-important">
+<p>This example contains examples using sudo/admin users. If you require sudo/admin access, you must upgrade to a&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/215279658-Dedicated-server-overview" target="_self" rel="undefined">Dedicated Server</a>.</p>
+</div>
 <p>The main config file can only be seen or edited if you're using an <a href="https://help.dreamhost.com/hc/en-us/articles/215945467-Add-users-to-a-Dedicated-server">admin user</a> on a Dedicated Server.</p>
 <ol>
-<li>Once you've created and admin user, log into your <a href="https://help.dreamhost.com/hc/en-us/articles/215279658-Dedicated-server-overview" target="_self" rel="undefined">Dedicated Server</a>&nbsp;and navigate to the following directory:
+<li>Log into your Dedicated Server server via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH</a>.</li>
+<li>Navigate to the <span class="text-object">/etc/nginx</span> directory:
 <div class="preboxcontainer">
-<pre class="prebox">/etc/nginx/</pre>
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd /etc/nginx</span></pre>
 </div>
 </li>
 <li>Use <span class="code">sudo</span> to view the directory contents:
@@ -33,46 +80,17 @@
 <li>Save and close the file and return to your shell.</li>
 </ol>
 </div>
-<h2><span id="Local_configuration_files">Local configuration files</span></h2>
-<div class="solvvy-solution">
-<div class="notebox-note">
-<p>In the following examples, <span class="code">username</span> would be your <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access" target="_self">Shell user</a> and <strong>example.com</strong> your website.</p>
-</div>
-<p>Nginx hard codes an include path for every domain, as seen in the following example:</p>
-<div class="preboxcontainer">
-<pre class="prebox">/home/username/nginx/example.com
-</pre>
-</div>
-<p>This <span class="text-object">/home/username/nginx/example.com</span> directory is the only place you should load any <span class="text-object">.conf</span> file you want your actual site to use. Additionally, any file ending in <span class="text-object">.conf</span> is inserted into the server block of the <span class="text-object">nginx.conf</span> file.</p>
-<div class="notebox-note">
-<p>The <span class="text-object">/nginx/example.com</span> folders do not exist by default. You must create them manually by running the following commands under your username:</p>
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">mkdir -p nginx/example.com</span></pre>
-</div>
-<p>To clarify, you'll now have two directories your domain uses:</p>
-<ul>
-<li>Your actual web directory (aka document root)</li>
-</ul>
-<dl>
-<dd><span class="text-object">/home/username/example.com</span></dd>
-</dl>
-<ul>
-<li>Your <span class="text-object">nginx/example.com</span> directory where ALL config files should be placed</li>
-</ul>
-<dl>
-<dd><span class="text-object">/home/username/nginx/example.com</span></dd>
-</dl>
-</div>
-</div>
-<h2>Examples of .conf files</h2>
+<div id="configuration-files" class="section-link">&nbsp;</div>
+<h2 id="h_01HF5FX3QCGWXT5TG9DAR2FZFA">Examples of .conf files</h2>
 <div class="solvvy-solution">
 <p>View the following articles for examples on what a custom <span class="text-object">.conf</span> file would look like for your site:</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/214824958-How-to-make-statistics-and-permalinks-work-with-WordPress-and-Nginx">How to make statistics and permalinks work with WordPress and Nginx</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215837528-Password-protecting-directories-with-Nginx">Password protecting directories with Nginx</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216456087-Creating-redirects-with-Nginx">Creating redirects with Nginx</a></li>
 </ul>
 </div>
-<h2>See also</h2>
+<h2 id="h_01HF5FX3QCMGP1EP1Q40JYMD1S">See also</h2>
 <div class="solvvy-hidden">
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216431827-Nginx-overview">Nginx overview</a></li>
