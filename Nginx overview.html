@@ -1,54 +1,73 @@
-<h2>Overview</h2>
+<h2 id="h_01HF7TKF82NYW7QQ9QVY9Y6WPC">Overview</h2>
 <div class="solvvy-solution">
-<p>Nginx (pronounced engine-x) is a free, open-source, high-performance HTTP server and reverse proxy, as well as an IMAP/POP3 proxy server. It's known for its high performance, stability, rich feature set, simple configuration, and low resource consumption.</p>
-<p>Nginx powers several high-visibility sites, such as Netflix, Hulu, Pinterest, Cloudflare, Airbnb, WordPress.com, GitHub, SoundCloud, Zynga, Eventbrite, Zappos, Heroku, RightScale, Engine Yard, and MaxCDN</p>
-<p>View the following article for further details:</p>
+<p>Nginx (pronounced engine-x) is a free, open-source, high-performance HTTP web server, reverse proxy, and load balancer. It is known for its high performance and stability and is one of the most popular web servers in use.</p>
 <ul>
-<li><a href="https://www.nginx.com/resources/wiki/">https://www.nginx.com/resources/wiki/</a></li>
+<li><a href="https://w3techs.com/technologies/overview/web_server" target="_blank" rel="noopener noreferrer nofollow">w3techs.com/technologies/overview/web_server</a></li>
 </ul>
-<p>Nginx is available on DreamHost <a href="/hc/en-us/articles/215280058-Virtual-Private-Server-overview-VPS-" target="_self" rel="undefined">VPS</a> plans as an optional web server to run your sites.</p>
+<p>From <a href="https://www.nginx.com/resources/wiki/" target="_blank" rel="noopener noreferrer nofollow">nginx.com</a></p>
+<div class="text-blockquote">
+<p>NGINX powers several high-visibility sites, such as Netflix, Hulu, Pinterest, CloudFlare, Airbnb, WordPress.com, GitHub, SoundCloud, Zynga, Eventbrite, Zappos, Media Temple, Heroku, RightScale, Engine Yard, StackPath, CDN77 and many others.</p>
 </div>
-<h2><span id="Nginx_at_DreamHost">Nginx at DreamHost</span></h2>
-<div class="solvvy-solution">
-<p>All DreamHost <a href="/hc/en-us/articles/215280058-Virtual-Private-Server-overview-VPS-" target="_self" rel="undefined">VPS plans</a> use Apache by default instead of Nginx. This is because Apache supports a larger toolbox of things it can do immediately and is probably the most compatible across all web software out there today.</p>
-<p>However, Nginx is a very good choice in cases where you have a site that gets large volumes of traffic and is running into performance/memory issues on a <a href="/hc/en-us/articles/215280058-Virtual-Private-Server-overview-VPS-">VPS</a>. A server running Nginx serves your site faster while using less memory than Apache. This lets you handle a much larger amount of traffic more gracefully than Apache would. For a more detailed look at this, visit the Web Server Performance Comparison page:</p>
+</div>
+<h3 id="h_01HFAN21SSR3FR9TMY6EXZKN1R">Apache vs Nginx</h3>
+<p>Apache is enabled by default as it supports a larger toolbox of things it can do immediately, making it the most compatible option for the majority of users. However, Nginx is an excellent choice for high-traffic websites as it serves your content faster while using less memory than Apache.</p>
+<p>View the following article for further comparison information:</p>
 <ul>
 <li><a href="/hc/en-us/articles/215945987-Web-server-performance-comparison">Web Server Performance Comparison</a></li>
 </ul>
-</div>
-<h2 class="subheader">Nginx version</h2>
+<h2 id="h_01HF7TKF82KPQ246GX2ZSZ2YYJ"><span id="Nginx_at_DreamHost">Nginx at DreamHost</span></h2>
 <div class="solvvy-solution">
-<p>To find the version of Nginx currently installed, run the following:</p>
+<p>Nginx is available on DreamHost <a href="/hc/en-us/articles/215280058-Virtual-Private-Server-overview-VPS-" target="_self" rel="undefined">VPS</a> and <a href="https://help.dreamhost.com/hc/en-us/articles/215279658-Dedicated-server-overview">Dedicated</a> hosting plans as an optional web server. View the <a href="https://help.dreamhost.com/hc/en-us/articles/214880148-Change-your-web-server-to-Nginx">Change your web server to Nginx</a> article for steps on switching to Nginx.</p>
 </div>
+<h2 id="h_01HF7TKF823DY52PX9WVEAXMQ0" class="subheader">Nginx version</h2>
+<div class="solvvy-solution">
+<p>To view the version of Nginx:</p>
+<ol>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214880148-Change-your-web-server-to-Nginx">Change your web server to Nginx</a> in the panel.</li>
+<li>Log into your server via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH</a>.</li>
+<li>Navigate to your&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/360001219231#the-users-home-directory">user's home directory</a>.</li>
+<li>Run the following command:
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">/usr/sbin/nginx -v</span></pre>
 </div>
-<h2><span id="Gzip_compression">Gzip compression</span></h2>
+</li>
+</ol>
+</div>
+<h2 id="h_01HF7TKF82EDTC58DYGJ3W9T70"><span id="Gzip_compression">Gzip compression</span></h2>
 <div class="solvvy-solution">
-<p>By default, gzip compression is enabled on your Nginx server. Follow these steps to disable gzip compression:</p>
+<p>By default, gzip compression is enabled on Nginx servers. You can disable it by following these steps.</p>
 <ol>
-<li>View the <a href="/hc/en-us/articles/216455077-Nginx-configuration-file-locations">Local configuration files</a>&nbsp;article&nbsp;to create your local <span class="text-object">/nginx/example.com</span> directory.</li>
-<li>Create a file named <span class="text-object">settings.conf</span> in this <span class="text-object">/nginx/example.com</span> directory.</li>
-<li>Add the following content:
+<li>Log into your server via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH</a>.</li>
+<li><a href="/hc/en-us/articles/216455077-Nginx-configuration-file-locations">Create your local</a> <span class="text-object">/nginx/example.com</span> directory.</li>
+<li>Change into this directory.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~/nginx/example.com</span></pre>
+</div>
+</li>
+<li>Create a file named <span class="text-object">settings.conf</span> in this <span class="text-object">/nginx/example.com</span> directory with the following content:
 <div class="preboxcontainer">
 <pre class="prebox">gzip off;
 </pre>
 </div>
 </li>
-<li>Make sure to <a href="/hc/en-us/articles/216454967-How-to-reload-and-restart-Nginx-Dedicated-servers-only-">reload Nginx</a> for the changes to take effect.</li>
+<li><a href="/hc/en-us/articles/216454967-How-to-reload-and-restart-Nginx-Dedicated-servers-only-">Rreload Nginx</a> for the changes to take effect.</li>
 </ol>
-<p>There are additional gzip compression options you can set that are all detailed at the following link:</p>
+<p>View the following page for additional gzip compression options:</p>
 <ul>
-<li><a href="http://nginx.org/en/docs/http/ngx_http_gzip_module.html">HttpGzipModule</a></li>
+<li><a href="http://nginx.org/en/docs/http/ngx_http_gzip_module.html" target="_blank" rel="noopener noreferrer">HttpGzipModule</a></li>
 </ul>
 </div>
-<h2><span id="Nginx_configurations_for_common_applications">Nginx configurations for common applications</span></h2>
+<h2 id="h_01HF7TKF82YK7ZHCRAF0VGDNTP"><span id="Nginx_configurations_for_common_applications">.htaccess rules with Nginx</span></h2>
 <div class="solvvy-solution">
-<p>Many web applications such as WordPress and MediaWiki are originally configured to work with Apache. Since <span class="text-object">.htaccess</span> files are not supported with Nginx, there are some adjustments you must make in order to get your applications running properly.</p>
+<p>Many web applications, such as WordPress, are configured to work with Apache. However, Nginx does not support directory-level configuration files, such as Apache's <span class="text-object">.htaccess</span> file. This means that if you have previously created a website that uses an <span class="text-object">.htaccess</span> file, all code within it will no longer function.</p>
+<ul>
+<li>Make sure your site is not dependent on your <span class="text-object">.htaccess</span> file before changing your server to Nginx.</li>
+<li>If your website depends on certain <span class="text-object" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;">.htaccess</span><span style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;"> rules to function, review your website's software documentation for Nginx configuration options.&nbsp;</span></li>
+</ul>
 </div>
-<h2><span id="See_also">See also</span></h2>
+<h2 id="h_01HF7TKF8239Y65GE8921MRNEK"><span id="See_also">See also</span></h2>
 <div class="solvvy-hidden">
-<h3>DreamHost links</h3>
+<h3 id="h_01HF7TKF82H3580901W9KEXBX1">DreamHost links</h3>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215945617-Adding-a-VPS" target="_self" rel="undefined">Adding a VPS</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215833158-PHP-with-Nginx-at-DreamHost">PHP with Nginx at DreamHost</a></li>
@@ -59,17 +78,17 @@
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216456127-Blocking-IPs-with-Nginx">Blocking IPs with Nginx</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/214880148-Change-your-web-server-to-Nginx">Change your web server to Nginx</a></li>
 </ul>
-<h3>Third-party links</h3>
+<h3 id="h_01HF7TKF83B1TFC2XPY5B9JSKE">Third-party links</h3>
 <ul>
 <li><a href="https://www.nginx.com/resources/wiki/">Official Nginx wiki</a></li>
 <li><a href="https://linuxaria.com/pills/how-to-modify-an-url-extension-with-a-nginx-rewrite">How To Modify A URL Extension With An Nginx Rewrite</a></li>
 </ul>
-<h3><span id="WordPress-related">WordPress-related</span></h3>
+<h3 id="h_01HF7TKF8343AKM0X02KD6V83Q"><span id="WordPress-related">WordPress-related</span></h3>
 <ul>
 <li><a href="https://odd.blog/2009/11/23/wordpress-nginx-wp-super-cache/">WordPress, Nginx, and WP Super Cache</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/214824958-How-to-make-statistics-and-permalinks-work-with-WordPress-and-Nginx">How to make statistics and permalinks work with WordPress and Nginx</a></li>
 </ul>
-<h3><span id="Drupal-related">Drupal-related</span></h3>
+<h3 id="h_01HF7TKF83Y3068QNYKBVX36XV"><span id="Drupal-related">Drupal-related</span></h3>
 <ul>
 <li><a href="https://groups.drupal.org/nginx">Nginx Drupal Group</a></li>
 <li><a href="https://groups.drupal.org/node/39944">Nginx, Multisite, and Rewrite Rules</a></li>
