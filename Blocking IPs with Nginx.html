@@ -1,71 +1,72 @@
-<h2><span id="How_to_block_IPs">How to block IPs</span></h2>
+<h2 id="h_01HFPST59QRA7WSMEVZFE2BQXN"><span id="How_to_block_IPs">Overview</span></h2>
 <div class="solvvy-solution">
-<p>Follow these steps to block an IP address.</p>
-<ol>
-<li>View the <a href="/hc/en-us/articles/216455077-Nginx-configuration-file-locations">Nginx configuration file locations</a>&nbsp;article&nbsp;to create your local <span class="text-object">/nginx/example.com</span> directory.</li>
-<li>Create a file named <span class="text-object">access.conf</span> in this <span class="text-object">/nginx/example.com</span> directory.</li>
-<li>Add the contents from the following sections.</li>
-<li>Make sure to <a href="/hc/en-us/articles/216454967-How-to-reload-and-restart-Nginx-Dedicated-servers-only-">reload Nginx</a> for the changes to take effect.</li>
-</ol>
-</div>
-<h2><span id="Blocking_an_IP_from_hitting_your_site">Blocking an IP from hitting your site</span></h2>
-<div class="solvvy-solution">
-<div class="preboxcontainer">
-<pre class="prebox">location / {
-   deny 1.2.3.4;
- }
-</pre>
-</div>
-<dl>
-<dd><em>This blocks the IP address of <code>1.2.3.4</code> from accessing your site entirely.</em></dd>
-</dl>
-</div>
-<h2><span id="Blocking_an_IP_from_hitting_a_subdirectory">Blocking an IP from hitting a subdirectory</span></h2>
-<div class="solvvy-solution">
-<div class="preboxcontainer">
-<pre class="prebox">location /subdirectory/ {
-   deny 1.2.3.4;
- }
-</pre>
-</div>
-</div>
-<h2><span id="Allowing_a_single_IP_while_blocking_all_others">Allowing a single IP while blocking all others</span></h2>
-<div class="solvvy-solution">
-<p>If you want to block access to all IPs while allowing a specific IP to still access your site, use this:</p>
-<div class="preboxcontainer">
-<pre class="prebox">location / {
-   allow 9.8.7.6;
-   deny all;
- }
-</pre>
-</div>
-<dl>
-<dd><em>This may be helpful if you're working on your site and do not want anyone but you to view it.</em></dd>
-</dl>
-</div>
-<h2><span id="Combining_rules">Combining rules</span></h2>
-<div class="solvvy-solution">
-<p>You can also create and combine multiple sets of these rules in your <span class="text-object">access.conf</span> file:</p>
-<div class="preboxcontainer">
-<pre class="prebox">location /subdir {
-   allow 1.2.3.4;
-   deny all;
- }
-
- location / {
-   deny all;
- }
-</pre>
-</div>
-<dl>
-<dd><em>The above allows <code>1.2.3.4</code> to <strong>only</strong> browse the subdirectory named <span class="text-object">/subdir</span>. All other IPs are blocked from everywhere in your site.</em></dd>
-</dl>
-<p>View the following page for further details:</p>
+<p>Nginx servers allow you to control IP access to your website by creating a custom configuration file. You can view the IP addresses that have visited your website by <a href="https://help.dreamhost.com/hc/en-us/articles/216105097-Viewing-and-examining-your-access-log-via-SSH">viewing your access.log file</a>. Users whose IP address is blocked will see a <strong>403 Forbidden</strong> error when visiting your website.</p>
+<p>This article explains how to create this file and code examples you can add to it.</p>
+<div class="notebox-note">
+<p>View the following page for further details about the Nginx <span class="code">location</span> module:</p>
 <ul>
-<li><a href="https://nginx.org/en/docs/http/ngx_http_core_module.html#location" target="_self" rel="undefined">nginx.org/en/docs/http/ngx_http_core_module.html#location</a></li>
+<li><a href="https://nginx.org/en/docs/http/ngx_http_core_module.html#location" target="_blank" rel="noopener noreferrer">nginx.org/en/docs/http/ngx_http_core_module.html#location</a></li>
 </ul>
 </div>
-<h2>See also</h2>
+</div>
+<h2 id="h_01HFPSXFFQ5FG17Y0TCBYY2KCH"><span id="How_to_block_IPs">Blocking IPs</span></h2>
+<div class="solvvy-solution">
+<p>These steps create a file named <span class="text-object">access.conf</span>, which is used to add the code examples below.</p>
+<ol>
+<li>View the&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/216455077-Nginx-configuration-file-locations">Nginx configuration file locations</a>&nbsp;article&nbsp;to create your local&nbsp;<span class="text-object">/nginx/example.com</span>&nbsp;directory.</li>
+<li>Change into this directory.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~/nginx/example.com</span></pre>
+</div>
+</li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Create a file</a> named&nbsp;<span class="text-object">access.conf</span>.</li>
+<li>Add code from one of the examples below.</li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216454967-How-to-reload-and-restart-Nginx-Dedicated-servers-only-">Reload Nginx</a>&nbsp;for the changes to take effect.</li>
+</ol>
+</div>
+<h2 id="h_01HFPXEMZNW5J0JBFPEWJHKPES">Code examples</h2>
+<div class="solvvy-solution">
+<h3 id="h_01HFPST59QM60CMCYKJT204NC6"><span id="Blocking_an_IP_from_hitting_your_site">Block an IP from your website</span></h3>
+<p>This code&nbsp;blocks the IP address of <code>1.2.3.4</code> from accessing your website.</p>
+<div class="preboxcontainer">
+<pre class="prebox">location <span class="code-highlight">/</span> {
+  deny 1.2.3.4;
+}</pre>
+</div>
+<h3 id="h_01HFPST59QT24G9E3ZBWAZFFBJ"><span id="Blocking_an_IP_from_hitting_a_subdirectory">Block an IP from a subdirectory</span></h3>
+<p>This code&nbsp;blocks the IP address of <code>1.2.3.4</code> from accessing a subdirectory on your site named <span class="text-object">/blog</span>.</p>
+<div class="preboxcontainer">
+<pre class="prebox">location <span class="code-highlight">/blog/</span> {
+  deny 1.2.3.4;
+}
+</pre>
+</div>
+<h3 id="h_01HFPST59QN32WBC6QJRQN0GP0"><span id="Allowing_a_single_IP_while_blocking_all_others">Only allow a single IP to access your website</span></h3>
+<p>This code allows a single IP address to access your website while blocking all others. This could be useful if you're building your website and do not want anyone to view it while it's being worked on.</p>
+<div class="alert-warning">
+<p>The <span class="code">deny all;</span> line must appear after all IP addresses in the list.</p>
+<p>If it is the first line, <strong>ALL</strong> IP addresses will be blocked.</p>
+</div>
+<div class="preboxcontainer">
+<pre class="prebox">location <span class="code-highlight">/</span> {
+  allow 1.2.3.4;
+  deny all;
+}</pre>
+</div>
+<h3 id="h_01HFPST59QHC2EZ4F5ZX03H2X8"><span id="Combining_rules">Multiple rules</span></h3>
+<p>You can also combine multiple rules. This example allows a single IP address to access the <span class="text-object">/blog</span> subdirectory while blocking all others from the website.</p>
+<div class="preboxcontainer">
+<pre class="prebox">location <span class="code-highlight">/blog</span> {
+  allow 1.2.3.4;
+  deny all;
+}
+
+location <span class="code-highlight">/</span> {
+  deny all;
+}</pre>
+</div>
+</div>
+<h2 id="h_01HFPST59QNR0X3FDXSNYQ2G99">See also</h2>
 <div class="solvvy-hidden">
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216431827-Nginx-overview">Nginx overview</a></li>

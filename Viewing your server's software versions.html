@@ -1,9 +1,10 @@
 <div id="auto-toc">&nbsp;</div>
-<h2>Overview</h2>
+<h2 id="h_01HFPYGBRTFJEBM28F9S1GFE47">Overview</h2>
 <div class="solvvy-solution">
 <p>This article lists several commands you can use to check the version of different software at DreamHost. All commands listed in this article should be run on a DreamHost server after logging into it via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview" target="_self">SSH</a>.</p>
 <p>The following topics are covered in this article:</p>
 <ul>
+<li><a href="#security">Security, Vulnerabilities, Patches, Updates</a></li>
 <li><a href="#os" target="_self">Operating system</a></li>
 <li><a href="#kernel" target="_self">Linux kernel</a></li>
 <li><a href="#apache" target="_self">Apache</a></li>
@@ -12,11 +13,19 @@
 <li><a href="#package-versions" target="_self">Package versions</a></li>
 </ul>
 </div>
-<div id="os" class="section-link">&nbsp;</div>
-<h2>Viewing the server's operating system version</h2>
+<div id="security" class="section-link">&nbsp;</div>
+<h2 id="h_01HFPYM6H6YHBWV06Y66536D6W">Security, Vulnerabilities, Patches, Updates</h2>
+<div class="solvvy-solution">
+<p>DreamHost only uses 'Long Term Support' (LTS) versions of Ubuntu. This means that while the version does not change, your server is always protected since Ubuntu is continually adding security patches to mitigate any vulnerabilities that are discovered.</p>
+<p>View the following page for more information about Ubuntu releases and their lifecycle:</p>
+<ul>
+<li><a href="https://ubuntu.com/about/release-cycle" target="_blank" rel="noopener noreferrer">The Ubuntu lifecycle and release cadence</a></li>
+</ul>
+</div>
+<h2 id="h_01HFPYGBRT5ETZ7K7YWD368E53">Viewing the server's operating system version</h2>
 <div class="solvvy-solution">
 <p>The following two commands display the server's operating system version.</p>
-<h3 class="subtoc-heading">The lsb_release command</h3>
+<h3 id="h_01HFPYGBRT3D9WE03P9NCWP0ZX" class="subtoc-heading">The lsb_release command</h3>
 <p>Run the LSB (Linux Standard Base) command with the <span class="code">-a</span> flag to view your server's operating system version.</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">lsb_release -a</span>
@@ -26,7 +35,7 @@ Description:    Ubuntu 18.04.4 LTS
 Release:        18.04
 Codename:       bionic</pre>
 </div>
-<h3 class="subtoc-heading">View the /etc/issue file</h3>
+<h3 id="h_01HFPYGBRVJ0YHY8Z30QF0BWFX" class="subtoc-heading">View the /etc/issue file</h3>
 <p>Run the following command to view the contents of the <span class="text-object">/etc/issue</span> file which displays your server's operating system version.</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">cat /etc/issue</span>
@@ -34,9 +43,9 @@ Ubuntu 18.04.4 LTS \n \l</pre>
 </div>
 </div>
 <div id="kernel" class="section-link">&nbsp;</div>
-<h2>Viewing the server's Linux Kernel version</h2>
+<h2 id="h_01HFPYGBRV0VZNKGA4R0ZJ3WRQ">Viewing the server's Linux Kernel version</h2>
 <div class="solvvy-solution">
-<h3 class="subtoc-heading">The uname command</h3>
+<h3 id="h_01HFPYGBRV0PT1EAKGFAZ5MBDV" class="subtoc-heading">The uname command</h3>
 <p>Run the <span class="code">uname</span> command with the <span class="code">-a</span> flag to view the following:</p>
 <ul>
 <li>Kernel name</li>
@@ -50,13 +59,13 @@ Ubuntu 18.04.4 LTS \n \l</pre>
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">uname -a</span>
 Linux gervais 4.14.117-grsec-grsec+ #1 SMP Fri May 10 17:15:47 PDT 2019 x86_64 GNU/Linux</pre>
 </div>
-<h3 class="subtoc-heading">View the /proc/version file</h3>
+<h3 id="h_01HFPYGBRVN8P0F2B4RDJ83B46" class="subtoc-heading">View the /proc/version file</h3>
 <p>The <span class="text-object">/proc/version</span> file displays the kernel version as well as information about the GCC compiler used to build the kernel.</p>
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">cat /proc/version</span>
 Linux version 3.14.52-vs2.3.6.15-1 (root@ksplice-build2.us.oracle.com) <br />(gcc version 4.9.2 (Debian 4.9.2-10) ) #1 SMP Wed Nov 2 10:45:38 UTC 2016</pre>
 </div>
 <div id="apache" class="section-link">&nbsp;</div>
-<h2>Apache version and status</h2>
+<h2 id="h_01HFPYGBRVPVP2JK7Y0MXPJ8NH">Apache version and status</h2>
 <div class="solvvy-solution">
 <p>Run the following to view the version of <a href="https://help.dreamhost.com/hc/en-us/articles/217214317-Apache-HTTP-Server" target="_self">Apache</a> installed.</p>
 <div class="preboxcontainer">
@@ -64,7 +73,7 @@ Linux version 3.14.52-vs2.3.6.15-1 (root@ksplice-build2.us.oracle.com) <br />(gc
 Server version: Apache/2.4.29 (Ubuntu)
 Server built:   2020-08-12T21:33:25</pre>
 </div>
-<h3 class="subtoc-heading">Check if Apache is running on a VPS or Dedicated Server</h3>
+<h3 id="h_01HFPYGBRVT6C9ZD10QR18Z237" class="subtoc-heading">Check if Apache is running on a VPS or Dedicated Server</h3>
 <p>VPS and Dedicated Servers can run Apache or Nginx. Run the following command to check if Apache is running.</p>
 <ul>
 <li>If Apache is running you will see the following output.</li>
@@ -78,7 +87,7 @@ Server built:   2020-08-12T21:33:25</pre>
 </div>
 </div>
 <div id="nginx" class="section-link">&nbsp;</div>
-<h2>Nginx version and status</h2>
+<h2 id="h_01HFPYGBRV4F9H9DAKTSEGPTZD">Nginx version and status</h2>
 <div class="solvvy-solution">
 <div class="notebox-important">
 <p>Nginx is only available on VPS and Dedicated Servers.</p>
@@ -92,7 +101,7 @@ Server built:   2020-08-12T21:33:25</pre>
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">/usr/sbin/nginx -v</span>
 nginx version: nginx/1.14.1</pre>
 </div>
-<h3 class="subtoc-heading">Check if Nginx is running on a VPS or Dedicated Server</h3>
+<h3 id="h_01HFPYGBRV86NBVQNDZK80HN9R" class="subtoc-heading">Check if Nginx is running on a VPS or Dedicated Server</h3>
 <p>Run the following command to check if Nginx is running.</p>
 <ul>
 <li>If Nginx is running you will see the following output.</li>
@@ -106,7 +115,7 @@ nginx version: nginx/1.14.1</pre>
 </div>
 </div>
 <div id="software" class="section-link">&nbsp;</div>
-<h2>Software versions</h2>
+<h2 id="h_01HFPYGBRVPXM5S8AYEF5YMD01">Software versions</h2>
 <div class="solvvy-solution">
 <p>You can view the versions of the following software after logging into your server via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview" target="_self">SSH</a> and running the corresponding command.</p>
 <table style="border-collapse: collapse; width: 100%;" border="1">
@@ -259,7 +268,7 @@ Enter ".help" for instructions
 </table>
 </div>
 <div id="package-versions" class="section-link">&nbsp;</div>
-<h2>Package versions on all servers</h2>
+<h2 id="h_01HFPYGBRVV5FKNGHQGRP3Y4HR">Package versions on all servers</h2>
 <div class="solvvy-solution">
 <table style="border-collapse: collapse; width: 100%;" border="1">
 <tbody>
