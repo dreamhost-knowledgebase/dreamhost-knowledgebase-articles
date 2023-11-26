@@ -1,7 +1,7 @@
 <h2 id="h_01HFPST59QRA7WSMEVZFE2BQXN"><span id="How_to_block_IPs">Overview</span></h2>
 <div class="solvvy-solution">
 <p>Nginx servers allow you to control IP access to your website by creating a custom configuration file. You can view the IP addresses that have visited your website by <a href="https://help.dreamhost.com/hc/en-us/articles/216105097-Viewing-and-examining-your-access-log-via-SSH">viewing your access.log file</a>. Users whose IP address is blocked will see a <strong>403 Forbidden</strong> error when visiting your website.</p>
-<p>This article explains how to create this file and code examples you can add to it.</p>
+<p>This article explains how to create this file and includes code examples you can add to it.</p>
 <div class="notebox-note">
 <p>View the following page for further details about the Nginx <span class="code">location</span> module:</p>
 <ul>
@@ -11,10 +11,10 @@
 </div>
 <h2 id="h_01HFPSXFFQ5FG17Y0TCBYY2KCH"><span id="How_to_block_IPs">Blocking IPs</span></h2>
 <div class="solvvy-solution">
-<p>These steps create a file named <span class="text-object">access.conf</span>, which is used to add the code examples below.</p>
+<p>The following steps create a file named <span class="text-object">access.conf</span>, which is used to add the code examples below.</p>
 <ol>
 <li>View the&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/216455077-Nginx-configuration-file-locations">Nginx configuration file locations</a>&nbsp;article&nbsp;to create your local&nbsp;<span class="text-object">/nginx/example.com</span>&nbsp;directory.</li>
-<li>Change into this directory.
+<li>Change into this directory:
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~/nginx/example.com</span></pre>
 </div>
@@ -27,14 +27,14 @@
 <h2 id="h_01HFPXEMZNW5J0JBFPEWJHKPES">Code examples</h2>
 <div class="solvvy-solution">
 <h3 id="h_01HFPST59QM60CMCYKJT204NC6"><span id="Blocking_an_IP_from_hitting_your_site">Block an IP from your website</span></h3>
-<p>This code&nbsp;blocks the IP address of <code>1.2.3.4</code> from accessing your website.</p>
+<p>The following code blocks the IP address of <code>1.2.3.4</code> from accessing your website:</p>
 <div class="preboxcontainer">
 <pre class="prebox">location <span class="code-highlight">/</span> {
   deny 1.2.3.4;
 }</pre>
 </div>
 <h3 id="h_01HFPST59QT24G9E3ZBWAZFFBJ"><span id="Blocking_an_IP_from_hitting_a_subdirectory">Block an IP from a subdirectory</span></h3>
-<p>This code&nbsp;blocks the IP address of <code>1.2.3.4</code> from accessing a subdirectory on your site named <span class="text-object">/blog</span>.</p>
+<p>The following code blocks the IP address of <code>1.2.3.4</code> from accessing a subdirectory on your site named <span class="text-object">/blog</span>:</p>
 <div class="preboxcontainer">
 <pre class="prebox">location <span class="code-highlight">/blog/</span> {
   deny 1.2.3.4;
@@ -42,7 +42,7 @@
 </pre>
 </div>
 <h3 id="h_01HFPST59QN32WBC6QJRQN0GP0"><span id="Allowing_a_single_IP_while_blocking_all_others">Only allow a single IP to access your website</span></h3>
-<p>This code allows a single IP address to access your website while blocking all others. This could be useful if you're building your website and do not want anyone to view it while it's being worked on.</p>
+<p>The following code allows a single IP address to access your website while blocking all others. This could be useful if you're building your website and do not want anyone to view it while it's being worked on.</p>
 <div class="alert-warning">
 <p>The <span class="code">deny all;</span> line must appear after all IP addresses in the list.</p>
 <p>If it is the first line, <strong>ALL</strong> IP addresses will be blocked.</p>
@@ -54,7 +54,7 @@
 }</pre>
 </div>
 <h3 id="h_01HFPST59QHC2EZ4F5ZX03H2X8"><span id="Combining_rules">Multiple rules</span></h3>
-<p>You can also combine multiple rules. This example allows a single IP address to access the <span class="text-object">/blog</span> subdirectory while blocking all others from the website.</p>
+<p>You can also combine multiple rules. The following example allows a single IP address to access the <span class="text-object">/blog</span> subdirectory while blocking all others from the website:</p>
 <div class="preboxcontainer">
 <pre class="prebox">location <span class="code-highlight">/blog</span> {
   allow 1.2.3.4;
