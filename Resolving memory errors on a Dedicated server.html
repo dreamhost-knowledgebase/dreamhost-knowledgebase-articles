@@ -1,0 +1,49 @@
+<h2 id="h_01HGTSXA9R9BMPRBQEWAHZB6WW">Overview</h2>
+<div class="solvvy-solution">
+<p>Dedicated server users attempting to execute a shared binary or interpreter (such as Python <span class="code">pip</span>) may see a memory error similar to the following:</p>
+<div class="preboxcontainer">
+<pre class="prebox">MemoryError: Cannot allocate write+execute memory for ffi.callback(). <br>You might be running on a system that prevents this. <br>For more information, see https://cffi.readthedocs.io/en/latest/using.html#callbacks</pre>
+</div>
+<p>This is due to grsec blocking unprivileged execution and the memory allocation that the binary or interpreter needs to function. This article explains how to resolve this issue by editing a configuration file with your admin user.</p>
+<div class="prereqs">
+<p>The steps in this article require you to create an admin user on your Dedicated server. View the following article for instructions on creating this user:</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215945467-Add-users-to-a-Dedicated-server">Add users to a Dedicated server</a></li>
+</ul>
+</div>
+</div>
+<h2 id="h_01HGTT1N7PYGAKATFX817NSJP8">Fixing the error</h2>
+<div class="solvvy-solution">
+<p>A script has been added to the following directory on your Dedicated server:</p>
+<div class="preboxcontainer">
+<pre class="prebox">/root/shared-interpreters-pax.sh</pre>
+</div>
+<p>This file can be modified and executed as a admin user to adjust memory allocation.</p>
+<ol>
+<li>Log into your server using your <a href="https://help.dreamhost.com/hc/en-us/articles/215945467-Add-users-to-a-Dedicated-server">admin user</a>.</li>
+<li>
+<a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access">Edit the following file</a> using <span class="code">sudo</span>.
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">sudo nano /root/shared-interpreters-pax.sh</span></pre>
+</div>
+<dl>
+<dd>The following list appears in this file:
+<div class="preboxcontainer">
+<pre class="prebox">list=( java javac pip pip3 python python3 )</pre>
+</div>
+</dd>
+</dl>
+</li>
+<li>Add the binary or interpreter you're using to this list.</li>
+<li>Execute the file:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">./root/shared-interpreters-pax.sh</span></pre>
+</div>
+</li>
+<li>Rerun your original command.
+<dl>
+<dd>The memory errors will be resolved.</dd>
+</dl>
+</li>
+</ol>
+</div>
