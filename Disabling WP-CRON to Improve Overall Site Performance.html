@@ -1,8 +1,8 @@
-<h2>Overview</h2>
+<h2 id="h_01HJKNKBCHH4W9DKVVY6Y0FBCN">Overview</h2>
 <div class="solvvy-solution">
 <p>A <a href="https://en.wikipedia.org/wiki/Cron" target="_self">cron</a> job is a script or function which is executed at a scheduled time, periodically. It can be once-off tasks such as publishing a post or recurring tasks like checking for updates. To help improve performance, WordPress only checks for scheduled items with each page load which is great for low to medium traffic sites, but on particularly busy sites, this constant scanning action can actually slow things down quite considerably.</p>
 </div>
-<h2>Understanding how WP-CRON Works</h2>
+<h2 id="h_01HJKNKBCJ8NBWS30C0DR107RF">Understanding how WP-CRON Works</h2>
 <div class="solvvy-solution">
 <p>WP-CRON does not work the same way as a normal cron job. It instead checks for scheduled events each time a site page is loaded. This works just fine with a steady stream of moderate traffic but issues arise with the two extremes.</p>
 <p><strong>High traffic</strong> — If the site gets too much traffic, it is continuously checking it’s WP-CRON schedule, increasing the work required by the server, and negatively impacting performance.</p>
@@ -13,7 +13,7 @@
 <li>Stopping WP-CRON from constantly checking for those same scheduled events.</li>
 </ol>
 </div>
-<h2>Create a Cron Job in your DreamHost Panel</h2>
+<h2 id="h_01HJKNKBCJ77PBRV90FJK5QFK2">Create a Cron Job in your DreamHost Panel</h2>
 <div class="solvvy-solution">
 <div class="notebox-note">
 <p>If your site is hosted on a DreamPress plan, this is already configured for you. Your server is configured to check for scheduled events every 15 minutes.</p>
@@ -30,23 +30,19 @@
 <p>Replace <strong>https://example.com</strong> with your domain name.</p>
 </div>
 </div>
-<h2>Prevent WordPress from checking for scheduled events on every page load</h2>
+<h2 id="h_01HJKNKBCJXJF36WT1DD9BBCQP">Prevent WordPress from checking for scheduled events on every page load</h2>
 <div class="solvvy-solution">
 <p>Follow the instructions below to disable the WP-CRON service.</p>
 <ol>
 <li>Connect to your server <a href="https://help.dreamhost.com/hc/en-us/articles/360003490852-Using-the-website-file-manager-in-the-panel" target="_blank" rel="noopener noreferrer">via WebFTP</a>.</li>
-<li>Right-click the <span class="text-object">wp-config.php</span> file and select <span class="text-object">edit</span>.
-<dl>
-<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/disablingwpcron_04.png" alt="Disabling WP cron" width="697" height="302" /></dd>
-</dl>
-</li>
+<li>Right-click the <span class="text-object">wp-config.php</span> file and select <span class="text-object">edit</span>.</li>
 <li>Just before the <span class="text-object">/* That’s all, stop editing! Happy blogging. */</span> line, insert the following code:
 <div><span class="code">define('DISABLE_WP_CRON', true) ;</span></div>
 </li>
 </ol>
 <p>This prevents WP-CRON from executing on page load but not when called directly.</p>
 </div>
-<h2>See also</h2>
+<h2 id="h_01HJKNKBCJ295EV6AF4JSWVMAS">See also</h2>
 <div class="solvvy-hidden">
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215088668-Create-a-cron-job">Create a cron job</a></li>
