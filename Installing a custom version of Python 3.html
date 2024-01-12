@@ -1,16 +1,6 @@
 <h2 id="h_01HKDBC0Z1M0SGJP8W7G2QYK7Q">Overview</h2>
 <div class="solvvy-solution">
 <p>Python3 is available on Shared, VPS, and Dedicated Servers. If you wish to use a specific version, you can install it locally under your Shell user by following the steps in this article.</p>
-<div class="notebox-important">
-<h3 id="h_01HKDBC0Z1XTWBN94FN0VNRGG8">Troubleshooting 'Resource temporarily unavailable' errors</h3>
-<p>When installing custom versions of Python, specifically versions 3.8 to 3.11, you may encounter a 'Resource temporarily unavailable' error. To alleviate this issue, set the <span class="code">-j6</span> flag using the <span class="code">sed</span> command in the build process (i.e., <span class="code">sed -i 's/-j0/-j6/g' Makefile*</span>, which permits up to six jobs to run concurrently during compilation, optimizing the use of system resources. This modification should be applied to the following three makefiles:</p>
-<ul>
-<li><span class="code">Makefile</span></li>
-<li><span class="code">Makefile.pre</span></li>
-<li><span class="code">Makefile.pre.in</span></li>
-</ul>
-<p>If issues persist after these changes, please reach out to <a href="https://help.dreamhost.com/hc/en-us/articles/218084068-Contacting-support-overview">customer support</a> for further assistance.</p>
-</div>
 <p>To run the following commands, you must log in to your server via SSH with your Shell user. View the following articles for more information:</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
@@ -20,25 +10,46 @@
 </div>
 <h2 id="h_01HKDASGVQJC9522DRT03Y3Q3K"><span id="ubuntu-18">Installing Python 3</span></h2>
 <div class="solvvy-solution">
-<div class="notebox-important">
+<div class="notebox-tip">
 <p>The instructions below install version 3.10.1. Make sure to change this to your chosen version in the commands below.</p>
 </div>
 <ol>
 <li>Choose the version you wish to install from&nbsp;<a href="https://www.python.org/downloads/source/" target="_self">python.org</a>.</li>
 <li>Right-click on the link titled <span class="text-object">Gzipped source tarball</span> of the version you wish to install. From the popout menu choose <span class="text-object">Copy Link Address</span>.</li>
-<li>Log into your server via <a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a>, and then run the following commands one at a time:
+<li>Log into your server via <a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a>, and then run the following commands one at a time to configure Python:
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">cd ~</span>
 <span class="server">[server]$ </span><span class="command">mkdir tmp</span>
 <span class="server">[server]$ </span><span class="command">cd tmp</span>
 <span class="server">[server]$ </span><span class="command">wget https://www.python.org/ftp/python/3.10.1/Python-3.10.1.tgz</span>
-<span class="server">[server]$ </span><span class="command">tar zxvf Python-3.10.1.tgz</span> <br /><span class="server">[server]$ </span><span class="command">cd Python-3.10.1</span> <br /><span class="server">[server]$ </span><span class="command">./configure --prefix=$HOME/opt/python-3.10.1</span>
-<span class="server">[server]$ </span><span class="command">make</span>
+<span class="server">[server]$ </span><span class="command">tar zxvf Python-3.10.1.tgz</span> <br /><span class="server">[server]$ </span><span class="command">cd Python-3.10.1</span>
+<span class="server">[server]$ </span><span class="command">./configure --prefix=$HOME/opt/python-3.10.1</span></pre>
+</div>
+</li>
+<li>Run the <span class="code">make</span> commands to install Python.
+<div class="notebox-important">
+<p><strong>Shared servers only</strong></p>
+<p>When installing custom versions of Python on a Shared server, specifically versions 3.8 to 3.11, you may encounter the following error:</p>
+<p><span class="text-object">Resource temporarily unavailable</span></p>
+<p>To resolve this issue, set the <span class="code">-j6</span> flag using the following <span class="code">sed</span> command. This command must be run right after the <span class="code">./configure</span> step above.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">sed -i 's/-j0/-j6/g' Makefile*</span></pre>
+</div>
+<p>This edit permits up to six jobs to run concurrently during compilation, optimizing the use of system resources. This modification applies to the following three makefiles:</p>
+<ul>
+<li><span class="code">Makefile</span></li>
+<li><span class="code">Makefile.pre</span></li>
+<li><span class="code">Makefile.pre.in</span></li>
+</ul>
+<p>If issues persist after these changes, please reach out to <a href="https://help.dreamhost.com/hc/en-us/articles/218084068-Contacting-support-overview">customer support</a> for further assistance.</p>
+</div>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">make</span>
 <span class="server">[server]$ </span><span class="command">make install</span></pre>
 </div>
-<ul>
-<li>These commands install your local version of python to <span class="text-object">/home/username/opt/python-3.10.1</span>.</li>
-</ul>
+<dl>
+<dd><em>These commands install your local version of python to <span class="text-object">/home/username/opt/python-3.10.1</span></em>.</dd>
+</dl>
 </li>
 <li>Navigate back to your <a href="https://help.dreamhost.com/hc/en-us/articles/360001219231-Where-is-the-home-directory-#the-users-home-directory" target="_self">user's home directory</a>:
 <div class="preboxcontainer">
@@ -56,11 +67,6 @@
 </div>
 </li>
 <li>Check which version of Python you're now using by entering the following command:
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">which python3</span>
-<span class="cmdoutput">/home/username/opt/python-3.10.1/bin/python3</span></pre>
-</div>
-<p>You can also check the version:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">python3 --version</span>
 <span class="cmdoutput">Python 3.10.1</span></pre>
