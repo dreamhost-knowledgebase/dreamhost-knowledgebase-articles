@@ -1,6 +1,6 @@
-<h2>Overview</h2>
+<h2 id="h_01HM7CH2NPWV0V3JHDGAJYM5QZ">Overview</h2>
 <div class="solvvy-solution">
-<p>Apache is the most popular open source web server available for modern Linux servers. It offers flexible configuration allowing for a wide variety of uses, from serving basic HTML sites, to complex PHP/Passenger applications, to proxying requests as a reverse proxy gateway. Given its popularity and easy of use, it’s essential to install and maintain a secure environment for Apache installations.</p>
+<p>Apache is the most popular open source web server available for modern Linux servers. It offers flexible configuration allowing for a wide variety of uses, from serving basic HTML sites, to complex PHP applications, to proxying requests as a reverse proxy gateway. Given its popularity and easy of use, it’s essential to install and maintain a secure environment for Apache installations.</p>
 <p>This article assumes you've installed and configured Apache on a Debian or Ubuntu instance:</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215879457-How-to-Configure-Apache-on-DreamCompute-Running-Debian-or-Ubuntu">How to Configure Apache on DreamCompute Running Debian or Ubuntu</a></li>
@@ -9,18 +9,18 @@
 <p>This article only applies to <a href="https://help.dreamhost.com/hc/en-us/articles/215279658-Dedicated-server-overview" target="_self" rel="undefined">Dedicated Servers with an Admin user</a> or <a href="https://help.dreamhost.com/hc/en-us/articles/214840947-What-is-DreamCompute-" target="_self">DreamCompute</a> since only these plans allow sudo privileges.</p>
 </div>
 </div>
-<h2>Keep Apache updated</h2>
+<h2 id="h_01HM7CH2NP8ERWPY09X0FWWW4V">Keep Apache updated</h2>
 <div class="solvvy-solution">
 <p>Apache has a good security track record, and security bugs are seldom found within the web server itself. Still, it’s important to keep Apache updated in order to take advantage of the latest security, stability and features available. Generally, this is simply a matter of keeping the Apache package provided by the distribution's OS updated (e.g. via <cite>apt</cite>, <cite>yum</cite>, etc). It’s also recommended that Apache server operators following the <a class="reference external" href="http://httpd.apache.org/lists.html">Apache Server Announcements</a> mailing list to stay up to date with the latest news from the Apache development team. You can subscribe to the list here:</p>
 <ul>
 <li><a href="http://httpd.apache.org/lists.html">Apache HTTP Server Mailing Lists</a></li>
 </ul>
 </div>
-<h2>Securing configurations</h2>
+<h2 id="h_01HM7CH2NPHHGJ1RE07H81KXEP">Securing configurations</h2>
 <div class="solvvy-solution">
 <p>Apache is built to be stable and secure, but it will only be as secure as the user who configures it. Once Apache is built and installed, it’s important to configure the server to be as minimal as possible.</p>
 <div id="run-as-an-unprivileged-user">
-<h3>Run as an unprivileged user</h3>
+<h3 id="h_01HM7CH2NPR77PK65DENHXSGFD">Run as an unprivileged user</h3>
 <p>In security, the principle of least privilege states that an entity should be given no more permission than necessary to accomplish its goals within a given system. In the context of your web server, this means locking down Apache to run only with the permissions necessary to run. A first step in this process is to configure Apache to run as an unprivileged system user (e.g., not root). This is done by setting the <span class="code">APACHE_RUN_USER</span> and <span class="code">APACHE_RUN_GROUP</span> variables in the <span class="text-object">/etc/apache2/envvars</span> file:</p>
 <p>Edit the file and change the following lines:</p>
 <div class="preboxcontainer">
@@ -34,7 +34,7 @@
 </div>
 <p>Apache servers distributed as a common OS package may also use a user and group name such as <span class="text-object">www-data</span> or <span class="text-object">nobody</span>. Regardless of the choice of user’s name, make sure that the <span class="text-object">user/group</span> selection has as few rights as necessary to run properly.</p>
 </div>
-<h3>Disable ServerTokens</h3>
+<h3 id="h_01HM7CH2NPZ6BVTS9VXEN54XFS">Disable ServerTokens</h3>
 <p>The HTTP spec recommends (but not requires) that web servers identify themselves via the <span class="code">Server</span> header. Historically, web servers have included their version information as part of this header. Disclosing the version of Apache running can be undesirable, particularly in environments sensitive to information disclosure. Configure Apache not to display its version in <span class="code">Server</span> header by editing the following file:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">sudo vim /etc/apache2/conf-available/security.conf</span></pre>
@@ -52,7 +52,7 @@ ServerTokens ProductOnly;</pre>
 <pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">sudo service apache2 reload</span></pre>
 </div>
 <div id="disable-htaccess-files">
-<h3>Disable .htaccess files</h3>
+<h3 id="h_01HM7CH2NPKWATSZ2NFSXV12T7">Disable .htaccess files</h3>
 <p><span class="text-object">.htaccess</span> files are a powerful feature that allow Apache to have its configuration extended outside its main config file. While this may be convenient, it does present a security risk, as Apache will read any <span class="text-object">.htaccess</span> file in its path — even ones placed by an attacker that could compromise the server. It may be desirable to lock down the Apache configuration by disabling <span class="text-object">.htaccess</span> files entirely. This can be done by editing the <span class="code"><a href="https://httpd.apache.org/docs/2.4/mod/core.html">AllowOverride</a></span> directive in the <span class="text-object">/etc/apache2/apache2.conf file:</span></p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@instance]$ </span><span class="command">sudo vim /etc/apache2/apache2.conf</span>
@@ -68,7 +68,7 @@ AllowOverride None</pre>
 </ul>
 </div>
 <div id="restrict-access-by-ip">
-<h3>Restrict access by IP</h3>
+<h3 id="h_01HM7CH2NQ5BQBZDH08V40KZA8">Restrict access by IP</h3>
 <p>Sensitive areas of websites, such as admin control panels, should have strict access controls placed on them. Apache makes it easy to whitelist IP access to certain locations of your website and deny traffic to all other IP addresses. You can add the following to your&nbsp;<span class="text-object">/etc/apache2/apache2.conf</span> file.</p>
 <div class="preboxcontainer">
 <pre class="prebox">&lt;Directory <span class="code-highlight">/PATH/TO/WEBDIR/wp-admin</span>&gt;
@@ -80,17 +80,17 @@ AllowOverride None</pre>
 </div>
 <p>In this example, the use of the <span class="code">Require</span> directive instructs Apache to allow access to the specified path if the requests come from any of the IP addresses listed, and to deny all other traffic.</p>
 </div>
-<h3>Restrict Access by Password</h3>
+<h3 id="h_01HM7CH2NQS4PTRNPJ40BA02H9">Restrict Access by Password</h3>
 <p>Access to certain locations can also be set via password-based credentials, using the <span class="code">htpasswd</span> utility. View the following article for further details:</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216363187-Password-protecting-your-site-with-an-htaccess-file">Password protecting your site with an .htaccess file</a></li>
 </ul>
 </div>
-<h2>Preventing DoS attacks</h2>
+<h2 id="h_01HM7CH2NQZC4Y5GMZFN1TZ5TK">Preventing DoS attacks</h2>
 <div class="solvvy-solution">
 <p>The default model in which Apache processes requests (called prefork mode), is subject to an attack known as a <a href="https://en.wikipedia.org/wiki/Slowloris_(computer_security)">Slowloris attack</a>. A Slowloris attack is a form of DoS (Denial of Service) attack in which the Apache server is forced to wait on requests from malicious clients taking a long time to send traffic, thus forcing legitimate requests to time out or be ignored entirely. Thankfully, modern Apache servers are capable of mitigating this threat with a few additional configuration directives.</p>
 <div id="enable-mod-reqtimeout">
-<h3>Enable mod_reqtimeout</h3>
+<h3 id="h_01HM7CH2NQ3NQY8965N5AWZ2MX">Enable mod_reqtimeout</h3>
 <p><span class="code">mod_reqtimeout</span> is an Apache module designed to shut down connections from clients taking too long to send their request, such as is seen in a Slowloris attack. This module provides a directive that allows Apache to close the connection if it senses that the client is not sending data quickly enough. For example, add this to your&nbsp;<span class="text-object">/etc/apache2/apache2.conf&nbsp;</span>file:</p>
 <div class="preboxcontainer">
 <pre class="prebox">RequestReadTimeout header=10-20,MinRate=500 body=20,MinRate=500</pre>
@@ -100,10 +100,10 @@ AllowOverride None</pre>
 <p>This configuration allows clients with poor TCP connection quality (such as remote clients with high latency, or those on low-grade cellular or satellite networks) to send requests, while still protecting against known fingerprints of the Slowloris attack. <span class="code">RequestReadTimeout</span> configurations can be complex, so it's recommended you review more information about this directive at the module <a class="reference external" href="https://httpd.apache.org/docs/2.4/mod/mod_reqtimeout.html">documentation page</a>.</p>
 </div>
 </div>
-<h2>Securing SSL/TLS</h2>
+<h2 id="h_01HM7CH2NQ9FS14MFVJTK4RHJP">Securing SSL/TLS</h2>
 <div class="solvvy-solution">
 <p>Make sure all sites on your server have an SSL certificate installed. You can install a free Let's Encrypt certificate.</p>
-<h3>Force all connections over TLS</h3>
+<h3 id="h_01HM7CH2NQC9C64E0EY4E3A32K">Force all connections over TLS</h3>
 <p>If you've installed a Let's Encrypt certificate as shown above, you already had the option to force all traffic over SSL. If you're not using a Let's Encrypt certificate, you can also do this by adding the following to your site's configuration file located at <span class="text-object">/etc/apache2/sites-available/example.com.conf</span>.</p>
 <p>First, make sure the <span class="code">headers</span> module is active.</p>
 <div class="preboxcontainer">
@@ -125,22 +125,22 @@ Header always set Strict-Transport-Security "max-age=15768000; includeSubDomains
 &lt;/VirtualHost&gt;</pre>
 </div>
 </div>
-<h2>Additional security measures</h2>
+<h2 id="h_01HM7CH2NQDSCKAB3KHX4QE5BA">Additional security measures</h2>
 <div class="solvvy-solution">
 <p>Beyond the basics of installing a secure Apache binary, locking down access to sensitive areas of your site and properly serving TLS connections, there are some additional steps that the extra security-conscious user can take:</p>
 <div id="install-a-waf">
-<h3>Install a WAF</h3>
+<h3 id="h_01HM7CH2NQW6ZDG4TX1FC2Y4GR">Install a WAF</h3>
 <p>A WAF (web application firewall) is a piece of software designed to inspect HTTP/HTTPS traffic, deny malicious requests, and generally act as an additional layer of security in an HTTP web stack. A properly configured WAF can protect your site from SQLi, XSS, CSRF, and DDoS attacks, as well as provide brute force attack mitigation and zero-day threat patching. The most popular and stable WAF for Apache is <a class="reference external" href="https://www.modsecurity.org/">ModSecurity</a>. View the project’s <a class="reference external" href="https://github.com/SpiderLabs/ModSecurity">GitHub page</a> for more information on installation and configuration.</p>
 </div>
 <div id="automated-log-analysis-monitoring">
-<h3>Automated Log Analysis + Monitoring</h3>
+<h3 id="h_01HM7CH2NQPZ9P6M061WRXJGW0">Automated Log Analysis + Monitoring</h3>
 <p>Programs like Fail2Ban can be used to monitor Apache access and error logs, searching for attack patterns and taking actions against the attacking client (such as dropping IP addresses, reporting malicious behavior to the IP’s owner, etc). Fail2Ban is extensible, allowing for the creation of unique search patterns and response behaviors. For more information and details on installation and configuration, see the project's GitHub page:</p>
 <ul>
 <li><a class="reference external" href="https://github.com/fail2ban/fail2ban" target="_blank" rel="noopener noreferrer">fail2ban GitHub project page</a></li>
 </ul>
 </div>
 <div id="limit-input-traffic-via-iptables">
-<h3>Limit input traffic via IPTables</h3>
+<h3 id="h_01HM7CH2NQ747BQAQSZ8NBRHV3">Limit input traffic via IPTables</h3>
 <p>Beyond securing Apache itself, it’s important to secure the host environment used to host the web server. Locking down access to things like SSH can greatly increase the security of the host by preventing intrusion attempts. A common approach is to whitelist known IPs that will access the host via SSH and deny all other port 22 traffic, or to use a jump box that strictly filters shell access. You can also do this by configuring a custom security group for your instance. View the following article for more information:</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215912838-Configuring-security-groups">Configuring security groups</a></li>
@@ -151,6 +151,6 @@ Header always set Strict-Transport-Security "max-age=15768000; includeSubDomains
 <div class="footer">&nbsp;</div>
 <!--DreamCompute Button-->
 <div class="dream-sign-up">
-<h2>Deploy Your Apps On Cloud Servers Today</h2>
+<h2 id="h_01HM7CH2NQQVYVR4FJJB9F0S3R">Deploy Your Apps On Cloud Servers Today</h2>
 <div class="solvvy-hidden"><a href="https://www.dreamhost.com/cloud/computing/" target="_self" rel="undefined">Sign Up for DreamCompute</a></div>
 </div>
