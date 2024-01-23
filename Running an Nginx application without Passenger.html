@@ -1,16 +1,16 @@
-<h2>Overview</h2>
+<h2 id="h_01HMSQHHH1P66ARQV764T5WE03">Overview</h2>
 <div class="solvvy-solution">
 <p>VPS machines are unable to run Passenger if the server type is set to Nginx (instead of Apache).</p>
 <p>An alternative method of hosting an application under Nginx without passenger would be to run it on a stand-alone HTTP server. This must also be run on a non-privileged port. The proxy can then be enabled via the DreamHost panel.</p>
 <p>This article lists a few simple examples of how to create a stand-alone server for Node, Python, and Ruby.&nbsp;</p>
 </div>
-<h2>Initial configuration</h2>
+<h2 id="h_01HMSQHHH1RK0ZE013JK12XD95">Initial configuration</h2>
 <div class="solvvy-solution">
 <div class="steps-section--container">
 <div class="steps-section-sublist--border">&nbsp;</div>
 <div class="steps-section--content">
 <div class="steps-section--step"><img class="steps-number-sublist-icon" src="https://kbimages.dreamhosters.com/graphics/number-1.svg" alt="" width="30px" />
-<h3>Step 1 — Configure the public directory</h3>
+<h3 id="h_01HMSQHHH1TGD46A36F61YW7W7">Step 1 — Configure the public directory</h3>
 <p>First, configure the domain to use the public subdirectory as the primary directory for the domain. View the following article for instructions on how to adjust your site's web directory on the server.</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/360041534491-Changing-the-web-directory-assigned-to-a-domain" target="_self">Changing the web directory assigned to a domain</a></li>
@@ -18,14 +18,14 @@
 <p>For example, you would change it to:&nbsp;<strong>example.com/public</strong></p>
 </div>
 <div class="steps-section--step"><img class="steps-number-sublist-icon" src="https://kbimages.dreamhosters.com/graphics/number-2.svg" alt="" width="30px" />
-<h3>Step 2 — Run the app on a non-privileged port</h3>
+<h3 id="h_01HMSQHHH1M0WGX6Q32W29SCBS">Step 2 — Run the app on a non-privileged port</h3>
 <p>Use the directions below to configure your app script to run on a non-privileged port. This would be a port between 8000 and 65535.</p>
 <div class="alert-warning">
 <p>Ports 80 and 443 cannot be used, however, the <span class="panel-page">Proxy</span> page in the panel allows the app to run without the port number binded to the URL.&nbsp;</p>
 </div>
 </div>
 <div class="steps-section--step"><img class="steps-number-sublist-icon" src="https://kbimages.dreamhosters.com/graphics/number-3.svg" alt="" width="30px" />
-<h3>Step 3 — Configure the domain on the Proxy page</h3>
+<h3 id="h_01HMSQHHH123PQ83YAE9V6R801">Step 3 — Configure the domain on the Proxy page</h3>
 <p>This step allows you to run the app without binding the port # to the URL.</p>
 <ol>
 <li>Visit <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=advanced.proxy" target="_blank" rel="noopener noreferrer">Proxy</a> page in the panel.</li>
@@ -40,7 +40,7 @@
 </div>
 </div>
 </div>
-<h2>Node.js</h2>
+<h2 id="h_01HMSQHHH1GH3FC1H5YEETQ94Z">Node.js</h2>
 <div class="solvvy-solution">
 <ol>
 <li>Install a <a href="https://help.dreamhost.com/hc/en-us/articles/360029083351-Installing-a-custom-version-of-NVM-and-Node-js" target="_self">custom version of Node.js</a>.</li>
@@ -49,10 +49,10 @@
 <div class="preboxcontainer">
 <pre class="prebox">var http = require("http");
 
-  var server = http.createServer(function (request, response) {
+var server = http.createServer(function (request, response) {
   response.writeHead(200, {"Content-Type": "text/plain"});
   response.end("Hello World From Node");
-  }).listen(8002);</pre>
+}).listen(8002);</pre>
 </div>
 <div class="notebox-note">
 <p>The <span class="code">listen</span> function tells node which port the application to listen on.</p>
@@ -66,7 +66,7 @@
 </div>
 <p>Visit the domain (without the port added to the URL) and you will see the application run.</p>
 </div>
-<h2>Python</h2>
+<h2 id="h_01HMSQHHH2ZB4BRAH9YW04TRA2">Python</h2>
 <div class="solvvy-solution">
 <p>A common standalone server used for Python applications is <a href="https://gunicorn.org/" target="_self">Gunicorn</a> inspired by the Ruby Unicorn server.</p>
 <div class="prereqs">
@@ -95,13 +95,13 @@
                            ])
   return iter([data])</pre>
 </div>
-<p>Start Gunicorn by passing in the port # to the command.</p>
+<p>Start Gunicorn by passing in the port # to the command. Make sure to change&nbsp;<strong>example.com</strong> to your domain name.</p>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">(venv)[server]$ </span><span class="command">GUNICORN_CMD_ARGS="--bind=localhost:8002" gunicorn myapp:app</span></pre>
+<pre class="prebox"><span class="server">(venv)[server]$ </span><span class="command">GUNICORN_CMD_ARGS="--bind=<span class="code-highlight">example.com</span>:8002" gunicorn myapp:app</span></pre>
 </div>
 <p>Visit the domain and you will see&nbsp; 'Hello, World From Gunicorn!'.</p>
 </div>
-<h2>Ruby</h2>
+<h2 id="h_01HMSQHHH2SR6NAPQVX3NCXDR1">Ruby</h2>
 <div class="solvvy-solution">
 <p>Make <span class="text-object">.gems</span> the default Gems directory for our user. Add the following to the <span class="text-object">.bash_profile</span> file.</p>
 <div class="preboxcontainer">
