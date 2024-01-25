@@ -1,40 +1,105 @@
 <h2 id="h_01HDM69VDVNMVPKDXDRE53W7CR">Overview</h2>
 <div class="solvvy-solution">
-<p>You may configure a Proxy Server on a <a href="/hc/en-us/articles/215280058-Virtual-Private-Server-VPS-overview-" target="_self" rel="undefined">VPS</a> or <a href="https://help.dreamhost.com/hc/en-us/articles/215279658-Dedicated-server-overview" target="_self" rel="undefined">Dedicated Server</a>. This can be set up on the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=advanced.proxy&amp;" target="_blank" rel="noopener noreferrer">Proxy</a> page in&nbsp;the <a href="https://panel.dreamhost.com/">DreamHost panel</a>.</p>
+<p>DreamHost offers a <a href="https://en.wikipedia.org/wiki/Proxy_server" target="_blank" rel="noopener noreferrer">Proxy Server</a> you can use to configure an application to run on a <a href="https://www.w3.org/Daemon/User/Installation/PrivilegedPorts.html" target="_blank" rel="noopener noreferrer">non-privileged port</a> without binding the port # to the URL.&nbsp;This service is available&nbsp;on <a href="/hc/en-us/articles/215280058-Virtual-Private-Server-VPS-overview-" target="_self" rel="undefined">VPS</a> or <a href="https://help.dreamhost.com/hc/en-us/articles/215279658-Dedicated-server-overview" target="_self" rel="undefined">Dedicated Server</a> hosting plans running either <a href="https://help.dreamhost.com/hc/en-us/articles/216431827-Nginx-overview">Nginx</a> or <a href="https://help.dreamhost.com/hc/en-us/articles/217214317-Apache-HTTP-Server">Apache</a>.</p>
+<p>This article explains how DreamHost's <span class="text-product">Proxy Server</span> is configured and examples of how to create a stand-alone server for Node.js and Python apps.</p>
 </div>
-<h2 id="h_01HDM69VDV0MSD9S7PSKXRTQ12">Technical details</h2>
+<h2 id="h_01HDM69VDVF6M1CCHPNDTGXYM6">Tecnical details</h2>
 <div class="solvvy-solution">
-<p>The Proxy Server feature is a reverse proxy using Apache <a href="http://httpd.apache.org/docs/current/mod/mod_proxy.html">mod_proxy</a>.</p>
-<p><span class="text-product">mod_proxy</span> forwards requests that Apache receives on to another running process through a specific port. You can only forward requests to daemons bound to all hosts, and only on ports above 8000.</p>
+<p>DreamHost's <span class="text-product">Proxy Server</span> is a reverse proxy using Apache <a href="http://httpd.apache.org/docs/current/mod/mod_proxy.html" target="_blank" rel="noopener noreferrer">mod_proxy</a>.&nbsp;</p>
+<p id="h_01HMYY85RX2H5PDNZMDT6YEWJS"><strong>Ports</strong></p>
+<p>You can only forward requests to daemons bound to all hosts using ports between 8000-65535.</p>
+<p>Ports 80 and 443 cannot be used, however, the <span class="text-product">Proxy Server</span> will use your SSL certificate to encrypt all connections.</p>
+<p>DreamHost does not employ any sort of firewall or port blocking on its network.</p>
+<p><strong>Daemon</strong></p>
+<p>A daemon process is a server process that listens for communication from remote clients. Daemon processes that bind to a port (on which they listen for incoming connections) are visible from the Internet.</p>
+<p>DreamHost VPS and Dedicated servers permit you to run daemon server processes, but please note they are limited to the server resources (CPU/RAM) of your plan type.</p>
 </div>
-<h2 id="h_01HDM69VDVF6M1CCHPNDTGXYM6">Daemon processes</h2>
+<h2 id="h_01HDM69VDVBS9GB45XMVN6M2S3">Configure a Proxy Server</h2>
 <div class="solvvy-solution">
-<p>A daemon process is a server process that listens for communication from remote <em>clients</em>. For example, the Apache Web server is a daemon that listens for TCP socket connections from Web browser client applications. Some servers, such as TeamSpeak or game servers, might also listen for UDP packets.</p>
-<p>A DreamHost VPS (or <a href="/hc/en-us/articles/215279658-Dedicated-server-overview">Dedicated Server)</a> account permits you to run daemon server processes. They are limited to the server resources (CPU/RAM) you pay for. This differs from a Shared Hosting plan, where these processes could adversely affect other users on the same server.</p>
-<p>Daemon processes that bind to a port (on which they listen for incoming connections) are visible from the Internet. DreamHost does not employ any sort of firewall or port blocking on its network.</p>
-</div>
-<h2 id="h_01HDM69VDVBS9GB45XMVN6M2S3">Setting up a Proxy Server Port</h2>
-<div class="solvvy-solution">
-<p>Enter the following values in the DreamHost panel:</p>
+<p>To configure a <span class="text-product">Proxy Server</span>:</p>
 <ol>
-<li>Launch your daemon process, bound to a port between 8000 and 65535.</li>
-<li>Visit&nbsp;the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=advanced.proxy&amp;" target="_blank" rel="noopener noreferrer">Proxy</a> page.
+<li>Navigate to the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=advanced.proxy&amp;" target="_blank" rel="noopener noreferrer">Proxy</a> page.
 <dl>
 <dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/panel-proxy.png" alt="proxy domain" width="570" height="180" /></dd>
 </dl>
 </li>
 <li>Enter the following:
 <ul>
-<li><strong>URL to set up Proxy under:</strong> the portion of your domain that will have the proxied service.
+<li><strong>URL to set up Proxy under:</strong> Choose your domain from the dropdown.
 <div class="notebox-important">
-<p>The text field to the right of the domain will display <span class="text-object">/url/to/proxy/</span> when you load this page. Make sure to clear that text from the field, or enter a subdirectory of your site.</p>
+<p><strong>url/to/proxy/</strong></p>
+<ul>
+<li>Primary directory: To use the primary web directory, you must clear this field.</li>
+<li>Subdirectory: To use a subdirectory, type in its name.</li>
+</ul>
 </div>
 </li>
-<li><strong>Port Number to Proxy:</strong> the port # you configured your app to use.</li>
+<li><strong>Port Number to Proxy:</strong> Enter the port # you configured your app to use.</li>
 </ul>
 </li>
 <li>Click the <strong>Add Proxy Server...</strong> button.</li>
 </ol>
+</div>
+<h2 id="h_01HMSQHHH1RK0ZE013JK12XD95">Stand-alone server examples</h2>
+<div class="solvvy-solution">
+<p>The following Node.js and Python examples show how to create a simple server to run on port #8002 for you to proxy.</p>
+<h3 id="h_01HMSQHHH1GH3FC1H5YEETQ94Z">Node.js</h3>
+<ol>
+<li>Install a <a href="https://help.dreamhost.com/hc/en-us/articles/360029083351-Installing-a-custom-version-of-NVM-and-Node-js" target="_self">custom version of Node.js</a>.</li>
+<li>In the app directory (<span class="text-object">example.com</span>), <a style="background-color: #ffffff;" href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH" target="_self">create a file</a> named <span class="text-object">app.js</span> with the following code:</li>
+</ol>
+<div class="preboxcontainer">
+<pre class="prebox">var http = require("http");
+
+var server = http.createServer(function (request, response) {
+  response.writeHead(200, {"Content-Type": "text/plain"});
+  response.end("Hello World From Node");
+}).listen(8002);</pre>
+</div>
+<div class="notebox-note">
+<p>The <span class="code">listen</span> function tells node which port the application to listen on.</p>
+</div>
+<p>Start the default node server by running the <span class="text-object">app.js</span> file.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">node app.js</span></pre>
+</div>
+<div class="notebox-important">
+<p>This loads the <span class="text-object">app.js</span> file only while your current SSH session is still active.&nbsp;You can also use a package such as <a href="https://www.npmjs.com/package/forever" target="_self">Forever</a> which would allow you to exit the SSH session while continuing to run the app.</p>
+</div>
+<p>Visit the domain (without the port added to the URL) and you will see the application run.</p>
+<h3 id="h_01HMSQHHH2ZB4BRAH9YW04TRA2">Python</h3>
+<p>A common standalone server used for Python applications is <a href="https://gunicorn.org/" target="_self">Gunicorn</a> inspired by the Ruby Unicorn server.</p>
+<div class="prereqs">
+<p>You must first install a custom version of Python. This allows you to create a virtualenv and install custom Python modules locally.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115000702772-Installing-a-custom-version-of-Python-3" target="_self">Installing a custom version of Python 3</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115000695551-Installing-and-using-virtualenv-with-Python-3" target="_self">Installing and using virtualenv with Python3</a></li>
+</ul>
+</div>
+<p>Make sure you have <a href="https://help.dreamhost.com/hc/en-us/articles/115000695551-Installing-and-using-virtualenv-with-Python-3" target="_self">activated your virtualenv</a>. The first part of your command prompt changes to the name of your virtualenv.</p>
+<p>You can then use <span class="code"><a href="https://help.dreamhost.com/hc/en-us/articles/115000699011-Using-pip3-to-install-Python3-modules" target="_self">pip</a></span> to install Gunicorn.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">(venv)[server]$ </span><span class="command">pip3 install gunicorn</span></pre>
+</div>
+<p>Next, <a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH" target="_self">create a Python file</a> to run the site. This example is named <span class="text-object">myapp.py</span>.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">(venv)[server]$ </span><span class="command">vim myapp.py</span></pre>
+</div>
+<p>Add the following code to the file.</p>
+<div class="preboxcontainer">
+<pre class="prebox">def app(environ, start_response):
+  data = b"Hello, World From Gunicorn!"
+  start_response("200 OK", [
+      ("Content-Type", "text/plain"),
+      ("Content-Length", str(len(data)))
+                           ])
+  return iter([data])</pre>
+</div>
+<p>Start Gunicorn by passing in the port # to the command. Make sure to change&nbsp;<strong>example.com</strong> to your domain name.</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">(venv)[server]$ </span><span class="command">GUNICORN_CMD_ARGS="--bind=<span class="code-highlight">example.com</span>:8002" gunicorn myapp:app</span></pre>
+</div>
+<p>Visit the domain and you will see&nbsp; 'Hello, World From Gunicorn!'.</p>
 </div>
 <h2 id="h_01HDM69VDVNC63GSYDSMAZXBGE">See also</h2>
 <div class="solvvy-hidden">
