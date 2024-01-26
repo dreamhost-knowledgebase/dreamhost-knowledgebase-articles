@@ -46,8 +46,7 @@
 <h3 id="h_01HMSQHHH1GH3FC1H5YEETQ94Z">Node.js</h3>
 <ol>
 <li>Install a <a href="https://help.dreamhost.com/hc/en-us/articles/360029083351-Installing-a-custom-version-of-NVM-and-Node-js" target="_self">custom version of Node.js</a>.</li>
-<li>In the app directory (<span class="text-object">example.com</span>), <a style="background-color: #ffffff;" href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH" target="_self">create a file</a> named <span class="text-object">app.js</span> with the following code:</li>
-</ol>
+<li>In the app directory (<span class="text-object">example.com</span>), <a style="background-color: #ffffff;" href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH" target="_self">create a file</a> named <span class="text-object">app.js</span> with the following code:
 <div class="preboxcontainer">
 <pre class="prebox">var http = require("http");
 
@@ -59,14 +58,17 @@ var server = http.createServer(function (request, response) {
 <div class="notebox-note">
 <p>The <span class="code">listen</span> function tells node which port the application to listen on.</p>
 </div>
-<p>Start the default node server by running the <span class="text-object">app.js</span> file.</p>
+</li>
+<li>Start the default node server by running the <span class="text-object">app.js</span> file.
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">node app.js</span></pre>
 </div>
 <div class="notebox-important">
 <p>This loads the <span class="text-object">app.js</span> file only while your current SSH session is still active.&nbsp;You can also use a package such as <a href="https://www.npmjs.com/package/forever" target="_self">Forever</a> which would allow you to exit the SSH session while continuing to run the app.</p>
 </div>
-<p>Visit the domain (without the port added to the URL) and you will see the application run.</p>
+</li>
+<li>Visit the domain (without the port added to the URL) and you will see the application run.</li>
+</ol>
 <h3 id="h_01HMSQHHH2ZB4BRAH9YW04TRA2">Python</h3>
 <p>A common standalone server used for Python applications is <a href="https://gunicorn.org/" target="_self">Gunicorn</a> inspired by the Ruby Unicorn server.</p>
 <div class="prereqs">
@@ -76,16 +78,19 @@ var server = http.createServer(function (request, response) {
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/115000695551-Installing-and-using-virtualenv-with-Python-3" target="_self">Installing and using virtualenv with Python3</a></li>
 </ul>
 </div>
-<p>Make sure you have <a href="https://help.dreamhost.com/hc/en-us/articles/115000695551-Installing-and-using-virtualenv-with-Python-3" target="_self">activated your virtualenv</a>. The first part of your command prompt changes to the name of your virtualenv.</p>
-<p>You can then use <span class="code"><a href="https://help.dreamhost.com/hc/en-us/articles/115000699011-Using-pip3-to-install-Python3-modules" target="_self">pip</a></span> to install Gunicorn.</p>
+<ol>
+<li>Make sure you have <a href="https://help.dreamhost.com/hc/en-us/articles/115000695551-Installing-and-using-virtualenv-with-Python-3" target="_self">activated your virtualenv</a>. The first part of your command prompt changes to the name of your virtualenv.</li>
+<li>After you activate your virtualenv, use <span class="code"><a href="https://help.dreamhost.com/hc/en-us/articles/115000699011-Using-pip3-to-install-Python3-modules" target="_self">pip</a></span> to install Gunicorn:
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">(venv)[server]$ </span><span class="command">pip3 install gunicorn</span></pre>
 </div>
-<p>Next, <a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH" target="_self">create a Python file</a> to run the site. This example is named <span class="text-object">myapp.py</span>.</p>
+</li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH" target="_self">Create a Python file</a> to run the site. This example is named <span class="text-object">myapp.py</span>:
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">(venv)[server]$ </span><span class="command">vim myapp.py</span></pre>
 </div>
-<p>Add the following code to the file.</p>
+</li>
+<li>Add the following code to the file:
 <div class="preboxcontainer">
 <pre class="prebox">def app(environ, start_response):
   data = b"Hello, World From Gunicorn!"
@@ -95,11 +100,14 @@ var server = http.createServer(function (request, response) {
                            ])
   return iter([data])</pre>
 </div>
-<p>Start Gunicorn by passing in the port # to the command. Make sure to change&nbsp;<strong>example.com</strong> to your domain name.</p>
+</li>
+<li>Start Gunicorn by passing in the port # to the command. Make sure to change&nbsp;<strong>example.com</strong> to your domain name:
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">(venv)[server]$ </span><span class="command">GUNICORN_CMD_ARGS="--bind=<span class="code-highlight">example.com</span>:8002" gunicorn myapp:app</span></pre>
 </div>
-<p>Visit the domain and you will see&nbsp; 'Hello, World From Gunicorn!'.</p>
+</li>
+<li>Visit the domain and you will see&nbsp; 'Hello, World From Gunicorn!'.</li>
+</ol>
 </div>
 <h2 id="h_01HDM69VDVNC63GSYDSMAZXBGE">See also</h2>
 <div class="solvvy-hidden">
