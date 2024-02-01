@@ -70,7 +70,7 @@
 <li><strong>Host</strong>: _dmarc</li>
 <li><strong>TXT Value *</strong> — Below is a basic configuration that handles the majority of your DMARC needs. Just make sure to adjust the email addresses to the addresses you created above to receive incoming reports.
 <div class="preboxcontainer">
-<pre class="prebox">v=DMARC1; p=none; fo=1; rua=mailto:<span class="code-highlight">dmarc_agg@example.com</span>;ruf=mailto:<span class="code-highlight">dmarc_forensic@example.com</span>;pct=100</pre>
+<pre class="prebox">v=DMARC1; p=quarantine; fo=1; rua=mailto:<span class="code-highlight">dmarc_agg@example.com</span>;ruf=mailto:<span class="code-highlight">dmarc_forensic@example.com</span>;pct=100</pre>
 </div>
 <a href="#dmarc-tags">View the 'DMARC Tags' section below</a> for further details on the different options you can use.</li>
 </ul>
@@ -172,7 +172,13 @@
 </table>
 <p>&nbsp;</p>
 <h4 id="h_01HBGVCKZTTQQ07APABTXYH3TW"><strong>The <span class="code">p</span> tag</strong></h4>
-<p>The <span class="code">p</span> tag identifies the action the domain owner requests the recipient to take for failed messages. Options are:</p>
+<p>The <span class="code">p</span> tag identifies the action the domain owner requests the recipient to take for failed messages.</p>
+<div class="notebox-important">
+<p>It's recommended to start out using <span class="code">p=none</span> and <span class="code">rua=mailto:dmarc_agg@example.com</span> for at least one week. This allows you to receive daily reports without messages being rejected or marked as Spam.</p>
+<p>During this initial time period, you can review the reports to see if valid emails are being rejected or going to Spam, allowing you to resolve any issues in the DMARC policy.</p>
+<p>When you're comfortable with the incoming reports and what email is getting flagged, you can then change this to <span class="code">p=quaratine</span>.</p>
+</div>
+<p>Options are:</p>
 <table style="border-collapse: collapse; width: 100%;" border="1">
 <tbody>
 <tr>

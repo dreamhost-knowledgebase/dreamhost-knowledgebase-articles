@@ -1,25 +1,25 @@
-<h2>Overview</h2>
+<h2 id="h_01HNGVSJNV123P8KBRKMWQA9T8">Overview</h2>
 <div class="solvvy-solution">
 <p>This article explains how to backup your site using <a href="/hc/en-us/articles/216041267-SSH-overview">SSH</a>. This means you would log into your server using a terminal, then run a command to download the database to the server. For other backup options, view the following article instead:</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215039758-Database-backup-overview">Database backup overview</a></li>
 </ul>
 </div>
-<h2>Finding your database credentials</h2>
+<h2 id="h_01HNGVSJNVMMNWQ3534W5W8Z6Y">Finding your database credentials</h2>
 <div class="solvvy-solution">
 <p>To backup your database, you'll need to know your database credentials such as username, password, hostname, and database name.&nbsp;View the following article for instructions on how to locate these credentials:</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/221610868-Finding-your-database-login-credentials">Finding your database login credentials</a></li>
 </ul>
 </div>
-<h2>Where to run the command?</h2>
+<h2 id="h_01HNGVSJNVKCQMWSFE1CEJZE3J">Where to run the command?</h2>
 <div class="solvvy-solution">
 <p>You must log into your web server via SSH to run the following command. Visit the following article for full instructions on how to do log into your server in a terminal:</p>
 <ul>
 <li><a href="/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
 </ul>
 </div>
-<h2>Running the command</h2>
+<h2 id="h_01HNGVSJNVWCPXM4CJX365RXV5">Running the command</h2>
 <div class="solvvy-solution">
 <p>At this point you should have your database credentials and are logged into your server in a terminal. Make sure you're in your <a href="https://help.dreamhost.com/hc/en-us/articles/360001219231-Where-is-the-home-directory-#the-users-home-directory" target="_self">user's home directory</a>:</p>
 <div class="preboxcontainer">
@@ -31,7 +31,8 @@
 </div>
 <ul>
 <li>You will then be prompted for your database user's password</li>
-<li>You can use any name for "nameofyourbackup.sql" – just make sure it ends with .sql</li>
+<li>You can use any name for <span class="code">nameofyourbackup.sql</span> – just make sure it ends with <span class="code">.sql</span></li>
+<li><span class="code">--no-tablespaces</span> is used to exclude statements in the output</li>
 </ul>
 <dl>
 <dd></dd>
@@ -41,14 +42,8 @@
 <p>Please note the following when you run this command:</p>
 <ul>
 <li>You only need to run the command once.</li>
-</ul>
-<ul>
 <li>The command does not provide any output.</li>
-</ul>
-<ul>
 <li>To an inexperienced user, it may appear that the server is not responding — Do not cancel the command action! If there is no response from the server, then you can assume that the command is continuing with the backup.</li>
-</ul>
-<ul>
 <li>For large databases, a backup can take several minutes to complete.</li>
 </ul>
 </div>
@@ -57,7 +52,7 @@
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/115000675027-FTP-overview-and-credentials">FTP overview</a></li>
 </ul>
 </div>
-<h2>Backing up ALL databases under a single username</h2>
+<h2 id="h_01HNGVSJNVSR9B2K3VT7TJXZSF">Backing up ALL databases under a single username</h2>
 <div class="solvvy-solution">
 <p>The following script backs up all databases under a single username. In the past it was possible to use the <span class="code">--all-databases</span> flag, but this no longer functions due to a MySQL upgrade. Make sure you <a href="https://help.dreamhost.com/hc/en-us/articles/221610868-Finding-your-database-login-credentials" target="_self">obtain the hostname, username, and password</a> before proceeding.</p>
 <ol>
@@ -84,7 +79,7 @@ done</pre>
 </ol>
 <p>All databases under this username are then downloaded to your current directory.</p>
 </div>
-<h2>Backing up your database in a cron job</h2>
+<h2 id="h_01HNGVSJNW1P2VBP4YB3ZYJBPY">Backing up your database in a cron job</h2>
 <div class="solvvy-solution">
 <p>If you want to back up your database in a <a href="https://help.dreamhost.com/hc/en-us/articles/215088668-Create-a-cron-job" target="_self">cron job</a>, you'll need to specify the password. For example, you could add this line to a Shell script to back up your database.</p>
 <div class="notebox-important">
@@ -94,7 +89,7 @@ done</pre>
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">mysqldump --opt --user=<span class="code-highlight">username</span> --password='<span class="code-highlight">password</span>' --host=<span class="code-highlight">yourMySQLHostname</span> --no-tablespaces <span class="code-highlight">dbname</span> &gt; nameofyourbackup.sql</span></pre>
 </div>
 </div>
-<h2>See also</h2>
+<h2 id="h_01HNGVSJNW1DSTA19M0VPWVW7C">See also</h2>
 <div class="solvvy-hidden">
 <ul>
 <li><a href="/hc/en-us/articles/221610868-Finding-your-database-login-credentials">Finding your database login credentials</a></li>
