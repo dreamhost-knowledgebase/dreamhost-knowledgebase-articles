@@ -1,4 +1,4 @@
-<h2>Overview</h2>
+<h2 id="h_01HPQM35KYQK71BXA2016APNY2">Overview</h2>
 <div class="solvvy-solution">
 <p>When you <a href="https://help.dreamhost.com/hc/en-us/articles/360049378932-Adding-a-website-and-hosting">fully host</a> your domain, you have the option to add the ‘www’ subdomain in front of it, leave it off entirely, or allow both options. For example:</p>
 <ul>
@@ -7,7 +7,7 @@
 </ul>
 <p>While some people prefer to not use "www" in their website URL, some prefer that it always be there. Either way, it can sometimes be useful to have a single canonical name by which your site can be accessed. This article details how to do both.</p>
 </div>
-<h2>Adding or removing "www" using an .htaccess file</h2>
+<h2 id="h_01HPQM35KZ6PJGZY9B5D9X6FQD">Adding or removing "www" using an .htaccess file</h2>
 <div class="solvvy-solution">
 <p>You can add or remove 'www' using an <span class="text-object">.htaccess</span> file.&nbsp;This involves creating and editing this file on your web server. View the following articles for information on creating or editing this file:</p>
 <ul>
@@ -16,14 +16,14 @@
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Creating and editing a file via SSH</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
 </ul>
-<h3><span id="Removing_.22www.22_through_an_.htaccess_file">Removing "www" through an .htaccess file</span></h3>
+<h3 id="h_01HPQM35KZ2S0C88PYC0B0D5D5"><span id="Removing_.22www.22_through_an_.htaccess_file">Removing "www" through an .htaccess file</span></h3>
 <p>To automatically remove the <em>www</em> from the beginning of your domain, add the following lines to your <a href="/hc/en-us/articles/216456227--htaccess-overview">.htaccess</a> file.&nbsp;If you don't have that file, create it in a text editor and then upload it to your root directory:</p>
 <div class="preboxcontainer">
 <pre class="prebox">RewriteEngine on
 RewriteCond&nbsp;%{HTTP_HOST} ^www\.(.+)$ [NC]
 RewriteRule ^(.*)$ http://%1/$1 [R=301,L]</pre>
 </div>
-<h3><span id="Forcing_the_.E2.80.98www.E2.80.99_subdomain_in_an_.htaccess_file">Forcing the ‘www’ subdomain in an .htaccess file</span></h3>
+<h3 id="h_01HPQM35KZ13BJHHJZSDW7EFKB"><span id="Forcing_the_.E2.80.98www.E2.80.99_subdomain_in_an_.htaccess_file">Forcing the ‘www’ subdomain in an .htaccess file</span></h3>
 <p>To force the use of "www" when viewers are reading your site, add the following lines to your <a href="/hc/en-us/articles/216456227--htaccess-overview">.htaccess</a> file:</p>
 <div class="preboxcontainer">
 <pre class="prebox">RewriteEngine On
@@ -32,7 +32,7 @@ RewriteRule ^(.*) <span class="code-highlight">http://www.example.com</span>/$1 
 </div>
 <p>If someone types in <strong>example.com</strong>, the URL now change to <strong>www.example.com</strong>.</p>
 </div>
-<h2><span id="add-remove-www-wp">Adding or removing "www" in WordPress</span></h2>
+<h2 id="h_01HPQM35KZ3J5BBJVKFKCK3NJ4"><span id="add-remove-www-wp">Adding or removing "www" in WordPress</span></h2>
 <div class="solvvy-solution">
 <p>It is not necessary to modify the <span class="text-object">.htaccess</span> file to handle how 'www' appears in the URL. Instead, you can modify it within WordPress based on the URL you set up there, as WordPress makes <span class="text-object">.htaccess</span> modifications on its own.</p>
 <p>See the following article for more information on how to modify a WordPress site URL:</p>
@@ -40,15 +40,12 @@ RewriteRule ^(.*) <span class="code-highlight">http://www.example.com</span>/$1 
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/214580498-Change-the-WordPress-Site-URL">Change the WordPress Site URL</a></li>
 </ul>
 </div>
-<h2><span id="When_removing_.22www.22_breaks_WordPress">When adding or removing "www" breaks WordPress</span></h2>
+<h2 id="h_01HPQM35KZ4J6ECD2H5MQT3Y64"><span id="When_removing_.22www.22_breaks_WordPress">When adding or removing "www" breaks WordPress</span></h2>
 <div class="solvvy-solution">
-<p>WordPress is unique in that it requires the URL to either force www or remove www from the domain name. If your database is forcing www, but your panel is forcing its removal (or vice versa), you’ll see a redirect loop error such as this:</p>
-<dl>
-<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-05_wordpress_infinite_redirect_01.png" alt="" /></dd>
-</dl>
-<p>Make sure any customizations to your <span class="text-object">.htaccess</span> file match what you selected within the WordPress configuration. View the <a href="https://help.dreamhost.com/hc/en-us/articles/214580498-Change-the-WordPress-Site-URL">Change WordPress Site URL</a> article for instructions on how to update all URLs in your WordPress site.</p>
+<p>WordPress is unique in that it requires the URL to either force www or remove www from the domain name. If your database is forcing www, but your panel is forcing its removal (or vice versa), you’ll see a redirect loop error that mentions that the page isn't redirecting properly.</p>
+<p>To fix this error, make sure any customizations to your <span class="text-object">.htaccess</span> file match what you selected within the WordPress configuration. View the <a href="https://help.dreamhost.com/hc/en-us/articles/214580498-Change-the-WordPress-Site-URL">Change WordPress Site URL</a> article for instructions on how to update all URLs in your WordPress site.</p>
 </div>
-<h2><span id="Additional_information">Additional information</span></h2>
+<h2 id="h_01HPQM35KZDAHY9Z8201RDR4SA"><span id="Additional_information">Additional information</span></h2>
 <div class="solvvy-solution">
 <ul>
 <li>While most domains configure their main web server to answer to both forms, most do not bother with this type of redirection from one to the other. Ultimately, as long as the content served is the same, it doesn't usually matter what name is used to get to a given site.</li>
@@ -57,7 +54,7 @@ RewriteRule ^(.*) <span class="code-highlight">http://www.example.com</span>/$1 
 <li>One consideration when deciding whether to redirect <strong>example.com</strong> to <strong>www.example.com</strong> (or vice-versa) is that of Search Engine Optimization (SEO). Many search engines blacklist sites that "mirror" their site (have the same content at multiple URLs) under different domains and/or subdomains. Spiders may not blacklist for a "www" mirror, but better to play it safe by picking one and redirecting the other to it.</li>
 </ul>
 </div>
-<h2><span id="See_also">See also</span></h2>
+<h2 id="h_01HPQM35M0FSSH6R2H63R5C3MZ"><span id="See_also">See also</span></h2>
 <div class="solvvy-hidden">
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/115000675027-FTP-overview-and-credentials">FTP overview</a></li>
