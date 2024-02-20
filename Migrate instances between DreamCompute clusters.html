@@ -1,4 +1,4 @@
-<h2>Overview</h2>
+<h2 id="h_01HQ14MJPJ01P5R472VX3ZNZHM">Overview</h2>
 <div class="solvvy-solution">
 <p>DreamCompute offers multiple clusters (also often called availability zones) which are independent OpenStack installations with their own servers, storage, and control panel. Some clusters have different features, such as SSD storage or different hardware that is useful for a given task. Migrating instances and data between clusters is not automated at this time, but this guide shows you how to accomplish this yourself.</p>
 <p>This guide assumes that you are comfortable working with SSH as well as some command line utilities like <span class="code">dd</span> and the OpenStack CLI. For more information about those utilities, see the articles below.</p>
@@ -8,26 +8,20 @@
 <li><a class="reference internal" href="https://help.dreamhost.com/hc/en-us/articles/235817468-Getting-started-with-the-OpenStack-command-line-client">Getting started with the OpenStack command line client</a></li>
 </ul>
 </div>
-<h2>Things to keep in mind</h2>
+<h2 id="h_01HQ14MJPJ1BTS5P014040N4EA">Things to keep in mind</h2>
 <div class="solvvy-solution">
 <p>Here are a few things to keep in mind and plan before a migration.</p>
-<h3>IP addresses will change</h3>
+<h3 id="h_01HQ14MJPJTR7F1RN7KS9AVJBJ">IP addresses will change</h3>
 <p>Each cluster has assigned blocks of IP addresses, therefore floating IPs, public IPv4, and public IPv6 addresses cannot be transferred between clusters. If you are using private networks (optional in US-East 2), the specific assigned 10.x.x.x address may also change.</p>
-<h3>SSH keys</h3>
-<p>Each cluster manages its SSH Keys separately, so if you have your keys already set up in the source cluster, you must set up the same keys (or new ones) in the destination cluster. You can grab the public key of any key pair in your project from the (<a href="https://iad2.dreamcompute.com/project/key_pairs/">'Project' &gt; 'Compute' &gt; 'Key Pairs'</a>) page of the DreamCompute dashboard.</p>
-<dl>
-<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/migrate-instances-between-clusters_01.png" alt="" /></dd>
-</dl>
-<dl>
-<dd>To get to that page, just click on the key pair name.</dd>
-</dl>
-<h3>Plan a maintenance window</h3>
+<h3 id="h_01HQ14MJPJNSCBXT6GKS23TBV6">SSH keys</h3>
+<p>Each cluster manages its SSH Keys separately, so if you have your keys already set up in the source cluster, you must set up the same keys (or new ones) in the destination cluster. You can grab the public key of any key pair in your project from the <a href="https://iad2.dreamcompute.com/project/key_pairs/">Project &gt; Compute &gt; Key Pairs</a>&nbsp;page of the DreamCompute dashboard. To get to that page, just click on the key pair name.</p>
+<h3 id="h_01HQ14MJPJA5A31S72WXB3NMGH">Plan a maintenance window</h3>
 <p>To avoid open files causing corruption or other odd behavior, it is safest to move the data when the instance is not running. The copying of the data is generally fairly quick for smaller volumes, but for larger volumes it could take some time. Remember, the copy must complete before service can be restored.</p>
 <p>Additionally, DNS must be updated from the old public IPs to the new ones. Depending on the time to live (TTL) of your DNS provider, this process can take a matter of minutes up to 24 hours. DNS zones managed by DreamHost can have the TTL of 5 minutes.</p>
-<h3>Ephemeral instances</h3>
+<h3 id="h_01HQ14MJPJB931HA2ZBA73G9VE">Ephemeral instances</h3>
 <p>Ephemeral instances cannot have their data accessed by other instances when they are shut off. These instances can only be migrated while running, so it is best to shut down as many services as possible to limit the possibility of corruption. Please see the last section below for <a class="reference external" href="#migrating-an-ephemeral-instance-using-the-openstack-cli">instructions on migrating running instances</a>.</p>
 </div>
-<h2>Migrating a volume-backed instance using the OpenStack CLI</h2>
+<h2 id="h_01HQ14MJPJ577EVKJ8XB376NWM">Migrating a volume-backed instance using the OpenStack CLI</h2>
 <div class="solvvy-solution">
 <p>For this type of move, it is necessary to delete the instance so that it leaves behind a volume to migrate.</p>
 <div class="notebox-important">
@@ -46,7 +40,7 @@
 +----------------+
 </pre>
 </div>
-<h3>Migration procedure</h3>
+<h3 id="h_01HQ14MJPJJW85RTAB653W42J5">Migration procedure</h3>
 <ol class="arabic simple">
 <li>Create a temporary "copy machine" by launching a new instance using the smallest available flavor. This guide uses Ubuntu commands. It is also recommended that you make the instance ephemeral since it will not be needed after the migration is complete.</li>
 <li>Install the needed software to access the Glance image service on this new instance:
@@ -105,7 +99,7 @@
 <p>You are now ready to go to the DESTINATION cluster to start up a new instance and to select the image that was just uploaded as the source. If the data is meant to be persistent, it is best to specify that you want to create a new volume in the <span class="text-object">Source</span> tab when launching the new instance.</p>
 </div>
 <div id="migrating-an-ephemeral-instance-using-the-openstack-cli" class="section-link">&nbsp;</div>
-<h2>Migrating an ephemeral instance using the OpenStack CLI</h2>
+<h2 id="h_01HQ14MJPK3W495YXMCBQ4ENP6">Migrating an ephemeral instance using the OpenStack CLI</h2>
 <div class="solvvy-solution">
 <p>This type of migration is not recommended. However it may be necessary in some situations and so is included here.</p>
 <ol>
