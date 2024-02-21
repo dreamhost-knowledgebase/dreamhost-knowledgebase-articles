@@ -1,4 +1,4 @@
-<h2>Overview</h2>
+<h2 id="h_01HQ36V5GXXCP2W4Y8B6311QZD">Overview</h2>
 <div class="solvvy-solution">
 <p><a href="https://help.dreamhost.com/hc/en-us/articles/215912838-Configuring-security-groups">Security Groups</a> can be created and managed within the DreamCompute dashboard. However, advanced users can take advantage of the OpenStack CLI&nbsp;to manage Security Groups.</p>
 <p>This article assumes you've already set up the OpenStack CLI.</p>
@@ -6,14 +6,14 @@
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/235817468-Getting-started-with-the-OpenStack-command-line-client">Getting started with the OpenStack CLI</a></li>
 </ul>
 </div>
-<h2>Creating and deleting Security Groups</h2>
+<h2 id="h_01HQ36V5GX5PMZ3ZE7F035V81N">Creating and deleting Security Groups</h2>
 <div class="solvvy-solution">
 <p>After logging into your instance, run the following command to list Security Groups currently configured.</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack security group list</span>
 </pre>
 </div>
-<h3>Creating a Security Group</h3>
+<h3 id="h_01HQ36V5GXZ7DX09B434ABA13Q">Creating a Security Group</h3>
 <p>Run the following command to create a Security Group with a specified name and description.</p>
 <div class="notebox-note">
 <p>The backslash character \ is used when entering a long command. When you enter the \, the terminal command continues to the next line until you finish entering it.</p>
@@ -24,7 +24,7 @@
 --description <span class="code-highlight">GROUP_DESCRIPTION SECURITY_GROUP_NAME</span></span></pre>
 </div>
 <p>If you run the <span class="code">openstack security group list</span> command above, you'll see it now exists. You can also view it in your DreamCompute dashboard on the '<a href="https://iad2.dreamcompute.com/project/security_groups/">Network &gt; Security Groups</a>' page.</p>
-<h3>Deleting a Security Group</h3>
+<h3 id="h_01HQ36V5GXTWS2V7PH02AHBDRP">Deleting a Security Group</h3>
 <p>Run the following to delete a Security Group.</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack security group delete <span class="code-highlight">SECURITY_GROUP_NAME</span></span>
@@ -34,17 +34,17 @@
 <p>You cannot delete the 'default' Security Group from your project. It's also not possible to delete a Security Group that is assigned to an instance.</p>
 </div>
 </div>
-<h2>Create and manage Security Group rules</h2>
+<h2 id="h_01HQ36V5GXTB0DE44R8BC3MS71">Create and manage Security Group rules</h2>
 <div class="solvvy-solution">
 <p>You can modify Security Group rules with the <span class="code">openstack security group rule</span>&nbsp;command.</p>
-<h3>List the rules for a Security Group</h3>
+<h3 id="h_01HQ36V5GXM4NXTB0550TG99V5">List the rules for a Security Group</h3>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack security group rule list <span class="code-highlight">SECURITY_GROUP_NAME</span></span>
 </pre>
 </div>
 <h3 id="h_681825905161518121085424">Allow requests to port 8080</h3>
 <p>To allow requests to port 8080 on all instances using this group, choose one of the following options:</p>
-<h3>Create new rules for a group</h3>
+<h3 id="h_01HQ36V5GXKJCD87GGR7W5N6D7">Create new rules for a group</h3>
 <p>Allow access from all IP addresses (specified as IP subnet <code class="docutils literal"><span class="pre">0.0.0.0/0</span></code> in CIDR notation).</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">openstack security group rule create \
@@ -81,7 +81,7 @@
 | fdd92e91-c... | tcp         | 0.0.0.0/0 | 8080:8080  | None                  |
 +---------------+-------------+-----------+------------+-----------------------+</pre>
 </div>
-<h3>Add rules from an existing group</h3>
+<h3 id="h_01HQ36V5GX3XSCA7HRTR9PW372">Add rules from an existing group</h3>
 <p>Allow access only from IP addresses from other Security Groups (source groups) to access the specified port.</p>
 <p>Run the following to view the ID and Name of existing Security Groups:</p>
 <div class="preboxcontainer">
@@ -103,16 +103,12 @@
 <p>The <span class="code">SOURCE_GROUP_ID</span> is the ID of the group you wish to add.</p>
 <p>The <span class="code">GROUP_NAME_TO_ADD_RULE_TO</span> is the group you're adding the rule to.</p>
 </div>
-<p>View the 'Network &gt; Security Groups' page in your panel. To the right of the new Security Group, click the <strong>Manage</strong> button.</p>
-<dl>
-<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/Remote_Security_Group.png" alt="" /></dd>
-</dl>
-<p>You'll see a new rule added and the name of the other Security Group is now under the <span class="text-object">Remote Security Group</span> column. In the example above, the other Security Group is named 'Cloud'.</p>
+<p>View the 'Network &gt; Security Groups' page in your panel. To the right of the new Security Group, click the <strong>Manage</strong> button. You'll see a new rule added, and the name of the other Security Group is now under the <span class="text-object">Remote Security Group</span> column. In the example above, the other Security Group is named 'Cloud'.</p>
 <p>This allows source traffic from any other instance in that Security Group access to any other instance.</p>
-<h3>Allow access through a UDP port</h3>
+<h3 id="h_01HQ36V5GXM02H0VZAMECKF38V">Allow access through a UDP port</h3>
 <p>Adding rules for UDP are the same as TCP. You can use the same commands above, just make sure to swap out <span class="code">--proto tcp</span> with <span class="code">--proto udp</span> and change the port number to 53.</p>
 </div>
-<h2>Delete a Security Group rule</h2>
+<h2 id="h_01HQ36V5GX2B46XG097SK4H43J">Delete a Security Group rule</h2>
 <div class="solvvy-solution">
 <p>First, run the following command to view all Security Group rules.</p>
 <div class="preboxcontainer">
