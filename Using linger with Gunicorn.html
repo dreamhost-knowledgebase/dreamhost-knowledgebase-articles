@@ -1,0 +1,116 @@
+<h2 id="h_01HQKXCTQD7QZ28YE1K362VFFR">Overview</h2>
+<div class="solvvy-solution">
+<p>This article explains how to use the Python <a href="https://pypi.org/project/linger/" target="_blank" rel="noopener noreferrer">linger</a> package with the <a href="https://gunicorn.org/" target="_blank" rel="noopener noreferrer">Gunicorn WSIG</a> server. This combination allows your app to run persistent processes and your services to restart if your app crashes or the server reboots.</p>
+<div class="notebox-important">
+<p>You must be on a <a href="https://help.dreamhost.com/hc/en-us/articles/215280058-Virtual-Private-Server-VPS-overview">VPS</a> or <a href="https://help.dreamhost.com/hc/en-us/articles/215279658-Dedicated-server-overview">Dedicated</a> hosting plan to install the software in these instructions.</p>
+</div>
+<div class="prereqs">
+<p><strong>Prerequisites</strong></p>
+<p>This article assumes you have completed the following steps:</p>
+<ul>
+<li>Created a <a href="https://help.dreamhost.com/hc/en-us/articles/217955787-Proxy-Server">Proxy Server</a> in the panel</li>
+<li>Installed a <a href="https://help.dreamhost.com/hc/en-us/articles/115000702772-Installing-a-custom-version-of-Python-3">custom version of Python</a>
+</li>
+<li>Created a <a href="https://help.dreamhost.com/hc/en-us/articles/115000695551-Installing-and-using-virtualenv-with-Python-3">virtual environment</a>
+</li>
+<li>Set up your <a href="https://help.dreamhost.com/hc/en-us/articles/217955787-Proxy-Server#python">Gunicorn app</a> in the virtual environment</li>
+</ul>
+</div>
+</div>
+<h2 id="h_01HQKXDKCCVGYBXZCG59TEQ197">Step #1: Install linger</h2>
+<div class="solvvy-solution">
+<p>This step installs linger under your user.</p>
+<ol>
+<li>Log into your server via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH</a>.</li>
+<li>Navigate into your <a href="https://help.dreamhost.com/hc/en-us/articles/360001219231-Where-is-the-home-directory#the-users-home-directory">user's home directory</a>.</li>
+<li>Run the following command to install linger:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">loginctl enable-linger</span></pre>
+</div>
+<div class="notebox-note">
+<p>This command will not respond with any output.</p>
+</div>
+</li>
+</ol>
+</div>
+<h2 id="h_01HQKXDRJM1RTW2ZPYWYNTX365">Step #2: Configure Gunicorn</h2>
+<div class="solvvy-solution">
+<p>This step configures Gunicorn to work with systemd user units on the server.</p>
+<ol>
+<li>Create a <span class="text-object">gunicorn.service</span> file in the following directory:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">nano ~/.config/systemd/user/gunicorn.service</span></pre>
+</div>
+</li>
+<li>
+<a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Add the following code</a> to this file.
+<div class="preboxcontainer">
+<pre class="prebox">Unit]
+Description=Gunicorn instance to serve application
+After=network.target
+
+[Service]
+User=<span class="code-highlight">your_username</span>
+Group=<span class="code-highlight">your_groupname</span>
+WorkingDirectory=<span class="code-highlight">/path/to/your/app</span>
+Environment="PATH=<span class="code-highlight">/path/to/venv/bin</span>"
+ExecStart=<span class="code-highlight">/path/to/venv/bin/gunicorn</span> --workers 3 --bind=<span class="code-highlight">&lt;example.com&gt;:&lt;port&gt;</span>
+gunicorn <span class="code-highlight">myapp</span>:app
+ExecReload=/bin/kill -s HUP $MAINPID
+KillMode=mixed
+TimeoutStopSec=5
+PrivateTmp=true
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target</pre>
+</div>
+</li>
+<li>Edit the highlighted lines above as follows:
+<ul>
+<li>
+<strong>User:</strong> Your <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access">SSH username</a>
+</li>
+<li>
+<strong>Group:</strong> The SSH user group number. Type in <span class="code">groups</span> to view this value. It will be something like <span class="text-object">pg#####</span>.</li>
+<li>
+<strong>WorkingDirectory:</strong> The path to your website application.</li>
+<li>
+<strong>Environment:</strong> The path to your virtual environment.</li>
+<li>
+<strong>ExecStart:</strong> The path to your gunicorn installation.</li>
+<li>
+<strong>example.com</strong>: Your website name.</li>
+<li>
+<strong>port:</strong> The port number you configured in your Proxy Server.</li>
+<li>
+<strong>myapp:</strong> The name of your application.</li>
+</ul>
+<div class="notebox-tip">
+<p>View <a href="https://docs.gunicorn.org/en/latest/run.html" target="_blank" rel="noopener noreferrer">Running Gunicorn</a> for further information.</p>
+</div>
+</li>
+<li>Enable the user unit for gunicorn:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">systemctl --user enable gunicorn</span></pre>
+</div>
+</li>
+<li>Start the unit with gunicorn:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">systemctl --user start gunicorn</span></pre>
+</div>
+</li>
+<li>Confirm it is running:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">systemctl --user status gunicorn</span></pre>
+</div>
+</li>
+</ol>
+<p>Your app's services will now automatically restart when the server reboots or if the application crashes.</p>
+</div>
+<h2 id="h_01HQKXEC8Q1FV61BRGZNE5P32V">See also</h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/217955787-Proxy-Server">Proxy Server</a></li>
+</ul>
+</div>

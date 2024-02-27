@@ -69,6 +69,7 @@ var server = http.createServer(function (request, response) {
 </li>
 <li>Visit the domain (without the port added to the URL) and you will see the application run.</li>
 </ol>
+<div id="python" class="section-link">&nbsp;</div>
 <h3 id="h_01HMSQHHH2ZB4BRAH9YW04TRA2">Python</h3>
 <p>A common standalone server used for Python applications is <a href="https://gunicorn.org/" target="_self">Gunicorn</a> inspired by the Ruby Unicorn server.</p>
 <div class="prereqs">
@@ -101,9 +102,15 @@ var server = http.createServer(function (request, response) {
   return iter([data])</pre>
 </div>
 </li>
-<li>Start Gunicorn by passing in the port # to the command. Make sure to change&nbsp;<strong>example.com</strong> to your domain name:
+<li>Start Gunicorn by passing in the port # to the command.
+<dl>
+<dd><em>Make sure to change&nbsp;<strong>example.com</strong> to your domain name.</em></dd>
+</dl>
+<div class="notebox-tip">
+<p>Adding <span class="code">--log-level=debug</span> provides helpful information if an error occurs. You can then share this information when contacting support to help identify the issue.</p>
+</div>
 <div class="preboxcontainer">
-<pre class="prebox"><span class="server">(venv)[server]$ </span><span class="command">GUNICORN_CMD_ARGS="--bind=<span class="code-highlight">example.com</span>:8002" gunicorn myapp:app</span></pre>
+<pre class="prebox"><span class="server">(venv)[server]$ </span><span class="command">GUNICORN_CMD_ARGS="--bind=<span class="code-highlight">example.com</span>:8002" gunicorn myapp:app --log-level=debug</span></pre>
 </div>
 </li>
 <li>Visit the domain and you will see&nbsp; 'Hello, World From Gunicorn!'.</li>
