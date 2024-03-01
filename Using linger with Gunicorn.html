@@ -29,7 +29,12 @@
 <div class="solvvy-solution">
 <p>This step configures Gunicorn to work with systemd user units on the server.</p>
 <ol>
-<li>Create a <span class="text-object">gunicorn.service</span> file in the following directory:
+<li>Create the following directories:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">mkdir -p ~/.config/systemd/user/</span></pre>
+</div>
+</li>
+<li>Create a <span class="text-object">gunicorn.service</span> file in the <span class="text-object">.config/systemd/user</span> directory:
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">nano ~/.config/systemd/user/gunicorn.service</span></pre>
 </div>
@@ -45,8 +50,7 @@ User=<span class="code-highlight">your_username</span>
 Group=<span class="code-highlight">your_groupname</span>
 WorkingDirectory=<span class="code-highlight">/path/to/your/app</span>
 Environment="PATH=<span class="code-highlight">/path/to/venv/bin</span>"
-ExecStart=<span class="code-highlight">/path/to/venv/bin/gunicorn</span> --workers 3 --bind=<span class="code-highlight">&lt;example.com&gt;:&lt;port&gt;</span>
-gunicorn <span class="code-highlight">myapp</span>:app
+ExecStart=<span class="code-highlight">/path/to/venv/bin/gunicorn</span> --workers 3 --bind=<span class="code-highlight">&lt;example.com&gt;:&lt;port&gt;</span> gunicorn <span class="code-highlight">myapp</span>:app
 ExecReload=/bin/kill -s HUP $MAINPID
 KillMode=mixed
 TimeoutStopSec=5
