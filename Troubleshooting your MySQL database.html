@@ -1,37 +1,33 @@
 <div class="notebox-tip">
 <p>If you find yourself in a situation that requires changes to your site, and your developer isn't available to help, DreamHost's skilled support team may be able to assist you for a small fee. You can find more information about supported services and associated costs in the <a href="/hc/en-us/articles/360042256912-Professional-Services-overview">DreamHost Professional Services</a> article.</p>
 </div>
-<h2>Overview</h2>
+<h2 id="h_01HRFBVN1TPGD9EB0C0DXNZAT0">Overview</h2>
 <div class="solvvy-solution">
 <div class="notebox-note">
 <p>There is no SSH access to a Shared or Private MySQL server. All troubleshooting must be done in the DreamHost panel or within your software.</p>
 <p>If you require SSH access, you must upgrade to a <a href="https://help.dreamhost.com/hc/en-us/articles/215279658-Dedicated-server-overview" target="_self" rel="undefined">Dedicated Server</a> or <a href="https://help.dreamhost.com/hc/en-us/articles/214840947-What-is-DreamCompute-">DreamCompute</a> where the database is hosted on the same machine.</p>
 </div>
 </div>
-<h2><span id="If_you.27re_having_problems_logging_in">Problems logging in</span></h2>
+<h2 id="h_01HRFBVN1TGAFGKVFD13BY92B3"><span id="If_you.27re_having_problems_logging_in">Problems logging in</span></h2>
 <div class="solvvy-solution">
-<h3>Updating 'Allowable hosts'</h3>
-<p>Also, make sure that your current IP address is added to the database's allowable hosts. You can manage this setting on the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=advanced.mysql" target="_blank" rel="noopener noreferrer">MySQL Databases</a> page.</p>
-<dl>
-<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-09_panel_database_credentials_02.png" /></dd>
-</dl>
-<p>To the right of your database, click the username. On the next page you can see the 'Allowable hosts' field.</p>
+<h3 id="h_01HRFBVN1T7T31R9G753VZAK1H">Updating 'Allowable hosts'</h3>
+<p>Also, make sure that your current IP address is added to the database's allowable hosts. You can manage this setting on the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=advanced.mysql" target="_blank" rel="noopener noreferrer">MySQL Databases</a> page. To the right of your database, click the username. On the next page you can see the 'Allowable hosts' field.</p>
 <dl>
 <dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-09_panel_database_allowable_hosts.png" alt="allowable hosts.png" /></dd>
 </dl>
 <p>In the image above, you would replace xxx.xxx.xxx.xxx with your computer's IP address. You can find it on a site such as <a href="https://whatismyipaddress.com/">whatismyipaddress.com</a>. The panel also displays your current IP address in this section.</p>
 </div>
-<h2>Reboot the server</h2>
+<h2 id="h_01HRFBVN1TE5AE75G57DB2SERG">Reboot the server</h2>
 <div class="solvvy-solution">
 <p>Due to the nature of shared MySQL hosting, it's not possible to reboot your MySQL server. The only way this would be possible is if you were on a <a href="https://help.dreamhost.com/hc/en-us/articles/215279658-Dedicated-server-overview" target="_self" rel="undefined">Dedicated Hosting plan</a>. On a Dedicated Server, the MySQL server is hosted on the same machine allowing you full root access.</p>
 </div>
-<h2><span id="Error_messages">Error messages</span></h2>
+<h2 id="h_01HRFBVN1T8ZFANJ2A6K0QACYD"><span id="Error_messages">Error messages</span></h2>
 <div class="solvvy-solution">
-<h3>"<em>The used command is not allowed with this MySQL version</em>"</h3>
+<h3 id="h_01HRFBVN1T0NKS6K47N2BYMPAV">"<em>The used command is not allowed with this MySQL version</em>"</h3>
 <p>This error may occur when using the <span class="code">LOAD DATA LOCAL INFILE</span> statement on Ubuntu 12.04 webservers. A change in the mysql library from Debian to Ubuntu requires code changes to work around this error and allow your statement to execute.</p>
 <dl>
 <dt>
-<h3>mysql command line</h3>
+<h3 id="h_01HRFBVN1TG1KEJ1P5BDW41M32">mysql command line</h3>
 </dt>
 <dd>Add the <span class="code">--local-infile</span> flag to your mysql connection statement, such as:</dd>
 </dl>
@@ -40,7 +36,7 @@
 </div>
 <dl>
 <dt>
-<h3>PHP mysql_connect()</h3>
+<h3 id="h_01HRFBVN1T7SQCT5KQJGRB0952">PHP mysql_connect()</h3>
 </dt>
 <dd>Add 2 extra params to mysql_connect, a <span class="code">false</span> for "new link" and then a client flag of <span class="code">128</span> or <span class="code">CLIENT_LOCAL_FILES</span>:</dd>
 </dl>
@@ -49,7 +45,7 @@
 </div>
 <dl>
 <dt>
-<h3>PHP mysqli_connect()</h3>
+<h3 id="h_01HRFBVN1TNG0G6MPEAQ8T5BCP">PHP mysqli_connect()</h3>
 </dt>
 <dd>Initialize mysqli first via <span class="code">mysqli_init</span>, and use <span class="code">mysqli_options()</span> to specify local infile as <span class="code">true</span> before connecting to the mysql server:</dd>
 </dl>
@@ -60,17 +56,17 @@ mysqli_real_connect($link, 'HOSTNAME','USERNAME','PASSWORD','DATABASENAME');</sp
 </div>
 <dl>
 <dt>
-<h3>PERL DBI</h3>
+<h3 id="h_01HRFBVN1TJCXZBY40FN6148F3">PERL DBI</h3>
 </dt>
 <dd>The <span class="code">mysql_local_infile</span> param can be added to your data source name variable, or directly in <span class="code">DBI-&gt;connect</span>:</dd>
 </dl>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="cmdoutput">$dbh = DBI-&gt;connect("DBI:mysql:database=DATABASENAME;host=HOSTNAME;<span class="code-highlight">mysql_local_infile=1</span>", "USERNAME", "PASSWORD");</span></pre>
 </div>
-<h3>Errors importing a database with mysqlimport</h3>
+<h3 id="h_01HRFBVN1V6ZZ7ZXXE55GEYCXA">Errors importing a database with mysqlimport</h3>
 <p>DreamHost has implemented some newer features in MySQL 8, which may cause an error to occur when using the command line program <span class="code">mysqlimport</span>. For more details, see the <a href="https://help.dreamhost.com/hc/en-us/articles/215099117-MySQL-overview#errors-importing-a-database" target="_self">MySQL Overview</a> page.</p>
 </div>
-<h2>See also</h2>
+<h2 id="h_01HRFBVN1V1A4ZC3TVWFVRSSVN">See also</h2>
 <div class="solvvy-hidden">
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215099117-MySQL-overview">MySQL overview</a></li>
