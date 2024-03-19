@@ -1,28 +1,64 @@
-<h2>Overview</h2>
+<h2 id="h_01HS8XPHMW5DTZXH214N7J5ET0">Overview</h2>
 <div class="solvvy-solution">
 <p>DreamObjects allows you to set public and private permissions on Buckets and Objects. These permissions control what information is available when accessing the Bucket or Objects within it.</p>
 </div>
-<h2>Bucket permissions</h2>
+<h2 id="h_01HS8XPHMWTVCC3A1WW2KB34A2">Bucket permissions</h2>
 <div class="solvvy-solution">
 <p>You can view your Bucket's permissions on the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=cloud.objects&amp;" target="_blank" rel="noopener noreferrer">DreamObjects</a> page.</p>
 <ol>
 <li>Click your username to expand your Bucket list.</li>
-<li>To the right of a Bucket, click the <span class="text-link">Change Settings</span> link.</li>
-<li>In the pop-up you'll see a 'PERMISSIONS' toggle. Click to toggle between public and private permissions for this Bucket.</li>
+<li>Click the <span class="text-link">Change Settings</span> link to the right of a Bucket.</li>
+<li>Click the 'PERMISSIONS' toggle in the pop-up to toggle between public and private permissions for this Bucket.</li>
 </ol>
-<h3>What does this change?</h3>
-<p>Bucket permissions control what information is able to be viewed publicly online.</p>
+<h3 id="h_01HS8XPHMWNWRCBV6YKYX26D90">What does this change?</h3>
+<p>Bucket permissions control what information can be viewed publicly online.</p>
 <p>If a Bucket has public permissions, visiting the URL of the bucket will display a list of its contents. For example, this bucket has two images named 'lake-public.jpg' and 'lake-private.jpg'.</p>
-<dl>
-<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-08_panel_dho_permissions_03.png" alt="panel_dho_permissions_03.png" /></dd>
-</dl>
-<p>You can see above the names of the Objects are displayed along with the username of the Bucket.</p>
-<p>If the Buckets permissions were set to private, you would not see the contents or username. You would only see this 'Access Denied' message:</p>
-<dl>
-<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-08_panel_dho_permissions_04.png" alt="panel_dho_permissions_04.png" /></dd>
-</dl>
+<div class="preboxcontainer">
+<pre class="prebox">    &lt;ListBucketResult xmlns="http://s3.amazonaws.com/doc/2006-03-01/"&gt;
+      &lt;Name&gt;dreamhostexample-1&lt;/Name&gt;
+      &lt;Prefix/&gt;
+      &lt;Marker/&gt;
+      &lt;MaxKeys&gt;1000&lt;/MaxKeys&gt;
+      &lt;IsTruncated&gt;false&lt;/IsTruncated&gt;
+      &lt;Contents&gt;
+        &lt;Key&gt;lake-private.jpg&lt;/Key&gt;
+        &lt;LastModified&gt;2018-08-30T15:16:58.554Z&lt;/LastModified&gt;
+        &lt;ETag&gt;"91d13527c81b99fe42f01f47219a250d"&lt;/ETag&gt;
+        &lt;Size&gt;462604&lt;/Size&gt;
+        &lt;StorageClass&gt;STANDARD&lt;/StorageClass&gt;
+        &lt;Owner&gt;
+          &lt;ID&gt;my_user&lt;/ID&gt;
+          &lt;DisplayName&gt;my_user&lt;/DisplayName&gt;
+        &lt;/Owner&gt;
+        &lt;Type&gt;Normal&lt;/Type&gt;
+        &lt;/Contents&gt;
+       &lt;Contents&gt;
+        &lt;Key&gt;lake-public.jpg&lt;/Key&gt;
+        &lt;LastModified&gt;2018-08-30T22:14:52.661Z&lt;/LastModified&gt;
+        &lt;ETag&gt;"91d13527c81b99fe42f01f47219a250d-36"&lt;/ETag&gt;
+        &lt;Size&gt;462604&lt;/Size&gt;
+        &lt;StorageClass&gt;STANDARD&lt;/StorageClass&gt;
+        &lt;Owner&gt;
+          &lt;ID&gt;my_user&lt;/ID&gt;
+          &lt;DisplayName&gt;my_user&lt;/DisplayName&gt;
+        &lt;/Owner&gt;
+      &lt;/Contents&gt;
+    &lt;/ListBucketResult&gt;</pre>
 </div>
-<h2>Object permissions</h2>
+<p>You can see above the names of the Objects are displayed along with the username of the Bucket.</p>
+<p>If the Bucket's permissions were set to private, you would not see the contents or username. You would only see this 'Access Denied' message:</p>
+<div class="preboxcontainer">
+<pre class="prebox">    &lt;Error&gt;
+      &lt;Code&gt;AccessDenied&lt;/Code&gt;
+      &lt;BucketName&gt;dreamhostexample&lt;/BucketName&gt;
+      &lt;RequestId&gt;
+        tx00000000000000035767c-005b885a0766e58c8-us-east-1-iad1
+      &lt;/RequestId&gt;
+      &lt;HostId&gt;66e58c8-us-east-1-iad1-us-east-1&lt;/HostId&gt;
+    &lt;/Error&gt;</pre>
+</div>
+</div>
+<h2 id="h_01HS8XPHMWFHYHWFG1Q5G6P1EW">Object permissions</h2>
 <div class="solvvy-solution">
 <p>Object permissions control how an individual Object within a Bucket can be viewed.</p>
 <p>You can view your Bucket's permissions on the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=cloud.objects&amp;" target="_blank" rel="noopener noreferrer">DreamObjects</a>&nbsp;page after opening your Bucket.</p>
@@ -30,45 +66,41 @@
 <li>Click your username to expand your Bucket list.</li>
 <li>Click the&nbsp;<strong>View Objects</strong> button at the bottom. This opens a pop-up box.</li>
 <li>Click your Bucket name in the left pane to display a list of your Objects.</li>
-<li>Click on an Object to view its permissions
+<li>Click on an Object to view its permissions.
 <dl>
 <dd><em>A <strong>PERMISSIONS</strong> toggle button appears.</em></dd>
 </dl>
 </li>
-<li>Click the <strong>PERMISSIONS</strong> toggle button, which changes the URL link to the Object. The example above shows a public URL. If you visit it, you'll see the image.
-<dl>
-<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2018-08_panel_dho_permissions_08.png" alt="Panel DHO Permissions" /></dd>
-</dl>
-The example above shows a private URL. It is a long strand of random characters that is only valid for a temporary time period. You can set this period in the <span class="text-object">Expires</span> dropdown menu. You'll only be able to view this image if you're using this private URL.&nbsp;</li>
+<li>Click the <strong>PERMISSIONS</strong> toggle button, which changes the URL link to the Object.<br />If the URL is public, you'll see the image when you visit it. If the URL is private, it will appear as a long strand of random characters that is only valid for a temporary time period. You can set this period in the <span class="text-object">Expires</span> dropdown menu. You'll only be able to view this image using this private URL.&nbsp;</li>
 </ol>
 </div>
-<h2>Can I view my Objects in a private bucket?</h2>
+<h2 id="h_01HS8XPHMX69JJ21GEEJNM0YRH">Can I view my Objects in a private bucket?</h2>
 <div class="solvvy-solution">
-<p>Yes. It does not matter if the Bucket's permissions are set to Public or Private, you will always be able to view your Objects when using the Object's correct URL.&nbsp;The correct URL depends on if the Object is set to public or private as shown above.</p>
-<p>Public Objects have a simple URL, where private Objects have the longer URL with a unique timestamp.</p>
+<p>Yes. It does not matter if the Bucket's permissions are set to Public or Private; you will always be able to view your Objects using the Object's correct URL. The correct URL depends on whether the Object is set to public or private.</p>
+<p>Public Objects have a simple URL, whereas private Objects have a longer URL with a unique timestamp.</p>
 </div>
-<h2>Does changing a Bucket's permissions in the panel change the permissions of Objects within it?</h2>
+<h2 id="h_01HS8XPHMXNZ1DVDBESVF7H3ZB">Does changing a Bucket's permissions in the panel change the permissions of Objects within it?</h2>
 <div class="solvvy-solution">
 <p>No. Changing the Bucket's permissions in the panel does not change any of the Object's permissions. They will remain the same.</p>
 </div>
-<h2>Changing permissions in a client</h2>
+<h2 id="h_01HS8XPHMXTBEVPM52XY7G92TM">Changing permissions in a client</h2>
 <div class="solvvy-solution">
 <p>You can also change permissions in any <a href="https://help.dreamhost.com/hc/en-us/sections/115000059232-DreamObjects-clients">DreamObjects client</a>. Here's a link that shows how to do this in Cyberduck.</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/217131247#permissions">Changing permissions</a></li>
 </ul>
 </div>
-<h2>Changing permissions using S3cmd or aws-cli</h2>
+<h2 id="h_01HS8XPHMX0S7MRENKWRZ9RNDF">Changing permissions using S3cmd or aws-cli</h2>
 <div class="solvvy-solution">
 <p>This can be done by running a command via SSH. When run, all permissions will change to either Public or Private.&nbsp;The following link shows how to do this using S3cmd and aws-cli.</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/360022507011#permissions" target="_blank" rel="noopener noreferrer">Changing permissions using S3cmd</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/360022618112-Setting-permissions-using-AWS-CLI" target="_self">Setting permissions using AWS CLI</a></li>
 </ul>
-<h3>Requesting support</h3>
+<h3 id="h_01HS8XPHMXYDZ9363T888AZR47">Requesting support</h3>
 <p>If you need assistance with updating your Object permissions,&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/215722447-Contacting-DreamHost-via-email" target="_blank" rel="noopener noreferrer">submit a ticket to support</a>. In your ticket, make sure to specify the Bucket name and what Objects within it you'd like permissions changed. Support will then be able to perform the Object permission changes for you.</p>
 </div>
-<h2>See also</h2>
+<h2 id="h_01HS8XPHMXJWS77R1RJWKCNA0N">See also</h2>
 <div class="solvvy-hidden">
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215321178-DreamObjects-Buckets">DreamObjects Buckets</a></li>

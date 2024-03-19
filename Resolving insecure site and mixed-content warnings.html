@@ -1,16 +1,12 @@
-<h2>Overview</h2>
+<h2 id="h_01HS92MC8GJPHVCGDW181JPDG1">Overview</h2>
 <div class="solvvy-solution">
 <p>A common issue after adding an SSL certificate is that your browser still shows your site as insecure. This most often happens because there are links on your page that still point to <span class="text-object">HTTP</span> instead of <span class="text-object">HTTPS</span>. For example, look at the following code to link an image.</p>
 <div class="preboxcontainer">
 <pre class="prebox">&lt;img src="<span class="code-highlight">http</span>://www.example.com/images/pic_mountain.jpg" alt="Mountain View"&gt;</pre>
 </div>
-<p>Notice how the URL is directly linked above with <span class="text-object">http</span> at the beginning. When visiting the site in Firefox, the following is displayed:</p>
-<dl>
-<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/mixed-content-site-error-01.png" alt="mixed-content-site-error-01.png" width="618" height="340"></dd>
-</dl>
-<p>You can see the <span class="text-object">padlock</span> icon in the navigation bar shows a <span class="text-object">warning</span> instead.</p>
+<p>Notice how the URL is directly linked above with <span class="text-object">http</span> at the beginning. When visiting the site in Firefox, a "You are not securely connected to this site." error is displayed, and the <span class="text-object">padlock</span> icon in the navigation bar shows a <span class="text-object">warning icon</span> instead.</p>
 </div>
-<h2><span id="Cause_of_this_error">Cause of this error</span></h2>
+<h2 id="h_01HS92MC8GHX42Y8ZCTDVDZH52"><span id="Cause_of_this_error">Cause of this error</span></h2>
 <div class="solvvy-solution">
 <p>If you click on the <span class="text-object">warning</span> icon the text explains that there are 'unencrypted elements' on the page you're viewing.</p>
 <p>From the example above, this is happening because the image was linked using <span class="text-object">HTTP</span> and not <span class="text-object">HTTPS</span>. Another way to confirm what on your site is linked insecurely is to use the following site:</p>
@@ -18,62 +14,48 @@
 <li><a href="https://www.whynopadlock.com/">whynopadlock.com</a></li>
 </ul>
 </div>
-<h2>Browser HTTPS errors</h2>
+<h2 id="h_01HS92MC8G4QWYTXPG73WY6EHD">Browser HTTPS errors</h2>
 <div class="solvvy-solution">
-<p>If you attempt to connect to a site that has a missing, invalid, or self-signed SSL certificate using an <span class="text-object">HTTPS</span> URL, your browser shows a <a href="https://help.dreamhost.com/hc/en-us/articles/215767487#self_signed_warnings">security warning</a> such as 'Your connection to this site is not secure' in Chrome or 'Potential Security Risk Ahead' in Firefox. For example:</p>
-<dl>
-<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/mixed-content-site-error-02.png" alt="mixed-content-site-error-02.png" width="422" height="252"></dd>
-</dl>
-<h3>Checking the JavaScript console</h3>
+<p>If you attempt to connect to a site that has a missing, invalid, or self-signed SSL certificate using an <span class="text-object">HTTPS</span> URL, your browser shows a <a href="https://help.dreamhost.com/hc/en-us/articles/215767487#self_signed_warnings">security warning</a> such as 'Your connection to this site is not secure' in Chrome or 'Potential Security Risk Ahead' in Firefox.</p>
+<h3 id="h_01HS92MC8GRNCPTJ7S3EF1Y8B4">Checking the JavaScript console</h3>
 <p>You could also check the JavaScript console in your browser. This may also display a warning as to why the site is not loading.</p>
 <p>In FireFox and Chrome, you can open the console by pressing the following keys:</p>
 <ul>
-<li>
-<strong>Windows</strong> — <span class="code">Ctrl + Shift + i</span>
-</li>
-<li>
-<strong>Mac</strong> — <span class="code">Option&nbsp;+ Cmd + i</span>
-</li>
+<li><strong>Windows</strong> — <span class="code">Ctrl + Shift + i</span></li>
+<li><strong>Mac</strong> — <span class="code">Option&nbsp;+ Cmd + i</span></li>
 </ul>
-<p>Click the console tab:</p>
+<p>Click the console tab. An error message similar to the following appears in the console:</p>
 <dl>
-<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/mixed-content-site-error-03.png" alt="mixed-content-site-error-03.png"></dd>
-</dl>
-<p>An error message similar to the following appears in the console:</p>
-<dl>
-<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/mixed-content-site-error-04.png" alt="mixed-content-site-error-04.png" width="896" height="38"></dd>
+<dd><img class="img-border" src="https://kbimages.dreamhosters.com/images/2x/mixed-content-site-error-04.png" alt="mixed-content-site-error-04.png" width="896" height="38" /></dd>
 </dl>
 <p>The link listed in the error message opens the following page with more information on this issue:</p>
 <ul>
 <li><a href="https://blog.chromium.org/2019/10/no-more-mixed-messages-about-https.html" target="_self" rel="undefined">No More Mixed Messages About HTTPS (Chromium Blog)</a></li>
 </ul>
 </div>
-<h2>Fixing the error</h2>
+<h2 id="h_01HS92MC8GSSYZWRA8XB6JXVAV">Fixing the error</h2>
 <div class="solvvy-solution">
 <p>There are a few steps you must make in order to fix this error.</p>
 <div class="steps-section--container">
 <div class="steps-section-sublist--border">&nbsp;</div>
 <div class="steps-section--content">
-<div class="steps-section--step">
-<img class="steps-number-sublist-icon" src="https://kbimages.dreamhosters.com/graphics/number-1.svg" width="30px">
-<h3>Step 1 — Add an SSL certificate</h3>
+<div class="steps-section--step"><img class="steps-number-sublist-icon" src="https://kbimages.dreamhosters.com/graphics/number-1.svg" width="30px" />
+<h3 id="h_01HS92MC8GE6E3NTRQSNAB45X2">Step 1 — Add an SSL certificate</h3>
 <p>All modern sites should use a valid SSL certificate. View the following article for instructions on how to add an SSL certificate to your site:</p>
 <ul>
 <li><a href="/hc/en-us/articles/215089118-Adding-an-SSL-certificate-overview">Adding an SSL certificate overview</a></li>
 </ul>
 </div>
-<div class="steps-section--step">
-<img class="steps-number-sublist-icon" src="https://kbimages.dreamhosters.com/graphics/number-2.svg" width="30px">
-<h3>Step 2 — <span id="Fixing_unencrypted_elements">Fixing unencrypted links</span>
-</h3>
+<div class="steps-section--step"><img class="steps-number-sublist-icon" src="https://kbimages.dreamhosters.com/graphics/number-2.svg" width="30px" />
+<h3 id="h_01HS92MC8HRGAVRZVKHFY1F9MR">Step 2 — <span id="Fixing_unencrypted_elements">Fixing unencrypted links</span></h3>
 <p>There are two solutions:</p>
-<h4><strong>Use absolute links</strong></h4>
+<h4 id="h_01HS92MC8HBP5Z70MV2XGX8RE6"><strong>Use absolute links</strong></h4>
 <p>Absolute links are the full url location to your file. This includes the domain name. For example:</p>
 <div class="preboxcontainer">
 <pre class="prebox">&lt;img src="<span class="code-highlight">https://www.example.com</span>/images/pic_mountain.jpg" alt="Mountain View"&gt;</pre>
 </div>
 <p>Just make sure you're using <span class="text-object">HTTPS</span> when linking this way.</p>
-<h4><strong>Use relative links</strong></h4>
+<h4 id="h_01HS92MC8HMYABNVQ3R4V2R5KS"><strong>Use relative links</strong></h4>
 <p>Relative links do not include the domain name. These links point to a local file instead. For example:</p>
 <div class="preboxcontainer">
 <pre class="prebox">&lt;img src="images/pic_mountain.jpg" alt="Mountain View"&gt;</pre>
@@ -83,10 +65,8 @@
 <li><a href="https://www.w3schools.com/html/html_filepaths.asp">HTML File Paths</a></li>
 </ul>
 </div>
-<div class="steps-section--step">
-<img class="steps-number-sublist-icon" src="https://kbimages.dreamhosters.com/graphics/number-3.svg" width="30px">
-<h3>Step 3 — <span id="content-security-policy">Resolving the warning by adding code to your .htaccess file</span>
-</h3>
+<div class="steps-section--step"><img class="steps-number-sublist-icon" src="https://kbimages.dreamhosters.com/graphics/number-3.svg" width="30px" />
+<h3 id="h_01HS92MC8HEH0Y8VYAHVH8ZY55">Step 3 — <span id="content-security-policy">Resolving the warning by adding code to your .htaccess file</span></h3>
 <p>Instead of manually updating links in your code, you could add the following lines to your site's <span class="text-object">.htaccess</span> file.</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/115000098272-Creating-and-editing-a-file-via-FTP" target="_self">Creating and editing a file via FTP</a></li>
@@ -103,14 +83,14 @@
 </div>
 </div>
 </div>
-<h2>WordPress sites</h2>
+<h2 id="h_01HS92MC8H5CF0BPMDDFKYC3Y7">WordPress sites</h2>
 <div class="solvvy-solution">
 <p>There are a few additional steps you must take to secure a WordPress site. View the following article for a list of steps to ensure your WordPress site is using secure links in both the website files and the database.</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/218428687-How-do-I-use-an-SSL-certificate-with-WordPress-">How do I use an SSL certificate with WordPress?</a></li>
 </ul>
 </div>
-<h2>See also</h2>
+<h2 id="h_01HS92MC8HRDJSE5PSPHB8GJ1J">See also</h2>
 <div class="solvvy-hidden">
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216041537-SSL-certificates-overview">SSL certificates overview</a></li>
