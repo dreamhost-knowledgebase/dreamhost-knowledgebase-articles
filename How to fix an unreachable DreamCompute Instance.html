@@ -1,8 +1,8 @@
-<h2>Overview</h2>
+<h2 id="h_01HTFQ1YBB6VBF32JZVWVH0RWK">Overview</h2>
 <div class="solvvy-solution">
 <p>This guide is a checklist of common issues that can be investigated before contacting support. Please keep in mind that DreamHost support does not have access to your instances and cannot view your data. To help resolve the issue, please provide any error messages, logs or other details you may see.</p>
 </div>
-<h2>Ensure the instance is running</h2>
+<h2 id="h_01HTFQ1YBBN9M4459Q11JJN34A">Ensure the instance is running</h2>
 <div class="solvvy-solution">
 <p>Log in to the DreamCompute <a class="reference external" href="https://iad2.dreamcompute.com/project/">dashboard</a> and examine the <a class="reference external" href="https://iad2.dreamcompute.com/project/instances/">instances</a> page. Examine the <strong>Status</strong> and <strong>Power State</strong> columns for the instance. Some common combinations of these values and their meaning are below:</p>
 <table class="wikitable">
@@ -38,7 +38,7 @@
 </table>
 <p><a href="https://help.dreamhost.com/hc/en-us/articles/218084068-Contacting-support-overview">Contact support</a> for any other status you may see.</p>
 </div>
-<h2>Check the instance log for boot errors</h2>
+<h2 id="h_01HTFQ1YBBGDG0TEA8A7FXNF3Y">Check the instance log for boot errors</h2>
 <div class="solvvy-solution">
 <p>On the <a class="reference external" href="https://iad2.dreamcompute.com/project/instances/">Instances</a> page, click your instance. Then select the <span class="text-object">Log</span> tab. This displays the last 35 lines of the consoles output. A properly booted instance has a login prompt which could be slightly buried in the log. An Ubuntu-16 example would look like this:</p>
 <div class="highlight-console">
@@ -54,13 +54,13 @@
 </div>
 <p>Error messages such as failing to find a disk, file system errors, or syntax errors in config files will also generally display there. These type errors are more difficult to fix without creating a new instance, however a ticket to support is recommended.</p>
 </div>
-<h2>Check the instance log for network errors</h2>
+<h2 id="h_01HTFQ1YBBB9Q0BVJPMV5DT33Y">Check the instance log for network errors</h2>
 <div class="solvvy-solution">
 <p>On the same 'Log' page as above, click the <strong>View Full Log</strong>&nbsp;button on the top right. This opens a new browser tab with the full console log output. Search for 'eth', 'ens, or 'cloud-init'. Some problems may include not finding a network device, or if a snapshot was used, the network not being re-configured.</p>
 <p>Compare the output of cloud-init network configuration (if available), to the assigned <a href="https://help.dreamhost.com/hc/en-us/articles/115001754711-Locating-the-IP-Address-of-your-instance">IPv4 and IPv6 addresses of the instance</a>. An example output snippet for Ubuntu-16 looks like this:</p>
 <div class="preboxcontainer">
 <pre class="prebox">Starting Initial cloud-init job (metadata service crawler)...
-<span class="go">cloud-init[982]: Cloud-init v. 0.7.8 running 'init' at Tue, 24 Jan 2017 21:32:28 +0000. Up 8.86 seconds.</span>
+<span class="go">cloud-init[982]: Cloud-init v. 0.7.8 running 'init' at Tue, 02 Apr 2024 21:32:28 +0000. Up 8.86 seconds.</span>
 <span class="go">cloud-init[982]: ci-info: ++++++++++++++++++++++++++++++++++++++Net device info+++++++++++++++++++++++++++++++++++++++</span>
 <span class="go">cloud-init[982]: ci-info: +--------+------+------------------------------+---------------+-------+-------------------+</span>
 <span class="go">cloud-init[982]: ci-info: | Device |  Up  |           Address            |      Mask     | Scope |     Hw-Address    |</span>
@@ -71,7 +71,7 @@
 </div>
 <p>This example instance has an IPv4 address of 208.113.165.36. Confirm this is the <a href="https://help.dreamhost.com/hc/en-us/articles/115001754711-Locating-the-IP-Address-of-your-instance">correct IP</a> on the DreamCompute dashboard instances page.</p>
 </div>
-<h2>Check security group rules</h2>
+<h2 id="h_01HTFQ1YBBZG7JB550APCJ65M2">Check security group rules</h2>
 <div class="solvvy-solution">
 <p>On the <a class="reference external" href="https://iad2.dreamcompute.com/project/instances/">Instances</a> page to the far right, you'll see a column titled <span class="text-object">Actions</span>. Under this is a dropdown. Click this and select '<a href="https://help.dreamhost.com/hc/en-us/articles/360000607492-Changing-the-Security-Group-of-an-instance">Edit Security Groups</a>'. Confirm the necessary security groups are in the 'Instance Security Groups' list on the right. Make a note of the list of security groups to check next.</p>
 <p>Navigate back to the <a class="reference external" href="https://iad2.dreamcompute.com/project/instances/">Instances</a>&nbsp;page. In the left panel, click 'Network &gt; Security Groups' page. Check that the security group(s) assigned to the instance have the ports open that are being checked. To do this, click on the <strong>Manage Rules</strong> button to see the list of rules. All instances should have rules for unrestricted egress (outbound) traffic like so:</p>
@@ -94,22 +94,22 @@
 </div>
 <p>If any of these rules are missing, consider adding them to restore the default functionality. Sometimes the 'allow everything' of IPv4 0.0.0.0/0 and IPv6 ::/0 is modified to allow just specific IP blocks. If so, confirm the IP range is sufficient for the connectivity desired.</p>
 </div>
-<h2>Try a reboot, just in case</h2>
+<h2 id="h_01HTFQ1YBBCQY94N6Z21RNDQ9H">Try a reboot, just in case</h2>
 <div class="solvvy-solution">
 <p>It is preferred to find the cause of an issue before <a href="https://help.dreamhost.com/hc/en-us/articles/216511647-How-to-reboot-a-DreamCompute-instance">rebooting an instance</a>, but if none of the solutions above fixed the issue, you should now attempt a reboot. If this fixes the issue, include the previously gathered console logs for support if a support ticket is opened.</p>
 </div>
-<h2>Consider changes made before the issues</h2>
+<h2 id="h_01HTFQ1YBBA6AGDXHPZEJ04WKR">Consider changes made before the issues</h2>
 <div class="solvvy-solution">
 <p>Lastly, if all the above seems correct but there are still issues, consider what changes were last made. Some examples of changes that can cause issues are additional firewalls, large system upgrades that could modify kernels or network systems, or modifying config files that could disrupt the boot process if a program won’t start.</p>
 </div>
-<h2>Conclusion</h2>
+<h2 id="h_01HTFQ1YBBPYZW5QEBFKARRGPD">Conclusion</h2>
 <div class="solvvy-solution">
-<p>Should there be no other indication of issues in the above logs and configurations, please <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=support.msg&amp;" target="_blank" rel="noopener">contact support</a> with all available information.</p>
+<p>Should there be no other indication of issues in the above logs and configurations, please <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=support.msg&amp;" target="_blank" rel="noopener noreferrer">contact support</a> with all available information.</p>
 </div>
 <div class="clearer">&nbsp;</div>
 <div class="footer">&nbsp;</div>
 <!--DreamCompute Button-->
 <div class="dream-sign-up">
-<h2>Deploy Your Apps On Cloud Servers Today</h2>
+<h2 id="h_01HTFQ1YBB86S9KHRVJSCNRPZH">Deploy Your Apps On Cloud Servers Today</h2>
 <div class="solvvy-hidden"><a href="https://www.dreamhost.com/cloud/computing/" target="_self" rel="undefined">Sign Up for DreamCompute</a></div>
 </div>

@@ -1,10 +1,10 @@
-<h2>Overview</h2>
+<h2 id="h_01HTFQR9BT8V9KYKMGV4QCJF3Z">Overview</h2>
 <div class="solvvy-solution">
 <p>For larger file uploads, most S3 clients make use of the multi-part-upload (MPU) feature of the S3 protocol. This allows the client to break large files into smaller chunks, upload these smaller chunks, and re-try any chunks that failed without having to start over.</p>
 <p>Most S3 clients are good about cleaning up MPU data that it no longer needs, but if a connection drops or the client crashes, it could leave this data behind. The data is generally not used again, however it may silently use additional disk space on your account until it is removed. It is worthwhile to check for and remove this MPU data if disk storage costs appear larger than expected.</p>
 <p>Most S3 clients don’t have an MPU data purge feature, so in the following example, Python and the boto library is used to check for and clean up this data.</p>
 </div>
-<h2>Step 1&nbsp;— Create a .boto file to store your keys.</h2>
+<h2 id="h_01HTFQR9BT6PFM2TPSK4HBQ03P">Step 1&nbsp;— Create a .boto file to store your keys.</h2>
 <div class="solvvy-solution">
 <p>View the following external instructions on how to create a <span class="text-object">.boto</span> config file. This will be used to store your DreamObjects keys.</p>
 <ul>
@@ -12,7 +12,7 @@
 </ul>
 <p>There should now be a file named <span class="text-object">.boto</span> in your <a href="https://help.dreamhost.com/hc/en-us/articles/360001219231-Where-is-the-home-directory-#the-users-home-directory" target="_self">user's home directory</a>, which stores your DreamObjects keys.</p>
 </div>
-<h2>Step 2 — Create the&nbsp;clean-up script</h2>
+<h2 id="h_01HTFQR9BTCB51KKB5ZA33BKMH">Step 2 — Create the&nbsp;clean-up script</h2>
 <div class="solvvy-solution">
 <p>Create a file titled&nbsp;<span class="text-object">mpu.py </span>via&nbsp;SSH. The following article explains how to do this.</p>
 <ul>
@@ -23,7 +23,7 @@
 <p>Once the MPU data is deleted, it cannot be recovered. Please be sure you don’t need the data before removing it.</p>
 </div>
 <div id="clean-up-script-code">
-<h3>Clean-up script code</h3>
+<h3 id="h_01HTFQR9BTM8Y63N6443QE31M6">Clean-up script code</h3>
 <div class="notebox-note">
 <p>You do not need to adjust any of the code below since your keys are already stored in your .boto file from step 1 above.</p>
 </div>
@@ -59,16 +59,16 @@ for b in c.get_all_buckets():
         print 'No changes made to bucket.'</pre>
 </div>
 </div>
-<h3>Clean-up script example output</h3>
+<h3 id="h_01HTFQR9BT1MBBFX1E7SNAM33E">Clean-up script example output</h3>
 <div class="preboxcontainer">
-<pre class="prebox">Bucket: my-user-bucket<br />2019-02-20T19:36:21.072Z backups/example.com/02-20-2019_example.com.zip 0.1GB<br />Total: 0.1GB<br />Delete MPU data? (y/n) y<br />MPU data deleted!
+<pre class="prebox">Bucket: my-user-bucket<br />2024-04-02T19:36:21.072Z backups/example.com/04-02-2024_example.com.zip 0.1GB<br />Total: 0.1GB<br />Delete MPU data? (y/n) y<br />MPU data deleted!
 
 Bucket: workbackup
 Total: 0.00GB
 No changes made to bucket.</pre>
 </div>
 </div>
-<h2>Step 3 — Run the file</h2>
+<h2 id="h_01HTFQR9BTRCTX4SJA0KADGFDS">Step 3 — Run the file</h2>
 <div class="solvvy-solution">
 <p>While still logged into your server via SSH, run the file by using the following command.</p>
 </div>
@@ -77,5 +77,5 @@ No changes made to bucket.</pre>
 </div>
 <!--DreamObjects Button-->
 <div class="dream-sign-up">
-<h2>Start Storing Your Data Today!</h2>
+<h2 id="h_01HTFQR9BTES2W0JVHHZNDDKSM">Start Storing Your Data Today!</h2>
 <a href="https://www.dreamhost.com/cloud/storage/">Sign Up for DreamObjects</a></div>
