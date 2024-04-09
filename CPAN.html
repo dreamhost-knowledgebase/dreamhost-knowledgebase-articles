@@ -13,7 +13,7 @@
 <div class="notebox-note">
 <p>In the following examples, <span class="code">username</span> would be your <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access" target="_self">Shell user</a> and <strong>example.com</strong> your website.</p>
 </div>
-<h2>Setting up CPAN</h2>
+<h2 id="h_01HTZNYT41T4NVV7MRV2K25GWQ">Setting up CPAN</h2>
 <div class="solvvy-solution">
 <ol>
 <li>Log in to your server via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH</a>.</li>
@@ -111,7 +111,7 @@ You can re-run configuration any time with 'o conf init' in the CPAN shell</pre>
 <em>This puts you back in your normal shell.</em></li>
 </ol>
 </div>
-<h2>Installing modules</h2>
+<h2 id="h_01HTZNYT43YZF4DNBCRKACRYY5">Installing modules</h2>
 <div class="solvvy-solution">
 <p>Now that everything is set up, you can install the modules.</p>
 <ol>
@@ -128,7 +128,7 @@ You can re-run configuration any time with 'o conf init' in the CPAN shell</pre>
 </li>
 </ol>
 </div>
-<h2>Viewing modules</h2>
+<h2 id="h_01HTZNYT43G55K7DGM7DHM1HNA">Viewing modules</h2>
 <div class="solvvy-solution">
 <p>You can also check if and where modules are installed within CPAN. Type in the letter <span class="text-object wysiwyg-font-size-x-large">i</span> followed by the module name. For example:</p>
 <div class="preboxcontainer">
@@ -137,13 +137,13 @@ Module id = XML::Simple
     CPAN_USERID  GRANTM (Grant McLean &lt;grantm@cpan.org&gt;)
     CPAN_VERSION 2.25
     CPAN_FILE    G/GR/GRANTM/XML-Simple-2.25.tar.gz
-    UPLOAD_DATE  2018-03-18
+    UPLOAD_DATE  2024-04-08
     MANPAGE      XML::Simple - An API for simple XML files
     INST_FILE    /usr/share/perl5/XML/Simple.pm
     INST_VERSION 2.22</pre>
 </div>
 </div>
-<h2>Making your FastCGI / CGI scripts work</h2>
+<h2 id="h_01HTZNYT43GRS0PCKZMTP0NX81">Making your FastCGI / CGI scripts work</h2>
 <div class="solvvy-solution">
 <p>Any CGI or Fast CGI scripts must have the following at the top in order to use the locally installed modules:</p>
 <div class="preboxcontainer">
@@ -153,7 +153,7 @@ Module id = XML::Simple
             /home/<em>username</em>/<em>perlmods</em>/local/lib/perl/5.x.x );</pre>
 </div>
 <p>where <span class="text-object">username</span> is your shell name, <span class="text-object">perlmods</span> is what you chose above as the local CPAN install directory, and <span class="text-object">5.x</span> and <span class="text-object">5.x.x</span> refer to the currently installed Perl version determined by <span class="code">perl -v</span>.</p>
-<h3>What if I see an error?</h3>
+<h3 id="h_01HTZNYT43P2JNV7PPPSG1XFN3">What if I see an error?</h3>
 <p>If the above <strong>cpan</strong> command generates an error like the following:</p>
 <div class="preboxcontainer">
 <pre class="prebox">Your configuration suggests that CPAN.pm should use a working
@@ -229,20 +229,20 @@ __END__
 eof</pre>
 </div>
 </div>
-<h2>Installing Module::Build and many other modules</h2>
+<h2 id="h_01HTZNYT439QYBXF363DSRAANW">Installing Module::Build and many other modules</h2>
 <div class="solvvy-solution">
 <p>If you're installing Module::Build or others which use Module::Build in their installation, it might help to add the above PERL5LIB lines to your <span class="text-object">.bash_profile</span>, otherwise, anything you build won't know how to read the Module::Build Build script.</p>
 </div>
-<h2>Other modules</h2>
+<h2 id="h_01HTZNYT430D6MBSJGRGZSCS0E">Other modules</h2>
 <div class="solvvy-solution">
 <p>Please note that some modules do not install correctly from CPAN as non-root and to a non-standard path. They must be built and installed manually (that is, using the build scripts provided with the modules). Two specifically are:</p>
-<h3>DateTime</h3>
+<h3 id="h_01HTZNYT43F93PZ4NQE3G7BTBQ">DateTime</h3>
 <p>DateTime (as of 0.68) requires the install step to be executed like so using the <span class="code">--install_base</span> option:</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">./Build install --install_base ~/perlmods</span>
 </pre>
 </div>
-<h3>IO:Compress</h3>
+<h3 id="h_01HTZNYT43N834T797C3MCJTGQ">IO:Compress</h3>
 <p>IO::Compress (as of 2.034) requires tweaking the <span class="text-object">Makefile</span> because one of the target paths ignores the <span class="code">PREFIX</span> environment variable.</p>
 <ol>
 <li>Generate the <span class="text-object">Makefile</span> using:
@@ -264,7 +264,7 @@ eof</pre>
 <li>Run <span class="code">make</span>, <span class="code">make test</span>, and <span class="code">make install</span>.</li>
 </ol>
 </div>
-<h2>Configuring CPAN</h2>
+<h2 id="h_01HTZNYT43JCZ7CMBMM5QVA2NT">Configuring CPAN</h2>
 <div class="solvvy-solution">
 <p>If you need to manually configure settings, you can access your configuration in the file:</p>
 <div class="preboxcontainer">
@@ -280,7 +280,7 @@ eof</pre>
 </pre>
 </div>
 </div>
-<h2>Using CPAN Minus and local::lib</h2>
+<h2 id="h_01HTZNYT43WC7VZMGTTMPW1FNJ">Using CPAN Minus and local::lib</h2>
 <div class="solvvy-solution">
 <p>Tatsuhiko Miyagawa's CPAN Minus (<a href="https://github.com/miyagawa/cpanminus">github</a> <a href="https://metacpan.org/pod/App::cpanminus">) makes it even easier to add support for your own Perl modules. Use </a></p>
 <div class="preboxcontainer">
@@ -293,7 +293,7 @@ eof</pre>
 </div>
 <p>to use these modules.</p>
 </div>
-<h2>Killed</h2>
+<h2 id="h_01HTZNYT43Z7J59G1J2DYTMSJM">Killed</h2>
 <div class="solvvy-solution">
 <p>There is a monitor service running that may kill your perl installs. Visit the following article for more information.</p>
 <ul>

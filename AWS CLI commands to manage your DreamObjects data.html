@@ -1,4 +1,4 @@
-<h2>Overview</h2>
+<h2 id="h_01HTZ4Z5V8CABXQ167ETNVBEXG">Overview</h2>
 <div class="solvvy-solution">
 <p>This article lists several aws-cli commands you can use to manage your DreamObjects data. View the following article for information on how to install and configure AWS CLI:</p>
 <ul>
@@ -16,24 +16,24 @@
 <p>In the following examples, <span class="code">username</span> would be your <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access" target="_self">Shell user</a> and <strong>example.com</strong> your website.</p>
 </div>
 </div>
-<h2><span id="creating">Creating</span></h2>
+<h2 id="h_01HTZ4Z5V83ER40S6X1AKYAZJF"><span id="creating">Creating</span></h2>
 <div class="solvvy-solution">
-<h3>Making a bucket</h3>
+<h3 id="h_01HTZ4Z5V91TV4XESM0MG87XYW">Making a bucket</h3>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">aws --endpoint-url https://objects-us-east-1.dream.io s3 mb s3://<span class="code-highlight">newbucketname --region us-east-1</span></span>
 <span class="cmdoutput">make_bucket: s3://newbucketname/</span>
 </pre>
 </div>
 </div>
-<h2><span id="listing">Listing</span></h2>
+<h2 id="h_01HTZ4Z5V90RF4F9TNQ57DWA6F"><span id="listing">Listing</span></h2>
 <div class="solvvy-solution">
-<h3>Listing all buckets under a user</h3>
+<h3 id="h_01HTZ4Z5V9GRMYFB5J7BGACYDH">Listing all buckets under a user</h3>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">aws --endpoint-url https://objects-us-east-1.dream.io s3 ls</span>
-<span class="cmdoutput">2019-01-31 20:14:46 newbucketname</span>
+<span class="cmdoutput">2024-04-08 20:14:46 newbucketname</span>
 </pre>
 </div>
-<h3>Listing the contents of a specific bucket</h3>
+<h3 id="h_01HTZ4Z5V9KM7DD9JJWHQW1CGP">Listing the contents of a specific bucket</h3>
 <p>Use the following flags to display data about the size of your Objects.</p>
 <ul>
 <li><span class="code">--recursive</span></li>
@@ -46,71 +46,71 @@
 </ul>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">aws --endpoint-url https://objects-us-east-1.dream.io s3 ls --recursive --human-readable --summarize s3://<span class="code-highlight">my-bucket</span>/</span>
-2020-01-30 12:37:51    0 Bytes backups/
-2020-02-03 11:43:16  107.1 MiB backups/example.com/02-03-2020_example.com.zip
-2020-02-03 11:43:04   70.2 KiB backups/example.com/02-03-2020_example_co_1.sql
-2020-02-03 12:36:25    3.9 KiB test.txt
+2024-04-08 12:37:51    0 Bytes backups/
+2024-04-08 11:43:16  107.1 MiB backups/example.com/02-03-2020_example.com.zip
+2024-04-08 11:43:04   70.2 KiB backups/example.com/02-03-2020_example_co_1.sql
+2024-04-08 12:36:25    3.9 KiB test.txt
 
 Total Objects: 4
    Total Size: 107.2 MiB</pre>
 </div>
 </div>
-<h2><span id="uploading">Uploading</span></h2>
+<h2 id="h_01HTZ4Z5V9G4QMHBSFHERB5G4G"><span id="uploading">Uploading</span></h2>
 <div class="solvvy-solution">
 <p>You can use either the <a href="https://docs.aws.amazon.com/cli/latest/reference/s3/cp.html" target="_self">cp</a> or <a href="https://docs.aws.amazon.com/cli/latest/reference/s3/sync.html" target="_self">sync</a> command to upload files and directories. The difference is that <span class="code">cp</span> will&nbsp;overwrite any existing file or directory with the same name. The <span class="code">sync</span> command will only upload new or changed files.</p>
-<h3>Uploading a single file</h3>
+<h3 id="h_01HTZ4Z5V9D8M93G8H23TC45C0">Uploading a single file</h3>
 <p><strong>Copying a file</strong></p>
 <p>This copies a file named <span class="text-object">file.txt</span> to your bucket. Make sure to also specify the same name of the file within the bucket file-path.&nbsp;</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">aws --endpoint-url https://objects-us-east-1.dream.io s3 cp <span class="code-highlight">/home/username/file.txt</span> s3://<span class="code-highlight">my-bucket/file.txt</span></span>
 </pre>
 </div>
-<h3>Uploading a directory</h3>
+<h3 id="h_01HTZ4Z5V94JWAE6KNZ8DC9JJ5">Uploading a directory</h3>
 <div class="notebox-important">
 <p>When uploading a directory, make sure to add the directory name to the s3 file path in your command. For example:</p>
 <p>s3://my-bucket/<span class="text-object">my-directory</span></p>
 <p>If you do not add the directory path you wish to upload to, the contents of the directory you're uploading will be placed in the bucket's top-level directory.</p>
 </div>
-<h4><strong>Using the cp command&nbsp;</strong></h4>
+<h4 id="h_01HTZ4Z5V9RSQTRPDMCQW0JFM0"><strong>Using the cp command&nbsp;</strong></h4>
 <p>Use the <span class="code">--recursive</span> flag to copy a directory and any subdirectories.</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">aws --endpoint-url https://objects-us-east-1.dream.io s3 cp <span class="code-highlight">/home/username/my-directory</span> s3://<span class="code-highlight">my-bucket/my-directory</span> --recursive</span>
 </pre>
 </div>
-<h4><strong>Using the sync command</strong></h4>
+<h4 id="h_01HTZ4Z5V94DA9NVNMM1YBKD4T"><strong>Using the sync command</strong></h4>
 <p>This uploads all contents of a directory to your DHO bucket. Subdirectories will only be uploaded if they are not empty.</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">aws --endpoint-url https://objects-us-east-1.dream.io s3 sync <span class="code-highlight">/home/username/my-directory</span> s3://<span class="code-highlight">my-bucket/my-directory</span></span>
 </pre>
 </div>
 </div>
-<h2><span id="downloading">Downloading</span></h2>
+<h2 id="h_01HTZ4Z5VA3RR03WS81WVGB3XR"><span id="downloading">Downloading</span></h2>
 <div class="solvvy-solution">
-<h3>Downloading a file from a bucket</h3>
+<h3 id="h_01HTZ4Z5VAKMC1GDKYZE1WPG6C">Downloading a file from a bucket</h3>
 <p>Make sure to specify at the end, the path and name of the file to be downloaded.</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">aws --endpoint-url https://objects-us-east-1.dream.io s3 cp s3://<span class="code-highlight">my-bucket/file.txt /home/username/file.txt</span></span>
 </pre>
 </div>
-<h3>Downloading a directory from a bucket</h3>
+<h3 id="h_01HTZ4Z5VA57W3SSZAFG9XS4WX">Downloading a directory from a bucket</h3>
 <p>Make sure to specify at the end, the path and directory of the bucket directory to be downloaded. You must also use the <span class="code">--recursive</span> flag for a directory.</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">aws --endpoint-url https://objects-us-east-1.dream.io s3 cp s3://<span class="code-highlight">my-bucket/download-directory /home/username/download-directory</span> --recursive</span>
 </pre>
 </div>
 </div>
-<h2><span id="deleting">Deleting</span></h2>
+<h2 id="h_01HTZ4Z5VAJXJEH36P093GXTH2"><span id="deleting">Deleting</span></h2>
 <div class="solvvy-solution">
-<h3>Deleting an object in a bucket</h3>
+<h3 id="h_01HTZ4Z5VAMDDS98NEBH0WYZG8">Deleting an object in a bucket</h3>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">aws --endpoint-url https://objects-us-east-1.dream.io s3 rm s3://<span class="code-highlight">my-bucket/file.txt</span></span>
 </pre>
 </div>
-<h3>Deleting all files and directories in a bucket</h3>
+<h3 id="h_01HTZ4Z5VA5MZ30NZK51H1NYV0">Deleting all files and directories in a bucket</h3>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">aws --endpoint-url https://objects-us-east-1.dream.io s3 rm s3://<span class="code-highlight">my-bucket</span>/ --recursive</span></pre>
 </div>
-<h3>Deleting an empty bucket</h3>
+<h3 id="h_01HTZ4Z5VA1TKYCSRJJEJZ5DN1">Deleting an empty bucket</h3>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[user@localhost]$ </span><span class="command">aws --endpoint-url https://objects-us-east-1.dream.io s3 rb s3://<span class="code-highlight">mybucket</span>/</span>
 </pre>
@@ -118,6 +118,6 @@ Total Objects: 4
 </div>
 <!--DreamObjects Button-->
 <div class="dream-sign-up">
-<h2>Start Storing Your Data Today!</h2>
+<h2 id="h_01HTZ4Z5VAJ619AWAYA9FGB8X6">Start Storing Your Data Today!</h2>
 <div class="solvvy-hidden"><a href="https://www.dreamhost.com/cloud/storage/">Sign Up for DreamObjects</a></div>
 </div>
