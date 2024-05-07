@@ -1,0 +1,86 @@
+<h2 id="h_01HQKXCTQD7QZ28YE1K362VFFR">Overview</h2>
+<div class="solvvy-solution">
+<p>This article explains how to use <a href="https://pypi.org/project/linger/" target="_blank" rel="noopener noreferrer">linger</a> with a Node.js application. This combination allows your app to run persistent processes and your services to restart if your app crashes or the server reboots.</p>
+<div class="notebox-important">
+<p>You must be on a <a href="https://help.dreamhost.com/hc/en-us/articles/215280058-Virtual-Private-Server-VPS-overview">VPS</a> or <a href="https://help.dreamhost.com/hc/en-us/articles/215279658-Dedicated-server-overview">Dedicated</a> hosting plan to install the software in these instructions.</p>
+</div>
+<div class="prereqs">
+<p><strong>Prerequisites</strong></p>
+<p>This article assumes you have set up a <a href="https://help.dreamhost.com/hc/en-us/articles/217955787-Proxy-Server">Proxy Server</a> in the panel.</p>
+</div>
+</div>
+<h2 id="h_01HQKXDKCCVGYBXZCG59TEQ197">Step #1: Install linger</h2>
+<div class="solvvy-solution">
+<p>To install linger under your user, log in to your server via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH</a> and run the following command:</p>
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">loginctl enable-linger</span></pre>
+</div>
+<div class="notebox-note">
+<p>This command will not respond with any output.</p>
+</div>
+</div>
+<h2 id="h_01HQKXDRJM1RTW2ZPYWYNTX365">Step #2: Configure systemd user unit</h2>
+<div class="solvvy-solution">
+<p>This step configures Node to work with systemd user units on the server.</p>
+<ol>
+<li>Create the following directories:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">mkdir -p ~/.config/systemd/user/</span></pre>
+</div>
+</li>
+<li>Create a <span class="text-object">myapp.service</span> file in the <span class="text-object">.config/systemd/user</span> directory:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">nano ~/.config/systemd/user/myapp.service</span></pre>
+</div>
+</li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115006413028-Creating-and-editing-a-file-via-SSH">Add the following code</a> to this file:
+<div class="preboxcontainer">
+<pre class="prebox">[Unit]
+Description=Systemd instance to serve Node application
+After=network.target
+
+[Service]
+WorkingDirectory=<span class="code-highlight">/path/to/your/app</span>
+ExecStart=/usr/bin/node <span class="code-highlight">/path/to/your/app/app.js</span>
+Environment="PATH=/usr/bin:/usr/local/bin"
+Environment=NODE_ENV=production
+ExecReload=/bin/kill -s HUP $MAINPID
+KillMode=mixed
+TimeoutStopSec=5
+PrivateTmp=true
+Restart=on-failure
+
+[Install]
+WantedBy=default.target</pre>
+</div>
+</li>
+<li>Edit the highlighted lines above as follows:
+<ul>
+<li><strong>WorkingDirectory:</strong> The path to your website application.</li>
+<li><strong>ExecStart:</strong> The path to your node installation.</li>
+</ul>
+</li>
+<li>Enable the user unit for your Node app:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">systemctl --user enable myapp</span></pre>
+</div>
+</li>
+<li>Start the user unit for your Node app:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">systemctl --user start myapp</span></pre>
+</div>
+</li>
+<li>Confirm it is running:
+<div class="preboxcontainer">
+<pre class="prebox"><span class="server">[server]$ </span><span class="command">systemctl --user status myapp</span></pre>
+</div>
+</li>
+</ol>
+<p>Your app's services will now automatically restart when the server reboots or if the application crashes.</p>
+</div>
+<h2 id="h_01HQKXEC8Q1FV61BRGZNE5P32V">See also</h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/217955787-Proxy-Server">Proxy Server</a></li>
+</ul>
+</div>
