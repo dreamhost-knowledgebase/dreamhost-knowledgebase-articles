@@ -1,8 +1,8 @@
-<h2>Overview</h2>
+<h2 id="h_01HXZ45QXJSC5MT6JF68GY15D0">Overview</h2>
 <div class="solvvy-solution">
 <p>There could be several reasons a website is not responding as quickly as it should. This article details a few command line tools you can use to troubleshoot your website and webserver. All commands below must be run on the server via&nbsp;<a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH</a>.&nbsp;</p>
 </div>
-<h2>Uptime</h2>
+<h2 id="h_01HXZ45QXJ2WYVT77FB76WASRH">Uptime</h2>
 <div class="solvvy-solution">
 <p>The command <span class="code">uptime</span> checks the current server load and how long the server has been up and running. The load should most often stay in single digits, but a spike is not uncommon. For example:</p>
 <div class="preboxcontainer">
@@ -18,14 +18,14 @@
 </ul>
 <p>What you're looking for is the load 'over time', not necessarily the load at a single instant.</p>
 </div>
-<h2><span id="TOP">TOP</span></h2>
+<h2 id="h_01HXZ45QXJGY7K1KD6NYEHZAWD"><span id="TOP">TOP</span></h2>
 <div class="solvvy-solution">
 <p>The <span class="code">top</span> command allows you to view system tasks running in real-time.&nbsp;View the following article for examples on how to use this command:</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/115000683852-Using-the-top-command-to-troubleshoot-your-website">Using the 'top' command</a></li>
 </ul>
 </div>
-<h2>lsof</h2>
+<h2 id="h_01HXZ45QXJN4GAWS4X00QAG5SX">lsof</h2>
 <div class="solvvy-solution">
 <p>Assuming you’re running a PHP site, run the following command. If you’re not using PHP, just change the <span class="code">grep php</span> code to the language you’re using:</p>
 <div class="notebox-note">
@@ -40,7 +40,7 @@
 <span class="cmdoutput">php82.cgi 14963 username  cwd       DIR   8,17      4096 15115680565 /home/username/example.com/</span></pre>
 </div>
 <p>Ignore any errors you see in the response. What you’re looking for is the list of open files for your PHP processes. You can then look closer into those files to see what the issue may be.</p>
-<h3>Troubleshooting the 'lsof' command</h3>
+<h3 id="h_01HXZ45QXK6ARWY785BJMPCS70">Troubleshooting the 'lsof' command</h3>
 <p>One problem with running 'lsof' is that there may be no useful output to work with when you run it once.&nbsp;The following example uses the <span class="code">watch</span> command to run the <span class="code">lsof</span> command every two seconds while outputting the results to a file named <span class="text-object">results.txt</span>.</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command"> watch "lsof -u <span class="code-highlight">username</span> | grep php | grep /home | tee -a results.txt"</span></pre>
@@ -51,24 +51,33 @@
 </div>
 <p>If there is nothing in the <span class="text-object">results.txt</span> file, run it again. Keep running it until you have a line of output that shows which domain or file is currently being used.</p>
 </div>
-<h2>ps</h2>
+<h2 id="h_01HXZ45QXKV18W9260WS0QFYVF">ps</h2>
 <div class="solvvy-solution">
 <p>The <span class="code">ps</span> command displays a snapshot of&nbsp;running processes on the server. View the following article for examples on how to use this command:</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/214880098-Using-the-ps-command-to-troubleshoot-your-website">Using the 'ps' command to troubleshoot your website</a></li>
 </ul>
 </div>
-<h2>Examine your access.log file</h2>
+<h2 id="h_01HXZ45QXK47QZCX00NT6ZFDNX">Examine your access.log file</h2>
 <div class="solvvy-solution">
 <p>Every DreamHost website stores <span class="text-object">access.log</span> information about the site. These logs can become very large and difficult to read, so there are a few commands you can run to quickly tell which site is getting the most traffic. View the following article for further details:</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216105097-Viewing-and-examining-your-access-log-via-SSH">Viewing and examining your access log via SSH</a></li>
 </ul>
 </div>
-<h2>Login issues</h2>
+<h2 id="h_01HXZ45QXK6AJM0RA3SDHMVNZZ">Login issues</h2>
 <div class="solvvy-solution">
 <p>If you're having a problem logging into your site or server, view the following articles for instructions on how to reset different types of passwords:</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/sections/203242417-Passwords">Passwords</a></li>
+</ul>
+</div>
+<h2 id="h_01HXZ46GH2V5ZSEATH24TSZ3P2">See also</h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH overview</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/115000683852-Using-the-top-command-to-troubleshoot-your-website">Using the 'top' command</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/214880098-Using-the-ps-command-to-troubleshoot-your-website">Using the 'ps' command to troubleshoot your website</a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216105097-Viewing-and-examining-your-access-log-via-SSH">Viewing and examining your access log via SSH</a></li>
 </ul>
 </div>
