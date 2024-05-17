@@ -1,20 +1,20 @@
-<h2>Overview</h2>
+<h2 id="h_01HY1GKKKQDFV1ZZATSZVN8M16">Overview</h2>
 <div class="solvvy-solution">
 <p>This article covers a few common issues and troubleshooting steps you can take to fix your cron jobs.</p>
 <div class="notebox-note">
 <p>In the following examples, <span class="code">username</span> would be your <a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access" target="_self">Shell user</a> and <strong>example.com</strong> your website.</p>
 </div>
 </div>
-<h2>Troubleshooting steps</h2>
+<h2 id="h_01HY1GKKKQHHN5W3PQNDKQZ4WV">Troubleshooting steps</h2>
 <div class="solvvy-solution">
-<h3>Setting an email address</h3>
+<h3 id="h_01HY1GKKKQFBTG61PSTNRZ9Q1R">Setting an email address</h3>
 <p>When testing your new cron job, make sure to set an email address for reporting the results. This gives you important information about what may be going wrong if the command line is not running the cron job as desired.</p>
 <div class="notebox-note">
 <p>You will only receive an email if the cron fails, or if the cron job itself creates output to view.</p>
 </div>
-<h3>Setting the correct file permissions</h3>
+<h3 id="h_01HY1GKKKQ6ZX0AP37TWQF0AWF">Setting the correct file permissions</h3>
 <p>If you're planning to use external software with a cron job, make sure you have set 'write' and other permissions for the files in your remote folders. If you get an error message about "permission denied" it means your permissions are not set properly. Also specifying the full path of the file you’re writing to can prevent issues with the cron environment running from a different directory.</p>
-<h3>Using full file paths</h3>
+<h3 id="h_01HY1GKKKQT6F3T7HRRTR54YWA">Using full file paths</h3>
 <p>The server's crontab needs to know exactly where to read and write files. For example, if you manually run the following file named <span class="text-object">file.sh</span>, it will create a new file named <span class="text-object">output.txt</span> in the directory you run the command in.</p>
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[server]$ </span><span class="command">sh file.sh &gt; output.txt</span></pre>
@@ -24,9 +24,9 @@
 <pre class="prebox">0 12 * * * sh /home/<span class="code-highlight">username</span>/<span class="code-highlight">example.com</span>/file.sh &gt; /home/<span class="code-highlight">username</span>/<span class="code-highlight">example.com</span>/output.txt</pre>
 </div>
 </div>
-<h2>Error messages</h2>
+<h2 id="h_01HY1GKKKQJ61ED2N8TNRZTQVR">Error messages</h2>
 <div class="solvvy-solution">
-<h3>Could not open input file</h3>
+<h3 id="h_01HY1GKKKQ0A3H812QR41NVGRE">Could not open input file</h3>
 <p>You may be emailed this when the cron job fails to run. Check the subject of the email that was sent to you. It will start like this:</p>
 <p><strong>Cron username@server</strong></p>
 <p>Make a note of this <span class="text-object">username</span>, then check the Cron Job you created in the panel. These should be the same username. If the username is different than what you see in the panel, make sure to adjust your cron job to the correct username.</p>
@@ -34,7 +34,7 @@
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/360029138491-Unix-permissions-overview" target="_self">Unix permissions overview</a></li>
 </ul>
-<h3>No such file or directory</h3>
+<h3 id="h_01HY1GKKKQAJK5ZN4G3JYEJX6A">No such file or directory</h3>
 <p>Check your file paths. Try adding the full file path to the file you're attempting to run as well as the full file path to any file's you're writing to. For example, instead of:</p>
 <div class="preboxcontainer">
 <pre class="prebox">cat file.txt</pre>
@@ -44,7 +44,7 @@
 <pre class="prebox">cat /home/<span class="code-highlight">username</span>/<span class="code-highlight">example.com</span>/file.txt</pre>
 </div>
 </div>
-<h2><span id="Dedicated_server_troubleshooting">Dedicated Server troubleshooting</span></h2>
+<h2 id="h_01HY1GKKKQ853E3GDDZ5C9NJYP"><span id="Dedicated_server_troubleshooting">Dedicated Server troubleshooting</span></h2>
 <div class="solvvy-solution">
 <p>It's rare that the cron service on a server may stop running. However, if you’re using a Dedicated Server, you can verify the cron is running by running this shell command:</p>
 <div class="preboxcontainer">
@@ -59,4 +59,14 @@
 <div class="preboxcontainer">
 <pre class="prebox"><span class="server">[root]# </span><span class="command">sudo service cron restart</span></pre>
 </div>
+</div>
+<h2 id="h_01HY1GRXKH72HKE2A0WDT8027W">See also</h2>
+<div class="solvvy-hidden">
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215088668-Create-a-cron-job">Create a cron job </a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215767047-Creating-a-custom-Cron-Job">Creating a custom Cron Job </a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview">SSH overview </a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/216385837-Creating-a-user-with-Shell-SSH-access">Creating a user with Shell (SSH) access </a></li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360029138491-Unix-permissions-overview">Unix permissions overview </a></li>
+</ul>
 </div>
