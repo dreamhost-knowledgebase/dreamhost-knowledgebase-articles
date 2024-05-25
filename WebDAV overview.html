@@ -1,4 +1,4 @@
-<h2>Overview</h2>
+<h2 id="h_01HYPD2YN50TJKQN1P7BV9R59F">Overview</h2>
 <div class="solvvy-solution">
 <p>Web-based Distributed Authoring and Versioning (WebDAV) is an extension to the <a href="https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol">HTTP</a> protocol which allows users to collaboratively edit and manage files on remote web servers. The World Wide Web, as conceived by Tim Berners-Lee, was always intended to be a readable and writable medium. However, as the web grew it became a largely read-only medium. WebDAV has emerged as a way to restore that functionality.</p>
 <div class="alert-warning">
@@ -11,72 +11,34 @@
 <p>These instructions walk you through how to manually create your <span class="text-object">.htaccess</span> and <span class="text-object">.htpasswd</span> file.</p>
 </div>
 </div>
-<h2><span id="HTTPS">HTTPS</span></h2>
+<h2 id="h_01HYPD2YN5WCDMAXZF0BHM4D72"><span id="HTTPS">HTTPS</span></h2>
 <div class="solvvy-solution">
 <p>If you'd like to access your WebDAV directory over a secure connection, you must <a href="https://help.dreamhost.com/hc/en-us/articles/215089748-Purchase-a-professionally-signed-SSL-certificate" target="_self" rel="undefined">purchase an SSL certificate</a>. Visit the following article for further details:</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216041537-SSL-certificates-overview">SSL certificates overview</a></li>
 </ul>
 </div>
-<h2><span id="User_access">User access</span></h2>
+<h2 id="h_01HYPD2YN5P9QXZ405HJ019YTZ"><span id="User_access">User access</span></h2>
 <div class="solvvy-solution">
-<p>The DreamHost panel allows you to specify which users have access to a WebDAV-enabled directory. However, by default, each user has full access to all files in the entire directory. This may not be an issue with a very simple WebDAV directory, but as the WebDAV directory grows in users, certain problems may arise. For example:</p>
+<p>Review the following article to learn more about accessing Webdav:</p>
 <ul>
-<li>There is no file-level security.</li>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/215864738-Accessing-WebDAV-overview">Accessing WebDAV overview</a></li>
 </ul>
-<dl>
-<dd>– Users can potentially overwrite edits by another user and even delete another user's file.</dd>
-<dd>– Any files intended to be private are viewable by all users of the folder.</dd>
-</dl>
-<ul>
-<li>User management cannot be done automatically (e.g., no adding users via PHP scripts).</li>
-</ul>
-<p>The best solution is to specify access levels (Access-Control-Lists) on a per-folder (or maybe even per-file) basis. As the user count grows, you can then manage the users and passwords list automatically using scripts.</p>
-<p>This can be done by creating/editing an <a href="https://help.dreamhost.com/hc/en-us/articles/216363187-Password-protecting-your-site-with-an-htaccess-file">.htaccess</a> file placed in every folder where you want to make an exception.</p>
 </div>
-<h2><span id="Enabling_WebDAV_on_an_entire_domain.2C_not_just_a_sub-folder">Enabling WebDAV on an entire domain, not just a sub-folder</span></h2>
+<h2 id="h_01HYPD2YN6YVMW8YH5W8EV4E2P"><span id="Editing_files_normally_pre-processed_by_the_web_server">Editing files normally pre-processed by the web server</span></h2>
 <div class="solvvy-solution">
-<p>Creating the WebDAV directory in your DreamHost panel does not allow you to apply WebDAV to an entire domain – it only works on the specific subdirectory. However, using an <span class="text-object">.htaccess</span> file, you can make it so WebDAV works when visiting the site's URL without the subdirectory.</p>
-<div class="notebox-note">
-<p>WebDAV uses it's own <span class="text-object">.htaccess</span> and <span class="text-object">.htpasswd</span> file which are controlled by the WebDAV interface and may not always be visible. This may cause "abnormal" behavior in certain instances, such as creating a WebDAV directory off of your domain's root directory (e.g., <strong>https://example.com/webdav/</strong>). It is suggested that if you're creating a WebDAV directory, you ensure that the target WebDAV (as well as its parent) are reasonably isolated from your main site.</p>
-</div>
-<ol>
-<li>Visit the <a class="panel-link" href="https://panel.dreamhost.com/index.cgi?tree=advanced.webdav&amp;" target="_blank" rel="noopener noreferrer">Htaccess/WebDAV</a> page to set up a directory with WebDAV enabled.
-<ul>
-<li>For the rest of these steps, it's assumed that the directory is called "site".</li>
-</ul>
-</li>
-<li>If you already have any data or directories you want to include in the new WebDAV site, connect to your new WebDAV share and upload them. The URL of your WebDAV share should be something like <strong>https://example.com/site/</strong>.
-<ul>
-<li>Don't worry about modifying the links within your pages – they will still work exactly the same way they currently do.</li>
-</ul>
-<em>The remaining steps help you create an <span class="text-object">.htaccess</span> file so that rewrite requests to <strong>https://example.com</strong> use the data stored in <strong>https://example.com/site/</strong>:</em></li>
-<li>In the main folder for your domain, create a file called <span class="text-object">.htaccess</span>. Make sure you include the period at the start.</li>
-<li>Put the following text into the file:
+<p>One problem with WebDAV is that it does not allow you to edit the source of server processed files, including PHP, shtml, Perl, and so on. This is because it uses the same command to "GET" the file as your web browser. The webserver has no way of knowing to not process the PHP file and give you the output instead of the source code.</p>
+<p>Adding this line to your <span class="text-object">.htaccess</span> file disables all processing:</p>
 <div class="preboxcontainer">
-<pre class="prebox">RewriteEngine on
-RewriteCond %{REQUEST_URI} !<span class="code-highlight">site</span>/
-RewriteRule ^(.*)$ /<span class="code-highlight">site</span>/$1
+<pre class="prebox">SetHandler default-handler
 </pre>
 </div>
-<ul>
-<li>The first line turns on rewriting.</li>
-<li>The second line tells the webserver not to rewrite <strong>https://example.com/site/</strong>.</li>
-<li>The third line tells the webserver to rewrite all requests to <strong>https://example.com/</strong> to use the data from <strong>https://example.com/site/</strong>.</li>
-</ul>
-</li>
-<li>If you have directories that you don't want to be under WebDAV control, add additional RewriteCond lines like the one for "site". For example, if you don't want the directory "scripts" to be rewritten, then add the following:
-<div class="preboxcontainer">
-<pre class="prebox">RewriteCond&nbsp;%{REQUEST_URI}&nbsp;!<span class="code-highlight">scripts</span>/
-</pre>
+<p>This forces <span class="text-object">.php</span> files to show their source, including any passwords you have coded in. You will need to change the permissions on your <span class="text-object">.htaccess</span> file to edit it. Any changes made to this file will be overwritten if you make any changes in the panel to your htaccess/webdav options.</p>
+<p>You could also append <span class="text-object">.txt</span> to the end of any file to force it to read as a normal text file. For example, change <span class="text-object">test.php</span> to <span class="text-object">test.php.txt</span>.</p>
 </div>
-</li>
-</ol>
-<p>When you now visit <strong>https://example.com/ </strong>you should actually be sent the data from <strong>https://example.com/site/</strong>, but your URLs will look exactly the same as they did before.</p>
-</div>
-<h2><span id="Troubleshooting">Troubleshooting</span></h2>
+<h2 id="h_01HYPD2YN5KW6XG711WZ37C4KK"><span id="Troubleshooting">Troubleshooting</span></h2>
 <div class="solvvy-solution">
-<h3><span id="WebDAV_and_mod_rewrite">WebDAV and mod_rewrite</span></h3>
+<h3 id="h_01HYPD2YN54MAKJS8K14KV02Y7"><span id="WebDAV_and_mod_rewrite">WebDAV and mod_rewrite</span></h3>
 <p>Certain software such as WordPress and Joomla put <span class="code">Rewrite</span> directives in your site’s base directory, even when installed to a subdirectory. This could possibly interfere with WebDAV access. If so, modify the base <span class="text-object">.htaccess</span> as follows. Before each RewriteRule add:</p>
 <div class="preboxcontainer">
 <pre class="prebox">RewriteCond&nbsp;%{REQUEST_URI}&nbsp;!/<span class="code-highlight">webdavdir</span>
@@ -90,31 +52,20 @@ RewriteRule ^(.*)$ /<span class="code-highlight">site</span>/$1
 </pre>
 </div>
 </div>
-<h2><span id="Editing_files_normally_pre-processed_by_the_web_server">Editing files normally pre-processed by the web server</span></h2>
-<div class="solvvy-solution">
-<p>One problem with WebDAV is that it does not allow you to edit the source of server processed files, including PHP, shtml, Perl, and so on. This is because it uses the same command to "GET" the file as your web browser. The webserver has no way of knowing to not process the PHP file and give you the output instead of the source code.</p>
-<p>Adding this line to your <span class="text-object">.htaccess</span> file disables all processing:</p>
-<div class="preboxcontainer">
-<pre class="prebox">SetHandler default-handler
-</pre>
-</div>
-<p>This forces <span class="text-object">.php</span> files to show their source, including any passwords you have coded in. You will need to change the permissions on your <span class="text-object">.htaccess</span> file to edit it. Any changes made to this file will be overwritten if you make any changes in the panel to your htaccess/webdav options.</p>
-<p>You could also append <span class="text-object">.txt</span> to the end of any file to force it to read as a normal text file. For example, change <span class="text-object">test.php</span> to <span class="text-object">test.php.txt</span>.</p>
-</div>
-<h2><span id="WebDAV_extensions">WebDAV extensions</span></h2>
+<h2 id="h_01HYPD2YN6897B1R1N9XGETEP2"><span id="WebDAV_extensions">WebDAV extensions</span></h2>
 <div class="solvvy-solution">
 <p>DreamHost's WebDAV implementation does not support extensions, such as CalDAV. You may be able to implement these features using third-party software, but DreamHost support cannot assist with any installation or configuration issues.</p>
 </div>
-<h2><span id="See_also">See also</span></h2>
+<h2 id="h_01HYPD2YN6Q9QA450HYQS4D4Q5"><span id="See_also">See also</span></h2>
 <div class="solvvy-hidden">
-<h2>Internal links</h2>
+<h3 id="h_01HYPD2YN6RNC2K9TVVYY9RBP5">Internal links</h3>
 <ul>
 <li><a style="background-color: #ffffff;" href="https://help.dreamhost.com/hc/en-us/articles/216660118-How-to-enable-WebDAV-in-the-panel">How to enable WebDAV in the panel</a></li>
 <li><a style="background-color: #ffffff;" href="https://help.dreamhost.com/hc/en-us/articles/215864738-Accessing-WebDAV-overview">Accessing WebDAV overview</a></li>
 <li><a style="background-color: #ffffff;" href="https://help.dreamhost.com/hc/en-us/articles/216473357-Accessing-WebDAV-with-Windows">Accessing WebDAV with Windows</a></li>
 <li><a style="background-color: #ffffff;" href="https://help.dreamhost.com/hc/en-us/articles/216473527-Accessing-WebDAV-with-Mac-OS-X-and-Linux">Accessing WebDAV with Mac OS X and Linux</a></li>
 </ul>
-<h3>RFCs</h3>
+<h3 id="h_01HYPD2YN62QMTJ2RY4TJHTY9D">RFCs</h3>
 <ul>
 <li><a href="https://www.ietf.org/rfc/rfc2291.txt">Requirements</a></li>
 <li><a href="https://www.ietf.org/rfc/rfc2518.txt">HTTP Extensions</a></li>
