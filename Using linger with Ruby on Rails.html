@@ -114,6 +114,30 @@ WantedBy=default.target</pre>
 <li><strong>WorkingDirectory:</strong> The path to your website application.</li>
 <li><strong>ExecStart:</strong> The path to your puma installation.</li>
 </ul>
+<div class="notebox-important">
+<p>If you are using a custom environment for your Ruby/Puma setup, be sure to define your environment directory paths in the <span class="code">[Service]</span> section of your Linger Systemd service file.</p>
+<div class="preboxcontainer">
+<pre class="prebox">[Unit]
+Description=Puma server to serve application
+After=network.target
+
+[Service]
+WorkingDirectory=/path/to/your/app
+ExecStart=/path/to/your/app/bin/puma  -C config/puma.rb -e production
+ExecReload=/bin/kill -s HUP $MAINPID
+Environment=GEM_PATH=<span class="code-highlight">/path/to/your/.rvm/gem-VERSION@global</span>
+Environment=GEM_HOME=<span class="code-highlight">/path/to/your/.rvm/gems/ruby-VERSION</span>
+Environment=PATH=<span class="code-highlight">/path/to/your/.rvm/gems/ruby-VERSION/bin:/path/to/your/.rvm//gem-VERSION@global/bin:/path/to/your..rvm/rubies/ruby-VERSION/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/APP:/usr/local/APP:/snap/bin:/path/to/your/.rvm/bin</span>
+KillMode=mixed
+TimeoutStopSec=5
+PrivateTmp=true
+Restart=on-failure
+PIDFile=<span class="code-highlight">/tmp/puma.pid</span>
+
+[Install]
+WantedBy=default.target</pre>
+</div>
+</div>
 </li>
 <li>Enable the user unit for puma:
 <div class="preboxcontainer">
