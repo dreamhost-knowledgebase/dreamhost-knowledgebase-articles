@@ -1,73 +1,31 @@
-<div id="auto-toc">&nbsp;</div>
-<p>The following provides information to help you prepare your site for the Ubuntu upgrade from Debian Stretch or Debian Buster to version 22.04.2 LTS (aka Jammy).</p>
-<h2 id="h_01HN199BH1H8TSEJFG4S03H4B1"><span id="prep">What to expect</span></h2>
+<h2 id="h_01J0VKXT5W3744YBZHYQ1984GH">Overview</h2>
 <div class="solvvy-solution">
+<p>This article provides information to help you prepare your site for the Ubuntu 22.04.2 LTS (aka Jammy) upgrade.&nbsp;&nbsp;</p>
+<h3 id="h_01HN199BH1H8TSEJFG4S03H4B1"><span id="prep">What to expect</span></h3>
 <p>DreamHost will contact you via email in advance of the upgrade.</p>
-<p>The time frame of an upgrade can vary from server to server, however the timing ensures that there are several highly trained engineers on hand should any major issues arise. The upgrade itself should take no longer than an hour to complete.</p>
-<p>Any services that rely on the availability of your MySQL server (WordPress or any other database-driven websites, applications, and so on) will not be reachable until the upgrade is complete. This will NOT affect cloud or email services.</p>
+<ul>
+<li>The timing ensures that there are several highly trained engineers on hand should any major issues arise.</li>
+<li>The upgrade itself should take no longer than an hour to complete.</li>
+<li>Any services that rely on the availability of your MySQL server (WordPress or any other database-driven websites, applications, and so on) will <strong>not be reachable</strong> until the upgrade is complete. This will NOT affect cloud or email services.</li>
+</ul>
 </div>
-<div id="version" class="section-link">&nbsp;</div>
-<h2 id="h_01HN199BH122PP6RHZSK1EWJWX">Checking the version of Ubuntu</h2>
+<h2 id="h_01HN199BH1R9RH1KGYWYP72DT0">Web server version changes</h2>
 <div class="solvvy-solution">
-<p>As mentioned above, you will receive an email notifying you of your server's upgrade. However, you can manually check via <a href="https://help.dreamhost.com/hc/en-us/articles/216041267-SSH-overview" target="_self">SSH</a>.</p>
-<p>The following command confirms the server is still running Debian.</p>
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">cat /etc/issue</span>
-Debian GNU/Linux 10 \n \l</pre>
+<p>View the following article for instructions on how to find the versions of installed software on your server.</p>
+<ul>
+<li><a href="https://help.dreamhost.com/hc/en-us/articles/360059767631-Viewing-your-server-s-software-versions">Viewing your server's software versions</a></li>
+</ul>
 </div>
-<p>And this shows a server running Ubuntu 22.04</p>
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">cat /etc/issue</span>
-Ubuntu 22.04.2 LTS \n \l</pre>
-</div>
-</div>
-<h2 id="h_01HN199BH1CR0BAK8E15AGM8CD">ssh-rsa</h2>
+<h2 id="h_01J0VMJK9RFK9VH9F1A33NSZ9G">Troubleshooting</h2>
 <div class="solvvy-solution">
+<p><strong>ssh-rsa</strong></p>
 <p>The <span class="text-object">ssh-rsa</span> ssh key cipher is no longer allowed. You will need to regenerate your ssh key if you are using ssh-rsa. Please see the following guides for instructions on how to create new key pairs:</p>
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/216499537-How-to-configure-passwordless-login-in-Mac-OS-X-and-Linux" target="_self">How to configure passwordless login in Mac OS X and Linux</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/215464758-Set-up-passwordless-login-in-PuTTY" target="_self">Set up passwordless login in PuTTY</a></li>
 </ul>
-</div>
-<h2 id="h_01HN199BH1R9RH1KGYWYP72DT0">Web server version changes</h2>
-<div class="solvvy-solution">
-<h3 id="h_01HN199BH14N16YWQMB0PBSSJB" class="subtoc-heading">curl</h3>
-<p>The version of curl is changing from Stretch (7.52.1) or Buster (7.64.0) to 7.81.0.</p>
-<h3 id="h_01HN199BH1ZVYDSS21XV3R91TC" class="subtoc-heading">FFmpeg</h3>
-<p>The version of FFmpeg is changing from Stretch (3.2.15) or Buster (4.1.6) to 4.4.2.</p>
-<h3 id="h_01HN199BH1DJM2ZG9FSAQ1GDVK" class="subtoc-heading">GCC</h3>
-<p>The version of GCC is changing from Stretch (6.3) or Buster (8.3) to 11.3 and 12.1.</p>
-<h3 id="h_01HN199BH1VH4WBE5WAM422MRY" class="subtoc-heading">Java</h3>
-<p>Ubuntu Jammy includes a new version of Java version 8, 8u362.</p>
-<h3 id="h_01HN199BH1A357QAZFE7EXKMT1" class="subtoc-heading">Node / NVM</h3>
-<p>When installing a custom version of Node.js/NVM, the installation will get caught by grsec. You must run a command to change the <span class="code">pax flags</span> so grsec ignores the files. View the following article for full instructions:</p>
-<ul>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/360029083351-Installing-a-custom-version-of-NVM-and-Node-js">Installing a custom version of NVM and Node.js</a></li>
-</ul>
-<h3 id="h_01HN199BH10JAKGM4RTPJ5RGCP" class="subtoc-heading">OpenSSL</h3>
-<p>The version of OpenSSL is changing from Stretch (1.1.0l) or Buster (1.1.1d) to 3.0.2.</p>
-<h3 id="h_01HN199BH13DGHM0JY2MX0TR6W" class="subtoc-heading">Perl</h3>
-<p>The version of Perl is changing from Stretch (5.24.1) or Buster (5.28.1) to 5.34.0.</p>
-<h3 id="h_01HN199BH16WPHMKNXH04SGF5A" class="subtoc-heading">Python</h3>
-<p>The following Python versions are changing:</p>
-<ul>
-<li>Python 2 (from 2.7.13/16 to 2.7.18)</li>
-<li>Python 3 (from 3.5.3/3.7.3 to 3.10.6)</li>
-</ul>
-<h3 id="h_01HN199BH2P6CNK36TH4CDCYC6" class="subtoc-heading">Python virtualenv</h3>
+<p><strong>Python virtualenv</strong></p>
 <p>If your website is using a Python virtual environment and you notice any errors after the upgrade, reinstall your virtual environment and all modules. This helps to ensure everything is compatible with the new libraries on the server.</p>
-<h3 id="h_01HN199BH29EEHR4GCR0VJP3PB" class="subtoc-heading">Ruby</h3>
-<p>The Ruby version on the server is 3.0.2. If you would like more control over this (e.g., you wish to use an older or newer version of Ruby), DreamHost strongly recommends using <a href="/hc/en-us/articles/217185247-Ruby-Version-Manager-RVM-">RVM</a>.</p>
-<p>If you are using <a href="/hc/en-us/articles/115001070131-Using-Bundler-to-install-Ruby-gems">Bundler</a>, you only need to run:</p>
-<div class="preboxcontainer">
-<pre class="prebox"><span class="server">[server]$ </span><span class="command">bundle exec gem pristine</span>
-</pre>
-</div>
-<h3 id="h_01HN199BH2KR2HET2DXFA8G0Q1" class="subtoc-heading">SSH</h3>
-<p>The version of SSH is changing from Stretch (7.4p1) or Buster (7.9p1) to 8.9p1.</p>
-<div id="telnet" class="section-link">&nbsp;</div>
-<h3 id="h_01HN199BH2KXKBD20KH6PP339Q" class="subtoc-heading">Telnet</h3>
-<p>Telnet was previously available on Debian Stretch machines. However, since it is a deprecated protocol, it is not available on Jammy machines to help keep your server secure. If you require Telnet, DreamHost recommends running it on your local computer instead.</p>
 </div>
 <h2 id="h_01HN199BH23912R3SPE658Z2SP">How can I find support?</h2>
 <div class="solvvy-solution">
@@ -77,8 +35,6 @@ Ubuntu 22.04.2 LTS \n \l</pre>
 <div class="solvvy-hidden">
 <ul>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/360059767631-Viewing-your-server-s-software-versions">Viewing your server's software versions</a></li>
-<li><a href="https://help.dreamhost.com/hc/en-us/articles/4999613317268-Preparing-for-Ubuntu-Focal">Preparing for Ubuntu Focal</a></li>
 <li><a href="https://help.dreamhost.com/hc/en-us/articles/26139217919380-Preparing-for-Ubuntu-Noble">Preparing for Ubuntu Noble</a></li>
 </ul>
 </div>
-<div class="clearer">&nbsp;</div>
